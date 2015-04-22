@@ -361,3 +361,10 @@ std::string md5(const std::string str)
     return md5.hexdigest();
 }
 
+// RB--
+
+ void 
+ MD5::update(std::string const &s)
+ {
+     update(s.c_str(), s.length());
+ }
