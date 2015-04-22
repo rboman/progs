@@ -34,6 +34,7 @@ documentation and/or software.
 #define BZF_MD5_H
  
 #include <cstring>
+#include <string>
 #include <iostream>
  
  
@@ -53,7 +54,7 @@ public:
   typedef unsigned int size_type; // must be 32bit
  
   MD5();
-  MD5(const std::string& text);
+  explicit MD5(const std::string& text);
   void update(const unsigned char *buf, size_type length);
   void update(const char *buf, size_type length);
   MD5& finalize();
