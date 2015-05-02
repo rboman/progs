@@ -83,15 +83,11 @@ set(_TBB_LIBSET2 ${_TBB_PROXYLIB_NAME} ${_TBB_MALLOCLIB_NAME})
 SET(_TBB_LIB_PATH ${TBB_LIB_PATH})                              # copy cached value
 IF(NOT _TBB_LIB_PATH)                                           # work on copy
 	# try to find "tbb.dll/so" from the env variables
-	#IF(MSVC)
-	#	find_file(_TBB_TBBDLL "tbb.dll" PATHS "" )
-	#ELSE()
-	#	find_library(_TBB_TBBDLL "tbb" PATHS "" ENV LD_LIBRARY_PATH)
-	#ENDIF()
-
-	#new
-	find_file(_TBB_TBBDLL "${_TBB_TBBLIB_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX}" PATHS "" )
-
+	IF(MSVC)
+		find_file(_TBB_TBBDLL "tbb.dll" PATHS "" )
+	ELSE()
+		find_library(_TBB_TBBDLL "tbb" PATHS "" ENV LD_LIBRARY_PATH)
+	ENDIF()
 	#MESSAGE(STATUS "_TBB_TBBDLL=${_TBB_TBBDLL}")
 	IF(_TBB_TBBDLL)
 		get_filename_component(_TBB_DLL_PATH ${_TBB_TBBDLL} PATH CACHE)
@@ -106,12 +102,12 @@ IF(NOT _TBB_LIB_PATH)                                           # work on copy
 	
 		#MESSAGE(STATUS "_TBB_LIB_PATH=${_TBB_LIB_PATH}")
 	ELSE()
-		MESSAGE(WARNING "!!!!!!!! ${_TBB_TBBLIB_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} should be in PATH/LD_LIBRARY_PATH !!!!!!!!!")
+		MESSAGE(WARNING "!!!!!!!! ${CMAKE_SHARED_LIBRARY_PREFIX}${_TBB_TBBLIB_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} should be in PATH/LD_LIBRARY_PATH !!!!!!!!!")
 	ENDIF()
 	unset(_TBB_TBBDLL CACHE)
 ENDIF()
 IF(NOT TBB_LIB_PATH) # set cache if needed
-	SET(TBB_LIB_PATH ${_TBB_LIB_PATH} CACHE PATH "where the optimized .so/.lib are")
+	SET(TBB_LIB_PATH "${_TBB_LIB_PATH}" CACHE PATH "where the optimized .so/.lib are" FORCE)
 ENDIF()
 
 # ----------------------------------------------------------------------------   
@@ -146,7 +142,7 @@ IF(NOT _TBB_LIB_PATH_DEBUG)                                                 # wo
 	unset(_TBB_TBBDLL_DEBUG CACHE)
 ENDIF()
 IF(NOT TBB_LIB_PATH_DEBUG) # set cache if needed
-	SET(TBB_LIB_PATH_DEBUG ${_TBB_LIB_PATH_DEBUG} CACHE PATH "where the debug .so/.lib are")
+	SET(TBB_LIB_PATH_DEBUG ${_TBB_LIB_PATH_DEBUG} CACHE PATH "where the debug .so/.lib are" FORCE)
 ENDIF()
 
 # ----------------------------------------------------------------------------   
@@ -222,7 +218,7 @@ IF( (NOT _TBB_INCLUDE_DIRS) AND (TBB_LIB_PATH))
 	#MESSAGE(STATUS "_TBB_INCLUDE_DIRS=${_TBB_INCLUDE_DIRS}")
 ENDIF()
 IF(NOT TBB_INCLUDE_DIRS) # set cache if needed
-	SET(TBB_INCLUDE_DIRS ${_TBB_INCLUDE_DIRS} CACHE PATH "where the tbb/*.h are")
+	SET(TBB_INCLUDE_DIRS ${_TBB_INCLUDE_DIRS} CACHE PATH "where the tbb/*.h are" FORCE)
 ENDIF()
 unset(_TBB_INCLUDE_DIRS CACHE)
 
@@ -242,10 +238,10 @@ IF( (NOT TBB_VERSION_INTERFACE) AND TBB_INCLUDE_DIRS )
 	unset(_FILE)
 ENDIF()
 IF(NOT TBB_VERSION_INTERFACE)
-	SET(TBB_VERSION_INTERFACE ${_TBB_VERSION_INTERFACE} CACHE STRING "")
-	SET(TBB_VERSION_MAJOR ${_TBB_VERSION_MAJOR} CACHE INTERNAL "")
-	SET(TBB_VERSION_MINOR ${_TBB_VERSION_MINOR} CACHE INTERNAL "")
-	SET(TBB_VERSION_STRING ${_TBB_VERSION_STRING} CACHE STRING "")
+	SET(TBB_VERSION_INTERFACE ${_TBB_VERSION_INTERFACE} CACHE STRING "" FORCE)
+	SET(TBB_VERSION_MAJOR ${_TBB_VERSION_MAJOR} CACHE INTERNAL "" FORCE)
+	SET(TBB_VERSION_MINOR ${_TBB_VERSION_MINOR} CACHE INTERNAL "" FORCE)
+	SET(TBB_VERSION_STRING ${_TBB_VERSION_STRING} CACHE STRING "" FORCE)
 	mark_as_advanced(TBB_VERSION_INTERFACE)
 	mark_as_advanced(TBB_VERSION_MAJOR)
 	mark_as_advanced(TBB_VERSION_MINOR)
@@ -258,7 +254,7 @@ include(FindPackageHandleStandardArgs)
 # if all listed variables are TRUE
 find_package_handle_standard_args(TBB DEFAULT_MSG 
 				TBB_LIBRARIES TBB_INCLUDE_DIRS
-				TBB_LIB_PATH TBB_LIB_PATH_DEBUG TBB_VERSION_STRING)
+				TBB_LIB_PATH TBB_LIB_PATH_DEBUG)
 
 #MESSAGE(STATUS "TBB_FOUND = ${TBB_FOUND}")
 # ----------------------------------------------------------------------------   
