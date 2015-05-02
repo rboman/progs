@@ -15,21 +15,33 @@
 #
 # autodetection:
 #    succeeds if tbb.dll/tbb_debug.dll are in the PATH/LD_LIBRARY_PATH
-#    otherwise, you may set TBB_LIB_PATH, TBB_LIB_PATH manually
+#    otherwise, you may set TBB_LIB_PATH, TBB_LIB_PATH_DEBUG manually
 #
 # main advantage: 
-#    the link wilkl be performed with a library in the PATH
+#    the link will be always performed with the library corresponding 
+#    to dynamic lib the PATH
 #    => avoids problem when 2 sets of libs are installed in the system
+#
+# remarks:
+#    $ENV{TBBROOT} is *not* used here because it is rather difficult 
+#    to guess the wanted target architecture
+#
+# tested on:
+#    win7-msvc + official tbb binaries
+#    winxp-mingw32 + tbb compiled from src
+#    linux + installed parallel studio 
 #
 # memo:
 #    http://www.cmake.org/Wiki/CMake:How_To_Find_Libraries#Writing_find_modules
 # ----------------------------------------------------------------------------   
 
+set (_VERB 0)
+
 OPTION(ENABLE_TBBMALLOC "Use TBBMALLOC" ON)
 
 # clean cache from previous runs
-unset(TBB_TBBDLL       CACHE)
-unset(TBB_TBBDLL_DEBUG CACHE)
+unset(_TBB_TBBDLL       CACHE)
+unset(_TBB_TBBDLL_DEBUG CACHE)
 
 IF(0)  # Debug
 	MESSAGE(STATUS "-------------------------------------")
@@ -46,7 +58,14 @@ IF(0)  # Debug
 	MESSAGE(STATUS "MINGW=${MINGW}")
 ENDIF()
 
-# --- Liste des bibliothèques à trouver ---
+# --- List of libraries to be found ---
+
+set(_TBB_LIB_NAME    "tbb")
+set(_TBB_MALLOC_NAME "tbbmalloc")
+set(_TBB_PROXY_NAME  "tbbmalloc_proxy")
+
+
+
 
 SET(TBB_LIBRARIES  optimized tbb debug tbb_debug)
 IF(ENABLE_TBBMALLOC)
@@ -63,65 +82,68 @@ MESSAGE(STATUS "TBB_LIBRARIES=${TBB_LIBRARIES}")
 #     on linux or win/mingw; this path is correct
 #   - on win/msvc, replace "bin" => "lib" in the path previously found
 
-SET(TBB_LIB_PATH TBB_LIB_PATH-NOTFOUND CACHE PATH "where the optimized .so/.lib are")
-
-IF(NOT TBB_LIB_PATH)
+SET(_TBB_LIB_PATH ${TBB_LIB_PATH})                              # copy cached value
+IF(NOT _TBB_LIB_PATH)                                           # work on copy
 	# try to find "tbb.dll/so" from the env variables
 	IF(MSVC)
-		find_file(TBB_TBBDLL "tbb.dll" PATHS "" )
+		find_file(_TBB_TBBDLL "tbb.dll" PATHS "" )
 	ELSE()
-		find_library(TBB_TBBDLL "tbb" PATHS "" ENV LD_LIBRARY_PATH)
+		find_library(_TBB_TBBDLL "tbb" PATHS "" ENV LD_LIBRARY_PATH)
 	ENDIF()
-	MESSAGE(STATUS "TBB_TBBDLL=${TBB_TBBDLL}")
-	IF("${TBB_TBBDLL}" STREQUAL "TBB_TBBDLL-NOTFOUND")
+	MESSAGE(STATUS "_TBB_TBBDLL=${_TBB_TBBDLL}")
+	IF("${_TBB_TBBDLL}" STREQUAL "_TBB_TBBDLL-NOTFOUND")
 		MESSAGE(FATAL_ERROR "!!!!!!!! tbb${CMAKE_SHARED_LIBRARY_SUFFIX} should be in PATH/LD_LIBRARY_PATH !!!!!!!!!")
 	ENDIF()
 
-	get_filename_component(TBB_DLL_PATH ${TBB_TBBDLL} PATH CACHE)
-	unset(TBB_TBBDLL CACHE)
+	get_filename_component(_TBB_DLL_PATH ${_TBB_TBBDLL} PATH CACHE)
+	unset(_TBB_TBBDLL CACHE)
 
 	IF(MSVC)
-		STRING(REPLACE "/bin/" "/lib/" TBB_LIB_PATH ${TBB_DLL_PATH})
-		SET(TBB_LIB_PATH ${TBB_LIB_PATH} CACHE PATH "where the optimized .so/.lib are" FORCE) 
+		STRING(REPLACE "/bin/" "/lib/" _TBB_LIB_PATH ${_TBB_DLL_PATH})
 	ELSE()
-		SET(TBB_LIB_PATH ${TBB_DLL_PATH} CACHE PATH "where the optimized .so/.lib are" FORCE) 
+		SET(_TBB_LIB_PATH ${_TBB_DLL_PATH}) 
 	ENDIF()
-	unset(TBB_DLL_PATH CACHE)
+	unset(_TBB_DLL_PATH CACHE)
 
-	MESSAGE(STATUS "TBB_LIB_PATH=${TBB_LIB_PATH}")
+	MESSAGE(STATUS "_TBB_LIB_PATH=${_TBB_LIB_PATH}")
 ENDIF()
+IF(NOT TBB_LIB_PATH) # set cache if needed
+	SET(TBB_LIB_PATH ${_TBB_LIB_PATH} CACHE PATH "where the optimized .so/.lib are")
+ENDIF()
+
 
 # ----------------------------------------------------------------------------   
 # --- TBB_LIB_PATH_DEBUG ---
 # ----------------------------------------------------------------------------   
 #   same method for debug libs
 
-SET(TBB_LIB_PATH_DEBUG TBB_LIB_PATH_DEBUG-NOTFOUND CACHE PATH "where the debug .so/.lib are")
-
-IF(NOT TBB_LIB_PATH_DEBUG)
+SET(_TBB_LIB_PATH_DEBUG ${TBB_LIB_PATH_DEBUG})                              # copy cached value
+IF(NOT _TBB_LIB_PATH_DEBUG)                                                 # work on copy
 	# try to find "tbb_debug.dll/so" from the env variables
 	IF(MSVC)
-		find_file(TBB_TBBDLL_DEBUG "tbb_debug.dll" PATHS "" )
+		find_file(_TBB_TBBDLL_DEBUG "tbb_debug.dll" PATHS "" )
 	ELSE()
-		find_library(TBB_TBBDLL_DEBUG "tbb_debug" PATHS "" ENV LD_LIBRARY_PATH)
+		find_library(_TBB_TBBDLL_DEBUG "tbb_debug" PATHS "" ENV LD_LIBRARY_PATH)
 	ENDIF()
-	MESSAGE(STATUS "TBB_TBBDLL_DEBUG=${TBB_TBBDLL_DEBUG}")
-	IF(NOT TBB_TBBDLL_DEBUG)
+	MESSAGE(STATUS "_TBB_TBBDLL_DEBUG=${_TBB_TBBDLL_DEBUG}")
+	IF(NOT _TBB_TBBDLL_DEBUG)
 		MESSAGE(FATAL_ERROR "!!!!!!!! tbb_debug${CMAKE_SHARED_LIBRARY_SUFFIX} should be in PATH/LD_LIBRARY_PATH !!!!!!!!!")
 	ENDIF()
 
-	get_filename_component(TBB_DLL_PATH_DEBUG ${TBB_TBBDLL_DEBUG} PATH CACHE)
-	unset(TBB_TBBDLL_DEBUG CACHE)
+	get_filename_component(_TBB_DLL_PATH_DEBUG ${_TBB_TBBDLL_DEBUG} PATH CACHE)
+	unset(_TBB_TBBDLL_DEBUG CACHE)
 
 	IF(MSVC)
-		STRING(REPLACE "/bin/" "/lib/" TBB_LIB_PATH_DEBUG ${TBB_DLL_PATH_DEBUG})
-		SET(TBB_LIB_PATH_DEBUG ${TBB_LIB_PATH_DEBUG} CACHE PATH "where the debug .so/.lib are" FORCE)
+		STRING(REPLACE "/bin/" "/lib/" _TBB_LIB_PATH_DEBUG ${_TBB_DLL_PATH_DEBUG})
 	ELSE()
-		SET(TBB_LIB_PATH_DEBUG ${TBB_DLL_PATH_DEBUG} CACHE PATH "where the debug .so/.lib are" FORCE)
+		SET(_TBB_LIB_PATH_DEBUG ${_TBB_DLL_PATH_DEBUG}) 
 	ENDIF()
-	unset(TBB_DLL_PATH_DEBUG CACHE)
+	unset(_TBB_DLL_PATH_DEBUG CACHE)
 
-	MESSAGE(STATUS "TBB_LIB_PATH_DEBUG=${TBB_LIB_PATH_DEBUG}")
+	MESSAGE(STATUS "_TBB_LIB_PATH_DEBUG=${_TBB_LIB_PATH_DEBUG}")
+ENDIF()
+IF(NOT TBB_LIB_PATH_DEBUG) # set cache if needed
+	SET(TBB_LIB_PATH_DEBUG ${_TBB_LIB_PATH_DEBUG} CACHE PATH "where the debug .so/.lib are")
 ENDIF()
 
 # ----------------------------------------------------------------------------   
@@ -171,3 +193,14 @@ find_package_handle_standard_args(TBB  DEFAULT_MSG
 # a voir + tard si necessaire
 #mark_as_advanced(TBB_INCLUDE_DIRS TBB_LIBRARIES )
 
+# ----------------------------------------------------------------------------   
+# Version
+# ----------------------------------------------------------------------------   
+
+IF(TBB_INCLUDE_DIRS)
+	set(TBB_INTERFACE_VERSION 0)
+	FILE(READ "${TBB_INCLUDE_DIRS}/tbb/tbb_stddef.h" _TBB_VERSION_CONTENTS)
+	STRING(REGEX REPLACE ".*#define TBB_INTERFACE_VERSION ([0-9]+).*" "\\1" TBB_INTERFACE_VERSION "${_TBB_VERSION_CONTENTS}")
+	set(TBB_INTERFACE_VERSION "${TBB_INTERFACE_VERSION}")
+	MESSAGE(STATUS "TBB_INTERFACE_VERSION=${TBB_INTERFACE_VERSION}")
+ENDIF()
