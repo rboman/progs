@@ -82,7 +82,7 @@ set(_TBB_LIBSET2 ${_TBB_PROXYLIB_NAME} ${_TBB_MALLOCLIB_NAME})
 
 SET(_TBB_LIB_PATH ${TBB_LIB_PATH})                              # copy cached value
 IF(NOT _TBB_LIB_PATH)                                           # work on copy
-	# try to find "tbb.dll/so" from the env variables
+	# try to find "(lib)tbb.dll/so" from the env variables
 	IF(MSVC)
 		find_file(_TBB_TBBDLL "tbb.dll" PATHS "" )
 	ELSE()
@@ -99,7 +99,6 @@ IF(NOT _TBB_LIB_PATH)                                           # work on copy
 			SET(_TBB_LIB_PATH ${_TBB_DLL_PATH}) 
 		ENDIF()
 		unset(_TBB_DLL_PATH CACHE)
-	
 		#MESSAGE(STATUS "_TBB_LIB_PATH=${_TBB_LIB_PATH}")
 	ELSE()
 		MESSAGE(WARNING "!!!!!!!! ${CMAKE_SHARED_LIBRARY_PREFIX}${_TBB_TBBLIB_NAME}${CMAKE_SHARED_LIBRARY_SUFFIX} should be in PATH/LD_LIBRARY_PATH !!!!!!!!!")
@@ -117,7 +116,7 @@ ENDIF()
 
 SET(_TBB_LIB_PATH_DEBUG ${TBB_LIB_PATH_DEBUG})                              # copy cached value
 IF(NOT _TBB_LIB_PATH_DEBUG)                                                 # work on copy
-	# try to find "tbb_debug.dll/so" from the env variables
+	# try to find "(lib)tbb_debug.dll/so" from the env variables
 	IF(MSVC)
 		find_file(_TBB_TBBDLL_DEBUG "tbb_debug.dll" PATHS "" )
 	ELSE()
@@ -134,10 +133,9 @@ IF(NOT _TBB_LIB_PATH_DEBUG)                                                 # wo
 			SET(_TBB_LIB_PATH_DEBUG ${_TBB_DLL_PATH_DEBUG}) 
 		ENDIF()
 		unset(_TBB_DLL_PATH_DEBUG CACHE)
-	
 		#MESSAGE(STATUS "_TBB_LIB_PATH_DEBUG=${_TBB_LIB_PATH_DEBUG}")
 	ELSE()
-		MESSAGE(WARNING "!!!!!!!! tbb_debug${CMAKE_SHARED_LIBRARY_SUFFIX} should be in PATH/LD_LIBRARY_PATH !!!!!!!!!")
+		MESSAGE(WARNING "!!!!!!!! ${CMAKE_SHARED_LIBRARY_PREFIX}${_TBB_TBBLIB_NAME}_debug${CMAKE_SHARED_LIBRARY_SUFFIX} should be in PATH/LD_LIBRARY_PATH !!!!!!!!!")
 	ENDIF()
 	unset(_TBB_TBBDLL_DEBUG CACHE)
 ENDIF()
