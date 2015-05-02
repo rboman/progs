@@ -14,12 +14,12 @@
 #   
 # ----------------------------------------------------------------------------   
 
-find_file(GMM_INCLUDE_DIRS "gmm/gmm.h")
+find_path(GMM_INCLUDE_DIRS "gmm/gmm.h")
 
 # ----------------------------------------------------------------------------   
 
 include(FindPackageHandleStandardArgs)
-# handle the QUIETLY and REQUIRED arguments and set TBB_FOUND to TRUE
+# handle the QUIETLY and REQUIRED arguments and set GMM_FOUND to TRUE
 # if all listed variables are TRUE
 find_package_handle_standard_args(GMM DEFAULT_MSG 
 				GMM_INCLUDE_DIRS)
