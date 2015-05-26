@@ -2,7 +2,7 @@
 # -*- coding: latin-1; -*-
 # test mpi4py
 
-# exc:   mpiexec.openmpi -n 6 ./test01.py
+# exc:   mpiexec.openmpi -n 6 ./test01_send.py
 
 
 import mpi4py.MPI as mpi
