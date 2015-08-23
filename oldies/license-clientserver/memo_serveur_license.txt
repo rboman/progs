@@ -1,0 +1,37 @@
+
+Creation d'un système de "jetons" pour Metafor
+==============================================
+
+
+
+Le systeme possede les contraintes suivantes:
+- doit pouvoir fonctionner sous "python pur", en nogui et en gui.
+- l'ancien système de .lic doit pouvoir toujours fonctionner.
+
+Recherche du .lic:
+  1. soit dans le repertoire utilisateur
+  2. soit dans le repertoire de l'install de Metafor
+  3. soit sur serveur (host+port dans varenv ou python?)
+
+	cas config par python:
+	  lire un code python du genre:
+	  TheLicManager::getInstance().setHost("localhost", 12000)
+
+
+2 premiers cas: comme avant
+
+cas reseau:
+  - connection au serveur.
+  - le serveur verifie si un jeton est dispo. Si oui, renvoie un .lic
+  - Metafor construit le LicenseManager et ajoute une License de type CheckTokenLicense. Cette license va verifier periodiquement que la connexion avec le serveur de license n'est pas perdue. Si c'est le cas, ca plante, ou ca essaye de reconnecter, ou ca sauve et ca plante...
+
+Le serveur doit posseder son propre .lic qui le relie a une adresse MAC, a une date limite, etc. 
+
+Le keygen pourrait etre utilisé comme serveur. 
+Avantages:
+  - un seul projet Qt.
+  - les licences peut eventuellement réencoder les clefs pour que l'utilisateur puisse ajouter des limitations.
+
+Difficulté: communiquer avec le serveur sous python pur car, à ce moment, aucune mainloop Qt n'est disponible.
+ => faire un thread specialisé?
+ => ne pas utiliser la mainloop Qt. possible?
