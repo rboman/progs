@@ -13,6 +13,11 @@
 #define MYDLL_API
 #endif
 
+#ifdef _MSC_VER
+#pragma warning( disable : 4910) // '__declspec(dllexport)' and 'extern' are incompatible on an explicit instantiation
+                                 // see https://msdn.microsoft.com/en-us/library/bb531392(v=vs.90).aspx
+#endif
+
 #include <iostream>
 #include <string>
 
