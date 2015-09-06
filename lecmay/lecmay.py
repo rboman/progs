@@ -18,16 +18,16 @@ class Mesh:
     def __str__(self):
         str = "Mesh:\n"
         str += "\tself.nbnoe = %d (nombre de noeuds)\n" % self.nbnoe
-        str += "\tself.nbelt = %d (nombre d'éléments)\n" % self.nbelt
+        str += "\tself.nbelt = %d (nombre d'elements)\n" % self.nbelt
         str += "\tself.nbfac = %d (nombre de faces)\n" % self.nbfac
         str += "\tself.nbnfr = %d (nombre de nfr)\n" % self.nbnfr
-        str += "\tself.lbg   = %d (largeur de bande géométrique)\n" % self.lbg
+        str += "\tself.lbg   = %d (largeur de bande geometrique)\n" % self.lbg
         return str
 
 def readfile(filename, verb=False):
 
     print 'reading file "%s"' % filename
-    f = frt.FortranFile(filename, endian='@')
+    f = frt.FortranFile(filename, endian='@', header_prec='i', mode='rb') # !! par defaut c'est du texte 'r' seul!
     
     # == header .DIMENSIONS
     hdr = f.readString()
@@ -119,11 +119,16 @@ def readfile(filename, verb=False):
     r=f.readReals('d')
     print 'r=', r
 
+    for rr in r:
+        print rr
    
     return msh
 
 
 
+def lecall():
+    file = open('')
+
 if __name__=="__main__":
-    msh = readfile('plat.may')
+    msh = readfile('plat2.may')
     print msh

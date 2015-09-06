@@ -123,7 +123,7 @@ class FortranFile(file):
             else:
                 print "self.read(%d)" % (num_bytes - l)
                 read_data = self.read(num_bytes - l)
-            if read_data == '' and True:
+            if read_data == '' and False:
                 print 'read_data="%s"' %read_data         
                 raise IOError('Could not read enough data.'
                               '  Wanted %d bytes, got %d.' % (num_bytes, l))
@@ -131,6 +131,7 @@ class FortranFile(file):
             
 
     def _read_check(self):
+        print "read_check"
         return numpy.fromstring(self._read_exactly(self._header_length),
                                 dtype=self.ENDIAN+self.HEADER_PREC
                                )[0]
@@ -143,9 +144,11 @@ class FortranFile(file):
 
     def readRecord(self):
         """Read a single fortran record"""
+        print "===readRecord"
         l = self._read_check()
         data_str = self._read_exactly(l)
         check_size = self._read_check()
+        print "check_size=", check_size
         if check_size != l:
             raise IOError('Error reading record from data file')
         return data_str
@@ -189,7 +192,7 @@ class FortranFile(file):
             Python's struct module.  Possible values are 'd' and 'f'.
             
         """
-        
+        print "readReals"
         _numpy_precisions = {'d': numpy.float64,
                              'f': numpy.float32
                             }
