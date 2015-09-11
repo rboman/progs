@@ -5,7 +5,7 @@
 #include "mydll.h"
 #include "ObjectA.h"
 
-extern template class MYDLL_API ObjectA<int>;
+extern template class ObjectA<int>;
 
 class MYDLL_API ObjectB : public ObjectA<int>
 {
