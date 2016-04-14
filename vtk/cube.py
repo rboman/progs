@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui  import *
 import vtk
