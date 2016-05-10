@@ -1,3 +1,7 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
+
 import sys
 
 class StdoutCatcher:

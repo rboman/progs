@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 def test():
     import sys, signal
     class SigHandler:
