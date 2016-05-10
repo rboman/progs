@@ -32,7 +32,8 @@ def main():
     #update svn directories
     if 1:
         # set SVN_SSH, sinon: "can't create tunnel"
-        os.environ['SVN_SSH']=r'C:\\Program Files\\TortoiseSVN\\bin\\TortoisePlink.exe'  # '\\\\' ou 'r et \\' !!
+        if not isUnix():
+            os.environ['SVN_SSH']=r'C:\\Program Files\\TortoiseSVN\\bin\\TortoisePlink.exe'  # '\\\\' ou 'r et \\' !!
         for svndir in ['oo_nda', 'oo_meta', 'mtStart']:
             cmd='svn update %s' % svndir
             print cmd
