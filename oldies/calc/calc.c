@@ -1,11 +1,6 @@
 /*
- * $Id$ 
- *
- *
- *
  *                               MODULE CALC
  *                     Evaluation de Fonctions + abrevs
- *
  *
  * RoBo juin 2000
  *
