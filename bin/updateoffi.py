@@ -11,35 +11,46 @@ def isUnix():
     uname = platform.uname()
     return not (uname[0] == 'Windows' or uname[2] == 'Windows')
 
+class Repo(object):
+    def __init__(self):
+        pass
+    def update(self):
+        pass
 
-def main():
-    # update git directories
-    if 1:
-        for gitdir in ['keygen', 'MetaforSetup', 'parasolid']:
-            chDir(gitdir)
-            if isUnix():
-                cmd='git pull origin master'
-            else:
-                cmd=r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull origin master"'  
-            print cmd
-            # os.system necessite des "" en plus autour de la cmd)
-            #os.system('"%s"' % cmd)
-            status = subprocess.call(cmd, shell=True)
-            if status: raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            print 'status=', status
-            chDir('..')
+class GITRepo(Repo):
+    def __init__(self, name):
+        self.name = name
+    def update(self):
+        chDir(self.name)
+        if isUnix():
+            cmd='git pull origin master'
+        else:
+            cmd=r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull origin master"'  
+        print cmd
+        # os.system necessite des "" en plus autour de la cmd)
+        #os.system('"%s"' % cmd)
+        status = subprocess.call(cmd, shell=True)
+        if status: raise Exception('"%s" FAILED with error %d' % (cmd, status))
+        print 'status=', status
+        chDir('..')       
 
-    #update svn directories
-    if 1:
+
+class SVNRepo(Repo):
+    def __init__(self, name):
+        self.name = name
+    def update(self):
         # set SVN_SSH, sinon: "can't create tunnel"
         if not isUnix():
             os.environ['SVN_SSH']=r'C:\\Program Files\\TortoiseSVN\\bin\\TortoisePlink.exe'  # '\\\\' ou 'r et \\' !!
-        for svndir in ['oo_nda', 'oo_meta', 'mtStart']:
-            cmd='svn update %s' % svndir
-            print cmd
-            status = subprocess.call(cmd, shell=True)
-            if status: raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            #print 'status=', status
+        cmd='svn update %s' % self.name
+        print cmd
+        status = subprocess.call(cmd, shell=True)
+        if status: raise Exception('"%s" FAILED with error %d' % (cmd, status))       
+
+def main(repos):
+
+    for rep in repos:
+        rep.update()
 
     # clean build dir
     if 1:
@@ -68,5 +79,12 @@ def main():
             os.system('BuildConsole Metafor.sln /rebuild /cfg="Release|x64"')
 
 if __name__=="__main__":
-    main()
+    repos = []
+    repos.append(GITRepo('keygen'))
+    repos.append(GITRepo('MetaforSetup'))
+    repos.append(GITRepo('parasolid'))    
+    repos.append(SVNRepo('oo_meta'))
+    repos.append(SVNRepo('oo_nda'))
+    repos.append(SVNRepo('mtStart'))
+    main(repos)
     
