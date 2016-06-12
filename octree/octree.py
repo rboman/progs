@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: latin-1; -*-
-# $Id$
 
 import math, random, vtk
 

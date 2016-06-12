@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 """A Tkinter-based console for conversing with the Python interpreter,
 featuring more tolerant pasting of code from other interactive sessions,
 better handling of continuations than the standard Python interpreter,

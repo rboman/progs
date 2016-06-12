@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 #Le client
 #On importe socket..
 from socket import *

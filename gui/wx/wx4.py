@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 import os
 from wxPython.wx import *
 ID_ABOUT=101

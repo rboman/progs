@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 # Time client program
 from socket import *
 s = socket(AF_INET,SOCK_STREAM) # Create TCP socket

@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 base = './workspace/presse_37_CP/'
 import os,os.path
 files = os.listdir(base)

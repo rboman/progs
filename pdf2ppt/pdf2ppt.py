@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 # -*- coding: latin-1; -*-
 #
 # Splitte un pdf PPT 4pages/feuilles (nécessite ImageMagick dans le PATH)

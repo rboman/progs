@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
 #
 # test de threads pour la batterie de metafor
 # RoBo

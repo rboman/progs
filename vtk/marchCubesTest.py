@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: latin-1; -*-
 
-
 import vtk
 
 sphere = vtk.vtkSphere()

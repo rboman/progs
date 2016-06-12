@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 from wxPython.wx import *
 class Form1(wxPanel):
     def __init__(self, parent, id):

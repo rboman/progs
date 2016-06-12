@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
 
 class A:
     static = 1

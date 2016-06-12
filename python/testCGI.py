@@ -1,4 +1,5 @@
-#!d:/python23/python
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
 
 # http://garfield.ltas.ulg.ac.be/python/test2.py?r=0.88
 

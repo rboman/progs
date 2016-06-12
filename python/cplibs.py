@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 # copy dependencies (.so files) of "exefile" to "targetPath"
 
 def cplibs(exefile, targetPath='lddLibs', libPaths=[]):

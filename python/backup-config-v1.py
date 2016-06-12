@@ -1,5 +1,5 @@
+#! /usr/bin/env python
 # -*- coding: latin-1; -*-
-#/usr/bin/env python
 
 winrar = '"C:\\Program Files (x86)\\WinRAR\\rar.exe"'
 

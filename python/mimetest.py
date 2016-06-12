@@ -1,7 +1,8 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 import smtplib
 from email.MIMEText import MIMEText
-
-
 
 file = open("CYGWIN-diffs.html",'r')
 text = file.read()

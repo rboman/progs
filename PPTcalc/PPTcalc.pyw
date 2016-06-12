@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: latin-1; -*-
-# $Id$
 
 import os,sys,os.path
 from PyQt4 import QtCore, QtGui

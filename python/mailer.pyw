@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 # -*- coding: latin-1; -*-
-# $Id$
+# 
 # GUI mailer by RoBo
 #
 # rassemble "mailtest.py", "sendhtml.py" et "anonmail.py"

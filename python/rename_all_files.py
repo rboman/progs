@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 import os, fnmatch
 
 lst = os.listdir(".")

@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 import smtplib
 
 fromaddr = "r.boman@ulg.ac.be"

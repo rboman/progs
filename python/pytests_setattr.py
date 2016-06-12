@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 class A():
     a=1
     def __setattr__(self, name, value):       

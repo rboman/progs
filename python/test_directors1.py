@@ -1,5 +1,5 @@
+#! /usr/bin/env python
 # -*- coding: latin-1; -*-
-# $Id: defaut.py 690 2008-08-18 09:49:37Z boman $
 
 from wrap import *
 from toolbox.conge import Pt

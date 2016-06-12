@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
 # tra2py
 #    - extract 2 columns from semicolon-separated values
 #    - write the 2 columns in a file

@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: latin-1; -*-
 
 """
 RPNit is a simple calculator based upon reverse polish notation.

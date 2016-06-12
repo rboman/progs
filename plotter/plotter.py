@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: latin-1; -*-
-# $Id$
 # Plot2DWidget: tracé de fonctions
-#
+
 
 import sys
 from PyQt4 import QtCore, QtGui, Qt

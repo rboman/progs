@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+# -*- coding: latin-1; -*-
+
 from wxPython.wx import *
 class MainWindow(wxFrame):
     """ We simply derive a new class of Frame. """
