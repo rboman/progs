@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 2.6)
+project(Fract CXX)
+
+FIND_PACKAGE(Qt4 REQUIRED)
+
+INCLUDE(${QT_USE_FILE})
+
+FILE(GLOB SRCS *.h *.cpp)
+#FILE(GLOB CPPSRCS *.cpp)
+#QT4_AUTOMOC(${CPPSRCS})
+
+set (MOC_HEADERS Fract.h)
+qt4_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
+
+ADD_EXECUTABLE(fract ${SRCS} ${MOC_OUTFILES})
+TARGET_LINK_LIBRARIES(fract ${QT_LIBRARIES})
