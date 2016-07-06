@@ -18,7 +18,6 @@ class RenderThread(QtCore.QThread):
         self.nbc = 50
         self.pixmap = QtGui.QPixmap(width, height)
         self.mutex = QtCore.QMutex()
-        #self.cond = QtCore.QWaitCondition()
         self.abort = False
 
     def run(self):
@@ -27,6 +26,12 @@ class RenderThread(QtCore.QThread):
         painter = QtGui.QPainter(self.pixmap)
         painter.fillRect(self.pixmap.rect(), QtCore.Qt.black)
         self.mutex.unlock()  
+
+        # setup palette
+        colours = []
+        for n in range(self.nbc):
+            colours.append(QtGui.QColor(255*n/self.nbc, 0, 0))
+        colours.append(QtGui.QColor(0, 0, 0))
                
         for xe in range(0, self.wx, self.inc):
             for ye in range(0, self.wy, self.inc):
@@ -36,10 +41,8 @@ class RenderThread(QtCore.QThread):
                 while (n!=self.nbc) and (yn*yn+xn*xn<4):
                     n+=1
                     xn, yn = xn*xn-yn*yn+x, 2*xn*yn+y 
-                if n==self.nbc:
-                    painter.setPen(QtGui.QColor(0, 0, 0))
-                else:
-	                painter.setPen(QtGui.QColor(255.0-255.0/(n+1), 0, 0)) 
+
+	            painter.setPen(colours[n]) 
                 self.mutex.lock()
                 painter.drawPoint(xe,ye)
                 self.mutex.unlock()
@@ -68,15 +71,13 @@ class MandelWindow(QtGui.QWidget):
         
     def timerfct(self):
         self.update()
-        #print "timer()"
+        import random
+        print "timer()" , random.random()
         
     def resizeEvent(self, event):
         #print "resize!"
         while self.thread.isRunning():
             self.thread.abort = True
-            #self.thread.mutex.lock()
-            #self.thread.cond.wait(self.thread.mutex)
-            
         self.thread = RenderThread(width=self.width(), height=self.height())
         self.thread.start()
 
@@ -111,8 +112,9 @@ def main():
     app = QtGui.QApplication(sys.argv)
     win = MandelWindow()
     win.show()
-    app.connect(app, QtCore.SIGNAL("lastWindowClosed()"),app,QtCore.SLOT("quit()"))
-    sys.exit(app.exec_())
+    app.exec_()
+    #app.connect(app, QtCore.SIGNAL("lastWindowClosed()"),app,QtCore.SLOT("quit()"))
+    #sys.exit(app.exec_())
  
 if __name__=="__main__":
     main() 
