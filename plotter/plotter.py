@@ -4,13 +4,14 @@
 
 
 import sys
-from PyQt4 import QtCore, QtGui, Qt
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 import math
 
 def fct(x):
     return math.sin(2*x)+math.cos(4*x)
 
-class Plot2DWidget(QtGui.QWidget):
+class Plot2DWidget(QWidget):
     def __init__(self): 
         super(Plot2DWidget, self).__init__()
         self.margin = 20
@@ -77,10 +78,10 @@ class Plot2DWidget(QtGui.QWidget):
             
     def paintEvent(self, event):
         #print "paintevent"
-        painter = QtGui.QPainter(self)
+        painter = QPainter(self)
         
         # boite
-        self.rect = QtCore.QRect(self.margin, self.margin, self.width()-2*self.margin, self.height()-2*self.margin)
+        self.rect = QRect(self.margin, self.margin, self.width()-2*self.margin, self.height()-2*self.margin)
         rect=self.rect
         
         if not rect.isValid(): return
@@ -99,9 +100,9 @@ class Plot2DWidget(QtGui.QWidget):
             print "xminf =", xminf, yminf
             print "bdXf =", bdXf, bdYf
         
-        pen = QtGui.QPen()
-        pen.setColor(QtCore.Qt.black)
-        pen.setStyle(QtCore.Qt.DashLine)
+        pen = QPen()
+        pen.setColor(Qt.black)
+        pen.setStyle(Qt.DashLine)
         painter.setPen(pen)
        
         # axes x
@@ -111,7 +112,7 @@ class Plot2DWidget(QtGui.QWidget):
             y1 = rect.bottom()
             x2 = x1
             y2 = rect.top()
-            line = QtCore.QLine(x1,y1,x2,y2)
+            line = QLine(x1,y1,x2,y2)
             
             painter.drawLine(line)
             x+=bdXf
@@ -123,7 +124,7 @@ class Plot2DWidget(QtGui.QWidget):
             y1 = rect.bottom() - (y-self.ymin)/(self.ymax-self.ymin)*rect.height()
             x2 = rect.right()
             y2 = y1
-            line = QtCore.QLine(x1,y1,x2,y2)
+            line = QLine(x1,y1,x2,y2)
             
             painter.drawLine(line)
             y+=bdYf
@@ -133,16 +134,16 @@ class Plot2DWidget(QtGui.QWidget):
 
         for c in self.curves:
             i=0
-            poly = QtGui.QPolygon(len(c.pts))
+            poly = QPolygon(len(c.pts))
             for pt in c:
                 (x,y) = self.ax2win(pt.x, pt.y)
                 #painter.drawPoint(x,y)
-                poly[i] = QtCore.QPoint(x,y)
+                poly[i] = QPoint(x,y)
                 i+=1
 
-            pen = QtGui.QPen()
-            pen.setColor(QtCore.Qt.blue)
-            #pen.setStyle(QtCore.Qt.DashLine)
+            pen = QPen()
+            pen.setColor(Qt.blue)
+            #pen.setStyle(Qt.DashLine)
             pen.setWidth(2)
             painter.setPen(pen)
             painter.drawPolyline(poly)
@@ -162,18 +163,18 @@ class Plot2DWidget(QtGui.QWidget):
         
                       
     def mousePressEvent(self, event):
-        if event.button() == Qt.Qt.LeftButton:
+        if event.button() == Qt.LeftButton:
             #print "left clicked!";
             self.starttx = event.pos().x()
             self.startty = event.pos().y()
-        elif event.button() == Qt.Qt.RightButton:
+        elif event.button() == Qt.RightButton:
             #print "right clicked!";
             self.starttx = event.pos().x()
             self.startty = event.pos().y()
     
     def mouseMoveEvent(self, event):
         #print "mouse moved!"
-        if event.buttons() & Qt.Qt.LeftButton:
+        if event.buttons() & Qt.LeftButton:
             (x1,y1) = self.win2ax(self.starttx, self.startty)
             (x2,y2) = self.win2ax(event.pos().x(), event.pos().y())
             dx = x1-x2
@@ -185,7 +186,7 @@ class Plot2DWidget(QtGui.QWidget):
             self.starttx = event.pos().x()
             self.startty = event.pos().y()            
             self.update() 
-        elif event.buttons() & Qt.Qt.RightButton:
+        elif event.buttons() & Qt.RightButton:
             dx = float(event.pos().x() - self.starttx)
             dy = float(event.pos().y() - self.startty)
             dz = math.sqrt(dx*dx+dy*dy)
@@ -238,7 +239,7 @@ if __name__=="__main__":
     c.fill(fct, (-1.5,10), 150)
     
     if 1:
-        app = QtGui.QApplication(sys.argv)
+        app = QApplication(sys.argv)
         win = Plot2DWidget()
         win.add(c)
         win.show()
