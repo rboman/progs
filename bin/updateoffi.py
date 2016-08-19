@@ -82,9 +82,10 @@ if __name__=="__main__":
     repos = []
     repos.append(GITRepo('keygen'))
     repos.append(GITRepo('MetaforSetup'))
-    repos.append(GITRepo('parasolid'))    
+    repos.append(GITRepo('parasolid'))
+    repos.append(GITRepo('linuxbin'))        
     repos.append(SVNRepo('oo_meta'))
     repos.append(SVNRepo('oo_nda'))
-    repos.append(SVNRepo('mtStart'))
+
     main(repos)
     
