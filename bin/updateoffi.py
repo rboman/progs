@@ -56,8 +56,10 @@ def main(repos):
     if 1:
         print 'removing build dir'
         if os.path.isdir('oo_metaB'):
-            shutil.rmtree('oo_metaB')
-        os.mkdir('oo_metaB')
+            os.rename('oo_metaB','oo_metaB_trash') # avoid the failure of os.mkdir() is same name is used
+            shutil.rmtree('oo_metaB_trash')
+        os.mkdir('oo_metaB') # could fail (access denied) on Windows: 
+        # http://stackoverflow.com/questions/16373747/permission-denied-doing-os-mkdird-after-running-shutil-rmtreed-in-python
         chDir('oo_metaB')
     
     # make
