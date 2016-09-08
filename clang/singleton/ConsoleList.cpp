@@ -1,15 +1,18 @@
 
 #include "Singleton.h"
+#include "ConsoleList.h"
+
 
 class ConsoleList;
 // on instancie Singleton<ConsoleList> (devrait etre fait dans un fichier séparé)
 template class Singleton<ConsoleList>;
-
+#include "Singleton.inl"
 // -- ConsoleList -----------------------------------------------------------------
 
-#include "ConsoleList.h"
+
 
 // on force l'init des le chargement de la DLL!
+
 template<>
 ConsoleList *Singleton<ConsoleList>::instance = &ConsoleList::getInstance();
 

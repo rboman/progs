@@ -22,4 +22,6 @@ protected:
     ConsoleList();
 };
 
+//#include "Singleton.inl"
+
 #endif //CONSOLELIST_H

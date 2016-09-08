@@ -21,6 +21,6 @@ private:
     static T *instance;
 };
 
-#include "Singleton.inl"
+//#include "Singleton.inl"
 
 #endif //SINGLETON_H
