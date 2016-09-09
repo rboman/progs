@@ -1,13 +1,16 @@
 
+#include "mydll.h"
 #include "Singleton.h"
-#include "ObjectC.h"
 #include "Singleton.inl"
-template<> ObjectC *Singleton<ObjectC>::instance = NULL;
 
+#if defined(__MINGW32__)
+class ObjectC;
 template class MYDLL_API Singleton<ObjectC>;
-
-
-
+#include "ObjectC.h"
+#else
+#include "ObjectC.h"
+template class MYDLL_API Singleton<ObjectC>;
+#endif
 
 ObjectC::ObjectC()
 {

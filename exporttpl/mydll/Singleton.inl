@@ -1,12 +1,8 @@
-//
-// $Id: Singleton.inl 1370 2010-12-20 09:03:15Z boman $
-//
-
 template<class T>
 T &
 Singleton<T>::getInstance()
 {
-    if(instance==NULL)
+    if(instance==nullptr)
     {
         instance = new T();
     }
@@ -19,3 +15,5 @@ Singleton<T>::destroy()
 {
     if(instance) delete instance;
 }
+
+template<class T> T *Singleton<T>::instance = nullptr;
