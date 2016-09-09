@@ -22,7 +22,11 @@ extern template class __declspec(dllexport) Singleton<CLS>; // declares the "typ
 #define SINGLETON_EXPORT
 #else
 #define SINGLETON_CLSATTR(CLS)
+#if defined(WIN32)
 #define SINGLETON_EXPORT __declspec(dllexport)
+#else
+#define SINGLETON_EXPORT
+#endif
 #endif
 
 #endif //SINGLETON_H
