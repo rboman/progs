@@ -1,12 +1,12 @@
 
 #include "Singleton.h"
 #include "ObjectC.h"
+#include "Singleton.inl"
+template<> ObjectC *Singleton<ObjectC>::instance = NULL;
 
 template class MYDLL_API Singleton<ObjectC>;
 
-#include "Singleton.inl"
 
-template<> ObjectC *Singleton<ObjectC>::instance = NULL;
 
 
 ObjectC::ObjectC()
