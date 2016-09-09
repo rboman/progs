@@ -1,6 +1,7 @@
 
 #include "ObjectA.h"
 #include "ObjectB.h"
+#include "ObjectC.h"
 
 //#include <stdio.h>
 
@@ -14,6 +15,9 @@ int main()
 
     ObjectB b(1);
     b.print();
+
+    ObjectC::getInstance().print();
+
 
     //getchar();
 }
