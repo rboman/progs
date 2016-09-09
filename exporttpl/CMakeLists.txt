@@ -24,7 +24,9 @@ IF( (CMAKE_CXX_COMPILER_ID MATCHES "GNU") OR (CMAKE_CXX_COMPILER_ID MATCHES "Int
 	    -std=gnu++0x #c++0x # =c++11 # Or -std=c++0x
 	)
 ENDIF()
-
+IF( (CMAKE_CXX_COMPILER_ID MATCHES "Clang") )
+ ADD_DEFINITIONS(-std=c++11)
+ENDIF()
 
 # -- Sub directories
 ADD_SUBDIRECTORY( mydll )
