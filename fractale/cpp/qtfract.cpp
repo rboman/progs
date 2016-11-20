@@ -1,6 +1,6 @@
 
 #include <QApplication>
-#include "Fract.h"
+#include "qtfract.h"
 
 
 int main(int argc, char *argv[])
