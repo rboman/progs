@@ -21,6 +21,9 @@ class GITRepo(Repo):
     def __init__(self, name):
         self.name = name
     def update(self):
+        if not os.path.isdir(self.name):
+            print "skipping %s" % self.name  # should checkout instead
+            return
         chDir(self.name)
         if isUnix():
             cmd='git pull origin master'
