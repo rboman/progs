@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  *
  *                                  Docteur METAFOR 
  *                                  ---------------
@@ -108,11 +106,11 @@ int main(int argc,char **argv)
    /** INIT DE LA LISTE LIEE **/
 
    firstsub = (s_mytabl*)malloc(sizeof(s_mytabl));
-   if(firstsub==NULL) {alloc_error(); exit();}
+   if(firstsub==NULL) {alloc_error(); exit(1);}
    nextsub=firstsub;
 
    firstcom = (s_mytabl*)malloc(sizeof(s_mytabl));
-   if(firstcom==NULL) {alloc_error(); exit();}
+   if(firstcom==NULL) {alloc_error(); exit(1);}
    nextcom=firstcom;
 
    firstcom->lnom=0;
@@ -129,13 +127,13 @@ int main(int argc,char **argv)
          switch(argv[n][i])
 	 {  case 's': nop1=true; break;
 	    case 'e': nop2=false; break;
-	    case 'h': {aide(); syntaxe(); exit();} break;
+	    case 'h': {aide(); syntaxe(); exit(1);} break;
 	    case 'c': nop4=false; break;
 	    case 'r': nop3=false; break;
          }
        nbopt++;
        }
-   if(argc<2) {syntaxe(); exit();}
+   if(argc<2) {syntaxe(); exit(1);}
 
    printf("\n%d fichiers a traiter\n\n",argc-1-nbopt);
  
@@ -193,15 +191,15 @@ int main(int argc,char **argv)
 			   nextsub->nb_vars=0;
 			   nextsub->nb_appels=0;
 			   nextsub->nom = (char*)malloc(sizeof(char)*(templen+1));
-			   if(nextsub->nom==NULL) {alloc_error(); exit();}
+			   if(nextsub->nom==NULL) {alloc_error(); exit(1);}
 			   strncpy(nextsub->nom,temptxt,templen);
 			   nextsub->nom[templen]=0;
 			   nextsub->next= (s_mytabl*)malloc(sizeof(s_mytabl));
-			   if(nextsub->next==NULL) {alloc_error(); exit();}
+			   if(nextsub->next==NULL) {alloc_error(); exit(1);}
 			   
 			   t=strlen(argv[n]);
 			   nextsub->src = (char*)malloc(sizeof(char)*(t+1));
-			   if(nextsub->src==NULL) {alloc_error(); exit();}
+			   if(nextsub->src==NULL) {alloc_error(); exit(1);}
 			   strcpy(nextsub->src,argv[n]);
 			   
 			   paren=0; /* niv de parenthese */
@@ -456,16 +454,16 @@ int main(int argc,char **argv)
 				 nextcom->nb_vars=0;
 				 nextcom->nb_appels=1;
 				 nextcom->nom = (char*)malloc(sizeof(char)*(templen+1));
-				 if(nextcom->nom==NULL) {alloc_error(); exit();}
+				 if(nextcom->nom==NULL) {alloc_error(); exit(1);}
 				 strncpy(nextcom->nom,temptxt,templen);
 				 nextcom->nom[templen]=0;
 				 /*printf("Nouveau COMMON (%s) dans %s",nextcom->nom,argv[n]);*/
 				 nextcom->next= (s_mytabl*)malloc(sizeof(s_mytabl));
-				 if(nextcom->next==NULL) {alloc_error(); exit();}
+				 if(nextcom->next==NULL) {alloc_error(); exit(1);}
 				 
 				 t=strlen(argv[n]);
 				 nextcom->src = (char*)malloc(sizeof(char)*(t+1));
-				 if(nextcom->src==NULL) {alloc_error(); exit();}
+				 if(nextcom->src==NULL) {alloc_error(); exit(1);}
 				 strcpy(nextcom->src,argv[n]);
 			       }
 			     paren=0; /* niv de parenthese */
@@ -592,7 +590,7 @@ void syntaxe()
      puts("                  -c : seulement COMMONS");
      puts("                  -r : seulement routines");
      puts("                  -h : help\n");
-     exit();
+     exit(0);
    }
 
 /*************************************************************************

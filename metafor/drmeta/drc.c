@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  *
  *                                  Docteur METAFOR 
  *                                  ---------------
@@ -128,16 +126,16 @@ int add_func_2_database(char *name,int lname,int nnargs, char *source)
   nextsub->nb_vars=nnargs;
   nextsub->nb_appels=0;
   nextsub->nom = (char*)malloc(sizeof(char)*(lname+1));
-  if(nextsub->nom==NULL) {alloc_error(); exit();}
+  if(nextsub->nom==NULL) {alloc_error(); exit(1);}
   strncpy(nextsub->nom,name,lname);
   //printf("name = %s lname = %d\n",name,lname);
   nextsub->nom[lname]=0;
   nextsub->next= (s_mytabl*)malloc(sizeof(s_mytabl));
-  if(nextsub->next==NULL) {alloc_error(); exit();}
+  if(nextsub->next==NULL) {alloc_error(); exit(1);}
 
   t=strlen(source);
   nextsub->src = (char*)malloc(sizeof(char)*(t+1));
-  if(nextsub->src==NULL) {alloc_error(); exit();}
+  if(nextsub->src==NULL) {alloc_error(); exit(1);}
   strcpy(nextsub->src,source);
 
 

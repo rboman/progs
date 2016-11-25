@@ -1,7 +1,4 @@
-$Id$
-
-Docteur METAFOR 
----------------
+# Docteur METAFOR 
 
 par Romain BOMAN
 (r.boman@ulg.ac.be)

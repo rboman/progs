@@ -1,12 +1,11 @@
 /*
- * $Id$
- *
  * Docteur METAFOR par R.BOMAN
  *
  * Version 2.0 - 18-10-00
- *
- *
  */
+
+#include <stdlib.h>
+#include <string.h>
 
 /************************************************
  *         STRUCTURES - VARGLOBS                *
