@@ -18,5 +18,5 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
 
 
-ADD_EXECUTABLE(prog01 prog01.f90) # .f90/.f95 => free format | .f/.for => fixed
+ADD_EXECUTABLE(prog01 prog01.f90 progmod.f90) # .f90/.f95 => free format | .f/.for => fixed
 
