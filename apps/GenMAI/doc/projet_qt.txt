@@ -1,0 +1,24 @@
+
+generer un fichier .pro
+-----------------------
+progen -n genmai -o genmai.pro
+
+modifier le .pro
+----------------
+DEFINES+=QT_DLL
+CONFIG+=thread
+INCLUDEPATH += src
+
+remarque:
+Il faut mettre un /GX dans les options de compilation a la main.
+(bug:la commande suivante ne marche pas si export en .dsp)
+win32:CXXFLAGS += -GX
+
+
+generer le .dsp
+---------------
+tmake -t vcapp genmai.pro -o genmai.dsp
+("vcapp" cree un "genmai.dsp" et "app" un "genmai.mak")
+
+RoBo
+ 

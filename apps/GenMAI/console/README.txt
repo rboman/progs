@@ -1,0 +1,1 @@
+Version console de GenMAI
