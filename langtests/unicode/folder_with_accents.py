@@ -4,18 +4,18 @@
 
 
 import os, os.path,sys
-foldername = 'ай_dir'
+foldername = u'ай_dir'   # plante sous linux sans le 'u'
 
-print "sys.stdout.encoding:", sys.stdout.encoding  # cp850 sous windows 10
-print "sys.getfilesystemencoding()", sys.getfilesystemencoding()  # mbcs sous windows 10
+print "sys.stdout.encoding:", sys.stdout.encoding  # cp850 sous windows 10 / UTF-8 sous linux
+print "sys.getfilesystemencoding():", sys.getfilesystemencoding()  # mbcs sous windows 10 / UTF-8 sous linux
 
 if not os.path.isdir(foldername):
     os.mkdir(foldername)
 else:
-    msg=u"%s already exists" % foldername.decode(sys.getfilesystemencoding())
+    msg=u"%s already exists" % foldername
     print "msg=", msg
     print "type(msg)=", type(msg)
-    print msg.encode('cp850')
+    print msg.encode(sys.stdout.encoding)
     
 for f in os.listdir('.'):
     uf = f.decode(sys.getfilesystemencoding())
