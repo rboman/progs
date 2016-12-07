@@ -1,7 +1,16 @@
 #! /usr/bin/env python
 # -*- coding: latin-1 -*-
 
+#   PyQt           python 2            python 3
+#  QString           unicode             str
+#  QByteArray        str                 bytes
 
+# http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/
+
+# ISO-8859-1 (also called Latin-1) is identical to Windows-1252 (also called CP1252) 
+# except for the code points 128-159 (0x80-0x9F). 
+# ISO-8859-1 assigns several control codes in this range. 
+# Windows-1252 has several characters, punctuation, arithmetic and business symbols assigned to these code points.
 
 import os, os.path,sys
 foldername = u'ай_dir'   # plante sous linux sans le 'u'
