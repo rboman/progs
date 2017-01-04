@@ -1,9 +1,7 @@
-
 #include <QWidget>
 #include <QColor>
 #include <QPen>
 #include <QPainter>
-
 #include <iostream>
 #include <vector>
 
@@ -26,7 +24,7 @@ public:
         y2 = -1.2;
         nb_coul = 50;
 
-        this->setWindowTitle("Mandelbrot (qt/c++)");
+        this->setWindowTitle("Mandelbrot (Qt/C++)");
         this->resize(640, 480);
     }
 
@@ -67,9 +65,14 @@ public slots:
                 }
                 QPen pen;
                 pen.setColor(colours[n]);
-                painter->setPen(pen);
-                painter->drawPoint(xe, ye);
+	        painter->setPen(pen);
+		painter->drawPoint(xe, ye);
+
             }
             std::cout << "done.\n";
+        painter->end();   // avoids "qpainter : cannot destroy paint device that is being painted" 
     }
+
 };
+
+
