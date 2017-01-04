@@ -1,16 +1,31 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.11)
 project(QtFract CXX)
 
-FIND_PACKAGE(Qt4 REQUIRED)
-
-INCLUDE(${QT_USE_FILE})
+FIND_PACKAGE(Qt4 QUIET)
+IF(NOT Qt4_FOUND)
+    FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED)
+ENDIF()
 
 FILE(GLOB SRCS *.h *.cpp)
-#FILE(GLOB CPPSRCS *.cpp)
-#QT4_AUTOMOC(${CPPSRCS})
-
 set (MOC_HEADERS qtfract.h)
-qt4_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
+
+if(Qt5_FOUND)
+    qt5_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
+else()
+    INCLUDE(${QT_USE_FILE})
+    #FILE(GLOB CPPSRCS *.cpp)
+    #QT4_AUTOMOC(${CPPSRCS})
+    qt4_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
+endif()
 
 ADD_EXECUTABLE(qtfract ${SRCS} ${MOC_OUTFILES})
-TARGET_LINK_LIBRARIES(qtfract ${QT_LIBRARIES})
+
+if(Qt5_FOUND)
+    if(POLICY CMP0043)
+        cmake_policy(SET CMP0043 OLD)
+    endif()
+    QT5_USE_MODULES(qtfract Widgets)
+    TARGET_LINK_LIBRARIES(qtfract)
+else()
+    TARGET_LINK_LIBRARIES(qtfract ${QT_LIBRARIES})
+endif()
