@@ -69,7 +69,7 @@ def main(repos):
     if 1:
         if isUnix():
             cmd='cmake -G"Eclipse CDT4 - Unix Makefiles"' \
-                ' -D_ECLIPSE_VERSION=4.4' \
+                ' -D_ECLIPSE_VERSION=4.7' \
                 ' -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE' \
                 ' -C ../oo_meta/CMake/ubuntu.cmake' \
                 ' ../oo_meta'
