@@ -56,26 +56,57 @@ for no, p in enumerate(pts):
 
 
 
-grid  = vtk.vtkUnstructuredGrid()
+#grid  = vtk.vtkUnstructuredGrid()
+grid  = vtk.vtkPolyData()
 grid.SetPoints(points)
-grid.SetCells(vtk.vtkVertex().GetCellType(), vertices)
+#grid.SetCells(vtk.vtkVertex().GetCellType(), vertices) # ugrid
+grid.SetVerts(vertices)                                 # polydata
 grid.GetPointData().AddArray(scalars)
 grid.GetPointData().AddArray(vectors)
 
 
+writer = vtk.vtkPolyDataWriter()
 #writer = vtk.vtkUnstructuredGridWriter()
-writer = vtk.vtkXMLUnstructuredGridWriter()
-writer.SetCompressorTypeToNone()
+#writer = vtk.vtkXMLUnstructuredGridWriter()
+#writer = vtk.vtkXMLPolyDataWriter()
+#writer.SetCompressorTypeToNone()
 #writer.SetCompressorTypeToZLib()
 #writer.SetDataModeToBinary()
-writer.SetDataModeToAscii()
+#writer.SetDataModeToAscii()
 if version>5:
     writer.SetInputData(grid)
 else:
     writer.SetInput(grid)
-#writer.SetFileName('output.vtk')
-writer.SetFileName('output.vtu')
+writer.SetFileName('output.vtk')
+#writer.SetFileName('output.vtp')
 writer.Write()
+
+
+
+f = open('output2.vtk','w')
+f.write('# vtk DataFile Version 3.0\n')
+f.write('manual output\n')
+f.write('ASCII\n')
+f.write('DATASET POLYDATA\n')
+f.write('POINTS %d float\n' % len(pts))
+for p in pts:
+    f.write('%f %f %f\n' % (p[0], p[1], p[2]))
+f.write('VERTICES %d %d\n' %(len(pts), 2*len(pts)))
+for i in range(len(pts)):
+    f.write('1 %d\n' % i)
+f.write( '\n')
+f.write('POINT_DATA %d\n' % len(pts) )
+f.write('FIELD FieldData 2\n' )
+f.write('myscalars2 1 %d float\n' % len(pts) )
+for no in range(len(pts)):
+    f.write('%f\n' % sdata[no])
+f.write('myvectors2 3 %d float\n' % len(pts) )
+for no in range(len(pts)):
+    f.write('%f %f %f\n' % (vdata[no][0], vdata[no][1], vdata[no][2]))
+f.close()
+
+
+
 
 
 
