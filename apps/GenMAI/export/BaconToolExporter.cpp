@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "BaconToolExporter.h"
 #include "Tool.h"

@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Resoud Reynolds inverse (h(x) from p(x))
  *
  * Elements finis lineaires (1er degre)
- *
  */
 
 

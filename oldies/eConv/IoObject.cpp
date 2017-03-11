@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "IoObject.h"
 #include <iostream>
 

@@ -1,9 +1,5 @@
 /*
- * $Id$
- *
  * Donnees du probleme
- *
- *
  */
 
 #include "ehd.h"

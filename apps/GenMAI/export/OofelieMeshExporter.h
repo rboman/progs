@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef OOFELIEMESHEXPORTER_H
 #define OOFELIEMESHEXPORTER_H
 

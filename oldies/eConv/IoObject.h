@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef IOOBJECT_H
 #define IOOBJECT_H
 

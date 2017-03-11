@@ -1,5 +1,4 @@
 /*
- * $Id$
  *
  * Calcule le cisaillement (tau) en un point donne
  *

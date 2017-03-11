@@ -1,10 +1,5 @@
 /*
- * $Id$
- *
  * Calcule les "flow factors"
- *
- *
- *
  */
 
 #include "ehd.h"

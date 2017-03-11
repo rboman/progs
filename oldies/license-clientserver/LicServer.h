@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef LICSERVER_H
 #define LICSERVER_H
 

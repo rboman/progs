@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * SkyLib
  * ======
  *   - Gestion des matrices au format SKYLINE

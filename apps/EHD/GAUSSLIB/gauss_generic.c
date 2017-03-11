@@ -1,15 +1,9 @@
 /*
- * $Id$
- *
  * Essai de merge des routines
  *           
  *       "gauss_line"
  *       "gauss_quad"
  *       "gauss_hexa"
- *
- *
- * RoBo
- *
  */
 
 #include "gausslib.h"

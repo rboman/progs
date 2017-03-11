@@ -1,14 +1,6 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include <iostream>
 #include "Exporter.h"
-
-/**
- * @brief Constructor
- */
 
 Exporter::Exporter() 
 { 

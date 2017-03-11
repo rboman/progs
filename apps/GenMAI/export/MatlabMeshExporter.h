@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef MATLABMESHEXPORTER_H
 #define MATLABMESHEXPORTER_H
 

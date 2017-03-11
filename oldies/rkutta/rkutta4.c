@@ -1,7 +1,5 @@
 /* Intègre y'=f(x,y) */
 
-/* $Id$ */
-
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

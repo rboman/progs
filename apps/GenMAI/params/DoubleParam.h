@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef DOUBLEPARAM_H
 #define DOUBLEPARAM_H
 

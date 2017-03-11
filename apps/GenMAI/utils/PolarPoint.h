@@ -1,12 +1,7 @@
-//
-// $Id$
-//
-
 #ifndef POLARPOINT_H
 #define POLARPOINT_H
 
 #include <iostream>
-
 #include "Point.h"
 
 /**

@@ -1,9 +1,5 @@
 /*
- * $Id$
- *
  * Splines cubiques de LITT
- *
- *
  */
 
 #include "ehd.h"

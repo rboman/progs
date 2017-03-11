@@ -1,15 +1,11 @@
 /*
- * $Id$
- *
  * SkyLib
  * ------
  *   - Gestion des matrices au format SKYLINE
  *   - Solver Symetrique / Non Symetrique
  *     (sans gestion de pivots nuls)
  *
- *
  * RoBo 27-09-00
- *
  */
 
 #ifndef __SKYLIB_H__

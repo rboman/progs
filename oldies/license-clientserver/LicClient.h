@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef LICCLIENT_H
 #define LICCLIENT_H
 

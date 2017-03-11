@@ -1,4 +1,4 @@
-# $Id$
+
 # "print" test
 
 from wrap import *

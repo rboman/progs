@@ -1,12 +1,7 @@
 /*
- * $Id$
- *
  * Calcul des matrices EF relative a la resolution inverse de Reynolds
  *
  * (les matrices indep de h pourrait etre evaluee 1 seule fois)
- *
- *
- *
  */
 
 #include "ehd.h"

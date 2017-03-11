@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef BACONMESHEXPORTER_H
 #define BACONMESHEXPORTER_H
 

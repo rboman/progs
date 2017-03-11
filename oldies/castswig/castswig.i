@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 %module castswig
 %{
 #include <iostream>

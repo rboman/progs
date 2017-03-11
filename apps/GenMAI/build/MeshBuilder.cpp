@@ -1,14 +1,6 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "MeshBuilder.h"
 #include "Mesh.h"
-
-/**
- * @brief Constructeur
- */
 
 MeshBuilder::MeshBuilder(Mesh &_target) : Builder(), target(_target)
 {

@@ -1,8 +1,5 @@
 /*
- * $Id$
- *
  * Initialisation du module EHD
- *
  */
 
 
@@ -12,12 +9,6 @@
 int ehd_init()
 {
   int iop=0;
-
-
-
-
-  
-
 
   // FIN:
   if(iop>900)

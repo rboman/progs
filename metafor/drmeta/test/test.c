@@ -1,8 +1,5 @@
 /*
- * $Id$
- *
  * Gestion routines c
- *
  */
 
 #include <stdio.h>

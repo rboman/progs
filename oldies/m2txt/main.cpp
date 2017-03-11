@@ -1,6 +1,4 @@
 //
-// $Id$
-//
 // convert a *.m vector/matrix metafor file to a *.txt file
 // use load -ascii pipo.txt to load it inside matlab (faster)
 //

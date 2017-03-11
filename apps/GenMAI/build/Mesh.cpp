@@ -1,13 +1,5 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "Mesh.h"
-
-/**
- * @brief Constructor
- */
 
 Mesh::Mesh() : TargetObject(), nodes(0), elements(0)
 {

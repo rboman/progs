@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Integration d'une fonction sur un segment cubique 2D/3D
  * par la methode de Gauss
  *
@@ -9,10 +7,6 @@
  *     Je n'ai donc besoin que de la fct "get_psi"
  *   - Cet ensemble de routine devrait deboucher a une integration
  *     de fct sur des "splines" cubiques.
- *
- *
- * RoBo
- *
  */
 
 #include "gausslib.h"

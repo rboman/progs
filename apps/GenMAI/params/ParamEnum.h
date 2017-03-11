@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef PARAMENUM_H
 #define PARAMENUM_H
 

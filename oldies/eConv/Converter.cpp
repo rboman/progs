@@ -1,14 +1,9 @@
-//
-// $Id$
-//
-
 #include "Converter.h"
 #include "Parser.h"
 #include <iostream>
 #include <map>
 
-Converter::Converter(const std::string &in) : 
-fileNameIn(in)
+Converter::Converter(const std::string &in) : fileNameIn(in)
 {
 }
 

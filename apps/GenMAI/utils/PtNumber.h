@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef PTNUMBER_H
 #define PTNUMBER_H
 

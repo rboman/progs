@@ -1,9 +1,5 @@
 /*
- * $Id$
- *
  * Test des flow factors
- *
- *
  */
 
 #include "ehd.h"

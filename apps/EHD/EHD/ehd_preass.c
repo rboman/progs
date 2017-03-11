@@ -1,8 +1,5 @@
 /*
- * $Id$
- *
  * Determination de la ligne de ciel
- *
  */
 
 #include "ehd.h"

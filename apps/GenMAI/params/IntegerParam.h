@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef INTEGERPARAM_H
 #define INTEGERPARAM_H
 

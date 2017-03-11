@@ -1,6 +1,4 @@
 #
-# $Id$
-#
 # generer le vcproj:
 #     qmake -tp vc LicServer.pro
 #

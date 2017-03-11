@@ -1,15 +1,11 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "NodeRenumberer.h"
 #include "Mesh.h"
 
 NodeRenumberer::NodeRenumberer(Mesh &mesh) : mesh(mesh), style(NORMALSTYLE)
 {
-
 }
+
 void
 NodeRenumberer::execute()
 {

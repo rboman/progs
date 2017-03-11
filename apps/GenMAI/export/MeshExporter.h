@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef MESHEXPORTER_H
 #define MESHEXPORTER_H
 

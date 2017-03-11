@@ -3,5 +3,6 @@
         "list": "cpp",
         "vector": "cpp",
         "xstring": "cpp"
-    }
+    },
+    "python.linting.pylintEnabled": false
 }

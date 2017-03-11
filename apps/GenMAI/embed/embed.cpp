@@ -1,10 +1,6 @@
 //
-// $Id$
-//
 // Python embedded into GenMai
 //
-
-
 
 #include <iostream>
 #include <Python.h>

@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "Point.h"
 #include "PolarPoint.h"

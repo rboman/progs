@@ -1,9 +1,5 @@
 /*
- * $Id$
- *
  * Routines de gestion d'un quad 2d bi-lineaire
- *
- *
  */
 
 #include "el.h"

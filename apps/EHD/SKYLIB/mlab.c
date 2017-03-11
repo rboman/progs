@@ -1,6 +1,4 @@
 /*
- * $Id$ 
- *
  * Interfaces MATLAB
  * -----------------
  *   Ecriture ds un fichier :
@@ -8,7 +6,6 @@
  *     - d'une matrice skyline (cfr. skylib)
  *     - d'une matrice tridiag (cfr. tdilib)
  *
- * 
  * RoBo 27-09-00
  *
  */

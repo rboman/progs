@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Resoud Reynolds direct (p(x),dp(x) from h(x))
  *
  * Elements finis type Hermite (3eme degre)
- *
  */
 
 #include "ehd.h"

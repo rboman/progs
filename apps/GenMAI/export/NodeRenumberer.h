@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef NODERENUMBERER_H
 #define NODERENUMBERER_H
 

@@ -1,8 +1,5 @@
 /*
- * $Id$
- *
  * Fcts d'interface du module 'calc'
- *
  */
 
 // PARAMETRES

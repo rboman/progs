@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef POINTPARAM_H
 #define POINTPARAM_H
 

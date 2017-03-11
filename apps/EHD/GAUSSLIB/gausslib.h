@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Librairie "Gauss" : (necessite la lib "el")
  * -------------------
  *
@@ -37,10 +35,7 @@
  *  - Introduire des triangles (2d/3d) & tetraedres (3d).
  *  - Introduire d'autres courbes (cercles, splines, ...).
  *
- *
- *
  * RoBo aout 2000
- *
  */
 
 

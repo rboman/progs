@@ -1,5 +1,3 @@
-// $Id$
-
 #include <vtkRenderer.h>
 #include <vtkRenderWindow.h>
 #include <vtkVRMLImporter.h>

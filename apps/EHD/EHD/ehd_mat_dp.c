@@ -1,9 +1,5 @@
 /*
- * $Id$
- *
  * Calcul des matrices C1, Sp et du vect Fu
- *
- *
  */
 
 #include "ehd.h"

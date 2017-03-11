@@ -1,10 +1,7 @@
 /*
- * $Id$
- *
  * Calcul des flow factors de cisaillement
  *
  * ATTENTION : routine ecrite pour gam = 1.0
- *
  */
 
 #include "ehd.h"

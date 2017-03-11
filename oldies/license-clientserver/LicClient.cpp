@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "LicClient.h"
 
 LicClient::LicClient() : hostname("localhost"), port(12000)

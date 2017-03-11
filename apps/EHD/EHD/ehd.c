@@ -1,8 +1,5 @@
 /*
- * $Id$
- *
  * Test determination CL
- *
  */
 
 #include "ehd.h"

@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef MATLABTOOLEXPORTER_H
 #define MATLABTOOLEXPORTER_H
 

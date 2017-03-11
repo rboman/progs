@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Dictionary.h"
 #include "Converter.h"
 #include "Parser.h"

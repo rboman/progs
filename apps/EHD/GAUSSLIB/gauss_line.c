@@ -1,12 +1,6 @@
 /*
- * $Id$
- *
  * Integration d'une fonction sur un segment lineaire 1D/2D/3D
  * par la methode de Gauss
- *
- *
- * RoBo
- *
  */
 
 #include "gausslib.h"

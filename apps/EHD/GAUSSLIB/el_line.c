@@ -1,9 +1,5 @@
 /*
- * $Id$
- *
  * Routines de gestion d'un segment lineaire
- *
- *
  */
 
 #include "el.h"

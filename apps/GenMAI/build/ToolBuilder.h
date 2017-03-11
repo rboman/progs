@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef TOOLBUILDER_H
 #define TOOLBUILDER_H
 

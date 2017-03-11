@@ -1,10 +1,5 @@
 /*
- * $Id$
- *
  * Calule le produit Sp p
- *
- * RoBo
- *
  */
 
 #include "ehd.h"

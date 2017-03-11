@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "MeshParameters.h"
 #include "DoubleParam.h"

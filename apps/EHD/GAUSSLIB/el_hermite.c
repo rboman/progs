@@ -1,12 +1,8 @@
 /*
- * $Id$
- *
  * Routines de gestion d'un elem d'hermite 1d (cubique)
  *
  *        x1,dx1       x2,dx2
  *         o-------------o
- *
- *
  */
 
 #include "el.h"

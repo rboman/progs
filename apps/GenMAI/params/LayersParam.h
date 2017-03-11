@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef LAYERSPARAM_H
 #define LAYERSPARAM_H
 

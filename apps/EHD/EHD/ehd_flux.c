@@ -1,9 +1,5 @@
 /*
- * $Id$
- *
  * Calcule le flux de l'equ. de Reynolds & ses derivees
- *
- *
  */
 
 #include "ehd.h"

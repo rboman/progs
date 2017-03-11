@@ -1,10 +1,5 @@
 /*
- * $Id$
- *
  * Cherche dp/dh0
- *
- *
- *
  */
 
 #include "ehd.h"

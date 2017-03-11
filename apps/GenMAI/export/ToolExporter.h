@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef TOOLEXPORTER_H
 #define TOOLEXPORTER_H
 

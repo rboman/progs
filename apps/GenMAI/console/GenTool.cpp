@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "Tool.h"
 #include "ToolBuilder.h"
@@ -38,7 +34,6 @@ void GenTool()
     writer2b.save();
     MatlabToolExporter writer3(matrix);
     writer3.save();
-
 }
 
 

@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef INTNUMBER_H
 #define INTNUMBER_H
 

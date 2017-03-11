@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef T_IOOBJECT_H
 #define T_IOOBJECT_H
 

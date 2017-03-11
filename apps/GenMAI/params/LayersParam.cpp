@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "LayersParam.h"
 #include "Layers.h"

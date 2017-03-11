@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "mywidgeti.h"
 
 #include <qlineedit.h>

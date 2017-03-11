@@ -1,14 +1,6 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "Tool.h"
 #include "curve.h"
-
-/**
- * @brief Constructor
- */
 
 Tool::Tool() : TargetObject(), point(0), courbe(0)
 {

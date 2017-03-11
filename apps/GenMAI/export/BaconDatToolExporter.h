@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef BACONDATTOOLEXPORTER_H
 #define BACONDATTOOLEXPORTER_H
 

@@ -1,8 +1,3 @@
-//
-// $Id$
-//
-//
-
 #ifndef T_MPARAM_H
 #define T_MPARAM_H
 

@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef EXPORTER_H
 #define EXPORTER_H
 

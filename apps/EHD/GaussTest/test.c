@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Routine de test de la lib d'integration de Gauss
  */
 

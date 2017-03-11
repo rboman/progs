@@ -1,11 +1,6 @@
 /*
- * $Id$
- *
  * Calcule la viscosite en fct de la pression
  * et sa derivee.
- *
- * RoBo
- *
  */
 
 #include "ehd.h"

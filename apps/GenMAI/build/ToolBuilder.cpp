@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "ToolBuilder.h"
 #include "Point.h"
@@ -18,10 +14,6 @@ ToolBuilder::getRollAxis() const
     static Point rollAxis(0,-1);
     return rollAxis;
 }
-
-/**
- * @brief Constructeur
- */
 
 ToolBuilder::ToolBuilder(Tool &_target) : Builder(), target(_target)
 {

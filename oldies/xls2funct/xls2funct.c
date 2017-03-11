@@ -1,10 +1,5 @@
-//
-// $Id$
-//
 // xls2funct - convert a xls file to a Funct object of Oofelie
-//
 // RoBo - june 2003
-//
 
 #include <stdio.h>
 #include <stdlib.h>

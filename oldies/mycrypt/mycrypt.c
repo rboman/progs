@@ -1,13 +1,10 @@
 /*
- * $Id$
- *
  * A stupid but useful crypt program
  * Two methods : 
  *    - swap byte : swap each pair of bytes.
  *    - xor       : xor all bytes with a passwd
  *
  * RoBo - May 2003
- *
  */
 
 #include <string.h>
@@ -227,9 +224,5 @@ int main(int argc, char *argv[])
         }
     }
 
-
     return 0;
 }
-
-
-

@@ -1,10 +1,5 @@
 /*
- * $Id$
- *
  * Gauss : routines communes a tous les types de domaines d'integration
- *
- * RoBo
- *
  */
 
 #include "gausslib.h"

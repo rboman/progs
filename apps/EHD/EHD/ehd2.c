@@ -1,8 +1,5 @@
 /*
- * $Id$
- *
  * Test de la determination de h(x)
- *
  */
 
 #include "ehd.h"

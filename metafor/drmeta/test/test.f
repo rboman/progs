@@ -1,6 +1,4 @@
 C
-C     $Id$
-C
 C
       SUBROUTINE MYFORTRAN(A,B, C, D, E)
 

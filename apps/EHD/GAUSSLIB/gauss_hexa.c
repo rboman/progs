@@ -1,12 +1,6 @@
 /*
- * $Id$
- *
  * Integration d'une fonction sur un hexa tri-lineaire 3D
  * par la methode de Gauss
- *
- *
- * RoBo
- *
  */
 
 #include "gausslib.h"

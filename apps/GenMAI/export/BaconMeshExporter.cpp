@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Global.h"
 #include "BaconMeshExporter.h"
 #include "Mesh.h"

@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef OOFELIETOOLEXPORTER_H
 #define OOFELIETOOLEXPORTER_H
 

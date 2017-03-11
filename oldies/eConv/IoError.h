@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #ifndef IOERROR_H
 #define IOERROR_H
 

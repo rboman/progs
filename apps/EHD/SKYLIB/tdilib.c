@@ -1,17 +1,13 @@
 /*
- * $Id$
- *
  * TdiLib
  * ======
  *   - Gestion de Matrices TriDIagonales
  *   - Solver non symetrique (sans gestion de pivots nuls)
  *
- *
  * RoBo 27-09-00
  *
  * Remarques: - l'utilisation est identique a "skylib"
  *            - la matrice est ecrasee par sa decomposition LU !!
- *
  */
 
 

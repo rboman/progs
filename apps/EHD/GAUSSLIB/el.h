@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Librairie "el" :
  * ----------------
  *   Cette librairie defini des fct propres aux elements
@@ -11,9 +9,7 @@
  *      - une fonction calculant le determinant du jacobien, le jacobien
  *        et la dimension du problème etant donnes 
  *
- *
  * RoBo aout 2000
- *
  */
 
 #ifndef __EL_H__

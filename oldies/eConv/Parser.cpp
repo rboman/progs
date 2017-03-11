@@ -1,7 +1,3 @@
-//
-// $Id$
-//
-
 #include "Parser.h"
 #include <iostream>
 
