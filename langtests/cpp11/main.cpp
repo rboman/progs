@@ -1,8 +1,9 @@
-
-
 #include <iostream>
 #include <complex>
 #include <vector>
+
+// Tests some "new" c++11 features
+// mingw 5.3.0: g++ -std=c++11 main.cpp   [OK]
 
 int main()
 {
@@ -17,10 +18,6 @@ int main()
 
 	std::vector<int> v1{1,2,2,3,4,5}; // pas ok icc
 
-
-
-
 	// le return 0 semble etre facultatif et ne gerere pas de warning s'il n'est pas la
-
 }
 
