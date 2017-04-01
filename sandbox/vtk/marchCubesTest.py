@@ -15,11 +15,11 @@ sample.SetSampleDimensions(10,10,10)
 #contour = vtk.vtkContourFilter()
 contour = vtk.vtkMarchingContourFilter() 
 contour.ComputeNormalsOff()
-contour.SetInput(sample.GetOutput())
+contour.SetInputConnection(sample.GetOutputPort())
 contour.SetValue(0,0.0)
 
 mapper = vtk.vtkPolyDataMapper()
-mapper.SetInput(contour.GetOutput())
+mapper.SetInputConnection(contour.GetOutputPort())
 
 actor = vtk.vtkActor()
 actor.SetMapper(mapper)
