@@ -2,6 +2,7 @@
 # -*- coding: latin-1; -*-
 
 import vtk
+version=vtk.vtkVersion().GetVTKMajorVersion()
 
 # data
 
@@ -12,13 +13,16 @@ reader.Update()
 # stupid filter
 
 shrink = vtk.vtkShrinkPolyData()
-shrink.SetInput(reader.GetOutput())
+if version>5:
+    shrink.SetInputData(reader.GetOutput())
+else:
+    shrink.SetInput(reader.GetOutput())
 shrink.SetShrinkFactor(0.8)
 
 # actor 1
 
 mapper = vtk.vtkPolyDataMapper()
-mapper.SetInput(shrink.GetOutput())
+mapper.SetInputConnection(shrink.GetOutputPort())
 actor = vtk.vtkActor()
 actor.GetProperty().SetColor(1.0,1.0,1.0)
 actor.SetMapper(mapper)
@@ -26,7 +30,7 @@ actor.SetMapper(mapper)
 # actor 2
 
 mapper2 = vtk.vtkPolyDataMapper()
-mapper2.SetInput(reader.GetOutput())
+mapper2.SetInputConnection(reader.GetOutputPort())
 actor2 = vtk.vtkActor()
 actor2.SetMapper(mapper2)
 actor2.GetProperty().SetOpacity(0.8)
@@ -46,22 +50,22 @@ actor2.RotateZ(90)
 gen = vtk.vtkTextureMapToCylinder()
 #gen = vtk.vtkTextureMapToSphere()
 #gen.PreventSeamOn()
-gen.SetInput(reader.GetOutput())
+gen.SetInputConnection(reader.GetOutputPort())
 #gen.PreventSeamOn()
 
 xform = vtk.vtkTransformTextureCoords()
-xform.SetInput(gen.GetOutput())
+xform.SetInputConnection(gen.GetOutputPort())
 xform.SetScale(3,-3,0)
 
 
 bmpReader = vtk.vtkBMPReader()
 bmpReader.SetFileName('bouteille.bmp')
 texture = vtk.vtkTexture()
-texture.SetInput(bmpReader.GetOutput())
+texture.SetInputConnection(bmpReader.GetOutputPort())
 texture.InterpolateOn()
 
 mapper3 = vtk.vtkPolyDataMapper()
-mapper3.SetInput(xform.GetOutput())
+mapper3.SetInputConnection(xform.GetOutputPort())
 actor3 = vtk.vtkActor()
 actor3.SetMapper(mapper3)
 actor3.SetTexture(texture)
@@ -145,6 +149,7 @@ picker = vtk.vtkCellPicker()
 picker.AddObserver("EndPickEvent", myPickFun)
 iren.SetPicker(picker)
     
+print "\nuse <p> to pick an actor..."
 
 iren.Initialize()
 renWin.Render()
