@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: latin-1; -*-
 
-## Qt ##
+## Qt 4 or 5 ##
 foundQt=0
 try:
     from PyQt4.QtCore import *
@@ -19,7 +19,7 @@ if not foundQt:
     raise Exception("PyQt4/5 not found!") 
 print "PyQt%d (Qt %s) loaded!" % (foundQt, QT_VERSION_STR)   
 
-## vtk ##
+## vtk 5 or 6 or 7 ##
 import vtk
 try:
     if foundQt==4:
