@@ -1,10 +1,35 @@
 #! /usr/bin/env python
 # -*- coding: latin-1; -*-
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui  import *
+## Qt ##
+foundQt=0
+try:
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui  import *
+    foundQt=4
+except:
+    pass    
+try:
+    from PyQt5.QtCore    import *
+    from PyQt5.QtWidgets import *
+    foundQt=5
+except:
+    pass     
+if not foundQt:
+    raise Exception("PyQt4/5 not found!") 
+print "PyQt%d (Qt %s) loaded!" % (foundQt, QT_VERSION_STR)   
+
+## vtk ##
 import vtk
-from vtk.qt4.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+try:
+    if foundQt==4:
+        from vtk.qt4.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+    else:
+        from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+except:
+    raise Exception("QVTKRenderWindowInteractor not available!")
+
+
 import sys
 class Ui_MainWindow(QWidget):
     def setupUi(self, MainWindow):
