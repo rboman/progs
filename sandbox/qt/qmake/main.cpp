@@ -1,5 +1,7 @@
 
-#include <QtGui>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDirModel>
+#include <QtWidgets/QListView>
 
 int main(int argc, char *argv[])
 {
