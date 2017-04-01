@@ -2,8 +2,25 @@
 # -*- coding: latin-1; -*-
 
 import sys
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+## Qt 4 or 5 ##
+foundQt=0
+try:
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui  import *
+    foundQt=4
+except:
+    pass    
+try:
+    from PyQt5.QtCore    import *
+    from PyQt5.QtGui import *
+    from PyQt5.QtWidgets import *
+    foundQt=5
+except:
+    pass     
+if not foundQt:
+    raise Exception("PyQt4/5 not found!") 
+print "PyQt%d (Qt %s) loaded!" % (foundQt, QT_VERSION_STR)   
+
 
 
 class MyWidget(QWidget):
