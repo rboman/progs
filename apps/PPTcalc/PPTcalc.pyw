@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: latin-1; -*-
 
-import os,sys,os.path
-from PyQt4 import QtCore, QtGui
+import os, sys, os.path
+from PyQt5.QtCore    import *
+from PyQt5.QtGui     import *
+from PyQt5.QtWidgets import *
 
 class Siz:
     def __init__(self, x, y):
@@ -34,7 +36,7 @@ resList['1920x1200 (16:10)'] = Reso(1920, 1200)
 from qtd.ui_mywidget import Ui_MyWidget
 
 
-class Window(QtGui.QWidget, Ui_MyWidget):
+class Window(QWidget, Ui_MyWidget):
     def __init__(self, parent=None):        
         super(Window, self).__init__(parent)
         self.setupUi(self)
@@ -59,11 +61,12 @@ class Window(QtGui.QWidget, Ui_MyWidget):
             self.resLabel.setText('Bad input!') 
 
 def main():
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     win = Window()
     win.setWindowTitle('%s' % os.path.basename(sys.argv[0]))
     win.show()
-    app.connect(app, QtCore.SIGNAL("lastWindowClosed()"),app,QtCore.SLOT("quit()"))
+    app.lastWindowClosed.connect(app.quit)
+    #app.connect(app, SIGNAL("lastWindowClosed()"),app,SLOT("quit()"))
     sys.exit(app.exec_())
         
 if __name__=="__main__":
