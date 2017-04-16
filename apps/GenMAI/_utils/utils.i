@@ -16,7 +16,7 @@
 #include "ToolParameters.h"
 
 
-// build --
+// builders --
 #include "Mesh.h"
 #include "MeshBuilder.h"
 #include "Tool.h"
@@ -127,7 +127,7 @@
 
 %include "ToolParameters.h"
 
-// build
+// builders
 
 %include "TargetObject.h"
 %include "Mesh.h"

@@ -3,7 +3,7 @@
 #ifndef MYWIDGETI_H
 #define MYWIDGETI_H
 
-#include "mywidget.h"
+#include "ui_mywidget.h"
 
 #include "Mesh.h"
 #include "MeshBuilder.h"
@@ -22,7 +22,7 @@
 #include "NodeRenumberer.h"
 
 
-class MyWidgetI : public MyWidget
+class MyWidgetI : public Ui::MyWidget
 {
     Q_OBJECT
 

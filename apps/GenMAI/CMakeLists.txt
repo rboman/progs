@@ -1,0 +1,26 @@
+PROJECT(GenMAI)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
+                        "Single output directory for building all libraries.")
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
+                        "Single output directory for building all executables.")
+MARK_AS_ADVANCED(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
+
+
+IF(WIN32)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_DEPRECATE)
+ENDIF(WIN32)
+
+
+ADD_SUBDIRECTORY( utils )
+ADD_SUBDIRECTORY( builders )
+ADD_SUBDIRECTORY( params )
+ADD_SUBDIRECTORY( export )
+
+ADD_SUBDIRECTORY( console )
+#ADD_SUBDIRECTORY( qt )
+
+ADD_SUBDIRECTORY( _utils )
+#ADD_SUBDIRECTORY( embed )
+
