@@ -206,7 +206,7 @@ class Window:
             bdataset.InsertNextCell(hexa.GetCellType(), ids)
        
         bmapper = vtk.vtkDataSetMapper() 
-        bmapper.SetInput(bdataset)
+        bmapper.SetInputData(bdataset)
         bactor = vtk.vtkActor()
         bactor.SetMapper(bmapper)
         bactor.GetProperty().SetRepresentationToWireframe()
@@ -235,7 +235,7 @@ class Window:
         points.Modified()
     
         mapper = vtk.vtkDataSetMapper() 
-        mapper.SetInput(dataset)
+        mapper.SetInputData(dataset)
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
         actor.GetProperty().SetPointSize(size)
