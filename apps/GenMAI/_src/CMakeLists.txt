@@ -24,26 +24,19 @@ SET(CMAKE_SWIG_FLAGS "")
 SET_SOURCE_FILES_PROPERTIES(${ISRCS} PROPERTIES CPLUSPLUS ON)
 
 SET(SWINCFLAGS 
--I${PROJECT_SOURCE_DIR}/utils
--I${PROJECT_SOURCE_DIR}/params
--I${PROJECT_SOURCE_DIR}/export
--I${PROJECT_SOURCE_DIR}/builders
+-I${PROJECT_SOURCE_DIR}/src
 )
 SET_SOURCE_FILES_PROPERTIES(${ISRCS} PROPERTIES SWIG_FLAGS "${SWINCFLAGS}")
 
 
 
-SWIG_ADD_MODULE(utils python ${ISRCS} ${SRCS})
+SWIG_ADD_MODULE(genmai python ${ISRCS} ${SRCS})
 
 
 # ---
 
-INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/export
-                     ${PROJECT_SOURCE_DIR}/builders
-                     ${PROJECT_SOURCE_DIR}/params
-                     ${PROJECT_SOURCE_DIR}/utils
+INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/src
                      )
 
-SWIG_LINK_LIBRARIES(utils
-                    exporters builders params utils  ${PYTHON_LIBRARIES}
+SWIG_LINK_LIBRARIES(genmai genmai  ${PYTHON_LIBRARIES}
 )

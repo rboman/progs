@@ -5,10 +5,8 @@
 ::    - installer les libs (dans c:\local p. expl.)
 ::    - definir la variable d'env MYLOCAL  (=c:\local p. expl. )
 ::    - double cliquer sur myenv.bat
-::    - cd ..\wavesB
-::    - cmake -G "Visual Studio 14 2015 Win64" -DWAVES_USE_TLNOS=OFF ..\waves
-::    ou (tbox seul):
-::    - cmake -G "Visual Studio 14 2015 Win64" -DWAVES_USE_TLNOS=OFF -DWAVES_USE_WAVES=OFF -DWAVES_USE_HEAT=OFF -DWAVES_USE_MIRRORS=OFF ..\waves
+::    - cd build
+::    - cmake -G "Visual Studio 14 2015 Win64" ..
 ::    - cmake --build . --config Release
 ::    - ctest -C Release
 :: Incredibuild (http://www.incredibuild.com/webhelp/#BuildConsole.html)
