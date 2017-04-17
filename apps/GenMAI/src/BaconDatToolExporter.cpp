@@ -10,14 +10,14 @@ void
 BaconDatToolExporter::writeHeader()
 {
     fprintf(fich,"! Fichier généré par 'gendon'\n!\n"); 
-    fprintf(fich,"abre \'/dxf\' \'%lf\'\n",0);
-    fprintf(fich,"abre \'/dyf\' \'%lf\'\n",0);
-    fprintf(fich,"abre \'/daf\' \'%lf\'\n",0);
+    fprintf(fich,"abre \'/dxf\' \'%lf\'\n",0.0);
+    fprintf(fich,"abre \'/dyf\' \'%lf\'\n",0.0);
+    fprintf(fich,"abre \'/daf\' \'%lf\'\n",0.0);
     fprintf(fich,"abre \'/fx\' \'0\' ! fraction du depl x\n");
     fprintf(fich,"abre \'/fy\' \'0\' ! fraction du depl y\n");
     fprintf(fich,"abre \'/fa\' \'0\' ! fraction de la rot\n");
-    fprintf(fich,"abre \'/xc\' \'%lf\'\n",0);
-    fprintf(fich,"abre \'/yc\' \'%lf\'\n",0);
+    fprintf(fich,"abre \'/xc\' \'%lf\'\n",0.0);
+    fprintf(fich,"abre \'/yc\' \'%lf\'\n",0.0);
     fprintf(fich,"abre \'/dx\' \'(/dxf*/fx)\'\n");
     fprintf(fich,"abre \'/dy\' \'(/dyf*/fy)\'\n");
     fprintf(fich,"abre \'/da\' \'(/daf*/fa)\'\n");
@@ -43,15 +43,13 @@ BaconDatToolExporter::writePoints()
 void
 BaconDatToolExporter::writeCurves()
 {
-    int i;
-    for(i=matrix.getFirstCurve(); i<matrix.numberOfCurves(); i++)
+    for(size_t i=matrix.getFirstCurve(); i<matrix.numberOfCurves(); i++)
     {  
-        int jj = matrix.getCurve(i).numberOfPoints();
+        size_t jj = matrix.getCurve(i).numberOfPoints();
 
         fprintf(fich,"\n%s", matrix.getCurve(i).carteBacon());
-        fprintf(fich," i %d points ",i+1);
-        int j;
-        for(j=0;j<jj;j++)
+        fprintf(fich," i %zd points ",i+1);
+        for(auto j=0; j<jj; j++)
             fprintf(fich," %d ",matrix.getCurve(i).getPointNumber(j));
     } 
 }
@@ -59,7 +57,7 @@ BaconDatToolExporter::writeCurves()
 void
 BaconDatToolExporter::writeContours()
 {
-    fprintf(fich,"\n\n.con lignes %d A %d",matrix.getFirstCurve()+1,matrix.numberOfCurves());
+    fprintf(fich,"\n\n.con lignes %d A %zd", matrix.getFirstCurve()+1, matrix.numberOfCurves());
 }
 
 void

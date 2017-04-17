@@ -5,7 +5,7 @@
 inline 
 PtNumber::PtNumber(int _no) 
 {
-    no=_no;
+    no = _no;
 }
 
 inline int 
@@ -18,17 +18,5 @@ inline bool
 PtNumber::isValid() 
 { 
     return (no ? true : false) ;
-}
-
-inline 
-PtNumber::PtNumber(const PtNumber &obj) 
-{ 
-    no=obj.no; 
-}
-
-inline void 
-PtNumber::operator=(const PtNumber &obj) 
-{ 
-    no=obj.no; 
 }
 

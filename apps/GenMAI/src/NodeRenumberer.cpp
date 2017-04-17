@@ -25,11 +25,8 @@ NodeRenumberer::execute()
 void 
 NodeRenumberer::executeNormalStyle()
 {
-    int i;
-    for(i=0; i<mesh.numberOfNodes(); ++i)
-    {
+    for(auto i=0; i<mesh.numberOfNodes(); ++i)
         mesh.setNodeNumber(i,PtNumber(i+1));
-    }
 }
 
 void
@@ -42,8 +39,7 @@ NodeRenumberer::executeBaconStyle()
     int nbmerde = sizeof(merde)/sizeof(int);  // nbre de merdes
     int maxno   = mesh.numberOfNodes();      // numero max si pas de merde
 
-    int i;
-    for(i=0; i<mesh.numberOfNodes(); ++i)
+    for(auto i=0; i<mesh.numberOfNodes(); ++i)
     {
         int no = i+1;
         if(no == merde[k])
@@ -61,13 +57,13 @@ NodeRenumberer::executeBaconStyle()
             no = maxno;
             std::cout << no << std::endl;
         }
-        mesh.setNodeNumber(i,PtNumber(no));
+        mesh.setNodeNumber(i, PtNumber(no));
     }
 }
 
 void 
 NodeRenumberer::setStyle(RenumberStyle style) 
 { 
-    this->style=style;
+    this->style = style;
 }
 

@@ -32,8 +32,8 @@ public:
     void addNode(Point &pt);
     void addNode(double x, double y);
 
-    int numberOfNodes() const;
-    int numberOfElements() const;
+    size_t numberOfNodes() const;
+    size_t numberOfElements() const;
 
     virtual void print() const;
     virtual void list() const;

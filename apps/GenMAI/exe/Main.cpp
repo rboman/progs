@@ -1,15 +1,15 @@
 #include "Global.h"
 
-extern void GenMesh();
-extern void GenTool();
+extern void genMesh();
+extern void genTool();
 
 /**
- * @brief Stupid main : console
+ * @brief console application
  */
 
-int main( int argc, char ** argv ) 
+int main(int argc, char **argv) 
 {
-    GenMesh();
-    GenTool();
+    genMesh();
+    genTool();
     return 0;
 }

@@ -1,14 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: latin-1; -*-
 # gentool
 
 
-import utils
+from genmai import *
 
-par = utils.ToolParameters() 
-par.load('../matrix.par')
+par = ToolParameters() 
+#thisdir = 
+par.load('matrix.txt')
 #par.save('matrix_2.par')
 
-matrix = utils.Tool()
-builder = utils.ToolBuilder(matrix)
+matrix = Tool()
+builder = ToolBuilder(matrix)
 
 builder.setParameters(par)
 builder.printParameters()
@@ -16,16 +19,16 @@ builder.genere()
 
 matrix.output()
 
-writer1 = utils.OofelieToolExporter (matrix)
+writer1 = OofelieToolExporter(matrix)
 writer1.save()
 
-writer2 = utils.BaconToolExporter (matrix)
+writer2 = BaconToolExporter(matrix)
 writer2.save()
 
-writer2b = utils.BaconDatToolExporter (matrix)
+writer2b = BaconDatToolExporter(matrix)
 writer2b.save()
 
-writer3 = utils.MatlabToolExporter (matrix)
+writer3 = MatlabToolExporter(matrix)
 writer3.save()
 
 

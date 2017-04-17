@@ -1,15 +1,16 @@
-# genmesh
+#!/usr/bin/env python
+# -*- coding: latin-1; -*-
 
 
-import utils
+from genmai import *
 
-par = utils.MeshParameters()
-par.load('../mesh.par')
+par = MeshParameters()
+par.load('mesh.txt')
 #par.save('mesh_2.par')
 #par.output()
 
-mesh = utils.Mesh()
-mesher = utils.MeshBuilder(mesh)
+mesh = Mesh()
+mesher = MeshBuilder(mesh)
 
 mesher.setParameters(par)
 mesher.printParameters()
@@ -17,21 +18,21 @@ mesher.genere()
 
 mesh.output()
 
-rnb = utils.NodeRenumberer(mesh) 
+rnb = NodeRenumberer(mesh) 
 
-rnb.setStyle(utils.NORMALSTYLE)
+rnb.setStyle(NORMALSTYLE)
 rnb.execute()
-writer1 = utils.OofelieMeshExporter(mesh)
+writer1 = OofelieMeshExporter(mesh)
 writer1.save()
 
-rnb.setStyle(utils.BACONSTYLE)
+rnb.setStyle(BACONSTYLE)
 rnb.execute()
-writer2 = utils.BaconMeshExporter (mesh)
+writer2 = BaconMeshExporter(mesh)
 writer2.save()
 
-rnb.setStyle(utils.NORMALSTYLE)
+rnb.setStyle(NORMALSTYLE)
 rnb.execute()
-writer3 = utils.MatlabMeshExporter (mesh)
+writer3 = MatlabMeshExporter(mesh)
 writer3.save()
 
 

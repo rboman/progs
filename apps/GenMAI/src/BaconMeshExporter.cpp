@@ -15,12 +15,11 @@ BaconMeshExporter::writeHeader()
 void
 BaconMeshExporter::writeNodes()
 {
-    int i;
     fprintf(fich,".noe\n");
-    for(i=0; i<mesh.numberOfNodes(); i++) 
+    for(auto i=0; i<mesh.numberOfNodes(); i++) 
     {
         fprintf(fich,"  i %d x %lf y %lf\n",
-            mesh.getNodeNumber(IntNumber(i)), 
+            mesh.getNodeNumber(IntNumber(i)).getInt(),
             mesh.getNodeX(i), 
             mesh.getNodeY(i));
     }
@@ -29,16 +28,15 @@ BaconMeshExporter::writeNodes()
 void
 BaconMeshExporter::writeElements()
 {
-    int i;
     fprintf(fich,".mai\n");
-    for(i=0; i<mesh.numberOfElements(); i++) 
+    for(auto i=0; i<mesh.numberOfElements(); i++) 
     {
         fprintf(fich," i %d noeuds %d %d %d %d\n",
                 i+1,
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,0)),
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,1)),
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,2)),
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,3))   );
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,0)).getInt(),
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,1)).getInt(),
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,2)).getInt(),
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i,3)).getInt());
     }
 }
 
@@ -46,10 +44,9 @@ void
 BaconMeshExporter::writeContactElements()
 {
     fprintf(fich,".mco\n");
-    int k;
-    for(k=mesh.getFirstContactNode(); k<=mesh.getLastContactNode(); ++k)
+    for(auto k=mesh.getFirstContactNode(); k<=mesh.getLastContactNode(); ++k)
     {
-         fprintf(fich," i %d loi 1 mat 1\n",mesh.getNodeNumber(IntNumber(k)));
+         fprintf(fich," i %d loi 1 mat 1\n",mesh.getNodeNumber(IntNumber(k)).getInt());
     }
 }
 

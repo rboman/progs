@@ -2,7 +2,7 @@
 #define PARAMENUM_H
 
 /**
- * @brief List of id for parameters (allow fast access)
+ * @brief List of id for parameters (used for fast access)
  */
 
 enum ParamEnum

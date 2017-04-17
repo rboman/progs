@@ -1,0 +1,21 @@
+Origin
+-1.00000000E+001
+-2.58750000E-001
+Dimension
+ 1.00000000E+001
+ 2.58750000E-001
+Number Of Element On X
+     200
+Number Of Element On Y
+       2
+Reduction Coefficient
+ 5.00000000E+000
+Layers Type
+       7
+       1
+       1
+       1
+       1
+       1
+       1
+       0

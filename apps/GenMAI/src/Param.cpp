@@ -85,7 +85,7 @@ Param::add(LayerType value)
     exit(1);
 }
 
-int 
+size_t
 Param::size() const
 {
     return 1;

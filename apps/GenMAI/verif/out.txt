@@ -1,0 +1,72 @@
+PARAMETRES:
+-----------
+Origin :  (-10,-0.25875)
+Dimension :  (10,0.25875)
+Number Of Element On X :  200
+Number Of Element On Y :  2
+Reduction Coefficient :  5
+Layers Type : 
+   couche #1 :Reduction
+   couche #2 :Reduction
+   couche #3 :Reduction
+   couche #4 :Reduction
+   couche #5 :Reduction
+   couche #6 :Reduction
+   couche #7 :Constant
+
+
+MAILLAGE:
+---------
+ noeuds     : 57510
+ mailles    : 51000
+ noeuds sup : 12800
+
+OofelieExporter:
+----------------
+fichier Oofelie (mydomain.e) cree.
+
+BaconMeshExporter: numero 9999 converti en 57511
+BaconMeshExporter: numero 11111 converti en 57512
+BaconMeshExporter: numero 22222 converti en 57513
+BaconMeshExporter: numero 33333 converti en 57514
+BaconMeshExporter: numero 44444 converti en 57515
+BaconMeshExporter: numero 55555 converti en 57516
+BaconExporter:
+----------------
+fichier Bacon (mydomain.dat) cree.
+
+MatlabExporter:
+----------------
+fichier Matlab (mydomain.m) cree.
+
+PARAMETRES:
+-----------
+Radius :  209
+Initial Angle :  0.5
+Asperity Length :  0.05
+Asperity Angle :  21.8014
+Smoothness Angle :  0.01
+Asperity Interval :  0.1
+Centre :  (-1,209.01)
+Number Of Asperities :  250
+MATRICE:
+--------
+ points     : 3000
+ courbes    : 2249
+
+OofelieExporter:
+----------------
+fichier Oofelie (mymatrix.e) cree.
+
+BaconExporter:
+----------------
+fichier Bacon (mymatrix.don) cree.
+
+BaconExporter:
+----------------
+fichier Bacon (mymatrix.dat) cree.
+
+MatlabExporter:
+----------------
+fichier Matlab (mymatrix.m) cree.
+

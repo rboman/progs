@@ -7,6 +7,7 @@ Tool::getPointX(int i) const
 {
     return point[i].getX();
 }
+
 inline double 
 Tool::getPointY(int i) const
 {
@@ -30,6 +31,7 @@ Tool::setFirstCurve(int firstCurve)
 {
     firstc=firstCurve;
 }
+
 inline int  
 Tool::getFirstCurve() const
 {
@@ -48,13 +50,13 @@ Tool::getFirstPoint() const
     return firstp;
 }
 
-inline int 
+inline size_t
 Tool::numberOfPoints() const  
 { 
     return point.size(); 
 }
 
-inline int 
+inline size_t
 Tool::numberOfCurves() const
 { 
     return courbe.size(); 

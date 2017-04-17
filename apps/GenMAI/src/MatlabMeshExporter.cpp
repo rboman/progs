@@ -14,24 +14,21 @@ MatlabMeshExporter::writeHeader()
 
 void
 MatlabMeshExporter::writeNodes()
-{
-    int i;    
-    for(i=0; i<mesh.numberOfNodes(); i++) 
+{  
+    for(auto i=0; i<mesh.numberOfNodes(); i++) 
     {
-        fprintf(fich,"x(%d)=%lf;\n", mesh.getNodeNumber(IntNumber(i)), mesh.getNodeX(i));
-        fprintf(fich,"y(%d)=%lf;\n", mesh.getNodeNumber(IntNumber(i)), mesh.getNodeY(i));
+        fprintf(fich,"x(%d)=%lf;\n", mesh.getNodeNumber(IntNumber(i)).getInt(), mesh.getNodeX(i));
+        fprintf(fich,"y(%d)=%lf;\n", mesh.getNodeNumber(IntNumber(i)).getInt(), mesh.getNodeY(i));
     }
 }
 
 void
 MatlabMeshExporter::writeElements()
 {
-    int i;
-    for(i=0; i<mesh.numberOfElements(); i++)
+    for(auto i=0; i<mesh.numberOfElements(); i++)
     {
-        int j;
-        for(j=0; j<4;j++)
-            fprintf(fich,"mai(%d,%d)=%d;\n",i+1,j+1,
+        for(auto j=0; j<4; j++)
+            fprintf(fich,"mai(%d,%d)=%d;\n", i+1, j+1,
             mesh.getNodeNumber( mesh.getNodeNumberFromElement(i,j) ) );
     }
 }

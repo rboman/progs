@@ -32,7 +32,7 @@ LayersParam::clone() const
     return new LayersParam(*this);
 }
 
-int 
+size_t 
 LayersParam::size() const
 {
     return this->value.size();
@@ -58,7 +58,7 @@ void
 LayersParam::load(FILE *file)
 {
     Param::load(file);
-    int siz=loadInteger(file, true );
+    int siz = loadInteger(file, true );
 
     setToDefault();
     int i;
@@ -73,9 +73,8 @@ void
 LayersParam::save(FILE *file) const
 { 
     Param::save(file);
-    saveInteger(file, size(), true );
+    saveInteger(file, size(), true);
 
-    int i;
-    for(i=0; i<size(); ++i)
+    for(auto i=0; i<size(); ++i)
        saveInteger(file, getLayer(i), true );
 }

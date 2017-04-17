@@ -11,13 +11,13 @@
  * @brief Automatic Mesh generation: loads the parameters and uses all exporters
  */
 
-void GenMesh()
+void genMesh()
 {
-    MeshParameters  par; 
+    MeshParameters par; 
     par.load("mesh.par");
     par.save("mesh_2.par");
 
-    Mesh   mesh;
+    Mesh mesh;
     MeshBuilder mesher(mesh);
 
     mesher.setParameters(par);

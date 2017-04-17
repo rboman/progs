@@ -18,14 +18,14 @@ BaconToolExporter::writeHeader()
 
     // carte .MAT
     fprintf(fich,".MAT\n");
-    fprintf(fich,"0 0 0 %lf %lf\n0 0 0", 0, 0);
+    fprintf(fich,"0 0 0 %lf %lf\n0 0 0", 0.0, 0.0);
     fprintf(fich,"0 0 0");
 }
 
 void
 BaconToolExporter::writePoints()
 {
-    fprintf(fich,"\n%d",matrix.numberOfPoints()-matrix.getFirstPoint());
+    fprintf(fich,"\n%zd",matrix.numberOfPoints()-matrix.getFirstPoint());
     int i;
     for(i=matrix.getFirstPoint(); i<matrix.numberOfPoints(); i++)
         fprintf(fich,"\n%lf %lf",
@@ -36,12 +36,12 @@ void
 BaconToolExporter::writeCurves()
 {
     fprintf(fich,"\n%d",matrix.numberOfCurves()-matrix.getFirstCurve());
-    int i;
-    for(i=matrix.getFirstCurve(); i<matrix.numberOfCurves(); i++)
+
+    for(int i=matrix.getFirstCurve(); i<matrix.numberOfCurves(); i++)
     {  
         fprintf(fich,"\n%d ",matrix.getCurve(i).typeDon());
-        int j;
-        for(j=0;j<3;j++)
+
+        for(int j=0; j<3; j++)
         {
             int va;
             if(j>=matrix.getCurve(i).numberOfPoints())

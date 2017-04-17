@@ -96,6 +96,7 @@ Parameters::save(const std::string &file) const
 void 
 Parameters::load(const std::string &file)
 {
+    std::cout << "opening file " << file << "\n";
     FILE *fich = fopen(file.c_str(),"r+t");
 
     MyMap::const_iterator it;

@@ -42,7 +42,7 @@ public:
 
     virtual LayerType getLayer(int i) const;
     virtual void      add(LayerType value);
-    virtual int size() const;
+    virtual size_t size() const;
 
 protected:
     void   saveDouble(FILE *file, double  val, bool newline) const;

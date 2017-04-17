@@ -2,7 +2,6 @@
 #define ELEMENT_H
 
 #include "Point.h"
-
 #include "IntNumber.h"
 
 class Element
@@ -12,9 +11,6 @@ class Element
 public:
 
     IntNumber getNodeNumber(int i) const;
-
-    //void setNo(int _no);
-    //int  getNo() const;
 
     Element(IntNumber n1=IntNumber::Null(), 
              IntNumber n2=IntNumber::Null(), 

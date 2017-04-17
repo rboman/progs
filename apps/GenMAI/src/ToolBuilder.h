@@ -29,7 +29,7 @@ public:
 private:
     void genereAsperity();//, double base, double angle, double rayr);
     void genereInterval();
-    void genereSmoothMatrix(int np0, int *np1, int i);
+    void genereSmoothMatrix(size_t np0, size_t *np1, size_t i);
 
     void addPoint(const Point &arg);
     void addCurve(Curve *arg);

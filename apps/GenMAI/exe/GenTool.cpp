@@ -11,11 +11,16 @@
  * @brief Automatic Tool generation: loads the parameters and uses all exporters
  */
 
-void GenTool()
+void genTool()
 {
-    ToolParameters        par; 
+    std::cout << "genTool...\n";
+
+    std::cout << "loading parameters...\n";
+    ToolParameters        par;
     par.load("matrix.par");
+    std::cout << "parameters loaded.\n";
     par.save("matrix_2.par");
+    std::cout << "parameters saved.\n";
 
     Tool        matrix;
     ToolBuilder builder(matrix);

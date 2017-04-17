@@ -14,7 +14,7 @@ Curve::setPointNumber(int i, int j)
     pt[i] = j;
 }
 
-inline int
+inline size_t
 Curve::numberOfPoints() const
 {
     return pt.size();

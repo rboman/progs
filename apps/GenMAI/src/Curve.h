@@ -14,7 +14,7 @@ public:
 
     Curve(int nbpt);
 
-    int  numberOfPoints() const;
+    size_t  numberOfPoints() const;
     int  getPointNumber(int i) const;
     void setPointNumber(int i, int j);
 

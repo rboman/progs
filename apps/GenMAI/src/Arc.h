@@ -1,7 +1,7 @@
 #ifndef ARC_H
 #define ARC_H
 
-#include "curve.h"
+#include "Curve.h"
 
 /**
  * @brief Defines an Arc of circle with 3 points.

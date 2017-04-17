@@ -56,13 +56,13 @@ Mesh::getLastContactNode() const
     return lastContactNode;
 }
 
-inline int 
+inline size_t
 Mesh::numberOfNodes()  const 
 { 
     return nodes.size(); 
 }
 
-inline int 
+inline size_t
 Mesh::numberOfElements()  const 
 { 
     return elements.size(); 

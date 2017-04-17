@@ -19,7 +19,7 @@ public:
 
     virtual LayerType getLayer(int i) const;
     virtual void      add(LayerType value);
-    virtual int       size() const;
+    virtual size_t    size() const;
 
     virtual Param * clone() const;
     virtual void print() const;

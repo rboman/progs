@@ -39,11 +39,10 @@ Tool::print() const
 void
 Tool::list() const
 {
-    int i;
-    for(i=0; i<numberOfPoints(); ++i)
+    for(auto i=0; i<numberOfPoints(); ++i)
         std::cout << point[i] << std::endl;
 
-    for(i=0; i<numberOfCurves(); ++i)
+    for(auto i=0; i<numberOfCurves(); ++i)
     {
         courbe[i]->print();
         std::cout << std::endl;
@@ -67,8 +66,8 @@ Tool::clear()
 
     point.resize(0);
 
-    int i;
-    for(i=0; i<numberOfCurves(); ++i) delete courbe[i];
+    for(auto i=0; i<numberOfCurves(); ++i) 
+        delete courbe[i];
     courbe.resize(0);
 }
 

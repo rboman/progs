@@ -26,6 +26,8 @@ ToolBuilder::ToolBuilder(Tool &_target) : Builder(), target(_target)
 void
 ToolBuilder::genere()
 {
+    std::cout << "ToolBuilder::genere()...\n";
+
     // Vide le maillage s'il existe
     if(!target.isEmpty()) target.clear();
 
@@ -36,15 +38,11 @@ ToolBuilder::genere()
                      par.getRadius()));
     
     // generation des aspérites
-    int i;
-    for(i=0; i<par.getNumberOfAsperities(); i++)
+    for(size_t i=0; i<par.getNumberOfAsperities(); i++)
     {
         genereAsperity();
-        if(par.getAsperityInterval()>0) 
-        {
+        if(par.getAsperityInterval()>0.0) 
             genereInterval();
-        }
-
     }
 
     // a partir d'ici, on va reconsidérer tous les
@@ -55,8 +53,8 @@ ToolBuilder::genere()
     // Generation des conges
     // ---------------------
 
-    const int nbpt2  = target.numberOfPoints();
-    const int nbcou2 = target.numberOfCurves();
+    const size_t nbpt2  = target.numberOfPoints();
+    const size_t nbcou2 = target.numberOfCurves();
     
     // On copie le premier point
     
@@ -64,10 +62,10 @@ ToolBuilder::genere()
     
     // Boucle sur les points 3 par 3
     
-    int np0 = nbpt2+1; 
-    int np1 = nbpt2+1;
+    size_t np0 = nbpt2+1; 
+    size_t np1 = nbpt2+1;
 
-    for(i=1; i<nbpt2-1; i++)
+    for(size_t i=1; i<nbpt2-1; i++)
     {
         genereSmoothMatrix(np0, &np1, i);
         np0 = np1;
@@ -103,7 +101,7 @@ ToolBuilder::genereAsperity()
     const Point &p1 = target.getPoint(target.numberOfPoints()-1);
 
     // index courant
-    int pr = target.numberOfPoints()-1;
+    size_t pr = target.numberOfPoints()-1;
     
     // point 1
     PolarPoint pp1(par.getCentre(), getRollAxis(), p1);
@@ -133,7 +131,7 @@ void
 ToolBuilder::genereInterval()
 {
     const Point &p1 = target.getPoint(target.numberOfPoints()-1);
-    int pr = target.numberOfPoints()-1;
+    size_t pr = target.numberOfPoints()-1;
 
     PolarPoint pp1(par.getCentre(), getRollAxis(), p1);
     Point p2(par.getCentre(), 
@@ -146,14 +144,14 @@ ToolBuilder::genereInterval()
 }
 
 void
-ToolBuilder::genereSmoothMatrix(int np0, int *np1, int i)
+ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
 {
     const Point &p1 = target.getPoint(i-1);
     const Point &p2 = target.getPoint(i+1);
     const Point &p3 = target.getPoint(i);
 
     // index courant
-    int pr = target.numberOfPoints()-1;
+    size_t pr = target.numberOfPoints()-1;
     
     // calcul de l'angle 1,2 - 1,3
 
@@ -161,7 +159,7 @@ ToolBuilder::genereSmoothMatrix(int np0, int *np1, int i)
     Point dx2(p2-p1);
     Point dx3(p2-p3);
 
-    int signpv = ((dx1^dx2)>=0)? 1.0 : -1.0;
+    int signpv = ((dx1^dx2)>=0)? 1 : -1;
 
     double angle1 = acos((dx1*dx2)/(dx1.length()*dx2.length()));
     double angle2 = acos((dx2*dx3)/(dx3.length()*dx2.length()));

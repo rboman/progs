@@ -15,8 +15,8 @@ class Tool : public TargetObject
     int firstp;
     int firstc;
 
-    std::vector<Point>  point;
-    std::vector<Curve*> courbe;
+    std::vector<Point>   point;
+    std::vector<Curve *> courbe;
 
 public:
     Tool();
@@ -25,8 +25,8 @@ public:
     void addPoint(const Point &pt);
     void addPoint(double x, double y);
 
-    int numberOfPoints() const;
-    int numberOfCurves() const;
+    size_t numberOfPoints() const;
+    size_t numberOfCurves() const;
 
     virtual void print() const;
     virtual void list() const;
