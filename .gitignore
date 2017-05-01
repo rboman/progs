@@ -3,6 +3,8 @@
 *.pyc
 *~
 
+# java
+*.class
 
 # Compiled Object files
 *.slo

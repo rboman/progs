@@ -1,10 +1,20 @@
 # Mandel applet
 
+This is one of my very old java programs displaying the Mandelbrot set.
+
+Two versions:
+  * applet (only works in old browsers or throught appletviewer
+  * desktop application (a translation of the applet using AWT)
+
 ![Mandel.png](screenshot)
 
+## applet version
 ```
 javac Mandel.java
 appletviewer Mandel.html
 ```
-
-
+## desktop version
+```
+javac MandelApp.java
+java MandelApp
+```
