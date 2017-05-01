@@ -2,10 +2,13 @@
 # -*- coding: latin-1; -*-
 
 import sys
-from PyQt4 import QtCore, QtGui, Qt
+#from PyQt4 import QtCore, QtGui, Qt
+from PyQt5.QtCore    import *
+from PyQt5.QtGui     import *
+from PyQt5.QtWidgets import *
 
 
-class Mandelbrot(QtGui.QWidget):
+class Mandelbrot(QWidget):
     def __init__(self): 
         super(Mandelbrot, self).__init__()
         
@@ -22,13 +25,13 @@ class Mandelbrot(QtGui.QWidget):
     def paintEvent(self, event):
         
         print "paintEvent: please wait..."
-        painter = QtGui.QPainter(self)
+        painter = QPainter(self)
                     
         # setup palette
         colours = []
         for n in range(self.nb_coul):
-            colours.append(QtGui.QColor(255*n/self.nb_coul, 0, 0))
-        colours.append(QtGui.QColor(0, 0, 0))
+            colours.append(QColor(255*n/self.nb_coul, 0, 0))
+        colours.append(QColor(0, 0, 0))
                
         (a1, a2) = (self.x2-self.x1, self.y2-self.y1)
         (sl, sh) = (self.width(), self.height())
@@ -43,7 +46,7 @@ class Mandelbrot(QtGui.QWidget):
 	                (xn, yn) = (xn*xn-yn*yn+xc, 2*xn*yn+yc)
 	                n+=1
 
-                pen = QtGui.QPen()
+                pen = QPen()
                 pen.setColor(colours[n])
                 painter.setPen(pen)
 
@@ -54,7 +57,7 @@ class Mandelbrot(QtGui.QWidget):
 
 if __name__=="__main__":
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     win = Mandelbrot()
     win.show()
     app.exec_()

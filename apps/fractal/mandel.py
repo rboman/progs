@@ -2,8 +2,9 @@
 # -*- coding: latin-1; -*-
 
 import sys
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore    import *
+from PyQt5.QtGui     import *
+from PyQt5.QtWidgets import *
 
 class Transf:
     """
@@ -30,6 +31,9 @@ class Transf:
         return str
 
 class RenderThread(QThread):
+    
+    newStuff = pyqtSignal()
+
     def __init__(self, parent, transf):
         QThread.__init__(self, parent)
         
@@ -84,7 +88,7 @@ class RenderThread(QThread):
                 if self.abort:
                     print "thread has been killed!"
                     return
-            self.emit(SIGNAL("newStuff()"))
+            self.newStuff.emit()
 
         print "thread is over!"
 
@@ -112,11 +116,12 @@ class MandelWidget(QWidget):
         # actions
         self.showcoords_action = QAction("Show &Coords", self)
         self.showcoords_action.setCheckable(True)
-        self.connect(self.showcoords_action, SIGNAL("toggled(bool)"), self.toggleShowCoords)  
-                
+        #self.connect(self.showcoords_action, SIGNAL("toggled(bool)"), self.toggleShowCoords)  # Qt4
+        self.showcoords_action.toggled.connect(self.toggleShowCoords)
         # restore state from HKEY_CURRENT_USER\SOFTWARE\ULG\Mandel
         settings = QSettings()
-        self.showcoords_action.setChecked(settings.value("showCoords", True).toBool())
+        #self.showcoords_action.setChecked(settings.value("showCoords", True, type=bool).toBool())
+        self.showcoords_action.setChecked(settings.value("showCoords", True, type=bool))
         
         self.resize(300, 300)
         
@@ -129,7 +134,8 @@ class MandelWidget(QWidget):
     def contextMenuEvent(self, event):
         menu = QMenu(self)
         action = menu.addAction("&Reset View")
-        self.connect(action, SIGNAL("triggered()"), self.resetView)
+        #self.connect(action, SIGNAL("triggered()"), self.resetView)
+        action.triggered.connect(self.resetView)
         menu.addSeparator()
         menu.addAction(self.showcoords_action)
         menu.exec_(event.globalPos())
@@ -143,7 +149,8 @@ class MandelWidget(QWidget):
         self.transf.wx = self.width()
         self.transf.wy = self.height()
         self.thread = RenderThread(self, self.transf)  
-        self.connect(self.thread, SIGNAL("newStuff()"), self.update)
+        #self.connect(self.thread, SIGNAL("newStuff()"), self.update)
+        self.thread.newStuff.connect(self.update)
         self.thread.start()        
         
     def toggleShowCoords(self, val):
@@ -161,7 +168,8 @@ class MandelWidget(QWidget):
         # pour l'instant on en cree un nouveau...
         # idee : allouer l'image dans le master thread et la donner a chaque thread
         self.thread = RenderThread(self, self.transf)  
-        self.connect(self.thread, SIGNAL("newStuff()"), self.update)
+        #self.connect(self.thread, SIGNAL("newStuff()"), self.update)
+        self.thread.newStuff.connect(self.update)
         self.thread.start()
 
     def paintEvent(self, event):
@@ -249,7 +257,8 @@ class MandelWidget(QWidget):
                 self.transf.zoom = (zoom1+zoom2)/2.0  
                               
                 self.thread = RenderThread(self, self.transf)               
-                self.connect(self.thread, SIGNAL("newStuff()"), self.update)
+                #self.connect(self.thread, SIGNAL("newStuff()"), self.update)
+                self.thread.newStuff.connect(self.update)
                 self.thread.start()            
             self.update()
     
