@@ -6,7 +6,7 @@ Two versions:
   * applet (only works in old browsers or throught appletviewer
   * desktop application (a translation of the applet using AWT)
 
-![Mandel.png](screenshot)
+![screenshot](Mandel.png)
 
 ## applet version
 ```
