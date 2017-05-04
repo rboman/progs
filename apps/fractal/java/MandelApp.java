@@ -1,7 +1,6 @@
 import java.awt.*;
-import java.applet.*;
 
-public class Mandel extends Applet
+public class MandelApp extends Panel
 {
     protected float x1, y1, x2, y2;
     protected int sl, sh, nb_coul, inc, max_it, sav;
@@ -10,6 +9,29 @@ public class Mandel extends Applet
     protected static final int BLUE=2;
     protected static final int GREEN=1;
     public int p_typ=BLUE;
+
+    public static void main(String[] args) 
+    {
+        Frame f = new Frame();
+        f.addWindowListener(new java.awt.event.WindowAdapter() 
+        {
+            public void windowClosing(java.awt.event.WindowEvent e) 
+            {
+                System.exit(0);
+            }
+        });
+
+        int height=586; 
+        int width=785;
+
+        MandelApp ut = new MandelApp();
+        ut.setSize(width, height); // same size as defined in the HTML APPLET
+        f.add(ut);
+        f.pack();
+        ut.init();
+        f.setSize(width, height + 20); // add 20, seems enough for the Frame title,
+        f.setVisible(true);
+    }
 
     public void init()
     {
@@ -36,7 +58,7 @@ public class Mandel extends Applet
         float a1, a2, xc, yc, xn, yn, xn1, yn1;
         int n, xe, ye;
 
-        Rectangle r=this.getBounds();
+        Rectangle r = this.getBounds();
         sl = r.width;
         sh = r.height;
 
