@@ -17,7 +17,7 @@ addr = (host,port)
 UDPSock = socket(AF_INET,SOCK_DGRAM)
 UDPSock.bind(addr)
 
-#On recois le message
+#On recoit le message
 while 1:
     data,addr = UDPSock.recvfrom(buf)
     if not data:
