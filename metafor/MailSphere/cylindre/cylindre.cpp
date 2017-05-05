@@ -8,7 +8,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void main()
+#include <vtkSmartPointer.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkHexahedron.h>
+#include <vtkXMLUnstructuredGridWriter.h>
+#include <vtkZLibDataCompressor.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderer.h>
+#include <vtkProperty.h>
+#include <vtkDataSetMapper.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+
+
+int main()
 {
 
     int cyl_creux, nbe, nbc, nbz, noe_ini, maille_ini, mat1rig, loi1rig, mat1def, loi1def, type1,
@@ -30,7 +43,7 @@ void main()
     // PARAMETRES
 
     cyl_creux = 1;      // 1 si creuse, 0 si pleine
-    rint = 97.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
+    rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
     rext = 100.;        // rayon externe
     longext = 460.;     // longueur du cylindre
     cyl_ouvert = 0;     // 1 si ouvert, 0 si ferm�
@@ -48,8 +61,8 @@ void main()
     ext[1] = 0.0;       // coor y de la direction d extrusion
     ext[2] = 1.0;       // coor z de la direction d extrusion
     nbe = 24;           // nombre d elements sur l arc d un m�ridien
-    nbc = 1;            // nombre d elements sur l epaisseur
-    nbz = 20;           // nombre d elements sur la hauteur
+    nbc = 3;            // nombre d elements sur l epaisseur
+    nbz = 15;           // nombre d elements sur la hauteur
     noe_ini = 0;
     maille_ini = 0;
     nocyl = 1;
@@ -98,7 +111,7 @@ void main()
     {
         if (cyl_ouvert == 1)
         {
-            return;
+            return 1;
         }
         if (nbe % 4 != 0)
         {
@@ -131,7 +144,7 @@ void main()
     vabs = sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
     if (vabs < 1.E-8)
     {
-        return;
+        return 1;
     }
     for (i = 0; i < 3; i++)
     {
@@ -487,6 +500,14 @@ void main()
     fprintf(fp_out, " \n");
     fprintf(fp_out, " \n");
 
+    // -VTK----------------------------------------------------------------------------------------------
+    vtkUnstructuredGrid *ugrid = vtkUnstructuredGrid::New();
+    vtkPoints *points = vtkPoints::New();
+    ugrid->SetPoints(points);
+    //std::map<
+
+
+
     //  impression du .NOE
 
     fprintf(fp_out, "\n.NOEUD\n");
@@ -507,11 +528,13 @@ void main()
                 if (noe > 99998)
                 {
                     fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                    return;
+                    return 1;
                 }
                 fprintf(fp_out, "I %5d  X %11.4E Y %11.4E Z %11.4E\n",
                         noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                 liste[nint] = noe;
+                // VTK
+                points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
             }
         }
     }
@@ -530,11 +553,13 @@ void main()
                 if (noe > 99998)
                 {
                     fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                    return;
+                    return 1;
                 }
                 fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
                         noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                 liste[nint] = noe;
+                // VTK
+                points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
             }
         }
     }
@@ -557,11 +582,13 @@ void main()
                         if (noe > 99998)
                         {
                             fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                            return;
+                            return 1;
                         }
                         fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
                                 noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                         liste[nint] = noe;
+                        // VTK
+                        points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                     }
                 }
             }
@@ -587,11 +614,13 @@ void main()
                         if (noe > 99998)
                         {
                             fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                            return;
+                            return 1;
                         }
                         fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
                                 noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                         liste[nint] = noe;
+                        // VTK
+                        points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                     }
                 }
             }
@@ -626,6 +655,18 @@ void main()
                 fprintf(fp_out, "I %5d N %4d %4d %4d %4d 0 %4d %4d %4d %4d AT %1d\n", maille,
                         liste[noe1], liste[noe2], liste[noe3], liste[noe4],
                         liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
+                // VTK-
+                vtkHexahedron *hexa = vtkHexahedron::New();
+                vtkIdList *ids = hexa->GetPointIds();  
+                ids->SetId( 0, liste[noe1]);
+                ids->SetId( 1, liste[noe2]);
+                ids->SetId( 2, liste[noe3]);
+                ids->SetId( 3, liste[noe4]);
+                ids->SetId( 4, liste[noe5]);
+                ids->SetId( 5, liste[noe6]);
+                ids->SetId( 6, liste[noe7]);
+                ids->SetId( 7, liste[noe8]);
+                ugrid->InsertNextCell(hexa->GetCellType(), ids);
             }
         }
     }
@@ -855,4 +896,57 @@ void main()
     //   fprintf(fp_out,"grap vc visee 2 3 1\n") ;
     //   fprintf(fp_out,"grap remp 0 visee 2 3 1\n") ;
     //   fprintf(fp_out,"VI\n") ;
+
+    std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
+
+    // export to vtu file
+    vtkXMLUnstructuredGridWriter *writer = vtkXMLUnstructuredGridWriter::New();
+    vtkZLibDataCompressor *compressor = vtkZLibDataCompressor::New();
+    writer->SetCompressor(compressor);
+    writer->SetDataModeToBinary();
+    writer->SetInputData(ugrid);
+    writer->SetFileName("cylindre.vtu");
+    writer->Write();
+    std::cout << "file saved to disk.\n";
+
+    // display
+
+    vtkDataSetMapper *meshMapper = vtkDataSetMapper::New(); 
+    meshMapper->SetInputData(ugrid);
+    vtkActor *meshActor = vtkActor::New();
+    meshActor->SetMapper(meshMapper);
+
+    vtkDataSetMapper *gridMapper = vtkDataSetMapper::New();  
+    gridMapper->SetResolveCoincidentTopologyToPolygonOffset();
+    gridMapper->ScalarVisibilityOff();
+    gridMapper->SetInputData(ugrid);
+    vtkActor *gridActor = vtkActor::New();
+    gridActor->GetProperty()->SetRepresentationToWireframe();
+    gridActor->GetProperty()->SetColor(0.,0.,0.);
+    gridActor->GetProperty()->SetAmbient(1.0);
+    gridActor->GetProperty()->SetDiffuse(0.0);
+    gridActor->GetProperty()->SetSpecular(0.0);
+    gridActor->SetMapper(gridMapper);  
+
+    vtkRenderer *ren = vtkRenderer::New();
+    ren->SetBackground(48./255,10./255,36./255); // unity terminal
+    ren->AddActor(meshActor);
+    ren->AddActor(gridActor);
+    ren->ResetCamera();
+
+    vtkRenderWindow *renWin = vtkRenderWindow::New();
+    renWin->SetSize(640, 480);    
+    renWin->AddRenderer(ren);
+
+    vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkRenderWindowInteractor::New();
+    iren->SetRenderWindow(renWin);
+
+    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkInteractorStyleTrackballCamera::New();
+    iren->SetInteractorStyle(style);
+    iren->Initialize();
+    //renWin->Render();
+    iren->Start();
+
+
+    return 0;
 }
