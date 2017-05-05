@@ -6,66 +6,68 @@
 # rassemble "mailtest.py", "sendhtml.py" et "anonmail.py"
 #
 
-import sys,os,socket
-from PyQt4 import QtCore, QtGui
+import sys, os, socket
+from PyQt5.QtCore    import *
+from PyQt5.QtGui     import *
+from PyQt5.QtWidgets import *
 
 
-class MailWindow(QtGui.QWidget):
+class MailWindow(QWidget):
     """
     Main Qt Widget
     """
     def __init__(self, parent = None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
         self.setWindowTitle("RoBo Mailer")
-        vbox = QtGui.QVBoxLayout()
+        vbox = QVBoxLayout()
         self.setLayout(vbox)
         
-        prmlayout = QtGui.QGridLayout()
+        prmlayout = QGridLayout()
         
-        self.smtpw = QtGui.QLineEdit("smtp.ulg.ac.be")
-        self.fromw = QtGui.QComboBox()
-        self.fromw.addItem("Robin Høød <r.hood@sherwood.uk>")
+        self.smtpw = QLineEdit("smtp.ulg.ac.be")
+        self.fromw = QComboBox()
+        self.fromw.addItem("Robin Hood <r.hood@sherwood.uk>")
         self.fromw.addItem("B. Obama <president@whitehouse.com>")
         self.fromw.addItem("J.-P. Ponthot <jp.ponthot@ulg.ac.be>")
         self.fromw.addItem("Philippe Bussetta <p.bussetta@ulg.ac.be>")
-        self.fromw.addItem("Geoffrey Deliége <g.deliege@ulg.ac.be>")
+        self.fromw.addItem("Geoffrey Deliege <g.deliege@ulg.ac.be>")
         self.fromw.addItem("God <god@heaven.com>")
         self.fromw.setEditable(True)
         
-        self.tow = QtGui.QLineEdit("Vinciane <vdotreppe@ulg.ac.be>; Pépé <ppjeunechamps@ulg.ac.be>; Robo <r.boman@ulg.ac.be>")
-        self.subjw = QtGui.QLineEdit("Bonjour du Canada")
+        self.tow = QLineEdit("Vinciane <vdotreppe@ulg.ac.be>; Pï¿½pï¿½ <ppjeunechamps@ulg.ac.be>; Robo <r.boman@ulg.ac.be>")
+        self.subjw = QLineEdit("Bonjour du Canada")
         
-        prmlayout.addWidget(QtGui.QLabel("SMTP Server:"), 0, 0)
+        prmlayout.addWidget(QLabel("SMTP Server:"), 0, 0)
         prmlayout.addWidget(self.smtpw, 0, 1)
-        prmlayout.addWidget(QtGui.QLabel("From:"), 1, 0)
+        prmlayout.addWidget(QLabel("From:"), 1, 0)
         prmlayout.addWidget(self.fromw, 1, 1)
-        prmlayout.addWidget(QtGui.QLabel("To:"), 2, 0)
+        prmlayout.addWidget(QLabel("To:"), 2, 0)
         prmlayout.addWidget(self.tow, 2, 1)
-        prmlayout.addWidget(QtGui.QLabel("Subject:"), 3, 0)
+        prmlayout.addWidget(QLabel("Subject:"), 3, 0)
         prmlayout.addWidget(self.subjw, 3, 1)
         vbox.addLayout(prmlayout)
         
-        #self.textw = QtGui.QTextEdit("<h1><font color=red>L</font>es <em>accents</em> marchent</h1><p>àêüø</p>")
-        self.textw = QtGui.QTextEdit("Salut Vinciane!")
+        #self.textw = QTextEdit("<h1><font color=red>L</font>es <em>accents</em> marchent</h1><p>ï¿½ï¿½ï¿½ï¿½</p>")
+        self.textw = QTextEdit("Salut Vinciane!")
         vbox.addWidget(self.textw)
  
         # buttons
-        btnlayout = QtGui.QHBoxLayout() 
+        btnlayout = QHBoxLayout() 
         vbox.addLayout(btnlayout)
         
         btnlayout.addStretch(1)
         
-        self.htmlcheck = QtGui.QCheckBox("HTML")
-        self.htmlcheck.setCheckState(QtCore.Qt.Checked)
+        self.htmlcheck = QCheckBox("HTML")
+        self.htmlcheck.setCheckState(Qt.Checked)
         btnlayout.addWidget(self.htmlcheck)
         
-        button = QtGui.QPushButton("Send!")
+        button = QPushButton("Send!")
         btnlayout.addWidget(button)
-        self.connect(button, QtCore.SIGNAL("clicked()"), self.sendmsg)
+        button.clicked.connect(self.sendmsg)
 
         # debug win
-        vbox.addWidget(QtGui.QLabel("Debug:"))
-        self.debugw = QtGui.QTextEdit()
+        vbox.addWidget(QLabel("Debug:"))
+        self.debugw = QTextEdit()
         self.debugw.setMaximumHeight(100)
         vbox.addWidget(self.debugw)
         self.stdout, sys.stdout = sys.stdout, self
@@ -83,7 +85,7 @@ class MailWindow(QtGui.QWidget):
             map( self.writeLine, stuff.split("\n") )
         else:
             self.buf += stuff 
-        QtGui.qApp.processEvents()
+        qApp.processEvents()
         
     def writeLine(self, stuff):
         "stdio redirection"
@@ -104,7 +106,7 @@ class MailWindow(QtGui.QWidget):
         toaddrs = unicode(self.tow.text())
         
         head = "From: %s\nTo: %s\nSubject:%s\n" % (fromaddr, toaddrs, unicode(self.subjw.text()))
-        if self.htmlcheck.checkState() == QtCore.Qt.Checked:
+        if self.htmlcheck.checkState() == Qt.Checked:
             head = head+"Content-Type: text/html;\n"
             body = unicode(self.textw.toHtml())
         else:
@@ -118,10 +120,10 @@ class MailWindow(QtGui.QWidget):
         server.quit()
 
 def main():
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     win = MailWindow()
     win.show()
-    app.connect(app, QtCore.SIGNAL("lastWindowClosed()"),app,QtCore.SLOT("quit()"))
+    app.lastWindowClosed.connect(app.quit)
     print "Ready!"
     sys.exit(app.exec_())
  
