@@ -5,6 +5,7 @@
 // cmake -G "Visual Studio 14 2015 Win64" ..
 // cmake --build . --config Release
 
+#include "cylindre.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -13,8 +14,6 @@
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkHexahedron.h>
-#include <vtkXMLUnstructuredGridWriter.h>
-#include <vtkZLibDataCompressor.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
@@ -71,9 +70,6 @@ int main()
     int loi1def = 1;
     int type1 = 1; // -1 pas contact, 0 si rigide, 1 si defo-defo, 2 si les deux
 
-
-
-
     // face interne
     int mat2rig, loi2rig, mat2def, loi2def, type2;
     if (cyl_creux == 1)
@@ -85,21 +81,16 @@ int main()
         type2 = -1; // -1 pas contact, 0 si rigide, 1 si defo-defo, 2 si les deux
     }
     else
-    {
         type2 = -1;
-    }
 
     // FIN DES PARAMETRES
-
-
 
 
     // inversion des rayons pour rext > rint
 
     if (theta0 != 360.)
-    {
         cyl_ouvert = 1;
-    }
+
     theta0 = theta0 * atan(1.) / 45.;
     if (rext < rint)
     {
@@ -111,29 +102,20 @@ int main()
     if (cyl_creux == 0)
     {
         if (cyl_ouvert == 1)
-        {
             return 1;
-        }
+
         if (nbe % 4 != 0)
-        {
             nbe = (nbe / 4 + 1) * 4;
-        }
     }
 
     double nbe2;
     if (cyl_ouvert == 1)
-    {
         nbe2 = (nbe + 1);
-    }
     else if (cyl_ouvert == 0)
-    {
         nbe2 = nbe;
-    }
 
     mat1def = -mat1def;
     mat2def = -mat2def;
-
-
 
     // norme les vecteur de definition
 
@@ -148,25 +130,18 @@ int main()
 
     double vabs = sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
     if (vabs < 1.E-8)
-    {
         return 1;
-    }
+
     for (int i = 0; i < 3; i++)
-    {
         vec1[i] = vec1[i] / vabs;
-    }
+
     vabs = sqrt(norm[0] * norm[0] + norm[1] * norm[1] + norm[2] * norm[2]);
     for (int i = 0; i < 3; i++)
-    {
         norm[i] = norm[i] / vabs;
-    }
+
     vabs = sqrt(ext[0] * ext[0] + ext[1] * ext[1] + ext[2] * ext[2]);
     for (int i = 0; i < 3; i++)
-    {
         ext[i] = ext[i] / vabs;
-    }
-
-
 
     // allocation du tableau tab(nz,couche,ne)
 
@@ -238,11 +213,6 @@ int main()
                 tab[nz][couche][ne] = no;
             }
 
-
-
-
-
-
     // remplissage de cube
 
     if (cyl_creux == 0)
@@ -251,30 +221,19 @@ int main()
                 for (int l = 0; l < nbe / 4 + 1; l++)
                 {
                     if (l == 0)
-                    {
                         cube[nz][l][c] = tab[nz][nbc][c];
-                    }
                     else if (l == (nbe / 4))
-                    {
                         cube[nz][l][c] = tab[nz][nbc][(3 * (nbe / 4)) - c];
-                    }
                     else if (c == 0)
-                    {
                         cube[nz][l][c] = tab[nz][nbc][(4 * (nbe / 4)) - l];
-                    }
                     else if (c == (nbe / 4))
-                    {
                         cube[nz][l][c] = tab[nz][nbc][((nbe / 4)) + l];
-                    }
                     else
                     {
                         no = no + 1;
                         cube[nz][l][c] = no;
                     }
                 }
-
-
-
 
     // Calcul des coordonnees
 
@@ -299,9 +258,6 @@ int main()
 
     // couche interieure du level 0
 
-    int 
-        n[4], n0[4], don[10][2];
-
     if (cyl_creux == 1)
     {
         for (int ne = 0; ne < nbe2; ne++)
@@ -315,6 +271,7 @@ int main()
     }
     else if (cyl_creux == 0)
     {
+        int n0[4], n[4];
         for (int cote = 0; cote < 4; cote++)
         {
             n0[cote] = tab[0][0][cote * nbe / 4];
@@ -369,7 +326,7 @@ int main()
             }
 
 
-    // mise � jour des positions avec le centre centre[i]
+    // mise a jour des positions avec le centre centre[i]
 
     for (int couche = 0; couche < nbc + 1; couche++)
         for (int ne = 0; ne < nbe2; ne++)
@@ -651,6 +608,7 @@ int main()
 
     if (type1 == 0 || type1 == 2)
     {
+        int don[10][2];
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 2; j++)
                 don[i][j] = 0;
@@ -731,6 +689,7 @@ int main()
 
     if (type2 == 0 || type2 == 2)
     {
+        int don[10][2];
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 2; j++)
                 don[i][j] = 0;
@@ -830,15 +789,8 @@ int main()
 
     std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
 
-    // export to vtu file
-    auto writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
-    auto compressor = vtkSmartPointer<vtkZLibDataCompressor>::New();
-    writer->SetCompressor(compressor);
-    writer->SetDataModeToBinary();
-    writer->SetInputData(ugrid);
-    writer->SetFileName("cylindre.vtu");
-    writer->Write();
-    std::cout << "file saved to disk.\n";
+    exportvtu(ugrid, "cylindre.vtu");
+
 
     // display
 
@@ -877,7 +829,6 @@ int main()
     iren->Initialize();
     //renWin->Render();
     iren->Start();
-
 
     return 0;
 }

@@ -18,5 +18,11 @@ vtk_module_config(VTK
     vtkIOXML
 )
 include(${VTK_USE_FILE})
-add_executable(cylindre MACOSX_BUNDLE cylindre.cpp)
+
+IF(MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_DEPRECATE)
+ENDIF(MSVC)
+
+FILE(GLOB SRCS *.h *.cpp)
+add_executable(cylindre MACOSX_BUNDLE ${SRCS})
 target_link_libraries(cylindre ${VTK_LIBRARIES})
