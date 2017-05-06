@@ -210,23 +210,17 @@ int main()
 
     int taille = (nbe2) * (nbc + 1) * (nbz + 1);
     if (cyl_creux == 0)
-    {
         taille = taille + (nbe / 4 - 1) * (nbe / 4 - 1) * (nbz + 1);
-    }
 
     double **coord = (double **)calloc(taille, sizeof(double *));
     for (int i = 0; i < taille; i++)
-    {
         coord[i] = (double *)calloc(3, sizeof(double));
-    }
 
     //  allocation du vecteur liste(numint)=numdao
 
     taille = (nbe2) * (nbc + 1) * (nbz + 1);
     if (cyl_creux == 0)
-    {
         taille = taille + (nbe / 4 - 1) * (nbe / 4 - 1) * (nbz + 1);
-    }
     int *liste = (int *)calloc(taille, sizeof(int));
 
     // fin des allocations
@@ -237,16 +231,14 @@ int main()
     int no = -1;
 
     for (int nz = 0; nz < nbz + 1; nz++)
-    {
         for (int couche = 0; couche < nbc + 1; couche++)
-        {
             for (int ne = 0; ne < nbe2; ne++)
             {
                 no = no + 1;
                 tab[nz][couche][ne] = no;
             }
-        }
-    }
+
+
 
 
 
@@ -254,11 +246,8 @@ int main()
     // remplissage de cube
 
     if (cyl_creux == 0)
-    {
         for (int nz = 0; nz < nbz + 1; nz++)
-        {
             for (int c = 0; c < nbe / 4 + 1; c++)
-            {
                 for (int l = 0; l < nbe / 4 + 1; l++)
                 {
                     if (l == 0)
@@ -283,33 +272,26 @@ int main()
                         cube[nz][l][c] = no;
                     }
                 }
-            }
-        }
-    }
 
-    int i, j,
-        nint,
-        n[4], n0[4], don[10][2], level1, level2, noe, noe1, noe2, noe3, noe4, noe5, noe6, noe7, noe8,
-        out, n1, n2, nbnoe, maille, ne2, cote;
-    double theta;
+
+
 
     // Calcul des coordonnees
 
     // le point 1
 
-    noe1 = tab[0][0][0];
+    int noe1 = tab[0][0][0];
     double ray = rext;
     for (int i = 0; i < 3; i++)
-    {
         coord[noe1][i] = vec1[i] * ray;
-    }
+
 
     // la couche exterieure du level 0
 
     for (int ne = 1; ne < nbe2; ne++)
     {
-        nint = tab[0][0][ne];
-        theta = theta0 * (ne * 1.) / (nbe * 1.);
+        int nint = tab[0][0][ne];
+        double theta = theta0 * (ne * 1.) / (nbe * 1.);
         coord[nint][0] = coord[noe1][0] * cos(theta) + (norm[1] * coord[noe1][2] - norm[2] * coord[noe1][1]) * sin(theta);
         coord[nint][1] = coord[noe1][1] * cos(theta) + (norm[2] * coord[noe1][0] - norm[0] * coord[noe1][2]) * sin(theta);
         coord[nint][2] = coord[noe1][2] * cos(theta) + (norm[0] * coord[noe1][1] - norm[1] * coord[noe1][0]) * sin(theta);
@@ -317,17 +299,18 @@ int main()
 
     // couche interieure du level 0
 
+    int 
+        n[4], n0[4], don[10][2];
+
     if (cyl_creux == 1)
     {
         for (int ne = 0; ne < nbe2; ne++)
         {
-            noe2 = tab[0][nbc][ne];
-            noe1 = tab[0][0][ne];
+            int noe2 = tab[0][nbc][ne];
+            int noe1 = tab[0][0][ne];
             double ray = rint / rext;
             for (int i = 0; i < 3; i++)
-            {
                 coord[noe2][i] = coord[noe1][i] * ray;
-            }
         }
     }
     else if (cyl_creux == 0)
@@ -338,28 +321,22 @@ int main()
             n[cote] = tab[0][nbc][cote * nbe / 4];
             double ray = rint / rext;
             for (int i = 0; i < 3; i++)
-            {
                 coord[n[cote]][i] = coord[n0[cote]][i] * ray;
-            }
         }
         for (int cote = 0; cote < 4; cote++)
         {
-            noe1 = n[cote];
+            int noe1 = n[cote];
+            int noe2;
             if (cote == 3)
-            {
                 noe2 = n[0];
-            }
             else
-            {
                 noe2 = n[cote + 1];
-            }
+
             for (int c = 1; c < nbe / 4; c++)
             {
-                nint = tab[0][nbc][cote * nbe / 4 + c];
+                int nint = tab[0][nbc][cote * nbe / 4 + c];
                 for (int i = 0; i < 3; i++)
-                {
                     coord[nint][i] = coord[noe1][i] + (c * 1.) / ((nbe / 4) * 1.) * (coord[noe2][i] - coord[noe1][i]);
-                }
             }
         }
     }
@@ -367,101 +344,73 @@ int main()
     // Toutes les couches de la face 0
 
     if (nbc > 1)
-    {
         for (int couche = 1; couche < nbc; couche++)
-        {
             for (int ne = 0; ne < nbe2; ne++)
             {
-                noe = tab[0][couche][ne];
-                noe1 = tab[0][0][ne];
-                noe2 = tab[0][nbc][ne];
+                int noe = tab[0][couche][ne];
+                int noe1 = tab[0][0][ne];
+                int noe2 = tab[0][nbc][ne];
                 for (int i = 0; i < 3; i++)
-                {
                     coord[noe][i] = coord[noe1][i] + (couche * 1.) / (nbc * 1.) * (coord[noe2][i] - coord[noe1][i]);
-                }
             }
-        }
-    }
+
 
     // generation du cube central
 
     if (cyl_creux == 0)
-    {
         for (int l = 1; l < (nbe / 4); l++)
-        {
             for (int c = 1; c < (nbe / 4); c++)
             {
-                noe = cube[0][l][c];
-                noe1 = cube[0][0][c];
-                noe2 = cube[0][(nbe / 4)][c];
+                int noe = cube[0][l][c];
+                int noe1 = cube[0][0][c];
+                int noe2 = cube[0][(nbe / 4)][c];
                 for (int i = 0; i < 3; i++)
-                {
                     coord[noe][i] = coord[noe1][i] + (l * 1.) / ((nbe / 4) * 1.) * (coord[noe2][i] - coord[noe1][i]);
-                }
             }
-        }
-    }
+
 
     // mise � jour des positions avec le centre centre[i]
 
     for (int couche = 0; couche < nbc + 1; couche++)
-    {
         for (int ne = 0; ne < nbe2; ne++)
         {
-            nint = tab[0][couche][ne];
+            int nint = tab[0][couche][ne];
             for (int i = 0; i < 3; i++)
-            {
                 coord[nint][i] = coord[nint][i] + centre[i];
-            }
         }
-    }
+
 
     if (cyl_creux == 0)
-    {
         for (int l = 1; l < (nbe / 4); l++)
-        {
             for (int c = 1; c < (nbe / 4); c++)
             {
-                nint = cube[0][l][c];
+                int nint = cube[0][l][c];
                 for (int i = 0; i < 3; i++)
-                {
                     coord[nint][i] = coord[nint][i] + centre[i];
-                }
             }
-        }
-    }
 
     // extrusion de la face de base
 
     for (int nz = 1; nz < nbz + 1; nz++)
     {
         for (int couche = 0; couche < nbc + 1; couche++)
-        {
             for (int ne = 0; ne < nbe2; ne++)
             {
-                noe1 = tab[0][couche][ne];
-                noe2 = tab[nz][couche][ne];
+                int noe1 = tab[0][couche][ne];
+                int noe2 = tab[nz][couche][ne];
                 for (int i = 0; i < 3; i++)
-                {
                     coord[noe2][i] = coord[noe1][i] + (nz * 1.) / (nbz * 1.) * longext * ext[i];
-                }
             }
-        }
+
         if (cyl_creux == 0)
-        {
             for (int l = 1; l < (nbe / 4); l++)
-            {
                 for (int c = 1; c < (nbe / 4); c++)
                 {
-                    noe1 = cube[0][l][c];
-                    noe2 = cube[nz][l][c];
+                    int noe1 = cube[0][l][c];
+                    int noe2 = cube[nz][l][c];
                     for (int i = 0; i < 3; i++)
-                    {
                         coord[noe2][i] = coord[noe1][i] + (nz * 1.) / (nbz * 1.) * longext * ext[i];
-                    }
                 }
-            }
-        }
     }
 
     // fin du remplissage du tableau des coord.
@@ -469,22 +418,18 @@ int main()
     //  impression des donn�es du probl�me
 
     if (cyl_creux == 1)
-    {
         fprintf(fp_out, "! Cylindre %2d Creux \n\n", nocyl);
-    }
+
     if (cyl_creux == 0)
-    {
         fprintf(fp_out, "! Cylindre %2d Plein \n\n", nocyl);
-    }
+
     fprintf(fp_out, "abrev '/rext' '%15.8E' ! Rayon Exterieur \n", rext);
     if (cyl_creux == 1)
-    {
         fprintf(fp_out, "abrev '/rint' '%15.8E' ! Rayon Interieur \n", rint);
-    }
+
     if (cyl_creux == 0)
-    {
         fprintf(fp_out, "abrev '/rap' '%15.8E' ! Rapport de la diagonale du carre central au rayon exterieur \n", (rint / rext));
-    }
+
 
     fprintf(fp_out, "abrev '/xcentre' '%15.8E' ! Coordonnee X du centre \n", centre[0]);
     fprintf(fp_out, "abrev '/ycentre' '%15.8E' ! Coordonnee Y du centre \n", centre[1]);
@@ -503,21 +448,17 @@ int main()
     fprintf(fp_out, "abrev '/noeini' '%3d' ! Numero du noeud initial - 1\n", noe_ini);
     fprintf(fp_out, "abrev '/maiini' '%3d' ! Numero de la maille initiale - 1\n", maille_ini);
     if (type1 == 0 || type1 == 2)
-    {
         fprintf(fp_out, "! Sa surface ext�rieure est la matrice de contact rigide numero %2d \n", mat1rig);
-    }
+
     if (type1 > 0)
-    {
         fprintf(fp_out, "! Sa surface ext�rieure est la matrice de contact deformable numero %2d \n", mat1def);
-    }
+
     if (type2 == 0 || type2 == 2)
-    {
         fprintf(fp_out, "! Sa surface int�rieure est la matrice de contact rigide numero %2d \n", mat2rig);
-    }
+
     if (type2 > 0)
-    {
         fprintf(fp_out, "! Sa surface int�rieure est la matrice de contact deformable numero %2d \n", mat2def);
-    }
+
     fprintf(fp_out, "! Tout ceci pour le cylindre numero %2d  \n", nocyl);
     fprintf(fp_out, " \n");
     fprintf(fp_out, " \n");
@@ -526,20 +467,16 @@ int main()
     auto ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     auto points = vtkSmartPointer<vtkPoints>::New();
     ugrid->SetPoints(points);
-    //std::map<
-
-
 
     //  impression du .NOE
 
     fprintf(fp_out, "\n.NOEUD\n");
-    noe = noe_ini;
+    int noe = noe_ini;
 
     for (int ne = 0; ne < nbe2; ne++)
-    {
         for (int nz = 0; nz < nbz + 1; nz++)
         {
-            nint = tab[nz][0][ne];
+            int nint = tab[nz][0][ne];
             if (liste[nint] == 0)
             {
                 noe = noe + 1;
@@ -559,19 +496,17 @@ int main()
                 points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
             }
         }
-    }
+
     for (int ne = 0; ne < nbe2; ne++)
-    {
         for (int nz = 0; nz < nbz + 1; nz++)
         {
-            nint = tab[nz][nbc][ne];
+            int nint = tab[nz][nbc][ne];
             if (liste[nint] == 0)
             {
                 noe = noe + 1;
                 if (noe % 11111 == 0 || noe == 9999)
-                {
                     noe = noe + 1;
-                }
+
                 if (noe > 99998)
                 {
                     fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
@@ -584,23 +519,19 @@ int main()
                 points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
             }
         }
-    }
+
     if (nbc > 1)
-    {
         for (int couche = 1; couche < nbc; couche++)
-        {
             for (int ne = 0; ne < nbe2; ne++)
-            {
                 for (int nz = 0; nz < nbz + 1; nz++)
                 {
-                    nint = tab[nz][couche][ne];
+                    int nint = tab[nz][couche][ne];
                     if (liste[nint] == 0)
                     {
                         noe = noe + 1;
                         if (noe % 11111 == 0 || noe == 9999)
-                        {
                             noe = noe + 1;
-                        }
+
                         if (noe > 99998)
                         {
                             fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
@@ -613,26 +544,19 @@ int main()
                         points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                     }
                 }
-            }
-        }
-    }
 
     if (cyl_creux == 0)
-    {
         for (int l = 1; l < (nbe / 4); l++)
-        {
             for (int c = 1; c < (nbe / 4); c++)
-            {
                 for (int nz = 0; nz < nbz + 1; nz++)
                 {
-                    nint = cube[nz][l][c];
+                    int nint = cube[nz][l][c];
                     if (liste[nint] == 0)
                     {
                         noe = noe + 1;
                         if (noe % 11111 == 0 || noe == 9999)
-                        {
                             noe = noe + 1;
-                        }
+
                         if (noe > 99998)
                         {
                             fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
@@ -645,39 +569,32 @@ int main()
                         points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                     }
                 }
-            }
-        }
-    }
 
     // impression du .MAI
 
     fprintf(fp_out, "\n.MAI\n");
-    maille = maille_ini;
+    int maille = maille_ini;
 
     for (int nz = 0; nz < nbz; nz++)
-    {
         for (int couche = 0; couche < nbc; couche++)
-        {
             for (int ne = 0; ne < nbe; ne++)
             {
                 maille = maille + 1;
-                ne2 = ne + 1;
+                int ne2 = ne + 1;
                 if (cyl_ouvert == 0 && ne == nbe - 1)
-                {
                     ne2 = 0;
-                }
-                noe1 = tab[nz][couche][ne];
-                noe2 = tab[nz][couche][ne2];
-                noe3 = tab[nz][couche + 1][ne2];
-                noe4 = tab[nz][couche + 1][ne];
-                noe5 = tab[nz + 1][couche][ne];
-                noe6 = tab[nz + 1][couche][ne2];
-                noe7 = tab[nz + 1][couche + 1][ne2];
-                noe8 = tab[nz + 1][couche + 1][ne];
+                int noe1 = tab[nz][couche][ne];
+                int noe2 = tab[nz][couche][ne2];
+                int noe3 = tab[nz][couche + 1][ne2];
+                int noe4 = tab[nz][couche + 1][ne];
+                int noe5 = tab[nz + 1][couche][ne];
+                int noe6 = tab[nz + 1][couche][ne2];
+                int noe7 = tab[nz + 1][couche + 1][ne2];
+                int noe8 = tab[nz + 1][couche + 1][ne];
                 fprintf(fp_out, "I %5d N %4d %4d %4d %4d 0 %4d %4d %4d %4d AT %1d\n", maille,
                         liste[noe1], liste[noe2], liste[noe3], liste[noe4],
                         liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
-                // VTK-
+                // VTK
                 vtkSmartPointer<vtkHexahedron> hexa = vtkSmartPointer<vtkHexahedron>::New();
                 vtkIdList *ids = hexa->GetPointIds();  
                 ids->SetId( 0, liste[noe1]);
@@ -690,32 +607,39 @@ int main()
                 ids->SetId( 7, liste[noe8]);
                 ugrid->InsertNextCell(hexa->GetCellType(), ids);
             }
-        }
-    }
+
     if (cyl_creux == 0)
-    {
         for (int nz = 0; nz < nbz; nz++)
-        {
             for (int l = 0; l < (nbe / 4); l++)
-            {
                 for (int c = 0; c < (nbe / 4); c++)
                 {
                     maille = maille + 1;
-                    noe1 = cube[nz][l][c];
-                    noe2 = cube[nz][l][c + 1];
-                    noe3 = cube[nz][l + 1][c + 1];
-                    noe4 = cube[nz][l + 1][c];
-                    noe5 = cube[nz + 1][l][c];
-                    noe6 = cube[nz + 1][l][c + 1];
-                    noe7 = cube[nz + 1][l + 1][c + 1];
-                    noe8 = cube[nz + 1][l + 1][c];
+                    int noe1 = cube[nz][l][c];
+                    int noe2 = cube[nz][l][c + 1];
+                    int noe3 = cube[nz][l + 1][c + 1];
+                    int noe4 = cube[nz][l + 1][c];
+                    int noe5 = cube[nz + 1][l][c];
+                    int noe6 = cube[nz + 1][l][c + 1];
+                    int noe7 = cube[nz + 1][l + 1][c + 1];
+                    int noe8 = cube[nz + 1][l + 1][c];
                     fprintf(fp_out, "I %5d N %4d %4d %4d %4d 0 %4d %4d %4d %4d AT %1d\n", maille,
                             liste[noe1], liste[noe2], liste[noe3], liste[noe4],
                             liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
+
+                    // VTK
+                    vtkSmartPointer<vtkHexahedron> hexa = vtkSmartPointer<vtkHexahedron>::New();
+                    vtkIdList *ids = hexa->GetPointIds();  
+                    ids->SetId( 0, liste[noe1]);
+                    ids->SetId( 1, liste[noe2]);
+                    ids->SetId( 2, liste[noe3]);
+                    ids->SetId( 3, liste[noe4]);
+                    ids->SetId( 4, liste[noe5]);
+                    ids->SetId( 5, liste[noe6]);
+                    ids->SetId( 6, liste[noe7]);
+                    ids->SetId( 7, liste[noe8]);
+                    ugrid->InsertNextCell(hexa->GetCellType(), ids);
                 }
-            }
-        }
-    }
+
 
     //  impression du .MCO
 
@@ -727,19 +651,17 @@ int main()
 
     if (type1 == 0 || type1 == 2)
     {
-
         for (int i = 0; i < 10; i++)
-        {
             for (int j = 0; j < 2; j++)
-            {
                 don[i][j] = 0;
-            }
-        }
-        nbnoe = nbe2 * (nbz + 1);
-        n1 = noe_ini + 1;
-        n2 = n1 + nbnoe - 1;
+
+        int nbnoe = nbe2 * (nbz + 1);
+        int n1 = noe_ini + 1;
+        int n2 = n1 + nbnoe - 1;
         int i = -1;
-        out = 0;
+        int out = 0;
+        int level1=0;
+        int level2=0;
         do
         {
             i = i + 1;
@@ -780,10 +702,8 @@ int main()
         for (int i = level1; i <= level2; i++)
         {
             if (don[i][0] != 0)
-            {
                 fprintf(fp_out2, "I %6d      J %6d    MAT %2d   LOI %2d \n",
                         don[i][0], don[i][1], mat1rig, loi1rig);
-            }
         }
         fprintf(fp_out2, "\n");
     }
@@ -792,21 +712,15 @@ int main()
 
     if (type1 > 0)
     {
-        int couche = 0;
-
         for (int ne = 0; ne < nbe2; ne++)
         {
-            noe1 = liste[tab[0][0][ne]];
-            noe2 = liste[tab[nbz][0][ne]];
+            int noe1 = liste[tab[0][0][ne]];
+            int noe2 = liste[tab[nbz][0][ne]];
             fprintf(fp_out2, "I %6d  J %6d  K 1  MAT %3d  LOI %2d \n", noe1, noe2, mat1def, loi1def);
             if (ne != nbe2 - 1)
-            {
                 fprintf(fp_out2, "I %8d \n", -3);
-            }
             if (cyl_ouvert == 0 && ne == nbe2 - 1)
-            {
                 fprintf(fp_out2, "I -2 \n");
-            }
         }
     }
     fprintf(fp_out2, "\n");
@@ -817,19 +731,17 @@ int main()
 
     if (type2 == 0 || type2 == 2)
     {
-
         for (int i = 0; i < 10; i++)
-        {
             for (int j = 0; j < 2; j++)
-            {
                 don[i][j] = 0;
-            }
-        }
-        nbnoe = nbe2 * (nbz + 1);
-        n1 = liste[tab[0][nbc][0]];
-        n2 = n1 + nbnoe - 1;
+
+        int nbnoe = nbe2 * (nbz + 1);
+        int n1 = liste[tab[0][nbc][0]];
+        int n2 = n1 + nbnoe - 1;
         int i = -1;
-        out = 0;
+        int out = 0;
+        int level1=0;
+        int level2=0;
         do
         {
             i = i + 1;
@@ -840,6 +752,7 @@ int main()
                 out = 1;
             }
         } while (out == 0 && i < 10);
+
         out = 0;
         i = i - 1;
         do
@@ -867,13 +780,12 @@ int main()
                 }
             }
         } while (out == 0 && i < 10);
+
         for (int i = level1; i <= level2; i++)
         {
             if (don[i][0] != 0)
-            {
                 fprintf(fp_out2, "I %6d      J %6d    MAT %2d   LOI %2d \n",
                         don[i][0], don[i][1], mat2rig, loi2rig);
-            }
         }
         fprintf(fp_out2, "\n");
     }
@@ -884,17 +796,14 @@ int main()
     {
         for (int ne = 0; ne < nbe2; ne++)
         {
-            noe1 = liste[tab[0][nbc][ne]];
-            noe2 = liste[tab[nbz][nbc][ne]];
+            int noe1 = liste[tab[0][nbc][ne]];
+            int noe2 = liste[tab[nbz][nbc][ne]];
             fprintf(fp_out2, "I %6d  J %6d  K -1  MAT %3d  LOI %2d \n", noe2, noe1, mat2def, loi2def);
             if (ne != nbe2 - 1)
-            {
                 fprintf(fp_out2, "I %8d \n", -3);
-            }
+
             if (cyl_ouvert == 0 && ne == nbe2 - 1)
-            {
                 fprintf(fp_out2, "I -2 \n");
-            }
         }
     }
     //     fprintf(fp_out2,"I -4 \n") ;
