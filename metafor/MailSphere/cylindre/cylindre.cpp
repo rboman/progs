@@ -25,16 +25,6 @@
 
 int main()
 {
-
-    int cyl_creux, nbe, nbc, nbz, noe_ini, maille_ini, mat1rig, loi1rig, mat1def, loi1def, type1,
-        mat2rig, loi2rig, mat2def, loi2def, type2, nocyl, cyl_ouvert, i, j,
-        taille1, taille2, taille3, ***tab, ***cube, taille, *liste, nz, couche, ne, no, nint,
-        n[4], n0[4], don[10][2], level1, level2, noe, noe1, noe2, noe3, noe4, noe5, noe6, noe7, noe8,
-        out, n1, n2, nbnoe, l, c, maille, ne2, cote, nbe2;
-
-    double rint, rext, centre[3], ext[3], norm[3], ray, theta0, **coord, vec1[3], vabs, longext, theta,
-        vrot[3];
-
     FILE *fp_out, *fp_out2;
 
     fp_out = fopen("cyl_noe.dat", "w");
@@ -44,41 +34,48 @@ int main()
 
     // PARAMETRES
 
-    cyl_creux = 1;      // 1 si creuse, 0 si pleine
-    rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
-    rext = 100.;        // rayon externe
-    longext = 460.;     // longueur du cylindre
-    cyl_ouvert = 0;     // 1 si ouvert, 0 si ferm�
-    theta0 = 360.;      // ouverture en degr� si ouvert
+    int cyl_creux = 1;      // 1 si creuse, 0 si pleine
+    double rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
+    double rext = 100.;        // rayon externe
+    double longext = 460.;     // longueur du cylindre
+    int cyl_ouvert = 0;     // 1 si ouvert, 0 si ferm�
+    double theta0 = 360.;      // ouverture en degr� si ouvert
+    double centre[3];
     centre[0] = -100.1; // coor x du centre
     centre[1] = 0.0;    // coor y du centre
     centre[2] = -230.0; // coor z du centre
+    double vec1[3];
     vec1[0] = 1.0;      // position du premier noeud
     vec1[1] = 0.0;      //
     vec1[2] = 0.0;      //
+    double norm[3];
     norm[0] = 0.0;      // coor x de la normale au plan de l arc
     norm[1] = 0.0;      // coor y de la normale au plan du l arc
     norm[2] = 1.0;      // coor z de la normale au plan du c arc
+    double ext[3];
     ext[0] = 0.0;       // coor x de la direction d extrusion
     ext[1] = 0.0;       // coor y de la direction d extrusion
     ext[2] = 1.0;       // coor z de la direction d extrusion
-    nbe = 24;           // nombre d elements sur l arc d un m�ridien
-    nbc = 3;            // nombre d elements sur l epaisseur
-    nbz = 15;           // nombre d elements sur la hauteur
-    noe_ini = 0;
-    maille_ini = 0;
-    nocyl = 1;
+    int nbe = 24;           // nombre d elements sur l arc d un m�ridien
+    int nbc = 3;            // nombre d elements sur l epaisseur
+    int nbz = 15;           // nombre d elements sur la hauteur
+    int noe_ini = 0;
+    int maille_ini = 0;
+    int nocyl = 1;
 
     // face externe
 
-    mat1rig = 1;
-    mat1def = 1;
-    loi1rig = 1;
-    loi1def = 1;
-    type1 = 1; // -1 pas contact, 0 si rigide, 1 si defo-defo, 2 si les deux
+    int mat1rig = 1;
+    int mat1def = 1;
+    int loi1rig = 1;
+    int loi1def = 1;
+    int type1 = 1; // -1 pas contact, 0 si rigide, 1 si defo-defo, 2 si les deux
+
+
+
 
     // face interne
-
+    int mat2rig, loi2rig, mat2def, loi2def, type2;
     if (cyl_creux == 1)
     {
         mat2rig = 3;
@@ -94,6 +91,9 @@ int main()
 
     // FIN DES PARAMETRES
 
+
+
+
     // inversion des rayons pour rext > rint
 
     if (theta0 != 360.)
@@ -103,10 +103,9 @@ int main()
     theta0 = theta0 * atan(1.) / 45.;
     if (rext < rint)
     {
-        ray = rext;
+        double ray = rext;
         rext = rint;
         rint = ray;
-        ray = 0;
     }
 
     if (cyl_creux == 0)
@@ -121,6 +120,7 @@ int main()
         }
     }
 
+    double nbe2;
     if (cyl_ouvert == 1)
     {
         nbe2 = (nbe + 1);
@@ -133,8 +133,11 @@ int main()
     mat1def = -mat1def;
     mat2def = -mat2def;
 
+
+
     // norme les vecteur de definition
 
+    double vrot[3];
     vrot[0] = vec1[1] * norm[2] - vec1[2] * norm[1];
     vrot[1] = vec1[2] * norm[0] - vec1[0] * norm[2];
     vrot[2] = vec1[0] * norm[1] - vec1[1] * norm[0];
@@ -143,69 +146,76 @@ int main()
     vec1[1] = norm[2] * vrot[0] - norm[0] * vrot[2];
     vec1[2] = norm[0] * vrot[1] - norm[1] * vrot[0];
 
-    vabs = sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
+    double vabs = sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
     if (vabs < 1.E-8)
     {
         return 1;
     }
-    for (i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         vec1[i] = vec1[i] / vabs;
     }
     vabs = sqrt(norm[0] * norm[0] + norm[1] * norm[1] + norm[2] * norm[2]);
-    for (i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         norm[i] = norm[i] / vabs;
     }
     vabs = sqrt(ext[0] * ext[0] + ext[1] * ext[1] + ext[2] * ext[2]);
-    for (i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         ext[i] = ext[i] / vabs;
     }
 
+
+
     // allocation du tableau tab(nz,couche,ne)
 
-    taille1 = (nbz + 1);
-    tab = (int ***)calloc(taille1, sizeof(int **));
-    for (i = 0; i < taille1; i++)
+    int ***tab;
     {
-        taille2 = (nbc + 1);
-        tab[i] = (int **)calloc(taille2, sizeof(int *));
-        for (j = 0; j < taille2; j++)
+        int taille1 = (nbz + 1);
+        tab = (int ***)calloc(taille1, sizeof(int **));
+        for (int i = 0; i < taille1; i++)
         {
-            taille3 = nbe2;
-            tab[i][j] = (int *)calloc(taille3, sizeof(int));
+            int taille2 = (nbc + 1);
+            tab[i] = (int **)calloc(taille2, sizeof(int *));
+            for (int j = 0; j < taille2; j++)
+            {
+                int taille3 = nbe2;
+                tab[i][j] = (int *)calloc(taille3, sizeof(int));
+            }
         }
     }
-
     // allocation du tableau cube(nz,lig,col)
-
-    if (cyl_creux == 0)
+    int ***cube;
     {
-        taille1 = (nbz + 1);
-        cube = (int ***)calloc(taille1, sizeof(int **));
-        for (i = 0; i < taille1; i++)
+        if (cyl_creux == 0)
         {
-            taille2 = (nbe / 4 + 1);
-            cube[i] = (int **)calloc(taille2, sizeof(int *));
-            for (j = 0; j < taille2; j++)
+            int taille1 = (nbz + 1);
+            cube = (int ***)calloc(taille1, sizeof(int **));
+            for (int i = 0; i < taille1; i++)
             {
-                taille3 = (nbe / 4 + 1);
-                cube[i][j] = (int *)calloc(taille3, sizeof(int));
+                int taille2 = (nbe / 4 + 1);
+                cube[i] = (int **)calloc(taille2, sizeof(int *));
+                for (int j = 0; j < taille2; j++)
+                {
+                    int taille3 = (nbe / 4 + 1);
+                    cube[i][j] = (int *)calloc(taille3, sizeof(int));
+                }
             }
         }
     }
 
+
     // allocation du tableau coord(numint, xyz)
 
-    taille = (nbe2) * (nbc + 1) * (nbz + 1);
+    int taille = (nbe2) * (nbc + 1) * (nbz + 1);
     if (cyl_creux == 0)
     {
         taille = taille + (nbe / 4 - 1) * (nbe / 4 - 1) * (nbz + 1);
     }
 
-    coord = (double **)calloc(taille, sizeof(double *));
-    for (i = 0; i < taille; i++)
+    double **coord = (double **)calloc(taille, sizeof(double *));
+    for (int i = 0; i < taille; i++)
     {
         coord[i] = (double *)calloc(3, sizeof(double));
     }
@@ -217,9 +227,15 @@ int main()
     {
         taille = taille + (nbe / 4 - 1) * (nbe / 4 - 1) * (nbz + 1);
     }
-    liste = (int *)calloc(taille, sizeof(int));
+    int *liste = (int *)calloc(taille, sizeof(int));
 
     // fin des allocations
+
+    int i, j,
+        nz, couche, ne, no, nint,
+        n[4], n0[4], don[10][2], level1, level2, noe, noe1, noe2, noe3, noe4, noe5, noe6, noe7, noe8,
+        out, n1, n2, nbnoe, l, c, maille, ne2, cote;
+    double theta;
 
     // remplissage de tab
 
@@ -278,7 +294,7 @@ int main()
     // le point 1
 
     noe1 = tab[0][0][0];
-    ray = rext;
+    double ray = rext;
     for (i = 0; i < 3; i++)
     {
         coord[noe1][i] = vec1[i] * ray;
@@ -303,7 +319,7 @@ int main()
         {
             noe2 = tab[0][nbc][ne];
             noe1 = tab[0][0][ne];
-            ray = rint / rext;
+            double ray = rint / rext;
             for (i = 0; i < 3; i++)
             {
                 coord[noe2][i] = coord[noe1][i] * ray;
@@ -316,7 +332,7 @@ int main()
         {
             n0[cote] = tab[0][0][cote * nbe / 4];
             n[cote] = tab[0][nbc][cote * nbe / 4];
-            ray = rint / rext;
+            double ray = rint / rext;
             for (i = 0; i < 3; i++)
             {
                 coord[n[cote]][i] = coord[n0[cote]][i] * ray;
