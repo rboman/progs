@@ -13,5 +13,6 @@ void exportvtu(vtkUnstructuredGrid *ugrid, std::string const &fname)
     writer->SetInputData(ugrid);
     writer->SetFileName(fname.c_str());
     writer->Write();
-    std::cout << "file saved to disk.\n";
+    std::cout << fname << " saved to disk.\n";
 }
+

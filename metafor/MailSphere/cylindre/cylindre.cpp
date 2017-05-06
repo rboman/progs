@@ -14,13 +14,6 @@
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkHexahedron.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderer.h>
-#include <vtkProperty.h>
-#include <vtkDataSetMapper.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-
 
 int main()
 {
@@ -405,16 +398,16 @@ int main()
     fprintf(fp_out, "abrev '/noeini' '%3d' ! Numero du noeud initial - 1\n", noe_ini);
     fprintf(fp_out, "abrev '/maiini' '%3d' ! Numero de la maille initiale - 1\n", maille_ini);
     if (type1 == 0 || type1 == 2)
-        fprintf(fp_out, "! Sa surface ext�rieure est la matrice de contact rigide numero %2d \n", mat1rig);
+        fprintf(fp_out, "! Sa surface ext�rinterieureieure est la matrice de contact rigide numero %2d \n", mat1rig);
 
     if (type1 > 0)
-        fprintf(fp_out, "! Sa surface ext�rieure est la matrice de contact deformable numero %2d \n", mat1def);
+        fprintf(fp_out, "! Sa surface interieure est la matrice de contact deformable numero %2d \n", mat1def);
 
     if (type2 == 0 || type2 == 2)
-        fprintf(fp_out, "! Sa surface int�rieure est la matrice de contact rigide numero %2d \n", mat2rig);
+        fprintf(fp_out, "! Sa surface interieure est la matrice de contact rigide numero %2d \n", mat2rig);
 
     if (type2 > 0)
-        fprintf(fp_out, "! Sa surface int�rieure est la matrice de contact deformable numero %2d \n", mat2def);
+        fprintf(fp_out, "! Sa surface interieure est la matrice de contact deformable numero %2d \n", mat2def);
 
     fprintf(fp_out, "! Tout ceci pour le cylindre numero %2d  \n", nocyl);
     fprintf(fp_out, " \n");
@@ -598,173 +591,12 @@ int main()
                 }
 
 
-    //  impression du .MCO
+    writemco(fp_out2, type1, noe_ini, nbe2,  nbz,  nbc,  
+                     mat1rig,  loi1rig,  mat2rig,  loi2rig, 
+                     liste,  tab, 
+                     mat1def,  loi1def,  mat2def, loi2def, 
+                     cyl_ouvert,  type2 );
 
-    fprintf(fp_out2, "\n.MCO\n\n");
-
-    //   couche exterieure
-
-    //   matrice rigide
-
-    if (type1 == 0 || type1 == 2)
-    {
-        int don[10][2];
-        for (int i = 0; i < 10; i++)
-            for (int j = 0; j < 2; j++)
-                don[i][j] = 0;
-
-        int nbnoe = nbe2 * (nbz + 1);
-        int n1 = noe_ini + 1;
-        int n2 = n1 + nbnoe - 1;
-        int i = -1;
-        int out = 0;
-        int level1=0;
-        int level2=0;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n1 < 9999) || (i > 0 && n1 < (i * 11111)))
-            {
-                don[i][0] = n1;
-                level1 = i;
-                out = 1;
-            }
-        } while (out == 0 && i < 10);
-        out = 0;
-        i = i - 1;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n2 < 9999) || (i > 0 && n2 < (i * 11111)))
-            {
-                don[i][1] = n2;
-                level2 = i;
-                out = 1;
-            }
-            else
-            {
-                if (i == 0)
-                {
-                    don[i][1] = 9998;
-                    don[i + 1][0] = 10000;
-                    n2 = n2 + 1;
-                }
-                else
-                {
-                    don[i][1] = (i * 11111) - 1;
-                    don[i + 1][0] = (i * 11111) + 1;
-                    n2 = n2 + 1;
-                }
-            }
-        } while (out == 0 && i < 10);
-        for (int i = level1; i <= level2; i++)
-        {
-            if (don[i][0] != 0)
-                fprintf(fp_out2, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-                        don[i][0], don[i][1], mat1rig, loi1rig);
-        }
-        fprintf(fp_out2, "\n");
-    }
-
-    //   matrice souple
-
-    if (type1 > 0)
-    {
-        for (int ne = 0; ne < nbe2; ne++)
-        {
-            int noe1 = liste[tab[0][0][ne]];
-            int noe2 = liste[tab[nbz][0][ne]];
-            fprintf(fp_out2, "I %6d  J %6d  K 1  MAT %3d  LOI %2d \n", noe1, noe2, mat1def, loi1def);
-            if (ne != nbe2 - 1)
-                fprintf(fp_out2, "I %8d \n", -3);
-            if (cyl_ouvert == 0 && ne == nbe2 - 1)
-                fprintf(fp_out2, "I -2 \n");
-        }
-    }
-    fprintf(fp_out2, "\n");
-
-    //   couche interieure
-
-    //   matrice rigide
-
-    if (type2 == 0 || type2 == 2)
-    {
-        int don[10][2];
-        for (int i = 0; i < 10; i++)
-            for (int j = 0; j < 2; j++)
-                don[i][j] = 0;
-
-        int nbnoe = nbe2 * (nbz + 1);
-        int n1 = liste[tab[0][nbc][0]];
-        int n2 = n1 + nbnoe - 1;
-        int i = -1;
-        int out = 0;
-        int level1=0;
-        int level2=0;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n1 < 9999) || (i > 0 && n1 < (i * 11111)))
-            {
-                don[i][0] = n1;
-                level1 = i;
-                out = 1;
-            }
-        } while (out == 0 && i < 10);
-
-        out = 0;
-        i = i - 1;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n2 < 9999) || (i > 0 && n2 < (i * 11111)))
-            {
-                don[i][1] = n2;
-                level2 = i;
-                out = 1;
-            }
-            else
-            {
-                if (i == 0)
-                {
-                    don[i][1] = 9998;
-                    don[i + 1][0] = 10000;
-                    n2 = n2 + 1;
-                }
-                else
-                {
-                    don[i][1] = (i * 11111) - 1;
-                    don[i + 1][0] = (i * 11111) + 1;
-                    n2 = n2 + 1;
-                }
-            }
-        } while (out == 0 && i < 10);
-
-        for (int i = level1; i <= level2; i++)
-        {
-            if (don[i][0] != 0)
-                fprintf(fp_out2, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-                        don[i][0], don[i][1], mat2rig, loi2rig);
-        }
-        fprintf(fp_out2, "\n");
-    }
-
-    //   matrice souple
-
-    if (type2 > 0)
-    {
-        for (int ne = 0; ne < nbe2; ne++)
-        {
-            int noe1 = liste[tab[0][nbc][ne]];
-            int noe2 = liste[tab[nbz][nbc][ne]];
-            fprintf(fp_out2, "I %6d  J %6d  K -1  MAT %3d  LOI %2d \n", noe2, noe1, mat2def, loi2def);
-            if (ne != nbe2 - 1)
-                fprintf(fp_out2, "I %8d \n", -3);
-
-            if (cyl_ouvert == 0 && ne == nbe2 - 1)
-                fprintf(fp_out2, "I -2 \n");
-        }
-    }
     //     fprintf(fp_out2,"I -4 \n") ;
     fprintf(fp_out2, "return \n");
     fprintf(fp_out, "return \n");
@@ -790,45 +622,8 @@ int main()
     std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
 
     exportvtu(ugrid, "cylindre.vtu");
+    displayugrid(ugrid);
 
-
-    // display
-
-    auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New(); 
-    meshMapper->SetInputData(ugrid);
-    vtkSmartPointer<vtkActor> meshActor = vtkSmartPointer<vtkActor>::New();
-    meshActor->SetMapper(meshMapper);
-
-    auto gridMapper = vtkSmartPointer<vtkDataSetMapper>::New();  
-    gridMapper->SetResolveCoincidentTopologyToPolygonOffset();
-    gridMapper->ScalarVisibilityOff();
-    gridMapper->SetInputData(ugrid);
-    auto gridActor = vtkSmartPointer<vtkActor>::New();
-    gridActor->GetProperty()->SetRepresentationToWireframe();
-    gridActor->GetProperty()->SetColor(0.,0.,0.);
-    gridActor->GetProperty()->SetAmbient(1.0);
-    gridActor->GetProperty()->SetDiffuse(0.0);
-    gridActor->GetProperty()->SetSpecular(0.0);
-    gridActor->SetMapper(gridMapper);  
-
-    auto ren = vtkSmartPointer<vtkRenderer>::New();
-    ren->SetBackground(48./255,10./255,36./255); // unity terminal
-    ren->AddActor(meshActor);
-    ren->AddActor(gridActor);
-    ren->ResetCamera();
-
-    auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
-    renWin->SetSize(640, 480);    
-    renWin->AddRenderer(ren);
-
-    auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-    iren->SetRenderWindow(renWin);
-
-    auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-    iren->SetInteractorStyle(style);
-    iren->Initialize();
-    //renWin->Render();
-    iren->Start();
 
     return 0;
 }
