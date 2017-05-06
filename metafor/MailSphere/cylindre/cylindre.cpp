@@ -1,7 +1,9 @@
-// pour compiler : cc -g -lm -o cyl.x  cylindre.c
-// ca cree un executable test.x
-// on tape test.x et ca cree out.dat lisible dans BACON
-// pour modifier la sphere, aller voir dans param�tres ! (un peu plus bas)
+// pour compiler : cc -lm *.cpp
+
+// mkdir build
+// cd build
+// cmake -G "Visual Studio 14 2015 Win64" ..
+// cmake --build . --config Release
 
 #include <math.h>
 #include <string.h>
@@ -25,7 +27,7 @@ int main()
 {
 
     int cyl_creux, nbe, nbc, nbz, noe_ini, maille_ini, mat1rig, loi1rig, mat1def, loi1def, type1,
-        mat2rig, loi2rig, mat2def, loi2def, type2, nocyl, cyl_ouvert, i, j, k,
+        mat2rig, loi2rig, mat2def, loi2def, type2, nocyl, cyl_ouvert, i, j,
         taille1, taille2, taille3, ***tab, ***cube, taille, *liste, nz, couche, ne, no, nint,
         n[4], n0[4], don[10][2], level1, level2, noe, noe1, noe2, noe3, noe4, noe5, noe6, noe7, noe8,
         out, n1, n2, nbnoe, l, c, maille, ne2, cote, nbe2;
@@ -501,8 +503,8 @@ int main()
     fprintf(fp_out, " \n");
 
     // -VTK----------------------------------------------------------------------------------------------
-    vtkUnstructuredGrid *ugrid = vtkUnstructuredGrid::New();
-    vtkPoints *points = vtkPoints::New();
+    auto ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+    auto points = vtkSmartPointer<vtkPoints>::New();
     ugrid->SetPoints(points);
     //std::map<
 
@@ -656,7 +658,7 @@ int main()
                         liste[noe1], liste[noe2], liste[noe3], liste[noe4],
                         liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
                 // VTK-
-                vtkHexahedron *hexa = vtkHexahedron::New();
+                vtkSmartPointer<vtkHexahedron> hexa = vtkSmartPointer<vtkHexahedron>::New();
                 vtkIdList *ids = hexa->GetPointIds();  
                 ids->SetId( 0, liste[noe1]);
                 ids->SetId( 1, liste[noe2]);
@@ -900,8 +902,8 @@ int main()
     std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
 
     // export to vtu file
-    vtkXMLUnstructuredGridWriter *writer = vtkXMLUnstructuredGridWriter::New();
-    vtkZLibDataCompressor *compressor = vtkZLibDataCompressor::New();
+    auto writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
+    auto compressor = vtkSmartPointer<vtkZLibDataCompressor>::New();
     writer->SetCompressor(compressor);
     writer->SetDataModeToBinary();
     writer->SetInputData(ugrid);
@@ -911,16 +913,16 @@ int main()
 
     // display
 
-    vtkDataSetMapper *meshMapper = vtkDataSetMapper::New(); 
+    auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New(); 
     meshMapper->SetInputData(ugrid);
-    vtkActor *meshActor = vtkActor::New();
+    vtkSmartPointer<vtkActor> meshActor = vtkSmartPointer<vtkActor>::New();
     meshActor->SetMapper(meshMapper);
 
-    vtkDataSetMapper *gridMapper = vtkDataSetMapper::New();  
+    auto gridMapper = vtkSmartPointer<vtkDataSetMapper>::New();  
     gridMapper->SetResolveCoincidentTopologyToPolygonOffset();
     gridMapper->ScalarVisibilityOff();
     gridMapper->SetInputData(ugrid);
-    vtkActor *gridActor = vtkActor::New();
+    auto gridActor = vtkSmartPointer<vtkActor>::New();
     gridActor->GetProperty()->SetRepresentationToWireframe();
     gridActor->GetProperty()->SetColor(0.,0.,0.);
     gridActor->GetProperty()->SetAmbient(1.0);
@@ -928,20 +930,20 @@ int main()
     gridActor->GetProperty()->SetSpecular(0.0);
     gridActor->SetMapper(gridMapper);  
 
-    vtkRenderer *ren = vtkRenderer::New();
+    auto ren = vtkSmartPointer<vtkRenderer>::New();
     ren->SetBackground(48./255,10./255,36./255); // unity terminal
     ren->AddActor(meshActor);
     ren->AddActor(gridActor);
     ren->ResetCamera();
 
-    vtkRenderWindow *renWin = vtkRenderWindow::New();
+    auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
     renWin->SetSize(640, 480);    
     renWin->AddRenderer(ren);
 
-    vtkSmartPointer<vtkRenderWindowInteractor> iren = vtkRenderWindowInteractor::New();
+    auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
     iren->SetRenderWindow(renWin);
 
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkInteractorStyleTrackballCamera::New();
+    auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
     iren->SetInteractorStyle(style);
     iren->Initialize();
     //renWin->Render();
