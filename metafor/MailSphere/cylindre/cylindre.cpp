@@ -231,21 +231,16 @@ int main()
 
     // fin des allocations
 
-    int i, j,
-        nz, couche, ne, no, nint,
-        n[4], n0[4], don[10][2], level1, level2, noe, noe1, noe2, noe3, noe4, noe5, noe6, noe7, noe8,
-        out, n1, n2, nbnoe, l, c, maille, ne2, cote;
-    double theta;
 
     // remplissage de tab
 
-    no = -1;
+    int no = -1;
 
-    for (nz = 0; nz < nbz + 1; nz++)
+    for (int nz = 0; nz < nbz + 1; nz++)
     {
-        for (couche = 0; couche < nbc + 1; couche++)
+        for (int couche = 0; couche < nbc + 1; couche++)
         {
-            for (ne = 0; ne < nbe2; ne++)
+            for (int ne = 0; ne < nbe2; ne++)
             {
                 no = no + 1;
                 tab[nz][couche][ne] = no;
@@ -253,15 +248,18 @@ int main()
         }
     }
 
+
+
+
     // remplissage de cube
 
     if (cyl_creux == 0)
     {
-        for (nz = 0; nz < nbz + 1; nz++)
+        for (int nz = 0; nz < nbz + 1; nz++)
         {
-            for (c = 0; c < nbe / 4 + 1; c++)
+            for (int c = 0; c < nbe / 4 + 1; c++)
             {
-                for (l = 0; l < nbe / 4 + 1; l++)
+                for (int l = 0; l < nbe / 4 + 1; l++)
                 {
                     if (l == 0)
                     {
@@ -289,20 +287,26 @@ int main()
         }
     }
 
-    // Calcul des coordonn�es
+    int i, j,
+        nint,
+        n[4], n0[4], don[10][2], level1, level2, noe, noe1, noe2, noe3, noe4, noe5, noe6, noe7, noe8,
+        out, n1, n2, nbnoe, maille, ne2, cote;
+    double theta;
+
+    // Calcul des coordonnees
 
     // le point 1
 
     noe1 = tab[0][0][0];
     double ray = rext;
-    for (i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         coord[noe1][i] = vec1[i] * ray;
     }
 
     // la couche exterieure du level 0
 
-    for (ne = 1; ne < nbe2; ne++)
+    for (int ne = 1; ne < nbe2; ne++)
     {
         nint = tab[0][0][ne];
         theta = theta0 * (ne * 1.) / (nbe * 1.);
@@ -315,12 +319,12 @@ int main()
 
     if (cyl_creux == 1)
     {
-        for (ne = 0; ne < nbe2; ne++)
+        for (int ne = 0; ne < nbe2; ne++)
         {
             noe2 = tab[0][nbc][ne];
             noe1 = tab[0][0][ne];
             double ray = rint / rext;
-            for (i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 coord[noe2][i] = coord[noe1][i] * ray;
             }
@@ -328,17 +332,17 @@ int main()
     }
     else if (cyl_creux == 0)
     {
-        for (cote = 0; cote < 4; cote++)
+        for (int cote = 0; cote < 4; cote++)
         {
             n0[cote] = tab[0][0][cote * nbe / 4];
             n[cote] = tab[0][nbc][cote * nbe / 4];
             double ray = rint / rext;
-            for (i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 coord[n[cote]][i] = coord[n0[cote]][i] * ray;
             }
         }
-        for (cote = 0; cote < 4; cote++)
+        for (int cote = 0; cote < 4; cote++)
         {
             noe1 = n[cote];
             if (cote == 3)
@@ -349,10 +353,10 @@ int main()
             {
                 noe2 = n[cote + 1];
             }
-            for (c = 1; c < nbe / 4; c++)
+            for (int c = 1; c < nbe / 4; c++)
             {
                 nint = tab[0][nbc][cote * nbe / 4 + c];
-                for (i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     coord[nint][i] = coord[noe1][i] + (c * 1.) / ((nbe / 4) * 1.) * (coord[noe2][i] - coord[noe1][i]);
                 }
@@ -364,14 +368,14 @@ int main()
 
     if (nbc > 1)
     {
-        for (couche = 1; couche < nbc; couche++)
+        for (int couche = 1; couche < nbc; couche++)
         {
-            for (ne = 0; ne < nbe2; ne++)
+            for (int ne = 0; ne < nbe2; ne++)
             {
                 noe = tab[0][couche][ne];
                 noe1 = tab[0][0][ne];
                 noe2 = tab[0][nbc][ne];
-                for (i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     coord[noe][i] = coord[noe1][i] + (couche * 1.) / (nbc * 1.) * (coord[noe2][i] - coord[noe1][i]);
                 }
@@ -383,14 +387,14 @@ int main()
 
     if (cyl_creux == 0)
     {
-        for (l = 1; l < (nbe / 4); l++)
+        for (int l = 1; l < (nbe / 4); l++)
         {
-            for (c = 1; c < (nbe / 4); c++)
+            for (int c = 1; c < (nbe / 4); c++)
             {
                 noe = cube[0][l][c];
                 noe1 = cube[0][0][c];
                 noe2 = cube[0][(nbe / 4)][c];
-                for (i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     coord[noe][i] = coord[noe1][i] + (l * 1.) / ((nbe / 4) * 1.) * (coord[noe2][i] - coord[noe1][i]);
                 }
@@ -400,12 +404,12 @@ int main()
 
     // mise � jour des positions avec le centre centre[i]
 
-    for (couche = 0; couche < nbc + 1; couche++)
+    for (int couche = 0; couche < nbc + 1; couche++)
     {
-        for (ne = 0; ne < nbe2; ne++)
+        for (int ne = 0; ne < nbe2; ne++)
         {
             nint = tab[0][couche][ne];
-            for (i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 coord[nint][i] = coord[nint][i] + centre[i];
             }
@@ -414,12 +418,12 @@ int main()
 
     if (cyl_creux == 0)
     {
-        for (l = 1; l < (nbe / 4); l++)
+        for (int l = 1; l < (nbe / 4); l++)
         {
-            for (c = 1; c < (nbe / 4); c++)
+            for (int c = 1; c < (nbe / 4); c++)
             {
                 nint = cube[0][l][c];
-                for (i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     coord[nint][i] = coord[nint][i] + centre[i];
                 }
@@ -429,15 +433,15 @@ int main()
 
     // extrusion de la face de base
 
-    for (nz = 1; nz < nbz + 1; nz++)
+    for (int nz = 1; nz < nbz + 1; nz++)
     {
-        for (couche = 0; couche < nbc + 1; couche++)
+        for (int couche = 0; couche < nbc + 1; couche++)
         {
-            for (ne = 0; ne < nbe2; ne++)
+            for (int ne = 0; ne < nbe2; ne++)
             {
                 noe1 = tab[0][couche][ne];
                 noe2 = tab[nz][couche][ne];
-                for (i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     coord[noe2][i] = coord[noe1][i] + (nz * 1.) / (nbz * 1.) * longext * ext[i];
                 }
@@ -445,13 +449,13 @@ int main()
         }
         if (cyl_creux == 0)
         {
-            for (l = 1; l < (nbe / 4); l++)
+            for (int l = 1; l < (nbe / 4); l++)
             {
-                for (c = 1; c < (nbe / 4); c++)
+                for (int c = 1; c < (nbe / 4); c++)
                 {
                     noe1 = cube[0][l][c];
                     noe2 = cube[nz][l][c];
-                    for (i = 0; i < 3; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         coord[noe2][i] = coord[noe1][i] + (nz * 1.) / (nbz * 1.) * longext * ext[i];
                     }
@@ -531,9 +535,9 @@ int main()
     fprintf(fp_out, "\n.NOEUD\n");
     noe = noe_ini;
 
-    for (ne = 0; ne < nbe2; ne++)
+    for (int ne = 0; ne < nbe2; ne++)
     {
-        for (nz = 0; nz < nbz + 1; nz++)
+        for (int nz = 0; nz < nbz + 1; nz++)
         {
             nint = tab[nz][0][ne];
             if (liste[nint] == 0)
@@ -556,9 +560,9 @@ int main()
             }
         }
     }
-    for (ne = 0; ne < nbe2; ne++)
+    for (int ne = 0; ne < nbe2; ne++)
     {
-        for (nz = 0; nz < nbz + 1; nz++)
+        for (int nz = 0; nz < nbz + 1; nz++)
         {
             nint = tab[nz][nbc][ne];
             if (liste[nint] == 0)
@@ -583,11 +587,11 @@ int main()
     }
     if (nbc > 1)
     {
-        for (couche = 1; couche < nbc; couche++)
+        for (int couche = 1; couche < nbc; couche++)
         {
-            for (ne = 0; ne < nbe2; ne++)
+            for (int ne = 0; ne < nbe2; ne++)
             {
-                for (nz = 0; nz < nbz + 1; nz++)
+                for (int nz = 0; nz < nbz + 1; nz++)
                 {
                     nint = tab[nz][couche][ne];
                     if (liste[nint] == 0)
@@ -615,11 +619,11 @@ int main()
 
     if (cyl_creux == 0)
     {
-        for (l = 1; l < (nbe / 4); l++)
+        for (int l = 1; l < (nbe / 4); l++)
         {
-            for (c = 1; c < (nbe / 4); c++)
+            for (int c = 1; c < (nbe / 4); c++)
             {
-                for (nz = 0; nz < nbz + 1; nz++)
+                for (int nz = 0; nz < nbz + 1; nz++)
                 {
                     nint = cube[nz][l][c];
                     if (liste[nint] == 0)
@@ -650,11 +654,11 @@ int main()
     fprintf(fp_out, "\n.MAI\n");
     maille = maille_ini;
 
-    for (nz = 0; nz < nbz; nz++)
+    for (int nz = 0; nz < nbz; nz++)
     {
-        for (couche = 0; couche < nbc; couche++)
+        for (int couche = 0; couche < nbc; couche++)
         {
-            for (ne = 0; ne < nbe; ne++)
+            for (int ne = 0; ne < nbe; ne++)
             {
                 maille = maille + 1;
                 ne2 = ne + 1;
@@ -690,11 +694,11 @@ int main()
     }
     if (cyl_creux == 0)
     {
-        for (nz = 0; nz < nbz; nz++)
+        for (int nz = 0; nz < nbz; nz++)
         {
-            for (l = 0; l < (nbe / 4); l++)
+            for (int l = 0; l < (nbe / 4); l++)
             {
-                for (c = 0; c < (nbe / 4); c++)
+                for (int c = 0; c < (nbe / 4); c++)
                 {
                     maille = maille + 1;
                     noe1 = cube[nz][l][c];
@@ -724,9 +728,9 @@ int main()
     if (type1 == 0 || type1 == 2)
     {
 
-        for (i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
         {
-            for (j = 0; j < 2; j++)
+            for (int j = 0; j < 2; j++)
             {
                 don[i][j] = 0;
             }
@@ -734,7 +738,7 @@ int main()
         nbnoe = nbe2 * (nbz + 1);
         n1 = noe_ini + 1;
         n2 = n1 + nbnoe - 1;
-        i = -1;
+        int i = -1;
         out = 0;
         do
         {
@@ -773,7 +777,7 @@ int main()
                 }
             }
         } while (out == 0 && i < 10);
-        for (i = level1; i <= level2; i++)
+        for (int i = level1; i <= level2; i++)
         {
             if (don[i][0] != 0)
             {
@@ -788,9 +792,9 @@ int main()
 
     if (type1 > 0)
     {
-        couche = 0;
+        int couche = 0;
 
-        for (ne = 0; ne < nbe2; ne++)
+        for (int ne = 0; ne < nbe2; ne++)
         {
             noe1 = liste[tab[0][0][ne]];
             noe2 = liste[tab[nbz][0][ne]];
@@ -814,9 +818,9 @@ int main()
     if (type2 == 0 || type2 == 2)
     {
 
-        for (i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
         {
-            for (j = 0; j < 2; j++)
+            for (int j = 0; j < 2; j++)
             {
                 don[i][j] = 0;
             }
@@ -824,7 +828,7 @@ int main()
         nbnoe = nbe2 * (nbz + 1);
         n1 = liste[tab[0][nbc][0]];
         n2 = n1 + nbnoe - 1;
-        i = -1;
+        int i = -1;
         out = 0;
         do
         {
@@ -863,7 +867,7 @@ int main()
                 }
             }
         } while (out == 0 && i < 10);
-        for (i = level1; i <= level2; i++)
+        for (int i = level1; i <= level2; i++)
         {
             if (don[i][0] != 0)
             {
@@ -878,7 +882,7 @@ int main()
 
     if (type2 > 0)
     {
-        for (ne = 0; ne < nbe2; ne++)
+        for (int ne = 0; ne < nbe2; ne++)
         {
             noe1 = liste[tab[0][nbc][ne]];
             noe2 = liste[tab[nbz][nbc][ne]];
