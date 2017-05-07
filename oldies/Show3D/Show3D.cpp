@@ -10,28 +10,29 @@
 
 int main(int argc, char *argv[])
 {
-    if(argc!=2)
+    if (argc != 2)
     {
         std::cout << argv[0] << " by RoBo: display 3DS & VRML2 files using vtkImporter classes\n";
         std::cout << "usage:\n";
         std::cout << "\t" << argv[0] << " file.[3ds|wrl]\n\n";
         return 1;
     }
-    
+
     auto ren = vtkSmartPointer<vtkRenderer>::New();
     auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
     renWin->AddRenderer(ren);
 
     std::string filename = argv[1];
-    if (filename.find(".3ds")!=std::string::npos)
-    {   
+    if (filename.find(".3ds") != std::string::npos)
+    {
         auto importer = vtkSmartPointer<vtk3DSImporter>::New();
         importer->SetRenderWindow(renWin);
         importer->SetFileName(filename.c_str());
         importer->Read();
-    } else if (filename.find(".wrl")!=std::string::npos)
+    }
+    else if (filename.find(".wrl") != std::string::npos)
     {
-        auto importer = vtkSmartPointer<vtkVRMLImporter>::New();    
+        auto importer = vtkSmartPointer<vtkVRMLImporter>::New();
         importer->SetRenderWindow(renWin);
         importer->SetFileName(filename.c_str());
         importer->Read();
