@@ -4,254 +4,272 @@
  * Elements finis lineaires (1er degre)
  */
 
-
 #include "ehd.h"
 
 #define TOL_NR 1.0e-10
 
 int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alpha,
-              double *x, double *u, double *um, double *v, 
-              double *h_t0, double dt, 
-              double *p, double *dp, 
+              double *x, double *u, double *um, double *v,
+              double *h_t0, double dt,
+              double *p, double *dp,
               double *PhiP, double *PhiS, double *dPhiP, double *dPhiS,
               double Rq1, double Rq2, double gam_s,
               S_TDIMAT *K, int nbfix,
-              int *nnfix, int *ndfix, double *vfix, int opt, 
+              int *nnfix, int *ndfix, double *vfix, int opt,
               int loi, int scheme)
 {
-  int iop=0;
+    int iop = 0;
 
-  int ite, rester;
-  int i,j,ni,nj,n;
+    int ite, rester;
+    int i, j, ni, nj, n;
 
-  double res;
-  double flux,sign,nor,fluxd[3];
-  double Rq;
+    double res;
+    double flux, sign, nor, fluxd[3];
+    double Rq;
 
-  // locels
-    int *loc = (int*)malloc(nbnode*sizeof(int));
-    int *loc2 = (int*)malloc(nbnode*sizeof(int));
-    int *locs = (int*)malloc(nbnode*sizeof(int));
+    // locels
+    int *loc = (int *)malloc(nbnode * sizeof(int));
+    int *loc2 = (int *)malloc(nbnode * sizeof(int));
+    int *locs = (int *)malloc(nbnode * sizeof(int));
 
+    // matrices
+    double Sp[2][2], Su[2][2], dSp[2][2], dSu[2][2];
+    double C1[2][2], C2[2][2], Sv[2][2], dSv[2][2];
 
-  // matrices
-  double Sp[2][2], Su[2][2], dSp[2][2], dSu[2][2];
-  double C1[2][2], C2[2][2], Sv[2][2], dSv[2][2];
+    double *rhs = (double *)malloc(nbnode * sizeof(double));
+    double *inc = (double *)malloc(nbnode * sizeof(double));
 
-    double *rhs = (double*)malloc(nbnode*sizeof(double));
-    double *inc = (double*)malloc(nbnode*sizeof(double));
+    double Re[2];
+    int nsys;
 
-  double Re[2];
-  int nsys;
+    Rq = sqrt(Rq1 * Rq1 + Rq2 * Rq2);
 
-  Rq = sqrt( Rq1*Rq1 + Rq2*Rq2 );
+    // init h
 
-  // init h
-
-  /*
+    /*
   for(i=0;i<nbnode;i++){
     h[i]=0.0;
   }
   */
-  //memset(h,0,nbnode*sizeof(double));
-  //bzero(h,nbnode*sizeof(double));
+    //memset(h,0,nbnode*sizeof(double));
+    //bzero(h,nbnode*sizeof(double));
 
-  // CALCUL DES LOCELS
+    // CALCUL DES LOCELS
 
-  // init
+    // init
 
-  for(i=0;i<nbnode;i++) {
-    loc[i]  = i;
-    loc2[i] = 0;
-    locs[i] = 0;
-  }
-
-  //bzero(loc2, nbnode*sizeof(double));
-  //bzero(locs, nbnode*sizeof(double));
-
-
-  // supprime fix et code la valeur
-
-  for(i=0; i<nbfix; i++) {
-    loc2[ nnfix[i]+ndfix[i] ]=-1-i;
-  }
-
-  // calcule le locs et le loc2 
-
-  nsys=0;
-  for(i=0;i<nbnode;i++) {
-    if(loc2[i]>=0) {
-      loc2[i]=nsys;
-      locs[nsys]=i;
-      nsys++;
-    }
-  }
-
-  // Ajuste taille systeme
-
-  iop = tdi_setsize(K, nsys);
-  if(iop!=0) goto FIN;
-
-
-  // Extraction de la solution en p et dp
-  
-  for(i=0;i<nbnode;i++) {
-    if(loc2[i]>=0)
-      h[i] = h_t0[i];
-    else
-      h[i] =  vfix[-loc2[i]-1];
-  }
-
-  // NEWTON-RAPHSON 
-  // --------------
-  
-  rester = 1;
-  ite=0;
-  while(rester) { 
-
-    // init 2nd membre & residu
-    
-    for(i=0;i<nbnode;i++)
-      rhs[i]=0.0;
-    
-    //memset(rhs,0,nbnode*sizeof(double));
-    //bzero(rhs,nbnode*sizeof(double));
-    // init matrice tridiag
-    
-    tdi_fill(K,0.0);
-
-    // init vecteur inc (facultatif)
-    
-    for(i=0;i<nbnode;i++)
-      inc[i]=0.0;
-    
-    //bzero(inc,nbnode*sizeof(double));
-
-    // Mise a jour des flow factors 
-
-    for(i=0;i<nbnode;i++) {
-      iop = ehd_flow_factors(h[i], gam_s, Rq, Rq1, Rq2,
-                             &(PhiP[i]), &(PhiS[i]),
-                             &(dPhiP[i]), &(dPhiS[i]), loi);
-      if(iop!=0) goto FIN;
+    for (i = 0; i < nbnode; i++)
+    {
+        loc[i] = i;
+        loc2[i] = 0;
+        locs[i] = 0;
     }
 
-    // Construction du systeme
+    //bzero(loc2, nbnode*sizeof(double));
+    //bzero(locs, nbnode*sizeof(double));
 
-    for(n=0;n<nbelem;n++) {
+    // supprime fix et code la valeur
 
-      // calcul de Sp(elem) et Su(elem) + derivees
-      iop = ehd_mat_h(&(x[n]), 
-                      &(h[n]),&(u[n]),&(um[n]),&(v[n]),
-                      eta0, alpha, &(p[n]), &(dp[n]), 
-                      &(PhiS[n]),&(dPhiS[n]),
-                      &(PhiP[n]),&(dPhiP[n]),
-                      Su, Sp, dSu, dSp, C1, C2, Sv, dSv);
-      if(iop!=0) goto FIN;
+    for (i = 0; i < nbfix; i++)
+    {
+        loc2[nnfix[i] + ndfix[i]] = -1 - i;
+    }
 
-      // residu elementaire
+    // calcule le locs et le loc2
 
-      for(i=0;i<2;i++) {
-        Re[i] = 0.0;
-        for(j=0;j<2;j++)
-          Re[i] += Sp[i][j]*p[n+j]
-            -      Su[i][j]*u[n+j]
-            -      Sv[i][j]*v[n+j]*Rq
-            -      C2[i][j]*h[n+j];
-
-        if(scheme == EHD_EULER) {
-          for(j=0;j<2;j++)
-            Re[i] += C1[i][j]*(h[n+j]-h_t0[n+j])/dt;
+    nsys = 0;
+    for (i = 0; i < nbnode; i++)
+    {
+        if (loc2[i] >= 0)
+        {
+            loc2[i] = nsys;
+            locs[nsys] = i;
+            nsys++;
         }
-      }
-      //printf("Re : %E, %E\n",Re[0],Re[1]);
+    }
 
-      // assemblage
+    // Ajuste taille systeme
 
-      for(i=0;i<2;i++) {
+    iop = tdi_setsize(K, nsys);
+    if (iop != 0)
+        goto FIN;
 
-        if((ni=loc2[n+i])<0) continue;
+    // Extraction de la solution en p et dp
 
-        rhs[ni] += -Re[i];
+    for (i = 0; i < nbnode; i++)
+    {
+        if (loc2[i] >= 0)
+            h[i] = h_t0[i];
+        else
+            h[i] = vfix[-loc2[i] - 1];
+    }
 
-        for(j=0;j<2;j++) {
-          if((nj = loc2[n+j])<0) {
-            // que dalle
-          }
-          else {
-            tdi_ass(K,ni,nj, 
-                    dSp[i][j] -dSu[i][j] -C2[i][j] -dSv[i][j]*Rq );
-            if(scheme == EHD_EULER)
-              tdi_ass(K,ni,nj, C1[i][j]/dt );
-          }    
-            //tdi_ass(K,ni,nj,-dSu[i][j]);      
+    // NEWTON-RAPHSON
+    // --------------
+
+    rester = 1;
+    ite = 0;
+    while (rester)
+    {
+
+        // init 2nd membre & residu
+
+        for (i = 0; i < nbnode; i++)
+            rhs[i] = 0.0;
+
+        //memset(rhs,0,nbnode*sizeof(double));
+        //bzero(rhs,nbnode*sizeof(double));
+        // init matrice tridiag
+
+        tdi_fill(K, 0.0);
+
+        // init vecteur inc (facultatif)
+
+        for (i = 0; i < nbnode; i++)
+            inc[i] = 0.0;
+
+        //bzero(inc,nbnode*sizeof(double));
+
+        // Mise a jour des flow factors
+
+        for (i = 0; i < nbnode; i++)
+        {
+            iop = ehd_flow_factors(h[i], gam_s, Rq, Rq1, Rq2,
+                                   &(PhiP[i]), &(PhiS[i]),
+                                   &(dPhiP[i]), &(dPhiS[i]), loi);
+            if (iop != 0)
+                goto FIN;
         }
 
-      } // endfor(i)
+        // Construction du systeme
 
-    } // endfor(n)
+        for (n = 0; n < nbelem; n++)
+        {
 
+            // calcul de Sp(elem) et Su(elem) + derivees
+            iop = ehd_mat_h(&(x[n]),
+                            &(h[n]), &(u[n]), &(um[n]), &(v[n]),
+                            eta0, alpha, &(p[n]), &(dp[n]),
+                            &(PhiS[n]), &(dPhiS[n]),
+                            &(PhiP[n]), &(dPhiP[n]),
+                            Su, Sp, dSu, dSp, C1, C2, Sv, dSv);
+            if (iop != 0)
+                goto FIN;
 
-    // Gestion des CL en 0 et (nbnode-1)
+            // residu elementaire
 
-    n = 0;
-    nor  = x[n+1]-x[n];
-    sign = 1.0;
-    if(nor>0.0) sign=1.0;
+            for (i = 0; i < 2; i++)
+            {
+                Re[i] = 0.0;
+                for (j = 0; j < 2; j++)
+                    Re[i] += Sp[i][j] * p[n + j] - Su[i][j] * u[n + j] - Sv[i][j] * v[n + j] * Rq - C2[i][j] * h[n + j];
 
-    if(loc2[n]>=0) { // si h libre
-      ni = loc2[n];
-      ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
-               PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
-      rhs[ni] += sign*flux; // rhs = - residu
-      tdi_ass(K,ni,ni,-sign*fluxd[2]);
-      //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
-    }
+                if (scheme == EHD_EULER)
+                {
+                    for (j = 0; j < 2; j++)
+                        Re[i] += C1[i][j] * (h[n + j] - h_t0[n + j]) / dt;
+                }
+            }
+            //printf("Re : %E, %E\n",Re[0],Re[1]);
 
-    n = nbnode-1;
-    nor  = x[n]-x[n-1];
-    sign = 1.0;
-    if(nor>0.0) sign=1.0;
-    
-    if(loc2[2*n]>=0) { // si h libre
-      ni = loc2[n];
-      ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
-               PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux,fluxd);
-      rhs[ni] += -sign*flux; // rhs = - residu :  SIGN (-) OK cov pure
-      tdi_ass(K,ni,ni,sign*fluxd[2]);
-      //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
-    }
+            // assemblage
 
-    // Suite du calcul du residu
-    // Norme au carre du residu (sans les fixations) - rendre adim + tard
+            for (i = 0; i < 2; i++)
+            {
 
-    res = 0.0;
-    for(i=0;i<nbnode;i++)
-      if(loc2[i]>=0) {
-        res += rhs[loc2[i]]*rhs[loc2[i]];
-      }
-    res = sqrt(res);
+                if ((ni = loc2[n + i]) < 0)
+                    continue;
 
-    // Test residu
+                rhs[ni] += -Re[i];
 
-    printf("\tite %4d:\tres = %+E\n",ite,res);
+                for (j = 0; j < 2; j++)
+                {
+                    if ((nj = loc2[n + j]) < 0)
+                    {
+                        // que dalle
+                    }
+                    else
+                    {
+                        tdi_ass(K, ni, nj,
+                                dSp[i][j] - dSu[i][j] - C2[i][j] - dSv[i][j] * Rq);
+                        if (scheme == EHD_EULER)
+                            tdi_ass(K, ni, nj, C1[i][j] / dt);
+                    }
+                    //tdi_ass(K,ni,nj,-dSu[i][j]);
+                }
+
+            } // endfor(i)
+
+        } // endfor(n)
+
+        // Gestion des CL en 0 et (nbnode-1)
+
+        n = 0;
+        nor = x[n + 1] - x[n];
+        sign = 1.0;
+        if (nor > 0.0)
+            sign = 1.0;
+
+        if (loc2[n] >= 0)
+        { // si h libre
+            ni = loc2[n];
+            ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
+                     PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
+            rhs[ni] += sign * flux; // rhs = - residu
+            tdi_ass(K, ni, ni, -sign * fluxd[2]);
+            //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
+        }
+
+        n = nbnode - 1;
+        nor = x[n] - x[n - 1];
+        sign = 1.0;
+        if (nor > 0.0)
+            sign = 1.0;
+
+        if (loc2[2 * n] >= 0)
+        { // si h libre
+            ni = loc2[n];
+            ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
+                     PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
+            rhs[ni] += -sign * flux; // rhs = - residu :  SIGN (-) OK cov pure
+            tdi_ass(K, ni, ni, sign * fluxd[2]);
+            //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
+        }
+
+        // Suite du calcul du residu
+        // Norme au carre du residu (sans les fixations) - rendre adim + tard
+
+        res = 0.0;
+        for (i = 0; i < nbnode; i++)
+            if (loc2[i] >= 0)
+            {
+                res += rhs[loc2[i]] * rhs[loc2[i]];
+            }
+        res = sqrt(res);
+
+        // Test residu
+
+        printf("\tite %4d:\tres = %+E\n", ite, res);
 
 #if 0   
     mlab_tdi("tri.m","",K,TDI_A,MLAB_NEW, MLAB_VERBOSE);
     mlab_vec("tri.m","rhs",rhs,nsys,MLAB_OLD, MLAB_VERBOSE);
 #endif
 
-    if(res<TOL_NR) {
-      printf("\t*** converge !\n");
-      break;
-    }
+        if (res < TOL_NR)
+        {
+            printf("\t*** converge !\n");
+            break;
+        }
 
+        // Solution systeme
 
-    // Solution systeme
-    
-    iop = tdi_solve(K, rhs, inc, SKY_DO_LU | SKY_DO_SUBST); 
-    if(iop!=0) 
-      { tdi_print_err(stdout, iop); goto FIN; }
+        iop = tdi_solve(K, rhs, inc, SKY_DO_LU | SKY_DO_SUBST);
+        if (iop != 0)
+        {
+            tdi_print_err(stdout, iop);
+            goto FIN;
+        }
 
 #if 0
     mlab_tdi("tri.m","",K,TDI_LU,MLAB_OLD, MLAB_VERBOSE);
@@ -259,28 +277,30 @@ int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alpha,
     //exit(0);
 #endif
 
-    // Extraction de la solution en h
-    
-    for(i=0;i<nbnode;i++) {
-      if(loc2[i]>=0)
-        h[i] += inc[loc2[i]];
-      else
-        h[i] =  vfix[-loc2[i]-1];
-      //printf("p[%d]=%E \n",i,p[i]);
+        // Extraction de la solution en h
+
+        for (i = 0; i < nbnode; i++)
+        {
+            if (loc2[i] >= 0)
+                h[i] += inc[loc2[i]];
+            else
+                h[i] = vfix[-loc2[i] - 1];
+            //printf("p[%d]=%E \n",i,p[i]);
+        }
+
+        ite++;
+        if (ite == 100)
+        {
+            printf("\t*** diverge !\n");
+            break;
+        }
     }
 
-    ite++;
-    if(ite==100) {
-      printf("\t*** diverge !\n");
-      break;
-    }
-  }
+    // FIN N.-R.
 
-  // FIN N.-R.
+    // verif de la solution (le flux ou sa derivee doit etre une constante)
 
-  // verif de la solution (le flux ou sa derivee doit etre une constante)
-
-  /*
+    /*
   for(n=0;n<nbnode;n++) {
     ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
              PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
@@ -289,23 +309,21 @@ int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alpha,
   }
   */
 
+    // Output Matlab
 
-
-
-
-  // Output Matlab
-
-  if(opt==EHD_IO) {
-    iop = mlab_vec("pipo.m", "u", u, nbnode, MLAB_NEW, MLAB_SILENT);
-    iop = mlab_vec("pipo.m", "h", h, nbnode, MLAB_OLD, MLAB_SILENT);
-    iop = mlab_vec("pipo.m", "x", x, nbnode, MLAB_OLD, MLAB_SILENT);
-    iop = mlab_vec("pipo.m", "inc", inc, nsys, MLAB_OLD, MLAB_SILENT);
-    iop = mlab_vec("pipo.m", "rhs", rhs, nsys, MLAB_OLD, MLAB_SILENT);
-    iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_OLD, MLAB_SILENT);
-    iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_SILENT);
-    //iop = mlab_tdi("pipo.m","",K,TDI_LU,MLAB_OLD, MLAB_SILENT);
-    if(iop!=0) goto FIN;
-  }
+    if (opt == EHD_IO)
+    {
+        iop = mlab_vec("pipo.m", "u", u, nbnode, MLAB_NEW, MLAB_SILENT);
+        iop = mlab_vec("pipo.m", "h", h, nbnode, MLAB_OLD, MLAB_SILENT);
+        iop = mlab_vec("pipo.m", "x", x, nbnode, MLAB_OLD, MLAB_SILENT);
+        iop = mlab_vec("pipo.m", "inc", inc, nsys, MLAB_OLD, MLAB_SILENT);
+        iop = mlab_vec("pipo.m", "rhs", rhs, nsys, MLAB_OLD, MLAB_SILENT);
+        iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_OLD, MLAB_SILENT);
+        iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_SILENT);
+        //iop = mlab_tdi("pipo.m","",K,TDI_LU,MLAB_OLD, MLAB_SILENT);
+        if (iop != 0)
+            goto FIN;
+    }
 
     free(loc);
     free(loc2);
@@ -314,12 +332,11 @@ int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alpha,
     free(rhs);
     free(inc);
 
-  /****/
+/****/
 
- FIN:
-  if(iop>900)
-    printf("\n\t-->"__FILE__"\n");
-  return iop;
-
-
+FIN:
+    if (iop > 900)
+        printf("\n\t-->"__FILE__
+               "\n");
+    return iop;
 }

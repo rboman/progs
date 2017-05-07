@@ -8,4 +8,4 @@ Includes also:
 
 ## Compilation
 
-Double click on `build_and_run.py` (requires Visual Studio 2012, cmake and python 2.x) and edit this file to make it work on your own environment.
+Double click on `build_and_run.py` (requires Visual Studio 2015, cmake and python 2.x) and edit this file to make it work on your own environment.

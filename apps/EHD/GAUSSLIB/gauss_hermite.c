@@ -15,66 +15,75 @@
 
 int gauss_hermite_get_psi(int ng, double ****psi, double *xg)
 {
-  int iop=0;
-  int i,j,l,m;
-  int ng1;
-  double F[EL_HERMITE_NODE][4];
-  double *c;
-  
-  ng1 = ng-1;
+    int iop = 0;
+    int i, j, l, m;
+    int ng1;
+    double F[EL_HERMITE_NODE][4];
+    double *c;
 
-  if(ng>GAUSS_MAX_NG) goto ERR2;
+    ng1 = ng - 1;
 
-  // Calcul si pas encore fait
+    if (ng > GAUSS_MAX_NG)
+        goto ERR2;
 
-  if(hermite_psi[ng1]==NULL) {
+    // Calcul si pas encore fait
 
-    // allocation
+    if (hermite_psi[ng1] == NULL)
+    {
 
-    hermite_psi[ng1] = (double***)calloc(1+EL_HERMITE_DIM, sizeof(double**));
-    if(hermite_psi[ng1]==NULL) goto ERR1;
+        // allocation
 
-    for(i=0;i<1+EL_HERMITE_DIM;i++) {
-      hermite_psi[ng1][i] = (double**)calloc(EL_HERMITE_NODE, sizeof(double*));
-      if(hermite_psi[ng1][i]==NULL) goto ERR1;
-      for(j=0;j<EL_HERMITE_NODE;j++) {
-        hermite_psi[ng1][i][j] = (double*)calloc(ng, sizeof(double));
-        if(hermite_psi[ng1][i][j]==NULL) goto ERR1;
-      }
-    }
+        hermite_psi[ng1] = (double ***)calloc(1 + EL_HERMITE_DIM, sizeof(double **));
+        if (hermite_psi[ng1] == NULL)
+            goto ERR1;
 
-    // remplissage
+        for (i = 0; i < 1 + EL_HERMITE_DIM; i++)
+        {
+            hermite_psi[ng1][i] = (double **)calloc(EL_HERMITE_NODE, sizeof(double *));
+            if (hermite_psi[ng1][i] == NULL)
+                goto ERR1;
+            for (j = 0; j < EL_HERMITE_NODE; j++)
+            {
+                hermite_psi[ng1][i][j] = (double *)calloc(ng, sizeof(double));
+                if (hermite_psi[ng1][i][j] == NULL)
+                    goto ERR1;
+            }
+        }
 
-    for(i=0;i<ng;i++) {
+        // remplissage
 
-      c = &(xg[EL_HERMITE_DIM*i]);
-      el_hermite_ff(F,c);
+        for (i = 0; i < ng; i++)
+        {
 
-      for(l=0;l<1+EL_HERMITE_DIM;l++)
-        for(m=0;m<EL_HERMITE_NODE;m++)
-          hermite_psi[ng1][l][m][i] = F[m][l];
-    }
-  } // endif
-  
-  // Retourne le pointeur
+            c = &(xg[EL_HERMITE_DIM * i]);
+            el_hermite_ff(F, c);
 
-  *psi = hermite_psi[ng1];
+            for (l = 0; l < 1 + EL_HERMITE_DIM; l++)
+                for (m = 0; m < EL_HERMITE_NODE; m++)
+                    hermite_psi[ng1][l][m][i] = F[m][l];
+        }
+    } // endif
 
-  /***/
+    // Retourne le pointeur
 
- FIN:
-  if(iop>900)
-    printf("\n\t-->"__FILE__"\n");
-  return iop;
+    *psi = hermite_psi[ng1];
 
- ERR1:
-  printf("\nErreur: pas assez de memoire");
-  iop = 990;
-  goto FIN;
- ERR2:
-  printf("\nErreur: le nbre de points de Gauss demande est trop grand !");
-  iop = 990;
-  goto FIN;
+/***/
+
+FIN:
+    if (iop > 900)
+        printf("\n\t-->"__FILE__
+               "\n");
+    return iop;
+
+ERR1:
+    printf("\nErreur: pas assez de memoire");
+    iop = 990;
+    goto FIN;
+ERR2:
+    printf("\nErreur: le nbre de points de Gauss demande est trop grand !");
+    iop = 990;
+    goto FIN;
 }
 
 /* ---------------------------------------------------------------------------------- */

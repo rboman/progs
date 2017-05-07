@@ -7,147 +7,148 @@
 
 #define VERBOSE 0
 
-int ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *u, double *um, 
-               double *p, double *dp, double Sp[2][2], double Se[2][2], 
+int ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *u, double *um,
+               double *p, double *dp, double Sp[2][2], double Se[2][2],
                double Fu[2], double C1[2][2], double Fum[2])
 {
 
-  int iop=0;
+    int iop = 0;
 
-  int i,j;
-  int n,ng;
-  double *xg,*pg;
-  double ***psil;
-  double ***psih;
-  double dNi,dNj, Ni, Nj;
-  double h_g, eta_g, etad_g, u_g, p_g,dum_g;
-  double tmp,tmp01,tmp02;
-  double *xx[2];
-  double jaco[3][3];
-  double detj;
-  double dpdx_g;
+    int i, j;
+    int n, ng;
+    double *xg, *pg;
+    double ***psil;
+    double ***psih;
+    double dNi, dNj, Ni, Nj;
+    double h_g, eta_g, etad_g, u_g, p_g, dum_g;
+    double tmp, tmp01, tmp02;
+    double *xx[2];
+    double jaco[3][3];
+    double detj;
+    double dpdx_g;
 
-  xx[0] = &(x[0]);
-  xx[1] = &(x[1]);
+    xx[0] = &(x[0]);
+    xx[1] = &(x[1]);
 
+    ng = 3;
 
-  ng=3;
+    // recupere les pos & poids de Gauss (->xg, pg)
 
-  // recupere les pos & poids de Gauss (->xg, pg)
+    iop = gauss_line_get_xgpg(ng, &xg, &pg);
+    if (iop != 0)
+        goto FIN;
 
-  iop = gauss_line_get_xgpg(ng, &xg, &pg);
-  if(iop!=0) goto FIN;
+    // recupere les valeurs des fct de forme lineaires & derivees (->psil)
 
-  // recupere les valeurs des fct de forme lineaires & derivees (->psil)
+    iop = gauss_line_get_psi(ng, &psil, xg);
+    if (iop != 0)
+        goto FIN;
 
-  iop = gauss_line_get_psi(ng, &psil, xg);
-  if(iop!=0) goto FIN;
+    // recupere les valeurs des fct de forme cubiques & derivees (->psih)
 
-  // recupere les valeurs des fct de forme cubiques & derivees (->psih)
+    iop = gauss_hermite_get_psi(ng, &psih, xg);
+    if (iop != 0)
+        goto FIN;
 
-  iop = gauss_hermite_get_psi(ng, &psih, xg);
-  if(iop!=0) goto FIN;
+    // initialisation
 
-  // initialisation
-
-  for(i=0; i<2; i++) {
-    Fu[i]  = 0.0;
-    Fum[i] = 0.0;
-    for(j=0; j<2; j++) {
-      Sp[i][j] = 0.0;
-      C1[i][j] = 0.0;
-      Se[i][j] = 0.0;
+    for (i = 0; i < 2; i++)
+    {
+        Fu[i] = 0.0;
+        Fum[i] = 0.0;
+        for (j = 0; j < 2; j++)
+        {
+            Sp[i][j] = 0.0;
+            C1[i][j] = 0.0;
+            Se[i][j] = 0.0;
+        }
     }
-  }
 
-  // BOUCLE D'INTEGRATION DE GAUSS
+    // BOUCLE D'INTEGRATION DE GAUSS
 
-  for(n=0; n<ng; n++) {
+    for (n = 0; n < ng; n++)
+    {
 
-    // valeur de h, eta, u au pt de gauss -> h_g, u_g
-    gauss_line_getf(n,psil,h,&h_g);
-    gauss_line_getf(n,psil,u,&u_g);
+        // valeur de h, eta, u au pt de gauss -> h_g, u_g
+        gauss_line_getf(n, psil, h, &h_g);
+        gauss_line_getf(n, psil, u, &u_g);
 
-    // jacobien de l'elem ( ! tjs >0 par "libgauss")
-      
-    gauss_line_jaco(xx, jaco, n, xg, psil, 1);
-    el_line_detj(jaco, 1, &detj);
+        // jacobien de l'elem ( ! tjs >0 par "libgauss")
 
-    // valeur dx/dx au pt de gauss
+        gauss_line_jaco(xx, jaco, n, xg, psil, 1);
+        el_line_detj(jaco, 1, &detj);
 
-    p_g = psih[0][0][n] * p[0]
-      +   psih[0][1][n] * dp[0] * detj
-      +   psih[0][2][n] * p[1]
-      +   psih[0][3][n] * dp[1] * detj;
-    dpdx_g = psih[1][0][n] * p[0] /detj
-      +      psih[1][1][n] * dp[0]
-      +      psih[1][2][n] * p[1] /detj
-      +      psih[1][3][n] * dp[1];
+        // valeur dx/dx au pt de gauss
 
-    dum_g = (psil[1][0][n] *um[0] + psil[1][1][n] *um[1])/detj;
+        p_g = psih[0][0][n] * p[0] + psih[0][1][n] * dp[0] * detj + psih[0][2][n] * p[1] + psih[0][3][n] * dp[1] * detj;
+        dpdx_g = psih[1][0][n] * p[0] / detj + psih[1][1][n] * dp[0] + psih[1][2][n] * p[1] / detj + psih[1][3][n] * dp[1];
 
-    // viscosite eta=f(p)
+        dum_g = (psil[1][0][n] * um[0] + psil[1][1][n] * um[1]) / detj;
 
-    iop = ehd_visco(eta0, alpha, p_g, &eta_g, &etad_g);  
-    if(iop!=0) goto FIN;
+        // viscosite eta=f(p)
 
-    //printf("dpdx_g (%d)= %E (%E,%E,%E,%E)\n",n,dpdx_g,p[0],dp[0],p[1],dp[1]);
-    // valeurs temporaires
+        iop = ehd_visco(eta0, alpha, p_g, &eta_g, &etad_g);
+        if (iop != 0)
+            goto FIN;
 
-    tmp   = pg[n]*detj;
-    tmp01 = h_g*h_g/(4.0*eta_g);
-    tmp02 = tmp01*h_g/3.0;
+        //printf("dpdx_g (%d)= %E (%E,%E,%E,%E)\n",n,dpdx_g,p[0],dp[0],p[1],dp[1]);
+        // valeurs temporaires
 
-    // BOUCLE SUR LES COMPOSANTES DE LA MATRICE ELEMENTAIRE
+        tmp = pg[n] * detj;
+        tmp01 = h_g * h_g / (4.0 * eta_g);
+        tmp02 = tmp01 * h_g / 3.0;
 
-    for(i=0; i<2; i++) {
+        // BOUCLE SUR LES COMPOSANTES DE LA MATRICE ELEMENTAIRE
 
-      Ni  = psil[0][i][n];
-      dNi = psil[1][i][n] /detj;   // dNi/dx
+        for (i = 0; i < 2; i++)
+        {
 
-      Fu[i] += (u_g - tmp01*dpdx_g)  * dNi * tmp;
-      Fum[i] += dum_g * Ni * tmp;
+            Ni = psil[0][i][n];
+            dNi = psil[1][i][n] / detj; // dNi/dx
 
-      for(j=0; j<2; j++) {
-        
-        Nj  = psil[0][j][n];
-        dNj = psil[1][j][n] /detj; // dNj/dx
-        
-        Sp[i][j] += tmp02 * dNi*dNj * tmp;  
-        C1[i][j] += Ni*Nj * tmp;
-        Se[i][j] += -tmp02 * etad_g/eta_g * dpdx_g * dNi*Nj * tmp;
+            Fu[i] += (u_g - tmp01 * dpdx_g) * dNi * tmp;
+            Fum[i] += dum_g * Ni * tmp;
 
-      } // endfor(j)
+            for (j = 0; j < 2; j++)
+            {
 
-    } // endfor(i)
-    
-  } // endfor(n)
+                Nj = psil[0][j][n];
+                dNj = psil[1][j][n] / detj; // dNj/dx
 
+                Sp[i][j] += tmp02 * dNi * dNj * tmp;
+                C1[i][j] += Ni * Nj * tmp;
+                Se[i][j] += -tmp02 * etad_g / eta_g * dpdx_g * dNi * Nj * tmp;
 
+            } // endfor(j)
 
-  // ** TEST **
-  /*
+        } // endfor(i)
+
+    } // endfor(n)
+
+    // ** TEST **
+    /*
   for(i=0; i<4; i++) {
     Fu[i]/=2.0;
     for(j=0; j<4; j++)
       Sp[i][j]/=2.0;
   }
   */
-  // Infos de debug
+    // Infos de debug
 
-  if(VERBOSE) {
-    for(i=0; i<2; i++)
-      for(j=0; j<2; j++)
-        printf("Sp: %d,%d = %E\n",i,j,Sp[i][j]);
-    for(i=0; i<2; i++)
-      printf("Fu: %d = %E\n",i,Fu[i]);
-  }
+    if (VERBOSE)
+    {
+        for (i = 0; i < 2; i++)
+            for (j = 0; j < 2; j++)
+                printf("Sp: %d,%d = %E\n", i, j, Sp[i][j]);
+        for (i = 0; i < 2; i++)
+            printf("Fu: %d = %E\n", i, Fu[i]);
+    }
 
-  /***/
+/***/
 
- FIN:
-  if(iop>900)
-    printf("\n\t-->"__FILE__"\n");
-  return iop;
-
+FIN:
+    if (iop > 900)
+        printf("\n\t-->"__FILE__
+               "\n");
+    return iop;
 }
