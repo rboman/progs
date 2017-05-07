@@ -6,7 +6,11 @@
         "cmath": "cpp",
         "xcomplex": "cpp",
         "xiosbase": "cpp",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "iosfwd": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp"
     },
     "python.linting.pylintEnabled": false
 }
