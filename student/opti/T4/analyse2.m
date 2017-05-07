@@ -1,0 +1,18 @@
+clear X W Err IT
+mini
+figure(1)
+plot(X','k-')
+title('Evolution des variables réciproques')
+xlabel('quadratisation')
+figure(2)
+plot(W,'k-')
+title('Poids de la structure')
+xlabel('quadratisation')
+figure(3)
+plot(Err,'k-')
+title('Différence de poids entre 2 quadratisations')
+xlabel('quadratisation')
+figure(4)
+plot(IT,'k-')
+title('Nbre d''itérations par quadratisation')
+xlabel('quadratisation')
