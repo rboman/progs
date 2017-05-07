@@ -1,3 +1,6 @@
+# cmake -G "Visual Studio 14 Win64" ..
+# cmake --build . --config Release
+
 cmake_minimum_required(VERSION 2.8.5 FATAL_ERROR)
 if(POLICY CMP0025)
   cmake_policy(SET CMP0025 NEW) # CMake 3.0
