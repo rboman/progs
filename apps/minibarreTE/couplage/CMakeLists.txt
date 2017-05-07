@@ -1,0 +1,18 @@
+#
+# $Id: CMakeLists.txt 1083 2013-02-14 11:31:55Z boman $
+#
+
+FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
+
+ADD_LIBRARY(couplage SHARED ${SRCS})
+IF(WIN32)
+    SET_TARGET_PROPERTIES(couplage PROPERTIES DEBUG_POSTFIX "_d")
+ENDIF(WIN32)
+
+# ---
+
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/gmm
+)
+
+#TARGET_LINK_LIBRARIES(couplage 
+#)
