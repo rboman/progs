@@ -2,7 +2,11 @@
     "files.associations": {
         "list": "cpp",
         "vector": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "cmath": "cpp",
+        "xcomplex": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp"
     },
     "python.linting.pylintEnabled": false
 }
