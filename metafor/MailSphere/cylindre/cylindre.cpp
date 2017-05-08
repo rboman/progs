@@ -17,10 +17,8 @@
 
 int main()
 {
-    FILE *fp_out, *fp_out2;
-
-    fp_out = fopen("cyl_noe.dat", "w");
-    fp_out2 = fopen("cyl_mco.dat", "w");
+    FILE *fp_out = fopen("cyl_noe.dat", "w");
+    FILE *fp_out2 = fopen("cyl_mco.dat", "w");
 
     fprintf(fp_out, ".DEL.*\n");
 

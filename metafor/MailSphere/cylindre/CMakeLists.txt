@@ -11,6 +11,12 @@ endif()
 
 project (Cylindre)
 
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-std=c++11" STD11CHECK)
+IF(STD11CHECK)
+    ADD_DEFINITIONS(-std=c++11 )
+ENDIF()
+
 find_package(VTK REQUIRED)
 vtk_module_config(VTK
     vtkGUISupportQt   

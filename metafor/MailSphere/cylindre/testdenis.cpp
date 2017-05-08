@@ -9,7 +9,7 @@
 #include <stdlib.h>
 void prog(double **, int, int, int, int, double *, double);
 
-void main()
+void testdenis()
 {
 
     int nbe, nbc, noe_ini, maille_ini, mat, loi, taille, taille1, taille2, taille3, taille4, i, j, k, l,

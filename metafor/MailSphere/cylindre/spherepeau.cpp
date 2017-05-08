@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void main()
+void spherepeau()
 {
     int num, n, ntour, a, b, c, d, e, i, ii, j, k, l, n2, nelemtour, nelemext, face, taille, **maille, **posface, level, nbtotal;
 

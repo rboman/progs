@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void main()
+void sphere()
 {
     int num, n, ntour, a, b, c, d, e, i, ii, j, k, l, n2, nelemtour, nelemext, face, taille, **maille, **posface, level, nbtotal;
 
@@ -142,5 +142,3 @@ void main()
 
     fprintf(fp_out, ".COL\n pres  %15.8E \n .COL  EXECUTE\n\n", pres);
 }
-
-//--------------------------------------------------
