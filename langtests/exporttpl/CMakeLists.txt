@@ -18,14 +18,10 @@ IF(WIN32)
 ENDIF(WIN32)
 
 # -- C++11
-
-IF( (CMAKE_CXX_COMPILER_ID MATCHES "GNU") OR (CMAKE_CXX_COMPILER_ID MATCHES "Intel") )
-	ADD_DEFINITIONS(
-	    -std=gnu++0x #c++0x # =c++11 # Or -std=c++0x
-	)
-ENDIF()
-IF( (CMAKE_CXX_COMPILER_ID MATCHES "Clang") )
- ADD_DEFINITIONS(-std=c++11)
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-std=c++11" STD11CHECK)
+IF(STD11CHECK)
+    ADD_DEFINITIONS(-std=c++11 )
 ENDIF()
 
 # -- Sub directories
