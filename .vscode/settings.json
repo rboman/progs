@@ -10,7 +10,8 @@
         "iosfwd": "cpp",
         "xhash": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "complex": "cpp"
     },
     "python.linting.pylintEnabled": false
 }

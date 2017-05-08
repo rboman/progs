@@ -1,15 +1,15 @@
       PROGRAM TCGS
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C   SOLVER : CGS (d'après TEMPLATES)                 11.02.97
+C   SOLVER : CGS (d'apres TEMPLATES)                 11.02.97
 C
 C   Utilise ILU0 & ILUTP
 C
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C Compilation : nécessite CGS.OBJ, MATFUN.OBJ, LOADMAT.OBJ
-C ~~~~~~~~~~~             SPARFUN2.OBJ + précondit.
+C Compilation : necessite CGS.OBJ, MATFUN.OBJ, LOADMAT.OBJ
+C ~~~~~~~~~~~             SPARFUN2.OBJ + precondit.
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
-C     -- Déclarations ---------------------------------------
+C     -- Declarations ---------------------------------------
 C
       IMPLICIT REAL*8(A-H,O-Z)
 C
@@ -26,13 +26,13 @@ C
 C     -- Chargement de la matrice A et du vecteur b ---------
       CALL loadmat(A,IA,JA,b,ierr)
 
-C     -- Paramètres du SYMMLQ -------------------------------
+C     -- Paramï¿½tres du SYMMLQ -------------------------------
       epsilon = 1.0D-8
       it_max  = 800
       iflag   = 2
       ierr    = 0
 
-C     -- Paramètres du préconditionneur ---------------------
+C     -- Paramï¿½tres du prï¿½conditionneur ---------------------
       droptol = 0.0
       lfil    = 40
       permtol = 0.1
@@ -53,7 +53,7 @@ C
      #         epsilon,it_max,r,r2,p,p2,q,q2,v,u,
      #         IFLAG,ierr)
 C
-C     -- Permutation de la solution (si pivotage employé) --
+C     -- Permutation de la solution (si pivotage employï¿½) --
 
       IF(IFLAG.EQ.2) THEN
          DO 101 i=1,N
@@ -64,7 +64,7 @@ C     -- Permutation de la solution (si pivotage employé) --
 102      CONTINUE
       ENDIF
 
-C     -- Sauvegarde du résultat vers MATLAB ----------------
+C     -- Sauvegarde du rï¿½sultat vers MATLAB ----------------
 
       OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='UNKNOWN')
       DO 100 i = 1, N

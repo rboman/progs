@@ -16,5 +16,5 @@ xxx=A\b';
 [xxx x']
 disp('   MATLAB - GMRES ')
 disp(' ')
-disp(['résidu GMRES  : ' num2str(norm(b'-A*x'))] )
-disp(['résidu MATLAB : ' num2str(norm(b'-A*xxx))] )
+disp(['residu GMRES  : ' num2str(norm(b'-A*x'))] )
+disp(['residu MATLAB : ' num2str(norm(b'-A*xxx))] )

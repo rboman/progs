@@ -1,6 +1,6 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                         MODIFICATION DES DONNEES
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#include <conio.h>
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #include <fstream.h>
 #include <stdio.h>
@@ -14,36 +14,37 @@ extern void titre();
 
 void param(char *texte, double *par)
 {
-   char entree[20];
-   float prm=0.0;
-   printf("   %s [%f]=", texte, *par);
-   gets(entree);
-   sscanf(entree,"%f",&prm);
-   if(fabs(prm)>1E-10)
-      *par=prm;
+      char entree[20];
+      float prm = 0.0;
+      printf("   %s [%f]=", texte, *par);
+      gets(entree);
+      sscanf(entree, "%f", &prm);
+      if (fabs(prm) > 1E-10)
+            *par = prm;
 }
 
 void input_data()
 {
-   clrscr(); titre();
-   cout << "\n-Dimensions de l'avion:\n";
-   param("Densit‚",&densite);
-   param("Masse des moteurs",&Mmoteurs);
-   param("Masse du fuselage",&Mfuselage);
-   param("Module de Young",&MYoung);
-   param("c0",&c0);
-   param("c1",&c1);
-   cout << "\n-2ø partie:\n";
-   param("P‚riode T",&T);
-   param("Force F0",&F0);
-   cout << "\n-Donn‚es relatives … Matlab:\n";
-   param("Pas en x",&np);
-   param("Pas en t",&np2);
-   param("Nbre de p‚riodes",&Nperiod);
-   cout << "\n-ParamŠtres suppl‚mentaires:\n";
-   param("Envergure",&enverg);
-   param("Epaisseur de l'aile",&ep);
-   param("Nbre de modes F0",&Nmodes);
-   param("Pr‚cision sur les fr‚q.",&PREC);
-   param("Pr‚cision sur les modes",&PREC2);
+      clrscr();
+      titre();
+      cout << "\n-Dimensions de l'avion:\n";
+      param("Densitï¿½", &densite);
+      param("Masse des moteurs", &Mmoteurs);
+      param("Masse du fuselage", &Mfuselage);
+      param("Module de Young", &MYoung);
+      param("c0", &c0);
+      param("c1", &c1);
+      cout << "\n-2ï¿½ partie:\n";
+      param("Pï¿½riode T", &T);
+      param("Force F0", &F0);
+      cout << "\n-Donnï¿½es relatives ï¿½ Matlab:\n";
+      param("Pas en x", &np);
+      param("Pas en t", &np2);
+      param("Nbre de pï¿½riodes", &Nperiod);
+      cout << "\n-Paramï¿½tres supplï¿½mentaires:\n";
+      param("Envergure", &enverg);
+      param("Epaisseur de l'aile", &ep);
+      param("Nbre de modes F0", &Nmodes);
+      param("Prï¿½cision sur les frï¿½q.", &PREC);
+      param("Prï¿½cision sur les modes", &PREC2);
 }

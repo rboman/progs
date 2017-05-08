@@ -1,9 +1,9 @@
 // Class Polynome
 // @ Igor KLAPKA - LTAS
-// D‚cembre 93
+// Dï¿½cembre 93
 //
 // Comments:
-//   - Deletion des 'new double a' … mettre au point
+//   - Deletion des 'new double a' ï¿½ mettre au point
 
 #ifndef _POLYNOME_H
 #define _POLYNOME_H
@@ -12,37 +12,35 @@
 #include <math.h>
 
 class Polynome
-{    typedef unsigned short indice;
+{
+	typedef unsigned short indice;
 
-	  indice degre;
-	  double *a;
+	indice degre;
+	double *a;
 
- public:
-	Polynome (indice _taille = 0);
-	Polynome (const Polynome &);
-	~Polynome ();
+  public:
+	Polynome(indice _taille = 0);
+	Polynome(const Polynome &);
+	~Polynome();
 
-	  double & operator [] (indice);
-	  double operator () (double);
+	double &operator[](indice);
+	double operator()(double);
 
-	  indice donne_degre() {return degre;};
+	indice donne_degre() { return degre; };
 
-	Polynome operator = ( const Polynome &b );
-	Polynome operator ! ();
-	Polynome operator + (Polynome &);
-	Polynome operator - (Polynome &);
-	Polynome operator * (Polynome &);
-	friend
-	Polynome operator * (double a, Polynome &b);
-	friend
-	Polynome operator * (Polynome &b, double a);
+	Polynome operator=(const Polynome &b);
+	Polynome operator!();
+	Polynome operator+(Polynome &);
+	Polynome operator-(Polynome &);
+	Polynome operator*(Polynome &);
+	friend Polynome operator*(double a, Polynome &b);
+	friend Polynome operator*(Polynome &b, double a);
 
 	Polynome derive();
 	Polynome primitive();
-	  double integrale(double , double);
+	double integrale(double, double);
 
-	friend
-	 ostream &operator << (ostream & outp,Polynome &po);
+	friend ostream &operator<<(ostream &outp, Polynome &po);
 };
 
 /* EXEMPLE

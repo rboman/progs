@@ -1,11 +1,11 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : El‚ments aux frontiŠres               *
+ *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniŠre modif.: 30.11.96               *
+ *	      Version C++    derniï¿½re modif.: 30.11.96               *
  *                                                                   *
  *********************************************************************
- *  Fichier d'en-tˆte : ELMFR.H                                      *
+ *  Fichier d'en-tï¿½te : ELMFR.H                                      *
  *********************************************************************/
 
 #include <conio.h>
@@ -18,50 +18,49 @@
 // Desription des variables :
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   int N        = 40; // Nombre d'‚l‚ments frontiŠres sur le contour.
-   int istep    = 20; // Nombre de pas d'int‚gration sur un ‚l‚ment.
-   int density  = 15; // Densit‚ de visualisation de la solution
-		      // (nombre de mailles sur un rayon).
-   int d_old;         // Ancienne valeur de la densit‚ (utile pour
-		      // d‚truire correctement le tableau des T).
-   int range;         // Nbre de ray. sur lesquels la sol. est calcul‚e.
-   int ideg     = 1;  // Type d'int‚gration de Newton-Cotes
-		      // (1=trapŠze, 2=Simpson,...).
-   int type     = 1;  // M‚thode de calcul (1=full, 2=sym‚trique).
-   int maillag  = 1;  // 1=Dessine le maillage.
-   int probleme = 1;  // Type de problŠme (1=cercle, 2=carr‚, 3=qcq.).
-   int whitebg  = 1;  // 1=Fond blanc pour l'impression.
-   int cartesien= 0;  // 1=maillage rectangulaire (density x density)
-		      // (uniquement pour le carr‚).
-   int calcul   = 0;  // 1=calculs effectu‚s.
+int N = 40;        // Nombre d'ï¿½lï¿½ments frontiï¿½res sur le contour.
+int istep = 20;    // Nombre de pas d'intï¿½gration sur un ï¿½lï¿½ment.
+int density = 15;  // Densitï¿½ de visualisation de la solution
+                   // (nombre de mailles sur un rayon).
+int d_old;         // Ancienne valeur de la densitï¿½ (utile pour
+                   // dï¿½truire correctement le tableau des T).
+int range;         // Nbre de ray. sur lesquels la sol. est calculï¿½e.
+int ideg = 1;      // Type d'intï¿½gration de Newton-Cotes
+                   // (1=trapï¿½ze, 2=Simpson,...).
+int type = 1;      // Mï¿½thode de calcul (1=full, 2=symï¿½trique).
+int maillag = 1;   // 1=Dessine le maillage.
+int probleme = 1;  // Type de problï¿½me (1=cercle, 2=carrï¿½, 3=qcq.).
+int whitebg = 1;   // 1=Fond blanc pour l'impression.
+int cartesien = 0; // 1=maillage rectangulaire (density x density)
+                   // (uniquement pour le carrï¿½).
+int calcul = 0;    // 1=calculs effectuï¿½s.
 
-   clock_t time1=0,time2=0;  // temps de d‚but et de fin de calcul.
+clock_t time1 = 0, time2 = 0; // temps de dï¿½but et de fin de calcul.
 
-   float xo=220, yo=240;  // (x,y) de l'origine des axes absolus.
-   float zoom=200.0/1.2;  // Zoom de visualisation.
-   float *alpha;          // Vecteur temporaire [N].
-   float *xf, *yf;        // (x,y) des extr‚mit‚s des ‚l‚ments [N+1].
-   float *xel, *yel;      // (x,y) des connecteurs [N].
-   float *xint, *yint;    // (x,y) des points d'int‚gration [istep+1].
-   float *fct, *fct2;     // Valeurs des fonctions … int‚grer [istep+1].
-   float *G1, *H1;        // Vect. auxilaires pour le calcul des T [N].
-   float *u;              // Temp‚tatures sur les ‚l‚ments [N].
-   float *q;              // Flux de chaleur sur les ‚l‚ments [N].
-   float **G, **H;        // Matrices G et H [N,N].
-   float **T;             // Tableau des T calcul‚es [density,range].
-   float beta=80;         // ParamŠtre du problŠme.
-   float k=400;           // Conductivit‚ thermique.
-   float R=1.2;           // Rayon du cercle.
-   float a=1.2;           // Longueur du c“t‚ du carr‚.
-   float pi;              // 3.141592.
-   float Tmin, Tmax;      // Valeurs min et max des T calcul‚es.
+float xo = 220, yo = 240; // (x,y) de l'origine des axes absolus.
+float zoom = 200.0 / 1.2; // Zoom de visualisation.
+float *alpha;             // Vecteur temporaire [N].
+float *xf, *yf;           // (x,y) des extrï¿½mitï¿½s des ï¿½lï¿½ments [N+1].
+float *xel, *yel;         // (x,y) des connecteurs [N].
+float *xint, *yint;       // (x,y) des points d'intï¿½gration [istep+1].
+float *fct, *fct2;        // Valeurs des fonctions ï¿½ intï¿½grer [istep+1].
+float *G1, *H1;           // Vect. auxilaires pour le calcul des T [N].
+float *u;                 // Tempï¿½tatures sur les ï¿½lï¿½ments [N].
+float *q;                 // Flux de chaleur sur les ï¿½lï¿½ments [N].
+float **G, **H;           // Matrices G et H [N,N].
+float **T;                // Tableau des T calculï¿½es [density,range].
+float beta = 80;          // Paramï¿½tre du problï¿½me.
+float k = 400;            // Conductivitï¿½ thermique.
+float R = 1.2;            // Rayon du cercle.
+float a = 1.2;            // Longueur du cï¿½tï¿½ du carrï¿½.
+float pi;                 // 3.141592.
+float Tmin, Tmax;         // Valeurs min et max des T calculï¿½es.
 
-   // Coefficients de l'int‚gration de Newton-Cotes:
-   float icoeff[6][7]={{1, 1, 0, 0, 0, 0, 0},
-		       {1, 4, 1, 0, 0, 0, 0},
-		       {1, 3, 3, 1, 0, 0, 0},
-		       {7, 32, 12, 32, 7, 0, 0},
-		       {19, 75, 50, 50, 75, 19},
-		       {41, 216, 27, 272, 27, 216, 41}};
-   float idiv[6]={2, 6, 8, 90, 288, 840};
-
+// Coefficients de l'intï¿½gration de Newton-Cotes:
+float icoeff[6][7] = {{1, 1, 0, 0, 0, 0, 0},
+                      {1, 4, 1, 0, 0, 0, 0},
+                      {1, 3, 3, 1, 0, 0, 0},
+                      {7, 32, 12, 32, 7, 0, 0},
+                      {19, 75, 50, 50, 75, 19},
+                      {41, 216, 27, 272, 27, 216, 41}};
+float idiv[6] = {2, 6, 8, 90, 288, 840};

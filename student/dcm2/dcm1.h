@@ -13,10 +13,10 @@
 //----------------------------------------------------------------------------
 extern void input_data(void);
 extern void jacobi(double **a, int n, double d[], double **v, int &nrot);
-extern void C_to_Matlab_1(double*, double**, int);
+extern void C_to_Matlab_1(double *, double **, int);
 extern void C_to_Matlab_2(void);
 extern void C_to_Matlab_3(void);
-void dswap(double *,double *);
+void dswap(double *, double *);
 
 //----------------------------------------------------------------------------
 //                                Variables
@@ -27,12 +27,12 @@ Polynome h(1), m(1), I(3), Unite(0), p(0), *MP;
 Polynome M, DM, swap(0);
 Masses MSX[4];
 double **KM, *mu, *ValPro, **ModPro, **ModPro2, **COPY_K, *ValPro2;
-double *Moment, *Tranchant, **MODES, *XX, t=0.0, om;
+double *Moment, *Tranchant, **MODES, *XX, t = 0.0, om;
 
 //----------------------------------------------------------------------------
-//                                Donn‚es
+//                                Donnï¿½es
 //----------------------------------------------------------------------------
-double densite = 2700.0;            // Aluminium
+double densite = 2700.0; // Aluminium
 double enverg = 22.0;
 double Mmoteurs = 14000.0;
 double Mfuselage = 50000.0;
@@ -42,9 +42,9 @@ double c0 = 1.20;
 double c1 = 0.30;
 double T = 1.0;
 double F0 = 150000.0;
-double np = 80.0;                   // pr‚cision du trac‚ en x ds MATLAB
-double np2 = 40.0;                  //                    en t
-double Nperiod = 2.0;               // nbre de p‚riode en t (pour MATLAB)
-double Nmodes = 6.0;                // nbre de modes … calculer avec pr‚c.
+double np = 80.0;     // prï¿½cision du tracï¿½ en x ds MATLAB
+double np2 = 40.0;    //                    en t
+double Nperiod = 2.0; // nbre de pï¿½riode en t (pour MATLAB)
+double Nmodes = 6.0;  // nbre de modes ï¿½ calculer avec prï¿½c.
 double PREC = 1E-4;
 double PREC2 = 1E-2;

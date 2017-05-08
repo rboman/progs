@@ -1,11 +1,11 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : El‚ments aux frontiŠres               *
+ *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniŠre modif.: 10.12.96               *
+ *	      Version C++    derniï¿½re modif.: 10.12.96               *
  *                                                                   *
  *********************************************************************
- *  Programme : PARAM.CPP  (routines de modification de paramŠtres)  *
+ *  Programme : PARAM.CPP  (routines de modification de paramï¿½tres)  *
  *********************************************************************/
 
 #include "extern.h"
@@ -15,13 +15,14 @@
 //--------------------------------------------------------------------
 
 void param(char *texte, float *par)
-{  char entree[20];
-   float prm=0.0;
-   printf("  %s [%f] =", texte, *par);
-   gets(entree);
-   sscanf(entree,"%f",&prm);
-   if(fabs(prm)>1E-10)
-      *par=prm;
+{
+      char entree[20];
+      float prm = 0.0;
+      printf("  %s [%f] =", texte, *par);
+      gets(entree);
+      sscanf(entree, "%f", &prm);
+      if (fabs(prm) > 1E-10)
+            *par = prm;
 }
 
 //--------------------------------------------------------------------
@@ -29,48 +30,64 @@ void param(char *texte, float *par)
 //--------------------------------------------------------------------
 
 void param2(char *texte, int *par)
-{  char entree[20];
-   int prm=0.0;
-   printf("  %s [%d] =", texte, *par);
-   gets(entree);
-   sscanf(entree,"%d",&prm);
-   if(abs(prm)>0)
-      *par=prm;
+{
+      char entree[20];
+      int prm = 0.0;
+      printf("  %s [%d] =", texte, *par);
+      gets(entree);
+      sscanf(entree, "%d", &prm);
+      if (abs(prm) > 0)
+            *par = prm;
 }
 
 //--------------------------------------------------------------------
-// Routine de modification des paramŠtres
+// Routine de modification des paramï¿½tres
 //--------------------------------------------------------------------
 
 void input_data()
 {
-   void destroy_vectors(), create_vectors(), define_geometry();
-   void param(char*, float*), param2(char*, int*), titre();
-   char entree[20]; int j;
+      void destroy_vectors(), create_vectors(), define_geometry();
+      void param(char *, float *), param2(char *, int *), titre();
+      char entree[20];
+      int j;
 
-   clrscr(); titre();
-   param2("ProblŠme (1=cercle,2=carr‚,3=autre)",&probleme);
-   param("Beta",&beta);
-   param("k",&k);
-      if(probleme==1) param("Rayon",&R); else param("Cot‚",&a);
-   param2("Nbre d'‚l‚ments aux frontiŠres",&N);
-      if(probleme==2)    // Le nbre d'‚l‚m. doit ˆtre un multiple de 4.
-	 {j=N/4; N=4*j;} // si le problŠme est le carr‚.
-      if (N<2) N=20;
-   param2("Nbre de pas d'int‚gration par ‚l‚ment",&istep);
-      if (istep<2) istep=5;
-      if(probleme==1) zoom=200.0/R; else zoom=200.0/a;
-   param2("Type d'int‚gration (1=trapŠze,2=Simpson,...,6=Weddle)",&ideg);
-      if ((ideg<1)||(ideg>6)) ideg=1;
-      j=istep/ideg; istep=j*ideg;  // le nbre d'intervalles d'int‚gr.
-      if(istep==0) istep=ideg;     // doit ˆtre un mult. de 'ideg'.
-   param2("Densit‚ de visualisation", &density);
-   param2("Maillage (1=on 2=off)", &maillag);
-   param2("White Bg (1=on 2=off)", &whitebg);
+      clrscr();
+      titre();
+      param2("Problï¿½me (1=cercle,2=carrï¿½,3=autre)", &probleme);
+      param("Beta", &beta);
+      param("k", &k);
+      if (probleme == 1)
+            param("Rayon", &R);
+      else
+            param("Cotï¿½", &a);
+      param2("Nbre d'ï¿½lï¿½ments aux frontiï¿½res", &N);
+      if (probleme == 2) // Le nbre d'ï¿½lï¿½m. doit ï¿½tre un multiple de 4.
+      {
+            j = N / 4;
+            N = 4 * j;
+      } // si le problï¿½me est le carrï¿½.
+      if (N < 2)
+            N = 20;
+      param2("Nbre de pas d'intï¿½gration par ï¿½lï¿½ment", &istep);
+      if (istep < 2)
+            istep = 5;
+      if (probleme == 1)
+            zoom = 200.0 / R;
+      else
+            zoom = 200.0 / a;
+      param2("Type d'intï¿½gration (1=trapï¿½ze,2=Simpson,...,6=Weddle)", &ideg);
+      if ((ideg < 1) || (ideg > 6))
+            ideg = 1;
+      j = istep / ideg;
+      istep = j * ideg; // le nbre d'intervalles d'intï¿½gr.
+      if (istep == 0)
+            istep = ideg; // doit ï¿½tre un mult. de 'ideg'.
+      param2("Densitï¿½ de visualisation", &density);
+      param2("Maillage (1=on 2=off)", &maillag);
+      param2("White Bg (1=on 2=off)", &whitebg);
 
-
-   // Re-dimensionement des tableaux:
-   destroy_vectors();
-   create_vectors();
-   define_geometry();
+      // Re-dimensionement des tableaux:
+      destroy_vectors();
+      create_vectors();
+      define_geometry();
 }
