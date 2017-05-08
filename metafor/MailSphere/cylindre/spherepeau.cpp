@@ -1,3 +1,4 @@
+#include "cylindre.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -149,5 +150,3 @@ void spherepeau()
 
     fprintf(fp_out, ".COL\n pres  %15.8E \n .COL  EXECUTE\n\n", pres);
 }
-
-//--------------------------------------------------

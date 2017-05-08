@@ -15,7 +15,7 @@
 #include <vtkUnstructuredGrid.h>
 #include <vtkHexahedron.h>
 
-int main()
+int cylindre()
 {
     FILE *fp_out = fopen("cyl_noe.dat", "w");
     FILE *fp_out2 = fopen("cyl_mco.dat", "w");

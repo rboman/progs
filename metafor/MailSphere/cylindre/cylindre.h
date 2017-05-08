@@ -14,4 +14,15 @@ void writemco(FILE *fp_out2, int type1, int noe_ini, int nbe2, int nbz, int nbc,
 void exportvtu(vtkUnstructuredGrid *ugrid, std::string const &fname);
 void displayugrid(vtkUnstructuredGrid *ugrid);
 
+
+int cylindre();
+void spherepeau();
+void sphere();
+void sphere2();
+void testdenis();
+
+
+void prog(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);
+void prog1(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);
+
 #endif
