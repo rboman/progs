@@ -4,15 +4,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void sphere2()
+#include <vtkSmartPointer.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkReflectionFilter.h>
+#include <vtkExtractUnstructuredGrid.h>
+#include <vtkAppendFilter.h>
+#include <vtkIncrementalOctreePointLocator.h>
+
+
+vtkSmartPointer<vtkUnstructuredGrid> sphere2()
 {
 
 	int nbe, nbc, noe_ini, maille_ini, mat1, loi1, mat2, loi2, taille, taille1, taille2,
-			taille3, taille4, i, j, k, l, ****tab, *liste, **status, no, c, face, addon,
-			n[4], s, cote, noe1, noe2, noe, louc, noe0, l_ini, l_fin, c_ini, c_fin, nint,
-			maille, noe3, noe4, noe5, noe6, noe7, noe8, compteur, dao, couche, nbnoe,
-			type1, type2, n1, n2, out, don[10][2], level0, level1, level2, out2, nop,
-			sphere_creuse, ***cube, ep, ep_fin, ep_ini, nn[4], dim_status, nosph;
+		taille3, taille4, i, j, k, l, ****tab, *liste, **status, no, c, face, addon,
+		n[4], s, cote, noe1, noe2, noe, louc, noe0, l_ini, l_fin, c_ini, c_fin, nint,
+		maille, noe3, noe4, noe5, noe6, noe7, noe8, compteur, dao, couche, nbnoe,
+		type1, type2, n1, n2, out, don[10][2], level0, level1, level2, out2, nop,
+		sphere_creuse, ***cube, ep, ep_fin, ep_ini, nn[4], dim_status, nosph;
 
 	double rint, rext, centre[3], r[3], **coord, xyz[3], alpha, ray, beta;
 
@@ -25,16 +33,16 @@ void sphere2()
 	// PARAMETRES
 
 	sphere_creuse = 1; // 1 si creuse, 0 si pleine
-	rint = 12.;				 // rayon interne si creuse, demi-diagonale du cube central si pleine
-	rext = 20.;				 // rayon externe
-	centre[0] = 0.0;	 // coor x du centre
-	centre[1] = 0.0;	 // coor y du centre
-	centre[2] = 0.0;	 // coor z du centre
-	r[0] = -1.0;			 // coor x du reducteur
-	r[1] = -1.0;			 // coor y du reducteur
-	r[2] = -1.0;			 // coor z du reducteur
-	nbe = 5;					 // nombre d elements sur 1/6 d un m�ridien
-	nbc = 2;					 // nombre d elements sur l epaisseur
+	rint = 12.;		   // rayon interne si creuse, demi-diagonale du cube central si pleine
+	rext = 20.;		   // rayon externe
+	centre[0] = 0.0;   // coor x du centre
+	centre[1] = 0.0;   // coor y du centre
+	centre[2] = 0.0;   // coor z du centre
+	r[0] = -1.0;	   // coor x du reducteur
+	r[1] = -1.0;	   // coor y du reducteur
+	r[2] = -1.0;	   // coor z du reducteur
+	nbe = 5;		   // nombre d elements sur 1/6 d un m�ridien
+	nbc = 2;		   // nombre d elements sur l epaisseur
 	noe_ini = 0;
 	maille_ini = 0;
 	nosph = 1;
@@ -862,6 +870,12 @@ void sphere2()
 	//  impression du .NOE
 
 	fprintf(fp_out, "\n.NOEUD\n");
+
+	// -VTK----------------------------------------------------------------------------------------------
+	auto ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+	auto points = vtkSmartPointer<vtkPoints>::New();
+	ugrid->SetPoints(points);
+
 	noe = noe_ini;
 
 	for (couche = 0; couche < nbc + 1; couche++)
@@ -908,10 +922,13 @@ void sphere2()
 							if (noe > 99998)
 							{
 								fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-								return;
+								throw std::runtime_error("bad parameters!");
 							}
 							fprintf(fp_out, "I %8d       X %15.8E    Y %15.8E    Z %15.8E\n",
-											noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+									noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+							// VTK
+							points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+
 							liste[nint] = noe;
 						}
 					}
@@ -974,10 +991,13 @@ void sphere2()
 						if (noe > 99998)
 						{
 							fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-							return;
+							throw std::runtime_error("bad parameters!");
 						}
 						fprintf(fp_out, "I %8d       X %15.8E    Y %15.8E    Z %15.8E\n",
-										noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+								noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+						// VTK
+						points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+
 						liste[nint] = noe;
 					}
 				}
@@ -1033,8 +1053,11 @@ void sphere2()
 						noe7 = tab[couche][face][l + 1][c + 1];
 						noe8 = tab[couche][face][l + 1][c];
 						fprintf(fp_out, "I %8d     N %6d %6d %6d %6d     0 %6d %6d %6d %6d ATT %2d\n", maille,
-										liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-										liste[noe5], liste[noe6], liste[noe7], liste[noe8], face);
+								liste[noe1], liste[noe2], liste[noe3], liste[noe4],
+								liste[noe5], liste[noe6], liste[noe7], liste[noe8], face);
+
+						insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
+									  liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
 					}
 				}
 			}
@@ -1094,8 +1117,11 @@ void sphere2()
 					noe7 = cube[ep + 1][l + 1][c + 1];
 					noe8 = cube[ep + 1][l + 1][c];
 					fprintf(fp_out, "I %8d     N %6d %6d %6d %6d     0 %6d %6d %6d %6d ATT %2d\n", maille,
-									liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-									liste[noe5], liste[noe6], liste[noe7], liste[noe8], face);
+							liste[noe1], liste[noe2], liste[noe3], liste[noe4],
+							liste[noe5], liste[noe6], liste[noe7], liste[noe8], face);
+
+					insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
+								  liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
 				}
 			}
 		}
@@ -1190,7 +1216,7 @@ void sphere2()
 			if (don[i][0] != 0)
 			{
 				fprintf(fp_out, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-								don[i][0], don[i][1], mat1, loi1);
+						don[i][0], don[i][1], mat1, loi1);
 			}
 		}
 		fprintf(fp_out, "\n");
@@ -1386,7 +1412,7 @@ void sphere2()
 			if (don[i][0] != 0)
 			{
 				fprintf(fp_out, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-								don[i][0], don[i][1], mat2, loi2);
+						don[i][0], don[i][1], mat2, loi2);
 			}
 		}
 		fprintf(fp_out, "\n");
@@ -1506,5 +1532,30 @@ void sphere2()
 	//   fprintf(fp_out,"grap vc visee 2 3 1\n") ;
 	fprintf(fp_out, "grap remp 0 visee 2 3 1\n");
 	fprintf(fp_out, "VI\n");
-}
 
+
+	auto rfilterX = vtkSmartPointer<vtkReflectionFilter>::New();
+	rfilterX->SetInputData(ugrid);
+	rfilterX->CopyInputOn();
+	rfilterX->SetPlaneToXMax();
+	/*
+	auto append = vtkSmartPointer<vtkAppendFilter>::New();
+	append->MergePointsOn(); // marche pas (tolerence==0 en dur)
+	append->DebugOn();
+	append->AddInputData(ugrid);
+	append->AddInputConnection(rfilterX->GetOutputPort());
+*/
+
+
+	auto tougrid = vtkSmartPointer<vtkExtractUnstructuredGrid>::New();
+	tougrid->MergingOn();
+	auto ptInserter = vtkSmartPointer<vtkIncrementalOctreePointLocator>::New();
+    ptInserter->SetTolerance(0.001);
+	tougrid->SetLocator(ptInserter);
+
+	tougrid->SetInputConnection(rfilterX->GetOutputPort());
+	tougrid->Update();
+	vtkSmartPointer<vtkUnstructuredGrid> ugrid2 = tougrid->GetOutput();
+
+    return ugrid2;	
+}

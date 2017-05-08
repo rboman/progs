@@ -4,11 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void sphere()
-{
-    int num, n, ntour, a, b, c, d, e, i, ii, j, k, l, n2, nelemtour, nelemext, face, taille, **maille, **posface, level, nbtotal;
+#include <vtkSmartPointer.h>
+#include <vtkUnstructuredGrid.h>
 
-    double rtour, rayonini, rayonext, **alpha, **beta, alpha1, beta1, xt2[3], yt2[3], x0, x1, x2, centre[3], pi, x[3], rayon, tx, d1, d2, d3, pres, eps;
+
+vtkSmartPointer<vtkUnstructuredGrid> sphere()
+{
+    int num, n, ntour, a, b, c, d, e, i, ii, j, k, l, n2, nelemtour, nelemext,
+        face, taille, **maille, **posface, level, nbtotal;
+
+    double rtour, rayonini, rayonext, **alpha, **beta, alpha1, beta1, xt2[3], yt2[3],
+        x0, x1, x2, centre[3], pi, x[3], rayon, tx, d1, d2, d3, pres, eps;
 
     FILE *fp_out;
 
@@ -16,6 +22,11 @@ void sphere()
 
     fprintf(fp_out, ".DEL.*\n");
     fprintf(fp_out, ".NOEUD\n");
+
+    // -VTK----------------------------------------------------------------------------------------------
+    auto ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+    auto points = vtkSmartPointer<vtkPoints>::New();
+    ugrid->SetPoints(points);
 
     rayonini = 10;
     rayonext = 15;
@@ -85,6 +96,9 @@ void sphere()
                         x2 = rayon * cos(alpha[k][l]) * cos(beta[k][l]) + centre[2];
                         fprintf(fp_out, "I %8d X %15.8E Y %15.8E Z %15.8E\n", i, x0, x1, x2);
 
+                        // VTK
+                        points->InsertPoint(i, x0, x1, x2);
+
                         posface[k][l] = i;
                         i++;
                     }
@@ -135,6 +149,8 @@ void sphere()
         fprintf(fp_out, "I %8d N %d %d %d %d 0 %d %d %d %d\n", ii,
                 maille[ii][0], maille[ii][1], maille[ii][2], maille[ii][3],
                 maille[ii][4], maille[ii][5], maille[ii][6], maille[ii][7]);
+        insertvtkcell(ugrid, maille[ii][0], maille[ii][1], maille[ii][2], maille[ii][3],
+                maille[ii][4], maille[ii][5], maille[ii][6], maille[ii][7]);
     }
     fprintf(fp_out, ".SEL\n groupe 100 maille tout\n");
     fprintf(fp_out, ".CMA\n rz 90\n execute 3 maille gr 100\n");
@@ -142,4 +158,6 @@ void sphere()
     fprintf(fp_out, ".CMA\n ry -90\n execute 1 maille gr 100\n");
 
     fprintf(fp_out, ".COL\n pres  %15.8E \n .COL  EXECUTE\n\n", pres);
+
+    return ugrid;
 }

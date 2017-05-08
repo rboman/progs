@@ -1,6 +1,7 @@
 #ifndef CYLINDRE_H
 #define CYLINDRE_H
 
+#include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 #include <string>
 
@@ -15,12 +16,13 @@ void exportvtu(vtkUnstructuredGrid *ugrid, std::string const &fname);
 void displayugrid(vtkUnstructuredGrid *ugrid);
 
 
-int cylindre();
-void spherepeau();
-void sphere();
-void sphere2();
-void testdenis();
+vtkSmartPointer<vtkUnstructuredGrid>  cylindre();
+vtkSmartPointer<vtkUnstructuredGrid>  spherepeau();
+vtkSmartPointer<vtkUnstructuredGrid>  sphere();
+vtkSmartPointer<vtkUnstructuredGrid>  sphere2();
 
+void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4, int id5, int id6, int id7, int id8);
+void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4);
 
 void prog(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);
 void prog1(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);

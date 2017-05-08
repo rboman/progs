@@ -12,8 +12,10 @@ void displayugrid(vtkUnstructuredGrid *ugrid)
 {
     auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New(); 
     meshMapper->SetInputData(ugrid);
+
     vtkSmartPointer<vtkActor> meshActor = vtkSmartPointer<vtkActor>::New();
     meshActor->SetMapper(meshMapper);
+    meshActor->GetProperty()->SetOpacity(0.1);
 
     auto gridMapper = vtkSmartPointer<vtkDataSetMapper>::New();  
     gridMapper->SetResolveCoincidentTopologyToPolygonOffset();
@@ -28,7 +30,8 @@ void displayugrid(vtkUnstructuredGrid *ugrid)
     gridActor->SetMapper(gridMapper);  
 
     auto ren = vtkSmartPointer<vtkRenderer>::New();
-    ren->SetBackground(48./255,10./255,36./255); // unity terminal
+    //ren->SetBackground(48./255,10./255,36./255); // unity terminal
+    ren->SetBackground(0.1, 0.2, 0.4);
     ren->AddActor(meshActor);
     ren->AddActor(gridActor);
     ren->ResetCamera();

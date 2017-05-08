@@ -13,9 +13,8 @@
 
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
-#include <vtkHexahedron.h>
 
-int cylindre()
+vtkSmartPointer<vtkUnstructuredGrid> cylindre()
 {
     FILE *fp_out = fopen("cyl_noe.dat", "w");
     FILE *fp_out2 = fopen("cyl_mco.dat", "w");
@@ -93,7 +92,7 @@ int cylindre()
     if (cyl_creux == 0)
     {
         if (cyl_ouvert == 1)
-            return 1;
+            throw std::runtime_error("bad parameters!");
 
         if (nbe % 4 != 0)
             nbe = (nbe / 4 + 1) * 4;
@@ -121,7 +120,7 @@ int cylindre()
 
     double vabs = sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
     if (vabs < 1.E-8)
-        return 1;
+        throw std::runtime_error("bad parameters!");
 
     for (int i = 0; i < 3; i++)
         vec1[i] = vec1[i] / vabs;
@@ -435,7 +434,7 @@ int cylindre()
                 if (noe > 99998)
                 {
                     fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                    return 1;
+                    throw std::runtime_error("bad parameters!");
                 }
                 fprintf(fp_out, "I %5d  X %11.4E Y %11.4E Z %11.4E\n",
                         noe, coord[nint][0], coord[nint][1], coord[nint][2]);
@@ -458,7 +457,7 @@ int cylindre()
                 if (noe > 99998)
                 {
                     fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                    return 1;
+                    throw std::runtime_error("bad parameters!");
                 }
                 fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
                         noe, coord[nint][0], coord[nint][1], coord[nint][2]);
@@ -483,7 +482,7 @@ int cylindre()
                         if (noe > 99998)
                         {
                             fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                            return 1;
+                            throw std::runtime_error("bad parameters!");
                         }
                         fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
                                 noe, coord[nint][0], coord[nint][1], coord[nint][2]);
@@ -508,7 +507,7 @@ int cylindre()
                         if (noe > 99998)
                         {
                             fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                            return 1;
+                            throw std::runtime_error("bad parameters!");
                         }
                         fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
                                 noe, coord[nint][0], coord[nint][1], coord[nint][2]);
@@ -542,18 +541,9 @@ int cylindre()
                 fprintf(fp_out, "I %5d N %4d %4d %4d %4d 0 %4d %4d %4d %4d AT %1d\n", maille,
                         liste[noe1], liste[noe2], liste[noe3], liste[noe4],
                         liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
-                // VTK
-                vtkSmartPointer<vtkHexahedron> hexa = vtkSmartPointer<vtkHexahedron>::New();
-                vtkIdList *ids = hexa->GetPointIds();  
-                ids->SetId( 0, liste[noe1]);
-                ids->SetId( 1, liste[noe2]);
-                ids->SetId( 2, liste[noe3]);
-                ids->SetId( 3, liste[noe4]);
-                ids->SetId( 4, liste[noe5]);
-                ids->SetId( 5, liste[noe6]);
-                ids->SetId( 6, liste[noe7]);
-                ids->SetId( 7, liste[noe8]);
-                ugrid->InsertNextCell(hexa->GetCellType(), ids);
+
+                insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
+                        liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
             }
 
     if (cyl_creux == 0)
@@ -574,18 +564,8 @@ int cylindre()
                             liste[noe1], liste[noe2], liste[noe3], liste[noe4],
                             liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
 
-                    // VTK
-                    vtkSmartPointer<vtkHexahedron> hexa = vtkSmartPointer<vtkHexahedron>::New();
-                    vtkIdList *ids = hexa->GetPointIds();  
-                    ids->SetId( 0, liste[noe1]);
-                    ids->SetId( 1, liste[noe2]);
-                    ids->SetId( 2, liste[noe3]);
-                    ids->SetId( 3, liste[noe4]);
-                    ids->SetId( 4, liste[noe5]);
-                    ids->SetId( 5, liste[noe6]);
-                    ids->SetId( 6, liste[noe7]);
-                    ids->SetId( 7, liste[noe8]);
-                    ugrid->InsertNextCell(hexa->GetCellType(), ids);
+                    insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
+                            liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
                 }
 
 
@@ -617,11 +597,8 @@ int cylindre()
     //   fprintf(fp_out,"grap remp 0 visee 2 3 1\n") ;
     //   fprintf(fp_out,"VI\n") ;
 
-    std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
-
-    exportvtu(ugrid, "cylindre.vtu");
-    displayugrid(ugrid);
 
 
-    return 0;
+
+    return ugrid;
 }
