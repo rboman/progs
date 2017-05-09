@@ -1533,27 +1533,30 @@ vtkSmartPointer<vtkUnstructuredGrid> sphere2()
 	fprintf(fp_out, "grap remp 0 visee 2 3 1\n");
 	fprintf(fp_out, "VI\n");
 
-
+	// apply 3 reflections
+	
 	auto rfilterX = vtkSmartPointer<vtkReflectionFilter>::New();
 	rfilterX->SetInputData(ugrid);
 	rfilterX->CopyInputOn();
 	rfilterX->SetPlaneToXMax();
-	/*
-	auto append = vtkSmartPointer<vtkAppendFilter>::New();
-	append->MergePointsOn(); // marche pas (tolerence==0 en dur)
-	append->DebugOn();
-	append->AddInputData(ugrid);
-	append->AddInputConnection(rfilterX->GetOutputPort());
-*/
 
+	auto rfilterY = vtkSmartPointer<vtkReflectionFilter>::New();
+	rfilterY->SetInputConnection(rfilterX->GetOutputPort());
+	rfilterY->CopyInputOn();
+	rfilterY->SetPlaneToYMax();
+
+	auto rfilterZ = vtkSmartPointer<vtkReflectionFilter>::New();
+	rfilterZ->SetInputConnection(rfilterY->GetOutputPort());
+	rfilterZ->CopyInputOn();
+	rfilterZ->SetPlaneToZMax();
 
 	auto tougrid = vtkSmartPointer<vtkExtractUnstructuredGrid>::New();
 	tougrid->MergingOn();
 	auto ptInserter = vtkSmartPointer<vtkIncrementalOctreePointLocator>::New();
-    ptInserter->SetTolerance(0.001);
+    ptInserter->SetTolerance(0.001); // default tol is too low
 	tougrid->SetLocator(ptInserter);
 
-	tougrid->SetInputConnection(rfilterX->GetOutputPort());
+	tougrid->SetInputConnection(rfilterZ->GetOutputPort());
 	tougrid->Update();
 	vtkSmartPointer<vtkUnstructuredGrid> ugrid2 = tougrid->GetOutput();
 

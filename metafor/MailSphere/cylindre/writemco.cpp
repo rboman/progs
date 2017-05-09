@@ -2,6 +2,10 @@
 #include <stdio.h>
 
 
+/**
+ * @brief cylindre .MCO
+ */
+
 void writemco(FILE *fp_out2, int type1, int noe_ini, int nbe2, int nbz, int nbc,  
                 int mat1rig, int loi1rig, int mat2rig, int loi2rig, 
                 int *liste, int ***tab, 
