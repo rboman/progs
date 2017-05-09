@@ -5,9 +5,9 @@ int main()
     try
     {
         //vtkSmartPointer<vtkUnstructuredGrid> ugrid = cylindre();
-        //vtkSmartPointer<vtkUnstructuredGrid> ugrid = sphere();
-        vtkSmartPointer<vtkUnstructuredGrid> ugrid = sphere2();
-        //vtkSmartPointer<vtkUnstructuredGrid> ugrid = spherepeau();
+        //vtkSmartPointer<vtkUnstructuredGrid> ugrid = sphereBAD();     // pas OK
+        vtkSmartPointer<vtkUnstructuredGrid> ugrid = sphere2(); // OK
+        //vtkSmartPointer<vtkUnstructuredGrid> ugrid = spherepeauBAD(); // pas OK
 
         std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
 

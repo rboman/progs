@@ -6,9 +6,13 @@
 
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
+#include <vtkTransform.h>
+#include <vtkTransformFilter.h>
+#include <vtkAppendFilter.h>
+#include <vtkExtractUnstructuredGrid.h>
+#include <vtkIncrementalOctreePointLocator.h>
 
-
-vtkSmartPointer<vtkUnstructuredGrid> sphere()
+vtkSmartPointer<vtkUnstructuredGrid> sphereBAD()
 {
     int num, n, ntour, a, b, c, d, e, i, ii, j, k, l, n2, nelemtour, nelemext,
         face, taille, **maille, **posface, level, nbtotal;
@@ -33,8 +37,8 @@ vtkSmartPointer<vtkUnstructuredGrid> sphere()
     centre[0] = 0.0;
     centre[1] = 0.0;
     centre[2] = 0.0;
-    nelemtour = 50;
-    nelemext = 5;
+    nelemtour = 10;
+    nelemext = 3;
 
     pi = 3.1415926536;
     i = 1;
@@ -159,5 +163,46 @@ vtkSmartPointer<vtkUnstructuredGrid> sphere()
 
     fprintf(fp_out, ".COL\n pres  %15.8E \n .COL  EXECUTE\n\n", pres);
 
-    return ugrid;
+	auto rotZ = vtkSmartPointer<vtkTransform>::New();
+	rotZ->RotateZ(90.);
+	auto rotY1 = vtkSmartPointer<vtkTransform>::New();
+	rotY1->RotateY(90.);
+	auto rotY2 = vtkSmartPointer<vtkTransform>::New();
+	rotY2->RotateY(-90.);
+
+	auto rot90Z1 = vtkSmartPointer<vtkTransformFilter>::New();
+	rot90Z1->SetInputData(ugrid);
+	rot90Z1->SetTransform(rotZ);
+	auto rot90Z2 = vtkSmartPointer<vtkTransformFilter>::New();
+	rot90Z2->SetInputConnection(rot90Z1->GetOutputPort());
+	rot90Z2->SetTransform(rotZ);
+	auto rot90Z3 = vtkSmartPointer<vtkTransformFilter>::New();
+	rot90Z3->SetInputConnection(rot90Z2->GetOutputPort());
+	rot90Z3->SetTransform(rotZ);
+
+	auto rot90Y1 = vtkSmartPointer<vtkTransformFilter>::New();
+	rot90Y1->SetInputData(ugrid);
+	rot90Y1->SetTransform(rotY1);	
+    auto rot90Y2 = vtkSmartPointer<vtkTransformFilter>::New();
+	rot90Y2->SetInputData(ugrid);
+	rot90Y2->SetTransform(rotY2);
+
+    auto append = vtkSmartPointer<vtkAppendFilter>::New();
+    append->AddInputData(ugrid);
+    append->AddInputConnection(rot90Z1->GetOutputPort());
+    append->AddInputConnection(rot90Z2->GetOutputPort());
+    append->AddInputConnection(rot90Z3->GetOutputPort());
+    append->AddInputConnection(rot90Y1->GetOutputPort());
+    append->AddInputConnection(rot90Y2->GetOutputPort());
+
+	auto tougrid = vtkSmartPointer<vtkExtractUnstructuredGrid>::New();
+	tougrid->MergingOn();
+	auto ptInserter = vtkSmartPointer<vtkIncrementalOctreePointLocator>::New();
+    ptInserter->SetTolerance(0.001); // default tol is too low
+	tougrid->SetLocator(ptInserter);
+	tougrid->SetInputConnection(append->GetOutputPort());
+	tougrid->Update();
+	vtkSmartPointer<vtkUnstructuredGrid> ugrid2 = tougrid->GetOutput();    
+
+    return ugrid2;
 }

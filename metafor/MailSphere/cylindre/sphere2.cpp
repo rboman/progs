@@ -6,10 +6,6 @@
 
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
-#include <vtkReflectionFilter.h>
-#include <vtkExtractUnstructuredGrid.h>
-#include <vtkAppendFilter.h>
-#include <vtkIncrementalOctreePointLocator.h>
 
 
 vtkSmartPointer<vtkUnstructuredGrid> sphere2()
@@ -1534,31 +1530,7 @@ vtkSmartPointer<vtkUnstructuredGrid> sphere2()
 	fprintf(fp_out, "VI\n");
 
 	// apply 3 reflections
-	
-	auto rfilterX = vtkSmartPointer<vtkReflectionFilter>::New();
-	rfilterX->SetInputData(ugrid);
-	rfilterX->CopyInputOn();
-	rfilterX->SetPlaneToXMax();
-
-	auto rfilterY = vtkSmartPointer<vtkReflectionFilter>::New();
-	rfilterY->SetInputConnection(rfilterX->GetOutputPort());
-	rfilterY->CopyInputOn();
-	rfilterY->SetPlaneToYMax();
-
-	auto rfilterZ = vtkSmartPointer<vtkReflectionFilter>::New();
-	rfilterZ->SetInputConnection(rfilterY->GetOutputPort());
-	rfilterZ->CopyInputOn();
-	rfilterZ->SetPlaneToZMax();
-
-	auto tougrid = vtkSmartPointer<vtkExtractUnstructuredGrid>::New();
-	tougrid->MergingOn();
-	auto ptInserter = vtkSmartPointer<vtkIncrementalOctreePointLocator>::New();
-    ptInserter->SetTolerance(0.001); // default tol is too low
-	tougrid->SetLocator(ptInserter);
-
-	tougrid->SetInputConnection(rfilterZ->GetOutputPort());
-	tougrid->Update();
-	vtkSmartPointer<vtkUnstructuredGrid> ugrid2 = tougrid->GetOutput();
+	auto ugrid2 = reflect(ugrid);
 
     return ugrid2;	
 }

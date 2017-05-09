@@ -17,14 +17,15 @@ void displayugrid(vtkUnstructuredGrid *ugrid);
 
 
 vtkSmartPointer<vtkUnstructuredGrid>  cylindre();
-vtkSmartPointer<vtkUnstructuredGrid>  spherepeau();
-vtkSmartPointer<vtkUnstructuredGrid>  sphere();
+vtkSmartPointer<vtkUnstructuredGrid>  spherepeauBAD();
+vtkSmartPointer<vtkUnstructuredGrid>  sphereBAD();
 vtkSmartPointer<vtkUnstructuredGrid>  sphere2();
 
 void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4, int id5, int id6, int id7, int id8);
 void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4);
+vtkSmartPointer<vtkUnstructuredGrid> reflect(vtkSmartPointer<vtkUnstructuredGrid> ugrid);
 
-void prog(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);
+//void prog(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);
 void prog1(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);
 
 #endif
