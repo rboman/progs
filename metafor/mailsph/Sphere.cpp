@@ -1,14 +1,16 @@
-#include "mailsph.h"
+#include "Sphere.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <vtkSmartPointer.h>
-#include <vtkUnstructuredGrid.h>
 
+Sphere::Sphere()
+{
+ 	ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+}
 
-vtkSmartPointer<vtkUnstructuredGrid> sphere2()
+void Sphere::build()
 {
 
 	int nbe, nbc, noe_ini, maille_ini, mat1, loi1, mat2, loi2, taille, taille1, taille2,
@@ -29,10 +31,10 @@ vtkSmartPointer<vtkUnstructuredGrid> sphere2()
 	// PARAMETRES
 
 	sphere_creuse = 1; // 1 si creuse, 0 si pleine
-	rint = 12.;		   // rayon interne si creuse, demi-diagonale du cube central si pleine
-	rext = 20.;		   // rayon externe
+	rint = 12.*5;		   // rayon interne si creuse, demi-diagonale du cube central si pleine
+	rext = 20.*5;		   // rayon externe
 	centre[0] = 0.0;   // coor x du centre
-	centre[1] = 0.0;   // coor y du centre
+	centre[1] = 200.0;   // coor y du centre
 	centre[2] = 0.0;   // coor z du centre
 	r[0] = -1.0;	   // coor x du reducteur
 	r[1] = -1.0;	   // coor y du reducteur
@@ -1532,5 +1534,5 @@ vtkSmartPointer<vtkUnstructuredGrid> sphere2()
 	// apply 3 reflections
 	auto ugrid2 = reflect(ugrid);
 
-    return ugrid2;	
+    this->ugrid = ugrid2;	
 }

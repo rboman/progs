@@ -3,7 +3,7 @@
 #include <vtkXMLUnstructuredGridWriter.h>
 #include <vtkZLibDataCompressor.h>
 
-void exportvtu(vtkUnstructuredGrid *ugrid, std::string const &fname)
+void exportvtu(vtkSmartPointer<vtkUnstructuredGrid> ugrid, std::string const &fname)
 {
     // export to vtu file
     auto writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();

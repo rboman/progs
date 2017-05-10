@@ -12,8 +12,8 @@ void writemco(FILE *fp_out2, int type1, int noe_ini, int nbe2, int nbz, int nbc,
                 int mat1def, int loi1def, int mat2def, int loi2def, 
                 int cyl_ouvert, int type2 );
 
-void exportvtu(vtkUnstructuredGrid *ugrid, std::string const &fname);
-void displayugrid(vtkUnstructuredGrid *ugrid);
+void exportvtu(vtkSmartPointer<vtkUnstructuredGrid> ugrid, std::string const &fname);
+void displayugrid(std::vector<vtkSmartPointer<vtkUnstructuredGrid>> grids);
 
 
 vtkSmartPointer<vtkUnstructuredGrid>  cylindre();

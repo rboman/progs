@@ -15,8 +15,25 @@
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 
-void displayugrid(vtkUnstructuredGrid *ugrid)
+
+
+void displayugrid(std::vector<vtkSmartPointer<vtkUnstructuredGrid>> grids)
 {
+
+     // renderer & co
+
+    auto ren = vtkSmartPointer<vtkRenderer>::New();
+    //ren->SetBackground(48./255,10./255,36./255); // unity terminal
+    ren->SetBackground(0.1, 0.2, 0.4);
+
+
+    //std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
+    //ugrid->Print(std::cout);
+
+for(auto ugrid : grids)
+{
+    //vtkSmartPointer<vtkUnstructuredGrid> ugrid = grids[0];
+
     // mesh
     auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New(); 
     meshMapper->SetInputData(ugrid);
@@ -46,14 +63,13 @@ void displayugrid(vtkUnstructuredGrid *ugrid)
     bboxActor->SetMapper(bboxMapper);
     bboxActor->GetProperty()->SetColor(0.1*2, 0.2*2, 0.4*2);
 
-    // renderer & co
-
-    auto ren = vtkSmartPointer<vtkRenderer>::New();
-    //ren->SetBackground(48./255,10./255,36./255); // unity terminal
-    ren->SetBackground(0.1, 0.2, 0.4);
     ren->AddActor(meshActor);
     ren->AddActor(gridActor);    
     ren->AddActor(bboxActor);
+}
+
+
+
     ren->ResetCamera();
 
     auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
@@ -91,6 +107,6 @@ void displayugrid(vtkUnstructuredGrid *ugrid)
 
 
     iren->Initialize();
-    //renWin->Render();
+    renWin->Render();
     iren->Start();
 }

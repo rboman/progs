@@ -5,16 +5,21 @@
 // cmake -G "Visual Studio 14 2015 Win64" ..
 // cmake --build . --config Release
 
-#include "mailsph.h"
+#include "Cylinder.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <vtkSmartPointer.h>
-#include <vtkUnstructuredGrid.h>
+Cylinder::Cylinder()
+{
+    cyl_creux = 1;      // 1 si creuse, 0 si pleine
+    centre[0] = -100.1; // coor x du centre
+    centre[1] = 0.0;    // coor y du centre
+    centre[2] = -230.0; // coor z du centre
+}
 
-vtkSmartPointer<vtkUnstructuredGrid> cylindre()
+void Cylinder::build()
 {
     FILE *fp_out = fopen("cyl_noe.dat", "w");
     FILE *fp_out2 = fopen("cyl_mco.dat", "w");
@@ -23,16 +28,14 @@ vtkSmartPointer<vtkUnstructuredGrid> cylindre()
 
     // PARAMETRES
 
-    int cyl_creux = 1;      // 1 si creuse, 0 si pleine
+    //int cyl_creux = 1;      // 1 si creuse, 0 si pleine
     double rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
     double rext = 100.;        // rayon externe
     double longext = 460.;     // longueur du cylindre
     int cyl_ouvert = 0;     // 1 si ouvert, 0 si ferm�
     double theta0 = 360.;      // ouverture en degr� si ouvert
-    double centre[3];
-    centre[0] = -100.1; // coor x du centre
-    centre[1] = 0.0;    // coor y du centre
-    centre[2] = -230.0; // coor z du centre
+
+
     double vec1[3];
     vec1[0] = 1.0;      // position du premier noeud
     vec1[1] = 0.0;      //
@@ -597,8 +600,8 @@ vtkSmartPointer<vtkUnstructuredGrid> cylindre()
     //   fprintf(fp_out,"grap remp 0 visee 2 3 1\n") ;
     //   fprintf(fp_out,"VI\n") ;
 
+    fclose(fp_out);
+    fclose(fp_out2);
 
-
-
-    return ugrid;
+    this->ugrid = ugrid;
 }
