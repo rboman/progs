@@ -3,3 +3,5 @@
 *.sam
 *.spy
 *.sdb
+*.vtu
+*.json
