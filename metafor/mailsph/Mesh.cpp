@@ -1,10 +1,16 @@
-#include "mailsph.h"
+#include "Mesh.h"
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkHexahedron.h>
 #include <vtkQuad.h>
-/*
-void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4, int id5, int id6, int id7, int id8)
+
+
+Mesh::Mesh()
+{
+ 	ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+}
+
+void Mesh::insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4, int id5, int id6, int id7, int id8)
 {
     vtkSmartPointer<vtkHexahedron> cell = vtkSmartPointer<vtkHexahedron>::New();
     vtkIdList *ids = cell->GetPointIds();  
@@ -19,7 +25,7 @@ void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id
     ugrid->InsertNextCell(cell->GetCellType(), ids);
 }
 
-void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4)
+void Mesh::insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4)
 {
     vtkSmartPointer<vtkQuad> cell = vtkSmartPointer<vtkQuad>::New();
     vtkIdList *ids = cell->GetPointIds();  
@@ -29,4 +35,3 @@ void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id
     ids->SetId( 3, id4);
     ugrid->InsertNextCell(cell->GetCellType(), ids);
 }
-*/

@@ -1,4 +1,5 @@
 #include "mailsph.h"
+#include "SphereBAD.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -12,8 +13,13 @@
 #include <vtkExtractUnstructuredGrid.h>
 #include <vtkIncrementalOctreePointLocator.h>
 
-vtkSmartPointer<vtkUnstructuredGrid> sphereBAD()
+SphereBAD::SphereBAD() : Mesh()
 {
+}
+
+void SphereBAD::build()
+{
+
     int num, n, ntour, a, b, c, d, e, i, ii, j, k, l, n2, nelemtour, nelemext,
         face, taille, **maille, **posface, level, nbtotal;
 
@@ -204,5 +210,5 @@ vtkSmartPointer<vtkUnstructuredGrid> sphereBAD()
 	tougrid->Update();
 	vtkSmartPointer<vtkUnstructuredGrid> ugrid2 = tougrid->GetOutput();    
 
-    return ugrid2;
+    this->ugrid = ugrid2;
 }

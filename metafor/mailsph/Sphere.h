@@ -2,15 +2,15 @@
 #define SPHERE_H
 
 #include "mailsph.h"
-#include <vtkSmartPointer.h>
-#include <vtkUnstructuredGrid.h>
+#include "Mesh.h"
 
-class Sphere
+class Sphere : public Mesh
 {
 public:
-    vtkSmartPointer<vtkUnstructuredGrid> ugrid;
     Sphere();
     void build();
+private:
+    void prog1(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext);
 };
 
 #endif
