@@ -18,11 +18,11 @@ void Sphere::build()
 {
 
 	int nbe, nbc, noe_ini, maille_ini, mat1, loi1, mat2, loi2, taille, taille1, taille2,
-		taille3, taille4, i, j, k, l, ****tab = NULL, *liste = NULL, **status = NULL, no, c, face, addon,
+		taille3, taille4, i, j, k, l, ****tab = nullptr, *liste = nullptr, **status = nullptr, no, c, face, addon,
 		n[4], s, cote, noe1, noe2, noe, louc, noe0, l_ini, l_fin, c_ini, c_fin, nint,
 		maille, noe3, noe4, noe5, noe6, noe7, noe8, compteur, dao, couche, nbnoe,
 		type1, type2, n1, n2, out, don[10][2], level0, level1, level2, out2, nop,
-		sphere_creuse, ***cube = NULL, ep, ep_fin, ep_ini, nn[4], dim_status, nosph;
+		sphere_creuse, ***cube = nullptr, ep, ep_fin, ep_ini, nn[4], dim_status, nosph;
 
 	double rint, rext, centre[3], r[3], **coord, xyz[3], alpha, ray, beta;
 

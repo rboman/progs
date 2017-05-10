@@ -7,10 +7,38 @@
 
 Cylinder::Cylinder() : Mesh()
 {
-    cyl_creux = 1;      // 1 si creuse, 0 si pleine
+    cyl_creux = 1;      // 1 si creux, 0 si plein
     centre[0] = -100.1; // coor x du centre
     centre[1] = 0.0;    // coor y du centre
     centre[2] = -230.0; // coor z du centre
+
+    rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
+    rext = 100.;        // rayon externe
+    longext = 460.;     // longueur du cylindre
+    cyl_ouvert = 0;     // 1 si ouvert, 0 si ferme
+    theta0 = 360.;      // ouverture en degre si ouvert
+
+    ///vec1 = { 1, 0, 0};
+    
+    vec1[0] = 1.0;      // position du premier noeud
+    vec1[1] = 0.0;      //
+    vec1[2] = 0.0;      //
+
+    norm[0] = 0.0;      // coor x de la normale au plan de l arc
+    norm[1] = 0.0;      // coor y de la normale au plan de l arc
+    norm[2] = 1.0;      // coor z de la normale au plan de l arc
+
+    ext[0] = 0.0;       // coor x de la direction d extrusion
+    ext[1] = 0.0;       // coor y de la direction d extrusion
+    ext[2] = 1.0;       // coor z de la direction d extrusion
+
+    nbe = 24;           // nombre d elements sur l arc d un m�ridien
+    nbc = 3;            // nombre d elements sur l epaisseur
+    nbz = 15;           // nombre d elements sur la hauteur
+
+    noe_ini = 0;
+    maille_ini = 0;
+    nocyl = 1;
 }
 
 void Cylinder::build()
@@ -19,34 +47,6 @@ void Cylinder::build()
     FILE *fp_out2 = fopen("cyl_mco.dat", "w");
 
     fprintf(fp_out, ".DEL.*\n");
-
-    // PARAMETRES
-
-    double rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
-    double rext = 100.;        // rayon externe
-    double longext = 460.;     // longueur du cylindre
-    int cyl_ouvert = 0;     // 1 si ouvert, 0 si ferm�
-    double theta0 = 360.;      // ouverture en degr� si ouvert
-
-
-    double vec1[3];
-    vec1[0] = 1.0;      // position du premier noeud
-    vec1[1] = 0.0;      //
-    vec1[2] = 0.0;      //
-    double norm[3];
-    norm[0] = 0.0;      // coor x de la normale au plan de l arc
-    norm[1] = 0.0;      // coor y de la normale au plan du l arc
-    norm[2] = 1.0;      // coor z de la normale au plan du c arc
-    double ext[3];
-    ext[0] = 0.0;       // coor x de la direction d extrusion
-    ext[1] = 0.0;       // coor y de la direction d extrusion
-    ext[2] = 1.0;       // coor z de la direction d extrusion
-    int nbe = 24;           // nombre d elements sur l arc d un m�ridien
-    int nbc = 3;            // nombre d elements sur l epaisseur
-    int nbz = 15;           // nombre d elements sur la hauteur
-    int noe_ini = 0;
-    int maille_ini = 0;
-    int nocyl = 1;
 
     // face externe
 
@@ -130,11 +130,11 @@ void Cylinder::build()
         ext[i] = ext[i] / vabs;
 
     // allocation du tableau tab(nz,couche,ne)
-	int ***tab=NULL;
+	int ***tab=nullptr;
     array3D_alloc(tab, nbz + 1, nbc + 1, nbe2);
 
     // allocation du tableau cube(nz,lig,col)
-    int ***cube=NULL;
+    int ***cube=nullptr;
     if (cyl_creux == 0)
         array3D_alloc(cube, nbz + 1, nbe / 4 + 1, nbe / 4 + 1);
 

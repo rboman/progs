@@ -23,16 +23,21 @@ int main()
         viz.grids.push_back( cyl1.ugrid );
 
         Cylinder cyl2;
-        cyl2.centre[0] = 100.0; 
+        cyl2.centre[0] = 120.0; 
+        cyl2.norm[1] = 1.0;
         cyl2.cyl_creux = 0;
+        cyl2.rint = 50;
         cyl2.build();
         viz.grids.push_back( cyl2.ugrid );
-
-
-        //vtkSmartPointer<vtkUnstructuredGrid> ugrid = sphereBAD();     // pas OK
-
-        //vtkSmartPointer<vtkUnstructuredGrid> ugrid = spherepeauBAD(); // pas OK
-
+/*
+        Cylinder cyl3;
+        //cyl3.centre[0] = 120.0*2; 
+        //cyl3.norm[1] = 1.0;
+        //cyl3.cyl_ouvert = 1;
+        //cyl3.theta0 = 270.0;
+        cyl3.build();
+        viz.grids.push_back( cyl3.ugrid );
+*/
 
         Sphere sph1; 
         sph1.build();
@@ -40,7 +45,6 @@ int main()
 
         //std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
 
-        //exportvtu(ugrid, "mesh.vtu");
         viz.display();
     }
     catch(std::exception &e) 
