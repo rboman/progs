@@ -3,7 +3,8 @@
 #include <vtkUnstructuredGrid.h>
 #include <vtkHexahedron.h>
 #include <vtkQuad.h>
-
+#include <vtkXMLUnstructuredGridWriter.h>
+#include <vtkZLibDataCompressor.h>
 
 Mesh::Mesh()
 {
@@ -35,3 +36,17 @@ void Mesh::insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, 
     ids->SetId( 3, id4);
     ugrid->InsertNextCell(cell->GetCellType(), ids);
 }
+
+void Mesh::exportvtu(std::string const &fname)
+{
+    // export to vtu file
+    auto writer = vtkSmartPointer<vtkXMLUnstructuredGridWriter>::New();
+    auto compressor = vtkSmartPointer<vtkZLibDataCompressor>::New();
+    writer->SetCompressor(compressor);
+    writer->SetDataModeToBinary();
+    writer->SetInputData(ugrid);
+    writer->SetFileName(fname.c_str());
+    writer->Write();
+    std::cout << fname << " saved to disk.\n";
+}
+

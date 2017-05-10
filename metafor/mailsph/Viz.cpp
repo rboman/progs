@@ -1,4 +1,5 @@
 #include "mailsph.h"
+#include "Viz.h"
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkRenderWindowInteractor.h>
@@ -15,65 +16,60 @@
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 
-
-
-void displayugrid(std::vector<vtkSmartPointer<vtkUnstructuredGrid>> grids)
+void Viz::display()
 {
 
-     // renderer & co
+    // renderer & co
 
     auto ren = vtkSmartPointer<vtkRenderer>::New();
     //ren->SetBackground(48./255,10./255,36./255); // unity terminal
     ren->SetBackground(0.1, 0.2, 0.4);
 
-
     //std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
     //ugrid->Print(std::cout);
 
-for(auto ugrid : grids)
-{
-    //vtkSmartPointer<vtkUnstructuredGrid> ugrid = grids[0];
+    for (auto ugrid : grids)
+    {
+        //vtkSmartPointer<vtkUnstructuredGrid> ugrid = grids[0];
 
-    // mesh
-    auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New(); 
-    meshMapper->SetInputData(ugrid);
-    vtkSmartPointer<vtkActor> meshActor = vtkSmartPointer<vtkActor>::New();
-    meshActor->SetMapper(meshMapper);
-    meshActor->GetProperty()->SetOpacity(0.5);
+        // mesh
+        auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+        meshMapper->SetInputData(ugrid);
+        vtkSmartPointer<vtkActor> meshActor = vtkSmartPointer<vtkActor>::New();
+        meshActor->SetMapper(meshMapper);
+        meshActor->GetProperty()->SetOpacity(0.5);
 
-    // grid
-    auto gridMapper = vtkSmartPointer<vtkDataSetMapper>::New();  
-    gridMapper->SetResolveCoincidentTopologyToPolygonOffset();
-    gridMapper->ScalarVisibilityOff();
-    gridMapper->SetInputData(ugrid);
-    auto gridActor = vtkSmartPointer<vtkActor>::New();
-    gridActor->GetProperty()->SetRepresentationToWireframe();
-    gridActor->GetProperty()->SetColor(0.1*2, 0.2*2, 0.4*2);
-    gridActor->GetProperty()->SetAmbient(1.0);
-    gridActor->GetProperty()->SetDiffuse(0.0);
-    gridActor->GetProperty()->SetSpecular(0.0);
-    gridActor->SetMapper(gridMapper);  
+        // grid
+        auto gridMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+        gridMapper->SetResolveCoincidentTopologyToPolygonOffset();
+        gridMapper->ScalarVisibilityOff();
+        gridMapper->SetInputData(ugrid);
+        auto gridActor = vtkSmartPointer<vtkActor>::New();
+        gridActor->GetProperty()->SetRepresentationToWireframe();
+        gridActor->GetProperty()->SetColor(0.1 * 2, 0.2 * 2, 0.4 * 2);
+        gridActor->GetProperty()->SetAmbient(1.0);
+        gridActor->GetProperty()->SetDiffuse(0.0);
+        gridActor->GetProperty()->SetSpecular(0.0);
+        gridActor->SetMapper(gridMapper);
 
-    // bbox
-    auto bboxfilter = vtkSmartPointer<vtkOutlineFilter>::New();
-    bboxfilter->SetInputData(ugrid);
-    auto bboxMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    bboxMapper->SetInputConnection(bboxfilter->GetOutputPort());
-    auto bboxActor = vtkSmartPointer<vtkActor>::New();
-    bboxActor->SetMapper(bboxMapper);
-    bboxActor->GetProperty()->SetColor(0.1*2, 0.2*2, 0.4*2);
+        // bbox
+        auto bboxfilter = vtkSmartPointer<vtkOutlineFilter>::New();
+        bboxfilter->SetInputData(ugrid);
+        auto bboxMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        bboxMapper->SetInputConnection(bboxfilter->GetOutputPort());
+        auto bboxActor = vtkSmartPointer<vtkActor>::New();
+        bboxActor->SetMapper(bboxMapper);
+        bboxActor->GetProperty()->SetColor(0.1 * 2, 0.2 * 2, 0.4 * 2);
 
-    ren->AddActor(meshActor);
-    ren->AddActor(gridActor);    
-    ren->AddActor(bboxActor);
-}
-
-
+        ren->AddActor(meshActor);
+        ren->AddActor(gridActor);
+        ren->AddActor(bboxActor);
+    }
 
     ren->ResetCamera();
 
     auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
-    renWin->SetSize(640, 480);    
+    renWin->SetSize(640, 480);
     renWin->AddRenderer(ren);
 
     auto iren = vtkSmartPointer<vtkRenderWindowInteractor>::New();
@@ -81,7 +77,6 @@ for(auto ugrid : grids)
 
     auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
     iren->SetInteractorStyle(style);
-
 
     // -- axes a la paraview
     auto axes = vtkSmartPointer<vtkAxesActor>::New();
@@ -104,7 +99,6 @@ for(auto ugrid : grids)
     marker->SetEnabled(1);
     marker->InteractiveOff();
     // -- fin axes
-
 
     iren->Initialize();
     renWin->Render();

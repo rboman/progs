@@ -7,24 +7,26 @@
 #include "mailsph.h"
 #include "Cylinder.h"
 #include "Sphere.h"
+#include "Viz.h"
 
 int main()
 {
     try
     {
-        std::vector<vtkSmartPointer<vtkUnstructuredGrid>> grids;
-
+        //std::vector<vtkSmartPointer<vtkUnstructuredGrid>> grids;
+        Viz viz;
 
 
         Cylinder cyl1; 
         cyl1.build();
-        grids.push_back( cyl1.ugrid );
+        cyl1.exportvtu("cyl1.vtu");
+        viz.grids.push_back( cyl1.ugrid );
 
         Cylinder cyl2;
         cyl2.centre[0] = 100.0; 
         cyl2.cyl_creux = 0;
         cyl2.build();
-        grids.push_back( cyl2.ugrid );
+        viz.grids.push_back( cyl2.ugrid );
 
 
         //vtkSmartPointer<vtkUnstructuredGrid> ugrid = sphereBAD();     // pas OK
@@ -34,12 +36,12 @@ int main()
 
         Sphere sph1; 
         sph1.build();
-        grids.push_back( sph1.ugrid );
+        viz.grids.push_back( sph1.ugrid );
 
         //std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
 
         //exportvtu(ugrid, "mesh.vtu");
-        displayugrid(grids);
+        viz.display();
     }
     catch(std::exception &e) 
     {
