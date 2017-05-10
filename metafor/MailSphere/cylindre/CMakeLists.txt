@@ -11,6 +11,8 @@ endif()
 
 project (Cylindre)
 
+include(CMakeToolsHelpers OPTIONAL)  # VSCode + CMake
+
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-std=c++11" STD11CHECK)
 IF(STD11CHECK)

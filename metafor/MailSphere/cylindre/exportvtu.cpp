@@ -1,4 +1,4 @@
-#include "cylindre.h"
+#include "mailsph.h"
 #include <vtkSmartPointer.h>
 #include <vtkXMLUnstructuredGridWriter.h>
 #include <vtkZLibDataCompressor.h>

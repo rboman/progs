@@ -1,4 +1,4 @@
-#include "cylindre.h"
+#include "mailsph.h"
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkReflectionFilter.h>

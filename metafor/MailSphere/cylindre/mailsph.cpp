@@ -5,7 +5,7 @@
 // cmake -G "Visual Studio 14 2015 Win64" ..
 // cmake --build . --config Release
 
-#include "cylindre.h"
+#include "mailsph.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>

@@ -1,4 +1,4 @@
-#include "cylindre.h"
+#include "mailsph.h"
 
 void prog1(double **coord, int noe1, int noe2, int louc, int nbe, double *xyz, double rext)
 {
