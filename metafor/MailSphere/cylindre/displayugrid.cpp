@@ -8,6 +8,12 @@
 #include <vtkDataSetMapper.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 
+#include <vtkAxesActor.h>
+#include <vtkTextProperty.h>
+#include <vtkOrientationMarkerWidget.h>
+#include <vtkCaptionActor2D.h>
+
+
 void displayugrid(vtkUnstructuredGrid *ugrid)
 {
     auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New(); 
@@ -45,6 +51,31 @@ void displayugrid(vtkUnstructuredGrid *ugrid)
 
     auto style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
     iren->SetInteractorStyle(style);
+
+
+    // -- axes a la paraview
+    auto axes = vtkSmartPointer<vtkAxesActor>::New();
+    axes->SetShaftTypeToCylinder();
+    axes->SetXAxisLabelText("x");
+    axes->SetYAxisLabelText("y");
+    axes->SetZAxisLabelText("z");
+    axes->SetTotalLength(1, 1, 1);
+    auto tprop = vtkSmartPointer<vtkTextProperty>::New();
+    tprop->ItalicOn();
+    axes->GetXAxisCaptionActor2D()->SetCaptionTextProperty(tprop);
+    axes->GetYAxisCaptionActor2D()->SetCaptionTextProperty(tprop);
+    axes->GetZAxisCaptionActor2D()->SetCaptionTextProperty(tprop);
+
+    auto marker = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+    marker->SetOrientationMarker(axes);
+    marker->SetViewport(0.85, 0.8, 1.1, 1.1);
+
+    marker->SetInteractor(iren);
+    marker->SetEnabled(1);
+    marker->InteractiveOff();
+    // -- fin axes
+
+
     iren->Initialize();
     //renWin->Render();
     iren->Start();
