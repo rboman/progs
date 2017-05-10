@@ -2,7 +2,9 @@
 #define VIZ_H
 
 #include "mailsph.h"
-
+#include <vector>
+#include <vtkSmartPointer.h>
+#include <vtkUnstructuredGrid.h>
 
 class Viz 
 {
