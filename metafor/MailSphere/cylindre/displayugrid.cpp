@@ -12,34 +12,48 @@
 #include <vtkTextProperty.h>
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkCaptionActor2D.h>
-
+#include <vtkOutlineFilter.h>
+#include <vtkPolyDataMapper.h>
 
 void displayugrid(vtkUnstructuredGrid *ugrid)
 {
+    // mesh
     auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New(); 
     meshMapper->SetInputData(ugrid);
-
     vtkSmartPointer<vtkActor> meshActor = vtkSmartPointer<vtkActor>::New();
     meshActor->SetMapper(meshMapper);
-    meshActor->GetProperty()->SetOpacity(0.1);
+    meshActor->GetProperty()->SetOpacity(0.5);
 
+    // grid
     auto gridMapper = vtkSmartPointer<vtkDataSetMapper>::New();  
     gridMapper->SetResolveCoincidentTopologyToPolygonOffset();
     gridMapper->ScalarVisibilityOff();
     gridMapper->SetInputData(ugrid);
     auto gridActor = vtkSmartPointer<vtkActor>::New();
     gridActor->GetProperty()->SetRepresentationToWireframe();
-    gridActor->GetProperty()->SetColor(0.,0.,0.);
+    gridActor->GetProperty()->SetColor(0.1*2, 0.2*2, 0.4*2);
     gridActor->GetProperty()->SetAmbient(1.0);
     gridActor->GetProperty()->SetDiffuse(0.0);
     gridActor->GetProperty()->SetSpecular(0.0);
     gridActor->SetMapper(gridMapper);  
 
+    // bbox
+    auto bboxfilter = vtkSmartPointer<vtkOutlineFilter>::New();
+    bboxfilter->SetInputData(ugrid);
+    auto bboxMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    bboxMapper->SetInputConnection(bboxfilter->GetOutputPort());
+    auto bboxActor = vtkSmartPointer<vtkActor>::New();
+    bboxActor->SetMapper(bboxMapper);
+    bboxActor->GetProperty()->SetColor(0.1*2, 0.2*2, 0.4*2);
+
+    // renderer & co
+
     auto ren = vtkSmartPointer<vtkRenderer>::New();
     //ren->SetBackground(48./255,10./255,36./255); // unity terminal
     ren->SetBackground(0.1, 0.2, 0.4);
     ren->AddActor(meshActor);
-    ren->AddActor(gridActor);
+    ren->AddActor(gridActor);    
+    ren->AddActor(bboxActor);
     ren->ResetCamera();
 
     auto renWin = vtkSmartPointer<vtkRenderWindow>::New();
