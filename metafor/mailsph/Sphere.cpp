@@ -1,4 +1,5 @@
 #include "Sphere.h"
+#include "arrays.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,78 +12,6 @@
 
 Sphere::Sphere() : Mesh()
 {
-}
-
-void array4D_alloc(int ****&tab, int taille1, int taille2, int taille3, int taille4)
-{
-	tab = (int ****)calloc(taille1, sizeof(int ***));
-	for (int j = 0; j < taille1; j++)
-	{
-		tab[j] = (int ***)calloc(taille2, sizeof(int **));
-		for (int k = 0; k < taille2; k++)
-		{
-			tab[j][k] = (int **)calloc(taille3, sizeof(int *));
-			for (int l = 0; l < taille3; l++)
-				tab[j][k][l] = (int *)calloc(taille4, sizeof(int));
-		}
-	}
-}
-void array4D_free(int ****&tab, int taille1, int taille2, int taille3)
-{
-	for (int j = 0; j < taille1; j++)
-	{
-		for (int k = 0; k < taille2; k++)
-		{
-			for (int l = 0; l < taille3; l++)
-				free(tab[j][k][l]);
-			free(tab[j][k]);
-		}
-		free(tab[j]);
-	}
-	free(tab);
-}
-void array3D_alloc(int ***&tab, int taille1, int taille2, int taille3)
-{
-	tab = (int ***)calloc(taille1, sizeof(int **));
-	for (int j = 0; j < taille1; j++)
-	{
-		tab[j] = (int **)calloc(taille2, sizeof(int *));
-		for (int k = 0; k < taille2; k++)
-			tab[j][k] = (int *)calloc(taille3, sizeof(int));
-	}
-}
-void array3D_free(int ***&tab, int taille1, int taille2)
-{
-	for (int j = 0; j < taille1; j++)
-	{
-		for (int k = 0; k < taille2; k++)
-			free(tab[j][k]);
-		free(tab[j]);
-	}
-	free(tab);
-}
-
-template <typename T>
-void array2D_alloc(T **&tab, int taille1, int taille2)
-{
-	tab = (T **)calloc(taille1, sizeof(T *));
-	for (int j = 0; j < taille1; j++)
-		tab[j] = (T *)calloc(taille2, sizeof(T));
-}
-template <typename T>
-void array2D_free(T **&tab, int taille1)
-{
-	for (int j = 0; j < taille1; j++)
-		free(tab[j]);
-	free(tab);
-}
-void array1D_alloc(int *&tab, int taille1)
-{
-	tab = (int *)calloc(taille1, sizeof(int));
-}
-void array1D_free(int *&tab)
-{
-	free(tab);
 }
 
 void Sphere::build()

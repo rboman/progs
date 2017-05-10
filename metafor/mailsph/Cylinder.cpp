@@ -1,4 +1,5 @@
 #include "Cylinder.h"
+#include "arrays.h"
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -21,7 +22,6 @@ void Cylinder::build()
 
     // PARAMETRES
 
-    //int cyl_creux = 1;      // 1 si creuse, 0 si pleine
     double rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
     double rext = 100.;        // rayon externe
     double longext = 460.;     // longueur du cylindre
@@ -130,59 +130,27 @@ void Cylinder::build()
         ext[i] = ext[i] / vabs;
 
     // allocation du tableau tab(nz,couche,ne)
+	int ***tab=NULL;
+    array3D_alloc(tab, nbz + 1, nbc + 1, nbe2);
 
-    int ***tab;
-    {
-        int taille1 = (nbz + 1);
-        tab = (int ***)calloc(taille1, sizeof(int **));
-        for (int i = 0; i < taille1; i++)
-        {
-            int taille2 = (nbc + 1);
-            tab[i] = (int **)calloc(taille2, sizeof(int *));
-            for (int j = 0; j < taille2; j++)
-            {
-                int taille3 = nbe2;
-                tab[i][j] = (int *)calloc(taille3, sizeof(int));
-            }
-        }
-    }
     // allocation du tableau cube(nz,lig,col)
-    int ***cube;
-    {
-        if (cyl_creux == 0)
-        {
-            int taille1 = (nbz + 1);
-            cube = (int ***)calloc(taille1, sizeof(int **));
-            for (int i = 0; i < taille1; i++)
-            {
-                int taille2 = (nbe / 4 + 1);
-                cube[i] = (int **)calloc(taille2, sizeof(int *));
-                for (int j = 0; j < taille2; j++)
-                {
-                    int taille3 = (nbe / 4 + 1);
-                    cube[i][j] = (int *)calloc(taille3, sizeof(int));
-                }
-            }
-        }
-    }
-
+    int ***cube=NULL;
+    if (cyl_creux == 0)
+        array3D_alloc(cube, nbz + 1, nbe / 4 + 1, nbe / 4 + 1);
 
     // allocation du tableau coord(numint, xyz)
-
     int taille = (nbe2) * (nbc + 1) * (nbz + 1);
     if (cyl_creux == 0)
         taille = taille + (nbe / 4 - 1) * (nbe / 4 - 1) * (nbz + 1);
-
-    double **coord = (double **)calloc(taille, sizeof(double *));
-    for (int i = 0; i < taille; i++)
-        coord[i] = (double *)calloc(3, sizeof(double));
+    double **coord;
+    array2D_alloc(coord, taille, 3);
 
     //  allocation du vecteur liste(numint)=numdao
-
     taille = (nbe2) * (nbc + 1) * (nbz + 1);
     if (cyl_creux == 0)
         taille = taille + (nbe / 4 - 1) * (nbe / 4 - 1) * (nbz + 1);
-    int *liste = (int *)calloc(taille, sizeof(int));
+    int *liste;
+    array1D_alloc(liste, taille);
 
     // fin des allocations
 
@@ -597,6 +565,24 @@ void Cylinder::build()
     fclose(fp_out2);
 
     this->ugrid = ugrid;
+
+    // free memory
+
+    // allocation du tableau tab(nz,couche,ne)
+	array3D_free(tab, nbz + 1, nbc + 1);
+
+    // allocation du tableau cube(nz,lig,col)
+    if (cyl_creux == 0)
+        array3D_free(cube, nbz + 1, nbe / 4 + 1);
+
+    // allocation du tableau coord(numint, xyz)
+    taille = (nbe2) * (nbc + 1) * (nbz + 1);
+    if (cyl_creux == 0)
+        taille = taille + (nbe / 4 - 1) * (nbe / 4 - 1) * (nbz + 1);
+    array2D_free(coord, taille);
+
+    //  allocation du vecteur liste(numint)=numdao
+    array1D_free(liste);
 }
 
 
@@ -778,7 +764,5 @@ void Cylinder::writemco(FILE *fp_out2, int type1, int noe_ini, int nbe2, int nbz
                 fprintf(fp_out2, "I -2 \n");
         }
     }
-
-
 }
 
