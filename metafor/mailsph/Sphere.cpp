@@ -16,19 +16,13 @@ Sphere::Sphere() : Mesh()
 
 void Sphere::build()
 {
+	int nbe, nbc, noe_ini, maille_ini, mat1, loi1, mat2, loi2, taille, taille2,
+		i, j, l, ****tab = nullptr, *liste = nullptr, **status = nullptr, no, c, face, addon,
+		n[4], s, cote, noe1, noe2, noe, noe0, l_ini, l_fin, c_ini, c_fin, nint,
+		maille, noe3, noe4, noe5, noe6, noe7, noe8, couche,
+		type1, type2, sphere_creuse, ***cube = nullptr, ep, ep_fin, ep_ini, nn[4], dim_status, nosph;
 
-	int nbe, nbc, noe_ini, maille_ini, mat1, loi1, mat2, loi2, taille, taille1, taille2,
-		taille3, taille4, i, j, k, l, ****tab = nullptr, *liste = nullptr, **status = nullptr, no, c, face, addon,
-		n[4], s, cote, noe1, noe2, noe, louc, noe0, l_ini, l_fin, c_ini, c_fin, nint,
-		maille, noe3, noe4, noe5, noe6, noe7, noe8, compteur, dao, couche, nbnoe,
-		type1, type2, n1, n2, out, don[10][2], level0, level1, level2, out2, nop,
-		sphere_creuse, ***cube = nullptr, ep, ep_fin, ep_ini, nn[4], dim_status, nosph;
-
-	double rint, rext, centre[3], r[3], **coord, xyz[3], alpha, ray, beta;
-
-	FILE *fp_out = fopen("out.dat", "w");
-
-	fprintf(fp_out, ".DEL.*\n");
+	double rint, rext, centre[3], r[3], **coord, xyz[3], ray;
 
 	// PARAMETRES
 
@@ -584,50 +578,8 @@ void Sphere::build()
 		}
 	}
 
-	//  impression des donn�es du probl�me
+	// nodes
 
-	if (sphere_creuse == 1)
-		fprintf(fp_out, "! Sphere %2d Creuse \n\n", nosph);
-
-	if (sphere_creuse == 0)
-		fprintf(fp_out, "! Sphere %2d Pleine \n\n", nosph);
-
-	fprintf(fp_out, "abrev '/rext' '%15.8E' ! Rayon Exterieur \n", rext);
-	if (sphere_creuse == 1)
-		fprintf(fp_out, "abrev '/rint' '%15.8E' ! Rayon Interieur \n", rint);
-
-	if (sphere_creuse == 0)
-		fprintf(fp_out, "abrev '/rap' '%15.8E' ! Rapport de la diagonale du cube central au rayon exterieur \n", rint);
-
-
-	fprintf(fp_out, "abrev '/xcentre' '%15.8E' ! Coordonnee X du centre \n", centre[0]);
-	fprintf(fp_out, "abrev '/ycentre' '%15.8E' ! Coordonnee Y du centre \n", centre[0]);
-	fprintf(fp_out, "abrev '/zcentre' '%15.8E' ! Coordonnee Z du centre \n", centre[0]);
-
-	fprintf(fp_out, "! Coefficient reducteur: X '%15.8E' Y '%15.8E' Z '%15.8E' \n", r[0], r[1], r[2]);
-
-	fprintf(fp_out, "abrev '/nbe' '%3d' ! Nombre d'elements sur un cote de facette \n", nbe);
-	fprintf(fp_out, "abrev '/nbc' '%3d' ! Nombre de couches d'�l�ments (hors cube central si plein) \n", nbc);
-	fprintf(fp_out, "abrev '/noeini' '%3d' ! Numero du noeud initial - 1\n", noe_ini);
-	fprintf(fp_out, "abrev '/maiini' '%3d' ! Numero de la maille initiale - 1\n", maille_ini);
-	if (type1 == 0)
-		fprintf(fp_out, "! Sa surface ext�rieure est la matrice de contact rigide numero %2d \n", mat1);
-	if (type1 == 1)
-		fprintf(fp_out, "! Sa surface ext�rieure est la matrice de contact deformable numero %2d \n", mat1);
-	if (type2 == 0)
-		fprintf(fp_out, "! Sa surface int�rieure est la matrice de contact rigide numero %2d \n", mat2);
-	if (type2 == 1)
-		fprintf(fp_out, "! Sa surface int�rieure est la matrice de contact deformable numero %2d \n", mat2);
-	
-	fprintf(fp_out, "! Tout ceci pour la sphere numero %2d  \n", nosph);
-	fprintf(fp_out, " \n");
-	fprintf(fp_out, " \n");
-
-	//  impression du .NOE
-
-	fprintf(fp_out, "\n.NOEUD\n");
-
-	// -VTK----------------------------------------------------------------------------------------------
 	auto ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
 	auto points = vtkSmartPointer<vtkPoints>::New();
 	ugrid->SetPoints(points);
@@ -662,19 +614,7 @@ void Sphere::build()
 						if (liste[nint] == 0)
 						{
 							noe = noe + 1;
-							if (noe % 11111 == 0 || noe == 9999)
-								noe = noe + 1;
-
-							if (noe > 99998)
-							{
-								fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-								throw std::runtime_error("bad parameters!");
-							}
-							fprintf(fp_out, "I %8d       X %15.8E    Y %15.8E    Z %15.8E\n",
-									noe, coord[nint][0], coord[nint][1], coord[nint][2]);
-							// VTK
-							points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
-
+							points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
 							liste[nint] = noe;
 						}
 					}
@@ -716,28 +656,14 @@ void Sphere::build()
 					if (liste[nint] == 0)
 					{
 						noe = noe + 1;
-						if (noe % 11111 == 0 || noe == 9999)
-						{
-							noe = noe + 1;
-						}
-						if (noe > 99998)
-						{
-							fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-							throw std::runtime_error("bad parameters!");
-						}
-						fprintf(fp_out, "I %8d       X %15.8E    Y %15.8E    Z %15.8E\n",
-								noe, coord[nint][0], coord[nint][1], coord[nint][2]);
-						// VTK
-						points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
-
+						points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
 						liste[nint] = noe;
 					}
 				}
 	}
 
-	// impression du .MAI
+	// cells
 
-	fprintf(fp_out, "\n.MAI\n");
 	maille = maille_ini;
 
 	for (couche = 1; couche <= nbc; couche++)
@@ -774,12 +700,8 @@ void Sphere::build()
 						noe6 = tab[couche][face][l][c + 1];
 						noe7 = tab[couche][face][l + 1][c + 1];
 						noe8 = tab[couche][face][l + 1][c];
-						fprintf(fp_out, "I %8d     N %6d %6d %6d %6d     0 %6d %6d %6d %6d ATT %2d\n", maille,
-								liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-								liste[noe5], liste[noe6], liste[noe7], liste[noe8], face);
-
-						insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-									  liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
+						insertvtkcell(ugrid, liste[noe1]-1, liste[noe2] - 1, liste[noe3] - 1, liste[noe4] - 1,
+									  liste[noe5] - 1, liste[noe6] - 1, liste[noe7] - 1, liste[noe8] - 1);
 					}
 				}
 			}
@@ -824,346 +746,10 @@ void Sphere::build()
 					noe6 = cube[ep + 1][l][c + 1];
 					noe7 = cube[ep + 1][l + 1][c + 1];
 					noe8 = cube[ep + 1][l + 1][c];
-					fprintf(fp_out, "I %8d     N %6d %6d %6d %6d     0 %6d %6d %6d %6d ATT %2d\n", maille,
-							liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-							liste[noe5], liste[noe6], liste[noe7], liste[noe8], face);
-
-					insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-								  liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
+					insertvtkcell(ugrid, liste[noe1] - 1, liste[noe2] - 1, liste[noe3] - 1, liste[noe4] - 1,
+								  liste[noe5] - 1, liste[noe6] - 1, liste[noe7] - 1, liste[noe8] - 1);
 				}
 	}
-
-	//  impression du .MCO
-
-	fprintf(fp_out, "\n.MCO\n\n");
-
-	//   couche exterieure
-
-	//   matrice rigide
-
-	if (type1 == 0)
-	{
-
-		for (i = 0; i < 10; i++)
-			for (j = 0; j < 2; j++)
-				don[i][j] = 0;
-
-		compteur = 0;
-		for (i = 0; i < 3; i++)
-			if (r[i] != 0)
-				compteur = compteur + 1;
-
-		if (compteur == 0)
-			nbnoe = 6 * nbe * nbe + 2;
-		else if (compteur == 1)
-			nbnoe = 3 * nbe * nbe + 2 * nbe + 1;
-		else if (compteur == 2)
-			nbnoe = 3 * nbe * nbe / 2 + 2 * nbe + 1;
-		else if (compteur == 3)
-			nbnoe = 3 * nbe * nbe / 4 + 3 * nbe / 2 + 1;
-
-		n1 = noe_ini + 1;
-		n2 = n1 + nbnoe - 1;
-		i = -1;
-		out = 0;
-		do
-		{
-			i = i + 1;
-			if ((i == 0 && n1 < 9999) || (i > 0 && n1 < (i * 11111)))
-			{
-				don[i][0] = n1;
-				level1 = i;
-				out = 1;
-			}
-		} while (out == 0 && i < 10);
-		out = 0;
-		i = i - 1;
-		do
-		{
-			i = i + 1;
-			if ((i == 0 && n2 < 9999) || (i > 0 && n2 < (i * 11111)))
-			{
-				don[i][1] = n2;
-				level2 = i;
-				out = 1;
-			}
-			else
-			{
-				if (i == 0)
-				{
-					don[i][1] = 9998;
-					don[i + 1][0] = 10000;
-					n2 = n2 + 1;
-				}
-				else
-				{
-					don[i][1] = (i * 11111) - 1;
-					don[i + 1][0] = (i * 11111) + 1;
-					n2 = n2 + 1;
-				}
-			}
-		} while (out == 0 && i < 10);
-		for (i = level1; i <= level2; i++)
-		{
-			if (don[i][0] != 0)
-				fprintf(fp_out, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-						don[i][0], don[i][1], mat1, loi1);
-		}
-		fprintf(fp_out, "\n");
-	}
-
-	//   matrice souple
-
-	if (type1 == 1)
-	{
-		couche = 0;
-		compteur = 0;
-
-		for (face = 0; face < 6; face++)
-		{
-			if (status[face][0] != 3)
-			{
-				if (compteur > 0)
-					fprintf(fp_out, "I %6d \n", -4);
-
-				compteur = compteur + 1;
-
-				l_ini = 0;
-				l_fin = nbe;
-				c_ini = 0;
-				c_fin = nbe;
-
-				if (status[face][0] == 1)
-					c_fin = nbe / 2;
-				else if (status[face][0] == 2)
-					c_ini = nbe / 2;
-
-				if (status[face][1] == 1)
-					l_fin = nbe / 2;
-				else if (status[face][1] == 2)
-					l_ini = nbe / 2;
-
-				for (l = l_ini; l <= l_fin; l++)
-				{
-					for (c = c_ini; c <= c_fin; c++)
-					{
-						noe = tab[couche][face][l][c];
-						dao = liste[noe];
-						nop = 0;
-						if (c == 0 || c == nbe || l == 0 || l == nbe)
-						{
-							if (face == 0)
-								nop = -1;
-							else if (face == 1 || face == 2)
-							{
-								if (c == 0)
-									nop = -2;
-								else
-									nop = -1;
-							}
-							else if (face == 3)
-							{
-								if (c == 0 || c == nbe)
-									nop = -2;
-								else
-									nop = -1;
-							}
-							if (face == 4 || face == 5)
-								nop = -2;
-
-							fprintf(fp_out, "I %6d      MAT %3d   LOI %2d NOP %2d \n", dao, mat1, loi1, nop);
-						}
-						else
-							fprintf(fp_out, "I %6d      MAT %3d   LOI %2d \n", dao, mat1, loi1);
-					}
-					if (l != l_fin)
-						fprintf(fp_out, "I %8d \n", -3);
-				}
-			}
-		}
-		fprintf(fp_out, "\n");
-	}
-
-	//   couche interieure
-
-	//   matrice rigide
-
-	if (type2 == 0)
-	{
-		for (i = 0; i < 10; i++)
-			for (j = 0; j < 2; j++)
-				don[i][j] = 0;
-
-		compteur = 0;
-		for (i = 0; i < 3; i++)
-			if (r[i] != 0)
-				compteur = compteur + 1;
-
-		if (compteur == 0)
-			nbnoe = 6 * nbe * nbe + 2;
-		else if (compteur == 1)
-			nbnoe = 3 * nbe * nbe + 2 * nbe + 1;
-
-		else if (compteur == 2)
-			nbnoe = 3 * nbe * nbe / 2 + 2 * nbe + 1;
-		else if (compteur == 3)
-			nbnoe = 3 * nbe * nbe / 4 + 3 * nbe / 2 + 1;
-
-		n1 = noe_ini + nbc * nbnoe + 1;
-		n2 = n1 + nbc * nbnoe - 1;
-		i = -1;
-		out = 0;
-		out2 = 0;
-
-		do
-		{
-			i = i + 1;
-			if (((i == 0 && (noe_ini + 1) < 9999) || (i > 0 && (noe_ini + 1) < (i * 11111))) && (out2 == 0))
-			{
-				level0 = i;
-				out2 = 1;
-			}
-			if ((i == 0 && n1 < 9999) || (i > 0 && n1 < (i * 11111)))
-			{
-				level1 = i;
-				n1 = n1 + i - level0;
-				n2 = n2 + i - level0;
-				don[i][0] = n1;
-				out = 1;
-			}
-		} while (out == 0 && i < 10);
-
-		out = 0;
-		i = i - 1;
-
-		do
-		{
-			i = i + 1;
-			if ((i == 0 && n2 < 9999) || (i > 0 && n2 < (i * 11111)))
-			{
-				don[i][1] = n2;
-				level2 = i;
-				out = 1;
-			}
-			else
-			{
-				if (i == 0)
-				{
-					don[i][1] = 9998;
-					don[i + 1][0] = 10000;
-					n2 = n2 + 1;
-				}
-				else
-				{
-					don[i][1] = (i * 11111) - 1;
-					don[i + 1][0] = (i * 11111) + 1;
-					n2 = n2 + 1;
-				}
-			}
-		} while (out == 0 && i < 10);
-
-		for (i = level1; i <= level2; i++)
-		{
-			if (don[i][0] != 0)
-				fprintf(fp_out, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-						don[i][0], don[i][1], mat2, loi2);
-		}
-		fprintf(fp_out, "\n");
-	}
-
-	//   matrice souple
-
-	if (type2 == 1)
-	{
-		couche = nbc;
-		compteur = 0;
-
-		for (face = 0; face < 6; face++)
-		{
-			if (status[face][0] != 3)
-			{
-				if (compteur > 0)
-					fprintf(fp_out, "I %6d \n", -4);
-
-				compteur = compteur + 1;
-
-				l_ini = 0;
-				l_fin = nbe;
-				c_ini = 0;
-				c_fin = nbe;
-
-				if (status[face][0] == 1)
-					c_fin = nbe / 2;
-
-				else if (status[face][0] == 2)
-					c_ini = nbe / 2;
-
-				if (status[face][1] == 1)
-					l_fin = nbe / 2;
-
-				else if (status[face][1] == 2)
-					l_ini = nbe / 2;
-
-				for (l = l_ini; l <= l_fin; l++)
-				{
-					for (c = c_ini; c <= c_fin; c++)
-					{
-						noe = tab[couche][face][(l_fin + l_ini) - l][c];
-						dao = liste[noe];
-						nop = 0;
-						if (c == 0 || c == nbe || l == 0 || l == nbe)
-						{
-							if (face == 0)
-							{
-								nop = -1;
-							}
-							else if (face == 1 || face == 2)
-							{
-								if (c == 0)
-									nop = -2;
-								else
-									nop = -1;
-							}
-							else if (face == 3)
-							{
-								if (c == 0 || c == nbe)
-									nop = -2;
-								else
-									nop = -1;
-							}
-							if (face == 4 || face == 5)
-								nop = -2;
-
-							fprintf(fp_out, "I %6d      MAT %3d   LOI %2d NOP %2d \n", dao, mat2, loi2, nop);
-						}
-						else
-							fprintf(fp_out, "I %6d      MAT %3d   LOI %2d \n", dao, mat2, loi2);
-					}
-					if (l != l_fin)
-						fprintf(fp_out, "I %6d \n", -3);
-				}
-			}
-		}
-		fprintf(fp_out, "\n");
-	}
-	fprintf(fp_out, ".DES\n");
-	//   fprintf(fp_out,"grap effa \n") ;
-	//   fprintf(fp_out,"grap remp 0 \n") ;
-	//   fprintf(fp_out,"grap divise cloture 4 \n") ;
-	//   fprintf(fp_out,"grap sel clo 1 \n") ;
-	//   fprintf(fp_out,"/g vise 1 0 0 \n") ;
-	//   fprintf(fp_out,"vi \n") ;
-	//   fprintf(fp_out,"grap effa 0 \n") ;
-	//   fprintf(fp_out,"/g sel clo 2 \n") ;
-	//   fprintf(fp_out,"/g vise 0 1 0 \n") ;
-	//   fprintf(fp_out,"vi \n") ;
-	//   fprintf(fp_out,"/g sel clo 3 \n") ;
-	//   fprintf(fp_out,"/g vise 0 0 1 \n") ;
-	//   fprintf(fp_out,"VI\n") ;
-	//   fprintf(fp_out,"/g sel clo 4 \n") ;
-	//   fprintf(fp_out,"grap vc visee 2 3 1\n") ;
-	fprintf(fp_out, "grap remp 0 visee 2 3 1\n");
-	fprintf(fp_out, "VI\n");
 
 	// apply 3 reflections
 	auto ugrid2 = reflect(ugrid);

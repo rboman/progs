@@ -20,11 +20,11 @@ SphereBAD::SphereBAD() : Mesh()
 void SphereBAD::build()
 {
 
-    int num, n, ntour, a, b, c, d, e, i, ii, j, k, l, n2, nelemtour, nelemext,
-        face, taille, **maille, **posface, level, nbtotal;
+    int i, ii, j, k, l, n2, nelemtour, nelemext,
+        face, taille, **maille, **posface, level;
 
-    double rtour, rayonini, rayonext, **alpha, **beta, alpha1, beta1, xt2[3], yt2[3],
-        x0, x1, x2, centre[3], pi, x[3], rayon, tx, d1, d2, d3, pres, eps;
+    double rayonini, rayonext, **alpha, **beta, alpha1, beta1, 
+        x0, x1, x2, centre[3], pi, rayon, d1, d2, d3, pres, eps;
 
     FILE *fp_out;
 

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 Cylinder::Cylinder() : Mesh()
 {
@@ -43,11 +44,6 @@ Cylinder::Cylinder() : Mesh()
 
 void Cylinder::build()
 {
-    FILE *fp_out = fopen("cyl_noe.dat", "w");
-    FILE *fp_out2 = fopen("cyl_mco.dat", "w");
-
-    fprintf(fp_out, ".DEL.*\n");
-
     // face externe
 
     int mat1rig = 1;
@@ -57,7 +53,7 @@ void Cylinder::build()
     int type1 = 1; // -1 pas contact, 0 si rigide, 1 si defo-defo, 2 si les deux
 
     // face interne
-    int mat2rig, loi2rig, mat2def, loi2def, type2;
+    int mat2rig = 0, loi2rig = 0, mat2def = 0, loi2def = 0, type2 = 0;
     if (cyl_creux == 1)
     {
         mat2rig = 3;
@@ -326,53 +322,6 @@ void Cylinder::build()
 
     // fin du remplissage du tableau des coord.
 
-    //  impression des donn�es du probl�me
-
-    if (cyl_creux == 1)
-        fprintf(fp_out, "! Cylindre %2d Creux \n\n", nocyl);
-
-    if (cyl_creux == 0)
-        fprintf(fp_out, "! Cylindre %2d Plein \n\n", nocyl);
-
-    fprintf(fp_out, "abrev '/rext' '%15.8E' ! Rayon Exterieur \n", rext);
-    if (cyl_creux == 1)
-        fprintf(fp_out, "abrev '/rint' '%15.8E' ! Rayon Interieur \n", rint);
-
-    if (cyl_creux == 0)
-        fprintf(fp_out, "abrev '/rap' '%15.8E' ! Rapport de la diagonale du carre central au rayon exterieur \n", (rint / rext));
-
-
-    fprintf(fp_out, "abrev '/xcentre' '%15.8E' ! Coordonnee X du centre \n", centre[0]);
-    fprintf(fp_out, "abrev '/ycentre' '%15.8E' ! Coordonnee Y du centre \n", centre[1]);
-    fprintf(fp_out, "abrev '/zcentre' '%15.8E' ! Coordonnee Z du centre \n", centre[2]);
-
-    fprintf(fp_out, "abrev '/xnormplan' '%15.8E' ! Coordonnee X de la normale au plan \n", norm[0]);
-    fprintf(fp_out, "abrev '/ynormplan' '%15.8E' ! Coordonnee Y de la normale au plan \n", norm[1]);
-    fprintf(fp_out, "abrev '/znormplan' '%15.8E' ! Coordonnee Z de la normale au plan \n", norm[2]);
-
-    fprintf(fp_out, "abrev '/xextru' '%15.8E' ! Coordonnee X du vecteur d extrusion \n", ext[0]);
-    fprintf(fp_out, "abrev '/yextru' '%15.8E' ! Coordonnee Y du vecteur d extrusion \n", ext[1]);
-    fprintf(fp_out, "abrev '/zextru' '%15.8E' ! Coordonnee Z du vecteur d extrusion \n", ext[2]);
-
-    fprintf(fp_out, "abrev '/nbe' '%3d' ! Nombre d'elements sur l arc de cercle \n", nbe);
-    fprintf(fp_out, "abrev '/nbc' '%3d' ! Nombre de couches d'�l�ments (hors carre central si plein) \n", nbc);
-    fprintf(fp_out, "abrev '/noeini' '%3d' ! Numero du noeud initial - 1\n", noe_ini);
-    fprintf(fp_out, "abrev '/maiini' '%3d' ! Numero de la maille initiale - 1\n", maille_ini);
-    if (type1 == 0 || type1 == 2)
-        fprintf(fp_out, "! Sa surface ext�rinterieureieure est la matrice de contact rigide numero %2d \n", mat1rig);
-
-    if (type1 > 0)
-        fprintf(fp_out, "! Sa surface interieure est la matrice de contact deformable numero %2d \n", mat1def);
-
-    if (type2 == 0 || type2 == 2)
-        fprintf(fp_out, "! Sa surface interieure est la matrice de contact rigide numero %2d \n", mat2rig);
-
-    if (type2 > 0)
-        fprintf(fp_out, "! Sa surface interieure est la matrice de contact deformable numero %2d \n", mat2def);
-
-    fprintf(fp_out, "! Tout ceci pour le cylindre numero %2d  \n", nocyl);
-    fprintf(fp_out, " \n");
-    fprintf(fp_out, " \n");
 
     // -VTK----------------------------------------------------------------------------------------------
     auto ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
@@ -381,7 +330,6 @@ void Cylinder::build()
 
     //  impression du .NOE
 
-    fprintf(fp_out, "\n.NOEUD\n");
     int noe = noe_ini;
 
     for (int ne = 0; ne < nbe2; ne++)
@@ -391,20 +339,8 @@ void Cylinder::build()
             if (liste[nint] == 0)
             {
                 noe = noe + 1;
-                if (noe % 11111 == 0 || noe == 9999)
-                {
-                    noe = noe + 1;
-                }
-                if (noe > 99998)
-                {
-                    fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                    throw std::runtime_error("bad parameters!");
-                }
-                fprintf(fp_out, "I %5d  X %11.4E Y %11.4E Z %11.4E\n",
-                        noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                 liste[nint] = noe;
-                // VTK
-                points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+                points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]); // shift index to start from 0
             }
         }
 
@@ -415,19 +351,8 @@ void Cylinder::build()
             if (liste[nint] == 0)
             {
                 noe = noe + 1;
-                if (noe % 11111 == 0 || noe == 9999)
-                    noe = noe + 1;
-
-                if (noe > 99998)
-                {
-                    fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                    throw std::runtime_error("bad parameters!");
-                }
-                fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
-                        noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                 liste[nint] = noe;
-                // VTK
-                points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+                points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
             }
         }
 
@@ -440,19 +365,8 @@ void Cylinder::build()
                     if (liste[nint] == 0)
                     {
                         noe = noe + 1;
-                        if (noe % 11111 == 0 || noe == 9999)
-                            noe = noe + 1;
-
-                        if (noe > 99998)
-                        {
-                            fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                            throw std::runtime_error("bad parameters!");
-                        }
-                        fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
-                                noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                         liste[nint] = noe;
-                        // VTK
-                        points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+                        points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
                     }
                 }
 
@@ -465,25 +379,13 @@ void Cylinder::build()
                     if (liste[nint] == 0)
                     {
                         noe = noe + 1;
-                        if (noe % 11111 == 0 || noe == 9999)
-                            noe = noe + 1;
-
-                        if (noe > 99998)
-                        {
-                            fprintf(fp_out, "Erreur, numero de noeuds trop grand pour BACON\n");
-                            throw std::runtime_error("bad parameters!");
-                        }
-                        fprintf(fp_out, "I %5d X %11.4E Y %11.4E Z %11.4E\n",
-                                noe, coord[nint][0], coord[nint][1], coord[nint][2]);
                         liste[nint] = noe;
-                        // VTK
-                        points->InsertPoint(noe, coord[nint][0], coord[nint][1], coord[nint][2]);
+                        points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
                     }
                 }
 
     // impression du .MAI
 
-    fprintf(fp_out, "\n.MAI\n");
     int maille = maille_ini;
 
     for (int nz = 0; nz < nbz; nz++)
@@ -502,12 +404,9 @@ void Cylinder::build()
                 int noe6 = tab[nz + 1][couche][ne2];
                 int noe7 = tab[nz + 1][couche + 1][ne2];
                 int noe8 = tab[nz + 1][couche + 1][ne];
-                fprintf(fp_out, "I %5d N %4d %4d %4d %4d 0 %4d %4d %4d %4d AT %1d\n", maille,
-                        liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-                        liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
 
-                insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-                        liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
+                insertvtkcell(ugrid, liste[noe1]-1, liste[noe2] - 1, liste[noe3] - 1, liste[noe4] - 1,
+                        liste[noe5] - 1, liste[noe6] - 1, liste[noe7] - 1, liste[noe8] - 1);
             }
 
     if (cyl_creux == 0)
@@ -524,45 +423,10 @@ void Cylinder::build()
                     int noe6 = cube[nz + 1][l][c + 1];
                     int noe7 = cube[nz + 1][l + 1][c + 1];
                     int noe8 = cube[nz + 1][l + 1][c];
-                    fprintf(fp_out, "I %5d N %4d %4d %4d %4d 0 %4d %4d %4d %4d AT %1d\n", maille,
-                            liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-                            liste[noe5], liste[noe6], liste[noe7], liste[noe8], nocyl);
 
-                    insertvtkcell(ugrid, liste[noe1], liste[noe2], liste[noe3], liste[noe4],
-                            liste[noe5], liste[noe6], liste[noe7], liste[noe8]);
+                    insertvtkcell(ugrid, liste[noe1] - 1, liste[noe2] - 1, liste[noe3] - 1, liste[noe4] - 1,
+                            liste[noe5] - 1, liste[noe6] - 1, liste[noe7] - 1, liste[noe8] - 1);
                 }
-
-
-    writemco(fp_out2, type1, noe_ini, nbe2,  nbz,  nbc,  
-                     mat1rig,  loi1rig,  mat2rig,  loi2rig, 
-                     liste,  tab, 
-                     mat1def,  loi1def,  mat2def, loi2def, 
-                     cyl_ouvert,  type2 );
-
-    //     fprintf(fp_out2,"I -4 \n") ;
-    fprintf(fp_out2, "return \n");
-    fprintf(fp_out, "return \n");
-    //   fprintf(fp_out,".DES\n") ;
-    //   fprintf(fp_out,"grap effa \n") ;
-    //   fprintf(fp_out,"grap remp 0 \n") ;
-    //   fprintf(fp_out,"grap divise cloture 4 \n") ;
-    //   fprintf(fp_out,"grap sel clo 1 \n") ;
-    //   fprintf(fp_out,"/g vise 1 0 0 \n") ;
-    //   fprintf(fp_out,"vi \n") ;
-    //   fprintf(fp_out,"grap effa 0 \n") ;
-    //   fprintf(fp_out,"/g sel clo 2 \n") ;
-    //   fprintf(fp_out,"/g vise 0 1 0 \n") ;
-    //   fprintf(fp_out,"vi \n") ;
-    //   fprintf(fp_out,"/g sel clo 3 \n") ;
-    //   fprintf(fp_out,"/g vise 0 0 1 \n") ;
-    //   fprintf(fp_out,"VI\n") ;
-    //   fprintf(fp_out,"/g sel clo 4 \n") ;
-    //   fprintf(fp_out,"grap vc visee 2 3 1\n") ;
-    //   fprintf(fp_out,"grap remp 0 visee 2 3 1\n") ;
-    //   fprintf(fp_out,"VI\n") ;
-
-    fclose(fp_out);
-    fclose(fp_out2);
 
     this->ugrid = ugrid;
 
@@ -584,185 +448,3 @@ void Cylinder::build()
     //  allocation du vecteur liste(numint)=numdao
     array1D_free(liste);
 }
-
-
-
-
-
-void Cylinder::writemco(FILE *fp_out2, int type1, int noe_ini, int nbe2, int nbz, int nbc,  
-                int mat1rig, int loi1rig, int mat2rig, int loi2rig, 
-                int *liste, int ***tab, 
-                int mat1def, int loi1def, int mat2def, int loi2def, 
-                int cyl_ouvert, int type2 )
-{
-
-
-    //  impression du .MCO
-
-    fprintf(fp_out2, "\n.MCO\n\n");
-
-    //   couche exterieure
-
-    //   matrice rigide
-
-    if (type1 == 0 || type1 == 2)
-    {
-        int don[10][2];
-        for (int i = 0; i < 10; i++)
-            for (int j = 0; j < 2; j++)
-                don[i][j] = 0;
-
-        int nbnoe = nbe2 * (nbz + 1);
-        int n1 = noe_ini + 1;
-        int n2 = n1 + nbnoe - 1;
-        int i = -1;
-        int out = 0;
-        int level1=0;
-        int level2=0;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n1 < 9999) || (i > 0 && n1 < (i * 11111)))
-            {
-                don[i][0] = n1;
-                level1 = i;
-                out = 1;
-            }
-        } while (out == 0 && i < 10);
-        out = 0;
-        i = i - 1;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n2 < 9999) || (i > 0 && n2 < (i * 11111)))
-            {
-                don[i][1] = n2;
-                level2 = i;
-                out = 1;
-            }
-            else
-            {
-                if (i == 0)
-                {
-                    don[i][1] = 9998;
-                    don[i + 1][0] = 10000;
-                    n2 = n2 + 1;
-                }
-                else
-                {
-                    don[i][1] = (i * 11111) - 1;
-                    don[i + 1][0] = (i * 11111) + 1;
-                    n2 = n2 + 1;
-                }
-            }
-        } while (out == 0 && i < 10);
-        for (int i = level1; i <= level2; i++)
-        {
-            if (don[i][0] != 0)
-                fprintf(fp_out2, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-                        don[i][0], don[i][1], mat1rig, loi1rig);
-        }
-        fprintf(fp_out2, "\n");
-    }
-
-    //   matrice souple
-
-    if (type1 > 0)
-    {
-        for (int ne = 0; ne < nbe2; ne++)
-        {
-            int noe1 = liste[tab[0][0][ne]];
-            int noe2 = liste[tab[nbz][0][ne]];
-            fprintf(fp_out2, "I %6d  J %6d  K 1  MAT %3d  LOI %2d \n", noe1, noe2, mat1def, loi1def);
-            if (ne != nbe2 - 1)
-                fprintf(fp_out2, "I %8d \n", -3);
-            if (cyl_ouvert == 0 && ne == nbe2 - 1)
-                fprintf(fp_out2, "I -2 \n");
-        }
-    }
-    fprintf(fp_out2, "\n");
-
-    //   couche interieure
-
-    //   matrice rigide
-
-    if (type2 == 0 || type2 == 2)
-    {
-        int don[10][2];
-        for (int i = 0; i < 10; i++)
-            for (int j = 0; j < 2; j++)
-                don[i][j] = 0;
-
-        int nbnoe = nbe2 * (nbz + 1);
-        int n1 = liste[tab[0][nbc][0]];
-        int n2 = n1 + nbnoe - 1;
-        int i = -1;
-        int out = 0;
-        int level1=0;
-        int level2=0;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n1 < 9999) || (i > 0 && n1 < (i * 11111)))
-            {
-                don[i][0] = n1;
-                level1 = i;
-                out = 1;
-            }
-        } while (out == 0 && i < 10);
-
-        out = 0;
-        i = i - 1;
-        do
-        {
-            i = i + 1;
-            if ((i == 0 && n2 < 9999) || (i > 0 && n2 < (i * 11111)))
-            {
-                don[i][1] = n2;
-                level2 = i;
-                out = 1;
-            }
-            else
-            {
-                if (i == 0)
-                {
-                    don[i][1] = 9998;
-                    don[i + 1][0] = 10000;
-                    n2 = n2 + 1;
-                }
-                else
-                {
-                    don[i][1] = (i * 11111) - 1;
-                    don[i + 1][0] = (i * 11111) + 1;
-                    n2 = n2 + 1;
-                }
-            }
-        } while (out == 0 && i < 10);
-
-        for (int i = level1; i <= level2; i++)
-        {
-            if (don[i][0] != 0)
-                fprintf(fp_out2, "I %6d      J %6d    MAT %2d   LOI %2d \n",
-                        don[i][0], don[i][1], mat2rig, loi2rig);
-        }
-        fprintf(fp_out2, "\n");
-    }
-
-    //   matrice souple
-
-    if (type2 > 0)
-    {
-        for (int ne = 0; ne < nbe2; ne++)
-        {
-            int noe1 = liste[tab[0][nbc][ne]];
-            int noe2 = liste[tab[nbz][nbc][ne]];
-            fprintf(fp_out2, "I %6d  J %6d  K -1  MAT %3d  LOI %2d \n", noe2, noe1, mat2def, loi2def);
-            if (ne != nbe2 - 1)
-                fprintf(fp_out2, "I %8d \n", -3);
-
-            if (cyl_ouvert == 0 && ne == nbe2 - 1)
-                fprintf(fp_out2, "I -2 \n");
-        }
-    }
-}
-
