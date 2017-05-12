@@ -44,30 +44,6 @@ Cylinder::Cylinder() : Mesh()
 
 void Cylinder::build()
 {
-    // face externe
-
-    int mat1rig = 1;
-    int mat1def = 1;
-    int loi1rig = 1;
-    int loi1def = 1;
-    int type1 = 1; // -1 pas contact, 0 si rigide, 1 si defo-defo, 2 si les deux
-
-    // face interne
-    int mat2rig = 0, loi2rig = 0, mat2def = 0, loi2def = 0, type2 = 0;
-    if (cyl_creux == 1)
-    {
-        mat2rig = 3;
-        mat2def = 4;
-        loi2rig = 3;
-        loi2def = 4;
-        type2 = -1; // -1 pas contact, 0 si rigide, 1 si defo-defo, 2 si les deux
-    }
-    else
-        type2 = -1;
-
-    // FIN DES PARAMETRES
-
-
     // inversion des rayons pour rext > rint
 
     if (theta0 != 360.)
@@ -96,10 +72,7 @@ void Cylinder::build()
     else if (cyl_ouvert == 0)
         nbe2 = nbe;
 
-    mat1def = -mat1def;
-    mat2def = -mat2def;
-
-    // norme les vecteur de definition
+    // norme les vecteurs de definition
 
     double vrot[3];
     vrot[0] = vec1[1] * norm[2] - vec1[2] * norm[1];

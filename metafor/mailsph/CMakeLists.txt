@@ -2,16 +2,19 @@
 # cmake --build . --config Release
 
 cmake_minimum_required(VERSION 2.8.5 FATAL_ERROR)
+if(POLICY CMP0020)
+    cmake_policy(SET CMP0020 NEW)   # Automatically link Qt executables to qtmain target on Windows. (OLD=NO)
+endif()
 if(POLICY CMP0025)
-  cmake_policy(SET CMP0025 NEW) # CMake 3.0
+  cmake_policy(SET CMP0025 NEW)     # Compiler id for Apple Clang is now AppleClang.
 endif()
 if(POLICY CMP0053)
-  cmake_policy(SET CMP0053 NEW) # CMake 3.1
+    cmake_policy(SET CMP0053 NEW)   # Simplify variable reference and escape sequence evaluation
 endif()
 
-project (Cylindre)
+project (MailSph)
 
-include(CMakeToolsHelpers OPTIONAL)  # VSCode + CMake
+include(CMakeToolsHelpers OPTIONAL)  # integration VSCode + CMake
 
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-std=c++11" STD11CHECK)
@@ -35,5 +38,5 @@ IF(MSVC)
 ENDIF(MSVC)
 
 FILE(GLOB SRCS *.h *.cpp)
-add_executable(cylindre MACOSX_BUNDLE ${SRCS})
-target_link_libraries(cylindre ${VTK_LIBRARIES})
+add_executable(mailsph MACOSX_BUNDLE ${SRCS})
+target_link_libraries(mailsph ${VTK_LIBRARIES})
