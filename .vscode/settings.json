@@ -45,7 +45,22 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "algorithm": "cpp",
+        "ios": "cpp",
+        "map": "cpp",
+        "numeric": "cpp",
+        "set": "cpp",
+        "string": "cpp",
+        "xfacet": "cpp",
+        "xlocinfo": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xloctime": "cpp",
+        "xmemory": "cpp",
+        "xmemory0": "cpp",
+        "xstddef": "cpp",
+        "xtr1common": "cpp"
     },
     "python.linting.pylintEnabled": false
 }
