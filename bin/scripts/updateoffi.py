@@ -5,10 +5,68 @@ import os, shutil, platform, subprocess
 import pytools.utils as pu
 import pytools.versioning as vrs
 
+def guessSystem():
+    guesses = []
+    import platform
+    system, node, release, version, machine, processor = platform.uname()
+
+    # machine name
+    machine_name = node.split('.')[0].lower()
+    print 'machine_name =', machine_name
+    guesses.append(machine_name)
+
+    # system name
+    print 'system =', system
+    if system=='Darwin':
+        mac_release, mac_versioninfo, mac_machine = platform.mac_ver()  
+        print '\tmac_release =', mac_release
+        print '\tmac_versioninfo =', mac_versioninfo
+        print '\tmac_machine =', mac_machine
+        guesses.append('macos')
+    if system=='Linux':
+        lin_distname, lin_version, lin_id = platform.linux_distribution()
+        print '\tlin_distname =', lin_distname
+        print '\tlin_version =', lin_version
+        print '\tlin_id =', lin_id
+        guesses.append(lin_distname.lower())
+    if system=='Windows':
+        win_release, win_version, win_csd, win_ptype = platform.win32_ver()
+        print '\twin_release =', win_release
+        print '\twin_version =', win_version
+        print '\twin_csd =', win_csd
+        print '\twin_ptype =', win_ptype
+        guesses.append(system.lower())
+    return guesses
+
+def chooseCfg():
+    guesses = guessSystem()
+    #print guesses
+
+    avfiles = os.listdir('oo_meta/CMake')
+    #print avfiles
+    cfiles=[]
+    for g in guesses:
+        for avf in avfiles:
+            if avf.find(g)!=-1:
+                cfiles.append(avf)
+    #print cfiles
+
+    # ask
+    print 'Choose a config file:'
+    for i, cf in enumerate(cfiles):
+        print '\t%d: %s' % (i+1, cf)
+    ii = raw_input('? ')
+    return cfiles[int(ii)-1]
+        
+
 def main(repos):
 
-    for rep in repos:
-        rep.update()
+    # checkout/update everything
+    if 1:
+        for rep in repos:
+            rep.update()
+
+    cfg = chooseCfg()
 
     # clean build dir
     if 1:
@@ -23,19 +81,17 @@ def main(repos):
     # make
     if 1:
         if pu.isUnix():
-            cmd='cmake -G"Eclipse CDT4 - Unix Makefiles"' \
-                ' -D_ECLIPSE_VERSION=4.7' \
-                ' -DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE' \
-                ' -C ../oo_meta/CMake/ubuntu.cmake' \
-                ' ../oo_meta'
+            cmd='cmake -C ../oo_meta/CMake/%s ../oo_meta' %cfg
         else:
-            cmd=r'cmake -C ..\oo_meta\CMake\garfield.cmake ..\oo_meta'
+            cmd=r'cmake -C ..\oo_meta\CMake\%s ..\oo_meta' %cfg
         os.system(cmd)
         
     if 1:
         if pu.isUnix():
+            # TODO: guess nb of cores
             os.system('make -j 12')
         else:
+            # TODO: check buildconsole
             os.system('BuildConsole Metafor.sln /rebuild /cfg="Release|x64"')
 
 if __name__=="__main__":
