@@ -122,11 +122,11 @@ tprop.ItalicOn()
 #tprop.ShadowOn()
 #tprop.SetFontFamilyToTimes()
 axes.GetXAxisCaptionActor2D().SetCaptionTextProperty(tprop)
-tprop2 = vtk.vtkTextProperty()
-tprop2.ShallowCopy(tprop)
+tprop2 = vtk.vtkTextProperty() # inutile
+tprop2.ShallowCopy(tprop) # inutile
 axes.GetYAxisCaptionActor2D().SetCaptionTextProperty(tprop2)
-tprop3 = vtk.vtkTextProperty()
-tprop3.ShallowCopy(tprop)
+tprop3 = vtk.vtkTextProperty() # inutile
+tprop3.ShallowCopy(tprop) # inutile
 axes.GetZAxisCaptionActor2D().SetCaptionTextProperty(tprop3)
 
 marker = vtk.vtkOrientationMarkerWidget()

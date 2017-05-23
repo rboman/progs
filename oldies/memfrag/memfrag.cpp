@@ -22,8 +22,8 @@ void operator delete(void *p)
 
 class Obj
 {
-public:
-    int i, j, k, l;  // 4*4 = 16bytes
+  public:
+    int i, j, k, l; // 4*4 = 16bytes
 };
 
 int main()
@@ -48,19 +48,19 @@ int main()
     std::cout << "size    =" << pipo->size() << std::endl;
 
     //--
-    std::cout << "**test 2"<< std::endl;
+    std::cout << "**test 2" << std::endl;
     std::vector<int> test(1);
     //test.push_back(0);
     std::cout << &test << std::endl;
 
     std::cout << "**test 3" << std::endl;
-    std::list<int> test2(0,0);
+    std::list<int> test2(0, 0);
     std::cout << "push" << std::endl;
     test2.push_back(1);
     test2.push_back(2);
     test2.push_back(4);
     test2.push_back(5);
- 
+
     std::cout << "**test4" << std::endl;
     std::list<int> *test3 = new std::list<int>;
     std::cout << "push" << std::endl;

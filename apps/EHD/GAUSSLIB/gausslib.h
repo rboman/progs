@@ -38,7 +38,6 @@
  * RoBo aout 2000
  */
 
-
 #ifndef __GAUSSLIB_H__
 #define __GAUSSLIB_H__
 
@@ -52,7 +51,6 @@
 
 /* ---------------------------------------------------------------------------------- */
 
-
 #define GAUSS_MAX_NG 10
 
 #define GAUSS_MAX_EL 3
@@ -60,7 +58,6 @@
 #define GAUSS_EL_LINE 0
 #define GAUSS_EL_QUAD 1
 #define GAUSS_EL_HEXA 2
-
 
 /* ---------------------------------------------------------------------------------- */
 
@@ -104,10 +101,7 @@ double *generic_xg[GAUSS_MAX_EL][GAUSS_MAX_NG];
 double *generic_pg[GAUSS_MAX_EL][GAUSS_MAX_NG];
 double ***generic_psi[GAUSS_MAX_EL][GAUSS_MAX_NG];
 
-
-
 /* ---------------------------------------------------------------------------------- */
-
 
 /* protos */
 
@@ -119,55 +113,55 @@ int gauss_common_pp(double *xg, double *wg, int ng);
 // gauss_quad.c
 
 int gauss_quad(int ng, int ndim,
-               double *x1, double *x2, double *x3, double *x4, 
-               int (*fct)(double *,double *,void *,int,double *), 
+               double *x1, double *x2, double *x3, double *x4,
+               int (*fct)(double *, double *, void *, int, double *),
                void *par, double *res);
 void gauss_quad_getx(int no, double ***psi, double **xx, int ndim, double *x);
 int gauss_quad_get_psi(int ng, double ****psi, double *xg);
-void gauss_quad_jaco(double **xx, double jaco[][3], int no, 
+void gauss_quad_jaco(double **xx, double jaco[][3], int no,
                      double *xg, double ***psi, int ndim);
 int gauss_quad_get_xgpg(int ng, double **xg, double **pg);
 
 // gauss_line.c
 
 int gauss_line(int ng, int ndim,
-               double *x1, double *x2, 
-               int (*fct)(double *,double *,void *,int,double *), 
+               double *x1, double *x2,
+               int (*fct)(double *, double *, void *, int, double *),
                void *par, double *res);
 void gauss_line_getx(int no, double ***psi, double **xx, int ndim, double *x);
 void gauss_line_getf(int no, double ***psi, double *ff, double *x);
 int gauss_line_get_psi(int ng, double ****psi, double *xg);
-void gauss_line_jaco(double **xx, double jaco[][3], int no, 
+void gauss_line_jaco(double **xx, double jaco[][3], int no,
                      double *xg, double ***psi, int ndim);
 int gauss_line_get_xgpg(int ng, double **xg, double **pg);
 
 // gauss_hexa.c
 
 int gauss_hexa(int ng, int ndim,
-               double *x1, double *x2, double *x3, double *x4, 
-               double *x5, double *x6, double *x7, double *x8, 
-               int (*fct)(double *,double *,void *,int,double *), 
+               double *x1, double *x2, double *x3, double *x4,
+               double *x5, double *x6, double *x7, double *x8,
+               int (*fct)(double *, double *, void *, int, double *),
                void *par, double *res);
 void gauss_hexa_getx(int no, double ***psi, double **xx, int ndim, double *x);
 int gauss_hexa_get_psi(int ng, double ****psi, double *xg);
-void gauss_hexa_jaco(double **xx, double jaco[][3], int no, 
+void gauss_hexa_jaco(double **xx, double jaco[][3], int no,
                      double *xg, double ***psi, int ndim);
 int gauss_hexa_get_xgpg(int ng, double **xg, double **pg);
 
 // gauss_generic.c
 
 int gauss_generic(int ng, int ndim,
-                  double **xx, int type, 
-                  int (*fct)(double *,double *,void *,int,double *), 
+                  double **xx, int type,
+                  int (*fct)(double *, double *, void *, int, double *),
                   void *par, double *res);
-void gauss_generic_getx(int no, double ***psi, double **xx, 
+void gauss_generic_getx(int no, double ***psi, double **xx,
                         int ndim, int nnode, double *x);
-int gauss_generic_get_psi(int ng, double ****psi, double *xg, 
+int gauss_generic_get_psi(int ng, double ****psi, double *xg,
                           int type, int dimp, int nnode, int npg);
-void gauss_generic_jaco(double **xx, double jaco[][3], int no, 
-                        double *xg, double ***psi, int ndim, 
+void gauss_generic_jaco(double **xx, double jaco[][3], int no,
+                        double *xg, double ***psi, int ndim,
                         int dimp, int nnode);
-int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp,int type,
+int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp, int type,
                            int npg);
 
 // gauss_hermite.c
@@ -177,5 +171,3 @@ int gauss_hermite_get_psi(int ng, double ****psi, double *xg);
 /* ---------------------------------------------------------------------------------- */
 
 #endif
-
-// EOF

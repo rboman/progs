@@ -33,13 +33,15 @@
         {
             "name": "Win32",
             "includePath": [
-                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*"
+                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                "F:/local/VTK-7.1.0/include/vtk-7.1/*"
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": "",
                 "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*"
+                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "F:/local/VTK-7.1.0/include/vtk-7.1/*"
                 ]
             }
         }

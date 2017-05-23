@@ -7,12 +7,11 @@
 #include <stdlib.h>
 #include <vector>
 
-typedef std::vector<std::vector<double> > MyArray;
+typedef std::vector<std::vector<double>> MyArray;
 
-bool
-manageErr(int err)
+bool manageErr(int err)
 {
-    switch(err)
+    switch (err)
     {
     case 0:
         fprintf(stderr, "** error : no field assigned!\n");
@@ -25,103 +24,102 @@ manageErr(int err)
     }
 }
 
-bool
-skipname(FILE *file)
+bool skipname(FILE *file)
 {
-    for(;;)
+    for (;;)
     {
         char c;
-        c=fgetc(file);
-        if(c==EOF)
+        c = fgetc(file);
+        if (c == EOF)
             return false;
-        if(c=='(')
+        if (c == '(')
             return true;
     }
 }
 
-bool
-getidx(FILE *file, int *ni, int *nj)
+bool getidx(FILE *file, int *ni, int *nj)
 {
-    *ni=1; *nj=1;
-    int lost=0;
-    int err = fscanf(file,"%d", ni);
-    if(!manageErr(err)) return false;
-    for(;;)
+    *ni = 1;
+    *nj = 1;
+    int lost = 0;
+    int err = fscanf(file, "%d", ni);
+    if (!manageErr(err))
+        return false;
+    for (;;)
     {
         char c;
-        c=fgetc(file);
-        if(c==EOF)
+        c = fgetc(file);
+        if (c == EOF)
             return false;
-        if(c==')')
+        if (c == ')')
             return true;
-        if(c==',')
+        if (c == ',')
             return getidx(file, nj, &lost);
     }
 }
 
-
-bool
-getvalue(FILE *file, double *val)
+bool getvalue(FILE *file, double *val)
 {
-    int err = fscanf(file," =%lf", val);
+    int err = fscanf(file, " =%lf", val);
     return manageErr(err);
 }
 
-bool
-manageFileErr(FILE *file)
+bool manageFileErr(FILE *file)
 {
-    if(file) return true;
+    if (file)
+        return true;
     fprintf(stderr, "cannot open file!\n");
     exit(1);
 }
 
-bool
-openFileR(FILE **file, char *name)
+bool openFileR(FILE **file, char *name)
 {
-    *file = fopen(name, "r+t"); 
+    *file = fopen(name, "r+t");
     return manageFileErr(*file);
 }
 
-bool
-openFileW(FILE **file, char *name)
+bool openFileW(FILE **file, char *name)
 {
-    *file = fopen(name, "w+t"); 
+    *file = fopen(name, "w+t");
     return manageFileErr(*file);
 }
 
-void 
-getMaxIdx(FILE *file, int *nimax, int *njmax)
+void getMaxIdx(FILE *file, int *nimax, int *njmax)
 {
-    *nimax=1;
-    *njmax=1;
-    for(;;)
+    *nimax = 1;
+    *njmax = 1;
+    for (;;)
     {
-        int ni,nj;
+        int ni, nj;
         double val;
-        if(!skipname(file)) break;
-        if(!getidx(file, &ni, &nj)) break;
-        if(!getvalue(file, &val)) break;
-        *nimax = (ni>*nimax)? ni:*nimax;
-        *njmax = (nj>*njmax)? nj:*njmax;
+        if (!skipname(file))
+            break;
+        if (!getidx(file, &ni, &nj))
+            break;
+        if (!getvalue(file, &val))
+            break;
+        *nimax = (ni > *nimax) ? ni : *nimax;
+        *njmax = (nj > *njmax) ? nj : *njmax;
     }
 }
 
-void 
-fillArray(FILE *file, MyArray &array)
+void fillArray(FILE *file, MyArray &array)
 {
-    for(;;)
+    for (;;)
     {
-        int ni,nj;
+        int ni, nj;
         double val;
-        if(!skipname(file)) break;
-        if(!getidx(file, &ni, &nj)) break;
-        if(!getvalue(file, &val)) break;
-        array[ni-1][nj-1]=val;
+        if (!skipname(file))
+            break;
+        if (!getidx(file, &ni, &nj))
+            break;
+        if (!getvalue(file, &val))
+            break;
+        array[ni - 1][nj - 1] = val;
     }
 }
 
-void
-getMaxIdx(char *name, int *nimax, int *njmax)
+void getMaxIdx(char *name, int *nimax, int *njmax)
 {
     FILE *file;
     openFileR(&file, name);
@@ -129,39 +127,36 @@ getMaxIdx(char *name, int *nimax, int *njmax)
     fclose(file);
 }
 
-void
-writeArray(char *name, MyArray &array)
+void writeArray(char *name, MyArray &array)
 {
     FILE *file;
     openFileW(&file, name);
 
     int i;
-    for(i=0; i<array.size(); ++i)
+    for (i = 0; i < array.size(); ++i)
     {
         int j;
-        for(j=0;j<array[i].size(); ++j)
+        for (j = 0; j < array[i].size(); ++j)
             fprintf(file, "%15.10E ", array[i][j]);
         fprintf(file, "\n");
     }
     fclose(file);
 }
 
-void 
-allocArray(MyArray &array, int nimax, int njmax)
+void allocArray(MyArray &array, int nimax, int njmax)
 {
     array.resize(nimax);
     int i;
-    for(i=0; i<nimax; ++i)
+    for (i = 0; i < nimax; ++i)
     {
         array[i].resize(njmax);
         int j;
-        for(j=0;j<njmax; ++j)
-            array[i][j]=0.0;
+        for (j = 0; j < njmax; ++j)
+            array[i][j] = 0.0;
     }
 }
 
-void
-fillArray(char *name, MyArray &array)
+void fillArray(char *name, MyArray &array)
 {
     FILE *file;
     openFileR(&file, name);
@@ -169,23 +164,21 @@ fillArray(char *name, MyArray &array)
     fclose(file);
 }
 
-void
-convertFileName(const char *fileM, char *fileT)
+void convertFileName(const char *fileM, char *fileT)
 {
-    int i=0;
-    while(fileM[i]!='.' && i<100)
+    int i = 0;
+    while (fileM[i] != '.' && i < 100)
     {
-        fileT[i]=fileM[i];
+        fileT[i] = fileM[i];
         i++;
     }
-    strcpy(&(fileT[i]),".txt");
+    strcpy(&(fileT[i]), ".txt");
 }
 
-bool
-checkFileExist(char *name)
+bool checkFileExist(char *name)
 {
     FILE *file = fopen(name, "r+t");
-    if(file) 
+    if (file)
     {
         fclose(file);
         return true;
@@ -193,17 +186,16 @@ checkFileExist(char *name)
     return false;
 }
 
-bool 
-convertOneFile(char *name)
+bool convertOneFile(char *name)
 {
     char fileT[100];
     convertFileName(name, fileT);
     printf("converting %s to %s:", name, fileT);
-    if(checkFileExist(name))
+    if (checkFileExist(name))
     {
         int nimax, njmax;
         getMaxIdx(name, &nimax, &njmax);
-        printf(" size %d x %d\n",nimax, njmax);
+        printf(" size %d x %d\n", nimax, njmax);
         MyArray array;
         allocArray(array, nimax, njmax);
         fillArray(name, array);
@@ -217,15 +209,13 @@ convertOneFile(char *name)
     return true;
 }
 
-int 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     int n;
-    for(n=1; n<argc; ++n)
+    for (n = 1; n < argc; ++n)
     {
         convertOneFile(argv[n]);
     }
 
     return 0;
 }
-

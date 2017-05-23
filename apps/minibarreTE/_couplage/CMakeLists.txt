@@ -1,0 +1,38 @@
+#
+# $Id: CMakeLists.txt 1083 2013-02-14 11:31:55Z boman $
+#
+
+INCLUDE(${SWIG_USE_FILE})
+
+INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH})
+
+FILE(GLOB SRCS *.h *.cpp *.inl *.swg)
+FILE(GLOB ISRCS *.i)
+
+SET(CMAKE_SWIG_FLAGS "")
+SET_SOURCE_FILES_PROPERTIES(${ISRCS} PROPERTIES CPLUSPLUS ON)
+
+SET(SWINCFLAGS 
+-I${PROJECT_SOURCE_DIR}/couplage
+)
+SET_SOURCE_FILES_PROPERTIES(${ISRCS} PROPERTIES SWIG_FLAGS "${SWINCFLAGS}")
+
+
+
+SWIG_ADD_MODULE(couplage python ${ISRCS} ${SRCS})
+IF(WIN32)
+    SET_TARGET_PROPERTIES(_couplage PROPERTIES DEBUG_POSTFIX "_d")
+ENDIF(WIN32)
+
+# ---
+
+INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/_couplage
+                     ${PROJECT_SOURCE_DIR}/couplage
+                     ${PROJECT_SOURCE_DIR}/gmm
+)
+
+SWIG_LINK_LIBRARIES(couplage 
+                    couplage
+		      debug ${PYTHON_DEBUG_LIBRARY} 
+		      optimized ${PYTHON_LIBRARY}
+	              )

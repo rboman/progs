@@ -6,5 +6,4 @@
 
 void ehdd_fext()
 {
-
 }

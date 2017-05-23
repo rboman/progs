@@ -7,11 +7,11 @@
 int main(int argc, char *argv[])
 {
     std::cout << "LicServer...\n";
-    
+
     QApplication app(argc, argv);
 
     LicServer server;
-    if(!server.listen(QHostAddress::Any, 12000))
+    if (!server.listen(QHostAddress::Any, 12000))
     {
         std::cerr << "Failed to bind to port\n";
         return 1;
@@ -25,4 +25,3 @@ int main(int argc, char *argv[])
     quitButton.show();
     return app.exec();
 }
-

@@ -1,0 +1,16 @@
+#
+# $Id: CMakeLists.txt 1086 2013-07-26 14:49:44Z Boman $
+#
+
+FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
+
+ADD_EXECUTABLE(etage ${SRCS})
+IF(WIN32)
+    SET_TARGET_PROPERTIES(etage PROPERTIES DEBUG_POSTFIX "_d")
+ENDIF(WIN32)
+
+# ---
+
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/gmm
+)
+

@@ -2,7 +2,6 @@
 # -*- coding: latin-1; -*-
 
 import sys
-#from PyQt4 import QtCore, QtGui, Qt
 from PyQt5.QtCore    import *
 from PyQt5.QtGui     import *
 from PyQt5.QtWidgets import *

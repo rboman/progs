@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: latin-1; -*-
-# Plot2DWidget: tracé de fonctions
+# Plot2DWidget: tracï¿½ de fonctions
 
 
 import sys
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore    import *
+from PyQt5.QtGui     import *
+from PyQt5.QtWidgets import *
 import math
 
 def fct(x):

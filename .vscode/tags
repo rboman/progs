@@ -1,0 +1,1093 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+A	../langtests/python/attributs_dyn.py	/^class A:$/;"	kind:class	line:4
+A	../langtests/python/pytests_setattr.py	/^class A():$/;"	kind:class	line:4
+BACKGROUND_BLUE	../sandbox/python/console_color.py	/^BACKGROUND_BLUE = 0x10 # background color contains blue.$/;"	kind:variable	line:14
+BACKGROUND_GREEN	../sandbox/python/console_color.py	/^BACKGROUND_GREEN= 0x20 # background color contains green.$/;"	kind:variable	line:15
+BACKGROUND_INTENSITY	../sandbox/python/console_color.py	/^BACKGROUND_INTENSITY = 0x80 # background color is intensified.$/;"	kind:variable	line:17
+BACKGROUND_RED	../sandbox/python/console_color.py	/^BACKGROUND_RED  = 0x40 # background color contains red.$/;"	kind:variable	line:16
+Box	../apps/octree/octree.py	/^class Box:$/;"	kind:class	line:145
+CheckAbort	../metafor/biomec/vtkToolsGUI.py	/^def CheckAbort(obj, event):$/;"	kind:function	line:109
+ClipCallBack	../metafor/biomec/vtkToolsGUI.py	/^class ClipCallBack:$/;"	kind:class	line:113
+ClipVolumeRender	../metafor/biomec/vtkToolsGUI.py	/^    def ClipVolumeRender(obj, event):$/;"	kind:member	line:182
+CloseShell	../sandbox/wxwidgets/run.py	/^            def CloseShell(evt):$/;"	kind:function	line:121
+Curve	../apps/plotter/plotter.py	/^class Curve:$/;"	kind:class	line:218
+EndInteraction	../metafor/biomec/vtkToolsGUI.py	/^    def EndInteraction(obj, event):$/;"	kind:member	line:180
+EvtChar	../sandbox/wxwidgets/wx6.py	/^    def EvtChar(self, event):$/;"	kind:member	line:49
+EvtCheckBox	../sandbox/wxwidgets/wx6.py	/^    def EvtCheckBox(self, event):$/;"	kind:member	line:52
+EvtComboBox	../sandbox/wxwidgets/wx6.py	/^    def EvtComboBox(self, event):$/;"	kind:member	line:43
+EvtRadioBox	../sandbox/wxwidgets/wx6.py	/^    def EvtRadioBox(self, event):$/;"	kind:member	line:41
+EvtText	../sandbox/wxwidgets/wx6.py	/^    def EvtText(self, event):$/;"	kind:member	line:47
+FOREGROUND_BLUE	../sandbox/python/console_color.py	/^FOREGROUND_BLUE = 0x01 # text color contains blue.$/;"	kind:variable	line:10
+FOREGROUND_GREEN	../sandbox/python/console_color.py	/^FOREGROUND_GREEN= 0x02 # text color contains green.$/;"	kind:variable	line:11
+FOREGROUND_INTENSITY	../sandbox/python/console_color.py	/^FOREGROUND_INTENSITY = 0x08 # text color is intensified.$/;"	kind:variable	line:13
+FOREGROUND_RED	../sandbox/python/console_color.py	/^FOREGROUND_RED  = 0x04 # text color contains red.$/;"	kind:variable	line:12
+Form1	../sandbox/wxwidgets/wx6.py	/^class Form1(wxPanel):$/;"	kind:class	line:5
+GITRepo	../pytools/versioning.py	/^class GITRepo(Repo):$/;"	kind:class	line:12
+ID_ABOUT	../sandbox/wxwidgets/wx3.py	/^ID_ABOUT=101$/;"	kind:variable	line:5
+ID_ABOUT	../sandbox/wxwidgets/wx4.py	/^ID_ABOUT=101$/;"	kind:variable	line:6
+ID_ABOUT	../sandbox/wxwidgets/wx5.py	/^ID_ABOUT=101$/;"	kind:variable	line:6
+ID_BUTTON1	../sandbox/wxwidgets/wx5.py	/^ID_BUTTON1=110$/;"	kind:variable	line:8
+ID_EXIT	../sandbox/wxwidgets/wx3.py	/^ID_EXIT=110$/;"	kind:variable	line:6
+ID_EXIT	../sandbox/wxwidgets/wx4.py	/^ID_EXIT=110$/;"	kind:variable	line:7
+ID_EXIT	../sandbox/wxwidgets/wx5.py	/^ID_EXIT=200$/;"	kind:variable	line:9
+ID_OPEN	../sandbox/wxwidgets/wx4.py	/^ID_OPEN=102$/;"	kind:variable	line:8
+ID_OPEN	../sandbox/wxwidgets/wx5.py	/^ID_OPEN=102$/;"	kind:variable	line:7
+ImagingFrame	../metafor/biomec/vtkToolsGUI.py	/^class ImagingFrame(Frame):$/;"	kind:class	line:318
+InteractionCallBack	../metafor/biomec/vtkToolsGUI.py	/^class InteractionCallBack:$/;"	kind:class	line:121
+Log	../sandbox/wxwidgets/run.py	/^class Log:$/;"	kind:class	line:35
+MainWindow	../apps/textfilters/xls2latex_tk.py	/^class MainWindow(Frame):$/;"	kind:class	line:58
+MainWindow	../metafor/biomec/vtkToolsGUI.py	/^class MainWindow:$/;"	kind:class	line:226
+MainWindow	../sandbox/wxwidgets/wx2.py	/^class MainWindow(wxFrame):$/;"	kind:class	line:5
+MainWindow	../sandbox/wxwidgets/wx3.py	/^class MainWindow(wxFrame):$/;"	kind:class	line:7
+MainWindow	../sandbox/wxwidgets/wx4.py	/^class MainWindow(wxFrame):$/;"	kind:class	line:10
+MainWindow	../sandbox/wxwidgets/wx5.py	/^class MainWindow(wxFrame):$/;"	kind:class	line:10
+MandelWidget	../apps/fractal/mandel.py	/^class MandelWidget(QWidget):$/;"	kind:class	line:97
+Mandelbrot	../apps/fractal/fract.py	/^class Mandelbrot(QWidget):$/;"	kind:class	line:10
+MyApp	../sandbox/wxwidgets/wgui.py	/^class MyApp(wx.App):$/;"	kind:class	line:27
+MyFrame	../sandbox/wxwidgets/robot.py	/^class MyFrame(wx.Frame):$/;"	kind:class	line:7
+MyReZoner	../sandbox/python/test_directors1.py	/^class MyReZoner(CurveReZoner):$/;"	kind:class	line:11
+MyWidget	../sandbox/qt/draw.py	/^class MyWidget(QWidget):$/;"	kind:class	line:26
+MyWin	../sandbox/tkinter/runMetaforGUI.py	/^class MyWin:$/;"	kind:class	line:10
+MyWin	../sandbox/wxwidgets/wgui.py	/^class MyWin(wx.Frame):$/;"	kind:class	line:11
+Octree	../apps/octree/octree.py	/^class Octree:$/;"	kind:class	line:51
+OnAbout	../sandbox/wxwidgets/wx4.py	/^    def OnAbout(self,e):$/;"	kind:member	line:36
+OnAbout	../sandbox/wxwidgets/wx5.py	/^    def OnAbout(self,e):$/;"	kind:member	line:50
+OnButton	../sandbox/wxwidgets/run.py	/^    def OnButton(self, evt):$/;"	kind:member	line:130
+OnClick	../sandbox/wxwidgets/wx6.py	/^    def OnClick(self,event):$/;"	kind:member	line:45
+OnCloseFrame	../sandbox/wxwidgets/run.py	/^    def OnCloseFrame(self, evt):$/;"	kind:member	line:134
+OnCloseMe	../sandbox/wxwidgets/robot.py	/^    def OnCloseMe(self, event):$/;"	kind:member	line:22
+OnCloseWindow	../sandbox/wxwidgets/robot.py	/^    def OnCloseWindow(self, event):$/;"	kind:member	line:25
+OnExit	../sandbox/wxwidgets/wx4.py	/^    def OnExit(self,e):$/;"	kind:member	line:42
+OnExit	../sandbox/wxwidgets/wx5.py	/^    def OnExit(self,e):$/;"	kind:member	line:57
+OnInit	../sandbox/wxwidgets/run.py	/^    def OnInit(self):$/;"	kind:member	line:51
+OnInit	../sandbox/wxwidgets/wgui.py	/^    def OnInit(self):$/;"	kind:member	line:28
+OnOpen	../sandbox/wxwidgets/wx4.py	/^    def OnOpen(self,e):$/;"	kind:member	line:44
+OnOpen	../sandbox/wxwidgets/wx5.py	/^    def OnOpen(self,e):$/;"	kind:member	line:60
+Onode	../apps/octree/octree.py	/^class Onode:$/;"	kind:class	line:74
+Plot2DWidget	../apps/plotter/plotter.py	/^class Plot2DWidget(QWidget):$/;"	kind:class	line:15
+Point	../apps/plotter/plotter.py	/^class Point:$/;"	kind:class	line:211
+Point	../sandbox/mpi/point.py	/^class Point:$/;"	kind:class	line:3
+PolyDataFrame	../metafor/biomec/vtkToolsGUI.py	/^class PolyDataFrame(Frame):$/;"	kind:class	line:880
+Pt	../apps/octree/octree.py	/^class Pt:$/;"	kind:class	line:6
+RWin	../sandbox/tkinter/test_bwin1.py	/^class RWin (threading.Thread):$/;"	kind:class	line:10
+RWin	../sandbox/tkinter/test_bwin2.py	/^class RWin (threading.Thread):$/;"	kind:class	line:7
+RWin	../sandbox/wxwidgets/sgui.py	/^class RWin (threading.Thread):$/;"	kind:class	line:7
+RWin	../sandbox/wxwidgets/wgui.py	/^class RWin (threading.Thread):$/;"	kind:class	line:35
+RenderThread	../apps/fractal/mandel.py	/^class RenderThread(QThread):$/;"	kind:class	line:33
+Repo	../pytools/versioning.py	/^class Repo(object):$/;"	kind:class	line:6
+RunDemoApp	../sandbox/wxwidgets/run.py	/^class RunDemoApp(wx.App):$/;"	kind:class	line:43
+STD_ERROR_HANDLE	../sandbox/python/console_color.py	/^STD_ERROR_HANDLE = -12$/;"	kind:variable	line:8
+STD_INPUT_HANDLE	../sandbox/python/console_color.py	/^STD_INPUT_HANDLE = -10$/;"	kind:variable	line:6
+STD_OUTPUT_HANDLE	../sandbox/python/console_color.py	/^STD_OUTPUT_HANDLE= -11$/;"	kind:variable	line:7
+SVNRepo	../pytools/versioning.py	/^class SVNRepo(Repo):$/;"	kind:class	line:44
+ShowVRML.py	../metafor/biomec/vrml/ShowVRML.py	1;"	kind:file	line:1
+SigHandler	../langtests/python/testSignalCTRLC.py	/^    class SigHandler:$/;"	kind:class	line:6
+SimpleView	../sandbox/vtk/vtkqt.py	/^class SimpleView(QMainWindow):$/;"	kind:class	line:44
+Sphere	../apps/octree/octree.py	/^class Sphere:$/;"	kind:class	line:135
+StartInteraction	../metafor/biomec/vtkToolsGUI.py	/^    def StartInteraction(self, obj, event):$/;"	kind:member	line:178
+StdoutCatcher	../langtests/python/redirect_stdout.py	/^class StdoutCatcher:$/;"	kind:class	line:7
+StupidTest	../apps/octree/octree.py	/^class StupidTest:$/;"	kind:class	line:289
+SysChecker	../apps/unixadm/syschecker.py	/^class SysChecker:$/;"	kind:class	line:17
+ThreadSafeConsole	../sandbox/tkinter/console.py	/^class ThreadSafeConsole(Text):$/;"	kind:class	line:11
+Transf	../apps/fractal/mandel.py	/^class Transf:$/;"	kind:class	line:9
+UDPSock	../apps/sockets/client.py	/^UDPSock = socket(AF_INET,SOCK_DGRAM)$/;"	kind:variable	line:15
+UDPSock	../apps/sockets/server.py	/^UDPSock = socket(AF_INET,SOCK_DGRAM)$/;"	kind:variable	line:17
+Ui_MainWindow	../sandbox/vtk/vtkqt.py	/^class Ui_MainWindow(QWidget):$/;"	kind:class	line:34
+Ui_MyWidget	../apps/PPTcalc/qtd/ui_mywidget.py	/^class Ui_MyWidget(object):$/;"	kind:class	line:11
+VtkWindow2D	../metafor/biomec/vtkToolsGUI.py	/^class VtkWindow2D(Frame):$/;"	kind:class	line:191
+VtkWindow3DPoly	../metafor/biomec/vtkToolsGUI.py	/^class VtkWindow3DPoly(Frame):$/;"	kind:class	line:32
+VtkWindow3Planes	../metafor/biomec/vtkToolsGUI.py	/^class VtkWindow3Planes(Frame):$/;"	kind:class	line:55
+VtkWindowVolumic	../metafor/biomec/vtkToolsGUI.py	/^class VtkWindowVolumic(Frame):$/;"	kind:class	line:131
+Window	../apps/octree/octree.py	/^class Window:$/;"	kind:class	line:185
+WorkerThread	../sandbox/python/worker_threads.py	/^class WorkerThread(threading.Thread):$/;"	kind:class	line:11
+WriteText	../sandbox/wxwidgets/run.py	/^    def WriteText(self, text):$/;"	kind:member	line:36
+YalaEllipseSphere.py	../metafor/biomec/YalaEllipseSphere.py	1;"	kind:file	line:1
+_Getch	../apps/filemgr/remove_accents.py	/^class _Getch:$/;"	kind:class	line:45
+_GetchUnix	../apps/filemgr/remove_accents.py	/^class _GetchUnix:$/;"	kind:class	line:57
+_GetchWindows	../apps/filemgr/remove_accents.py	/^class _GetchWindows:$/;"	kind:class	line:73
+__abs__	../apps/octree/octree.py	/^    def __abs__(self):$/;"	kind:member	line:28
+__add__	../apps/octree/octree.py	/^    def __add__(self, pt):$/;"	kind:member	line:15
+__add__	../sandbox/mpi/point.py	/^    def __add__(self, p2):$/;"	kind:member	line:10
+__call__	../apps/filemgr/remove_accents.py	/^    def __call__(self): return self.impl()$/;"	kind:member	line:54
+__call__	../apps/filemgr/remove_accents.py	/^    def __call__(self):$/;"	kind:member	line:61
+__call__	../apps/filemgr/remove_accents.py	/^    def __call__(self):$/;"	kind:member	line:77
+__call__	../langtests/python/testSignalCTRLC.py	/^        def __call__(self, sn, sf):$/;"	kind:member	line:10
+__checkignorenice	../apps/unixadm/syschecker.py	/^    def __checkignorenice(self):$/;"	kind:member	line:39
+__del__	../sandbox/python/test_directors1.py	/^    def __del__(self):$/;"	kind:member	line:20
+__div__	../apps/octree/octree.py	/^    def __div__(self, scalar):$/;"	kind:member	line:19
+__ge__	../apps/octree/octree.py	/^    def __ge__(self, obj):$/;"	kind:member	line:46
+__getattr__	../langtests/python/pytests_setattr.py	/^    def __getattr__(self, name):$/;"	kind:member	line:8
+__gt__	../apps/octree/octree.py	/^    def __gt__(self, obj):$/;"	kind:member	line:42
+__init__	../apps/filemgr/remove_accents.py	/^    def __init__(self):$/;"	kind:member	line:48
+__init__	../apps/filemgr/remove_accents.py	/^    def __init__(self):$/;"	kind:member	line:58
+__init__	../apps/filemgr/remove_accents.py	/^    def __init__(self):$/;"	kind:member	line:74
+__init__	../apps/fractal/fract.py	/^    def __init__(self): $/;"	kind:member	line:11
+__init__	../apps/fractal/mandel.py	/^    def __init__(self, parent = None):$/;"	kind:member	line:101
+__init__	../apps/fractal/mandel.py	/^    def __init__(self, parent, transf):$/;"	kind:member	line:37
+__init__	../apps/fractal/mandel.py	/^    def __init__(self, wx, wy, ox=0.0, oy=0.0, zoom=1.0):$/;"	kind:member	line:13
+__init__	../apps/octree/octree.py	/^    def __init__(self):$/;"	kind:member	line:186
+__init__	../apps/octree/octree.py	/^    def __init__(self, bmin, bmax):$/;"	kind:member	line:146
+__init__	../apps/octree/octree.py	/^    def __init__(self, box, plist, lvl, maxlvl):$/;"	kind:member	line:75
+__init__	../apps/octree/octree.py	/^    def __init__(self, c, R):$/;"	kind:member	line:136
+__init__	../apps/octree/octree.py	/^    def __init__(self, npts=100, maxlvl=2):$/;"	kind:member	line:290
+__init__	../apps/octree/octree.py	/^    def __init__(self, plist, maxlvl=5):$/;"	kind:member	line:52
+__init__	../apps/octree/octree.py	/^    def __init__(self, x, y, z):$/;"	kind:member	line:9
+__init__	../apps/plotter/plotter.py	/^    def __init__(self): $/;"	kind:member	line:16
+__init__	../apps/plotter/plotter.py	/^    def __init__(self):$/;"	kind:member	line:219
+__init__	../apps/plotter/plotter.py	/^    def __init__(self, x, y):$/;"	kind:member	line:212
+__init__	../apps/textfilters/xls2latex_tk.py	/^    def __init__(self, master):$/;"	kind:member	line:59
+__init__	../apps/unixadm/syschecker.py	/^    def __init__(self, watchers):$/;"	kind:member	line:18
+__init__	../langtests/python/attributs_dyn.py	/^    def __init__(self, x):$/;"	kind:member	line:6
+__init__	../langtests/python/redirect_stdout.py	/^    def __init__(self):$/;"	kind:member	line:8
+__init__	../langtests/python/testSignalCTRLC.py	/^        def __init__(self):$/;"	kind:member	line:7
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self, master):$/;"	kind:member	line:227
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self, master, status):$/;"	kind:member	line:881
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self, master, status, mainW):$/;"	kind:member	line:319
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self, master=None):$/;"	kind:member	line:132
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self, master=None):$/;"	kind:member	line:33
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self, master=None):$/;"	kind:member	line:56
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self, master=None, size=(600,600),range=(0,50)):$/;"	kind:member	line:192
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self,planes, volumeMapper):$/;"	kind:member	line:114
+__init__	../metafor/biomec/vtkToolsGUI.py	/^    def __init__(self,renWin):$/;"	kind:member	line:122
+__init__	../pytools/versioning.py	/^    def __init__(self):$/;"	kind:member	line:7
+__init__	../pytools/versioning.py	/^    def __init__(self, name, repo):$/;"	kind:member	line:13
+__init__	../pytools/versioning.py	/^    def __init__(self, name, repo):$/;"	kind:member	line:45
+__init__	../sandbox/mpi/point.py	/^    def __init__(self, num, x, y):$/;"	kind:member	line:4
+__init__	../sandbox/python/test_directors1.py	/^    def __init__(self, curve):$/;"	kind:member	line:14
+__init__	../sandbox/python/worker_threads.py	/^    def __init__(self, num, queue):$/;"	kind:member	line:12
+__init__	../sandbox/qt/draw.py	/^    def __init__(self): $/;"	kind:member	line:27
+__init__	../sandbox/tkinter/console.py	/^    def __init__(self, master, **options):$/;"	kind:member	line:12
+__init__	../sandbox/tkinter/runMetaforGUI.py	/^    def __init__(self, parent):$/;"	kind:member	line:11
+__init__	../sandbox/tkinter/test_bwin1.py	/^    def __init__(self):$/;"	kind:member	line:11
+__init__	../sandbox/tkinter/test_bwin1.py	/^    def __init__(self, domainTxt):$/;"	kind:member	line:42
+__init__	../sandbox/tkinter/test_bwin2.py	/^    def __init__(self):$/;"	kind:member	line:8
+__init__	../sandbox/vtk/vtkqt.py	/^    def __init__(self, parent = None):$/;"	kind:member	line:45
+__init__	../sandbox/wxwidgets/robot.py	/^    def __init__($/;"	kind:member	line:8
+__init__	../sandbox/wxwidgets/run.py	/^    def __init__(self, name, module, useShell):$/;"	kind:member	line:44
+__init__	../sandbox/wxwidgets/sgui.py	/^    def __init__(self):$/;"	kind:member	line:8
+__init__	../sandbox/wxwidgets/wgui.py	/^    def __init__(self):$/;"	kind:member	line:36
+__init__	../sandbox/wxwidgets/wgui.py	/^    def __init__(self, parent, title):$/;"	kind:member	line:12
+__init__	../sandbox/wxwidgets/wx2.py	/^    def __init__(self,parent,id,title):$/;"	kind:member	line:7
+__init__	../sandbox/wxwidgets/wx3.py	/^    def __init__(self,parent,id,title):$/;"	kind:member	line:8
+__init__	../sandbox/wxwidgets/wx4.py	/^    def __init__(self,parent,id,title):$/;"	kind:member	line:11
+__init__	../sandbox/wxwidgets/wx5.py	/^    def __init__(self,parent,id,title):$/;"	kind:member	line:11
+__init__	../sandbox/wxwidgets/wx6.py	/^    def __init__(self, parent, id):$/;"	kind:member	line:6
+__init__.py	../apps/PPTcalc/qtd/__init__.py	1;"	kind:file	line:1
+__init__.py	../metafor/launch_param/mestests/__init__.py	1;"	kind:file	line:1
+__init__.py	../pytools/__init__.py	1;"	kind:file	line:1
+__iter__	../apps/plotter/plotter.py	/^    def __iter__(self):$/;"	kind:member	line:232
+__le__	../apps/octree/octree.py	/^    def __le__(self, obj):$/;"	kind:member	line:48
+__lt__	../apps/octree/octree.py	/^    def __lt__(self, obj):$/;"	kind:member	line:44
+__mailmsg	../apps/unixadm/syschecker.py	/^    def __mailmsg(self, toaddr, subject="no subject", file=None, text=None):$/;"	kind:member	line:22
+__mul__	../apps/octree/octree.py	/^    def __mul__(self, obj):$/;"	kind:member	line:21
+__priv	../langtests/python/attributs_dyn.py	/^    def __priv(self, n):$/;"	kind:member	line:11
+__rmul__	../apps/octree/octree.py	/^    def __rmul__(self, scalar):$/;"	kind:member	line:26
+__setattr__	../langtests/python/pytests_setattr.py	/^    def __setattr__(self, name, value):       $/;"	kind:member	line:6
+__setupGUI	../apps/plotter/plotter.py	/^    def __setupGUI(self):$/;"	kind:member	line:34
+__str__	../apps/fractal/mandel.py	/^    def __str__(self):$/;"	kind:member	line:25
+__str__	../apps/octree/octree.py	/^    def __str__(self):$/;"	kind:member	line:13
+__str__	../apps/octree/octree.py	/^    def __str__(self):$/;"	kind:member	line:150
+__str__	../apps/octree/octree.py	/^    def __str__(self):$/;"	kind:member	line:70
+__str__	../apps/plotter/plotter.py	/^    def __str__(self):$/;"	kind:member	line:215
+__str__	../apps/plotter/plotter.py	/^    def __str__(self):$/;"	kind:member	line:227
+__str__	../sandbox/mpi/point.py	/^    def __str__(self):$/;"	kind:member	line:8
+__sub__	../apps/octree/octree.py	/^    def __sub__(self, pt):$/;"	kind:member	line:17
+_metafor	../metafor/launch_param/mestests/sphere.py	/^_metafor = None  #Analyse Metafor vide$/;"	kind:variable	line:18
+_metafor	../metafor/launch_param/mestests/sphere_R_150.py	/^_metafor = None $/;"	kind:variable	line:6
+_metafor	../metafor/launch_param/mestests/sphere_R_50.py	/^_metafor = None $/;"	kind:variable	line:6
+_newclass	../sandbox/mpi/swig/testSwig.py	/^    _newclass = 0$/;"	kind:variable	line:69
+_object	../sandbox/mpi/swig/testSwig.py	/^    class _object : pass$/;"	kind:class	line:68
+_swig_getattr	../sandbox/mpi/swig/testSwig.py	/^def _swig_getattr(self,class_type,name):$/;"	kind:function	line:53
+_swig_property	../sandbox/mpi/swig/testSwig.py	/^    _swig_property = property$/;"	kind:variable	line:34
+_swig_repr	../sandbox/mpi/swig/testSwig.py	/^def _swig_repr(self):$/;"	kind:function	line:59
+_swig_setattr	../sandbox/mpi/swig/testSwig.py	/^def _swig_setattr(self,class_type,name,value):$/;"	kind:function	line:50
+_swig_setattr_nondynamic	../sandbox/mpi/swig/testSwig.py	/^def _swig_setattr_nondynamic(self,class_type,name,value,static=1):$/;"	kind:function	line:37
+_testSwig	../sandbox/mpi/swig/testSwig.py	/^    _testSwig = swig_import_helper()$/;"	kind:variable	line:28
+a	../langtests/python/attributs_dyn.py	/^a = A(5)$/;"	kind:variable	line:14
+a	../langtests/python/pytests_setattr.py	/^    a=1$/;"	kind:variable	line:5
+a	../langtests/python/pytests_setattr.py	/^a=A()$/;"	kind:variable	line:13
+a	../langtests/python/test-yield.py	/^a = func() # cree un generateur a partir de la fct "func"$/;"	kind:variable	line:8
+a	../metafor/integrity/printTest.py	/^a=Matr2(1,2,3,4)$/;"	kind:variable	line:21
+a	../metafor/integrity/printTest.py	/^a=Matr3(1,2,3,4)$/;"	kind:variable	line:23
+a	../sandbox/mpi/test04_bcast.py	/^    a = [(1,2), {2:'toto', 3: 'titi'}]$/;"	kind:variable	line:13
+a	../sandbox/mpi/test04_bcast.py	/^    a = comm.bcast(None,0)$/;"	kind:variable	line:16
+a	../sandbox/mpi/test04_bcast.py	/^    a = comm.bcast(a,0)$/;"	kind:variable	line:14
+a	../sandbox/mpi/test05_scatter.py	/^    a = [(1,2), {2:'toto', 3: 'titi'}]$/;"	kind:variable	line:17
+a	../sandbox/mpi/test05_scatter.py	/^    a = comm.scatter(None,0)$/;"	kind:variable	line:20
+a	../sandbox/mpi/test05_scatter.py	/^    a = comm.scatter(a,0)$/;"	kind:variable	line:18
+a	../sandbox/mpi/test06_gather.py	/^    a = (1,2)$/;"	kind:variable	line:17
+a	../sandbox/mpi/test06_gather.py	/^    a = comm.gather(a,0)$/;"	kind:variable	line:18
+a	../sandbox/mpi/test06_gather.py	/^    a = comm.gather(a,0)$/;"	kind:variable	line:21
+a	../sandbox/mpi/test06_gather.py	/^    a = {2:'toto', 3: 'titi'}$/;"	kind:variable	line:20
+a	../sandbox/python/test_locale_sort.py	/^a = [ "boundaries","bQs" ]$/;"	kind:variable	line:8
+a1	../oldies/castswig/problem.py	/^a1=A()$/;"	kind:variable	line:4
+a2	../oldies/castswig/problem.py	/^a2=A()$/;"	kind:variable	line:5
+aboutCallback	../metafor/biomec/vtkToolsGUI.py	/^    def aboutCallback(self):$/;"	kind:member	line:275
+actor	../apps/GenMAI/tests/gentool.py	/^actor = vtk.vtkActor()$/;"	kind:variable	line:79
+actor	../metafor/biomec/vtkToolsTEST.py	/^actor = createPolyDataActor(polydata, showScalar=True, range=(0,2))$/;"	kind:variable	line:81
+actor	../metafor/biomec/vtkToolsTEST.py	/^actor = createPolyDataActor(polydata, showScalar=True, range=(0,2))$/;"	kind:variable	line:95
+actor	../sandbox/vtk/marchCubesTest.py	/^actor = vtk.vtkActor()$/;"	kind:variable	line:24
+actor	../sandbox/vtk/testvtk.py	/^actor = vtk.vtkActor()$/;"	kind:variable	line:26
+actor2	../sandbox/vtk/testvtk.py	/^actor2 = vtk.vtkActor()$/;"	kind:variable	line:34
+actor3	../sandbox/vtk/testvtk.py	/^actor3 = vtk.vtkActor()$/;"	kind:variable	line:69
+add	../apps/plotter/plotter.py	/^    def add(self, curve):$/;"	kind:member	line:31
+addImages	../metafor/biomec/vtkTools.py	/^def addImages(image1, image2):$/;"	kind:function	line:375
+addboxes	../apps/octree/octree.py	/^    def addboxes(self, boxes):$/;"	kind:member	line:189
+addpts	../apps/octree/octree.py	/^    def addpts(self, pts, colour, size):$/;"	kind:member	line:218
+addr	../apps/sockets/client.py	/^addr = (host,port)$/;"	kind:variable	line:12
+addr	../apps/sockets/server.py	/^addr = (host,port)$/;"	kind:variable	line:13
+affiche	../sandbox/tkinter/myfirstgui_robo.py	/^def affiche(x):$/;"	kind:function	line:74
+ale	../sandbox/python/test_directors1.py	/^ale = None$/;"	kind:variable	line:9
+app	../apps/fractal/fract.py	/^    app = QApplication(sys.argv)$/;"	kind:variable	line:59
+app	../sandbox/qt/draw.py	/^    app = QApplication(sys.argv)$/;"	kind:variable	line:62
+app	../sandbox/vtk/vtkqt.py	/^    app = QApplication(sys.argv)$/;"	kind:variable	line:84
+app	../sandbox/wxwidgets/wx1.py	/^app = wxPySimpleApp()$/;"	kind:variable	line:5
+app	../sandbox/wxwidgets/wx2.py	/^app = wxPySimpleApp()$/;"	kind:variable	line:12
+app	../sandbox/wxwidgets/wx3.py	/^app = wxPySimpleApp()$/;"	kind:variable	line:24
+app	../sandbox/wxwidgets/wx4.py	/^app = wxPySimpleApp()$/;"	kind:variable	line:54
+app	../sandbox/wxwidgets/wx5.py	/^app = wxPySimpleApp()$/;"	kind:variable	line:72
+app	../sandbox/wxwidgets/wx6.py	/^app = wxPySimpleApp()$/;"	kind:variable	line:56
+arc	../apps/GenMAI/tests/test.py	/^arc=Arc(1,2,3);$/;"	kind:variable	line:24
+args	../bin/rb.py	/^    args = pyu.parseargs()$/;"	kind:variable	line:45
+askLoadConfig	../metafor/biomec/vtkToolsGUI.py	/^    def askLoadConfig(self):$/;"	kind:member	line:293
+askSaveConfig	../metafor/biomec/vtkToolsGUI.py	/^    def askSaveConfig(self):$/;"	kind:member	line:301
+assertMode	../sandbox/wxwidgets/run.py	/^assertMode = wx.PYAPP_ASSERT_DIALOG$/;"	kind:variable	line:29
+attributs_dyn.py	../langtests/python/attributs_dyn.py	1;"	kind:file	line:1
+autoLevel	../metafor/biomec/vtkToolsGUI.py	/^    def autoLevel(self):$/;"	kind:member	line:870
+avi_name_cleaner.py	../apps/filemgr/avi_name_cleaner.py	1;"	kind:file	line:1
+ax2win	../apps/plotter/plotter.py	/^    def ax2win(self, ax, ay):$/;"	kind:member	line:154
+axes	../sandbox/vtk/testvtk.py	/^axes = vtk.vtkAxesActor()$/;"	kind:variable	line:114
+b1	../oldies/castswig/problem.py	/^b1 = B( [a1,a2] ) # <= OK$/;"	kind:variable	line:7
+b2	../oldies/castswig/problem.py	/^b2 = B( [1,2] )   # <= should fail$/;"	kind:variable	line:8
+backup-config-v0.py	../sandbox/python/backup-config-v0.py	1;"	kind:file	line:1
+backup-config-v1.py	../sandbox/python/backup-config-v1.py	1;"	kind:file	line:1
+backup-winconfig.py	../sandbox/python/backup-winconfig.py	1;"	kind:file	line:1
+base	../apps/textfilters/transpose_gdtech.py	/^base = '.\/workspace\/presse_37_CP\/'$/;"	kind:variable	line:4
+basename	../metafor/biomec/off2geo/off2geo.py	/^basename ="brain"$/;"	kind:variable	line:10
+bbox	../apps/octree/octree.py	/^    def bbox(self):$/;"	kind:member	line:62
+bindir	../apps/GenMAI/run.py	/^    bindir = os.path.join(thisdir,'build\/bin\/Release')$/;"	kind:variable	line:8
+blah	../apps/md5/md5test.py	/^blah = QtCore.QString(QtCore.QCryptographicHash.hash((texte),QtCore.QCryptographicHash.Md5).toHex())$/;"	kind:variable	line:8
+blah	../apps/md5/test_md5_fullpython.py	/^blah = QtCore.QString(QtCore.QCryptographicHash.hash((texte),QtCore.QCryptographicHash.Md5).toHex())$/;"	kind:variable	line:8
+bmpReader	../sandbox/vtk/testvtk.py	/^bmpReader = vtk.vtkBMPReader()$/;"	kind:variable	line:61
+body	../apps/mails/mailtest.py	/^body = "salut!\\nRoBo\\n"$/;"	kind:variable	line:10
+btn	../sandbox/tkinter/myfirstgui_robo.py	/^btn = Button(frame4, text = "End") $/;"	kind:variable	line:63
+buf	../apps/sockets/client.py	/^buf = 1024$/;"	kind:variable	line:11
+buf	../apps/sockets/server.py	/^buf = 1024$/;"	kind:variable	line:12
+build	../apps/octree/octree.py	/^    def build(self):$/;"	kind:member	line:59
+buildDomain	../metafor/launch_param/mestests/sphere.py	/^def buildDomain(_parameters={}):$/;"	kind:function	line:99
+buildEnergyMap	../metafor/biomec/vtkToolsGUI.py	/^    def buildEnergyMap(self):$/;"	kind:member	line:729
+buildIsoValue	../metafor/biomec/vtkToolsGUI.py	/^    def buildIsoValue(self):$/;"	kind:member	line:719
+build_and_run.py	../apps/EHD/build_and_run.py	1;"	kind:file	line:1
+build_and_run.py	../apps/fractal/cpp/build_and_run.py	1;"	kind:file	line:1
+build_and_run.py	../sandbox/vtk/plotwidget/build_and_run.py	1;"	kind:file	line:1
+builder	../apps/GenMAI/tests/gentool.py	/^builder = ToolBuilder(matrix)$/;"	kind:variable	line:12
+but	../sandbox/tkinter/myfirstgui_robo.py	/^but = Button(win2, text="   ")$/;"	kind:variable	line:136
+but	../sandbox/tkinter/myfirstgui_robo.py	/^but=Button(root,text="Start", command=sortir) $/;"	kind:variable	line:86
+bw	../sandbox/tkinter/test_bwin1.py	/^bw = RWin()$/;"	kind:variable	line:60
+bw	../sandbox/tkinter/test_bwin2.py	/^bw = RWin()$/;"	kind:variable	line:16
+bw	../sandbox/wxwidgets/sgui.py	/^bw = RWin()$/;"	kind:variable	line:16
+c	../apps/plotter/plotter.py	/^    c = Curve()$/;"	kind:variable	line:239
+callback	../metafor/biomec/vtkToolsGUI.py	/^    def callback(self,obj, event):$/;"	kind:member	line:117
+cam1	../sandbox/vtk/testvtk.py	/^cam1 = vtk.vtkCamera()$/;"	kind:variable	line:93
+cell	../apps/GenMAI/tests/gentool.py	/^        cell = vtk.vtkLine() $/;"	kind:variable	line:50
+cell	../apps/GenMAI/tests/gentool.py	/^        cell = vtk.vtkQuadraticEdge() $/;"	kind:variable	line:54
+chDir	../pytools/utils.py	/^def chDir(dirname):$/;"	kind:function	line:19
+chDir	../sandbox/python/backup-config-v0.py	/^def chDir(dirname):$/;"	kind:function	line:16
+chDir	../sandbox/python/backup-config-v1.py	/^def chDir(dirname):$/;"	kind:function	line:20
+chDir	../sandbox/python/backup-winconfig.py	/^def chDir(dirname):$/;"	kind:function	line:21
+checkAspect	../apps/fractal/mandel.py	/^    def checkAspect(self, x1, y1, x2, y2):$/;"	kind:member	line:207
+checker	../apps/unixadm/syschecker.py	/^    checker = SysChecker("r.boman@ulg.ac.be;l.papeleux@ulg.ac.be")$/;"	kind:variable	line:68
+choices	../sandbox/tkinter/myfirstgui_robo.py	/^choices = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"]$/;"	kind:variable	line:125
+clean	../apps/filemgr/avi_name_cleaner.py	/^def clean(rename=False):$/;"	kind:function	line:6
+cleanNames	../apps/filemgr/pdfmanager.py	/^def cleanNames():$/;"	kind:function	line:98
+cleanOBJs.py	../apps/filemgr/cleanOBJs.py	1;"	kind:file	line:1
+clear	../apps/textfilters/xls2latex_tk.py	/^    def clear(self):$/;"	kind:member	line:90
+clear	../sandbox/tkinter/console.py	/^    def clear(self):$/;"	kind:member	line:18
+clearscreen	../sandbox/python/clearscreen.py	/^def clearscreen():$/;"	kind:function	line:6
+clearscreen.py	../sandbox/python/clearscreen.py	1;"	kind:file	line:1
+client.py	../apps/sockets/client.py	1;"	kind:file	line:1
+client2.py	../apps/sockets2/client2.py	1;"	kind:file	line:1
+closeEvent	../apps/fractal/mandel.py	/^    def closeEvent(self, event):$/;"	kind:member	line:270
+cmd	../apps/pdf2ppt/pdf2ppt.py	/^       cmd = "mogrify -trim %s" % g$/;"	kind:variable	line:27
+cmd	../apps/pdf2ppt/pdf2ppt.py	/^    cmd = "convert -crop 50x50%% %s %s" % (f2,f)$/;"	kind:variable	line:22
+cmd	../apps/pdf2ppt/pdf2ppt.py	/^    cmd = "convert -crop 95x95%%+0+0 %s %s" % (f,f2) # vire le numero$/;"	kind:variable	line:19
+cmd	../metafor/biomec/YalaEllipseSphere.py	/^cmd = "\\"%s\\" -t %d,%d -i %s -d %d,%d,%d -s %d,%d,%d -r %d -f %s" % (isosurfExec, $/;"	kind:variable	line:27
+cmd	../sandbox/python/backup-config-v0.py	/^    cmd = '"'+winrar+' a -idc "'+dest+'"  "'+src+'""' # -ep=exclude path$/;"	kind:variable	line:44
+cmd	../sandbox/python/backup-config-v0.py	/^    cmd = '"'+winrar+' a -idc "'+dest+'"  "'+src+'""' # -ep=exclude path$/;"	kind:variable	line:66
+cmd	../sandbox/python/testpath_metafor.py	/^cmd = r'd:\\offi\\oo_metaI\\bin\\debug\\metafor_d'$/;"	kind:variable	line:57
+cmd	../sandbox/python/testpath_metafor.py	/^cmd = r'd:\\offi\\oo_metaI\\bin\\release\\metafor'$/;"	kind:variable	line:58
+codes	../apps/filemgr/remove_accents.py	/^codes = {$/;"	kind:variable	line:8
+codes	../apps/textfilters/replace_accents.py	/^codes = {$/;"	kind:variable	line:6
+codflag	../metafor/biomec/YalaEllipseSphere.py	/^codflag='s' # 'c'='uchar' 'u'='ushort'$/;"	kind:variable	line:26
+coding	../metafor/biomec/YalaEllipseSphere.py	/^coding='ushort'$/;"	kind:variable	line:25
+codingCallBack	../metafor/biomec/vtkToolsGUI.py	/^    def codingCallBack(self, val):$/;"	kind:member	line:567
+comm	../sandbox/mpi/test01_send.py	/^comm = mpi.COMM_WORLD$/;"	kind:variable	line:10
+comm	../sandbox/mpi/test02_send_pickle.py	/^comm = mpi.COMM_WORLD$/;"	kind:variable	line:12
+comm	../sandbox/mpi/test03_isend.py	/^comm = mpi.COMM_WORLD$/;"	kind:variable	line:8
+comm	../sandbox/mpi/test04_bcast.py	/^comm = mpi.COMM_WORLD$/;"	kind:variable	line:8
+comm	../sandbox/mpi/test05_scatter.py	/^comm = mpi.COMM_WORLD$/;"	kind:variable	line:8
+comm	../sandbox/mpi/test06_gather.py	/^comm = mpi.COMM_WORLD$/;"	kind:variable	line:8
+comm	../sandbox/mpi/test07_reduce.py	/^comm = mpi.COMM_WORLD$/;"	kind:variable	line:8
+computegrid	../apps/plotter/plotter.py	/^    def computegrid(self, xmin, xmax, gridX):$/;"	kind:member	line:39
+console.py	../sandbox/tkinter/console.py	1;"	kind:file	line:1
+console_color.py	../sandbox/python/console_color.py	1;"	kind:file	line:1
+contains	../apps/octree/octree.py	/^    def contains(self, pt):$/;"	kind:member	line:141
+contains	../apps/octree/octree.py	/^    def contains(self, pt):$/;"	kind:member	line:163
+contextMenuEvent	../apps/fractal/mandel.py	/^    def contextMenuEvent(self, event):$/;"	kind:member	line:134
+contour	../sandbox/vtk/marchCubesTest.py	/^contour = vtk.vtkMarchingContourFilter() $/;"	kind:variable	line:16
+convert	../apps/filemgr/remove_accents.py	/^def convert(file, path):                    $/;"	kind:function	line:27
+convert	../apps/textfilters/replace_accents.py	/^def convert(filename):$/;"	kind:function	line:21
+convert	../apps/textfilters/xls2latex_tk.py	/^    def convert(self):$/;"	kind:member	line:87
+convert16to8bits	../metafor/biomec/vtkTools.py	/^def convert16to8bits(name16, name8, extent=(0,255,0,255,0,59)):$/;"	kind:function	line:255
+convertTab	../apps/textfilters/xls2latex_tk.py	/^def convertTab(tabstring):$/;"	kind:function	line:20
+copy	../apps/octree/octree.py	/^    def copy(self):$/;"	kind:member	line:40
+copyfiles	../sandbox/python/backup-config-v1.py	/^def copyfiles(dirtxt, path, files=None):$/;"	kind:function	line:24
+copyfiles	../sandbox/python/backup-winconfig.py	/^def copyfiles(dirtxt, path, files=None):$/;"	kind:function	line:25
+cplibs	../sandbox/python/cplibs.py	/^def cplibs(exefile, targetPath='lddLibs', libPaths=[]):$/;"	kind:function	line:6
+cplibs.py	../sandbox/python/cplibs.py	1;"	kind:file	line:1
+creEllispoid	../metafor/biomec/vtkToolsGUI.py	/^    def creEllispoid(self):$/;"	kind:member	line:570
+create3Planes	../metafor/biomec/vtkTools.py	/^def create3Planes(image, window, level):$/;"	kind:function	line:408
+createBoxWidget	../metafor/biomec/vtkTools.py	/^def createBoxWidget(image, iren):$/;"	kind:function	line:514
+createContourActor	../metafor/biomec/vtkTools.py	/^def createContourActor(image, value=(0,2), fangle=60):$/;"	kind:function	line:127
+createContourPolydata	../metafor/biomec/vtkTools.py	/^def createContourPolydata(image, value=(0,2), fangle=60):$/;"	kind:function	line:117
+createCreateFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createCreateFrame(self):$/;"	kind:member	line:406
+createDataFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createDataFrame(self):$/;"	kind:member	line:331
+createDataFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createDataFrame(self):$/;"	kind:member	line:892
+createEllipsoid	../metafor/biomec/vtkTools.py	/^def createEllipsoid(extent=(0,99,0,99,0,99), center=(50, 50, 50), radius=(20, 35, 25), coding='uchar',values=(255,0)):$/;"	kind:function	line:382
+createEuclide	../metafor/biomec/vtkTools.py	/^def createEuclide(image):$/;"	kind:function	line:361
+createExportFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createExportFrame(self):$/;"	kind:member	line:502
+createExportFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createExportFrame(self):$/;"	kind:member	line:930
+createImportFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createImportFrame(self):$/;"	kind:member	line:488
+createImportFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createImportFrame(self):$/;"	kind:member	line:921
+createMenu	../metafor/biomec/vtkToolsGUI.py	/^    def createMenu(self):$/;"	kind:member	line:251
+createModifyFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createModifyFrame(self): $/;"	kind:member	line:442
+createNegative	../metafor/biomec/vtkTools.py	/^def createNegative(image):$/;"	kind:function	line:369
+createOutlineActor	../metafor/biomec/vtkTools.py	/^def createOutlineActor(image):$/;"	kind:function	line:152
+createPages	../metafor/biomec/vtkToolsGUI.py	/^    def createPages(self):$/;"	kind:member	line:236
+createPolyDataActor	../metafor/biomec/vtkTools.py	/^def createPolyDataActor(polydata, showScalar=False, range=None):$/;"	kind:function	line:136
+createSphere	../metafor/biomec/vtkTools.py	/^def createSphere(extent=(0,99,0,99,0,99), center=(50, 50, 50), radius=20, coding='uchar',values=(255,0)):$/;"	kind:function	line:402
+createStatusBar	../metafor/biomec/vtkToolsGUI.py	/^    def createStatusBar(self):$/;"	kind:member	line:264
+createViewFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createViewFrame(self):$/;"	kind:member	line:525
+createViewFrame	../metafor/biomec/vtkToolsGUI.py	/^    def createViewFrame(self):$/;"	kind:member	line:952
+createVolume	../metafor/biomec/vtkTools.py	/^def createVolume(image):$/;"	kind:function	line:473
+createWarpPolyData	../metafor/biomec/vtkTools.py	/^def createWarpPolyData(image, scale=1.0):$/;"	kind:function	line:162
+createWidgets	../metafor/biomec/vtkToolsGUI.py	/^    def createWidgets(self):$/;"	kind:member	line:138
+createWidgets	../metafor/biomec/vtkToolsGUI.py	/^    def createWidgets(self):$/;"	kind:member	line:38
+createWidgets	../metafor/biomec/vtkToolsGUI.py	/^    def createWidgets(self):$/;"	kind:member	line:558
+createWidgets	../metafor/biomec/vtkToolsGUI.py	/^    def createWidgets(self):$/;"	kind:member	line:62
+createWidgets	../metafor/biomec/vtkToolsGUI.py	/^    def createWidgets(self):$/;"	kind:member	line:964
+createWidgets	../metafor/biomec/vtkToolsGUI.py	/^    def createWidgets(self, size, range):$/;"	kind:member	line:198
+cset	../metafor/integrity/tstmit.py	/^cset = geo.getCurveSet()$/;"	kind:variable	line:27
+curset	../metafor/integrity/splineTest.py	/^curset   = geometry.getCurveSet();$/;"	kind:variable	line:31
+data	../apps/sockets/client.py	/^    data = raw_input('>> ')$/;"	kind:variable	line:21
+data	../apps/textfilters/transpose_gdtech.py	/^            data = lines[0].split()$/;"	kind:variable	line:13
+datadir	../metafor/biomec/vtkToolsTEST.py	/^datadir="..\/data\/"$/;"	kind:variable	line:10
+days	../bin/starttime.py	/^    days = 0$/;"	kind:variable	line:41
+days	../bin/starttime.py	/^    days = int(pidInfo[0])$/;"	kind:variable	line:35
+days	../sandbox/python/starttime.py	/^    days = 0$/;"	kind:variable	line:41
+days	../sandbox/python/starttime.py	/^    days = int(pidInfo[0])$/;"	kind:variable	line:35
+defTitle	../apps/filemgr/pdfmanager.py	/^def defTitle():$/;"	kind:function	line:37
+def_msg	../apps/sockets/client.py	/^def_msg = "Message?"$/;"	kind:variable	line:16
+dest	../sandbox/python/backup-config-v0.py	/^    dest=(rep+os.sep+src).replace('.dat','.rar')$/;"	kind:variable	line:43
+dest	../sandbox/python/backup-config-v0.py	/^    dest=rep+os.sep+src+'.rar'$/;"	kind:variable	line:65
+dict	../sandbox/tkinter/myfirstgui_robo.py	/^dict = {} $/;"	kind:variable	line:78
+dirs	../apps/filemgr/cleanOBJs.py	/^dirs = ('ITK320BIN','VTKBIN','CSwig320BIN')$/;"	kind:variable	line:4
+display	../apps/octree/octree.py	/^    def display(self):$/;"	kind:member	line:94
+display3D	../metafor/biomec/vtkTools.py	/^def display3D(actors):$/;"	kind:function	line:171
+displayOneSlice	../metafor/biomec/vtkTools.py	/^def displayOneSlice(image, slice=30, window=255, level=127):$/;"	kind:function	line:104
+domain	../metafor/integrity/printTest.py	/^domain = apps.ale.qsUzi.getDomain(0)$/;"	kind:variable	line:16
+domain	../metafor/integrity/splineTest.py	/^domain = metafor.getDomain()$/;"	kind:variable	line:5
+domain	../metafor/integrity/tstmit.py	/^domain = Domain()$/;"	kind:variable	line:7
+draw.py	../sandbox/qt/draw.py	1;"	kind:file	line:1
+edge	../metafor/biomec/off2geo/off2geo.py	/^            edge=(edge[1],edge[0])$/;"	kind:variable	line:47
+edge	../metafor/biomec/off2geo/off2geo.py	/^        edge=eds[j];$/;"	kind:variable	line:42
+edges	../metafor/biomec/off2geo/off2geo.py	/^edges={}$/;"	kind:variable	line:29
+edno	../metafor/biomec/off2geo/off2geo.py	/^    edno = [0, 0, 0]$/;"	kind:variable	line:40
+eds	../metafor/biomec/off2geo/off2geo.py	/^    eds = [(n1,n2),(n2,n3),(n3,n1)]$/;"	kind:variable	line:39
+ellipse	../metafor/biomec/YalaEllipseSphere.py	/^ellipse = createEllipsoid(extent=(0,99,0,99,0,99), center=(50, 50, 50), radius=(40, 40, 40), coding='ushort')$/;"	kind:variable	line:44
+end	../metafor/biomec/vtkToolsGUI.py	/^    def end(self,obj, event):$/;"	kind:member	line:126
+ent1	../sandbox/tkinter/myfirstgui_robo.py	/^ent1=Entry(frame1, textvariable=nx, width=5)$/;"	kind:variable	line:27
+ent2	../sandbox/tkinter/myfirstgui_robo.py	/^ent2=Entry(frame2, textvariable=ny, width=10, state = DISABLED, relief=GROOVE) $/;"	kind:variable	line:37
+ent3	../sandbox/tkinter/myfirstgui_robo.py	/^ent3=Entry(frame3, textvariable=ny, width=10, justify=RIGHT) $/;"	kind:variable	line:46
+ent41	../sandbox/tkinter/myfirstgui_robo.py	/^ent41=Entry(frame4, width=30) $/;"	kind:variable	line:54
+ent42	../sandbox/tkinter/myfirstgui_robo.py	/^ent42=Entry(frame4, width=10) ; ent42.insert(0,"blabla")$/;"	kind:variable	line:58
+eps	../metafor/integrity/splineTest.py	/^eps = 10$/;"	kind:variable	line:20
+euclide1	../metafor/biomec/YalaEllipseSphere.py	/^euclide1 = createEuclide(ellipse)$/;"	kind:variable	line:49
+euclide1	../metafor/biomec/vtkToolsTEST.py	/^euclide1 = createEuclide(image2)$/;"	kind:variable	line:76
+euclide1	../metafor/biomec/vtkToolsTEST.py	/^euclide1 = createEuclide(image2)$/;"	kind:variable	line:90
+euclide2	../metafor/biomec/YalaEllipseSphere.py	/^euclide2 = createEuclide(negative)$/;"	kind:variable	line:51
+euclide2	../metafor/biomec/vtkToolsTEST.py	/^euclide2 = createEuclide(negative)$/;"	kind:variable	line:78
+euclide2	../metafor/biomec/vtkToolsTEST.py	/^euclide2 = createEuclide(negative)$/;"	kind:variable	line:92
+execIsosurf	../metafor/biomec/vtkToolsGUI.py	/^    def execIsosurf(self):$/;"	kind:member	line:698
+execpyfile	../bin/rb.py	/^def execpyfile(fname, searchdir):$/;"	kind:function	line:4
+execute	../apps/unixadm/syschecker.py	/^    def execute(self):$/;"	kind:member	line:56
+execute	../sandbox/python/test_directors1.py	/^    def execute(self):$/;"	kind:member	line:17
+exportToGmsh	../metafor/biomec/vtkToolsGUI.py	/^    def exportToGmsh(self):$/;"	kind:member	line:1032
+extent	../metafor/biomec/YalaEllipseSphere.py	/^extent=(100,100,100)$/;"	kind:variable	line:22
+extractOneSlice	../metafor/biomec/vtkTools.py	/^def extractOneSlice(image, slice=30):$/;"	kind:function	line:97
+exts	../apps/filemgr/cleanOBJs.py	/^exts = ('*.obj','*.ilk','*.ncb','*.suo')$/;"	kind:variable	line:5
+f	../sandbox/python/modification_time.py	/^        f = m.__file__$/;"	kind:variable	line:13
+f	../sandbox/vtk/writevtk.py	/^f = open('output2.vtk','w')$/;"	kind:variable	line:86
+f2	../apps/pdf2ppt/pdf2ppt.py	/^    f2=f.replace('.png','-crop.png')$/;"	kind:variable	line:18
+fct	../apps/plotter/plotter.py	/^def fct(x):$/;"	kind:function	line:12
+fct	../metafor/integrity/printTest.py	/^def fct(x,y,z):$/;"	kind:function	line:30
+file	../apps/mails/mimetest.py	/^file = open("CYGWIN-diffs.html",'r')$/;"	kind:variable	line:7
+filein	../apps/filemgr/swaplines.py	/^filein = open(fname, 'r')$/;"	kind:variable	line:6
+filemgr.py	../apps/filemgr/filemgr.py	1;"	kind:file	line:1
+filename	../metafor/biomec/vrml/ShowVRML.py	/^filename = sys.argv[1]$/;"	kind:variable	line:14
+fileout	../apps/filemgr/swaplines.py	/^fileout = open(fname+".rev", 'wt')$/;"	kind:variable	line:7
+files	../apps/textfilters/transpose_gdtech.py	/^files = os.listdir(base)$/;"	kind:variable	line:6
+files	../sandbox/python/backup-config-v0.py	/^    files = ('ServUAdmin.ini', 'ServUDaemon.ini')$/;"	kind:variable	line:87
+fill	../apps/octree/octree.py	/^    def fill(self, pts):$/;"	kind:member	line:106
+fill	../apps/plotter/plotter.py	/^    def fill(self, f, rng, n):$/;"	kind:member	line:221
+fillbox	../apps/octree/octree.py	/^    def fillbox(self, boxes):$/;"	kind:member	line:112
+final	../metafor/biomec/YalaEllipseSphere.py	/^final = addImages(euclide1, euclide2)$/;"	kind:variable	line:52
+final	../metafor/biomec/vtkToolsTEST.py	/^final = addImages(euclide1, euclide2)$/;"	kind:variable	line:79
+final	../metafor/biomec/vtkToolsTEST.py	/^final = addImages(euclide1, euclide2)$/;"	kind:variable	line:93
+findIsosurf	../metafor/biomec/vtkToolsGUI.py	/^    def findIsosurf(self):$/;"	kind:member	line:689
+findfiles	../apps/filemgr/filemgr.py	/^def findfiles(patterns):$/;"	kind:function	line:9
+fn_start	../sandbox/tkinter/runMetaforGUI.py	/^    def fn_start(self, event=None):$/;"	kind:member	line:46
+fname	../apps/filemgr/swaplines.py	/^fname = "test.txt"$/;"	kind:variable	line:4
+fname	../apps/pdf2ppt/pdf2ppt.py	/^fname = "cours_Page_*.pdf"$/;"	kind:variable	line:15
+folder_with_accents.py	../langtests/unicode/folder_with_accents.py	1;"	kind:file	line:1
+foldername	../langtests/unicode/folder_with_accents.py	/^foldername = u'àé_dir'   # plante sous linux sans le 'u'$/;"	kind:variable	line:16
+form	../sandbox/python/testCGI.py	/^form = cgi.FieldStorage()$/;"	kind:variable	line:8
+form1	../sandbox/wxwidgets/wx6.py	/^form1=Form1(nb, -1)$/;"	kind:variable	line:59
+foundQt	../sandbox/qt/draw.py	/^    foundQt=4$/;"	kind:variable	line:10
+foundQt	../sandbox/qt/draw.py	/^    foundQt=5$/;"	kind:variable	line:17
+foundQt	../sandbox/qt/draw.py	/^foundQt=0$/;"	kind:variable	line:6
+foundQt	../sandbox/vtk/vtkqt.py	/^    foundQt=4$/;"	kind:variable	line:9
+foundQt	../sandbox/vtk/vtkqt.py	/^    foundQt=5$/;"	kind:variable	line:15
+foundQt	../sandbox/vtk/vtkqt.py	/^foundQt=0$/;"	kind:variable	line:5
+fract.py	../apps/fractal/fract.py	1;"	kind:file	line:1
+frame	../sandbox/wxwidgets/wx1.py	/^frame = wxFrame(None, -1, "Hello World")$/;"	kind:variable	line:6
+frame	../sandbox/wxwidgets/wx2.py	/^frame = MainWindow(None, -1, "Small editor")$/;"	kind:variable	line:13
+frame	../sandbox/wxwidgets/wx3.py	/^frame = MainWindow(None, -1, "Sample editor")$/;"	kind:variable	line:25
+frame	../sandbox/wxwidgets/wx4.py	/^frame = MainWindow(None, -1, "Sample editor")$/;"	kind:variable	line:55
+frame	../sandbox/wxwidgets/wx5.py	/^frame = MainWindow(None, -1, "Sample editor")$/;"	kind:variable	line:73
+frame	../sandbox/wxwidgets/wx6.py	/^frame = wxFrame(None,-1," Demo with Notebook")$/;"	kind:variable	line:57
+frame1	../sandbox/tkinter/myfirstgui_robo.py	/^frame1 = Frame(root)$/;"	kind:variable	line:23
+frame2	../sandbox/tkinter/myfirstgui_robo.py	/^frame2 = Frame(root)$/;"	kind:variable	line:34
+frame3	../sandbox/tkinter/myfirstgui_robo.py	/^frame3 = Frame(root)$/;"	kind:variable	line:43
+frame4	../sandbox/tkinter/myfirstgui_robo.py	/^frame4 = Frame(root)$/;"	kind:variable	line:51
+fromA	../apps/mails/mimetest.py	/^fromA = "r.boman@ulg.ac.be"$/;"	kind:variable	line:12
+fromaddr	../apps/mails/mailtest.py	/^fromaddr = "r.boman@ulg.ac.be"$/;"	kind:variable	line:6
+func	../langtests/python/test-yield.py	/^def func():$/;"	kind:function	line:4
+func1	../langtests/python/var_loc_glob_python.py	/^def func1():$/;"	kind:function	line:6
+func2	../langtests/python/var_loc_glob_python.py	/^def func2():$/;"	kind:function	line:10
+funcThread	../sandbox/tkinter/console.py	/^def funcThread(widget):$/;"	kind:function	line:43
+g	../apps/filemgr/rename_mob_files.py	/^        g = match.groups()$/;"	kind:variable	line:15
+gen	../sandbox/vtk/testvtk.py	/^gen = vtk.vtkTextureMapToCylinder()$/;"	kind:variable	line:50
+genmesh.py	../apps/GenMAI/tests/genmesh.py	1;"	kind:file	line:1
+gentool.py	../apps/GenMAI/tests/gentool.py	1;"	kind:file	line:1
+geo	../metafor/integrity/tstmit.py	/^geo = domain.getGeometry()$/;"	kind:variable	line:10
+geometry	../metafor/integrity/splineTest.py	/^geometry = domain.getGeometry()$/;"	kind:variable	line:6
+getClipBoardText	../apps/filemgr/pdfmanager.py	/^def getClipBoardText(): $/;"	kind:function	line:25
+getMetafor	../metafor/launch_param/mestests/sphere.py	/^def getMetafor(_parameters={}): $/;"	kind:function	line:22
+getMetafor	../metafor/launch_param/mestests/sphere_R_150.py	/^def getMetafor(_parameters={}):$/;"	kind:function	line:7
+getMetafor	../metafor/launch_param/mestests/sphere_R_50.py	/^def getMetafor(_parameters={}):$/;"	kind:function	line:7
+getParameters	../metafor/launch_param/mestests/sphere.py	/^def getParameters(_parameters={}):$/;"	kind:function	line:31
+getch	../apps/filemgr/remove_accents.py	/^getch = _Getch()$/;"	kind:variable	line:81
+grid	../sandbox/vtk/writevtk.py	/^grid  = vtk.vtkPolyData()$/;"	kind:variable	line:55
+handout	../bin/mkhandout.py	/^def handout(infile):$/;"	kind:function	line:6
+hash	../apps/md5/md5test.py	/^hash = QtCore.QCryptographicHash(QtCore.QCryptographicHash.Md5)$/;"	kind:variable	line:14
+hash	../apps/md5/test_md5_fullpython.py	/^hash = QtCore.QCryptographicHash(QtCore.QCryptographicHash.Md5)$/;"	kind:variable	line:14
+head	../apps/mails/mailtest.py	/^head = "From: %s\\nTo: %s\\n\\n" % (fromaddr, toaddrs)$/;"	kind:variable	line:9
+help	../apps/filemgr/pdfmanager.py	/^def help():$/;"	kind:function	line:85
+host	../apps/sockets/client.py	/^host = "garfield.ltas.ulg.ac.be"$/;"	kind:variable	line:9
+host	../apps/sockets/server.py	/^host = "garfield.ltas.ulg.ac.be"$/;"	kind:variable	line:10
+hours	../bin/starttime.py	/^        hours = 0$/;"	kind:variable	line:48
+hours	../bin/starttime.py	/^        hours = 0$/;"	kind:variable	line:52
+hours	../bin/starttime.py	/^        hours = int(rest[0])$/;"	kind:variable	line:44
+hours	../bin/starttime.py	/^    hours = int(rest[0])$/;"	kind:variable	line:37
+hours	../sandbox/python/starttime.py	/^        hours = 0$/;"	kind:variable	line:48
+hours	../sandbox/python/starttime.py	/^        hours = 0$/;"	kind:variable	line:52
+hours	../sandbox/python/starttime.py	/^        hours = int(rest[0])$/;"	kind:variable	line:44
+hours	../sandbox/python/starttime.py	/^    hours = int(rest[0])$/;"	kind:variable	line:37
+i	../langtests/python/testfor.py	/^    i=nbReg$/;"	kind:variable	line:7
+ids	../apps/GenMAI/tests/genmesh.py	/^    ids = quad.GetPointIds()               $/;"	kind:variable	line:54
+image	../metafor/biomec/vtkToolsTEST.py	/^image = loadGenesisImage(datadir+"lara\/006", (1,60))$/;"	kind:variable	line:45
+image	../metafor/biomec/vtkToolsTEST.py	/^image = loadRawImage("seg2.img",(0, 255, 0, 255, 0, 59),(0.98,0.98,1.56),'uchar','little')$/;"	kind:variable	line:30
+image	../metafor/biomec/vtkToolsTEST.py	/^image = loadRawImage(datadir+"lara\/006",(0, 255, 0, 255, 1, 60),(0.98,0.98,1.56),'ushort','big')$/;"	kind:variable	line:51
+image	../metafor/biomec/vtkToolsTEST.py	/^image = loadRawImage(datadir+"lara\/seg.img", (0, 255, 0, 255, 0, 59),(0.9375,0.9375,2.5),'ushort','little')$/;"	kind:variable	line:37
+image	../metafor/biomec/vtkToolsTEST.py	/^image = loadRawImage(datadir+"lara\/seg.img",(0, 255, 0, 255, 0, 59),(0.98,0.98,1.56),'ushort','little')$/;"	kind:variable	line:22
+image	../metafor/biomec/vtkToolsTEST.py	/^image = loadRawImage(datadir+"lara\/seg.img",(0, 255, 0, 255, 0, 59),(0.98,0.98,1.56),'ushort','little')$/;"	kind:variable	line:74
+image	../metafor/biomec/vtkToolsTEST.py	/^image = loadVtkImage(datadir+"tests\/ellipse.vtk")$/;"	kind:variable	line:108
+image	../metafor/biomec/vtkToolsTEST.py	/^image=createEllipsoid()$/;"	kind:variable	line:102
+image	../metafor/biomec/vtkToolsTEST.py	/^image=createEllipsoid()$/;"	kind:variable	line:88
+image2	../metafor/biomec/vtkToolsTEST.py	/^image2 = extractOneSlice(image, slice=13)$/;"	kind:variable	line:75
+image2	../metafor/biomec/vtkToolsTEST.py	/^image2 = extractOneSlice(image, slice=30)$/;"	kind:variable	line:23
+image2	../metafor/biomec/vtkToolsTEST.py	/^image2 = extractOneSlice(image, slice=80)$/;"	kind:variable	line:89
+importer	../metafor/biomec/vrml/ShowVRML.py	/^importer = vtk.vtkVRMLImporter()$/;"	kind:variable	line:20
+inFile	../apps/textfilters/transpose_gdtech.py	/^        inFile = open( base+f, 'r')$/;"	kind:variable	line:10
+inFile	../metafor/biomec/off2geo/off2geo.py	/^inFile = open( basename+'.off', 'r')$/;"	kind:variable	line:13
+inbox	../apps/octree/octree.py	/^    def inbox(self, box):$/;"	kind:member	line:167
+include	../sandbox/mpi/swig/setup.py	/^include = [swig, "\/usr\/lib\/openmpi\/include"]$/;"	kind:variable	line:8
+include_dirs	../sandbox/mpi/swig/setup.py	/^                  include_dirs = include$/;"	kind:variable	line:14
+inputFile	../metafor/biomec/YalaEllipseSphere.py	/^inputFile="\\"E:\\Boman\\Work\\Projets\\Cerveau\\Recup_Yala\\Mine\\python\\sphere.raw\\""$/;"	kind:variable	line:19
+inputf	../sandbox/vtk/plotwidget/build_and_run.py	/^    inputf = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'rainbow.jpg')$/;"	kind:variable	line:21
+insphere	../apps/octree/octree.py	/^    def insphere(self, sph):$/;"	kind:member	line:165
+interactor	../sandbox/vtk/marchCubesTest.py	/^interactor = vtk.vtkRenderWindowInteractor()$/;"	kind:variable	line:33
+intor	../sandbox/vtk/twolabels.py	/^intor = vtk.vtkRenderWindowInteractor()$/;"	kind:variable	line:45
+intra	../sandbox/mpi/test08_master.py	/^intra = worker.Merge()$/;"	kind:variable	line:11
+intra	../sandbox/mpi/test08_slave.py	/^intra = master.Merge()$/;"	kind:variable	line:8
+iren	../apps/GenMAI/tests/gentool.py	/^iren = vtk.vtkRenderWindowInteractor()$/;"	kind:variable	line:87
+iren	../metafor/biomec/vrml/ShowVRML.py	/^iren = vtk.vtkRenderWindowInteractor()$/;"	kind:variable	line:25
+iren	../sandbox/vtk/testvtk.py	/^iren = vtk.vtkRenderWindowInteractor()$/;"	kind:variable	line:86
+isUnix	../pytools/utils.py	/^def isUnix():$/;"	kind:function	line:24
+isosurfExec	../metafor/biomec/YalaEllipseSphere.py	/^isosurfExec="E:\\Boman\\Work\\Projets\\Cerveau\\Recup_Yala\\Software\\IsoSurf\\isosurf.v1_5d.exe"$/;"	kind:variable	line:15
+isosurfExec	../metafor/biomec/YalaEllipseSphere.py	/^isosurfExec="isosurf.exe"$/;"	kind:variable	line:16
+keys	../metafor/integrity/printTest.py	/^keys = KeyList(Key(TX),Key(TY),Key(TZ),Key(TM))$/;"	kind:variable	line:40
+killThread	../apps/fractal/mandel.py	/^    def killThread(self):$/;"	kind:member	line:265
+l	../sandbox/python/test_directors1.py	/^l = Line(1,1,1)$/;"	kind:variable	line:24
+lab1	../sandbox/tkinter/myfirstgui_robo.py	/^lab1=Label(frame1,text="Mailles selon X (nx)", relief = SUNKEN )$/;"	kind:variable	line:24
+lab2	../sandbox/tkinter/myfirstgui_robo.py	/^lab2=Label(frame2,text="Mailles selon Y (ny)", bg='red', fg='yellow' )$/;"	kind:variable	line:35
+lab3	../sandbox/tkinter/myfirstgui_robo.py	/^lab3=Label(frame3,text="Radius", borderwidth = 5, font = ('Arial', 12, 'bold') )$/;"	kind:variable	line:44
+lab41	../sandbox/tkinter/myfirstgui_robo.py	/^lab41=Label(frame4,text="X Length" )$/;"	kind:variable	line:52
+lab42	../sandbox/tkinter/myfirstgui_robo.py	/^lab42=Label(frame4,text="Y Length" )$/;"	kind:variable	line:56
+lab43	../sandbox/tkinter/myfirstgui_robo.py	/^lab43=Label(frame4,text="Un super long texte")$/;"	kind:variable	line:60
+lactor1	../sandbox/vtk/twolabels.py	/^lactor1 = vtk.vtkActor2D()$/;"	kind:variable	line:24
+lactor2	../sandbox/vtk/twolabels.py	/^lactor2 = vtk.vtkActor2D()$/;"	kind:variable	line:31
+lc	../metafor/biomec/off2geo/off2geo.py	/^lc=4$/;"	kind:variable	line:11
+light	../sandbox/vtk/testvtk.py	/^light = vtk.vtkLight()$/;"	kind:variable	line:104
+line	../apps/GenMAI/tests/test.py	/^line=Line(5,8);$/;"	kind:variable	line:26
+line	../metafor/biomec/off2geo/off2geo.py	/^    line=inFile.readline().split()$/;"	kind:variable	line:26
+line	../metafor/biomec/off2geo/off2geo.py	/^    line=inFile.readline().split()$/;"	kind:variable	line:32
+line	../metafor/biomec/off2geo/off2geo.py	/^line = inFile.readline().split()$/;"	kind:variable	line:18
+lines	../apps/filemgr/swaplines.py	/^lines = filein.readlines()$/;"	kind:variable	line:9
+lines	../apps/textfilters/transpose_gdtech.py	/^        lines = inFile.readlines()$/;"	kind:variable	line:11
+list	../sandbox/tkinter/myfirstgui_robo.py	/^list = Listbox(win2, height=2, selectmode = SINGLE)$/;"	kind:variable	line:126
+list	../sandbox/tkinter/myfirstgui_robo.py	/^list = ["one", "two", "three"] $/;"	kind:variable	line:77
+lmapper1	../sandbox/vtk/twolabels.py	/^lmapper1 = vtk.vtkLabeledDataMapper()$/;"	kind:variable	line:20
+lmapper2	../sandbox/vtk/twolabels.py	/^lmapper2 = vtk.vtkLabeledDataMapper()$/;"	kind:variable	line:28
+load	../apps/textfilters/xls2latex_tk.py	/^    def load(self):$/;"	kind:member	line:76
+loadConfig	../metafor/biomec/vtkToolsGUI.py	/^    def loadConfig(self, filename='ImagingGUI.cfg'):$/;"	kind:member	line:847
+loadGEImage	../metafor/biomec/vtkToolsGUI.py	/^    def loadGEImage(self):$/;"	kind:member	line:675
+loadGenesisImage	../metafor/biomec/vtkTools.py	/^def loadGenesisImage(directory, range=(1,60)):$/;"	kind:function	line:244
+loadPolyData	../metafor/biomec/vtkTools.py	/^def loadPolyData(name):$/;"	kind:function	line:319
+loadPolyDataXML	../metafor/biomec/vtkTools.py	/^def loadPolyDataXML(name):$/;"	kind:function	line:338
+loadRawImage	../metafor/biomec/vtkTools.py	/^def loadRawImage(name, extent=(0,255,0,255,0,59), spacing=(1,1,1), coding='uchar',byteorder='little'):$/;"	kind:function	line:13
+loadRawImage	../metafor/biomec/vtkToolsGUI.py	/^    def loadRawImage(self):$/;"	kind:member	line:643
+loadTab	../apps/textfilters/xls2latex_tk.py	/^def loadTab(tabfile):$/;"	kind:function	line:7
+loadVtkImage	../metafor/biomec/vtkTools.py	/^def loadVtkImage(name):$/;"	kind:function	line:52
+loadVtkImage	../metafor/biomec/vtkToolsGUI.py	/^    def loadVtkImage(self):$/;"	kind:member	line:585
+loadVtkImageXML	../metafor/biomec/vtkTools.py	/^def loadVtkImageXML(name):$/;"	kind:function	line:75
+loadVtkPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def loadVtkPolydata(self):$/;"	kind:member	line:972
+loadXmlImage	../metafor/biomec/vtkToolsGUI.py	/^    def loadXmlImage(self):$/;"	kind:member	line:614
+loadXmlPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def loadXmlPolydata(self):$/;"	kind:member	line:1002
+lst	../apps/filemgr/rename_all_files.py	/^lst = os.listdir(".")$/;"	kind:variable	line:6
+lst	../apps/filemgr/rename_mob_files.py	/^lst = os.listdir(".")$/;"	kind:variable	line:5
+m	../apps/md5/md5test.py	/^m = hashlib.md5()$/;"	kind:variable	line:28
+m	../apps/md5/md5test.py	/^m = md5.new()$/;"	kind:variable	line:21
+m	../apps/md5/test_md5_fullpython.py	/^m = hashlib.md5()$/;"	kind:variable	line:31
+m	../apps/md5/test_md5_fullpython.py	/^m = hashlib.sha224()$/;"	kind:variable	line:40
+m	../apps/md5/test_md5_fullpython.py	/^m = md5.new()$/;"	kind:variable	line:22
+mail	../apps/mails/mimetest.py	/^mail = MIMEText(text)$/;"	kind:variable	line:13
+mailtest.py	../apps/mails/mailtest.py	1;"	kind:file	line:1
+main	../apps/filemgr/remove_accents.py	/^def main():$/;"	kind:function	line:85
+main	../apps/fractal/mandel.py	/^def main():$/;"	kind:function	line:277
+main	../bin/scripts/updateoffi.py	/^def main(repos):$/;"	kind:function	line:8
+main	../sandbox/python/test_directors1.py	/^def main(): $/;"	kind:function	line:26
+main	../sandbox/python/worker_threads.py	/^def main(numthr=3, count=20):$/;"	kind:function	line:25
+main	../sandbox/wxwidgets/run.py	/^def main(argv):$/;"	kind:function	line:143
+main.py	../sandbox/mpi/swig/main.py	1;"	kind:file	line:1
+mandel.py	../apps/fractal/mandel.py	1;"	kind:file	line:1
+mapper	../apps/GenMAI/tests/gentool.py	/^mapper = vtk.vtkDataSetMapper() $/;"	kind:variable	line:77
+mapper	../sandbox/vtk/marchCubesTest.py	/^mapper = vtk.vtkPolyDataMapper()$/;"	kind:variable	line:21
+mapper	../sandbox/vtk/testvtk.py	/^mapper = vtk.vtkPolyDataMapper()$/;"	kind:variable	line:24
+mapper2	../sandbox/vtk/testvtk.py	/^mapper2 = vtk.vtkPolyDataMapper()$/;"	kind:variable	line:32
+mapper3	../sandbox/vtk/testvtk.py	/^mapper3 = vtk.vtkPolyDataMapper()$/;"	kind:variable	line:67
+marchCubesTest.py	../sandbox/vtk/marchCubesTest.py	1;"	kind:file	line:1
+marker	../sandbox/vtk/testvtk.py	/^marker = vtk.vtkOrientationMarkerWidget()$/;"	kind:variable	line:132
+master	../sandbox/mpi/test08_slave.py	/^master = mpi.Comm.Get_parent()$/;"	kind:variable	line:7
+match	../apps/filemgr/rename_mob_files.py	/^    match = pattern.search(file)$/;"	kind:variable	line:12
+matrix	../apps/GenMAI/tests/gentool.py	/^matrix = Tool()$/;"	kind:variable	line:11
+max	../apps/octree/octree.py	/^    def max(self, obj):$/;"	kind:member	line:36
+md5test.py	../apps/md5/md5test.py	1;"	kind:file	line:1
+mesh	../apps/GenMAI/tests/genmesh.py	/^mesh = Mesh()$/;"	kind:variable	line:12
+mesher	../apps/GenMAI/tests/genmesh.py	/^mesher = MeshBuilder(mesh)$/;"	kind:variable	line:13
+message	../sandbox/tkinter/myfirstgui_robo.py	/^def message():$/;"	kind:function	line:155
+metaThread	../sandbox/tkinter/test_bwin1.py	/^class metaThread(threading.Thread):$/;"	kind:class	line:41
+metafor	../metafor/integrity/splineTest.py	/^metafor = Metafor()$/;"	kind:variable	line:4
+metafor	../sandbox/python/test_directors1.py	/^metafor = Metafor()$/;"	kind:variable	line:8
+mimetest.py	../apps/mails/mimetest.py	1;"	kind:file	line:1
+min	../apps/octree/octree.py	/^    def min(self, obj):$/;"	kind:member	line:32
+minutes	../bin/starttime.py	/^        minutes = 0$/;"	kind:variable	line:53
+minutes	../bin/starttime.py	/^        minutes = int(rest[0])$/;"	kind:variable	line:49
+minutes	../bin/starttime.py	/^        minutes = int(rest[1])$/;"	kind:variable	line:45
+minutes	../bin/starttime.py	/^    minutes = int(rest[1])$/;"	kind:variable	line:38
+minutes	../sandbox/python/starttime.py	/^        minutes = 0$/;"	kind:variable	line:53
+minutes	../sandbox/python/starttime.py	/^        minutes = int(rest[0])$/;"	kind:variable	line:49
+minutes	../sandbox/python/starttime.py	/^        minutes = int(rest[1])$/;"	kind:variable	line:45
+minutes	../sandbox/python/starttime.py	/^    minutes = int(rest[1])$/;"	kind:variable	line:38
+mkDir	../sandbox/python/backup-config-v0.py	/^def mkDir(dirname):$/;"	kind:function	line:10
+mkDir	../sandbox/python/backup-config-v1.py	/^def mkDir(dirname):$/;"	kind:function	line:13
+mkDir	../sandbox/python/backup-winconfig.py	/^def mkDir(dirname):$/;"	kind:function	line:14
+mkhandout.py	../bin/mkhandout.py	1;"	kind:file	line:1
+modNegative	../metafor/biomec/vtkToolsGUI.py	/^    def modNegative(self):$/;"	kind:member	line:581
+modification_time.py	../sandbox/python/modification_time.py	1;"	kind:file	line:1
+moreInfo	../metafor/biomec/vtkToolsGUI.py	/^    def moreInfo(self):$/;"	kind:member	line:1074
+moreInfo	../metafor/biomec/vtkToolsGUI.py	/^    def moreInfo(self):$/;"	kind:member	line:858
+mouseMoveEvent	../apps/fractal/mandel.py	/^    def mouseMoveEvent(self, event):$/;"	kind:member	line:234
+mouseMoveEvent	../apps/plotter/plotter.py	/^    def mouseMoveEvent(self, event):$/;"	kind:member	line:176
+mousePressEvent	../apps/fractal/mandel.py	/^    def mousePressEvent(self, event):$/;"	kind:member	line:228
+mousePressEvent	../apps/plotter/plotter.py	/^    def mousePressEvent(self, event):$/;"	kind:member	line:166
+mouseReleaseEvent	../apps/fractal/mandel.py	/^    def mouseReleaseEvent(self, event):$/;"	kind:member	line:239
+msg	../apps/mails/mailtest.py	/^msg = head+body$/;"	kind:variable	line:11
+msg	../langtests/unicode/folder_with_accents.py	/^    msg=u"%s already exists" % foldername$/;"	kind:variable	line:24
+mtime	../sandbox/python/modification_time.py	/^            mtime = os.path.getmtime(f)$/;"	kind:variable	line:16
+multiple_replace	../apps/filemgr/pdfmanager.py	/^def multiple_replace(text, adict):$/;"	kind:function	line:92
+myPickFun	../sandbox/vtk/testvtk.py	/^def myPickFun(object,event):$/;"	kind:function	line:144
+mydemo	../sandbox/ipython/mydemo.py	/^mydemo = Demo('myscript.py')$/;"	kind:variable	line:3
+mydemo.py	../sandbox/ipython/mydemo.py	1;"	kind:file	line:1
+myfirstgui_robo.py	../sandbox/tkinter/myfirstgui_robo.py	1;"	kind:file	line:1
+myscript.py	../sandbox/ipython/myscript.py	1;"	kind:file	line:1
+n	../apps/filemgr/rename_mob_files.py	/^n=0$/;"	kind:variable	line:10
+n1	../metafor/biomec/off2geo/off2geo.py	/^    n1=int(line[1])+1$/;"	kind:variable	line:36
+n2	../metafor/biomec/off2geo/off2geo.py	/^    n2=int(line[2])+1$/;"	kind:variable	line:37
+n3	../metafor/biomec/off2geo/off2geo.py	/^    n3=int(line[3])+1$/;"	kind:variable	line:38
+nb	../sandbox/wxwidgets/wx6.py	/^nb = wxNotebook(frame,-1)$/;"	kind:variable	line:58
+nbReg	../langtests/python/testfor.py	/^nbReg=3$/;"	kind:variable	line:4
+nbelm	../metafor/biomec/off2geo/off2geo.py	/^nbelm = int(line[1])$/;"	kind:variable	line:20
+nbnod	../metafor/biomec/off2geo/off2geo.py	/^nbnod = int(line[0])$/;"	kind:variable	line:19
+nbp	../apps/GenMAI/tests/gentool.py	/^    nbp = matrix.getCurve(i).numberOfPoints()$/;"	kind:variable	line:48
+negative	../metafor/biomec/YalaEllipseSphere.py	/^negative = createNegative(ellipse)$/;"	kind:variable	line:50
+negative	../metafor/biomec/vtkToolsTEST.py	/^negative = createNegative(image2)$/;"	kind:variable	line:77
+negative	../metafor/biomec/vtkToolsTEST.py	/^negative = createNegative(image2)$/;"	kind:variable	line:91
+newStuff	../apps/fractal/mandel.py	/^    newStuff = pyqtSignal()$/;"	kind:variable	line:35
+newenv	../sandbox/python/testpath_metafor.py	/^newenv = os.environ$/;"	kind:variable	line:53
+newname	../apps/filemgr/rename_all_files.py	/^        newname = file.replace(" ","_")$/;"	kind:variable	line:11
+newname	../apps/filemgr/rename_all_files.py	/^        newname = newname.replace("sens_profilage_bord_gauche","bord_gauche")$/;"	kind:variable	line:12
+newname	../apps/filemgr/rename_mob_files.py	/^        newname = 'mobistar-%s-%s-%s-facture-%s.pdf' %(g[1],g[2],g[3],g[0])$/;"	kind:variable	line:16
+newpath	../sandbox/python/testpath_metafor.py	/^newpath=[]$/;"	kind:variable	line:12
+nextno	../metafor/biomec/off2geo/off2geo.py	/^            nextno=nextno+1$/;"	kind:variable	line:54
+nextno	../metafor/biomec/off2geo/off2geo.py	/^    nextno=nextno+1$/;"	kind:variable	line:57
+nextno	../metafor/biomec/off2geo/off2geo.py	/^nextno=1$/;"	kind:variable	line:30
+ni	../sandbox/tkinter/myfirstgui_robo.py	/^ni = IntVar()$/;"	kind:variable	line:17
+normalize	../apps/octree/octree.py	/^    def normalize(self):$/;"	kind:member	line:30
+num_holder	../sandbox/tkinter/myfirstgui_robo.py	/^num_holder = IntVar() $/;"	kind:variable	line:105
+nx	../sandbox/tkinter/myfirstgui_robo.py	/^nx=StringVar()$/;"	kind:variable	line:20
+ny	../sandbox/tkinter/myfirstgui_robo.py	/^ny=StringVar()$/;"	kind:variable	line:31
+obj	../metafor/biomec/vtkToolsGUI.py	/^    obj = vtk.vtkObject()$/;"	kind:variable	line:22
+octree.py	../apps/octree/octree.py	1;"	kind:file	line:1
+off2geo.py	../metafor/biomec/off2geo/off2geo.py	1;"	kind:file	line:1
+off2vtk	../metafor/biomec/vtkTools.py	/^def off2vtk(name="ellipse.off"):$/;"	kind:function	line:278
+one_xlat	../apps/filemgr/pdfmanager.py	/^    def one_xlat(match):$/;"	kind:function	line:94
+open	../apps/octree/octree.py	/^    def open(self):$/;"	kind:member	line:245
+outFile	../apps/textfilters/transpose_gdtech.py	/^            outFile = open(outFileName, 'w')$/;"	kind:variable	line:15
+outFileName	../apps/textfilters/transpose_gdtech.py	/^            outFileName = base+ f + '.T' $/;"	kind:variable	line:14
+outbox	../apps/octree/octree.py	/^    def outbox(self, box):$/;"	kind:member	line:169
+outline	../metafor/biomec/YalaEllipseSphere.py	/^	outline = createOutlineActor(polydata)$/;"	kind:variable	line:39
+outline	../metafor/biomec/vtkToolsTEST.py	/^outline = createOutlineActor(image)$/;"	kind:variable	line:39
+outline	../metafor/biomec/vtkToolsTEST.py	/^outline = createOutlineActor(polydata)$/;"	kind:variable	line:60
+outline	../metafor/biomec/vtkToolsTEST.py	/^outline = createOutlineActor(polydata)$/;"	kind:variable	line:68
+outline	../metafor/biomec/vtkToolsTEST.py	/^outline = createOutlineActor(polydata)$/;"	kind:variable	line:82
+outline	../metafor/biomec/vtkToolsTEST.py	/^outline = createOutlineActor(polydata)$/;"	kind:variable	line:96
+p	../apps/minibarreTE/tests/test1.py	/^p = Problem()$/;"	kind:variable	line:8
+p	../apps/minibarreTE/tests/test2.py	/^p = Problem()$/;"	kind:variable	line:8
+p	../apps/minibarreTE/tests/test3.py	/^p = Problem()$/;"	kind:variable	line:8
+p	../sandbox/python/testpath_metafor.py	/^p = subprocess.Popen(cmd, env=newenv, shell=True)$/;"	kind:variable	line:60
+p	../sandbox/vtk/twolabels.py	/^p = lmapper2.GetLabelTextProperty()$/;"	kind:variable	line:34
+p1	../sandbox/mpi/test07_reduce.py	/^p1 = Point(0, rank, rank+1)$/;"	kind:variable	line:12
+p2	../sandbox/mpi/test07_reduce.py	/^p2 = comm.allreduce(p1, mpi.SUM)$/;"	kind:variable	line:13
+pactor	../sandbox/vtk/twolabels.py	/^pactor = vtk.vtkActor()$/;"	kind:variable	line:14
+paintEvent	../apps/fractal/fract.py	/^    def paintEvent(self, event):$/;"	kind:member	line:24
+paintEvent	../apps/fractal/mandel.py	/^    def paintEvent(self, event):$/;"	kind:member	line:175
+paintEvent	../apps/plotter/plotter.py	/^    def paintEvent(self, event):$/;"	kind:member	line:80
+paintEvent	../sandbox/qt/draw.py	/^    def paintEvent(self, event):$/;"	kind:member	line:32
+par	../apps/GenMAI/tests/genmesh.py	/^par = MeshParameters()$/;"	kind:variable	line:7
+par	../apps/GenMAI/tests/gentool.py	/^par = ToolParameters() $/;"	kind:variable	line:6
+parentdir	../bin/rb.py	/^    parentdir = os.path.abspath(os.path.join(thisdir,'..'))$/;"	kind:variable	line:36
+parseargs	../pytools/utils.py	/^def parseargs():$/;"	kind:function	line:3
+path	../sandbox/python/backup-config-v0.py	/^    path = 'C:\\\\Program Files\\\\RhinoSoft.com\\\\Serv-U'$/;"	kind:variable	line:86
+pattern	../apps/filemgr/rename_mob_files.py	/^pattern = re.compile(r'Mobistar-Détails-(\\d{11})-(\\d{4})(\\d{2})(\\d{2}).pdf')$/;"	kind:variable	line:8
+pdf2ppt.py	../apps/pdf2ppt/pdf2ppt.py	1;"	kind:file	line:1
+pdfmanager.py	../apps/filemgr/pdfmanager.py	1;"	kind:file	line:1
+pfct	../metafor/integrity/printTest.py	/^pfct = PythonMultiParameterFunction(fct,3)$/;"	kind:variable	line:37
+picker	../sandbox/vtk/testvtk.py	/^picker = vtk.vtkCellPicker()$/;"	kind:variable	line:148
+picture	../sandbox/tkinter/myfirstgui_robo.py	/^picture = PhotoImage(file="bouteille.gif")$/;"	kind:variable	line:151
+pid	../bin/starttime.py	/^pid = sys.argv[1]$/;"	kind:variable	line:11
+pid	../sandbox/python/starttime.py	/^pid = sys.argv[1]$/;"	kind:variable	line:11
+pidInfo	../bin/starttime.py	/^            pidInfo = result.split()[1]$/;"	kind:variable	line:21
+pidInfo	../bin/starttime.py	/^pidInfo = [result.split()[1] for result in results$/;"	kind:variable	line:30
+pidInfo	../bin/starttime.py	/^pidInfo = pidInfo.partition("-")$/;"	kind:variable	line:32
+pidInfo	../sandbox/python/starttime.py	/^            pidInfo = result.split()[1]$/;"	kind:variable	line:21
+pidInfo	../sandbox/python/starttime.py	/^pidInfo = [result.split()[1] for result in results$/;"	kind:variable	line:30
+pidInfo	../sandbox/python/starttime.py	/^pidInfo = pidInfo.partition("-")$/;"	kind:variable	line:32
+pipeToWidget	../sandbox/tkinter/console.py	/^def pipeToWidget(input, widget):$/;"	kind:function	line:35
+pipo	../langtests/python/testSignalCTRLC.py	/^def pipo(sn,sf):$/;"	kind:function	line:33
+pipo	../langtests/python/var_loc_glob_python.py	/^pipo=True$/;"	kind:variable	line:4
+plotter.py	../apps/plotter/plotter.py	1;"	kind:file	line:1
+pmapper	../sandbox/vtk/twolabels.py	/^pmapper = vtk.vtkPolyDataMapper()$/;"	kind:variable	line:11
+point.py	../sandbox/mpi/point.py	1;"	kind:file	line:1
+points	../apps/GenMAI/tests/genmesh.py	/^points = vtk.vtkPoints()$/;"	kind:variable	line:44
+points	../apps/GenMAI/tests/gentool.py	/^points = vtk.vtkPoints()$/;"	kind:variable	line:39
+points	../sandbox/vtk/writevtk.py	/^points = vtk.vtkPoints()$/;"	kind:variable	line:34
+poiset	../metafor/integrity/splineTest.py	/^poiset   = geometry.getPointSet()$/;"	kind:variable	line:10
+poly	../metafor/biomec/YalaEllipseSphere.py	/^	poly    = createPolyDataActor(polydata)$/;"	kind:variable	line:38
+poly	../metafor/biomec/vtkToolsTEST.py	/^poly    = createPolyDataActor(polydata)$/;"	kind:variable	line:59
+poly	../metafor/biomec/vtkToolsTEST.py	/^poly    = createPolyDataActor(polydata)$/;"	kind:variable	line:67
+polydata	../metafor/biomec/YalaEllipseSphere.py	/^polydata = off2vtk(name="surface.off")$/;"	kind:variable	line:35
+polydata	../metafor/biomec/vtkToolsTEST.py	/^polydata = createWarpPolyData(final, scale=1.0\/19480*100)$/;"	kind:variable	line:80
+polydata	../metafor/biomec/vtkToolsTEST.py	/^polydata = createWarpPolyData(final, scale=1.0\/19480*100)$/;"	kind:variable	line:94
+polydata	../metafor/biomec/vtkToolsTEST.py	/^polydata = loadPolyData(datadir+"tests\/brain.vtk")$/;"	kind:variable	line:66
+polydata	../metafor/biomec/vtkToolsTEST.py	/^polydata = off2vtk(datadir+"tests\/ellipse.off")$/;"	kind:variable	line:57
+port	../apps/sockets/client.py	/^port = 2074$/;"	kind:variable	line:10
+port	../apps/sockets/server.py	/^port = 2074$/;"	kind:variable	line:11
+printOneLineOfData	../metafor/biomec/vtkTools.py	/^def printOneLineOfData(filename, slice=30, line=128, extent=(0,255,0,255,0,59), coding='ushort'):$/;"	kind:function	line:212
+printTest	../metafor/integrity/printTest.py	/^def printTest(objet):$/;"	kind:function	line:6
+printTest.py	../metafor/integrity/printTest.py	1;"	kind:file	line:1
+printVal	../sandbox/tkinter/myfirstgui_robo.py	/^def printVal():$/;"	kind:function	line:102
+printVal2	../sandbox/tkinter/myfirstgui_robo.py	/^def printVal2():$/;"	kind:function	line:111
+printVal3	../sandbox/tkinter/myfirstgui_robo.py	/^def printVal3(x):$/;"	kind:function	line:122
+printVal4	../sandbox/tkinter/myfirstgui_robo.py	/^def printVal4(x):$/;"	kind:function	line:138
+problem.py	../oldies/castswig/problem.py	1;"	kind:file	line:1
+proc	../bin/starttime.py	/^proc = subprocess.Popen(['ps','-eo','pid,etime'], stdout=subprocess.PIPE)$/;"	kind:variable	line:12
+proc	../sandbox/python/starttime.py	/^proc = subprocess.Popen(['ps','-eo','pid,etime'], stdout=subprocess.PIPE)$/;"	kind:variable	line:12
+progname	../apps/fractal/cpp/build_and_run.py	/^progname='qtfract'$/;"	kind:variable	line:4
+progname	../sandbox/vtk/plotwidget/build_and_run.py	/^progname='HistogramXYPlot'$/;"	kind:variable	line:4
+prognames	../apps/EHD/build_and_run.py	/^prognames=[ 'skytest', 'gausstest' ]$/;"	kind:variable	line:4
+pset	../metafor/integrity/tstmit.py	/^pset = geo.getPointSet()$/;"	kind:variable	line:13
+psource	../sandbox/vtk/twolabels.py	/^psource = vtk.vtkPointSource()$/;"	kind:variable	line:7
+pt	../apps/GenMAI/tests/test.py	/^pt = Point(1,2);$/;"	kind:variable	line:13
+pt	../apps/GenMAI/tests/test.py	/^pt = PtNumber(54)$/;"	kind:variable	line:9
+pts	../sandbox/vtk/writevtk.py	/^pts = []$/;"	kind:variable	line:9
+pytests_setattr.py	../langtests/python/pytests_setattr.py	1;"	kind:file	line:1
+quad	../apps/GenMAI/tests/genmesh.py	/^    quad = vtk.vtkQuad()$/;"	kind:variable	line:53
+quit	../apps/textfilters/xls2latex_tk.py	/^    def quit(self):$/;"	kind:member	line:93
+quit	../sandbox/tkinter/runMetaforGUI.py	/^    def quit(self, event=None):$/;"	kind:member	line:52
+quitCallback	../metafor/biomec/vtkToolsGUI.py	/^    def quitCallback(self):$/;"	kind:member	line:270
+quitcallback	../metafor/biomec/vtkToolsGUI.py	/^    def quitcallback(self):$/;"	kind:member	line:185
+quitcallback	../metafor/biomec/vtkToolsGUI.py	/^    def quitcallback(self):$/;"	kind:member	line:220
+quitcallback	../metafor/biomec/vtkToolsGUI.py	/^    def quitcallback(self):$/;"	kind:member	line:98
+r	../sandbox/python/testCGI.py	/^    r = ''$/;"	kind:variable	line:13
+r	../sandbox/python/testCGI.py	/^    r = form.getvalue('r')$/;"	kind:variable	line:10
+range	../metafor/biomec/YalaEllipseSphere.py	/^range=(1,255)$/;"	kind:variable	line:18
+rank	../sandbox/mpi/swig/main.py	/^rank = mpi.COMM_WORLD.Get_rank()$/;"	kind:variable	line:10
+rank	../sandbox/mpi/test01_send.py	/^rank = comm.rank$/;"	kind:variable	line:11
+rank	../sandbox/mpi/test02_send_pickle.py	/^rank = comm.rank$/;"	kind:variable	line:13
+rank	../sandbox/mpi/test03_isend.py	/^rank = comm.rank$/;"	kind:variable	line:9
+rank	../sandbox/mpi/test04_bcast.py	/^rank = comm.rank$/;"	kind:variable	line:9
+rank	../sandbox/mpi/test05_scatter.py	/^rank = comm.rank$/;"	kind:variable	line:9
+rank	../sandbox/mpi/test06_gather.py	/^rank = comm.rank$/;"	kind:variable	line:9
+rank	../sandbox/mpi/test07_reduce.py	/^rank = comm.rank$/;"	kind:variable	line:9
+rarOneFile	../sandbox/python/backup-config-v1.py	/^def rarOneFile(dirtxt, fullfile):$/;"	kind:function	line:50
+rarOneFile	../sandbox/python/backup-winconfig.py	/^def rarOneFile(dirtxt, fullfile):$/;"	kind:function	line:51
+rb.py	../bin/rb.py	1;"	kind:file	line:1
+rb1	../sandbox/tkinter/myfirstgui_robo.py	/^rb1 = Checkbutton(win2, text = "Five", variable = txt1_holder, onvalue="FiveOn", offvalue="FiveOff", command=printVal2) $/;"	kind:variable	line:117
+rb1	../sandbox/tkinter/myfirstgui_robo.py	/^rb1 = Radiobutton(win2, text = "Five", variable = num_holder, value=5, command=printVal) $/;"	kind:variable	line:106
+rb2	../sandbox/tkinter/myfirstgui_robo.py	/^rb2 = Checkbutton(win2, text = "Three", variable = txt2_holder, onvalue="ThreeOn", offvalue="ThreeOff", command=printVal2) $/;"	kind:variable	line:118
+rb2	../sandbox/tkinter/myfirstgui_robo.py	/^rb2 = Radiobutton(win2, text = "Three", variable = num_holder, value=3, command=printVal) $/;"	kind:variable	line:107
+readImageScalarRange	../metafor/biomec/vtkTools.py	/^def readImageScalarRange(filename, extent=(0,255,0,255,0,59), coding='ushort'):$/;"	kind:function	line:189
+readPdfInfo	../apps/filemgr/pdfmanager.py	/^def readPdfInfo(file):$/;"	kind:function	line:11
+reader	../sandbox/vtk/testvtk.py	/^reader = vtk.vtkPolyDataReader()$/;"	kind:variable	line:9
+redirect_stdout.py	../langtests/python/redirect_stdout.py	1;"	kind:file	line:1
+remove_accents.py	../apps/filemgr/remove_accents.py	1;"	kind:file	line:1
+ren	../apps/GenMAI/tests/gentool.py	/^ren = vtk.vtkRenderer()$/;"	kind:variable	line:82
+ren	../metafor/biomec/vrml/ShowVRML.py	/^ren = vtk.vtkRenderer()$/;"	kind:variable	line:16
+ren	../sandbox/vtk/testvtk.py	/^ren = vtk.vtkRenderer()$/;"	kind:variable	line:80
+ren	../sandbox/vtk/twolabels.py	/^ren = vtk.vtkRenderer()$/;"	kind:variable	line:41
+renWin	../apps/GenMAI/tests/gentool.py	/^renWin = vtk.vtkRenderWindow()$/;"	kind:variable	line:84
+renWin	../metafor/biomec/vrml/ShowVRML.py	/^renWin = vtk.vtkRenderWindow()$/;"	kind:variable	line:17
+renWin	../sandbox/vtk/testvtk.py	/^renWin = vtk.vtkRenderWindow()$/;"	kind:variable	line:83
+rename	../apps/filemgr/avi_name_cleaner.py	/^            rename=True$/;"	kind:variable	line:34
+rename	../apps/filemgr/avi_name_cleaner.py	/^    rename=False$/;"	kind:variable	line:31
+rename_all_files.py	../apps/filemgr/rename_all_files.py	1;"	kind:file	line:1
+rename_mob_files.py	../apps/filemgr/rename_mob_files.py	1;"	kind:file	line:1
+renderLarge	../metafor/biomec/vrml/ShowVRML.py	/^renderLarge = vtk.vtkRenderLargeImage()$/;"	kind:variable	line:34
+renderer	../sandbox/vtk/marchCubesTest.py	/^renderer = vtk.vtkRenderer()$/;"	kind:variable	line:27
+rep	../apps/minibarreTE/tests/test1.py	/^rep = os.path.splitext(os.path.basename(__file__))[0]$/;"	kind:variable	line:31
+rep	../apps/minibarreTE/tests/test2.py	/^rep = os.path.splitext(os.path.basename(__file__))[0]$/;"	kind:variable	line:32
+rep	../apps/minibarreTE/tests/test3.py	/^rep = os.path.splitext(os.path.basename(__file__))[0]$/;"	kind:variable	line:32
+rep	../sandbox/python/backup-config-v0.py	/^    rep = os.getcwd()$/;"	kind:variable	line:40
+rep	../sandbox/python/backup-config-v0.py	/^    rep = os.getcwd()$/;"	kind:variable	line:62
+replace_accents.py	../apps/textfilters/replace_accents.py	1;"	kind:file	line:1
+repos	../bin/scripts/updateoffi.py	/^    repos = []$/;"	kind:variable	line:42
+resetView	../apps/fractal/mandel.py	/^    def resetView(self):$/;"	kind:member	line:143
+resizeEvent	../apps/fractal/mandel.py	/^    def resizeEvent(self, event):$/;"	kind:member	line:160
+resolution	../metafor/biomec/YalaEllipseSphere.py	/^resolution=2$/;"	kind:variable	line:24
+rest	../bin/starttime.py	/^    rest = pidInfo[0].split(":")$/;"	kind:variable	line:42
+rest	../bin/starttime.py	/^    rest = pidInfo[2].split(":")$/;"	kind:variable	line:36
+rest	../sandbox/python/starttime.py	/^    rest = pidInfo[0].split(":")$/;"	kind:variable	line:42
+rest	../sandbox/python/starttime.py	/^    rest = pidInfo[2].split(":")$/;"	kind:variable	line:36
+results	../bin/starttime.py	/^results = proc.stdout.readlines()$/;"	kind:variable	line:15
+results	../sandbox/python/starttime.py	/^results = proc.stdout.readlines()$/;"	kind:variable	line:15
+retcode	../sandbox/python/testpath_metafor.py	/^retcode = p.wait()$/;"	kind:variable	line:61
+retranslateUi	../apps/PPTcalc/qtd/ui_mywidget.py	/^    def retranslateUi(self, MyWidget):$/;"	kind:member	line:59
+rnb	../apps/GenMAI/tests/genmesh.py	/^    rnb = NodeRenumberer(mesh) $/;"	kind:variable	line:23
+robot.py	../sandbox/wxwidgets/robot.py	1;"	kind:file	line:1
+root	../apps/textfilters/xls2latex_tk.py	/^root = Tk()$/;"	kind:variable	line:54
+root	../metafor/biomec/vtkToolsGUI.py	/^root = Tk()$/;"	kind:variable	line:26
+root	../sandbox/tkinter/console.py	/^root = Tk()$/;"	kind:variable	line:48
+root	../sandbox/tkinter/myfirstgui_robo.py	/^root=Tk() $/;"	kind:variable	line:13
+root	../sandbox/tkinter/runMetaforGUI.py	/^root = Tk()$/;"	kind:variable	line:58
+rootrep	../sandbox/python/backup-config-v0.py	/^rootrep = os.getcwd()$/;"	kind:variable	line:22
+run	../apps/fractal/mandel.py	/^    def run(self):$/;"	kind:member	line:51
+run	../apps/octree/octree.py	/^    def run(self):$/;"	kind:member	line:293
+run	../sandbox/python/worker_threads.py	/^    def run(self):$/;"	kind:member	line:16
+run	../sandbox/tkinter/test_bwin1.py	/^    def run(self):$/;"	kind:member	line:47
+run	../sandbox/tkinter/test_bwin1.py	/^    def run(self, *args):$/;"	kind:member	line:15
+run	../sandbox/tkinter/test_bwin2.py	/^    def run(self, *args):$/;"	kind:member	line:11
+run	../sandbox/wxwidgets/sgui.py	/^    def run(self, *args):$/;"	kind:member	line:11
+run	../sandbox/wxwidgets/wgui.py	/^    def run(self, *args):$/;"	kind:member	line:39
+run.py	../apps/GenMAI/run.py	1;"	kind:file	line:1
+run.py	../sandbox/wxwidgets/run.py	1;"	kind:file	line:1
+runMetaforGUI.py	../sandbox/tkinter/runMetaforGUI.py	1;"	kind:file	line:1
+runTest	../sandbox/wxwidgets/robot.py	/^def runTest(frame, nb, log):$/;"	kind:function	line:30
+rw	../sandbox/wxwidgets/wgui.py	/^rw = RWin()$/;"	kind:variable	line:45
+s	../apps/sockets2/client2.py	/^s = socket(AF_INET,SOCK_STREAM) # Create TCP socket$/;"	kind:variable	line:6
+s	../apps/sockets2/server2.py	/^s = socket(AF_INET, SOCK_STREAM) # Create TCP socket$/;"	kind:variable	line:7
+s	../metafor/integrity/tstmit.py	/^    s = Side(i); s.push(i); sdset.copy(s) $/;"	kind:variable	line:61
+s	../metafor/integrity/tstmit.py	/^s = Skin(1); s.push(6,1,2,5,4,3); skset.copy(s) $/;"	kind:variable	line:70
+s	../metafor/integrity/tstmit.py	/^s=Volume(1); s.push(1); vset.copy(s) $/;"	kind:variable	line:73
+s	../sandbox/matplotlib/simple_plot.py	/^s = np.sin(2*np.pi*t)$/;"	kind:variable	line:5
+s	../sandbox/python/testCGI.py	/^    s = ''$/;"	kind:variable	line:14
+s	../sandbox/python/testCGI.py	/^    s = str(math.sin(float(r)))$/;"	kind:variable	line:11
+sample	../sandbox/vtk/marchCubesTest.py	/^sample = vtk.vtkSampleFunction()$/;"	kind:variable	line:10
+save	../apps/textfilters/xls2latex_tk.py	/^    def save(self):$/;"	kind:member	line:80
+saveConfig	../metafor/biomec/vtkToolsGUI.py	/^    def saveConfig(self):$/;"	kind:member	line:287
+saveConfig	../metafor/biomec/vtkToolsGUI.py	/^    def saveConfig(self, filename='ImagingGUI.cfg'):$/;"	kind:member	line:819
+savePolyData	../metafor/biomec/vtkTools.py	/^def savePolyData(name, polydata, asciiorbin='binary'):$/;"	kind:function	line:325
+savePolyDataXML	../metafor/biomec/vtkTools.py	/^def savePolyDataXML(name, image, asciiorbin='binary'):$/;"	kind:function	line:347
+saveRawImage	../metafor/biomec/vtkTools.py	/^def saveRawImage(name, image):$/;"	kind:function	line:42
+saveRawImage	../metafor/biomec/vtkToolsGUI.py	/^    def saveRawImage(self):$/;"	kind:member	line:659
+saveTex	../apps/textfilters/xls2latex_tk.py	/^def saveTex(tabfile, tabstring):$/;"	kind:function	line:14
+saveVtkImage	../metafor/biomec/vtkTools.py	/^def saveVtkImage(name, image, asciiorbin='binary'):$/;"	kind:function	line:61
+saveVtkImage	../metafor/biomec/vtkToolsGUI.py	/^    def saveVtkImage(self):$/;"	kind:member	line:598
+saveVtkImageXML	../metafor/biomec/vtkTools.py	/^def saveVtkImageXML(name, image, asciiorbin='binary'):$/;"	kind:function	line:84
+saveVtkPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def saveVtkPolydata(self):$/;"	kind:member	line:986
+saveXmlImage	../metafor/biomec/vtkToolsGUI.py	/^    def saveXmlImage(self):$/;"	kind:member	line:627
+saveXmlPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def saveXmlPolydata(self):$/;"	kind:member	line:1016
+scalars	../sandbox/vtk/writevtk.py	/^scalars = vtk.vtkFloatArray()$/;"	kind:variable	line:38
+scale	../metafor/biomec/YalaEllipseSphere.py	/^scale=(1,1,1)$/;"	kind:variable	line:23
+scale	../sandbox/tkinter/myfirstgui_robo.py	/^scale = Scale(win2, orient=HORIZONTAL, length = 100,$/;"	kind:variable	line:144
+scriptdir	../bin/rb.py	/^    scriptdir = os.path.join(thisdir,'scripts')$/;"	kind:variable	line:40
+scroll	../sandbox/tkinter/myfirstgui_robo.py	/^scroll = Scrollbar(win2, command = list.yview)$/;"	kind:variable	line:132
+sdata	../sandbox/vtk/writevtk.py	/^sdata = []$/;"	kind:variable	line:19
+sdset	../metafor/integrity/tstmit.py	/^sdset = geo.getSideSet()$/;"	kind:variable	line:59
+seconds	../bin/starttime.py	/^        seconds = int(rest[0])$/;"	kind:variable	line:54
+seconds	../bin/starttime.py	/^        seconds = int(rest[1])$/;"	kind:variable	line:50
+seconds	../bin/starttime.py	/^        seconds = int(rest[2])$/;"	kind:variable	line:46
+seconds	../bin/starttime.py	/^    seconds = int(rest[2])$/;"	kind:variable	line:39
+seconds	../sandbox/python/starttime.py	/^        seconds = int(rest[0])$/;"	kind:variable	line:54
+seconds	../sandbox/python/starttime.py	/^        seconds = int(rest[1])$/;"	kind:variable	line:50
+seconds	../sandbox/python/starttime.py	/^        seconds = int(rest[2])$/;"	kind:variable	line:46
+seconds	../sandbox/python/starttime.py	/^    seconds = int(rest[2])$/;"	kind:variable	line:39
+secondsSinceStart	../bin/starttime.py	/^secondsSinceStart = days*24*3600 + hours*3600 + minutes*60 + seconds$/;"	kind:variable	line:57
+secondsSinceStart	../sandbox/python/starttime.py	/^secondsSinceStart = days*24*3600 + hours*3600 + minutes*60 + seconds$/;"	kind:variable	line:57
+selectSlice	../metafor/biomec/vtkToolsGUI.py	/^    def selectSlice(self, val):$/;"	kind:member	line:210
+server	../apps/mails/mailtest.py	/^server = smtplib.SMTP("smtp.ulg.ac.be")$/;"	kind:variable	line:13
+server.py	../apps/sockets/server.py	1;"	kind:file	line:1
+server2.py	../apps/sockets2/server2.py	1;"	kind:file	line:1
+setClipBoardText	../apps/filemgr/pdfmanager.py	/^def setClipBoardText(aString): $/;"	kind:function	line:31
+setParamFromImage	../metafor/biomec/vtkToolsGUI.py	/^    def setParamFromImage(self):$/;"	kind:member	line:785
+setParamFromPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def setParamFromPolydata(self):$/;"	kind:member	line:1048
+setPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def setPolydata(self, poly):$/;"	kind:member	line:1069
+setPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def setPolydata(self, poly):$/;"	kind:member	line:290
+set_color	../sandbox/python/console_color.py	/^def set_color(color, handle=std_out_handle):$/;"	kind:function	line:23
+setup.py	../sandbox/mpi/swig/setup.py	1;"	kind:file	line:1
+setupUi	../apps/PPTcalc/qtd/ui_mywidget.py	/^    def setupUi(self, MyWidget):$/;"	kind:member	line:12
+setupUi	../sandbox/vtk/vtkqt.py	/^    def setupUi(self, MainWindow):$/;"	kind:member	line:35
+sgui.py	../sandbox/wxwidgets/sgui.py	1;"	kind:file	line:1
+showHelp	../metafor/biomec/vtkToolsGUI.py	/^    def showHelp(self):$/;"	kind:member	line:308
+shrink	../sandbox/vtk/testvtk.py	/^shrink = vtk.vtkShrinkPolyData()$/;"	kind:variable	line:15
+sign	../metafor/biomec/off2geo/off2geo.py	/^            sign=-1$/;"	kind:variable	line:46
+sign	../metafor/biomec/off2geo/off2geo.py	/^        sign=1$/;"	kind:variable	line:43
+simple_plot.py	../sandbox/matplotlib/simple_plot.py	1;"	kind:file	line:1
+siz	../sandbox/mpi/test02_send_pickle.py	/^siz  = comm.size$/;"	kind:variable	line:14
+siz	../sandbox/mpi/test03_isend.py	/^siz  = comm.size$/;"	kind:variable	line:10
+siz	../sandbox/mpi/test04_bcast.py	/^siz  = comm.size$/;"	kind:variable	line:10
+siz	../sandbox/mpi/test05_scatter.py	/^siz  = comm.size$/;"	kind:variable	line:10
+siz	../sandbox/mpi/test06_gather.py	/^siz  = comm.size$/;"	kind:variable	line:10
+siz	../sandbox/mpi/test07_reduce.py	/^siz  = comm.size$/;"	kind:variable	line:10
+skin	../metafor/biomec/vtkToolsTEST.py	/^skin    = createContourActor(image)$/;"	kind:variable	line:38
+skset	../metafor/integrity/tstmit.py	/^skset = geo.getSkinSet()$/;"	kind:variable	line:68
+smtp	../apps/mails/mimetest.py	/^smtp = smtplib.SMTP("smtp.ulg.ac.be")$/;"	kind:variable	line:19
+sortir	../sandbox/tkinter/myfirstgui_robo.py	/^def sortir():$/;"	kind:function	line:8
+sources	../sandbox/mpi/swig/setup.py	/^sources = ["testSwig.c","testSwig.i"]$/;"	kind:variable	line:9
+sphere	../metafor/biomec/YalaEllipseSphere.py	/^sphere = createSphere(extent=(0,99,0,99,0,99), center=(50, 50, 50), radius=30, coding='ushort')$/;"	kind:variable	line:10
+sphere	../sandbox/vtk/marchCubesTest.py	/^sphere = vtk.vtkSphere()$/;"	kind:variable	line:6
+sphere.py	../metafor/launch_param/mestests/sphere.py	1;"	kind:file	line:1
+sphere_R_150.py	../metafor/launch_param/mestests/sphere_R_150.py	1;"	kind:file	line:1
+sphere_R_50.py	../metafor/launch_param/mestests/sphere_R_50.py	1;"	kind:file	line:1
+spl1	../metafor/integrity/splineTest.py	/^spl1 = CubicSpline(1)$/;"	kind:variable	line:33
+spl2	../metafor/integrity/splineTest.py	/^spl2 = CubicSpline(11)$/;"	kind:variable	line:38
+splineTest.py	../metafor/integrity/splineTest.py	1;"	kind:file	line:1
+split	../apps/octree/octree.py	/^    def split(self):$/;"	kind:member	line:152
+split	../apps/octree/octree.py	/^    def split(self):$/;"	kind:member	line:84
+split_pages	../apps/filemgr/splitpdf.py	/^def split_pages(src, dst):$/;"	kind:function	line:8
+splitpdf.py	../apps/filemgr/splitpdf.py	1;"	kind:file	line:1
+src	../sandbox/python/backup-config-v0.py	/^    src='Favoris'$/;"	kind:variable	line:64
+src	../sandbox/python/backup-config-v0.py	/^    src='ipfilter.dat'$/;"	kind:variable	line:42
+start	../metafor/biomec/vtkToolsGUI.py	/^    def start(self, obj, event):$/;"	kind:member	line:124
+startTime	../bin/starttime.py	/^startTime = time.time() - secondsSinceStart$/;"	kind:variable	line:59
+startTime	../sandbox/python/starttime.py	/^startTime = time.time() - secondsSinceStart$/;"	kind:variable	line:59
+starttime.py	../bin/starttime.py	1;"	kind:file	line:1
+starttime.py	../sandbox/python/starttime.py	1;"	kind:file	line:1
+static	../langtests/python/attributs_dyn.py	/^    static = 1$/;"	kind:variable	line:5
+std_out_handle	../sandbox/python/console_color.py	/^std_out_handle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)$/;"	kind:variable	line:21
+stop	../sandbox/tkinter/myfirstgui_robo.py	/^def stop(event): $/;"	kind:function	line:65
+swaplines.py	../apps/filemgr/swaplines.py	1;"	kind:file	line:1
+swig	../sandbox/mpi/swig/setup.py	/^swig = mpi4py.get_include()$/;"	kind:variable	line:7
+swig_import_helper	../sandbox/mpi/swig/testSwig.py	/^    def swig_import_helper():$/;"	kind:function	line:13
+swig_opts	../sandbox/mpi/swig/setup.py	/^                  swig_opts = ["-I"+swig ],$/;"	kind:variable	line:13
+syschecker.py	../apps/unixadm/syschecker.py	1;"	kind:file	line:1
+t	../sandbox/matplotlib/simple_plot.py	/^t = np.arange(0.0, 2.0, 0.01)$/;"	kind:variable	line:4
+tag	../metafor/biomec/off2geo/off2geo.py	/^tag = inFile.readline()$/;"	kind:variable	line:14
+test	../langtests/python/testSignalCTRLC.py	/^def test():$/;"	kind:function	line:4
+test-yield.py	../langtests/python/test-yield.py	1;"	kind:file	line:1
+test.py	../apps/GenMAI/tests/test.py	1;"	kind:file	line:1
+test01_send.py	../sandbox/mpi/test01_send.py	1;"	kind:file	line:1
+test02_send_pickle.py	../sandbox/mpi/test02_send_pickle.py	1;"	kind:file	line:1
+test03_isend.py	../sandbox/mpi/test03_isend.py	1;"	kind:file	line:1
+test04_bcast.py	../sandbox/mpi/test04_bcast.py	1;"	kind:file	line:1
+test05_scatter.py	../sandbox/mpi/test05_scatter.py	1;"	kind:file	line:1
+test06_gather.py	../sandbox/mpi/test06_gather.py	1;"	kind:file	line:1
+test07_reduce.py	../sandbox/mpi/test07_reduce.py	1;"	kind:file	line:1
+test08_master.py	../sandbox/mpi/test08_master.py	1;"	kind:file	line:1
+test08_slave.py	../sandbox/mpi/test08_slave.py	1;"	kind:file	line:1
+test1.py	../apps/minibarreTE/tests/test1.py	1;"	kind:file	line:1
+test2	../langtests/python/testSignalCTRLC.py	/^def test2():$/;"	kind:function	line:37
+test2.py	../apps/minibarreTE/tests/test2.py	1;"	kind:file	line:1
+test3.py	../apps/minibarreTE/tests/test3.py	1;"	kind:file	line:1
+testCGI.py	../sandbox/python/testCGI.py	1;"	kind:file	line:1
+testSignalCTRLC.py	../langtests/python/testSignalCTRLC.py	1;"	kind:file	line:1
+testSwig	../sandbox/mpi/swig/testSwig.py	/^def testSwig(*args):$/;"	kind:function	line:73
+testSwig	../sandbox/mpi/swig/testSwig.py	/^testSwig = _testSwig.testSwig$/;"	kind:variable	line:75
+testSwig.py	../sandbox/mpi/swig/testSwig.py	1;"	kind:file	line:1
+test_bwin1.py	../sandbox/tkinter/test_bwin1.py	1;"	kind:file	line:1
+test_bwin2.py	../sandbox/tkinter/test_bwin2.py	1;"	kind:file	line:1
+test_directors1.py	../sandbox/python/test_directors1.py	1;"	kind:file	line:1
+test_locale_sort.py	../sandbox/python/test_locale_sort.py	1;"	kind:file	line:1
+test_matplotlib.py	../sandbox/matplotlib/test_matplotlib.py	1;"	kind:file	line:1
+test_md5_fullpython.py	../apps/md5/test_md5_fullpython.py	1;"	kind:file	line:1
+testfor.py	../langtests/python/testfor.py	1;"	kind:file	line:1
+testpath_metafor.py	../sandbox/python/testpath_metafor.py	1;"	kind:file	line:1
+testvtk.py	../sandbox/vtk/testvtk.py	1;"	kind:file	line:1
+text	../apps/mails/mimetest.py	/^text = file.read()$/;"	kind:variable	line:8
+texte	../apps/md5/md5test.py	/^texte = "grape"$/;"	kind:variable	line:6
+texte	../apps/md5/test_md5_fullpython.py	/^texte = "hello ca roule hello ca roule hello ca roule hello ca roule?"$/;"	kind:variable	line:6
+texture	../sandbox/vtk/testvtk.py	/^texture = vtk.vtkTexture()$/;"	kind:variable	line:63
+tfin	../apps/minibarreTE/tests/test1.py	/^tfin = 6e-4$/;"	kind:variable	line:23
+tfin	../apps/minibarreTE/tests/test2.py	/^tfin = 6e-4*20$/;"	kind:variable	line:23
+tfin	../apps/minibarreTE/tests/test3.py	/^tfin = 100000.$/;"	kind:variable	line:23
+thisdir	../apps/GenMAI/run.py	/^    thisdir = os.path.split(__file__)[0]$/;"	kind:variable	line:7
+thisdir	../bin/rb.py	/^    thisdir = os.path.split(__file__)[0]$/;"	kind:variable	line:35
+tm	../apps/sockets2/client2.py	/^tm = s.recv(1024) # Receive up to 1024 bytes$/;"	kind:variable	line:8
+toA	../apps/mails/mimetest.py	/^toA = "r.boman@ulg.ac.be"$/;"	kind:variable	line:11
+toaddrs	../apps/mails/mailtest.py	/^toaddrs = "romain.boman@gmail.com"$/;"	kind:variable	line:7
+toggleShowCoords	../apps/fractal/mandel.py	/^    def toggleShowCoords(self, val):$/;"	kind:member	line:156
+tprop	../sandbox/vtk/testvtk.py	/^tprop = vtk.vtkTextProperty()$/;"	kind:variable	line:120
+tprop2	../sandbox/vtk/testvtk.py	/^tprop2 = vtk.vtkTextProperty()$/;"	kind:variable	line:125
+tprop3	../sandbox/vtk/testvtk.py	/^tprop3 = vtk.vtkTextProperty()$/;"	kind:variable	line:128
+tra2py	../apps/tra2py/tra2py.py	/^def tra2py(file, fctname, rowX, rowY):$/;"	kind:function	line:9
+tra2py.py	../apps/tra2py/tra2py.py	1;"	kind:file	line:1
+transpose_gdtech.py	../apps/textfilters/transpose_gdtech.py	1;"	kind:file	line:1
+tstmit.py	../metafor/integrity/tstmit.py	1;"	kind:file	line:1
+twolabels.py	../sandbox/vtk/twolabels.py	1;"	kind:file	line:1
+txt1_holder	../sandbox/tkinter/myfirstgui_robo.py	/^txt1_holder = StringVar() $/;"	kind:variable	line:115
+txt2_holder	../sandbox/tkinter/myfirstgui_robo.py	/^txt2_holder = StringVar() $/;"	kind:variable	line:116
+uf	../langtests/unicode/folder_with_accents.py	/^    uf = f.decode(sys.getfilesystemencoding())$/;"	kind:variable	line:30
+ugrid	../apps/GenMAI/tests/genmesh.py	/^ugrid  = vtk.vtkUnstructuredGrid()$/;"	kind:variable	line:43
+ugrid	../apps/GenMAI/tests/gentool.py	/^ugrid  = vtk.vtkUnstructuredGrid()$/;"	kind:variable	line:38
+ui_mywidget.py	../apps/PPTcalc/qtd/ui_mywidget.py	1;"	kind:file	line:1
+update	../pytools/versioning.py	/^    def update(self):$/;"	kind:member	line:17
+update	../pytools/versioning.py	/^    def update(self):$/;"	kind:member	line:49
+update	../pytools/versioning.py	/^    def update(self):$/;"	kind:member	line:9
+update_me	../sandbox/tkinter/console.py	/^    def update_me(self):$/;"	kind:member	line:20
+updateoffi.py	../bin/scripts/updateoffi.py	1;"	kind:file	line:1
+utils.py	../pytools/utils.py	1;"	kind:file	line:1
+v	../sandbox/mpi/swig/main.py	/^v = testSwig(mpi.COMM_WORLD, rank)$/;"	kind:variable	line:12
+v	../sandbox/mpi/test01_send.py	/^    v = 1000$/;"	kind:variable	line:14
+v	../sandbox/mpi/test01_send.py	/^    v = comm.recv(source=1)$/;"	kind:variable	line:18
+vals	../sandbox/mpi/test02_send_pickle.py	/^    vals = [Point(1, 5,3.14), array([3, 4, 8]), {1:'un', 2:'deux', 3:'trois'}]$/;"	kind:variable	line:18
+vals	../sandbox/mpi/test02_send_pickle.py	/^    vals = comm.recv(source=0)$/;"	kind:variable	line:21
+vals	../sandbox/mpi/test03_isend.py	/^vals = []$/;"	kind:variable	line:21
+var_loc_glob_python.py	../langtests/python/var_loc_glob_python.py	1;"	kind:file	line:1
+vdata	../sandbox/vtk/writevtk.py	/^vdata = []$/;"	kind:variable	line:23
+vectors	../sandbox/vtk/writevtk.py	/^vectors = vtk.vtkFloatArray()$/;"	kind:variable	line:42
+version	../sandbox/vtk/testvtk.py	/^version=vtk.vtkVersion().GetVTKMajorVersion()$/;"	kind:variable	line:5
+version	../sandbox/vtk/writevtk.py	/^version=vtk.vtkVersion().GetVTKMajorVersion()$/;"	kind:variable	line:32
+versioning.py	../pytools/versioning.py	1;"	kind:file	line:1
+vertex	../sandbox/vtk/writevtk.py	/^    vertex = vtk.vtkVertex()$/;"	kind:variable	line:48
+vertices	../apps/octree/octree.py	/^    def vertices(self):$/;"	kind:member	line:174
+vertices	../sandbox/vtk/writevtk.py	/^vertices = vtk.vtkCellArray()$/;"	kind:variable	line:36
+view	../metafor/biomec/vtkToolsGUI.py	/^    def view(self, image):$/;"	kind:member	line:150
+view	../metafor/biomec/vtkToolsGUI.py	/^    def view(self, image, sliceno, window, level):$/;"	kind:member	line:213
+view	../metafor/biomec/vtkToolsGUI.py	/^    def view(self, image, window, level):$/;"	kind:member	line:74
+view	../metafor/biomec/vtkToolsGUI.py	/^    def view(self, polydata):$/;"	kind:member	line:47
+view3Planes	../metafor/biomec/vtkTools.py	/^def view3Planes(image, window, level):$/;"	kind:function	line:448
+view3Planes	../metafor/biomec/vtkToolsGUI.py	/^    def view3Planes(self):$/;"	kind:member	line:761
+viewPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def viewPolydata(self):$/;"	kind:member	line:1053
+viewSlice	../metafor/biomec/vtkToolsGUI.py	/^    def viewSlice(self):$/;"	kind:member	line:746
+viewVolumic	../metafor/biomec/vtkToolsGUI.py	/^    def viewVolumic(self):$/;"	kind:member	line:773
+vset	../metafor/integrity/tstmit.py	/^vset = geo.getVolumeSet()$/;"	kind:variable	line:72
+vtk2gmsh	../metafor/biomec/vtkTools.py	/^def vtk2gmsh(polydata, filename='out.geo'):$/;"	kind:function	line:533
+vtkTools.py	../metafor/biomec/vtkTools.py	1;"	kind:file	line:1
+vtkToolsGUI.py	../metafor/biomec/vtkToolsGUI.py	1;"	kind:file	line:1
+vtkToolsTEST.py	../metafor/biomec/vtkToolsTEST.py	1;"	kind:file	line:1
+vtkqt.py	../sandbox/vtk/vtkqt.py	1;"	kind:file	line:1
+w	../metafor/integrity/tstmit.py	/^w = Wire(1); w.push(102,103,2,3,4,101); wset.copy(w) $/;"	kind:variable	line:50
+w	../metafor/integrity/tstmit.py	/^w = Wire(2); w.push(5,6,7,8); wset.copy(w) $/;"	kind:variable	line:51
+w	../metafor/integrity/tstmit.py	/^w = Wire(3); w.push(103,11,5,10,101,102); wset.copy(w) $/;"	kind:variable	line:52
+w	../metafor/integrity/tstmit.py	/^w = Wire(4); w.push(2,12,6,11); wset.copy(w) $/;"	kind:variable	line:54
+w	../metafor/integrity/tstmit.py	/^w = Wire(5); w.push(13,3,12,7); wset.copy(w) $/;"	kind:variable	line:55
+w	../metafor/integrity/tstmit.py	/^w = Wire(6); w.push(4,10,8,13); wset.copy(w) $/;"	kind:variable	line:56
+warningNoImage	../metafor/biomec/vtkToolsGUI.py	/^    def warningNoImage(self):$/;"	kind:member	line:814
+warningNoPolydata	../metafor/biomec/vtkToolsGUI.py	/^    def warningNoPolydata(self):$/;"	kind:member	line:1065
+wgui.py	../sandbox/wxwidgets/wgui.py	1;"	kind:file	line:1
+widg	../sandbox/tkinter/runMetaforGUI.py	/^widg = MyWin(root)      $/;"	kind:variable	line:59
+widget	../sandbox/tkinter/console.py	/^widget = ThreadSafeConsole(root)$/;"	kind:variable	line:49
+win	../apps/fractal/fract.py	/^    win = Mandelbrot()$/;"	kind:variable	line:60
+win	../apps/textfilters/xls2latex_tk.py	/^win = MainWindow(root)$/;"	kind:variable	line:97
+win	../metafor/biomec/vtkToolsGUI.py	/^win = MainWindow(root)$/;"	kind:variable	line:1094
+win	../metafor/integrity/printTest.py	/^win=VizWin();$/;"	kind:variable	line:26
+win	../metafor/integrity/splineTest.py	/^win=VizWin()$/;"	kind:variable	line:44
+win	../metafor/integrity/tstmit.py	/^win=VizWin()$/;"	kind:variable	line:101
+win	../sandbox/qt/draw.py	/^    win = MyWidget()$/;"	kind:variable	line:63
+win	../sandbox/vtk/twolabels.py	/^win = vtk.vtkRenderWindow()$/;"	kind:variable	line:42
+win2	../sandbox/tkinter/myfirstgui_robo.py	/^win2 = Toplevel(root)$/;"	kind:variable	line:95
+win2ax	../apps/fractal/mandel.py	/^    def win2ax(self, xe, ye):  # (xe,ye) + wx,wy,ox,oy,zoom => (x,y)$/;"	kind:member	line:20
+win2ax	../apps/plotter/plotter.py	/^    def win2ax(self, wx, wy):$/;"	kind:member	line:159
+window	../sandbox/vtk/marchCubesTest.py	/^window = vtk.vtkRenderWindow()$/;"	kind:variable	line:30
+window	../sandbox/vtk/vtkqt.py	/^    window = SimpleView()$/;"	kind:variable	line:85
+winrar	../sandbox/python/backup-config-v0.py	/^winrar = '"c:\\\\program files\\\\winrar-360\\\\rar.exe"'$/;"	kind:variable	line:4
+winrar	../sandbox/python/backup-config-v1.py	/^winrar = '"C:\\\\Program Files (x86)\\\\WinRAR\\\\rar.exe"'$/;"	kind:variable	line:4
+winrar	../sandbox/python/backup-winconfig.py	/^winrar = '"C:\\\\Program Files (x86)\\\\WinRAR\\\\rar.exe"'$/;"	kind:variable	line:5
+withinradius	../apps/octree/octree.py	/^    def withinradius(self, sph, pts):$/;"	kind:member	line:116
+worker	../sandbox/mpi/test08_master.py	/^worker = mpi.COMM_SELF.Spawn("test08_slave.py", None, 2, root=0)$/;"	kind:variable	line:10
+worker_threads.py	../sandbox/python/worker_threads.py	1;"	kind:file	line:1
+write	../langtests/python/redirect_stdout.py	/^      def write(self, stuff):$/;"	kind:function	line:10
+write	../sandbox/tkinter/console.py	/^    def write(self, line):$/;"	kind:member	line:16
+write	../sandbox/wxwidgets/run.py	/^    write = WriteText$/;"	kind:variable	line:40
+writer	../apps/GenMAI/tests/genmesh.py	/^writer = vtk.vtkXMLUnstructuredGridWriter()$/;"	kind:variable	line:60
+writer	../apps/GenMAI/tests/gentool.py	/^writer = vtk.vtkXMLUnstructuredGridWriter()$/;"	kind:variable	line:65
+writer	../metafor/biomec/vrml/ShowVRML.py	/^writer = vtk.vtkPNGWriter()$/;"	kind:variable	line:37
+writer	../sandbox/vtk/writevtk.py	/^writer = vtk.vtkPolyDataWriter()$/;"	kind:variable	line:66
+writer1	../apps/GenMAI/tests/genmesh.py	/^    writer1 = OofelieMeshExporter(mesh)$/;"	kind:variable	line:27
+writer1	../apps/GenMAI/tests/gentool.py	/^    writer1 = OofelieToolExporter(matrix)$/;"	kind:variable	line:21
+writer2	../apps/GenMAI/tests/genmesh.py	/^    writer2 = BaconMeshExporter(mesh)$/;"	kind:variable	line:32
+writer2	../apps/GenMAI/tests/gentool.py	/^    writer2 = BaconToolExporter(matrix)$/;"	kind:variable	line:24
+writer2b	../apps/GenMAI/tests/gentool.py	/^    writer2b = BaconDatToolExporter(matrix)$/;"	kind:variable	line:27
+writer3	../apps/GenMAI/tests/genmesh.py	/^    writer3 = MatlabMeshExporter(mesh)$/;"	kind:variable	line:37
+writer3	../apps/GenMAI/tests/gentool.py	/^    writer3 = MatlabToolExporter(matrix)$/;"	kind:variable	line:30
+writevtk.py	../sandbox/vtk/writevtk.py	1;"	kind:file	line:1
+wset	../metafor/integrity/tstmit.py	/^wset = geo.getWireSet()$/;"	kind:variable	line:48
+wx1.py	../sandbox/wxwidgets/wx1.py	1;"	kind:file	line:1
+wx2.py	../sandbox/wxwidgets/wx2.py	1;"	kind:file	line:1
+wx3.py	../sandbox/wxwidgets/wx3.py	1;"	kind:file	line:1
+wx4.py	../sandbox/wxwidgets/wx4.py	1;"	kind:file	line:1
+wx5.py	../sandbox/wxwidgets/wx5.py	1;"	kind:file	line:1
+wx6.py	../sandbox/wxwidgets/wx6.py	1;"	kind:file	line:1
+x	../sandbox/ipython/myscript.py	/^x = 1$/;"	kind:variable	line:21
+x	../sandbox/matplotlib/test_matplotlib.py	/^x = np.arange(0.0, 2*math.pi, 0.1)$/;"	kind:variable	line:6
+xform	../sandbox/vtk/testvtk.py	/^xform = vtk.vtkTransformTextureCoords()$/;"	kind:variable	line:56
+xls2latex_tk.py	../apps/textfilters/xls2latex_tk.py	1;"	kind:file	line:1
+y	../sandbox/ipython/myscript.py	/^y = 2$/;"	kind:variable	line:22
+y	../sandbox/matplotlib/test_matplotlib.py	/^y = np.sin(x)$/;"	kind:variable	line:7
+z	../sandbox/ipython/myscript.py	/^z = x+y$/;"	kind:variable	line:35
