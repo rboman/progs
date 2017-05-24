@@ -52,8 +52,7 @@ int main(int argc, char *argv[])
     }
 
     // Create a vtkXYPlotActor
-    vtkSmartPointer<vtkXYPlotActor> plot =
-        vtkSmartPointer<vtkXYPlotActor>::New();
+    auto plot = vtkSmartPointer<vtkXYPlotActor>::New();
     plot->ExchangeAxesOff();
     plot->SetLabelFormat("%g");
     plot->SetXTitle("Level");
@@ -74,7 +73,7 @@ int main(int argc, char *argv[])
     // component
     for (int i = 0; i < numComponents; ++i)
     {
-        vtkSmartPointer<vtkImageExtractComponents> extract = vtkSmartPointer<vtkImageExtractComponents>::New();
+        auto extract = vtkSmartPointer<vtkImageExtractComponents>::New();
         extract->SetInputConnection(reader->GetOutputPort());
         extract->SetComponents(i);
         extract->Update();
@@ -116,14 +115,14 @@ int main(int argc, char *argv[])
     plot->SetYRange(0, ymax);
 
     // Visualize the histogram(s)
-    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+    auto renderer = vtkSmartPointer<vtkRenderer>::New();
     renderer->AddActor(plot);
 
-    vtkSmartPointer<vtkRenderWindow> renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
+    auto renderWindow = vtkSmartPointer<vtkRenderWindow>::New();
     renderWindow->AddRenderer(renderer);
     renderWindow->SetSize(640, 480);
 
-    vtkSmartPointer<vtkRenderWindowInteractor> interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+    auto interactor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
     interactor->SetRenderWindow(renderWindow);
 
     // Initialize the event loop and then start it

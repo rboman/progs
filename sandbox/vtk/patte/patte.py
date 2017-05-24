@@ -4,10 +4,10 @@
 import vtk
 
 def main():
-    view('patte.stl', ymin=30, ymax=45, step=0.1)
+    cutmesh('patte.stl', ymin=30, ymax=45, step=0.1)
 
 
-def view(filename, ymin, ymax, step):
+def cutmesh(filename, ymin, ymax, step):
     
     # 1. setup pipeline
     # -----------------
@@ -49,9 +49,7 @@ def view(filename, ymin, ymax, step):
             srf = massProps.GetSurfaceArea()
         curve.append( (planey, srf) )
 
-    plane.SetOrigin(0, ymin, 0)
-
-    # store result in matlab file
+    # store the result in a matlab file
     outname = 'area.txt'
     with open(outname,'w') as outfile:
         for c in curve:
@@ -61,6 +59,8 @@ def view(filename, ymin, ymax, step):
 
     # 3. display mesh + cut at y=ymin
     # -------------------------------
+
+    plane.SetOrigin(0, ymin, 0)
 
     # STL mesh
     mapper = vtk.vtkPolyDataMapper()
@@ -105,63 +105,75 @@ def view(filename, ymin, ymax, step):
     clipActor2.GetProperty().SetRepresentationToWireframe()
     clipActor2.SetMapper(clipMapper2)
 
-    # renderer / window / interactor
-    ren = vtk.vtkRenderer()
-    win = vtk.vtkRenderWindow()
-    win.SetSize(800, 800)
-    win.AddRenderer(ren)
-
-    intor = vtk.vtkRenderWindowInteractor()
-    intor.SetRenderWindow(win)
-
-    ren.AddActor(actor)
-    ren.AddActor(actor2)
-    ren.AddActor(clipActor)
-    ren.AddActor(clipActor2)
-    ren.SetBackground(0.1, 0.2, 0.4)
+    # display mesh
+    view = BasicView()
 
     cubeAxesActor = vtk.vtkCubeAxesActor()
     cubeAxesActor.SetBounds(stlmesh.GetOutput().GetBounds())
-    cubeAxesActor.SetCamera(ren.GetActiveCamera())
+    cubeAxesActor.SetCamera(view.ren.GetActiveCamera())
 
-    ren.AddActor(cubeAxesActor)
-    #ren.GetActiveCamera().Azimuth(30)
-    #ren.GetActiveCamera().Elevation(30)
-    ren.ResetCamera()
-
-    # axes a la paraview -----
-    axes = vtk.vtkAxesActor()
-    axes.SetShaftTypeToCylinder()
-    axes.SetXAxisLabelText("x")
-    axes.SetYAxisLabelText("y")
-    axes.SetZAxisLabelText("z")
-    axes.SetTotalLength(1, 1, 1)
-    tprop = vtk.vtkTextProperty()
-    tprop.ItalicOn()
-    #tprop.ShadowOn()
-    #tprop.SetFontFamilyToTimes()
-    axes.GetXAxisCaptionActor2D().SetCaptionTextProperty(tprop)
-    tprop2 = vtk.vtkTextProperty() # inutile
-    tprop2.ShallowCopy(tprop) # inutile
-    axes.GetYAxisCaptionActor2D().SetCaptionTextProperty(tprop2)
-    tprop3 = vtk.vtkTextProperty() # inutile
-    tprop3.ShallowCopy(tprop) # inutile
-    axes.GetZAxisCaptionActor2D().SetCaptionTextProperty(tprop3)
-
-    marker = vtk.vtkOrientationMarkerWidget()
-    #marker.SetOutlineColor(0.93, 0.57, 0.13)
-    marker.SetOrientationMarker(axes)
-    marker.SetViewport(0.85, 0.8, 1.1, 1.1)
-
-    marker.SetInteractor(intor)
-    marker.SetEnabled(1)
-    marker.InteractiveOff()
-    # axes a la paraview -----
-
-    win.Render()
-    intor.Start()
+    view.add( [actor, actor2, cubeAxesActor, clipActor, clipActor2])
+    view.interact()
 
 
+class BasicView(object):
+    "defines a basic renderer / window / interactor"
+
+    def __init__(self):
+        ren = vtk.vtkRenderer()
+        ren.SetBackground(0.1, 0.2, 0.4)
+
+        win = vtk.vtkRenderWindow()
+        win.SetSize(800, 800)
+        win.AddRenderer(ren)
+
+        intor = vtk.vtkRenderWindowInteractor()
+        intor.SetRenderWindow(win)
+
+        self.axes = ParaviewAxes(intor)
+        self.ren = ren
+        self.win = win
+        self.intor = intor
+
+    def add(self, actors):
+        for actor in actors:
+            self.ren.AddActor(actor) 
+    
+    def interact(self):
+        # setup camera viewpoint
+        #self.ren.GetActiveCamera().Azimuth(90)
+        #self.ren.GetActiveCamera().Elevation(30)       
+        self.ren.ResetCamera()
+        self.win.Render()
+        self.intor.Start() 
+
+
+class ParaviewAxes(object):
+    "axes a la paraview"
+
+    def __init__(self, intor):
+        axes = vtk.vtkAxesActor()
+        axes.SetShaftTypeToCylinder()
+        axes.SetXAxisLabelText("x")
+        axes.SetYAxisLabelText("y")
+        axes.SetZAxisLabelText("z")
+        axes.SetTotalLength(1, 1, 1)
+        tprop = vtk.vtkTextProperty()
+        tprop.ItalicOn()
+        #tprop.ShadowOn()
+        #tprop.SetFontFamilyToTimes()
+        axes.GetXAxisCaptionActor2D().SetCaptionTextProperty(tprop)
+        axes.GetYAxisCaptionActor2D().SetCaptionTextProperty(tprop)
+        axes.GetZAxisCaptionActor2D().SetCaptionTextProperty(tprop)
+        marker = vtk.vtkOrientationMarkerWidget()
+        marker.SetOrientationMarker(axes)
+        marker.SetViewport(0.85, 0.8, 1.1, 1.1)
+        marker.SetInteractor(intor)
+        marker.SetEnabled(1)
+        marker.InteractiveOff()
+        # keep track of both main objects
+        self.axes = axes
+        self.marker = marker
 
 
 if __name__=='__main__':
