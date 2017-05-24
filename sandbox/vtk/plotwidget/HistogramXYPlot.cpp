@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
         double range[2];
         extract->GetOutput()->GetScalarRange(range);
 
-        vtkSmartPointer<vtkImageAccumulate> histogram = vtkSmartPointer<vtkImageAccumulate>::New();
+        auto histogram = vtkSmartPointer<vtkImageAccumulate>::New();
         histogram->SetInputConnection(extract->GetOutputPort());
         histogram->SetComponentExtent(0, static_cast<int>(range[1]) - static_cast<int>(range[0]) - 1, 0, 0, 0, 0);
         histogram->SetComponentOrigin(range[0], 0, 0);
