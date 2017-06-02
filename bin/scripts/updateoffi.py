@@ -11,7 +11,7 @@ def guessSystem():
     system, node, release, version, machine, processor = platform.uname()
 
     # machine name
-    machine_name = node.split('.')[0].lower()
+    machine_name = node.split('.')[0].split('-')[0].lower()
     print 'machine_name =', machine_name
     guesses.append(machine_name)
 
@@ -47,6 +47,7 @@ def chooseCfg():
     cfiles=[]
     for g in guesses:
         for avf in avfiles:
+            #print "testing", avf, g
             if avf.find(g)!=-1:
                 cfiles.append(avf)
     #print cfiles
