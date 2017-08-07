@@ -15,6 +15,11 @@ def guessSystem():
     print 'machine_name =', machine_name
     guesses.append(machine_name)
 
+    # robo's libs
+    #print os.environ['MYLOCAL']
+    if 'MYLOCAL' in os.environ:
+        guesses.append('garfield')
+
     # system name
     print 'system =', system
     if system=='Darwin':
@@ -63,7 +68,7 @@ def chooseCfg():
 def main(repos):
 
     # checkout/update everything
-    if 1:
+    if 0:
         for rep in repos:
             rep.update()
 
