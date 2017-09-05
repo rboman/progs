@@ -68,7 +68,7 @@ def chooseCfg():
 def main(repos):
 
     # checkout/update everything
-    if 0:
+    if 1:
         for rep in repos:
             rep.update()
 
