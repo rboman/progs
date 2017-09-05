@@ -23,9 +23,9 @@ class GITRepo(Repo):
                 cmd='git clone %s' % self.repo
             else:
                 cmd=r'"C:\Program Files\Git\bin\sh.exe" --login -c "git clone %s"' % self.repo
-                status = subprocess.call(cmd, shell=True)
-                if status: raise Exception('"%s" FAILED with error %d' % (cmd, status))
-                print 'status=', status                
+            status = subprocess.call(cmd, shell=True)
+            if status: raise Exception('"%s" FAILED with error %d' % (cmd, status))
+            print 'status=', status                
         else:
             pu.chDir(self.name)
             if pu.isUnix():
