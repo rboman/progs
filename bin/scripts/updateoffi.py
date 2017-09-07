@@ -70,14 +70,14 @@ def chooseCfg():
 def main(repos):
 
     # checkout/update everything
-    if 0:
+    if 1:
         for rep in repos:
             rep.update()
 
     cfg = chooseCfg()
 
     # clean build dir
-    if 0:
+    if 1:
         print 'removing build dir'
         if os.path.isdir('oo_metaB'):
             os.rename('oo_metaB','oo_metaB_trash') # avoid the failure of os.mkdir() is same name is used
@@ -88,7 +88,7 @@ def main(repos):
     pu.chDir('oo_metaB')
     
     # make
-    if 0:
+    if 1:
         if pu.isUnix():
             cmd='cmake -C ../oo_meta/CMake/%s ../oo_meta' %cfg
         else:
