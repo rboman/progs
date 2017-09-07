@@ -1,7 +1,7 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: utf-8 -*-
 
-import os, shutil, platform, subprocess
+import os, shutil, platform, subprocess, multiprocessing
 import pytools.utils as pu
 import pytools.versioning as vrs
 
@@ -41,6 +41,8 @@ def guessSystem():
         print '\twin_csd =', win_csd
         print '\twin_ptype =', win_ptype
         guesses.append(system.lower())
+
+    guesses = list(set(guesses))  # remove duplicates
     return guesses
 
 def chooseCfg():
@@ -68,24 +70,25 @@ def chooseCfg():
 def main(repos):
 
     # checkout/update everything
-    if 1:
+    if 0:
         for rep in repos:
             rep.update()
 
     cfg = chooseCfg()
 
     # clean build dir
-    if 1:
+    if 0:
         print 'removing build dir'
         if os.path.isdir('oo_metaB'):
             os.rename('oo_metaB','oo_metaB_trash') # avoid the failure of os.mkdir() is same name is used
             shutil.rmtree('oo_metaB_trash')
         os.mkdir('oo_metaB') # could fail (access denied) on Windows: 
         # http://stackoverflow.com/questions/16373747/permission-denied-doing-os-mkdird-after-running-shutil-rmtreed-in-python
-        pu.chDir('oo_metaB')
+    
+    pu.chDir('oo_metaB')
     
     # make
-    if 1:
+    if 0:
         if pu.isUnix():
             cmd='cmake -C ../oo_meta/CMake/%s ../oo_meta' %cfg
         else:
@@ -93,12 +96,13 @@ def main(repos):
         os.system(cmd)
         
     if 1:
-        if pu.isUnix():
-            # TODO: guess nb of cores
-            os.system('make -j 12')
-        else:
-            # TODO: check buildconsole
+        if pu.isInstalled("BuildConsole") and os.path.isfile('Metafor.sln'):
+            print "[using incredibuild]"
             os.system('BuildConsole Metafor.sln /rebuild /cfg="Release|x64"')
+        else:
+            ncores = multiprocessing.cpu_count()
+            print "[using cmake --build] with %d core(s)" % ncores
+            os.system('cmake --build . --config Release -- -j%d' % ncores)
 
 if __name__=="__main__":
     repos = []

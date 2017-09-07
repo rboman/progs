@@ -25,3 +25,8 @@ def isUnix():
     import platform
     uname = platform.uname()
     return not (uname[0] == 'Windows' or uname[2] == 'Windows')
+
+def isInstalled(name):
+    """Check whether `name` is on PATH."""
+    from distutils.spawn import find_executable
+    return find_executable(name) is not None
