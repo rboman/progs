@@ -12,3 +12,6 @@ Various progs of mine:
   * `skel`: skeleton of progs including CMake files,
   * `student`: my old student projects,
   * `untested`: untested pieces of code.
+
+
+[![Apache License Version 2.0](https://img.shields.io/badge/license-Apache_2.0-green.svg)](LICENSE)
