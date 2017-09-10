@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 
 progname='qtfract'
 
@@ -11,7 +11,7 @@ try:
     os.chdir('build')
     # cmake
     if 'Windows' in platform.uname():
-        subprocess.call('cmake -G "Visual Studio 14 Win64" ..', shell=True)
+        subprocess.call('cmake -G "Visual Studio 17 Win64" ..', shell=True)
     else:
         subprocess.call('cmake ..', shell=True)
     subprocess.call('cmake --build . --config Release', shell=True)
