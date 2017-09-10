@@ -22,11 +22,15 @@ class Barres : public QWidget
 {
     Q_OBJECT;
 
+
+    float pi;     
+    
     int ox;
     int oy;
-    int traj;
-    float pi; 
+
+
     float zoom;
+    
     float a1; 
     float a2; 
     float a3; 
