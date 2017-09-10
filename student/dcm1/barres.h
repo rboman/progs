@@ -13,8 +13,7 @@
 //   limitations under the License.
 
 #include <QWidget>
-#include <QColor>
-#include <QPen>
+
 #include <QPainter>
 #include <iostream>
 #include <vector>
@@ -23,13 +22,29 @@ class Barres : public QWidget
 {
     Q_OBJECT;
 
-    int ox, oy, traj;
-    float pi, zoom, a1, a2, a3, xb, ya, L, e, dp;
+    int ox;
+    int oy;
+    int traj;
+    float pi; 
+    float zoom;
+    float a1; 
+    float a2; 
+    float a3; 
+    float xb; 
+    float ya; 
+    float L; 
+    float e; 
+    float dp;
 
+    int myTimerId;
+    int offset;
 public:
     Barres(QWidget* parent = 0);
-public slots: 
+protected: 
     virtual void paintEvent(QPaintEvent *event);
+    virtual void timerEvent(QTimerEvent *event);
+    virtual void showEvent(QShowEvent *event);
+    virtual void hideEvent(QHideEvent *event);
 };
 
 

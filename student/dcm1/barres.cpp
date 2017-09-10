@@ -18,6 +18,8 @@
 #include "Barres.h"
 #include <math.h>
 #include <QApplication>
+#include <QColor>
+#include <QPen>
 
 Barres::Barres(QWidget *parent) : QWidget(parent)
 {
@@ -25,17 +27,47 @@ Barres::Barres(QWidget *parent) : QWidget(parent)
     ox = 150;
     oy = 300;
     a1 = 1.5;
-    a2 = 5;
-    a3 = 3;
-    xb = 4.5, ya = 3;
+    a2 = 5.0;
+    a3 = 3.0;
+    xb = 4.5; ya = 3.0;
     L = 10.5;
     e = 1;
     dp = 0.5;
     pi = 3.141592;
     traj = 0;
 
-    this->setWindowTitle("Barres (DCM1-1994)");
+    this->setWindowTitle("Barres! (DCM1-1994)");
     this->resize(640, 480);
+
+    offset = 1;
+    myTimerId = 0;
+}
+
+void 
+Barres::timerEvent(QTimerEvent *event)
+{
+    if (event->timerId() == myTimerId) 
+    {
+        std::cout << "Timer!\n";
+        offset+=1;
+        if (offset==74) offset=1;
+        update();
+    } 
+    else 
+        QWidget::timerEvent(event);
+
+}
+
+void 
+Barres::showEvent(QShowEvent *event)
+{
+    myTimerId = startTimer(50); // in ms
+}
+
+void 
+Barres::hideEvent(QHideEvent *event)
+{
+    killTimer(myTimerId);
 }
 
 void 
@@ -44,10 +76,10 @@ Barres::paintEvent(QPaintEvent *event)
     std::cout << "paintEvent: please wait...\n";
     QPainter *painter = new QPainter(this);
 
-    int page, i, j;
+    //int page, i, j;
     float pas, k1, k2, k3, theta1[74], x1[74], x2[74], x[6][74], y[6][74];
-    page = 0;
-    for (i = 1; i <= 73; i++)
+    //int page = 0;
+    for (int i = 1; i <= 73; i++)
     {
           pas = i;
           theta1[i] = (pas - 1) * 5 * pi / 180;
@@ -73,38 +105,49 @@ Barres::paintEvent(QPaintEvent *event)
           x[5][i] = x[4][i] + dp * cos(x1[i] - pi / 2);
           y[5][i] = y[4][i] + dp * sin(x1[i] - pi / 2);
     }
-    for (i = 0; i < 6; i++)
-          for (j = 1; j < 74; j++)
+
+    // apply transl + zoom
+
+    for (int i = 0; i < 6; i++)
+          for (int j = 1; j < 74; j++)
           {
                 x[i][j] = ox + x[i][j] * zoom;
                 y[i][j] = oy - y[i][j] * zoom * 350 / 480;
           }
-
-    for (i = 1; i < 73; i++)
+/*
+    for (int i = 1; i < 73; i++)
     {
-        QPen pen;
-        pen.setColor(palette().dark().color());
+        QPen pen(Qt::black, 2.0);
+
         painter->setPen(pen);
         painter->drawLine(x[5][i], y[5][i], x[5][i + 1], y[5][i + 1]);
     }
-      
-    //while (!kbhit())
-          for (i = 1; i <= 73; i++)
-          {
-                QPen pen;
-                pen.setColor(palette().dark().color());
-                painter->setPen(pen);
+    */
 
-                painter->drawLine(x[0][i], y[0][i], x[1][i], y[1][i]);
-                painter->drawLine(x[1][i], y[1][i], x[4][i], y[4][i]);
-                painter->drawLine(x[4][i], y[4][i], x[5][i], y[5][i]);
-                painter->drawLine(x[3][i], y[3][i], x[2][i], y[2][i]);
-                painter->drawLine(x[3][i], y[3][i] - e * zoom * 350 / 480, x[3][i] + 10 * zoom, y[3][i] - e * zoom * 350 / 480);
-                painter->drawLine(x[3][i] - 0.5 * zoom, y[3][i], x[3][i] + 0.5 * zoom, y[3][i]);
-                painter->drawLine(ox - 0.5 * zoom, oy - ya * zoom * 350 / 480, ox + 0.5 * zoom, oy - ya * zoom * 350 / 480);
-                for (j = 1; j < 73; j++)
-                    painter->drawLine(x[5][j], y[5][j], x[5][j + 1], y[5][j + 1]);
-          }
+    //for (int i = 1; i <= 73; i++)
+    //{
+        int i=offset;
+
+        QPen pen1(Qt::black, 2.0);
+        //pen.setColor(palette().dark().color());
+        painter->setPen(pen1);
+
+        painter->drawLine(x[0][i], y[0][i], x[1][i], y[1][i]);
+        painter->drawLine(x[1][i], y[1][i], x[4][i], y[4][i]);
+        painter->drawLine(x[4][i], y[4][i], x[5][i], y[5][i]);
+        painter->drawLine(x[3][i], y[3][i], x[2][i], y[2][i]);
+        painter->drawLine(x[3][i], y[3][i] - e * zoom * 350 / 480, x[3][i] + 10 * zoom, y[3][i] - e * zoom * 350 / 480);
+        painter->drawLine(x[3][i] - 0.5 * zoom, y[3][i], x[3][i] + 0.5 * zoom, y[3][i]);
+        painter->drawLine(ox - 0.5 * zoom, oy - ya * zoom * 350 / 480, ox + 0.5 * zoom, oy - ya * zoom * 350 / 480);    
+    //}
+    
+
+    // trajectoire
+    QPen pen2(Qt::red, 2.0);
+    painter->setPen(pen2);
+    for (int j = 1; j < 73; j++)
+        painter->drawLine(x[5][j], y[5][j], x[5][j + 1], y[5][j + 1]);
+
 
     painter->end();   // avoids "qpainter : cannot destroy paint device that is being painted" 
 }
