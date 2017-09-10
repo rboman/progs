@@ -17,7 +17,8 @@
 
 #include "Barres.h"
 #include <math.h>
-#include <QApplication>
+
+#include <QTimerEvent>
 #include <QColor>
 #include <QPen>
 
@@ -25,11 +26,8 @@ Barres::Barres(QWidget *parent) : QWidget(parent)
 {
     pi = 4*atan(1.0);    
     
-
     ox = 150;
     oy = 300;
-
-
 
 /*
     // initial set
@@ -61,7 +59,7 @@ Barres::Barres(QWidget *parent) : QWidget(parent)
     this->setWindowTitle("Barres! (DCM1-1994)");
     this->resize(640, 480);
 
-    offset = 1;
+    frame = 1;
     myTimerId = 0;
 }
 
@@ -71,8 +69,8 @@ Barres::timerEvent(QTimerEvent *event)
     if (event->timerId() == myTimerId) 
     {
         //std::cout << "Timer!\n";
-        offset+=1;
-        if (offset==74) offset=1;
+        frame+=1;
+        if (frame==nframes) frame=0;
         update();
     } 
     else 
@@ -83,7 +81,7 @@ void
 Barres::showEvent(QShowEvent *event)
 {
     // create a timer using member fct
-    myTimerId = startTimer(50); // in ms
+    myTimerId = startTimer(25); // in ms
 }
 
 void 
@@ -97,56 +95,56 @@ Barres::paintEvent(QPaintEvent *event)
 {
     //std::cout << "paintEvent: please wait...\n";
 
-    float theta1[74]; 
+    double theta1[nframes]; 
 
-    float x1[74]; 
-    float x2[74];
+    double x1[nframes]; 
+    double x2[nframes];
 
-    float x[6][74]; 
-    float y[6][74];
+    double x[6][nframes]; 
+    double y[6][nframes];
 
-    for (int i = 1; i <= 73; i++)
+    for (int i = 0; i < nframes; i++)
     {
-          theta1[i] = 2*pi *(i-1)/73; //(pas - 1) * 5 * pi / 180;
-          float k1 = xb - a1 * cos(theta1[i]);
-          float k2 = -ya - a1 * sin(theta1[i]);
-          float k3 = (k1 * k1 + k2 * k2 + a2 * a2 - a3 * a3) / (2.0 * a2);
+        theta1[i] = 2*pi *i/nframes;
+        double k1 = xb - a1 * cos(theta1[i]);
+        double k2 = -ya - a1 * sin(theta1[i]);
+        double k3 = (k1 * k1 + k2 * k2 + a2 * a2 - a3 * a3) / (2.0 * a2);
 
-          x1[i] = 2.0 * atan((k2 + sqrt(k2 * k2 - (k3 + k1) * (k3 - k1))) / (k3 + k1));
-          if ( (k1 - a2 * cos(x1[i])) / a3 > 0.0)
-                x2[i] = asin((k2 - a2 * sin(x1[i])) / a3);
-          else
-                x2[i] = -asin((k2 - a2 * sin(x1[i])) / a3) - pi;
+        x1[i] = 2.0 * atan((k2 + sqrt(k2 * k2 - (k3 + k1) * (k3 - k1))) / (k3 + k1));
+        if ( (k1 - a2 * cos(x1[i])) / a3 > 0.0)
+            x2[i] = asin((k2 - a2 * sin(x1[i])) / a3);
+        else
+            x2[i] = -asin((k2 - a2 * sin(x1[i])) / a3) - pi;
 
-          x[0][i] = 0.0;
-          y[0][i] = ya;
+        x[0][i] = 0.0;
+        y[0][i] = ya;
 
-          x[1][i] = a1 * cos(theta1[i]);
-          y[1][i] = ya + a1 * sin(theta1[i]);
+        x[1][i] = a1 * cos(theta1[i]);
+        y[1][i] = ya + a1 * sin(theta1[i]);
 
-          x[2][i] = x[1][i] + a2 * cos(x1[i]);
-          y[2][i] = y[1][i] + a2 * sin(x1[i]);
+        x[2][i] = x[1][i] + a2 * cos(x1[i]);
+        y[2][i] = y[1][i] + a2 * sin(x1[i]);
 
-          x[3][i] = xb;
-          y[3][i] = 0.0;
+        x[3][i] = xb;
+        y[3][i] = 0.0;
 
-          x[4][i] = x[1][i] + L * cos(x1[i]);
-          y[4][i] = y[1][i] + L * sin(x1[i]);
+        x[4][i] = x[1][i] + L * cos(x1[i]);
+        y[4][i] = y[1][i] + L * sin(x1[i]);
 
-          x[5][i] = x[4][i] + dp * cos(x1[i] - pi / 2);
-          y[5][i] = y[4][i] + dp * sin(x1[i] - pi / 2);
+        x[5][i] = x[4][i] + dp * cos(x1[i] - pi / 2);
+        y[5][i] = y[4][i] + dp * sin(x1[i] - pi / 2);
     }
 
     // apply transl + zoom
 
     for (int i = 0; i < 6; i++)
-          for (int j = 1; j < 74; j++)
+          for (int j = 0; j < nframes; j++)
           {
                 x[i][j] = ox + x[i][j] * zoom;
                 y[i][j] = oy - y[i][j] * zoom; // * 350 / 480;
           }
 
-    int i=offset;
+    int i = frame;
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -183,19 +181,31 @@ Barres::paintEvent(QPaintEvent *event)
     
 
     // -- trajectory
-    QPen pen2(Qt::red, 2.0);
-    painter.setPen(pen2);
-    for (int j = 1; j < 73; j++)
+
+    painter.setPen(QPen(Qt::red, 2.0));
+    for (int j = 0; j < nframes-1; j++)
         painter.drawLine(x[5][j], y[5][j], x[5][j + 1], y[5][j + 1]);
+    painter.drawLine(x[5][nframes-1], y[5][nframes-1], x[5][0], y[5][0]);
+
+    // -- trajectory pt2
+    int npt=1;
+    painter.setPen(QPen(Qt::darkBlue, 0.5));
+    for (int j = 0; j < nframes-1; j++)
+        painter.drawLine(x[npt][j], y[npt][j], x[npt][j + 1], y[npt][j + 1]);
+    painter.drawLine(x[npt][nframes-1], y[npt][nframes-1], x[npt][0], y[npt][0]);
+
+
+    // write parameters values
+    painter.setPen(QPen(Qt::black));
+    QRect rect(10, 10, 200, 300);
+    QString argtxt = QString("a1 = %1\na2 = %2\na3 = %3\nxb = %4\nya = %5\nL = %6\ne = %7\ndp = %8")
+    .arg(a1).arg(a2).arg(a3).arg(xb).arg(ya).arg(L).arg(e).arg(dp);
+    painter.drawText(rect, Qt::AlignLeft|Qt::AlignTop, argtxt);
+    // value of "i"
+    painter.drawText(this->rect(), Qt::AlignHCenter|Qt::AlignTop, QString("frame=%1/%2").arg(frame).arg(nframes));   
+
 
     //painter.end();   // avoids "qpainter : cannot destroy paint device that is being painted" 
 }
 
-int main(int argc, char *argv[])
-{
-	QApplication *app = new QApplication(argc, argv);
-	Barres *win = new Barres();
-	win->show();
-	app->exec();
-	return 0;
-}
+

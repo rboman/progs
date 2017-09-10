@@ -22,26 +22,27 @@ class Barres : public QWidget
 {
     Q_OBJECT;
 
+    static constexpr int nframes = 50;
 
-    float pi;     
+    double pi;     
     
     int ox;
     int oy;
 
 
-    float zoom;
-    
-    float a1; 
-    float a2; 
-    float a3; 
-    float xb; 
-    float ya; 
-    float L; 
-    float e; 
-    float dp;
+    double zoom;
+
+    double a1; 
+    double a2; 
+    double a3; 
+    double xb; 
+    double ya; 
+    double L; 
+    double e; 
+    double dp;
 
     int myTimerId;
-    int offset;
+    int frame;
 public:
     Barres(QWidget* parent = 0);
 protected: 
