@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: latin-1 -*-
 
-progname='qtfract'
+progname='barres'
 
 import os, sys, subprocess, platform
 
