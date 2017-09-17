@@ -16,8 +16,8 @@
 //                                  DCM1.H
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include <fstream>
-#include <math.h>
-#include "base_pol.h"
+#include <cmath>
+#include "BasePoly.h"
 
 #define pi 3.141592
 
@@ -55,9 +55,9 @@ double c0 = 1.20;
 double c1 = 0.30;
 double T = 1.0;
 double F0 = 150000.0;
-double np = 80.0;     // précision du tracé en x ds MATLAB
-double np2 = 40.0;    //                    en t
+double np = 80.0;     // précision du tracé en x ds MATLAB    [TODO] changer en "int" ??
+double np2 = 40.0;    //                    en t              [TODO] changer en "int" ??
 double Nperiod = 2.0; // nbre de périodes en t (pour MATLAB)
-double Nmodes = 6;    // nbre de modes à calculer avec prec.
+double Nmodes = 6;    // nbre de modes à calculer avec prec.  [TODO] changer en "int"
 double PREC = 1E-4;
 double PREC2 = 1E-2;

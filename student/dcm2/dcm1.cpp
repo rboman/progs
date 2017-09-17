@@ -48,13 +48,13 @@ void calcule()
     std::cout << "--------\n";
 
     //-------------------------------------------------------------------------
-    //                   Crï¿½ation d'une base de polynome
+    //                   Création d'une base de polynome
     //-------------------------------------------------------------------------
-    p[0] = 1 / sqrt(m.integrale(0.0, enverg) // 1ï¿½ poly = cte.
+    p[0] = 1 / sqrt(m.integrale(0.0, enverg) // 1er poly = cte.
                     + (!m).integrale(-enverg, 0.0) + Mfuselage + 2 * Mmoteurs);
-    std::cout << "Polynome nï¿½0:" << p << '\n';
+    std::cout << "Polynome #0:" << p << '\n';
 
-    Base_Poly Base(MSX, I, m, MYoung, enverg, p);
+    BasePoly Base(MSX, I, m, MYoung, enverg, p);
 
     for (i = 2; i < Nmodes + 1; i++) // Ajoute 5 poly.
         KM = Base.ajoute_suivant();
@@ -66,7 +66,7 @@ void calcule()
     ModPro2--;                       // les val. & vect. pr.
     for (i = 1; i < Nmodes + 1; i++) // pour (n-1) poly...
     {
-        ValPro2[i] = 0.0; // ...et initialisation ï¿½ 0.
+        ValPro2[i] = 0.0; // ...et initialisation à 0.
         ModPro2[i] = new double[Nmodes];
         ModPro2[i]--;
         for (j = 1; j <= nopoly; j++)
@@ -75,7 +75,7 @@ void calcule()
 
     //-------------------------------------------------------------------------
     //    Ajoute un polynome et compare les val. et vect. propres avec
-    //             ceux et celles de l'itï¿½ration prï¿½cï¿½dente.
+    //             ceux et celles de l'itération précédente.
     //-------------------------------------------------------------------------
     rate = 1;
     while (rate == 1)
@@ -178,7 +178,7 @@ void calcule()
                 ModPro[j][k] = 0.0;
 
     //-------------------------------------------------------------------------
-    //                       affichage des rï¿½sultats
+    //                       affichage des résultats
     //-------------------------------------------------------------------------
     std::cout << "\nValeurs Propres:\n";
     for (j = 1; j <= nopoly; j++)
@@ -337,6 +337,7 @@ void titre()
 
 void main()
 {
+    /*
     char choix;
     int exit = 0;
     while (exit == 0)
@@ -362,4 +363,6 @@ void main()
         }
     }
     //clrscr();
+*/
+    calcule();
 }

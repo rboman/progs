@@ -12,13 +12,14 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include <math.h>
+#include <cmath>
 
 #define ROTATE(a, i, j, k, l)        \
     g = a[i][j];                     \
     h = a[k][l];                     \
     a[i][j] = g - s * (h + g * tau); \
     a[k][l] = h + s * (g - h * tau);
+
 typedef double TYPE;
 
 //    a Matrice de départ dont on cherche les Valeurs Propres

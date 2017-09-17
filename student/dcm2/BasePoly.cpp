@@ -12,12 +12,41 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "vararray.h"
-#include "base_pol.h"
+#include "VarArray.h"
+#include "BasePoly.h"
 //#include <conio.h>
 
+BasePoly::BasePoly(Masses *_MsX,
+                   Polynome _I,
+                   Polynome _m,
+                   double _young,
+                   double _envergure,
+                   Polynome &P) : VarArray<Polynome>(max_pol)
+
+{
+    young = _young; //E    N/m2
+    MsX = _MsX;
+    I = _I; //I(x) m4
+    m = _m; //m(x) kg/m
+    l = _envergure;
+
+    (*this)[0] = P;
+    K = NULL;
+    if (P.donne_degre() < 2)
+    {
+        Polynome vide(0);
+        ddBase[0] = vide;
+    }
+    else
+        ddBase[0] = (P.derive()).derive();
+
+    taille = 0;
+    build_k();
+    taille = 1;
+};
+
 double **
-Base_Poly::ajoute_suivant()
+BasePoly::ajoute_suivant()
 {
     //   int new_deg = ((*this)[taille-1]).donne_degre()+1;
     static int new_deg = 0;
@@ -86,7 +115,7 @@ Base_Poly::ajoute_suivant()
     return K;
 }
 
-void Base_Poly::build_k()
+void BasePoly::build_k()
 {
     double **KK;
     KK = new double *[taille + 1];
@@ -108,14 +137,14 @@ void Base_Poly::build_k()
    K[j]=KK[j];               */
 }
 
-std::ostream &operator<<(std::ostream &outp, Base_Poly &bp)
+std::ostream &operator<<(std::ostream &outp, BasePoly &bp)
 {
-    for (Base_Poly::indice i = 0; i < bp.taille; i++)
+    for (BasePoly::indice i = 0; i < bp.taille; i++)
         outp << i << ":(�" << bp[i].donne_degre() << ") = " << bp[i] << '\n';
     return outp;
 }
 
-void Base_Poly::affiche_K(int dim)
+void BasePoly::affiche_K(int dim)
 {
     std::cout << "Matrice K:" << '\n';
     for (int i = 0; i < dim; i++)
@@ -126,3 +155,6 @@ void Base_Poly::affiche_K(int dim)
     }
     std::cout << '\n';
 }
+
+
+

@@ -59,7 +59,7 @@ Polynome::operator=(const Polynome &b)
 }
 
 Polynome
-Polynome::operator!()
+    Polynome::operator!()
 {
     Polynome b(degre);
     degre = 0;
@@ -73,7 +73,7 @@ Polynome::operator!()
 }
 
 double &
-Polynome::operator[](indice i)
+    Polynome::operator[](indice i)
 {
     if (i <= degre)
         return a[i];
@@ -198,4 +198,49 @@ operator<<(std::ostream &outp, Polynome &po)
         }
     }
     return outp;
+}
+
+
+void Polynome::demo()
+{
+    std::cout << "\n Je go !\n";
+    Polynome a(3);
+    Polynome b(4);
+    a[0] = 4.;
+    a[1] = 2.;
+    a[3] = 1.;
+    b[1] = 1.3;
+    b[4] = 1.4;
+
+    Polynome c, d;
+    c = a + b;
+    d = a * b;
+
+    std::cout << "a(X)    = " << a << '\n';
+    std::cout << "a(.5)   = " << a(.5) << '\n';
+    std::cout << "b(X)    = " << b << '\n';
+    std::cout << "b(.5)   = " << b(.5) << '\n';
+    std::cout << "c(X)=a+b= " << c << '\n';
+    std::cout << "c(.5)   = " << c(.5) << '\n';
+    std::cout << "d(X)=a*b= " << d << '\n';
+    std::cout << "d(.5)   = " << d(.5) << '\n';
+    std::cout << "d'(X)   = " << d.derive() << '\n';
+    std::cout << (d.primitive())(1) - (d.primitive())(0) << '\n';
+    std::cout << d.integrale(0, 1);
+
+    // Resultats
+    /*
+Je go !
+a(X)    = 4 + 2 X^1 + 1 X^3
+a(.5)   = 5.125
+b(X)    = 0 + 1.3 X^1 + 1.4 X^4
+b(.5)   = 0.7375
+c(X)=a+b= 4 + 3.3 X^1 + 1 X^3 + 1.4 X^4
+c(.5)   = 5.8625
+d(X)=a*b= 0 + 5.2 X^1 + 5.6 X^4 + 2.8 X^5 + 1.4 X^7
+d(.5)   = 3.048437
+d'(X)   = 5.2 + 22.4 X^3 + 14 X^4 + 9.8 X^6
+4.361667
+4.361667 
+*/
 }

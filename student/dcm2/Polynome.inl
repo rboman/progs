@@ -12,34 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef VARARRAY_H
-#define VARARRAY_H
-
-extern int debug;
-
-template <class T>
-class VarArray
-{
-    T *data;
-    int maxsz;
-    int last;
-
-  public:
-    VarArray(int initsz = 8);
-    VarArray(const VarArray<T> &);
-    ~VarArray();
-
-    void remove_one_record(int i);
-    int maxsize();
-    int size();
-    T &operator[](int);
-    VarArray<T> &operator=(const VarArray<T> &);
-
-  private:
-    void resize(int);
-    void swap(int a, int b);
-};
-
-#include "VarArray.inl"
-
-#endif // VARARRAY_H
+inline Polynome::indice 
+Polynome::donne_degre() 
+{ 
+    return degre; 
+}

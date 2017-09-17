@@ -12,34 +12,14 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef VARARRAY_H
-#define VARARRAY_H
+#ifndef MASSES_H
+#define MASSES_H 
 
-extern int debug;
-
-template <class T>
-class VarArray
+struct Masses
 {
-    T *data;
-    int maxsz;
-    int last;
-
-  public:
-    VarArray(int initsz = 8);
-    VarArray(const VarArray<T> &);
-    ~VarArray();
-
-    void remove_one_record(int i);
-    int maxsize();
-    int size();
-    T &operator[](int);
-    VarArray<T> &operator=(const VarArray<T> &);
-
-  private:
-    void resize(int);
-    void swap(int a, int b);
+    explicit Masses(double _masse=0.0, double _x=0.0) : masse(_masse), x(_x) {}
+    double masse;
+    double x;
 };
 
-#include "VarArray.inl"
-
-#endif // VARARRAY_H
+#endif // MASSES_H
