@@ -29,38 +29,38 @@ extern void titre();
 
 void param(char *texte, double *par)
 {
-      char entree[20];
-      float prm = 0.0;
-      printf("   %s [%f]=", texte, *par);
-      //std::cin << entree;
-      //gets(entree);    // TODO - A RECODER
-      sscanf(entree, "%f", &prm);
-      if (fabs(prm) > 1E-10)
-            *par = prm;
+    char entree[20];
+    float prm = 0.0;
+    printf("   %s [%f]=", texte, *par);
+    //std::cin << entree;
+    //gets(entree);    // TODO - A RECODER
+    sscanf(entree, "%f", &prm);
+    if (fabs(prm) > 1E-10)
+        *par = prm;
 }
 
 void input_data()
 {
-      //clrscr();
-      titre();
-      std::cout << "\n-Dimensions de l'avion:\n";
-      param("Densite", &densite);
-      param("Masse des moteurs", &Mmoteurs);
-      param("Masse du fuselage", &Mfuselage);
-      param("Module de Young", &MYoung);
-      param("c0", &c0);
-      param("c1", &c1);
-      std::cout << "\n-2e partie:\n";
-      param("Periode T", &T);
-      param("Force F0", &F0);
-      std::cout << "\n-Donnees relatives a Matlab:\n";
-      param("Pas en x", &np);
-      param("Pas en t", &np2);
-      param("Nbre de periodes", &Nperiod);
-      std::cout << "\n-Parametres supplementaires:\n";
-      param("Envergure", &enverg);
-      param("Epaisseur de l'aile", &ep);
-      param("Nbre de modes F0", &Nmodes);
-      param("Precision sur les freq.", &PREC);
-      param("Precision sur les modes", &PREC2);
+    //clrscr();
+    titre();
+    std::cout << "\n-Dimensions de l'avion:\n";
+    param("Densite", &densite);
+    param("Masse des moteurs", &Mmoteurs);
+    param("Masse du fuselage", &Mfuselage);
+    param("Module de Young", &MYoung);
+    param("c0", &c0);
+    param("c1", &c1);
+    std::cout << "\n-2e partie:\n";
+    param("Periode T", &T);
+    param("Force F0", &F0);
+    std::cout << "\n-Donnees relatives a Matlab:\n";
+    param("Pas en x", &np);
+    param("Pas en t", &np2);
+    param("Nbre de periodes", &Nperiod);
+    std::cout << "\n-Parametres supplementaires:\n";
+    param("Envergure", &enverg);
+    param("Epaisseur de l'aile", &ep);
+    param("Nbre de modes F0", &Nmodes);
+    param("Precision sur les freq.", &PREC);
+    param("Precision sur les modes", &PREC2);
 }

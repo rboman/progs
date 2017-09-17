@@ -17,7 +17,6 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include <fstream>
 #include <math.h>
-//#include <conio.h>
 #include "base_pol.h"
 
 #define pi 3.141592
@@ -44,7 +43,7 @@ double **KM, *mu, *ValPro, **ModPro, **ModPro2, **COPY_K, *ValPro2;
 double *Moment, *Tranchant, **MODES, *XX, t = 0.0, om;
 
 //----------------------------------------------------------------------------
-//                                Donnï¿½es
+//                                Données
 //----------------------------------------------------------------------------
 double densite = 2700.0; // Aluminium
 double enverg = 22.0;
@@ -56,9 +55,9 @@ double c0 = 1.20;
 double c1 = 0.30;
 double T = 1.0;
 double F0 = 150000.0;
-double np = 80.0;     // prï¿½cision du tracï¿½ en x ds MATLAB
+double np = 80.0;     // précision du tracé en x ds MATLAB
 double np2 = 40.0;    //                    en t
-double Nperiod = 2.0; // nbre de pï¿½riode en t (pour MATLAB)
-double Nmodes = 6;  // nbre de modes ï¿½ calculer avec prï¿½c.
+double Nperiod = 2.0; // nbre de périodes en t (pour MATLAB)
+double Nmodes = 6;    // nbre de modes à calculer avec prec.
 double PREC = 1E-4;
 double PREC2 = 1E-2;

@@ -12,8 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef _VARARRAY_H
-#define _VARARRAY_H
+#ifndef VARARRAY_H
+#define VARARRAY_H
 
 #include <stdio.h>
 
@@ -92,7 +92,7 @@ Vararray<T>::Vararray(const Vararray<T> &a)
         data[i] = a.data[i];
     if (debug)
         std::cerr << "New Vararray of size " << maxsz
-             << " pointer " << this << "-" << data << "\n";
+                  << " pointer " << this << "-" << data << "\n";
 };
 
 template <class T>
@@ -104,7 +104,7 @@ Vararray<T>::Vararray(int initsize)
     //  for (int i=0; i<=maxsz; ++i) data[i] = 0;
     if (debug)
         std::cerr << "New Vararray of size " << maxsz
-             << " pointer " << this << "-" << data << "\n";
+                  << " pointer " << this << "-" << data << "\n";
 };
 
 template <class T>
@@ -112,7 +112,7 @@ Vararray<T>::~Vararray()
 {
     if (debug)
         std::cerr << "Delete Vararray of size " << maxsz
-             << " pointer " << this << "-" << data << "\n";
+                  << " pointer " << this << "-" << data << "\n";
     delete[] data;
 };
 
@@ -128,10 +128,10 @@ void Vararray<T>::resize(int fit)
 
     if (debug)
         std::cerr << "Resizing Vararray to size " << newsize
-             << " pointer " << this << " (" << data << ") ->" << newdata << "\n";
+                  << " pointer " << this << " (" << data << ") ->" << newdata << "\n";
     delete[] data;
     data = newdata;
     maxsz = newsize;
 };
 
-#endif
+#endif // VARARRAY_H
