@@ -1,3 +1,17 @@
+//   Copyright 2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                             DCM: Travail n�2
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -27,18 +41,18 @@ void calcule()
   MSX[2].x = -enverg / 2.0;
   MSX[3].masse = NULL;
   MSX[3].x = 0.0;
-  clrscr();
-  cout << "--------\n";
-  cout << "Masse   : " << m << '\n';
-  cout << "Inertie : " << I << '\n';
-  cout << "--------\n";
+  //clrscr();
+  std::cout << "--------\n";
+  std::cout << "Masse   : " << m << '\n';
+  std::cout << "Inertie : " << I << '\n';
+  std::cout << "--------\n";
 
   //-------------------------------------------------------------------------
   //                   Cr�ation d'une base de polynome
   //-------------------------------------------------------------------------
   p[0] = 1 / sqrt(m.integrale(0.0, enverg) // 1� poly = cte.
                   + (!m).integrale(-enverg, 0.0) + Mfuselage + 2 * Mmoteurs);
-  cout << "Polynome n�0:" << p << '\n';
+  std::cout << "Polynome n�0:" << p << '\n';
 
   Base_Poly Base(MSX, I, m, MYoung, enverg, p);
 
@@ -153,9 +167,8 @@ void calcule()
       delete COPY_K[i];
     delete COPY_K;
   }
-  cout << "\n"
-       << nopoly << " poly. n�cessaires.\n";
-  getch();
+  std::cout << "\n" << nopoly << " poly. n�cessaires.\n";
+  //getch();
 
   //---"Nettoie" les modes propres------------
   for (j = 1; j <= nopoly; j++)
@@ -166,25 +179,25 @@ void calcule()
   //-------------------------------------------------------------------------
   //                       affichage des r�sultats
   //-------------------------------------------------------------------------
-  cout << "\nValeurs Propres:\n";
+  std::cout << "\nValeurs Propres:\n";
   for (j = 1; j <= nopoly; j++)
-    cout << j << ": " << sqrt(ValPro[j]) << '\n';
-  getch();
-  cout << "\nVecteurs Propres:\n";
+      std::cout << j << ": " << sqrt(ValPro[j]) << '\n';
+  //getch();
+  std::cout << "\nVecteurs Propres:\n";
   for (j = 1; j <= nopoly; j++)
   {
-    cout << j << ": (";
+      std::cout << j << ": (";
     for (int k = 1; k <= nopoly; k++)
-      cout << ModPro[j][k] << ",";
-    cout << ")\n";
+        std::cout << ModPro[j][k] << ",";
+    std::cout << ")\n";
   }
   // Base.affiche_K(nopoly); getch();
 
   //-------------------------------------------------------------------------
   //           Transfert des val. et vect. propres vers Matlab
   //-------------------------------------------------------------------------
-  cout << "\n<SPACE> pour cr�ation des fichiers *.M\n\n";
-  getch();
+  std::cout << "\n<SPACE> pour creation des fichiers *.M\n\n";
+  //getch();
   C_to_Matlab_1(ValPro, ModPro, Nmodes);
 
   //-------------------------------------------------------------------------
@@ -294,12 +307,12 @@ void calcule()
   //---Prog. MATLAB -> Graphe M et T----------
   C_to_Matlab_3();
 
-  cout << "\n Programmes Matlab cr��s:";
-  cout << "\n   -VPVP        -> VP en m�moire";
-  cout << "\n   -GRAPH       -> trace les modes propres";
-  cout << "\n   -MT          -> trace M & T";
-  cout << "\n\n-SPACE-";
-  getch();
+  std::cout << "\n Programmes Matlab cr��s:";
+  std::cout << "\n   -VPVP        -> VP en m�moire";
+  std::cout << "\n   -GRAPH       -> trace les modes propres";
+  std::cout << "\n   -MT          -> trace M & T";
+  std::cout << "\n\n-SPACE-";
+  //getch();
 }
 
 void dswap(double *a, double *b)
@@ -312,13 +325,13 @@ void dswap(double *a, double *b)
 
 void titre()
 {
-  clrscr();
-  cout << '\n';
-  puts("\t\t    +--------------------------------------+");
-  puts("\t\t    |          DCM : Travail n�2           |");
-  puts("\t\t    |                                      |");
-  puts("\t\t    |                          RB fev.'95  |");
-  puts("\t\t    +--------------------------------------+");
+  //clrscr();
+    std::cout << '\n';
+    std::cout << "\t\t    +--------------------------------------+\n";
+    std::cout << "\t\t    |          DCM : Travail n�2           |\n";
+    std::cout << "\t\t    |                                      |\n";
+    std::cout << "\t\t    |                          RB fev.'95  |\n";
+    std::cout << "\t\t    +--------------------------------------+\n";
 }
 
 void main()
@@ -328,10 +341,12 @@ void main()
   while (exit == 0)
   {
     titre();
-    printf("\n\n\n     1:-----> Calcul");
-    printf("\n\     2:-----> Donn�es");
-    printf("\n\     3:-----> Retour au DOS\n");
-    choix = getch();
+    std::cout << "\n\n\n     1:-----> Calcul\n";
+    std::cout << "\n\     2:-----> Donnees\n";
+    std::cout << "\n\     3:-----> Retour au DOS\n\n";
+    
+    std::cin >> choix;
+    //choix = getch();
     switch (choix)
     {
     case '1':
@@ -345,5 +360,5 @@ void main()
       break;
     }
   }
-  clrscr();
+  //clrscr();
 }

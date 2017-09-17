@@ -1,3 +1,18 @@
+//   Copyright 1994 Igor Klapka
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
+
 #include "polynome.h"
 
 Polynome::Polynome(indice _taille)
@@ -18,10 +33,13 @@ Polynome::Polynome(const Polynome &b)
 	{
 		++degre;
 		a[degre] = b.a[degre];
-	};
+	}
 }
 
-Polynome::~Polynome() { delete a; };
+Polynome::~Polynome() 
+{ 
+    delete a; 
+}
 
 Polynome
 Polynome::operator=(const Polynome &b)
@@ -36,7 +54,7 @@ Polynome::operator=(const Polynome &b)
 		{
 			++degre;
 			a[degre] = b.a[degre];
-		};
+		}
 	}
 	return *this;
 }
@@ -62,8 +80,8 @@ double &
 		return a[i];
 	else
 	{
-		cerr << "indice trop �lev� :" << i
-			 << " Degr� maximum = " << degre << '\n';
+		std::cerr << "indice trop eleve :" << i
+			 << " Degre maximum = " << degre << '\n';
 		return a[0];
 	}
 }
@@ -96,7 +114,7 @@ Polynome::operator-(Polynome &b)
 }
 
 Polynome
-	Polynome::operator*(Polynome &b)
+Polynome::operator*(Polynome &b)
 {
 	Polynome res((indice)(degre + b.degre));
 	for (indice i = 0; i <= b.degre; i++)
@@ -157,7 +175,7 @@ Polynome::integrale(double from, double to)
 	return res_to - res_from;
 }
 
-ostream &operator<<(ostream &outp, Polynome &po)
+std::ostream &operator<<(std::ostream &outp, Polynome &po)
 {
 	Polynome::indice i = 0;
 	if (po[0])

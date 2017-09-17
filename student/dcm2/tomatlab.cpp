@@ -2,7 +2,7 @@
 //                              TOMATLAB.CPP
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#include <fstream.h>
+#include <fstream>
 #include <math.h>
 #include "Polynome.h"
 
@@ -13,43 +13,41 @@ extern double enverg, Nmodes, Nperiod, T, F0, np, np2;
 
 void C_to_Matlab_1(double *ValP, double **VectP, int n)
 {
-    int i, j;
-    ofstream fich("VPVP.M", ios::out);
+    std::ofstream fich("VPVP.M", std::ios::out);
     fich << "vap=[";
-    for (i = 1; i <= n - 1; i++)
+    for (int i = 1; i <= n - 1; i++)
         fich << sqrt(ValP[i]) << ",...\n ";
     fich << sqrt(ValP[n]) << "];\n\nvep=[";
-    for (i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
         fich << "[";
-        for (j = 1; j <= n - 1; j++)
+        for (int j = 1; j <= n - 1; j++)
             fich << VectP[i][j] << ",...\n ";
         fich << VectP[i][n] << "]\n";
     }
     fich << "];";
     fich.close();
-    cout << "VPVP.M cr��.\n";
+    std::cout << "VPVP.M cree.\n";
 }
 
 void C_to_Matlab_2(void)
 {
-    int i, j;
-    ofstream fich("GRAPH.M", ios::out);
+    std::ofstream fich("GRAPH.M", std::ios::out);
     fich << "x=["; // Vecteur abcisse  : x
-    for (i = 0; i < np; i++)
+    for (int i = 0; i < np; i++)
         fich << XX[i] << ",...\n ";
-    fich << XX[np] << "];\n\ngrafic=[";
-    for (i = 0; i < Nmodes; i++) // Matrice Yi(x)    : grafic
+    fich << XX[(int)np] << "];\n\ngrafic=[";
+    for (int i = 0; i < Nmodes; i++) // Matrice Yi(x)    : grafic
     {
         fich << "[";
-        for (j = 0; j < np; j++)
+        for (int j = 0; j < np; j++)
             fich << MODES[i][j] << ",...\n ";
-        fich << MODES[i][np] << "];\n";
+        fich << MODES[i][(int)np] << "];\n";
     }
     fich << "];\n\nyo=[";
-    for (j = 0; j < Nmodes; j++) // Valeurs de Yi(0);
+    for (int j = 0; j < Nmodes; j++) // Valeurs de Yi(0);
         fich << MP[j](0.0) << ",...\n ";
-    fich << MP[Nmodes](0.0) << "];\n";
+    fich << MP[(int)Nmodes](0.0) << "];\n";
     fich << "\nnp=" << np << ";\n";
     fich << "np2=" << np2 << ";\n";
     fich << "NPERIOD=" << Nperiod << ";\n";
@@ -63,17 +61,17 @@ void C_to_Matlab_2(void)
     fich << "title('Modes propres (normes)');\n";
     fich << "xlabel('x');\nylabel('Yi(x)');\n";
     fich.close();
-    cout << "GRAPH.M cr��.\n";
+    std::cout << "GRAPH.M cree.\n";
 }
 
 void C_to_Matlab_3(void)
 {
-    ofstream fich2("MT.M", ios::out);
+    std::ofstream fich2("MT.M", std::ios::out);
     fich2 << "M=[";
     for (int i = 0; i < compt - 1; i++)
         fich2 << Moment[i] << ",...\n";
     fich2 << Moment[compt - 1] << "];\n\nET=[";
-    for (i = 0; i < compt - 1; i++)
+    for (int i = 0; i < compt - 1; i++)
         fich2 << Tranchant[i] << ",...\n";
     fich2 << Tranchant[compt - 1] << "];\n";
     fich2 << "figure(7);\n";
@@ -84,5 +82,5 @@ void C_to_Matlab_3(void)
     fich2 << "title(' Moment et effort tranchant a l'' emplanture de l'' aile');\n";
     fich2 << "xlabel('temps');\nylabel('M(t) & T(t) en x=0');\n";
     fich2.close();
-    cout << "MT.M cr��.\n";
+    std::cout << "MT.M cree.\n";
 }

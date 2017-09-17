@@ -1,9 +1,23 @@
+//   Copyright 2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                                  DCM1.H
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#include <fstream.h>
+#include <fstream>
 #include <math.h>
-#include <conio.h>
+//#include <conio.h>
 #include "base_pol.h"
 
 #define pi 3.141592
@@ -45,6 +59,6 @@ double F0 = 150000.0;
 double np = 80.0;     // pr�cision du trac� en x ds MATLAB
 double np2 = 40.0;    //                    en t
 double Nperiod = 2.0; // nbre de p�riode en t (pour MATLAB)
-double Nmodes = 6.0;  // nbre de modes � calculer avec pr�c.
+double Nmodes = 6;  // nbre de modes � calculer avec pr�c.
 double PREC = 1E-4;
 double PREC2 = 1E-2;
