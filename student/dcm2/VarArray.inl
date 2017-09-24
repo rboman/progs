@@ -13,35 +13,17 @@
 //   limitations under the License.
 
 template <class T>
-int VarArray<T>::maxsize()
+int VarArray<T>::maxsize() const
 {
     return maxsz;
 }
 
 template <class T>
-int VarArray<T>::size()
+int VarArray<T>::size() const
 {
     return last;
 }
-/*
-template <class T>
-void VarArray<T>::swap(int a, int b)
-{
-    T tmp = data[a];
-    data[a] = data[b];
-    data[b] = tmp;
-}
-*/
-/*
-template <class T>
-void VarArray<T>::remove_one_record(int i)
-{
-    if (debug)
-        std::cerr << "VarArray remove " << this << " element " << i << "";
-    swap(i, last);
-    last--;
-}
-*/
+
 template <class T>
 T &VarArray<T>::operator[](int n)
 {
@@ -91,7 +73,7 @@ VarArray<T>::VarArray(int initsize)
     maxsz = initsize;
     last = 0;
     data = new T[initsize + 1];
-    //  for (int i=0; i<=maxsz; ++i) data[i] = 0;
+
     if (debug)
         std::cerr << "New VarArray of size " << maxsz
                   << " pointer " << this << "-" << data << "\n";
@@ -114,8 +96,7 @@ void VarArray<T>::resize(int fit)
 
     for (int i = 0; i <= maxsz; ++i)
         newdata[i] = data[i];
-    //  for(       ; i <=newsize; ++i) newdata[i] = 0 ;
-
+ 
     if (debug)
         std::cerr << "Resizing VarArray to size " << newsize
                   << " pointer " << this << " (" << data << ") ->" << newdata << "\n";

@@ -40,7 +40,7 @@ BasePoly::BasePoly(Masses *_MsX,
         ddBase[0] = (P.derive()).derive();
 
     taille = 0;
-    build_k();
+    buildK();
     taille = 1;
 };
 
@@ -109,12 +109,12 @@ BasePoly::ajoute_suivant()
     }
     std::cout << '\n';
 
-    build_k();
+    buildK();
     taille++;
     return K;
 }
 
-void BasePoly::build_k()
+void BasePoly::buildK()
 {
     double **KK = new double *[taille + 1];
     KK[taille] = new double[taille + 1];

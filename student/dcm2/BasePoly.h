@@ -51,7 +51,7 @@ class BasePoly : public VarArray<Polynome>
     friend std::ostream &operator<<(std::ostream &outp, BasePoly &bp);
 
   private:
-    void build_k();
+    void buildK();
 };
 
 #endif // BASEPOLY_H

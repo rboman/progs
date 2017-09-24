@@ -29,15 +29,13 @@ class VarArray
     VarArray(const VarArray<T> &);
     ~VarArray();
 
-    //void remove_one_record(int i);
-    int maxsize();
-    int size();
+    int maxsize() const;
+    int size() const;
     T &operator[](int);
     VarArray<T> &operator=(const VarArray<T> &);
 
   private:
     void resize(int);
-    //void swap(int a, int b);
 };
 
 #include "VarArray.inl"

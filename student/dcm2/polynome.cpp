@@ -59,7 +59,7 @@ Polynome::operator=(const Polynome &b)
 }
 
 Polynome
-    Polynome::operator!()
+Polynome::operator!()
 {
     Polynome b(degre);
     degre = 0;
@@ -73,7 +73,7 @@ Polynome
 }
 
 double &
-    Polynome::operator[](indice i)
+Polynome::operator[](indice i)
 {
     if (i <= degre)
         return a[i];
@@ -141,7 +141,7 @@ operator*(Polynome &b, double a)
 }
 
 Polynome
-Polynome::primitive()
+Polynome::primitive() const
 {
     Polynome res((indice)(degre + 1));
     res[0] = 0;
@@ -151,7 +151,7 @@ Polynome::primitive()
 }
 
 Polynome
-Polynome::derive()
+Polynome::derive() const
 {
     Polynome res((indice)(degre ? degre - 1 : 0));
     for (indice i = 1; i <= degre; i++)
@@ -160,7 +160,7 @@ Polynome::derive()
 }
 
 double
-Polynome::integrale(double from, double to)
+Polynome::integrale(double from, double to) const
 {
     double res_to = 0, res_from = 0, qu = 0;
     for (int i = degre; i >= 0; i--)

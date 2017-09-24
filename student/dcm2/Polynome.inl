@@ -13,7 +13,7 @@
 //   limitations under the License.
 
 inline Polynome::indice 
-Polynome::donne_degre() 
+Polynome::donne_degre() const 
 { 
     return degre; 
 }

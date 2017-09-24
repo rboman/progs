@@ -39,31 +39,29 @@ Dcm::Dcm()
     Nperiod = 2; // nbre de périodes en t (pour MATLAB)
     Nmodes = 6;    // nbre de modes à calculer avec prec.
     PREC = 1E-4;
-    PREC2 = 1E-2;    
-
+    PREC2 = 1E-2;
 }
 
 void Dcm::calcule()
 {
-    int nrot, nopoly, rate;
-    Polynome h(1), m(1), I(3), Unite(0), p(0);
-    Polynome M, DM, swap(0);
-    Masses MSX[4];
-    double **KM, *mu, *ValPro, **ModPro, **ModPro2, **COPY_K, *ValPro2;
-    double t = 0.0, om;
-
-
     //-------------------------------------------------------------------------
     //            Calcul de la masse et de l'inertie de l'aile
     //-------------------------------------------------------------------------
+    Polynome Unite(0);
     Unite[0] = 1;
+
+    Polynome h(1);
     h[0] = c0;
     h[1] = (c1 - c0) / enverg;
 
+    Polynome m(1);
     m = densite * (2.0 * ep * (11.0 * h - 2.0 * ep * Unite));
+
+    Polynome I(3);
     I = h * h * h * (31.0 / 6.0) * ep - 11.0 * h * h * pow(ep, 2) + (26.0 / 3.0) * h * pow(ep, 3);
     I[0] = I[0] - 4.0 / 3.0 * pow(ep, 4);
 
+    Masses MSX[4];
     MSX[0].masse = Mfuselage;
     MSX[0].x = 0.0;
     MSX[1].masse = Mmoteurs;
@@ -72,7 +70,7 @@ void Dcm::calcule()
     MSX[2].x = -enverg / 2.0;
     MSX[3].masse = NULL;
     MSX[3].x = 0.0;
-    //clrscr();
+
     std::cout << "--------\n";
     std::cout << "Masse   : " << m << '\n';
     std::cout << "Inertie : " << I << '\n';
@@ -81,20 +79,24 @@ void Dcm::calcule()
     //-------------------------------------------------------------------------
     //                   Création d'une base de polynome
     //-------------------------------------------------------------------------
-    p[0] = 1 / sqrt(m.integrale(0.0, enverg) // 1er poly = cte.
-                    + (!m).integrale(-enverg, 0.0) + Mfuselage + 2 * Mmoteurs);
+
+    Polynome p(0);
+    p[0] = 1.0 / sqrt(m.integrale(0.0, enverg) // 1er poly = cte.
+                      + (!m).integrale(-enverg, 0.0) + Mfuselage + 2 * Mmoteurs);
     std::cout << "Polynome #0:" << p << '\n';
 
     BasePoly Base(MSX, I, m, MYoung, enverg, p);
 
     for (int i = 2; i < Nmodes + 1; i++) // Ajoute 5 poly.
-        KM = Base.ajoute_suivant();
-    nopoly = Nmodes;
+        double **KM = Base.ajoute_suivant();
+    int nopoly = Nmodes;
 
-    ValPro2 = new double[Nmodes];
+    double *ValPro2 = new double[Nmodes];
     ValPro2--; // Tableaux auxil. contenant
-    ModPro2 = new double *[Nmodes];
+
+    double **ModPro2 = new double *[Nmodes];
     ModPro2--;                       // les val. & vect. pr.
+
     for (int i = 1; i < Nmodes + 1; i++) // pour (n-1) poly...
     {
         ValPro2[i] = 0.0; // ...et initialisation à 0.
@@ -108,25 +110,30 @@ void Dcm::calcule()
     //    Ajoute un polynome et compare les val. et vect. propres avec
     //             ceux et celles de l'itération précédente.
     //-------------------------------------------------------------------------
-    rate = 1;
+
+    double *ValPro;
+    double **ModPro;
+
+    int rate = 1;
     while (rate == 1)
     {
-        KM = Base.ajoute_suivant();
+        double **KM = Base.ajoute_suivant();
         nopoly++;
 
-        COPY_K = new double *[nopoly]; // Copie la matrice K
-        for (int i = 0; i < nopoly; i++)   //    dans COPY_K
+        double **COPY_K = new double *[nopoly]; // Copie la matrice K dans COPY_K
+        for (int i = 0; i < nopoly; i++)
         {
             COPY_K[i] = new double[nopoly];
             for (int j = 0; j < nopoly; j++)
                 COPY_K[i][j] = KM[i][j];
         }
-        COPY_K--;                     // indice minimal = 1
-        for (int j = 1; j <= nopoly; j++) //        (pour Jacobi())
+        COPY_K--;                         // indice minimal = 1 (pour Jacobi())
+        for (int j = 1; j <= nopoly; j++)
             COPY_K[j]--;
 
         ValPro = new double[nopoly];
         ValPro--;
+
         ModPro = new double *[nopoly];
         ModPro--;
         for (int j = 1; j <= nopoly; j++)
@@ -134,9 +141,10 @@ void Dcm::calcule()
             ModPro[j] = new double[nopoly];
             ModPro[j]--;
         }
+        int nrot;
         jacobi(COPY_K, nopoly, ValPro, ModPro, nrot);
 
-        //---Trie les VP (Bubble sort)-----------
+        // Trie les VP (Bubble sort)
         int j = nopoly;
         while (j != 1)
         {
@@ -147,10 +155,11 @@ void Dcm::calcule()
                 if (ValPro[i + 1] > ValPro[i + 2])
                 {
                     dswap(&ValPro[i + 1], &ValPro[i + 2]);
+                    Polynome swap(0);
                     swap = Base[i];
                     Base[i] = Base[i + 1];
                     Base[i + 1] = swap;
-                    for (compt = 0; compt < nopoly; compt++)
+                    for (int compt = 0; compt < nopoly; compt++)
                         dswap(&ModPro[i + 1][compt], &ModPro[i + 2][compt]);
                     k = i;
                 }
@@ -159,7 +168,7 @@ void Dcm::calcule()
             j = k + 1;
         }
 
-        //---Teste les valeurs obtenues----------
+        // Teste les valeurs obtenues
         rate = 0;
         for (int i = 1; i < Nmodes + 1; i++)
         {
@@ -179,9 +188,9 @@ void Dcm::calcule()
 
         //---Destruction des tabl. auxil.--------
         if (rate == 1) // Vire les VP & VP dans le
-        {              // cas oï¿½ la prï¿½cision n'est
+        {              // cas où la précision n'est pas atteinte
             ValPro++;
-            delete ValPro; // pas atteinte
+            delete ValPro;
             for (int j = 1; j <= nopoly; j++)
             {
                 ModPro[j]++;
@@ -198,15 +207,15 @@ void Dcm::calcule()
             delete COPY_K[i];
         delete COPY_K;
     }
-    std::cout << "\n"
-              << nopoly << " poly. nï¿½cessaires.\n";
+    std::cout << '\n'
+              << nopoly << " poly. nécessaires.\n";
     //getch();
 
     //---"Nettoie" les modes propres------------
     for (int j = 1; j <= nopoly; j++)
         for (int k = 1; k <= nopoly; k++)
             if (fabs(ModPro[j][k]) < 1E-10)
-                ModPro[j][k] = 0.0;
+                ModPro[j][k] = 0.0;                
 
     //-------------------------------------------------------------------------
     //                       affichage des résultats
@@ -228,15 +237,13 @@ void Dcm::calcule()
     //-------------------------------------------------------------------------
     //           Transfert des val. et vect. propres vers Matlab
     //-------------------------------------------------------------------------
-    std::cout << "\n<SPACE> pour creation des fichiers *.M\n\n";
-    //getch();
-    C_to_Matlab_1(ValPro, ModPro, Nmodes);
+    toMatlab1(ValPro, ModPro, Nmodes);
 
     //-------------------------------------------------------------------------
     //               Calcul des modes propres Yi(x) -> MP[i]
-    //          Crï¿½ation d'un prog *.M pour afficher les rï¿½sultats
+    //          Création d'un prog *.m pour afficher les résultats
     //-------------------------------------------------------------------------
-    MP = new Polynome[nopoly]; // Crï¿½e un tableau de poly.
+    Polynome *MP = new Polynome[nopoly]; // Crée un tableau de poly.
     for (int i = 0; i < nopoly; i++)
     {
         MP[i][0] = 0.0;
@@ -250,14 +257,15 @@ void Dcm::calcule()
     for (int i = 0; i < nopoly; i++)
     {
         MODES[i] = new double[np + 1];
-        for (int j = 0; j < np + 1; j++) // Initialisation ï¿½ 0.
+        for (int j = 0; j < np + 1; j++) // Initialisation à 0.
         {
             XX[j] = 0.0;
             MODES[i][j] = 0.0;
         }
     }
-
-    for (compt = 0, t = (-enverg); compt <= np; t += 2 * enverg / np, compt++)
+    int compt; 
+    double t;
+    for (compt = 0, t = -enverg; compt <= np; t += 2 * enverg / np, compt++)
     {
         XX[compt] = t;
         for (int i = 0; i < nopoly; i++)
@@ -265,28 +273,30 @@ void Dcm::calcule()
     }
 
     //-------------------------------------------------------------------------
-    //                      Calcul des masses rï¿½duites
-    //              pour une ï¿½ventuelle normalisation des modes
+    //                      Calcul des masses réduites
+    //              pour une éventuelle normalisation des modes
     //-------------------------------------------------------------------------
-    mu = new double[nopoly];
+    double *mu = new double[nopoly];
     for (int i = 0; i < nopoly; i++)
     {
         mu[i] = (m * MP[i] * MP[i]).integrale(0.0, enverg) + ((!m) * MP[i] * MP[i]).integrale(-enverg, 0.0) + MP[i](0) * MP[i](0) * Mfuselage + MP[i](-enverg / 2) * MP[i](-enverg / 2) * Mmoteurs + MP[i](enverg / 2) * MP[i](enverg / 2) * Mmoteurs;
     }
 
-    //---Ecriture dans un fichier *.M-----------
-    C_to_Matlab_2();
+    // Ecriture dans un fichier *.m
+    toMatlab2(MP);
 
     //-------------------------------------------------------------------------
-    //                    Calcul du moment flï¿½chissant et
-    //             de l'effort tranchant ï¿½ l'emplanture de l'aile
+    //                    Calcul du moment fléchissant et
+    //             de l'effort tranchant à l'emplanture de l'aile
     //-------------------------------------------------------------------------
 
-    Moment = new double[Nperiod * np2 + 1];
-    Tranchant = new double[Nperiod * np2 + 1];
+    double *Moment = new double[Nperiod * np2 + 1];
+    double *Tranchant = new double[Nperiod * np2 + 1];
     double alp0 = -2 * F0 * T / pi * MP[0](0.0);
 
-    //---M et T pdt l'appl. de la force---------
+    // M et T pdt l'appl. de la force
+    //double t;
+    Polynome M;
     for (t = 0, compt = 0; compt < np2 + 1; t += T / np2, compt++)
     {
         M = M - M;
@@ -294,17 +304,18 @@ void Dcm::calcule()
         M = MP[0] * (MP[0](0.0) * F0 * T * T / (pi * pi) * sin(pi * t / T) + (alp0 + MP[0](0.0) * F0 * T / pi) * t);
         for (int i = 3; i < Nmodes; i += 2)
         {
-            om = sqrt(ValPro[i]);
+            double om = sqrt(ValPro[i]);
             M = M + MP[i - 1] * MP[i - 1](0.0) * (F0 / om * (T / pi * sin(om * t) - om * T * T / (pi * pi) * sin(pi * t / T)) / (1 - om * om * T * T / (pi * pi)));
         }
         M = M.derive().derive();
         M = M * MYoung * I;
         Moment[compt] = M(0.0);
-        DM = M.derive();
+
+        Polynome DM = M.derive();
         Tranchant[compt] = DM(0.0);
     }
 
-    //---Calcul de M & T aprï¿½s l'appl. de F-----
+    // Calcul de M & T après l'appl. de F
     double *alpha = new double[6];
     double *alphap = new double[6];
 
@@ -312,7 +323,7 @@ void Dcm::calcule()
     alphap[0] = 0.0;
     for (int i = 3; i < Nmodes; i += 2)
     {
-        om = sqrt(ValPro[i]);
+        double om = sqrt(ValPro[i]);
         alpha[i] = F0 * MP[i - 1](0.0) / om * (T / (pi)*sin(om * T)) / (1 - ((om * om * T * T) / (pi * pi)));
         alphap[i] = F0 * MP[i - 1](0.0) / om * (T / (pi)*om * cos(om * T) + om * T / (pi)) / (1 - ((om * om * T * T) / (pi * pi)));
     }
@@ -324,24 +335,19 @@ void Dcm::calcule()
         M = MP[0] * (alphap[0] * (t - T) + alpha[0]);
         for (int i = 3; i < Nmodes; i += 2)
         {
-            om = sqrt(ValPro[i]);
+            double om = sqrt(ValPro[i]);
             M = M + MP[i - 1] * (alpha[i] * cos(om * (t - T)) + alphap[i] / om * sin(om * (t - T)));
         }
         M = M.derive().derive();
         M = M * MYoung * I;
         Moment[compt] = M(0.0);
-        DM = M.derive();
+
+        Polynome DM = M.derive();
         Tranchant[compt] = DM(0.0);
     }
 
-    //---Prog. MATLAB -> Graphe M et T----------
-    C_to_Matlab_3();
-
-    std::cout << "\n Programmes Matlab créés:";
-    std::cout << "\n   -VPVP        -> VP en mémoire";
-    std::cout << "\n   -GRAPH       -> trace les modes propres";
-    std::cout << "\n   -MT          -> trace M & T";
-    std::cout << "\n\n-SPACE-";
+    // Prog. MATLAB -> Graphe M et T
+    toMatlab3(Moment, Tranchant);
 }
 
 void Dcm::dswap(double *a, double *b)
@@ -354,13 +360,14 @@ void Dcm::dswap(double *a, double *b)
 
 void main()
 {
-
+    Polynome::demo();
+    std::cout << "\n\n---\n\n";
     Dcm dcm;
     dcm.calcule();
 }
 
 
-void Dcm::C_to_Matlab_1(double *ValP, double **VectP, int n)
+void Dcm::toMatlab1(double *ValP, double **VectP, int n)
 {
     std::ofstream fich("vpvp.m", std::ios::out);
     fich << "vap=[";
@@ -379,7 +386,7 @@ void Dcm::C_to_Matlab_1(double *ValP, double **VectP, int n)
     std::cout << "vpvp.m cree.\n";
 }
 
-void Dcm::C_to_Matlab_2()
+void Dcm::toMatlab2(Polynome *MP)
 {
     std::ofstream fich("graphe.m", std::ios::out);
     fich << "x=["; // Vecteur abcisse  : x
@@ -413,7 +420,7 @@ void Dcm::C_to_Matlab_2()
     std::cout << "graphe.m cree.\n";
 }
 
-void Dcm::C_to_Matlab_3()
+void Dcm::toMatlab3(double *Moment, double *Tranchant)
 {
     std::ofstream fich2("mt.m", std::ios::out);
     fich2 << "M=[";

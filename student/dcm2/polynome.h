@@ -23,8 +23,6 @@
 #define POLYNOME_H
 
 #include <iostream>
-#include <stdio.h>
-#include <math.h>
 
 class Polynome
 {
@@ -41,7 +39,7 @@ class Polynome
     double &operator[](indice);
     double operator()(double);
 
-    indice donne_degre();
+    indice donne_degre() const;
 
     Polynome operator=(const Polynome &b);
     Polynome operator!();
@@ -51,9 +49,9 @@ class Polynome
     friend Polynome operator*(double a, Polynome &b);
     friend Polynome operator*(Polynome &b, double a);
 
-    Polynome derive();
-    Polynome primitive();
-    double integrale(double, double);
+    Polynome derive() const;
+    Polynome primitive() const;
+    double integrale(double, double) const;
 
     friend std::ostream &operator<<(std::ostream &outp, Polynome &po);
 
