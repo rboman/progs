@@ -117,8 +117,7 @@ BasePoly::ajoute_suivant()
 
 void BasePoly::build_k()
 {
-    double **KK;
-    KK = new double *[taille + 1];
+    double **KK = new double *[taille + 1];
     KK[taille] = new double[taille + 1];
     for (int j = 0; j < taille; ++j)
     {
@@ -133,8 +132,6 @@ void BasePoly::build_k()
         delete K[j];
     delete K;
     K = KK;
-    /* for(j=0;j<=taille; ++j)
-   K[j]=KK[j];               */
 }
 
 std::ostream &operator<<(std::ostream &outp, BasePoly &bp)

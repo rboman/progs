@@ -20,7 +20,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <math.h>
-//#include <conio.h>
 
 extern double densite, enverg, Mmoteurs, Mfuselage, MYoung;
 extern double ep, c0, c1, T, F0, PREC, PREC2;

@@ -274,10 +274,8 @@ void calcule()
     }
 
     //---Calcul de M & T aprï¿½s l'appl. de F-----
-    double *alpha;
-    alpha = new double[6];
-    double *alphap;
-    alphap = new double[6];
+    double *alpha = new double[6];
+    double *alphap = new double[6];
 
     alpha[0] = (alp0 + F0 * MP[0](0.0) * T / pi) * T;
     alphap[0] = 0.0;
@@ -298,7 +296,7 @@ void calcule()
             om = sqrt(ValPro[i]);
             M = M + MP[i - 1] * (alpha[i] * cos(om * (t - T)) + alphap[i] / om * sin(om * (t - T)));
         }
-        M = (M.derive()).derive();
+        M = M.derive().derive();
         M = M * MYoung * I;
         Moment[compt] = M(0.0);
         DM = M.derive();
@@ -308,12 +306,11 @@ void calcule()
     //---Prog. MATLAB -> Graphe M et T----------
     C_to_Matlab_3();
 
-    std::cout << "\n Programmes Matlab crï¿½ï¿½s:";
-    std::cout << "\n   -VPVP        -> VP en mï¿½moire";
+    std::cout << "\n Programmes Matlab créés:";
+    std::cout << "\n   -VPVP        -> VP en mémoire";
     std::cout << "\n   -GRAPH       -> trace les modes propres";
     std::cout << "\n   -MT          -> trace M & T";
     std::cout << "\n\n-SPACE-";
-    //getch();
 }
 
 void dswap(double *a, double *b)
@@ -326,7 +323,6 @@ void dswap(double *a, double *b)
 
 void titre()
 {
-    //clrscr();
     std::cout << '\n';
     std::cout << "\t\t    +--------------------------------------+\n";
     std::cout << "\t\t    |          DCM : Travail #2            |\n";

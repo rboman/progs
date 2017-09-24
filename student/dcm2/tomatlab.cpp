@@ -40,7 +40,7 @@ void C_to_Matlab_1(double *ValP, double **VectP, int n)
     std::cout << "vpvp.m cree.\n";
 }
 
-void C_to_Matlab_2(void)
+void C_to_Matlab_2()
 {
     std::ofstream fich("graphe.m", std::ios::out);
     fich << "x=["; // Vecteur abcisse  : x
