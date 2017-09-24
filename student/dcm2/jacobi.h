@@ -1,4 +1,4 @@
-//   Copyright 1994 Igor Klapka
+//   Copyright 2017 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,34 +12,9 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef VARARRAY_H
-#define VARARRAY_H
+#ifndef JACOBI_H
+#define JACOBI_H
 
-template <class T>
-class VarArray
-{
-    static const bool debug = false;
+void jacobi(double **a, int n, double d[], double **v, int &nrot);
 
-    T *data;
-    int maxsz;
-    int last;
-
-  public:
-    VarArray(int initsz = 8);
-    VarArray(const VarArray<T> &);
-    ~VarArray();
-
-    //void remove_one_record(int i);
-    int maxsize();
-    int size();
-    T &operator[](int);
-    VarArray<T> &operator=(const VarArray<T> &);
-
-  private:
-    void resize(int);
-    //void swap(int a, int b);
-};
-
-#include "VarArray.inl"
-
-#endif // VARARRAY_H
+#endif //JACOBI_H

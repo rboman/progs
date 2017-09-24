@@ -23,7 +23,7 @@ int VarArray<T>::size()
 {
     return last;
 }
-
+/*
 template <class T>
 void VarArray<T>::swap(int a, int b)
 {
@@ -31,7 +31,8 @@ void VarArray<T>::swap(int a, int b)
     data[a] = data[b];
     data[b] = tmp;
 }
-
+*/
+/*
 template <class T>
 void VarArray<T>::remove_one_record(int i)
 {
@@ -40,7 +41,7 @@ void VarArray<T>::remove_one_record(int i)
     swap(i, last);
     last--;
 }
-
+*/
 template <class T>
 T &VarArray<T>::operator[](int n)
 {

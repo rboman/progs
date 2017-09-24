@@ -12,6 +12,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#include "jacobi.h"
 #include <cmath>
 
 #define ROTATE(a, i, j, k, l)        \
@@ -25,7 +26,7 @@ typedef double TYPE;
 //    a Matrice de départ dont on cherche les Valeurs Propres
 //      (! la diagonale sera modifiée après passage)
 //    n Taille de la matrice a
-//    d valaurs propres (non ordonnées)
+//    d valeurs propres (non ordonnées)
 //    v modes propres normés correspondants
 // nrot nombre de rotations dans la méthode
 

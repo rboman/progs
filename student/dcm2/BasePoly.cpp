@@ -14,7 +14,6 @@
 
 #include "VarArray.h"
 #include "BasePoly.h"
-//#include <conio.h>
 
 BasePoly::BasePoly(Masses *_MsX,
                    Polynome _I,
@@ -55,7 +54,7 @@ BasePoly::ajoute_suivant()
     temp[temp.donne_degre()] = 1 / pow(l, temp.donne_degre());
     Masses *msx;
 
-    for (short i = 0; i < poly.donne_degre(); i++)
+    for (int i = 0; i < poly.donne_degre(); i++)
     {
         poly[i] = (m * temp * ((*this)[i])).integrale(0.0, l) + (!m * temp * ((*this)[i])).integrale(-l, 0.0);
         msx = MsX;

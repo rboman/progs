@@ -19,9 +19,40 @@
 // Vendredi 10.02.95
 
 #include "dcm1.h"
+#include "jacobi.h"
 
-void calcule()
+Dcm::Dcm()
 {
+    // data
+    densite = 2700.0; // Aluminium
+    enverg = 22.0;
+    Mmoteurs = 14000.0;
+    Mfuselage = 50000.0;
+    MYoung = 65e9;
+    ep = 0.005;
+    c0 = 1.20;
+    c1 = 0.30;
+    T = 1.0;
+    F0 = 150000.0;
+    np = 80;     // précision du tracé en x ds MATLAB    [TODO] changer en "int" ??
+    np2 = 40;    //                    en t              [TODO] changer en "int" ??
+    Nperiod = 2; // nbre de périodes en t (pour MATLAB)
+    Nmodes = 6;    // nbre de modes à calculer avec prec.
+    PREC = 1E-4;
+    PREC2 = 1E-2;    
+
+}
+
+void Dcm::calcule()
+{
+    int nrot, nopoly, rate;
+    Polynome h(1), m(1), I(3), Unite(0), p(0);
+    Polynome M, DM, swap(0);
+    Masses MSX[4];
+    double **KM, *mu, *ValPro, **ModPro, **ModPro2, **COPY_K, *ValPro2;
+    double t = 0.0, om;
+
+
     //-------------------------------------------------------------------------
     //            Calcul de la masse et de l'inertie de l'aile
     //-------------------------------------------------------------------------
@@ -56,7 +87,7 @@ void calcule()
 
     BasePoly Base(MSX, I, m, MYoung, enverg, p);
 
-    for (i = 2; i < Nmodes + 1; i++) // Ajoute 5 poly.
+    for (int i = 2; i < Nmodes + 1; i++) // Ajoute 5 poly.
         KM = Base.ajoute_suivant();
     nopoly = Nmodes;
 
@@ -64,12 +95,12 @@ void calcule()
     ValPro2--; // Tableaux auxil. contenant
     ModPro2 = new double *[Nmodes];
     ModPro2--;                       // les val. & vect. pr.
-    for (i = 1; i < Nmodes + 1; i++) // pour (n-1) poly...
+    for (int i = 1; i < Nmodes + 1; i++) // pour (n-1) poly...
     {
         ValPro2[i] = 0.0; // ...et initialisation à 0.
         ModPro2[i] = new double[Nmodes];
         ModPro2[i]--;
-        for (j = 1; j <= nopoly; j++)
+        for (int j = 1; j <= nopoly; j++)
             ModPro2[i][j] = 0.0;
     }
 
@@ -84,21 +115,21 @@ void calcule()
         nopoly++;
 
         COPY_K = new double *[nopoly]; // Copie la matrice K
-        for (i = 0; i < nopoly; i++)   //    dans COPY_K
+        for (int i = 0; i < nopoly; i++)   //    dans COPY_K
         {
             COPY_K[i] = new double[nopoly];
-            for (j = 0; j < nopoly; j++)
+            for (int j = 0; j < nopoly; j++)
                 COPY_K[i][j] = KM[i][j];
         }
         COPY_K--;                     // indice minimal = 1
-        for (j = 1; j <= nopoly; j++) //        (pour Jacobi())
+        for (int j = 1; j <= nopoly; j++) //        (pour Jacobi())
             COPY_K[j]--;
 
         ValPro = new double[nopoly];
         ValPro--;
         ModPro = new double *[nopoly];
         ModPro--;
-        for (j = 1; j <= nopoly; j++)
+        for (int j = 1; j <= nopoly; j++)
         {
             ModPro[j] = new double[nopoly];
             ModPro[j]--;
@@ -106,11 +137,11 @@ void calcule()
         jacobi(COPY_K, nopoly, ValPro, ModPro, nrot);
 
         //---Trie les VP (Bubble sort)-----------
-        j = nopoly;
+        int j = nopoly;
         while (j != 1)
         {
-            i = 0;
-            k = 0;
+            int i = 0;
+            int k = 0;
             while (i != j - 1)
             {
                 if (ValPro[i + 1] > ValPro[i + 2])
@@ -130,15 +161,15 @@ void calcule()
 
         //---Teste les valeurs obtenues----------
         rate = 0;
-        for (i = 1; i < Nmodes + 1; i++)
+        for (int i = 1; i < Nmodes + 1; i++)
         {
             if (fabs(ValPro[i]) > 1E-10)
                 if (fabs(1.0 - sqrt(ValPro2[i]) / sqrt(ValPro[i])) > PREC)
                     rate = 1;
             ValPro2[i] = ValPro[i];
         }
-        for (i = 1; i < Nmodes + 1; i++)
-            for (j = 1; j < Nmodes + 1; j++)
+        for (int i = 1; i < Nmodes + 1; i++)
+            for (int j = 1; j < Nmodes + 1; j++)
             {
                 if (fabs(ModPro[i][j]) > 1E-10)
                     if (fabs(1.0 - ModPro2[i][j] / ModPro[i][j]) > PREC2)
@@ -151,7 +182,7 @@ void calcule()
         {              // cas oï¿½ la prï¿½cision n'est
             ValPro++;
             delete ValPro; // pas atteinte
-            for (j = 1; j <= nopoly; j++)
+            for (int j = 1; j <= nopoly; j++)
             {
                 ModPro[j]++;
                 delete ModPro[j];
@@ -160,10 +191,10 @@ void calcule()
             delete ModPro;
         }
 
-        for (j = 1; j <= nopoly; j++) // Vire COPY_K
+        for (int j = 1; j <= nopoly; j++) // Vire COPY_K
             COPY_K[j]++;
         COPY_K++;
-        for (i = 0; i < nopoly; i++)
+        for (int i = 0; i < nopoly; i++)
             delete COPY_K[i];
         delete COPY_K;
     }
@@ -172,8 +203,8 @@ void calcule()
     //getch();
 
     //---"Nettoie" les modes propres------------
-    for (j = 1; j <= nopoly; j++)
-        for (k = 1; k <= nopoly; k++)
+    for (int j = 1; j <= nopoly; j++)
+        for (int k = 1; k <= nopoly; k++)
             if (fabs(ModPro[j][k]) < 1E-10)
                 ModPro[j][k] = 0.0;
 
@@ -181,11 +212,11 @@ void calcule()
     //                       affichage des résultats
     //-------------------------------------------------------------------------
     std::cout << "\nValeurs Propres:\n";
-    for (j = 1; j <= nopoly; j++)
+    for (int j = 1; j <= nopoly; j++)
         std::cout << j << ": " << sqrt(ValPro[j]) << '\n';
     //getch();
     std::cout << "\nVecteurs Propres:\n";
-    for (j = 1; j <= nopoly; j++)
+    for (int j = 1; j <= nopoly; j++)
     {
         std::cout << j << ": (";
         for (int k = 1; k <= nopoly; k++)
@@ -206,20 +237,20 @@ void calcule()
     //          Crï¿½ation d'un prog *.M pour afficher les rï¿½sultats
     //-------------------------------------------------------------------------
     MP = new Polynome[nopoly]; // Crï¿½e un tableau de poly.
-    for (i = 0; i < nopoly; i++)
+    for (int i = 0; i < nopoly; i++)
     {
         MP[i][0] = 0.0;
-        for (j = 0; j < nopoly; j++)
+        for (int j = 0; j < nopoly; j++)
             MP[i] = MP[i] + ModPro[i + 1][j + 1] * Base[j];
     }
 
     //---Calcul de la matrice pour MATLAB--------
     XX = new double[np + 1];      // Matrice abcisse.
     MODES = new double *[nopoly]; // Matrice des Yi(x)
-    for (i = 0; i < nopoly; i++)
+    for (int i = 0; i < nopoly; i++)
     {
         MODES[i] = new double[np + 1];
-        for (j = 0; j < np + 1; j++) // Initialisation ï¿½ 0.
+        for (int j = 0; j < np + 1; j++) // Initialisation ï¿½ 0.
         {
             XX[j] = 0.0;
             MODES[i][j] = 0.0;
@@ -229,7 +260,7 @@ void calcule()
     for (compt = 0, t = (-enverg); compt <= np; t += 2 * enverg / np, compt++)
     {
         XX[compt] = t;
-        for (i = 0; i < nopoly; i++)
+        for (int i = 0; i < nopoly; i++)
             MODES[i][compt] += MP[i](t);
     }
 
@@ -238,7 +269,7 @@ void calcule()
     //              pour une ï¿½ventuelle normalisation des modes
     //-------------------------------------------------------------------------
     mu = new double[nopoly];
-    for (i = 0; i < nopoly; i++)
+    for (int i = 0; i < nopoly; i++)
     {
         mu[i] = (m * MP[i] * MP[i]).integrale(0.0, enverg) + ((!m) * MP[i] * MP[i]).integrale(-enverg, 0.0) + MP[i](0) * MP[i](0) * Mfuselage + MP[i](-enverg / 2) * MP[i](-enverg / 2) * Mmoteurs + MP[i](enverg / 2) * MP[i](enverg / 2) * Mmoteurs;
     }
@@ -261,12 +292,12 @@ void calcule()
         M = M - M;
         M[0] = 0.0;
         M = MP[0] * (MP[0](0.0) * F0 * T * T / (pi * pi) * sin(pi * t / T) + (alp0 + MP[0](0.0) * F0 * T / pi) * t);
-        for (i = 3; i < Nmodes; i += 2)
+        for (int i = 3; i < Nmodes; i += 2)
         {
             om = sqrt(ValPro[i]);
             M = M + MP[i - 1] * MP[i - 1](0.0) * (F0 / om * (T / pi * sin(om * t) - om * T * T / (pi * pi) * sin(pi * t / T)) / (1 - om * om * T * T / (pi * pi)));
         }
-        M = (M.derive()).derive();
+        M = M.derive().derive();
         M = M * MYoung * I;
         Moment[compt] = M(0.0);
         DM = M.derive();
@@ -279,7 +310,7 @@ void calcule()
 
     alpha[0] = (alp0 + F0 * MP[0](0.0) * T / pi) * T;
     alphap[0] = 0.0;
-    for (i = 3; i < Nmodes; i += 2)
+    for (int i = 3; i < Nmodes; i += 2)
     {
         om = sqrt(ValPro[i]);
         alpha[i] = F0 * MP[i - 1](0.0) / om * (T / (pi)*sin(om * T)) / (1 - ((om * om * T * T) / (pi * pi)));
@@ -291,7 +322,7 @@ void calcule()
         M = M - M;
         M[0] = 0.0;
         M = MP[0] * (alphap[0] * (t - T) + alpha[0]);
-        for (i = 3; i < Nmodes; i += 2)
+        for (int i = 3; i < Nmodes; i += 2)
         {
             om = sqrt(ValPro[i]);
             M = M + MP[i - 1] * (alpha[i] * cos(om * (t - T)) + alphap[i] / om * sin(om * (t - T)));
@@ -313,7 +344,7 @@ void calcule()
     std::cout << "\n\n-SPACE-";
 }
 
-void dswap(double *a, double *b)
+void Dcm::dswap(double *a, double *b)
 {
     double tmp;
     tmp = *a;
@@ -321,44 +352,85 @@ void dswap(double *a, double *b)
     *b = tmp;
 }
 
-void titre()
-{
-    std::cout << '\n';
-    std::cout << "\t\t    +--------------------------------------+\n";
-    std::cout << "\t\t    |          DCM : Travail #2            |\n";
-    std::cout << "\t\t    |                                      |\n";
-    std::cout << "\t\t    |                          RB fev.'95  |\n";
-    std::cout << "\t\t    +--------------------------------------+\n";
-}
-
 void main()
 {
-    /*
-    char choix;
-    int exit = 0;
-    while (exit == 0)
-    {
-        titre();
-        std::cout << "\n\n\n     1:-----> Calcul\n";
-        std::cout << "\n\     2:-----> Donnees\n";
-        std::cout << "\n\     3:-----> Retour au DOS\n\n";
 
-        std::cin >> choix;
-        //choix = getch();
-        switch (choix)
-        {
-        case '1':
-            calcule();
-            break;
-        case '2':
-            input_data();
-            break;
-        case '3':
-            exit = 1;
-            break;
-        }
-    }
-    //clrscr();
-*/
-    calcule();
+    Dcm dcm;
+    dcm.calcule();
 }
+
+
+void Dcm::C_to_Matlab_1(double *ValP, double **VectP, int n)
+{
+    std::ofstream fich("vpvp.m", std::ios::out);
+    fich << "vap=[";
+    for (int i = 1; i <= n - 1; i++)
+        fich << sqrt(ValP[i]) << ",...\n ";
+    fich << sqrt(ValP[n]) << "];\n\nvep=[";
+    for (int i = 1; i <= n; i++)
+    {
+        fich << "[";
+        for (int j = 1; j <= n - 1; j++)
+            fich << VectP[i][j] << ",...\n ";
+        fich << VectP[i][n] << "]\n";
+    }
+    fich << "];";
+    fich.close();
+    std::cout << "vpvp.m cree.\n";
+}
+
+void Dcm::C_to_Matlab_2()
+{
+    std::ofstream fich("graphe.m", std::ios::out);
+    fich << "x=["; // Vecteur abcisse  : x
+    for (int i = 0; i < np; i++)
+        fich << XX[i] << ",...\n ";
+    fich << XX[(int)np] << "];\n\ngrafic=[";
+    for (int i = 0; i < Nmodes; i++) // Matrice Yi(x)    : grafic
+    {
+        fich << "[";
+        for (int j = 0; j < np; j++)
+            fich << MODES[i][j] << ",...\n ";
+        fich << MODES[i][(int)np] << "];\n";
+    }
+    fich << "];\n\nyo=[";
+    for (int j = 0; j < Nmodes; j++) // Valeurs de Yi(0);
+        fich << MP[j](0.0) << ",...\n ";
+    fich << MP[(int)Nmodes](0.0) << "];\n";
+    fich << "\nnp=" << np << ";\n";
+    fich << "np2=" << np2 << ";\n";
+    fich << "NPERIOD=" << Nperiod << ";\n";
+    fich << "T=" << T << ";\n";
+    fich << "F0=" << F0 << ";\n";
+    fich << "NMOD=" << Nmodes - 1 << ";\n";
+    fich << "\ngrafic=grafic'; x=x';\n"; // Commandes de tracï¿½.
+    fich << "figure;\n";
+    fich << "v=[-" << enverg << "," << enverg << ",-0.04,0.04]; axis(v);\n";
+    fich << "plot(x,grafic,'k');\n";
+    fich << "title('Modes propres (normes)');\n";
+    fich << "xlabel('x');\nylabel('Yi(x)');\n";
+    fich.close();
+    std::cout << "graphe.m cree.\n";
+}
+
+void Dcm::C_to_Matlab_3()
+{
+    std::ofstream fich2("mt.m", std::ios::out);
+    fich2 << "M=[";
+    for (int i = 0; i < compt - 1; i++)
+        fich2 << Moment[i] << ",...\n";
+    fich2 << Moment[compt - 1] << "];\n\nET=[";
+    for (int i = 0; i < compt - 1; i++)
+        fich2 << Tranchant[i] << ",...\n";
+    fich2 << Tranchant[compt - 1] << "];\n";
+    fich2 << "figure;\n";
+    fich2 << "plot(0:T/np2:NPERIOD*T,M,'k',0:T/np2:NPERIOD*T,ET,'k');\n";
+    fich2 << "%gtext('M(t)');\n";
+    fich2 << "%gtext('T(t)');\n";
+    fich2 << "grid;\n";
+    fich2 << "title(' Moment et effort tranchant a l'' emplanture de l'' aile');\n";
+    fich2 << "xlabel('temps');\nylabel('M(t) & T(t) en x=0');\n";
+    fich2.close();
+    std::cout << "mt.m cree.\n";
+}
+

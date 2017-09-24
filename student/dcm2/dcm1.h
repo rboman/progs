@@ -15,49 +15,54 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                                  DCM1.H
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#ifndef DCM1_H
+#define DCM1_H
+
 #include <fstream>
 #include <cmath>
 #include "BasePoly.h"
 
 #define pi 3.141592
 
-//----------------------------------------------------------------------------
-//                                Fonctions
-//----------------------------------------------------------------------------
-extern void input_data(void);
-extern void jacobi(double **a, int n, double d[], double **v, int &nrot);
-extern void C_to_Matlab_1(double *, double **, int);
-extern void C_to_Matlab_2(void);
-extern void C_to_Matlab_3(void);
-void dswap(double *, double *);
+//int debug = 0;
 
-//----------------------------------------------------------------------------
-//                                Variables
-//----------------------------------------------------------------------------
-int debug = 0;
-int i, j, k, nrot, compt, nopoly, rate;
-Polynome h(1), m(1), I(3), Unite(0), p(0), *MP;
-Polynome M, DM, swap(0);
-Masses MSX[4];
-double **KM, *mu, *ValPro, **ModPro, **ModPro2, **COPY_K, *ValPro2;
-double *Moment, *Tranchant, **MODES, *XX, t = 0.0, om;
+class Dcm
+{
+    double densite; // Aluminium
+    double enverg;
+    double Mmoteurs;
+    double Mfuselage;
+    double MYoung;
+    double ep;
+    double c0;
+    double c1;
+    double T;
+    double F0;
+    int np;     // précision du tracé en x ds MATLAB   
+    int np2;    //                    en t            
+    int Nperiod; // nbre de périodes en t (pour MATLAB)
+    int Nmodes;    // nbre de modes à calculer avec prec. 
+    double PREC;
+    double PREC2;
 
-//----------------------------------------------------------------------------
-//                                Données
-//----------------------------------------------------------------------------
-double densite = 2700.0; // Aluminium
-double enverg = 22.0;
-double Mmoteurs = 14000.0;
-double Mfuselage = 50000.0;
-double MYoung = 65e9;
-double ep = 0.005;
-double c0 = 1.20;
-double c1 = 0.30;
-double T = 1.0;
-double F0 = 150000.0;
-double np = 80.0;     // précision du tracé en x ds MATLAB    [TODO] changer en "int" ??
-double np2 = 40.0;    //                    en t              [TODO] changer en "int" ??
-double Nperiod = 2.0; // nbre de périodes en t (pour MATLAB)
-double Nmodes = 6;    // nbre de modes à calculer avec prec.  [TODO] changer en "int"
-double PREC = 1E-4;
-double PREC2 = 1E-2;
+// --
+    Polynome *MP;
+    double **MODES, *XX;
+    double *Moment;
+    double *Tranchant;
+    int compt;
+
+public: 
+    Dcm();
+
+    void calcule();
+
+private:
+    void C_to_Matlab_1(double *ValP, double **VectP, int n);
+    void C_to_Matlab_2();
+    void C_to_Matlab_3();
+    void dswap(double *, double *);
+};
+
+#endif //DCM1_H
