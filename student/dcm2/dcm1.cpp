@@ -347,7 +347,7 @@ void Dcm::calcule()
     }
 
     // Prog. MATLAB -> Graphe M et T
-    toMatlab3(Moment, Tranchant);
+    toMatlab3(Moment, Tranchant, compt);
 }
 
 void Dcm::dswap(double *a, double *b)
@@ -420,7 +420,7 @@ void Dcm::toMatlab2(Polynome *MP)
     std::cout << "graphe.m cree.\n";
 }
 
-void Dcm::toMatlab3(double *Moment, double *Tranchant)
+void Dcm::toMatlab3(double *Moment, double *Tranchant, int compt)
 {
     std::ofstream fich2("mt.m", std::ios::out);
     fich2 << "M=[";

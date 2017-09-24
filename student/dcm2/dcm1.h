@@ -47,11 +47,8 @@ class Dcm
     double PREC2;
 
 // --
-    //Polynome *MP;
+
     double **MODES, *XX;
-    //double *Moment;
-    //double *Tranchant;
-    int compt;
 
 public: 
     Dcm();
@@ -61,7 +58,7 @@ public:
 private:
     void toMatlab1(double *ValP, double **VectP, int n);
     void toMatlab2(Polynome *MP);
-    void toMatlab3(double *Moment, double *Tranchant);
+    void toMatlab3(double *Moment, double *Tranchant, int compt);
     void dswap(double *, double *);
 };
 
