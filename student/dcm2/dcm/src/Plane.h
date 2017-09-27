@@ -15,6 +15,7 @@
 #ifndef PLANE_H
 #define PLANE_H
 
+#include "dcm.h"
 #include <fstream>
 #include <cmath>
 #include "BasePoly.h"
@@ -23,7 +24,7 @@
 
 //int debug = 0;
 
-class Plane
+class DCM_API Plane
 {
     double densite; // Aluminium
     double enverg;

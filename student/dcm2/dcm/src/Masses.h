@@ -1,4 +1,4 @@
-//   Copyright 2017 Romain Boman
+//   Copyright 1994 Igor Klapka
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,9 +12,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef JACOBI_H
-#define JACOBI_H
+#ifndef MASSES_H
+#define MASSES_H 
 
-void jacobi(double **a, int n, double d[], double **v, int &nrot);
+#include "dcm.h"
 
-#endif //JACOBI_H
+struct Masses
+{
+    explicit Masses(double _masse=0.0, double _x=0.0) : masse(_masse), x(_x) {}
+    double masse;
+    double x;
+};
+
+#endif // MASSES_H

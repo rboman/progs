@@ -1,0 +1,6 @@
+
+
+ADD_SUBDIRECTORY( exe )
+ADD_SUBDIRECTORY( src )
+ADD_SUBDIRECTORY( _src )
+

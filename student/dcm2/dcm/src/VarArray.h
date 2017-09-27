@@ -12,14 +12,34 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef MASSES_H
-#define MASSES_H 
+#ifndef VARARRAY_H
+#define VARARRAY_H
 
-struct Masses
+#include "dcm.h"
+
+template <class T>
+class VarArray
 {
-    explicit Masses(double _masse=0.0, double _x=0.0) : masse(_masse), x(_x) {}
-    double masse;
-    double x;
+    static const bool debug = false;
+
+    T *data;
+    int maxsz;
+    int last;
+
+  public:
+    VarArray(int initsz = 8);
+    VarArray(const VarArray<T> &);
+    ~VarArray();
+
+    int maxsize() const;
+    int size() const;
+    T &operator[](int);
+    VarArray<T> &operator=(const VarArray<T> &);
+
+  private:
+    void resize(int);
 };
 
-#endif // MASSES_H
+#include "VarArray.inl"
+
+#endif // VARARRAY_H

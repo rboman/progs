@@ -15,6 +15,7 @@
 #ifndef BASEPOLY_H
 #define BASEPOLY_H
 
+#include "dcm.h"
 #include "VarArray.h"
 #include "Polynome.h"
 #include "Masses.h"

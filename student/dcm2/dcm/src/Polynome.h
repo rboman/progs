@@ -22,9 +22,10 @@
 #ifndef POLYNOME_H
 #define POLYNOME_H
 
+#include "dcm.h"
 #include <iostream>
 
-class Polynome
+class DCM_API Polynome
 {
     typedef unsigned short indice;
 

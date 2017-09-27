@@ -358,13 +358,7 @@ void Plane::dswap(double *a, double *b)
     *b = tmp;
 }
 
-void main()
-{
-    Polynome::demo();
-    std::cout << "\n\n---\n\n";
-    Plane Plane;
-    Plane.calcule();
-}
+
 
 
 void Plane::toMatlab1(double *ValP, double **VectP, int n)
