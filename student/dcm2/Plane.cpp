@@ -13,15 +13,15 @@
 //   limitations under the License.
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//                             DCM: Travail n�2
+//                             Plane: Travail#2
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                                                                        R.B.
 // Vendredi 10.02.95
 
-#include "dcm1.h"
+#include "Plane.h"
 #include "jacobi.h"
 
-Dcm::Dcm()
+Plane::Plane()
 {
     // data
     densite = 2700.0; // Aluminium
@@ -42,7 +42,7 @@ Dcm::Dcm()
     PREC2 = 1E-2;
 }
 
-void Dcm::calcule()
+void Plane::calcule()
 {
     //-------------------------------------------------------------------------
     //            Calcul de la masse et de l'inertie de l'aile
@@ -350,7 +350,7 @@ void Dcm::calcule()
     toMatlab3(Moment, Tranchant, compt);
 }
 
-void Dcm::dswap(double *a, double *b)
+void Plane::dswap(double *a, double *b)
 {
     double tmp;
     tmp = *a;
@@ -362,12 +362,12 @@ void main()
 {
     Polynome::demo();
     std::cout << "\n\n---\n\n";
-    Dcm dcm;
-    dcm.calcule();
+    Plane Plane;
+    Plane.calcule();
 }
 
 
-void Dcm::toMatlab1(double *ValP, double **VectP, int n)
+void Plane::toMatlab1(double *ValP, double **VectP, int n)
 {
     std::ofstream fich("vpvp.m", std::ios::out);
     fich << "vap=[";
@@ -386,7 +386,7 @@ void Dcm::toMatlab1(double *ValP, double **VectP, int n)
     std::cout << "vpvp.m cree.\n";
 }
 
-void Dcm::toMatlab2(Polynome *MP)
+void Plane::toMatlab2(Polynome *MP)
 {
     std::ofstream fich("graphe.m", std::ios::out);
     fich << "x=["; // Vecteur abcisse  : x
@@ -420,7 +420,7 @@ void Dcm::toMatlab2(Polynome *MP)
     std::cout << "graphe.m cree.\n";
 }
 
-void Dcm::toMatlab3(double *Moment, double *Tranchant, int compt)
+void Plane::toMatlab3(double *Moment, double *Tranchant, int compt)
 {
     std::ofstream fich2("mt.m", std::ios::out);
     fich2 << "M=[";

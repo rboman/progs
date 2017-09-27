@@ -12,12 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//                                  DCM1.H
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-#ifndef DCM1_H
-#define DCM1_H
+#ifndef PLANE_H
+#define PLANE_H
 
 #include <fstream>
 #include <cmath>
@@ -27,7 +23,7 @@
 
 //int debug = 0;
 
-class Dcm
+class Plane
 {
     double densite; // Aluminium
     double enverg;
@@ -51,7 +47,7 @@ class Dcm
     double **MODES, *XX;
 
 public: 
-    Dcm();
+    Plane();
 
     void calcule();
 
@@ -62,4 +58,4 @@ private:
     void dswap(double *, double *);
 };
 
-#endif //DCM1_H
+#endif //PLANE_H
