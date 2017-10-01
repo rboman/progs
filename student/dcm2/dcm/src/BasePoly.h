@@ -22,6 +22,9 @@
 
 #define max_pol 20
 
+namespace dcm {
+
+DCM_API std::ostream &operator<<(std::ostream &outp, BasePoly &bp);
 
 /**
  * @brief Base de Polynome symetriques f(x)=f(-x)
@@ -29,8 +32,9 @@
 
 class BasePoly : public VarArray<Polynome>
 {
+public:
     typedef short unsigned int indice;
-
+private:
     indice taille;
     double **K;
     double young;
@@ -49,10 +53,12 @@ class BasePoly : public VarArray<Polynome>
     double **ajoute_suivant();
     void affiche_K(int);
 
-    friend std::ostream &operator<<(std::ostream &outp, BasePoly &bp);
+    friend DCM_API std::ostream &operator<<(std::ostream &outp, BasePoly &bp);
 
   private:
     void buildK();
 };
+
+}
 
 #endif // BASEPOLY_H

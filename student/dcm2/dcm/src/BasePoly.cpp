@@ -14,6 +14,7 @@
 
 #include "VarArray.h"
 #include "BasePoly.h"
+using namespace dcm;
 
 BasePoly::BasePoly(Masses *_MsX,
                    Polynome _I,
@@ -133,7 +134,8 @@ void BasePoly::buildK()
     K = KK;
 }
 
-std::ostream &operator<<(std::ostream &outp, BasePoly &bp)
+DCM_API std::ostream &
+dcm::operator<<(std::ostream &outp, BasePoly &bp)
 {
     for (BasePoly::indice i = 0; i < bp.taille; i++)
         outp << i << ":(�" << bp[i].donne_degre() << ") = " << bp[i] << '\n';

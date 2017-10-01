@@ -2,9 +2,7 @@
 #include "dcm.h"
 #include "Polynome.h"
 #include "Plane.h"
-
-
-
+using namespace dcm;
 
 void main()
 {

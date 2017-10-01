@@ -17,11 +17,15 @@
 
 #include "dcm.h"
 
+namespace dcm {
+    
 struct Masses
 {
     explicit Masses(double _masse=0.0, double _x=0.0) : masse(_masse), x(_x) {}
     double masse;
     double x;
 };
+
+}
 
 #endif // MASSES_H

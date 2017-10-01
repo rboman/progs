@@ -11,10 +11,12 @@ threads="1"
 %{
 
 #include "dcm.h"
+#include "Polynome.h"
 #include "Plane.h"
 
 %}
 
 // ----------- DCM CLASSES ---------------
 %include "dcm.h"
+%include "Polynome.h"
 %include "Plane.h"

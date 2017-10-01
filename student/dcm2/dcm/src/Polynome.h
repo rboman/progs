@@ -12,23 +12,30 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-// Class Polynome
-// @ Igor KLAPKA - LTAS
-// Decembre 93
-//
-// Comments:
-//   - Deletion des 'new double a' à mettre au point
-
 #ifndef POLYNOME_H
 #define POLYNOME_H
 
 #include "dcm.h"
 #include <iostream>
 
+namespace dcm {
+
+    DCM_API Polynome operator*(double a, Polynome &b);
+    DCM_API Polynome operator*(Polynome &b, double a);
+    DCM_API std::ostream &operator<<(std::ostream &outp, Polynome &po);
+
+/**
+ * @brief Polynome
+ * 
+ * @todo Deletion des 'new double a' à mettre au point
+ */
+
 class DCM_API Polynome
 {
+public:
     typedef unsigned short indice;
 
+private:
     indice degre;
     double *a;
 
@@ -37,28 +44,29 @@ class DCM_API Polynome
     Polynome(const Polynome &);
     ~Polynome();
 
-    double &operator[](indice);
-    double operator()(double);
-
     indice donne_degre() const;
+    Polynome derive() const;
+    Polynome primitive() const;
+    double integrale(double, double) const;
 
+#ifndef SWIG
+    double &operator[](indice);
+    double operator()(double);    
     Polynome operator=(const Polynome &b);
     Polynome operator!();
     Polynome operator+(Polynome &);
     Polynome operator-(Polynome &);
     Polynome operator*(Polynome &);
-    friend Polynome operator*(double a, Polynome &b);
-    friend Polynome operator*(Polynome &b, double a);
-
-    Polynome derive() const;
-    Polynome primitive() const;
-    double integrale(double, double) const;
-
-    friend std::ostream &operator<<(std::ostream &outp, Polynome &po);
+    friend DCM_API Polynome operator*(double a, Polynome &b);
+    friend DCM_API Polynome operator*(Polynome &b, double a);
+    friend DCM_API std::ostream &operator<<(std::ostream &outp, Polynome &po);
+#endif
 
     static void demo();
 };
 
 #include "Polynome.inl"
+
+}
 
 #endif // POLYNOME_H

@@ -1,6 +1,4 @@
-# -*- coding: latin-1; -*-
-# waves MODULE initialization file
+# -*- coding: latin-1 -*-
+# dcm MODULE initialization file
 
-import fwk
-import tbox
-from wavesw import *
+from dcmi import *

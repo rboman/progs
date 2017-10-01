@@ -1,4 +1,4 @@
-//   Copyright 2017 Romain Boman
+//   Copyright 1995-2017 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,14 +12,9 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//                             Plane: Travail#2
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//                                                                        R.B.
-// Vendredi 10.02.95
-
 #include "Plane.h"
 #include "jacobi.h"
+using namespace dcm;
 
 Plane::Plane()
 {

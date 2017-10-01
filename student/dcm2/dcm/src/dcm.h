@@ -15,11 +15,10 @@
 
 namespace dcm
 {
-    //class Plane;
+    class Plane;
+    class Polynome;
+    class BasePoly;
+    struct Masses;
 }
-
-class Plane;
-class Polynome;
-
 
 #endif //DCM_H

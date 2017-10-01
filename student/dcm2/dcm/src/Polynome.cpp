@@ -12,7 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "polynome.h"
+#include "Polynome.h"
+using namespace dcm;
 
 Polynome::Polynome(indice _taille)
 {
@@ -113,7 +114,7 @@ Polynome::operator-(Polynome &b)
 }
 
 Polynome
-    Polynome::operator*(Polynome &b)
+Polynome::operator*(Polynome &b)
 {
     Polynome res((indice)(degre + b.degre));
     for (indice i = 0; i <= b.degre; i++)
@@ -122,8 +123,8 @@ Polynome
     return res;
 }
 
-Polynome
-operator*(double a, Polynome &b)
+DCM_API Polynome
+dcm::operator*(double a, Polynome &b)
 {
     Polynome res(b.degre);
     for (Polynome::indice i = 0; i <= b.degre; i++)
@@ -131,8 +132,8 @@ operator*(double a, Polynome &b)
     return res;
 }
 
-Polynome
-operator*(Polynome &b, double a)
+DCM_API Polynome
+dcm::operator*(Polynome &b, double a)
 {
     Polynome res(b.degre);
     for (Polynome::indice i = 0; i <= b.degre; i++)
@@ -174,8 +175,8 @@ Polynome::integrale(double from, double to) const
     return res_to - res_from;
 }
 
-std::ostream &
-operator<<(std::ostream &outp, Polynome &po)
+DCM_API std::ostream &
+dcm::operator<<(std::ostream &outp, Polynome &po)
 {
     Polynome::indice i = 0;
     if (po[0])
@@ -200,10 +201,11 @@ operator<<(std::ostream &outp, Polynome &po)
     return outp;
 }
 
-
-void Polynome::demo()
+void 
+Polynome::demo()
 {
-    std::cout << "\n Je go !\n";
+    std::cout << "\nPolynome::demo()!\n\n";
+
     Polynome a(3);
     Polynome b(4);
     a[0] = 4.;

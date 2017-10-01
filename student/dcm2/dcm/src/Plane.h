@@ -1,4 +1,4 @@
-//   Copyright 2017 Romain Boman
+//   Copyright 1995-2017 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,7 +22,11 @@
 
 #define pi 3.141592
 
-//int debug = 0;
+namespace dcm {
+
+/**
+ * @brief Main class 
+ */
 
 class DCM_API Plane
 {
@@ -58,5 +62,7 @@ private:
     void toMatlab3(double *Moment, double *Tranchant, int compt);
     void dswap(double *, double *);
 };
+
+}
 
 #endif //PLANE_H
