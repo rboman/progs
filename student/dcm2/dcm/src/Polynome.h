@@ -20,9 +20,9 @@
 
 namespace dcm {
 
-    DCM_API Polynome operator*(double a, Polynome &b);
-    DCM_API Polynome operator*(Polynome &b, double a);
-    DCM_API std::ostream &operator<<(std::ostream &outp, Polynome &po);
+DCM_API Polynome operator*(double a, Polynome const &b);
+DCM_API Polynome operator*(Polynome const &b, double a);
+DCM_API std::ostream &operator<<(std::ostream &outp, Polynome const &po);
 
 /**
  * @brief Polynome
@@ -40,8 +40,8 @@ private:
     double *a;
 
   public:
-    Polynome(indice _taille = 0);
-    Polynome(const Polynome &);
+    explicit Polynome(indice _taille = 0);
+    Polynome(const Polynome &b);
     ~Polynome();
 
     indice donne_degre() const;
@@ -50,16 +50,17 @@ private:
     double integrale(double, double) const;
 
 #ifndef SWIG
-    double &operator[](indice);
-    double operator()(double);    
-    Polynome operator=(const Polynome &b);
+    double &operator[](indice i);
+    double operator[](indice i) const;
+    double operator()(double val) const;    
+    Polynome operator=(Polynome const &b);
     Polynome operator!();
-    Polynome operator+(Polynome &);
-    Polynome operator-(Polynome &);
-    Polynome operator*(Polynome &);
-    friend DCM_API Polynome operator*(double a, Polynome &b);
-    friend DCM_API Polynome operator*(Polynome &b, double a);
-    friend DCM_API std::ostream &operator<<(std::ostream &outp, Polynome &po);
+    Polynome operator+(Polynome const &b) const;
+    Polynome operator-(Polynome const &b) const;
+    Polynome operator*(Polynome const &b) const;
+    friend DCM_API Polynome operator*(double a, Polynome const &b);
+    friend DCM_API Polynome operator*(Polynome const &b, double a);
+    friend DCM_API std::ostream &operator<<(std::ostream &outp, Polynome const &po);
 #endif
 
     static void demo();
