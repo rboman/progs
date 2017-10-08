@@ -52,7 +52,7 @@ class TestWindow(QMainWindow):
         pen = curve.pen()
         if color is not None:
             pen.setColor(color)
-        pen.setWidthF(.1)
+        pen.setWidthF(2.0)
         curve.setPen(pen)
         curve.setUseOpenGL(True)
         curve.append(series_to_polyline(xdata, ydata))
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
     window = TestWindow()
 
-    npoints = 1000000
+    npoints = 100
     xdata = np.linspace(0., 10., npoints)
     window.add_data(xdata, np.sin(xdata), color=Qt.red)
     window.add_data(xdata, np.cos(xdata), color=Qt.blue)

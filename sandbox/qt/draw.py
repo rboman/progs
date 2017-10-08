@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 
 import sys
 ## Qt 4 or 5 ##
@@ -11,7 +11,7 @@ try:
 except:
     pass    
 try:
-    from PyQt5.QtCore    import *
+    from PyQt5.QtCore import *
     from PyQt5.QtGui import *
     from PyQt5.QtWidgets import *
     foundQt=5
