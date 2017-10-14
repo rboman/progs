@@ -1,7 +1,5 @@
-# $Id: test3.py 1086 2013-07-26 14:49:44Z Boman $
-
-import sys, os, os.path
-sys.path.append(r'Z:\Work\repets\Projet_MP\_projects\2013-BarreTM\moi\minibarreBIN\bin\Release')
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
 
 from couplage import *
 

@@ -1,7 +1,7 @@
 // compiler avec "g++ -o etage.exe -Igmm etage.cpp"
 // exécuter avec "./etage.exe"
 #include <iostream>
-#include <gmm.h>
+#include <gmm/gmm.h>
 #include <math.h>
 #include <fstream>
 

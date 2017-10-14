@@ -1,6 +1,6 @@
 
 #include "student.h"
-#include <gmm.h>
+#include <gmm/gmm.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>

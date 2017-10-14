@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <gmm.h>
+#include <gmm/gmm.h>
 
 #include "Bar.h"
 #include "Mesh.h"

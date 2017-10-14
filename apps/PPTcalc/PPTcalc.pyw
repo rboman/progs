@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 
 import os, sys, os.path
 from PyQt5.QtCore    import *

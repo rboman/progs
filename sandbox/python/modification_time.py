@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 # display the modification time of the modules loaded in memory
 
 import sys,os.path

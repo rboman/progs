@@ -1,4 +1,4 @@
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 
 class Point:
     def __init__(self, num, x, y):

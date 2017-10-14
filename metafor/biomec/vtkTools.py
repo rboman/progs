@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 # $Id$
 #
 # vtkTools - VTK/Python interface by RoBo

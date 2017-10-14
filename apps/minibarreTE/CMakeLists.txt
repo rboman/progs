@@ -22,10 +22,19 @@ FIND_PACKAGE(PythonLibs REQUIRED)
 
 # -- Search for SWIG
 
+# -- Search for SWIG
 FIND_PACKAGE(SWIG REQUIRED)
-IF(WIN32)
-    SET(CMAKE_SWIG_OUTDIR "${EXECUTABLE_OUTPUT_PATH}/$(OutDir)")
-ENDIF(WIN32)
+IF(CMAKE_GENERATOR MATCHES "Visual Studio") # not MSVC because of nmake & jom
+    SET(CMAKE_SWIG_OUTDIR "${EXECUTABLE_OUTPUT_PATH}/$(Configuration)/")
+ELSE()
+    SET(CMAKE_SWIG_OUTDIR "${EXECUTABLE_OUTPUT_PATH}")
+ENDIF()
+
+# -- GMM --
+find_path(GMM_INCLUDE_DIRS "gmm/gmm.h")
+include_directories(${GMM_INCLUDE_DIRS})
+#add_definitions(-DGMM_USES_LAPACK)  
+#add_definitions(-DGMM_USES_MUMPS)
 
 # -- Sub directories
 

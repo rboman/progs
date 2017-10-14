@@ -13,7 +13,7 @@
 #define COUPLAGE_API
 #endif
 
-#include <gmm.h>
+#include <gmm/gmm.h>
 #include <vector>
 #include <string>
 

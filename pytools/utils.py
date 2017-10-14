@@ -1,4 +1,4 @@
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 
 def parseargs():
     """

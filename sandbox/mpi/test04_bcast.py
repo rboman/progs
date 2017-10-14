@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 # test mpi4py
 
 import mpi4py.MPI as mpi

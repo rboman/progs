@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 # teste l'influence de la langue sur le tri de liste ("sort")
 #
 

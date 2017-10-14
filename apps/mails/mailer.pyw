@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 # 
 # GUI mailer by RoBo
 #
@@ -34,7 +34,7 @@ class MailWindow(QWidget):
         self.fromw.addItem("God <god@heaven.com>")
         self.fromw.setEditable(True)
         
-        self.tow = QLineEdit("Vinciane <vdotreppe@ulg.ac.be>; P�p� <ppjeunechamps@ulg.ac.be>; Robo <r.boman@ulg.ac.be>")
+        self.tow = QLineEdit("Vinciane <vdotreppe@ulg.ac.be>; Pepe <ppjeunechamps@ulg.ac.be>; Robo <r.boman@ulg.ac.be>")
         self.subjw = QLineEdit("Bonjour du Canada")
         
         prmlayout.addWidget(QLabel("SMTP Server:"), 0, 0)

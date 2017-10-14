@@ -1,4 +1,4 @@
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 
 import pytools.utils as pu
 import os, os.path, subprocess

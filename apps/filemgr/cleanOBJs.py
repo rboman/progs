@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 
 dirs = ('ITK320BIN','VTKBIN','CSwig320BIN')
 exts = ('*.obj','*.ilk','*.ncb','*.suo')

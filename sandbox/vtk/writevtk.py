@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: latin-1 -*-
 # Write a (legacy) VTK file line by line from a set of points+values.
 # This program was used to build a paraview export routine in C++
 
