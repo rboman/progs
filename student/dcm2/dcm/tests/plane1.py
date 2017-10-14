@@ -16,9 +16,37 @@
 #   limitations under the License.
 
 def main():
+    
     import dcm
     plane = dcm.Plane()
     plane.calcule()
+
+    # postprocessing
     
+    vp = plane.getValPro()
+    print vp
+    mp = plane.getModPro(1)  
+    print mp
+    print plane.getNoPoly()
+
+    import numpy as np
+    xx = np.array(plane.getXX())
+    mode1 = np.array(plane.getMODES(3))
+
+    #print "xx=",xx
+    #print "mode1=", mode1
+
+    if 1:
+        import matplotlib.pyplot as plt
+        plt.plot(xx, mode1)   
+        plt.xlabel('x')
+        #plt.ylim(0,150)
+        plt.title('modes')
+        plt.grid(True)
+        plt.show()    
+    #raw_input()
+
+
 if __name__ == "__main__":
     main()
+

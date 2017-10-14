@@ -22,8 +22,15 @@ dcm::Polynome __mult__(double a, dcm::Polynome const &p);
 %include "std_string.i"
 %include "exception.i"
 
+%include "std_vector.i"
+// Instantiate some std templates
+namespace std {
+   %template(std_vector_double) std::vector<double>;
+}
+
 // ----------- DCM CLASSES ---------------
 %include "dcm.h"
+
 %include "Polynome.h"
 %include "Plane.h"
 
@@ -42,3 +49,5 @@ dcm::Polynome __mult__(double a, dcm::Polynome const &p);
     double __getitem__(Polynome::indice i) const { return (*self)[i]; }    
     void __setitem__(Polynome::indice i, double val)  { (*self)[i]=val; } 
 }
+
+

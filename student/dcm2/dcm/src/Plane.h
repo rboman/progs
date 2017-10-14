@@ -18,6 +18,7 @@
 #include "dcm.h"
 #include <fstream>
 #include <cmath>
+#include <vector>
 #include "BasePoly.h"
 
 #define pi 3.141592
@@ -47,17 +48,28 @@ class DCM_API Plane
     double PREC;
     double PREC2;
 
-// --
+private:
+    // Results
+    double *ValPro;
+    double **ModPro;
+    int nopoly;    
+    double *XX;
+    double **MODES;
 
-    double **MODES, *XX;
-
+public:
+    int getNoPoly() const { return nopoly; }
+    std::vector<double> getValPro() const;
+    std::vector<double> getModPro(int i) const;
+    std::vector<double> getXX() const;
+    std::vector<double> getMODES(int i) const;
+    
 public: 
     Plane();
 
     void calcule();
 
 private:
-    void toMatlab1(double *ValP, double **VectP, int n);
+    void toMatlab1();
     void toMatlab2(Polynome *MP);
     void toMatlab3(double *Moment, double *Tranchant, int compt);
     void dswap(double *, double *);

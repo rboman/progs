@@ -35,6 +35,13 @@ Plane::Plane()
     Nmodes = 6;    // nbre de modes à calculer avec prec.
     PREC = 1E-4;
     PREC2 = 1E-2;
+
+    // results
+    nopoly = 0;
+    ValPro = NULL;
+    ModPro = NULL; 
+    XX = NULL;      // Matrice abcisse.
+    MODES = NULL; // Matrice des Yi(x)    
 }
 
 void Plane::calcule()
@@ -84,7 +91,8 @@ void Plane::calcule()
 
     for (int i = 2; i < Nmodes + 1; i++) // Ajoute 5 poly.
         double **KM = Base.ajoute_suivant();
-    int nopoly = Nmodes;
+    
+    nopoly = Nmodes;
 
     double *ValPro2 = new double[Nmodes];
     ValPro2--; // Tableaux auxil. contenant
@@ -105,9 +113,6 @@ void Plane::calcule()
     //    Ajoute un polynome et compare les val. et vect. propres avec
     //             ceux et celles de l'itération précédente.
     //-------------------------------------------------------------------------
-
-    double *ValPro;
-    double **ModPro;
 
     int rate = 1;
     while (rate == 1)
@@ -232,7 +237,7 @@ void Plane::calcule()
     //-------------------------------------------------------------------------
     //           Transfert des val. et vect. propres vers Matlab
     //-------------------------------------------------------------------------
-    toMatlab1(ValPro, ModPro, Nmodes);
+    toMatlab1();
 
     //-------------------------------------------------------------------------
     //               Calcul des modes propres Yi(x) -> MP[i]
@@ -354,25 +359,63 @@ void Plane::dswap(double *a, double *b)
 }
 
 
+std::vector<double> Plane::getValPro() const // size = nopoly[shift]
+{
+    // convert to std::vector
+    std::vector<double> vp(Nmodes);
+    for (int i = 1; i <Nmodes+1; i++)
+        vp[i-1] = sqrt(ValPro[i]);
+    return vp;
+}
 
+std::vector<double> Plane::getModPro(int j) const // size = nopoly[shift] * nopoly[shift]
+{
+    if(j<0 || j>=Nmodes)
+        throw std::runtime_error("getModPro(int j): bad j");
+    // convert to std::vector
+    std::vector<double> mod(Nmodes);
+    for (int i = 1; i <Nmodes; i++)
+        mod[i-1] = ModPro[j][i];
+    return mod;
+}
 
-void Plane::toMatlab1(double *ValP, double **VectP, int n)
+void Plane::toMatlab1()
 {
     std::ofstream fich("vpvp.m", std::ios::out);
     fich << "vap=[";
-    for (int i = 1; i <= n - 1; i++)
-        fich << sqrt(ValP[i]) << ",...\n ";
-    fich << sqrt(ValP[n]) << "];\n\nvep=[";
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i <= Nmodes - 1; i++)
+        fich << sqrt(ValPro[i]) << ",...\n ";
+    fich << sqrt(ValPro[Nmodes]) << "];\n\nvep=[";
+    for (int i = 1; i <= Nmodes; i++)
     {
         fich << "[";
-        for (int j = 1; j <= n - 1; j++)
-            fich << VectP[i][j] << ",...\n ";
-        fich << VectP[i][n] << "]\n";
+        for (int j = 1; j <= Nmodes - 1; j++)
+            fich << ModPro[i][j] << ",...\n ";
+        fich << ModPro[i][Nmodes] << "]\n";
     }
     fich << "];";
     fich.close();
     std::cout << "vpvp.m cree.\n";
+}
+
+
+std::vector<double> Plane::getXX() const   // size = np+1! - pas de shift
+{
+    // convert to std::vector
+    std::vector<double> xx(np+1);
+    for (int i = 0; i < np+1; i++)
+        xx[i] = XX[i];
+    return xx;
+}
+std::vector<double> Plane::getMODES(int j) const // size = nopoly * np+1  - pas de shift
+{
+    if(j<0 || j>=Nmodes)
+        throw std::runtime_error("getMODES(int j): bad j");
+    // convert to std::vector
+    std::vector<double> mod(np+1);
+    for (int i = 0; i < np+1; i++)
+        mod[i] = MODES[j][i];
+    return mod;
 }
 
 void Plane::toMatlab2(Polynome *MP)
