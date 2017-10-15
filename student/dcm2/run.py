@@ -6,6 +6,7 @@ if __name__=="__main__":
     import sys, os
     # adds "." to the pythonpath
     thisdir = os.path.split(__file__)[0]
+    thisdir = os.path.normcase(thisdir)
     sys.path.append(thisdir)
     
     # add binary dir to PYTHONPATH
@@ -27,11 +28,13 @@ if __name__=="__main__":
     # run all tests sequentially
     for testname in args.file:    
         testname = os.path.abspath(testname)
+        testname = os.path.normcase(testname)  # F:/ => f:/ on Windows
         # create workspace
         common = os.path.commonprefix( (testname, thisdir+os.sep) )
         resdir = testname[len(common):].replace(os.sep,"_")
         resdir = os.path.splitext(resdir)[0]  
         wdir=os.path.join('workspace', resdir)
+        print 'workspace=', wdir
         if not os.path.isdir(wdir):
             os.makedirs(wdir)
         os.chdir(wdir)
