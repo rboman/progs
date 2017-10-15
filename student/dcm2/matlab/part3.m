@@ -4,7 +4,7 @@
 
 %----------Initialisation--------------------
 vpvp
-graph
+graphe
 compt=0;
 YXT=0.0; 
 alp0(1)=-2*yo(1)*F0*T/pi
