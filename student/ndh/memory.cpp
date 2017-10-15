@@ -1,18 +1,18 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
+ *	      Travail N.D.H. : Eléments aux frontiéres               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniï¿½re modif.: 30.11.96               *
+ *	      Version C++    derniére modif.: 30.11.96               *
  *                                                                   *
  *********************************************************************
  *  Programme : MEMORY.CPP  (routines de gestion des tableaux dyn.)  *
  *********************************************************************/
 
-#include "extern.h"
+#include "ndh.h"
 
 //--------------------------------------------------------------------
 // Routines de gestion des tableaux dynamiques.
-// (crï¿½ation, destruction,...)
+// (création, destruction,...)
 //--------------------------------------------------------------------
 
 void create_aux()

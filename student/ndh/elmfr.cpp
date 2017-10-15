@@ -1,31 +1,31 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
+ *	      Travail N.D.H. : Eléments aux frontiéres               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniï¿½re modif.: 10.12.96               *
+ *	      Version C++    derniére modif.: 10.12.96               *
  *                                                                   *
  *********************************************************************
  *  Programme principal : ELMFR.CPP                                  *
- *  Compilation : utiliser le modï¿½le 'large'.                        *
+ *  Compilation : utiliser le modéle 'large'.                        *
  *********************************************************************/
 
 #include "elmfr.h"
 
 //--------------------------------------------------------------------
-// Routine de dï¿½finition de la gï¿½omï¿½trie :
+// Routine de définition de la géométrie :
 //  Remplit les vecteurs xf,yf et xel,yel.
-//  . si probleme=1 -> crï¿½ation d'un cercle.
-//  . si probleme=2 -> crï¿½ation d'un carrï¿½.
+//  . si probleme=1 -> création d'un cercle.
+//  . si probleme=2 -> création d'un carré.
 //--------------------------------------------------------------------
 
 void define_geometry()
 {
     int i, j;
-    void vector(float *, float, float, int);
+    void fillvector(float *, float, float, int);
 
     if (probleme == 1)
     {
-        vector(alpha, 0.0, (2 * pi) / N, N + 1);
+        fillvector(alpha, 0.0, (2 * pi) / N, N + 1);
         for (i = 0; i < N + 1; i++)
         {
             xf[i] = R * cos(alpha[i]);
@@ -36,7 +36,7 @@ void define_geometry()
     {
         j = N / 4;
         N = 4 * j;
-        vector(alpha, -a, (2 * a) / j, j + 1);
+        fillvector(alpha, -a, (2 * a) / j, j + 1);
         for (i = 0; i <= j; i++)
         {
             xf[i] = a;
@@ -57,8 +57,8 @@ void define_geometry()
 }
 
 //--------------------------------------------------------------------
-// Routine d'ï¿½valuation d'un ï¿½lï¿½m. des matrices G et H.
-//   .reï¿½oit -les indices i et j de l'ï¿½lï¿½m. ï¿½ calculer.
+// Routine d'évaluation d'un élém. des matrices G et H.
+//   .reéoit -les indices i et j de l'élém. é calculer.
 //           -les coord. x,y de l'origine des axes.
 //--------------------------------------------------------------------
 
@@ -66,10 +66,10 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
 {
     int t, tt;
     float dx, dy, dL, temp, r, nx, ny;
-    void vector(float *, float, float, int);
+    void fillvector(float *, float, float, int);
 
     if (j == i)
-    { // terme diagonal -> on applique les formules spï¿½ciales.
+    { // terme diagonal -> on applique les formules spéciales.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         dx = xf[i + 1] - xf[i];
         dy = yf[i + 1] - yf[i];
@@ -78,20 +78,20 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
         *h = 0.5;
     }
     else
-    { // cas gï¿½nï¿½ral d'un terme non diagonal.
+    { // cas général d'un terme non diagonal.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        // calcul de la normale (normï¿½e) ï¿½ l'ï¿½lï¿½ment:
+        // calcul de la normale (normée) é l'élément:
         nx = yf[j + 1] - yf[j];
         ny = xf[j] - xf[j + 1];
         temp = sqrt(nx * nx + ny * ny);
         nx = nx / temp;
         ny = ny / temp;
 
-        // calcul des coord. des points d'intï¿½gration (xint,yint):
-        vector(xint, xf[j], (xf[j + 1] - xf[j]) / istep, istep + 1);
-        vector(yint, yf[j], (yf[j + 1] - yf[j]) / istep, istep + 1);
+        // calcul des coord. des points d'intégration (xint,yint):
+        fillvector(xint, xf[j], (xf[j + 1] - xf[j]) / istep, istep + 1);
+        fillvector(yint, yf[j], (yf[j + 1] - yf[j]) / istep, istep + 1);
 
-        // ï¿½valuation des deux fonctions ï¿½ intï¿½grer sur l'ï¿½lï¿½ment
+        // évaluation des deux fonctions é intégrer sur l'élément
         // et stockage des valeurs dans fct et fct2:
         for (t = 0; t < istep + 1; t++)
         {
@@ -100,16 +100,16 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
             fct2[t] = (-nx * (xint[t] - x) - ny * (yint[t] - y)) / (2 * pi * temp * temp);
         }
 
-        // initialisation des ï¿½lï¿½ments ï¿½ calculer:
+        // initialisation des éléments é calculer:
         *g = 0.0;
         *h = 0.0;
 
-        // calcul de la longueur d'un pas d'intï¿½gration:
+        // calcul de la longueur d'un pas d'intégration:
         dx = xint[1] - xint[0];
         dy = yint[1] - yint[0];
         dL = sqrt(dx * dx + dy * dy);
 
-        // intï¿½gration de Newton-Cotes:
+        // intégration de Newton-Cotes:
         for (t = 0; t < istep - ideg + 1; t += ideg)
             for (tt = 0; tt <= ideg; tt++)
             {
@@ -122,7 +122,7 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
 }
 
 //--------------------------------------------------------------------
-// Routine d'ï¿½valuation des tempï¿½ratures sur chaque ï¿½lï¿½ment.
+// Routine d'évaluation des températures sur chaque élément.
 //--------------------------------------------------------------------
 
 void eval_u()
@@ -132,11 +132,11 @@ void eval_u()
 }
 
 //--------------------------------------------------------------------
-// Routine de calcul des tempï¿½tatures (remplissage du tableau T).
-// (Cette routine rï¿½soud le problï¿½me posï¿½)
-//   .reï¿½oit le 'type' de calculs ï¿½ effectuer:
-//         - type=1 : calculs sans tenir compte de la symï¿½trie.
-//         - type=2 : calculs optimisï¿½s compte tenu de la symï¿½trie.
+// Routine de calcul des tempétatures (remplissage du tableau T).
+// (Cette routine résoud le probléme posé)
+//   .reéoit le 'type' de calculs é effectuer:
+//         - type=1 : calculs sans tenir compte de la symétrie.
+//         - type=2 : calculs optimisés compte tenu de la symétrie.
 //--------------------------------------------------------------------
 
 void full_calcul()
@@ -144,7 +144,7 @@ void full_calcul()
     int i, j, i1, j1, t;
     float temp, r, xb, yb;
     void titre(), destroy_aux(), create_aux(), create_GH(), eval_u();
-    void destroy_GH(), visu(), vector(float *, float, float, int);
+    void destroy_GH(), visu(), fillvector(float *, float, float, int);
     void gauss(int, float **, float *, float *);
     void mmv(int, float **, float *, float *);
     void eval_GH(float *, float *, int, int, float, float);
@@ -153,27 +153,27 @@ void full_calcul()
     clrscr();
     titre();
     if (((probleme < 1) || (probleme > 2)) && (type == 2))
-    { // Cas du problï¿½me qcq. avec calculs optimisï¿½s.
+    { // Cas du probléme qcq. avec calculs optimisés.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        cout << "\nPas de solution rapide pour un problï¿½me QCQ !\n<ESPACE>";
+        cout << "\nPas de solution rapide pour un probléme QCQ !\n<ESPACE>";
         getch();
     }
     else
     {
-        time1 = clock(); // on commence ï¿½ compter le temps CPU.
-        calcul = 1;      // le calcul va ï¿½tre effectuï¿½.
-        destroy_aux();   // libï¿½ration de la mï¿½moire.
-        cout << "\n\nCrï¿½ation des matrices H et G...";
+        time1 = clock(); // on commence é compter le temps CPU.
+        calcul = 1;      // le calcul va étre effectué.
+        destroy_aux();   // libération de la mémoire.
+        cout << "\n\nCréation des matrices H et G...";
         create_GH();
         cout << "Ok\nCalcul des matrices H et G...";
         if (type == 1)
-            // Cas du problï¿½me non optimisï¿½:
+            // Cas du probléme non optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             for (i = 0; i < N; i++)
                 for (j = 0; j < N; j++)
                     eval_GH(&(G[i][j]), &(H[i][j]), i, j, xel[i], yel[i]);
         else
-        { // Cas du problï¿½me optimisï¿½:
+        { // Cas du probléme optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~
             if (probleme == 1) // *** CERCLE ***
             {                  // Une seule ligne de H utile:            ******
@@ -209,11 +209,11 @@ void full_calcul()
                 }
             }
         }
-        // Evaluation des T sur la frontiï¿½re et rï¿½solution du
-        // systï¿½me par Gauss:
-        cout << "Ok\nRï¿½solution de G q = H u...";
+        // Evaluation des T sur la frontiére et résolution du
+        // systéme par Gauss:
+        cout << "Ok\nRésolution de G q = H u...";
         eval_u();
-        if ((type == 2) && (probleme == 1)) // cas du cercle optimisï¿½
+        if ((type == 2) && (probleme == 1)) // cas du cercle optimisé
         {
             temp = 0.0;
             for (j = 0; j < N; j++)
@@ -221,15 +221,15 @@ void full_calcul()
             for (j = 0; j < N; j++)
                 alpha[j] = temp;
         }
-        else // cas gï¿½nï¿½ral
+        else // cas général
             mmv(N, H, u, alpha);
         gauss(N, G, q, alpha);
 
-        // Libï¿½ration de la mï¿½moire occupï¿½e par les matrices G et H:
+        // Libération de la mémoire occupée par les matrices G et H:
         cout << "Ok\nDestruction des matrices H et G...";
         destroy_GH();
 
-        cout << "Ok\nCalcul des T intï¿½rieures...";
+        cout << "Ok\nCalcul des T intérieures...";
         if ((probleme == 1) && (type == 2))
             range = 1;
         else if ((probleme == 2) && (type == 2))
@@ -242,7 +242,7 @@ void full_calcul()
             cartesien = 0;
         create_aux();
 
-        // Calcul des points xb,yb oï¿½ va ï¿½tre ï¿½valuï¿½e la T.
+        // Calcul des points xb,yb oé va étre évaluée la T.
         for (i1 = 0; i1 < density; i1++)
             for (j1 = 0; j1 < range; j1++)
             {
@@ -263,16 +263,16 @@ void full_calcul()
                 }
                 for (j = 0; j < N; j++)
                     eval_GH(&(G1[j]), &(H1[j]), j - 1, j, xb, yb);
-                // Calcul de la solution du problï¿½me de Poisson
+                // Calcul de la solution du probléme de Poisson
                 temp = 0.0;
                 for (j = 0; j < N; j++)
                     temp = temp + G1[j] * q[j] - H1[j] * u[j];
-                // Calcul de la solution du problï¿½me posï¿½
+                // Calcul de la solution du probléme posé
                 r = sqrt(xb * xb + yb * yb);
                 T[i1][j1] = temp + beta / (2 * k) * r * r;
             }
 
-        time2 = clock(); // les calculs sont terminï¿½s !
+        time2 = clock(); // les calculs sont terminés !
 
         // Affichage de la solution
         cout << "Ok\nSolution :";
@@ -288,7 +288,7 @@ void full_calcul()
 }
 
 //--------------------------------------------------------------------
-// Routine de calcul des tempï¿½tatures exactes (dans le tableau T).
+// Routine de calcul des tempétatures exactes (dans le tableau T).
 //--------------------------------------------------------------------
 
 void eval_Texact()
@@ -303,7 +303,7 @@ void eval_Texact()
         cout << "\n\nPas de solution exacte disponible !";
     else
     {
-        time1 = clock(); // dï¿½but des calculs.
+        time1 = clock(); // début des calculs.
         calcul = 1;
         for (i1 = 0; i1 < density; i1++)
             for (j1 = 0; j1 < range; j1++)
@@ -336,14 +336,14 @@ void eval_Texact()
             }
         time2 = clock();
         find_minmax();
-        cout << "\nCalcul effectuï¿½\n<ESPACE> pour voir la solution...";
+        cout << "\nCalcul effectué\n<ESPACE> pour voir la solution...";
         getch();
-        visu(); // Visualisation graphique des rï¿½sultats.
+        visu(); // Visualisation graphique des résultats.
     }
 }
 
 //--------------------------------------------------------------------
-//  Procï¿½dure main() : boucle principale
+//  Procédure main() : boucle principale
 //--------------------------------------------------------------------
 
 void main()
@@ -374,17 +374,17 @@ void main()
     {
         clrscr();
         titre();
-        cout << "\n\nProblï¿½me courant :";
+        cout << "\n\nProbléme courant :";
         if (probleme == 1)
             cout << " CERCLE de rayon a";
         else if (probleme == 2)
-            cout << " CARRE de cï¿½tï¿½ a";
+            cout << " CARRE de cété a";
         else
             cout << "QUELCONQUE";
         cout << "\n\n\t [1]  Lancer le calcul complet.";
         cout << "\n\t [2]  Lancer le calcul rapide.";
-        cout << "\n\t [3]  Paramï¿½tres.";
-        cout << "\n\t [4]  Charger fichier donnï¿½es.";
+        cout << "\n\t [3]  Paramétres.";
+        cout << "\n\t [4]  Charger fichier données.";
         cout << "\n\t [5]  Visualisation graphique.";
         cout << "\n\t [6]  Evaluation de la solution analytique.";
         cout << "\n\t [7]  Sauvegarde vers MATLAB";
@@ -429,3 +429,60 @@ void main()
     }
     clrscr();
 }
+
+//--------------------------------------------------------------------
+// Routine de génération d'une géométrie donnée et sauvegarde
+// dans un fichier *.DAT
+//--------------------------------------------------------------------
+
+
+
+//void tester()
+void generate()
+{
+    int i;
+    char nom_fich[50];
+    void fillvector(float *, float, float, int);
+    void create_vectors(), visu();
+
+    R = 1;
+    N = 50;
+    zoom = 200.0 / R;
+    pi = 4 * atan(1);
+    range = N;
+    probleme = 3;
+    create_vectors();
+
+    // Génération:
+    fillvector(alpha, 0.0, (2 * pi) / N, N + 1);
+    for (i = 0; i < N + 1; i++)
+    {
+        xf[i] = (R - 0.2 + 0.2 * cos(3 * alpha[i])) * cos(alpha[i]);
+        yf[i] = (R - 0.2 + 0.2 * cos(3 * alpha[i]) * 0.01 * (-alpha[i] * alpha[i] * alpha[i] + 2 * pi)) * sin(alpha[i]);
+    }
+    for (i = 0; i < N; i++)
+    {
+        xel[i] = (xf[i] + xf[i + 1]) / 2;
+        yel[i] = (yf[i] + yf[i + 1]) / 2;
+    }
+    // Sortie vers fichier.DAT
+    cout << "\nNom du fichier (.DAT) :";
+    gets(nom_fich);
+    ofstream fich(nom_fich, ios::out);
+    fich << N;
+    fich << "\n"
+         << zoom;
+    for (i = 0; i <= N; i++)
+    {
+        fich << "\n"
+             << xf[i];
+        fich << "\n"
+             << yf[i];
+    }
+    fich.close();
+    calcul = 0;
+    visu();
+}
+
+
+

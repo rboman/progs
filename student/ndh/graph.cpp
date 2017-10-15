@@ -1,14 +1,14 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
+ *	      Travail N.D.H. : Eléments aux frontiéres               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniï¿½re modif.: 30.11.96               *
+ *	      Version C++    derniére modif.: 30.11.96               *
  *                                                                   *
  *********************************************************************
  *  Programme : GRAPH.CPP  (routines graphiques)                     *
  *********************************************************************/
 
-#include "extern.h"
+#include "ndh.h"
 
 //--------------------------------------------------------------------
 // Affichage du titre
@@ -22,7 +22,7 @@ void titre()
 }
 
 //--------------------------------------------------------------------
-// Affichage des ï¿½lï¿½ments
+// Affichage des éléments
 //--------------------------------------------------------------------
 
 void ligne(float x1, float y1, float x2, float y2)
@@ -66,14 +66,14 @@ void visu()
         setrgbpalette(pal.colors[0], 63, 63, 63);
         setrgbpalette(pal.colors[15], 0, 0, 0);
     }
-    else // palette ï¿½cran (fond = noir).
+    else // palette écran (fond = noir).
     {
         for (i = 0; i < 16; i++)
             setrgbpalette(pal.colors[i], i * 4, 0, 0);
         setrgbpalette(pal.colors[15], 63, 63, 63);
     }
     if (calcul == 1) // pas d'affichage des T si
-    {                // pas de calculs effectuï¿½s
+    {                // pas de calculs effectués
         find_minmax();
         dT = Tmax - Tmin;
         if (cartesien == 1)
@@ -151,7 +151,7 @@ void visu()
     // Trace la bordure:
     rectangle(0, 0, 639, 479);
 
-    // dessine les ï¿½lï¿½ments frontiï¿½res:
+    // dessine les éléments frontiéres:
     for (i = 0; i < N; i++)
     {
         ligne(xf[i], yf[i], xf[i + 1], yf[i + 1]);

@@ -1,21 +1,21 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
+ *	      Travail N.D.H. : Eléments aux frontiéres               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniï¿½re modif.: 30.11.96               *
+ *	      Version C++    derniére modif.: 30.11.96               *
  *                                                                   *
  *********************************************************************
  *  Programme : MATFUN.CPP  (routines de manipulation matricielles)  *
  *********************************************************************/
 
-#include "extern.h"
+#include "ndh.h"
 
 //--------------------------------------------------------------------
-// Crï¿½e un vecteur ï¿½ la MATLAB
-// ( x=a:b:c  -> vector(x,a,b,(c-a)/b+1); )
+// Crée un vecteur é la MATLAB
+// ( x=a:b:c  -> fillvector(x,a,b,(c-a)/b+1); )
 //--------------------------------------------------------------------
 
-void vector(float *vect, float v1, float step, int nel)
+void fillvector(float *vect, float v1, float step, int nel)
 {
       int i;
       vect[0] = v1;
@@ -24,7 +24,7 @@ void vector(float *vect, float v1, float step, int nel)
 }
 
 //--------------------------------------------------------------------
-// Routine de multiplication d'une matrice carrï¿½e par un vecteur
+// Routine de multiplication d'une matrice carrée par un vecteur
 // ( c=A*b avec A(dim,dim), b(dim), c(dim) )
 //--------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ void gauss(int dim, float **A, float *x, float *b)
 }
 
 //--------------------------------------------------------------------
-// Affichage d'un vecteur ï¿½ l'ï¿½cran.
+// Affichage d'un vecteur é l'écran.
 //--------------------------------------------------------------------
 
 void vectaff(int dim, float *v)
@@ -84,7 +84,7 @@ void vectaff(int dim, float *v)
 
 //--------------------------------------------------------------------
 // Copie un bloc dans la matrice A, de taille 'sizebloc'
-// de la position i1,j1 ï¿½ la position i2,j2.
+// de la position i1,j1 é la position i2,j2.
 //--------------------------------------------------------------------
 
 void copy_block(float **A, int i2, int j2, int i1, int j1, int sizebloc)

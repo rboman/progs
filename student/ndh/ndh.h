@@ -1,11 +1,11 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
+ *	      Travail N.D.H. : Eléments aux frontiéres               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniï¿½re modif.: 30.11.96               *
+ *	      Version C++    derniére modif.: 30.11.96               *
  *                                                                   *
  *********************************************************************
- *  Fichier d'en-tï¿½te : EXTERN.H  (dï¿½claration des var. globales)    *
+ *  Fichier d'en-téte : EXTERN.H  (déclaration des var. globales)    *
  *********************************************************************/
 
 #include <conio.h>

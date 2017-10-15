@@ -1,18 +1,18 @@
 /*********************************************************************
  *                                                                   *
- *	      Travail N.D.H. : Elï¿½ments aux frontiï¿½res               *
+ *	      Travail N.D.H. : Eléments aux frontiéres               *
  *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniï¿½re modif.: 10.12.96               *
+ *	      Version C++    derniére modif.: 10.12.96               *
  *                                                                   *
  *********************************************************************
  *  Programme : IOFUN.CPP  (routines de gestion des I/O)             *
  *********************************************************************/
 
-#include "extern.h"
+#include "ndh.h"
 
 //--------------------------------------------------------------------
-// Rï¿½cupï¿½ration d'un fichier de donnï¿½e (chargement)
-// (attention : pas de vï¿½rification de l'existence du fichier!)
+// Récupération d'un fichier de donnée (chargement)
+// (attention : pas de vérification de l'existence du fichier!)
 //--------------------------------------------------------------------
 
 void load_data()
@@ -28,10 +28,10 @@ void load_data()
       cout << "\nNom du fichier (.DAT) :";
       gets(nom_fich);
       ifstream fich(nom_fich, ios::in);
-      fich >> N; // Lecture du nombre d'ï¿½lï¿½ments.
+      fich >> N; // Lecture du nombre d'éléments.
       fich >> zoom;
       destroy_vectors(); // Dimensionnement des tableaux
-      create_vectors();  // en consï¿½quence.
+      create_vectors();  // en conséquence.
       for (i = 0; i <= N; i++)
       {
             fich >> xf[i];
@@ -47,7 +47,7 @@ void load_data()
 }
 
 //--------------------------------------------------------------------
-// Sauvegarde des rï¿½sultats dans un fichier MATLAB (*.M)
+// Sauvegarde des résultats dans un fichier MATLAB (*.M)
 //--------------------------------------------------------------------
 
 void save_Mfile()
