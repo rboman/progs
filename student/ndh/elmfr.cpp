@@ -69,7 +69,7 @@ double idiv[6] = {2, 6, 8, 90, 288, 840};
 void clrscr()
 {
 #ifdef WIN32
-    system("cls");
+    //system("cls");
 #endif
 }
 
@@ -123,9 +123,6 @@ void define_geometry()
 
 void eval_GH(double *g, double *h, int i, int j, double x, double y)
 {
-    //int t, tt;
-    //double dx, dy, dL, temp, r, nx, ny;
- 
     if (j == i)
     { 
         // terme diagonal -> on applique les formules spéciales.

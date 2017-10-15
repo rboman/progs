@@ -21,13 +21,18 @@
 
 void param(char *texte, double *par)
 {
-      char entree[20];
-      double prm = 0.0;
-      printf("  %s [%f] =", texte, *par);
-      //gets(entree);
-      sscanf(entree, "%f", &prm);
-      if (fabs(prm) > 1E-10)
-            *par = prm;
+    //char entree[20];
+    double prm = *par;
+    //printf("  %s [%f] =", texte, *par);
+    std::cout << std::string(texte) << " [" << *par << "] = ";
+
+    //gets(entree);
+    //sscanf(entree, "%f", &prm);
+
+    std::cin >> prm;
+
+    if (fabs(prm) > 1E-10)
+        *par = prm;
 }
 
 //--------------------------------------------------------------------
@@ -36,6 +41,7 @@ void param(char *texte, double *par)
 
 void param2(char *texte, int *par)
 {
+    /*
       char entree[20];
       int prm = 0.0;
       printf("  %s [%d] =", texte, *par);
@@ -43,6 +49,13 @@ void param2(char *texte, int *par)
       sscanf(entree, "%d", &prm);
       if (abs(prm) > 0)
             *par = prm;
+*/
+    int prm = *par;
+    std::cout << std::string(texte) << " [" << *par << "] = ";
+    std::cin >> prm;
+    if (fabs(prm) > 1E-10)
+        *par = prm;
+
 }
 
 //--------------------------------------------------------------------
@@ -51,25 +64,21 @@ void param2(char *texte, int *par)
 
 void input_data()
 {
-      void destroy_vectors(), create_vectors(), define_geometry();
-      void param(char *, double *), param2(char *, int *), titre();
-      char entree[20];
-      int j;
+      //char entree[20];
 
       clrscr();
       titre();
-      param2("Probléme (1=cercle,2=carré,3=autre)", &probleme);
+      param2("Problème (1=cercle,2=carré,3=autre)", &probleme);
       param("Beta", &beta);
       param("k", &k);
       if (probleme == 1)
             param("Rayon", &R);
       else
             param("Coté", &a);
-      param2("Nbre d'éléments aux frontiéres", &N);
+      param2("Nbre d'éléments aux frontières", &N);
       if (probleme == 2) // Le nbre d'élém. doit étre un multiple de 4.
       {
-            j = N / 4;
-            N = 4 * j;
+            N = 4 * (N / 4);
       } // si le probléme est le carré.
       if (N < 2)
             N = 20;
@@ -80,11 +89,10 @@ void input_data()
             zoom = 200.0 / R;
       else
             zoom = 200.0 / a;
-      param2("Type d'intégration (1=trapéze,2=Simpson,...,6=Weddle)", &ideg);
+      param2("Type d'intégration (1=trapèze,2=Simpson,...,6=Weddle)", &ideg);
       if ((ideg < 1) || (ideg > 6))
             ideg = 1;
-      j = istep / ideg;
-      istep = j * ideg; // le nbre d'intervalles d'intégr.
+      istep = (istep / ideg) * ideg; // le nbre d'intervalles d'intégr.
       if (istep == 0)
             istep = ideg; // doit étre un mult. de 'ideg'.
       param2("Densité de visualisation", &density);

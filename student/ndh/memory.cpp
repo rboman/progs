@@ -22,27 +22,23 @@
 
 void create_aux()
 {
-      int i;
       T = new double *[density];
-      for (i = 0; i < density; i++)
+      for (int i = 0; i < density; i++)
             T[i] = new double[range];
 }
 
 void create_GH()
 {
-      int i;
       H = new double *[N];
-      for (i = 0; i < N; i++)
+      for (int i = 0; i < N; i++)
             H[i] = new double[N];
       G = new double *[N];
-      for (i = 0; i < N; i++)
+      for (int i = 0; i < N; i++)
             G[i] = new double[N];
 }
 
 void create_vectors()
 {
-      int i;
-      //void create_aux();
       alpha = new double[N + 1];
       xf = new double[N + 1];
       yf = new double[N + 1];
@@ -61,8 +57,7 @@ void create_vectors()
 
 void destroy_aux()
 {
-      int i;
-      for (i = 0; i < d_old; i++)
+      for (int i = 0; i < d_old; i++)
             delete T[i];
       delete T;
       d_old = density;
@@ -70,19 +65,16 @@ void destroy_aux()
 
 void destroy_GH()
 {
-      int i;
-      for (i = 0; i < N; i++)
+      for (int i = 0; i < N; i++)
             delete H[i];
       delete H;
-      for (i = 0; i < N; i++)
+      for (int i = 0; i < N; i++)
             delete G[i];
       delete G;
 }
 
 void destroy_vectors()
 {
-      int i;
-      //void destroy_aux();
       delete alpha, xf, yf, xel, yel, xint, yint, u, q, fct, fct2;
       delete G1, H1;
       destroy_aux();
