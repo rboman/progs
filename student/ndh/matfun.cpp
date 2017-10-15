@@ -1,14 +1,19 @@
-/*********************************************************************
- *                                                                   *
- *	      Travail N.D.H. : Eléments aux frontiéres               *
- *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniére modif.: 30.11.96               *
- *                                                                   *
- *********************************************************************
- *  Programme : MATFUN.CPP  (routines de manipulation matricielles)  *
- *********************************************************************/
+//   Copyright 1996-2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 
-#include "ndh.h"
+#include "elmfr.h"
+#include "matfun.h"
 
 //--------------------------------------------------------------------
 // Crée un vecteur é la MATLAB
@@ -76,10 +81,10 @@ void vectaff(int dim, float *v)
 {
       int i;
       for (i = 0; i < dim; i++)
-            cout << "\n"
+            std::cout << "\n"
                  << v[i];
-      cout << "\n<Pause>\n";
-      getch();
+      std::cout << "\n<Pause>\n";
+      //getch();
 }
 
 //--------------------------------------------------------------------

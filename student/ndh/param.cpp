@@ -1,14 +1,19 @@
-/*********************************************************************
- *                                                                   *
- *	      Travail N.D.H. : Eléments aux frontiéres               *
- *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniére modif.: 10.12.96               *
- *                                                                   *
- *********************************************************************
- *  Programme : PARAM.CPP  (routines de modification de paramétres)  *
- *********************************************************************/
+//   Copyright 1996-2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 
-#include "ndh.h"
+#include "elmfr.h"
+#include "param.h"
 
 //--------------------------------------------------------------------
 // Routine d'introduction d'un float au clavier
@@ -19,7 +24,7 @@ void param(char *texte, float *par)
       char entree[20];
       float prm = 0.0;
       printf("  %s [%f] =", texte, *par);
-      gets(entree);
+      //gets(entree);
       sscanf(entree, "%f", &prm);
       if (fabs(prm) > 1E-10)
             *par = prm;
@@ -34,7 +39,7 @@ void param2(char *texte, int *par)
       char entree[20];
       int prm = 0.0;
       printf("  %s [%d] =", texte, *par);
-      gets(entree);
+      //gets(entree);
       sscanf(entree, "%d", &prm);
       if (abs(prm) > 0)
             *par = prm;
@@ -51,7 +56,7 @@ void input_data()
       char entree[20];
       int j;
 
-      clrscr();
+      //clrscr();
       titre();
       param2("Probléme (1=cercle,2=carré,3=autre)", &probleme);
       param("Beta", &beta);

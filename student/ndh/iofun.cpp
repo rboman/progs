@@ -1,14 +1,19 @@
-/*********************************************************************
- *                                                                   *
- *	      Travail N.D.H. : Eléments aux frontiéres               *
- *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniére modif.: 10.12.96               *
- *                                                                   *
- *********************************************************************
- *  Programme : IOFUN.CPP  (routines de gestion des I/O)             *
- *********************************************************************/
+//   Copyright 1996-2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 
-#include "ndh.h"
+#include "elmfr.h"
+#include "iofun.h"
 
 //--------------------------------------------------------------------
 // Récupération d'un fichier de donnée (chargement)
@@ -19,15 +24,15 @@ void load_data()
 {
       char nom_fich[50];
       int i;
-      void titre(), destroy_vectors(), create_vectors();
+      //void titre(), destroy_vectors(), create_vectors();
 
-      clrscr();
+      //clrscr();
       titre();
       range = N;
       probleme = 3;
-      cout << "\nNom du fichier (.DAT) :";
-      gets(nom_fich);
-      ifstream fich(nom_fich, ios::in);
+      std::cout << "\nNom du fichier (.DAT) :";
+      //gets(nom_fich);
+      std::ifstream fich(nom_fich, std::ios::in);
       fich >> N; // Lecture du nombre d'éléments.
       fich >> zoom;
       destroy_vectors(); // Dimensionnement des tableaux
@@ -57,11 +62,11 @@ void save_Mfile()
       int i1, j1;
       void titre();
 
-      clrscr();
+      //clrscr();
       titre();
-      cout << "\nNom du fichier (.M) :";
-      gets(nom_fich);
-      ofstream fich(nom_fich, ios::out);
+      std::cout << "\nNom du fichier (.M) :";
+      //gets(nom_fich);
+      std::ofstream fich(nom_fich, std::ios::out);
       fich << "probleme =" << probleme << ';';
       fich << "\ndensity =" << density << ';';
       fich << "\nrange =" << range << ';';

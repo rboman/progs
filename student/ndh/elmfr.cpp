@@ -1,15 +1,76 @@
-/*********************************************************************
- *                                                                   *
- *	      Travail N.D.H. : Eléments aux frontiéres               *
- *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniére modif.: 10.12.96               *
- *                                                                   *
- *********************************************************************
- *  Programme principal : ELMFR.CPP                                  *
- *  Compilation : utiliser le modéle 'large'.                        *
- *********************************************************************/
+//   Copyright 1996-2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 
 #include "elmfr.h"
+
+// VARIABLES GLOBALES! ------------------------
+
+int N = 40;        // Nombre d'éléments frontiéres sur le contour.
+int istep = 20;    // Nombre de pas d'intégration sur un élément.
+int density = 15;  // Densité de visualisation de la solution
+                   // (nombre de mailles sur un rayon).
+int d_old;         // Ancienne valeur de la densité (utile pour
+                   // détruire correctement le tableau des T).
+int range;         // Nbre de ray. sur lesquels la sol. est calculée.
+int ideg = 1;      // Type d'intégration de Newton-Cotes
+                   // (1=trapéze, 2=Simpson,...).
+int type = 1;      // Méthode de calcul (1=full, 2=symétrique).
+int maillag = 1;   // 1=Dessine le maillage.
+int probleme = 1;  // Type de probléme (1=cercle, 2=carré, 3=qcq.).
+int whitebg = 1;   // 1=Fond blanc pour l'impression.
+int cartesien = 0; // 1=maillage rectangulaire (density x density)
+                   // (uniquement pour le carré).
+int calcul = 0;    // 1=calculs effectués.
+
+clock_t time1 = 0, time2 = 0; // temps de début et de fin de calcul.
+
+float xo = 220, yo = 240; // (x,y) de l'origine des axes absolus.
+float zoom = 200.0 / 1.2; // Zoom de visualisation.
+float *alpha;             // Vecteur temporaire [N].
+float *xf, *yf;           // (x,y) des extrémités des éléments [N+1].
+float *xel, *yel;         // (x,y) des connecteurs [N].
+float *xint, *yint;       // (x,y) des points d'intégration [istep+1].
+float *fct, *fct2;        // Valeurs des fonctions é intégrer [istep+1].
+float *G1, *H1;           // Vect. auxilaires pour le calcul des T [N].
+float *u;                 // Tempétatures sur les éléments [N].
+float *q;                 // Flux de chaleur sur les éléments [N].
+float **G, **H;           // Matrices G et H [N,N].
+float **T;                // Tableau des T calculées [density,range].
+float beta = 80;          // Paramétre du probléme.
+float k = 400;            // Conductivité thermique.
+float R = 1.2;            // Rayon du cercle.
+float a = 1.2;            // Longueur du cété du carré.
+float pi;                 // 3.141592.
+float Tmin, Tmax;         // Valeurs min et max des T calculées.
+
+// Coefficients de l'intégration de Newton-Cotes:
+float icoeff[6][7] = {{1, 1, 0, 0, 0, 0, 0},
+                      {1, 4, 1, 0, 0, 0, 0},
+                      {1, 3, 3, 1, 0, 0, 0},
+                      {7, 32, 12, 32, 7, 0, 0},
+                      {19, 75, 50, 50, 75, 19},
+                      {41, 216, 27, 272, 27, 216, 41}};
+float idiv[6] = {2, 6, 8, 90, 288, 840};
+
+// ---------------------------------------------------
+
+
+
+
+
+
+
 
 //--------------------------------------------------------------------
 // Routine de définition de la géométrie :
@@ -21,7 +82,7 @@
 void define_geometry()
 {
     int i, j;
-    void fillvector(float *, float, float, int);
+    //void fillvector(float *, float, float, int);
 
     if (probleme == 1)
     {
@@ -66,7 +127,7 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
 {
     int t, tt;
     float dx, dy, dL, temp, r, nx, ny;
-    void fillvector(float *, float, float, int);
+    //void fillvector(float *, float, float, int);
 
     if (j == i)
     { // terme diagonal -> on applique les formules spéciales.
@@ -143,29 +204,31 @@ void full_calcul()
 {
     int i, j, i1, j1, t;
     float temp, r, xb, yb;
+    /*
     void titre(), destroy_aux(), create_aux(), create_GH(), eval_u();
     void destroy_GH(), visu(), fillvector(float *, float, float, int);
     void gauss(int, float **, float *, float *);
     void mmv(int, float **, float *, float *);
     void eval_GH(float *, float *, int, int, float, float);
     void copy_block(float **, int, int, int, int, int);
+*/
 
-    clrscr();
+    //clrscr();
     titre();
     if (((probleme < 1) || (probleme > 2)) && (type == 2))
     { // Cas du probléme qcq. avec calculs optimisés.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        cout << "\nPas de solution rapide pour un probléme QCQ !\n<ESPACE>";
-        getch();
+        std::cout << "\nPas de solution rapide pour un probléme QCQ !\n<ESPACE>";
+        //getch();
     }
     else
     {
         time1 = clock(); // on commence é compter le temps CPU.
         calcul = 1;      // le calcul va étre effectué.
         destroy_aux();   // libération de la mémoire.
-        cout << "\n\nCréation des matrices H et G...";
+        std::cout << "\n\nCréation des matrices H et G...";
         create_GH();
-        cout << "Ok\nCalcul des matrices H et G...";
+        std::cout << "Ok\nCalcul des matrices H et G...";
         if (type == 1)
             // Cas du probléme non optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -211,7 +274,7 @@ void full_calcul()
         }
         // Evaluation des T sur la frontiére et résolution du
         // systéme par Gauss:
-        cout << "Ok\nRésolution de G q = H u...";
+        std::cout << "Ok\nRésolution de G q = H u...";
         eval_u();
         if ((type == 2) && (probleme == 1)) // cas du cercle optimisé
         {
@@ -226,10 +289,10 @@ void full_calcul()
         gauss(N, G, q, alpha);
 
         // Libération de la mémoire occupée par les matrices G et H:
-        cout << "Ok\nDestruction des matrices H et G...";
+        std::cout << "Ok\nDestruction des matrices H et G...";
         destroy_GH();
 
-        cout << "Ok\nCalcul des T intérieures...";
+        std::cout << "Ok\nCalcul des T intérieures...";
         if ((probleme == 1) && (type == 2))
             range = 1;
         else if ((probleme == 2) && (type == 2))
@@ -275,14 +338,13 @@ void full_calcul()
         time2 = clock(); // les calculs sont terminés !
 
         // Affichage de la solution
-        cout << "Ok\nSolution :";
+        std::cout << "Ok\nSolution :";
         for (i = 0; i < density; i++)
-            cout << "\n"
-                 << T[i][0];
+            std::cout << "\n"  << T[i][0];
 
         // Visualisation graphique:
-        cout << "\n       <SPACE> pour solution graphique";
-        getch();
+        std::cout << "\n       <SPACE> pour solution graphique";
+        //getch();
         visu();
     }
 }
@@ -293,14 +355,14 @@ void full_calcul()
 
 void eval_Texact()
 {
-    void titre(), visu(), find_minmax();
+    //void titre(), visu(), find_minmax();
     int i1, j1, i;
     float temp, xb, yb, r;
 
-    clrscr();
+    //clrscr();
     titre();
     if ((probleme < 1) || (probleme > 2))
-        cout << "\n\nPas de solution exacte disponible !";
+        std::cout << "\n\nPas de solution exacte disponible !";
     else
     {
         time1 = clock(); // début des calculs.
@@ -336,8 +398,8 @@ void eval_Texact()
             }
         time2 = clock();
         find_minmax();
-        cout << "\nCalcul effectué\n<ESPACE> pour voir la solution...";
-        getch();
+        std::cout << "\nCalcul effectué\n<ESPACE> pour voir la solution...";
+        //getch();
         visu(); // Visualisation graphique des résultats.
     }
 }
@@ -354,9 +416,10 @@ void main()
     int i, j, t, i1, j1, prm, exit = 0, choix;
 
     float nx, ny, temp, dL, dx, dy, r;
+    /*
     void tester(), create_vectors(), define_geometry(), titre();
     void full_calcul(), input_data(), load_data(), visu();
-    void eval_Texact(), save_Mfile();
+    void eval_Texact(), save_Mfile();*/
 
     // Initialisation
     // --------------
@@ -372,27 +435,27 @@ void main()
 
     while (exit == 0)
     {
-        clrscr();
+        //clrscr();
         titre();
-        cout << "\n\nProbléme courant :";
+        std::cout << "\n\nProbléme courant :";
         if (probleme == 1)
-            cout << " CERCLE de rayon a";
+            std::cout << " CERCLE de rayon a";
         else if (probleme == 2)
-            cout << " CARRE de cété a";
+            std::cout << " CARRE de cété a";
         else
-            cout << "QUELCONQUE";
-        cout << "\n\n\t [1]  Lancer le calcul complet.";
-        cout << "\n\t [2]  Lancer le calcul rapide.";
-        cout << "\n\t [3]  Paramétres.";
-        cout << "\n\t [4]  Charger fichier données.";
-        cout << "\n\t [5]  Visualisation graphique.";
-        cout << "\n\t [6]  Evaluation de la solution analytique.";
-        cout << "\n\t [7]  Sauvegarde vers MATLAB";
-        cout << "\n\t [0]  Quitter.";
-        cout << "\n\nChoix \?";
-        cout << "\n\n\n\nFLOPS     : non disponible";
-        cout << "\nTemps CPU : " << (double)(time2 - time1) / CLK_TCK << " sec.";
-        choix = getch();
+            std::cout << "QUELCONQUE";
+        std::cout << "\n\n\t [1]  Lancer le calcul complet.";
+        std::cout << "\n\t [2]  Lancer le calcul rapide.";
+        std::cout << "\n\t [3]  Paramétres.";
+        std::cout << "\n\t [4]  Charger fichier données.";
+        std::cout << "\n\t [5]  Visualisation graphique.";
+        std::cout << "\n\t [6]  Evaluation de la solution analytique.";
+        std::cout << "\n\t [7]  Sauvegarde vers MATLAB";
+        std::cout << "\n\t [0]  Quitter.";
+        std::cout << "\n\nChoix \?";
+        std::cout << "\n\n\n\nFLOPS     : non disponible";
+        std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLK_TCK << " sec.";
+        choix = 1; //getch();
         switch (choix)
         {
         case '1':
@@ -427,7 +490,7 @@ void main()
             break;
         }
     }
-    clrscr();
+    //clrscr();
 }
 
 //--------------------------------------------------------------------
@@ -435,16 +498,15 @@ void main()
 // dans un fichier *.DAT
 //--------------------------------------------------------------------
 
-
-
 //void tester()
 void generate()
 {
     int i;
     char nom_fich[50];
+    /*
     void fillvector(float *, float, float, int);
     void create_vectors(), visu();
-
+    */
     R = 1;
     N = 50;
     zoom = 200.0 / R;
@@ -466,9 +528,9 @@ void generate()
         yel[i] = (yf[i] + yf[i + 1]) / 2;
     }
     // Sortie vers fichier.DAT
-    cout << "\nNom du fichier (.DAT) :";
-    gets(nom_fich);
-    ofstream fich(nom_fich, ios::out);
+    std::cout << "\nNom du fichier (.DAT) :";
+    //gets(nom_fich);
+    std::ofstream fich(nom_fich, std::ios::out);
     fich << N;
     fich << "\n"
          << zoom;

@@ -1,14 +1,19 @@
-/*********************************************************************
- *                                                                   *
- *	      Travail N.D.H. : Eléments aux frontiéres               *
- *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniére modif.: 30.11.96               *
- *                                                                   *
- *********************************************************************
- *  Programme : GRAPH.CPP  (routines graphiques)                     *
- *********************************************************************/
+//   Copyright 1996-2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 
-#include "ndh.h"
+#include "elmfr.h"
+#include "graph.h"
 
 //--------------------------------------------------------------------
 // Affichage du titre
@@ -16,9 +21,9 @@
 
 void titre()
 {
-    cout << "\n\t\t+++++++++++++++++++++++++++++++++++++++++++\n";
-    cout << "\t\t|  Travail N.D.H. (version C++) 24.11.96  |\n";
-    cout << "\t\t+++++++++++++++++++++++++++++++++++++++++++\n";
+    std::cout << "\n\t\t+++++++++++++++++++++++++++++++++++++++++++\n";
+    std::cout << "\t\t|  Travail N.D.H. (version C++) 24.11.96  |\n";
+    std::cout << "\t\t+++++++++++++++++++++++++++++++++++++++++++\n";
 }
 
 //--------------------------------------------------------------------
@@ -27,19 +32,19 @@ void titre()
 
 void ligne(float x1, float y1, float x2, float y2)
 {
-    line(x1 * zoom + xo, yo - y1 * zoom, x2 * zoom + xo, yo - y2 * zoom);
+    //line(x1 * zoom + xo, yo - y1 * zoom, x2 * zoom + xo, yo - y2 * zoom);
 }
 
 void dot(float x1, float y1)
 {
-    circle(x1 * zoom + xo, yo - y1 * zoom, 3);
+    //circle(x1 * zoom + xo, yo - y1 * zoom, 3);
 }
 
 void dot2(float x1, float y1)
 {
     float x = x1 * zoom + xo, y = yo - y1 * zoom;
-    line(x - 2, y - 2, x + 2, y + 2);
-    line(x + 2, y - 2, x - 2, y + 2);
+    //line(x - 2, y - 2, x + 2, y + 2);
+    //line(x + 2, y - 2, x - 2, y + 2);
 }
 
 //-------------------------------------------------------------
@@ -48,13 +53,13 @@ void dot2(float x1, float y1)
 
 void visu()
 {
-    palettetype pal;
+    //palettetype pal;
     int gdriver = 9, gmode = 2, i, j, ncol = 16, color;
     int poly[8];
     float temp, dT, jx = 500, jy = 20;
     char buffer[30];
-    void find_minmax();
-
+    //void find_minmax();
+/*
     // initialisation du driver graphique et de la palette:
     initgraph(&gdriver, &gmode, "c:\\borlandc\\bgi");
     getpalette(&pal);
@@ -170,8 +175,9 @@ void visu()
             sprintf(buffer, "%f", (dT * (ncol - i - 2.0) / (ncol - 3.0) + Tmin));
             outtextxy((jx + 35), (jy + (i - 1) * 30 + 10), buffer);
         }
-    getch();
+    //getch();
     closegraph();
+    */
 }
 
 //--------------------------------------------------------------------

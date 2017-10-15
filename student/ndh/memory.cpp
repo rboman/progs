@@ -1,14 +1,19 @@
-/*********************************************************************
- *                                                                   *
- *	      Travail N.D.H. : Eléments aux frontiéres               *
- *            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   	     *
- *	      Version C++    derniére modif.: 30.11.96               *
- *                                                                   *
- *********************************************************************
- *  Programme : MEMORY.CPP  (routines de gestion des tableaux dyn.)  *
- *********************************************************************/
+//   Copyright 1996-2017 Romain Boman
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
 
-#include "ndh.h"
+#include "elmfr.h"
+#include "memory.h"
 
 //--------------------------------------------------------------------
 // Routines de gestion des tableaux dynamiques.
@@ -37,7 +42,7 @@ void create_GH()
 void create_vectors()
 {
       int i;
-      void create_aux();
+      //void create_aux();
       alpha = new float[N + 1];
       xf = new float[N + 1];
       yf = new float[N + 1];
@@ -77,7 +82,7 @@ void destroy_GH()
 void destroy_vectors()
 {
       int i;
-      void destroy_aux();
+      //void destroy_aux();
       delete alpha, xf, yf, xel, yel, xint, yint, u, q, fct, fct2;
       delete G1, H1;
       destroy_aux();
