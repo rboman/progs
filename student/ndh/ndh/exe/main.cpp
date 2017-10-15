@@ -12,13 +12,13 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "elmfr.h"
+#include "BemSolver.h"
 
 void main()
 {
     // Initialisation des variables
 
-    Ndh ndh;
+    BemSolver ndh;
 
     ndh.create_vectors();
     ndh.define_geometry();

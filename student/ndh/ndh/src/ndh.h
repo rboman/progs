@@ -27,7 +27,7 @@
 
 //namespace ndh
 //{
-    class Ndh;
+    class BemSolver;
 //}
 
 #endif //NDH_H

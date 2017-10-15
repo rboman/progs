@@ -9,7 +9,7 @@
 %{
 
 #include "ndh.h"
-#include "elmfr.h"
+#include "BemSolver.h"
 #include <string>
 #include <sstream>
 
@@ -27,5 +27,5 @@ namespace std {
 // ----------- DCM CLASSES ---------------
 %include "ndh.h"
 
-%include "elmfr.h"
+%include "BemSolver.h"
 

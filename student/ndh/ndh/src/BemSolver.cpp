@@ -12,10 +12,10 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "elmfr.h"
+#include "BemSolver.h"
 
 // VARIABLES GLOBALES! ------------------------
-Ndh::Ndh()
+BemSolver::BemSolver()
 {
     N = 40;        // Nombre d'éléments frontiéres sur le contour.
     istep = 20;    // Nombre de pas d'intégration sur un élément.
@@ -94,7 +94,7 @@ NDH_API void clrscr()
 //  . si probleme=2 -> création d'un carré.
 //--------------------------------------------------------------------
 
-void Ndh::define_geometry()
+void BemSolver::define_geometry()
 {
     if (probleme == 1) // cercle
     {
@@ -135,7 +135,7 @@ void Ndh::define_geometry()
 //           -les coord. x,y de l'origine des axes.
 //--------------------------------------------------------------------
 
-void Ndh::eval_GH(double *g, double *h, int i, int j, double x, double y)
+void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
 {
     if (j == i)
     {
@@ -196,7 +196,7 @@ void Ndh::eval_GH(double *g, double *h, int i, int j, double x, double y)
 // Routine d'évaluation des températures sur chaque élément.
 //--------------------------------------------------------------------
 
-void Ndh::eval_u()
+void BemSolver::eval_u()
 {
     for (int i = 0; i < N; i++)
         u[i] = -beta / (2 * k) * (xel[i] * xel[i] + yel[i] * yel[i]);
@@ -210,7 +210,7 @@ void Ndh::eval_u()
 //         - type=2 : calculs optimisés compte tenu de la symétrie.
 //--------------------------------------------------------------------
 
-void Ndh::full_calcul()
+void BemSolver::full_calcul()
 {
     int i, j, i1, j1, t;
     double temp, r, xb, yb;
@@ -360,7 +360,7 @@ void Ndh::full_calcul()
 // Routine de calcul des tempétatures exactes (dans le tableau T).
 //--------------------------------------------------------------------
 
-void Ndh::eval_Texact()
+void BemSolver::eval_Texact()
 {
     int i1, j1, i;
     double temp, xb, yb, r;
@@ -415,7 +415,7 @@ void Ndh::eval_Texact()
 //--------------------------------------------------------------------
 
 //void tester()
-void Ndh::generate()
+void BemSolver::generate()
 {
     int i;
     char nom_fich[50];
@@ -467,14 +467,14 @@ void Ndh::generate()
 // (création, destruction,...)
 //--------------------------------------------------------------------
 
-void Ndh::create_aux()
+void BemSolver::create_aux()
 {
     T = new double *[density];
     for (int i = 0; i < density; i++)
         T[i] = new double[range];
 }
 
-void Ndh::create_GH()
+void BemSolver::create_GH()
 {
     H = new double *[N];
     for (int i = 0; i < N; i++)
@@ -484,7 +484,7 @@ void Ndh::create_GH()
         G[i] = new double[N];
 }
 
-void Ndh::create_vectors()
+void BemSolver::create_vectors()
 {
     alpha = new double[N + 1];
     xf = new double[N + 1];
@@ -502,7 +502,7 @@ void Ndh::create_vectors()
     create_aux();
 }
 
-void Ndh::destroy_aux()
+void BemSolver::destroy_aux()
 {
     for (int i = 0; i < d_old; i++)
         delete T[i];
@@ -510,7 +510,7 @@ void Ndh::destroy_aux()
     d_old = density;
 }
 
-void Ndh::destroy_GH()
+void BemSolver::destroy_GH()
 {
     for (int i = 0; i < N; i++)
         delete H[i];
@@ -520,7 +520,7 @@ void Ndh::destroy_GH()
     delete G;
 }
 
-void Ndh::destroy_vectors()
+void BemSolver::destroy_vectors()
 {
     delete alpha, xf, yf, xel, yel, xint, yint, u, q, fct, fct2;
     delete G1, H1;
@@ -533,7 +533,7 @@ void Ndh::destroy_vectors()
 // Routine de modification des paramétres
 //--------------------------------------------------------------------
 
-void Ndh::input_data()
+void BemSolver::input_data()
 {
     //char entree[20];
 
@@ -581,7 +581,7 @@ void Ndh::input_data()
 // (attention : pas de vérification de l'existence du fichier!)
 //--------------------------------------------------------------------
 
-void Ndh::load_data()
+void BemSolver::load_data()
 {
     char nom_fich[50];
     int i;
@@ -616,7 +616,7 @@ void Ndh::load_data()
 // Sauvegarde des résultats dans un fichier MATLAB (*.M)
 //--------------------------------------------------------------------
 
-void Ndh::save_Mfile()
+void BemSolver::save_Mfile()
 {
     char nom_fich[50];
     double xb, yb;
@@ -666,7 +666,7 @@ void Ndh::save_Mfile()
     fich.close();
 }
 
-void Ndh::find_minmax()
+void BemSolver::find_minmax()
 {
     int i, j;
     Tmin = 1e10;

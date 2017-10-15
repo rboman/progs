@@ -12,8 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef ELMFR_H
-#define ELMFR_H
+#ifndef BEMSOLVER_H
+#define BEMSOLVER_H
 
 #include "ndh.h"
 #include <cmath>
@@ -27,7 +27,7 @@
 #include "param.h"
 
 
-class NDH_API Ndh
+class NDH_API BemSolver
 {
     int N;                   // Nombre d'éléments frontières sur le contour.
     int istep;               // Nombre de pas d'intégration sur un élément.
@@ -80,7 +80,7 @@ private:
     double idiv[6] = {2, 6, 8, 90, 288, 840};
 
 public:
-    Ndh();
+    BemSolver();
 
     // protos 
 
@@ -114,5 +114,5 @@ public:
 NDH_API void clrscr();
 #endif
 
-#endif //ELMFR_H
+#endif //BEMSOLVER_H
 
