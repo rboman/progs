@@ -15,21 +15,24 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-import os
-
 def main():
     
     import numpy as np
     import matplotlib.pyplot as plt
     import ndh
+    bem = ndh.BemSolver()
+    bem.exec_full();
+    bem.save_Mfile("resfrompy.m")
 
-    for i in range(1,9): # run all custom geometries!
-        bem = ndh.BemSolver()
-        f = os.path.join(os.path.dirname(__file__),'test%d.dat'%i)
-        bem.load_data(f)
-        bem.exec_full();
-        bem.save_Mfile("resfrompy%d.m" % i)
 
+    sol = bem.getSolution()
+    plt.plot(sol, label='solution')
+    plt.xlabel('to be fixed')
+    plt.ylabel('Temperature')
+    plt.title('Solution')
+    plt.grid(True)
+    plt.legend()
+    plt.show() 
 
 
 if __name__ == "__main__":

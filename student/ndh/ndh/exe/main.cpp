@@ -61,7 +61,7 @@ void main()
             bem.input_data();
             break;
         case 4:
-            bem.load_data();
+            //bem.load_data();
             break;
         case 5:
             visu();
@@ -70,7 +70,7 @@ void main()
             bem.eval_Texact();
             break;
         case 7:
-            bem.save_Mfile();
+            bem.save_Mfile("resultats.m");
             break;
         case 0:
         default:

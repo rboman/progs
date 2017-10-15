@@ -57,7 +57,7 @@ public:
 private:
     int maillag;             // 1=Dessine le maillage.
     int whitebg;             // 1=Fond blanc pour l'impression.
-    int cartesien;           // 1=maillage rectangulaire (density x density)
+    bool cartesien;           // 1=maillage rectangulaire (density x density)
                              // (uniquement pour le carré).
     int calcul;              // 1=calculs effectués.
 
@@ -103,8 +103,8 @@ public:
     void eval_Texact();
     void input_data();
     
-    void load_data();
-    void save_Mfile();
+    void load_data(std::string const &filename);
+    void save_Mfile(std::string const &filename);
 
     void find_minmax();
 

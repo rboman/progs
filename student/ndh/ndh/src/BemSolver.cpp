@@ -28,7 +28,7 @@ BemSolver::BemSolver()
     maillag = 1;   // 1=Dessine le maillage.
     probleme = CIRCLE;  // Type de probléme (1=cercle, 2=carré, 3=qcq.).
     whitebg = 1;   // 1=Fond blanc pour l'impression.
-    cartesien = 0; // 1=maillage rectangulaire (density x density)
+    cartesien = false; // 1=maillage rectangulaire (density x density)
                    // (uniquement pour le carré).
     calcul = 0;    // 1=calculs effectués.
 
@@ -248,8 +248,10 @@ void BemSolver::full_calcul()
         time1 = clock(); // on commence é compter le temps CPU.
         calcul = 1;      // le calcul va étre effectué.
         destroy_aux();   // libération de la mémoire.
+
         std::cout << "\n\nCréation des matrices H et G...";
         create_GH();
+
         std::cout << "Ok\nCalcul des matrices H et G...";
         if (type == FULL)
         {
@@ -324,10 +326,11 @@ void BemSolver::full_calcul()
             range = density;
         else
             range = N;
+
         if ((probleme == SQUARE) && (type == SYMMETRIC))
-            cartesien = 1;
+            cartesien = true;
         else
-            cartesien = 0;
+            cartesien = false;
         create_aux();
 
         // Calcul des points xb,yb où va étre évaluée la T.
@@ -409,7 +412,7 @@ void BemSolver::eval_Texact()
                     xb = R / (density)*i1;
                     yb = 0.0;
                 }
-                else if ((probleme == SQUARE) && (cartesien == 1))
+                else if ((probleme == SQUARE) && (cartesien == true))
                 {
                     xb = a / density * i1;
                     yb = a / range * j1;
@@ -611,28 +614,23 @@ void BemSolver::input_data()
 // (attention : pas de vérification de l'existence du fichier!)
 //--------------------------------------------------------------------
 
-void BemSolver::load_data()
+void BemSolver::load_data(std::string const &filename)
 {
-    char nom_fich[50];
-    int i;
-
-    clrscr();
-    titre();
     range = N;
     probleme = OTHER;
-    std::cout << "\nNom du fichier (.DAT) :";
-    //gets(nom_fich);
-    std::ifstream fich(nom_fich, std::ios::in);
+
+    std::ifstream fich(filename.c_str(), std::ios::in);
+
     fich >> N; // Lecture du nombre d'éléments.
     fich >> zoom;
     destroy_vectors(); // Dimensionnement des tableaux
     create_vectors();  // en conséquence.
-    for (i = 0; i <= N; i++)
+    for (int i = 0; i <= N; i++)
     {
         fich >> xf[i];
         fich >> yf[i];
     }
-    for (i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
     {
         xel[i] = (xf[i] + xf[i + 1]) / 2;
         yel[i] = (yf[i] + yf[i + 1]) / 2;
@@ -645,18 +643,19 @@ void BemSolver::load_data()
 // Sauvegarde des résultats dans un fichier MATLAB (*.M)
 //--------------------------------------------------------------------
 
-void BemSolver::save_Mfile()
+void BemSolver::save_Mfile(std::string const &filename)
 {
-    char nom_fich[50];
+    //char nom_fich[50];
     double xb, yb;
     int i1, j1;
-    void titre();
 
-    clrscr();
-    titre();
-    std::cout << "\nNom du fichier (.M) :";
+    //clrscr();
+    //titre();
+    //std::cout << "\nNom du fichier (.M) :";
     //gets(nom_fich);
-    std::ofstream fich(nom_fich, std::ios::out);
+
+    std::ofstream fich(filename.c_str(), std::ios::out);
+
     fich << "probleme =" << probleme << ';';
     fich << "\ndensity =" << density << ';';
     fich << "\nrange =" << range << ';';
@@ -674,7 +673,7 @@ void BemSolver::save_Mfile()
                 xb = R / (density)*i1;
                 yb = 0.0;
             }
-            else if (cartesien == 1)
+            else if (cartesien == true)
             {
                 xb = a / density * i1;
                 yb = a / range * j1;

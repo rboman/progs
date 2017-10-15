@@ -86,7 +86,7 @@ void ndh::visu()
     {                // pas de calculs effectués
         find_minmax();
         dT = Tmax - Tmin;
-        if (cartesien == 1)
+        if (cartesien == true)
         {
             for (i = 0; i < density; i++)
                 for (j = 0; j < density; j++)
