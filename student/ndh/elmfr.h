@@ -22,16 +22,12 @@
 #include <time.h>
 
 #include "graph.h"
-#include "iofun.h"
 #include "matfun.h"
-#include "memory.h"
 #include "param.h"
 
 
 class Ndh
 {
-
-
     int N;                   // Nombre d'éléments frontières sur le contour.
     int istep;               // Nombre de pas d'intégration sur un élément.
     int density;             // Densité de visualisation de la solution
@@ -44,6 +40,7 @@ class Ndh
 public:
     int type;                // Méthode de calcul (1=full, 2=symétrique).
     int probleme;            // Type de probléme (1=cercle, 2=carré, 3=qcq.).
+    
 private:
     int maillag;             // 1=Dessine le maillage.
     int whitebg;             // 1=Fond blanc pour l'impression.

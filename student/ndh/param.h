@@ -15,10 +15,9 @@
 #ifndef PARAM_H
 #define PARAM_H
 
-// routines de modification de paramétres
+// routines de modification de paramètres
 
 void param(char *texte, double *par);
 void param2(char *texte, int *par);
-void input_data();
 
 #endif //PARAM_H

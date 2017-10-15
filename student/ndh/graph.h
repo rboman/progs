@@ -20,6 +20,5 @@ void ligne(double x1, double y1, double x2, double y2);
 void dot(double x1, double y1);
 void dot2(double x1, double y1);
 void visu();
-//void find_minmax();
 
-#endif GRAPH_H
+#endif //GRAPH_H

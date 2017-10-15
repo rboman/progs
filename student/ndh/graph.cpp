@@ -183,24 +183,3 @@ void visu()
     closegraph();
     */
 }
-
-//--------------------------------------------------------------------
-// Routine de recherche des valeurs max. et min. de T
-// (pour la jauge et les couleurs)
-//--------------------------------------------------------------------
-/*
-void find_minmax()
-{
-    int i, j;
-    Tmin = 1e10;
-    Tmax = 1e-10;
-    for (i = 0; i < density; i++)
-        for (j = 0; j < range; j++)
-        {
-            if (T[i][j] > Tmax)
-                Tmax = T[i][j];
-            if (T[i][j] < Tmin)
-                Tmin = T[i][j];
-        }
-}
-*/

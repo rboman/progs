@@ -22,10 +22,9 @@
 
 void fillvector(double *vect, double v1, double step, int nel)
 {
-      int i;
-      vect[0] = v1;
-      for (i = 1; i < nel; i++)
-            vect[i] = vect[i - 1] + step;
+    vect[0] = v1;
+    for (int i = 1; i < nel; i++)
+        vect[i] = vect[i - 1] + step;
 }
 
 //--------------------------------------------------------------------
@@ -35,15 +34,13 @@ void fillvector(double *vect, double v1, double step, int nel)
 
 void mmv(int dim, double **A, double *b, double *c)
 {
-      int i, j;
-      double temp;
-      for (i = 0; i < dim; i++)
-      {
-            temp = 0.0;
-            for (j = 0; j < dim; j++)
-                  temp = temp + A[i][j] * b[j];
-            c[i] = temp;
-      }
+    for (int i = 0; i < dim; i++)
+    {
+        double temp = 0.0;
+        for (int j = 0; j < dim; j++)
+            temp = temp + A[i][j] * b[j];
+        c[i] = temp;
+    }
 }
 
 //--------------------------------------------------------------------
@@ -52,50 +49,42 @@ void mmv(int dim, double **A, double *b, double *c)
 
 void gauss(int dim, double **A, double *x, double *b)
 {
-      int i, j, t;
-      double m;
+    for (int t = 0; t < dim - 1; t++)
+        for (int i = t + 1; i < dim; i++)
+        {
+            double m = A[i][t] / A[t][t];
+            for (int j = t + 1; j < dim; j++)
+                A[i][j] = A[i][j] - m * A[t][j];
+            b[i] = b[i] - m * b[t];
+        }
 
-      for (t = 0; t < dim - 1; t++)
-            for (i = t + 1; i < dim; i++)
-            {
-                  m = A[i][t] / A[t][t];
-                  for (j = t + 1; j < dim; j++)
-                        A[i][j] = A[i][j] - m * A[t][j];
-                  b[i] = b[i] - m * b[t];
-            }
-
-      for (i = dim - 1; (i + 1) > 0; i--)
-      {
-            m = 0.0;
-            for (t = i + 1; t < dim; t++)
-                  m = m + A[i][t] * x[t];
-            x[i] = (b[i] - m) / A[i][i];
-      }
+    for (int i = dim - 1; (i + 1) > 0; i--)
+    {
+        double m = 0.0;
+        for (int t = i + 1; t < dim; t++)
+            m = m + A[i][t] * x[t];
+        x[i] = (b[i] - m) / A[i][i];
+    }
 }
 
 //--------------------------------------------------------------------
-// Affichage d'un vecteur é l'écran.
+// Affichage d'un vecteur à l'écran.
 //--------------------------------------------------------------------
 
 void vectaff(int dim, double *v)
 {
-      int i;
-      for (i = 0; i < dim; i++)
-            std::cout << "\n"
-                 << v[i];
-      std::cout << "\n<Pause>\n";
-      //getch();
+    for (int i = 0; i < dim; i++)
+        std::cout << "\n" << v[i];
 }
 
 //--------------------------------------------------------------------
 // Copie un bloc dans la matrice A, de taille 'sizebloc'
-// de la position i1,j1 é la position i2,j2.
+// de la position i1,j1 à la position i2,j2.
 //--------------------------------------------------------------------
 
 void copy_block(double **A, int i2, int j2, int i1, int j1, int sizebloc)
 {
-      int i, j;
-      for (i = 0; i < sizebloc; i++)
-            for (j = 0; j < sizebloc; j++)
-                  A[i2 + i][j2 + j] = A[i1 + i][j1 + j];
+    for (int i = 0; i < sizebloc; i++)
+        for (int j = 0; j < sizebloc; j++)
+            A[i2 + i][j2 + j] = A[i1 + i][j1 + j];
 }
