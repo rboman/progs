@@ -15,6 +15,8 @@
 #ifndef PARAM_H
 #define PARAM_H
 
+#include "ndh.h"
+
 // routines de modification de paramètres
 
 void param(char *texte, double *par);

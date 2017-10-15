@@ -1,12 +1,8 @@
-# CMake input file of dcm.so
+# CMake input file of ndh.so
 
 FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
 
-ADD_LIBRARY(dcm SHARED ${SRCS})
-MACRO_DebugPostfix(dcm)
-
-# ---
-#INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/... )
-#TARGET_LINK_LIBRARIES(dcm ...)
+ADD_LIBRARY(ndh SHARED ${SRCS})
+MACRO_DebugPostfix(ndh)
 
 SOURCE_GROUP(base       REGULAR_EXPRESSION ".*\\.(cpp|inl|hpp|h)")

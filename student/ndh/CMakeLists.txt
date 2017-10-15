@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-PROJECT(Dcm)
+PROJECT(NDH)
 # ----------------------------------------------------------------------------
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
@@ -65,4 +65,4 @@ ENDIF()
 
 # -- Sub directories
 
-ADD_SUBDIRECTORY( dcm )
+ADD_SUBDIRECTORY( ndh )

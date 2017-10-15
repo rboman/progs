@@ -80,7 +80,7 @@ Ndh::Ndh()
 // ---------------------------------------------------
 
 #include <stdlib.h>
-void clrscr()
+NDH_API void clrscr()
 {
 #ifdef WIN32
     //system("cls");

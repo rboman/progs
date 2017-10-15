@@ -1,4 +1,4 @@
-//   Copyright 1996-2017 Romain Boman
+//   Copyright 1995-2017 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,15 +12,22 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef NDH_H
+#define NDH_H
 
-#include "ndh.h"
+#if defined(WIN32)
+#ifdef ndh_EXPORTS
+#define NDH_API __declspec(dllexport)
+#else
+#define NDH_API __declspec(dllimport)
+#endif
+#else
+#define NDH_API
+#endif
 
-NDH_API void titre();
-NDH_API void ligne(double x1, double y1, double x2, double y2);
-NDH_API void dot(double x1, double y1);
-NDH_API void dot2(double x1, double y1);
-NDH_API void visu();
+//namespace ndh
+//{
+    class Ndh;
+//}
 
-#endif //GRAPH_H
+#endif //NDH_H

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: latin-1 -*-
 
-progname='dcm2'
+progname='ndh_app'
 
 import os, sys, subprocess, platform
 

@@ -1,4 +1,4 @@
-# CMake input file of the SWIG wrapper around "dcm.so"
+# CMake input file of the SWIG wrapper around "ndh.so"
 
 INCLUDE(${SWIG_USE_FILE})
 
@@ -11,21 +11,21 @@ SET(CMAKE_SWIG_FLAGS "")
 SET_SOURCE_FILES_PROPERTIES(${ISRCS} PROPERTIES CPLUSPLUS ON)
 
 SET(SWINCFLAGS 
--I${PROJECT_SOURCE_DIR}/dcm/src
+-I${PROJECT_SOURCE_DIR}/ndh/src
 )
 SET_SOURCE_FILES_PROPERTIES(${ISRCS} PROPERTIES SWIG_FLAGS "${SWINCFLAGS}")
 
 
 
-SWIG_ADD_MODULE(dcmi python ${ISRCS} ${SRCS})
-MACRO_DebugPostfix(_dcmi)
+SWIG_ADD_MODULE(ndhi python ${ISRCS} ${SRCS})
+MACRO_DebugPostfix(_ndhi)
 
 # ---
 
-INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/dcm/src
+INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/ndh/src
 )
 
-SWIG_LINK_LIBRARIES(dcmi 
-                    dcm ${PYTHON_LIBRARIES}
+SWIG_LINK_LIBRARIES(ndhi 
+                    ndh ${PYTHON_LIBRARIES}
 )
 

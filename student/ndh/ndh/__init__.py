@@ -1,4 +1,4 @@
 # -*- coding: latin-1 -*-
-# dcm MODULE initialization file
+# ndh MODULE initialization file
 
-from dcmi import *
+from ndhi import *

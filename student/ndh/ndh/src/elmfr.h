@@ -15,6 +15,7 @@
 #ifndef ELMFR_H
 #define ELMFR_H
 
+#include "ndh.h"
 #include <cmath>
 #include <iostream>
 #include <fstream>
@@ -26,7 +27,7 @@
 #include "param.h"
 
 
-class Ndh
+class NDH_API Ndh
 {
     int N;                   // Nombre d'éléments frontières sur le contour.
     int istep;               // Nombre de pas d'intégration sur un élément.
@@ -109,9 +110,9 @@ public:
 
 };
 
-
-void clrscr();
-
+#ifndef SWIG
+NDH_API void clrscr();
+#endif
 
 #endif //ELMFR_H
 

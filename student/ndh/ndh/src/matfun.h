@@ -15,6 +15,8 @@
 #ifndef MATFUN_H
 #define MATFUN_H
 
+#include "ndh.h"
+
 // routines de manipulation matricielles
 
 void fillvector(double *vect, double v1, double step, int nel);
