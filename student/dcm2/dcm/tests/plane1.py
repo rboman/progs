@@ -30,22 +30,22 @@ def main():
     print plane.getNoPoly()
 
     import numpy as np
+    import matplotlib.pyplot as plt
+
+
+
     xx = np.array(plane.getXX())
-    mode1 = np.array(plane.getMODES(3))
-
-    #print "xx=",xx
-    #print "mode1=", mode1
-
-    if 1:
-        import matplotlib.pyplot as plt
-        plt.plot(xx, mode1)   
-        plt.xlabel('x')
-        #plt.ylim(0,150)
-        plt.title('modes')
-        plt.grid(True)
-        plt.show()    
-    #raw_input()
-
+    nopoly = plane.getNoPoly()
+    for i in range(5):
+        mode = np.array(plane.getMODES(i))
+        plt.plot(xx, mode, label='mode %d' %(i+1))
+   
+    plt.xlabel('x')
+    #plt.ylim(0,150)
+    plt.title('modes')
+    plt.grid(True)
+    plt.legend()
+    plt.show()    
 
 if __name__ == "__main__":
     main()
