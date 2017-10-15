@@ -19,13 +19,13 @@
 // Routines de gestion des tableaux dynamiques.
 // (création, destruction,...)
 //--------------------------------------------------------------------
-
+/*
 void create_aux();
 void create_GH();
 void create_vectors();
 void destroy_aux();
 void destroy_GH();
 void destroy_vectors();
-
+*/
 #endif
 

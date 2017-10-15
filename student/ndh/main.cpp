@@ -17,10 +17,11 @@
 void main()
 {
     // Initialisation des variables
-    d_old = density;
-    range = N;
-    create_vectors();
-    define_geometry();
+
+    Ndh ndh;
+
+    ndh.create_vectors();
+    ndh.define_geometry();
 
     // Menu
     int exit = 0;
@@ -29,9 +30,9 @@ void main()
         clrscr();
         titre();
         std::cout << "\n\nProblème courant :";
-        if (probleme == 1)
+        if (ndh.probleme == 1)
             std::cout << " CERCLE de rayon a";
-        else if (probleme == 2)
+        else if (ndh.probleme == 2)
             std::cout << " CARRE de côté a";
         else
             std::cout << "QUELCONQUE";
@@ -44,7 +45,7 @@ void main()
         std::cout << "\n\t [7]  Sauvegarde vers MATLAB";
         std::cout << "\n\t [0]  Quitter.";
         std::cout << "\n\n\n\nFLOPS     : non disponible";
-        std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLK_TCK << " sec.";
+        //std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLK_TCK << " sec.";
         std::cout << "\n\nChoix\?+<ENTER>: ";
         
         int choix;
@@ -54,30 +55,30 @@ void main()
         {
         case 1:
         {
-            type = 1;
-            full_calcul();
+            ndh.type = 1;
+            ndh.full_calcul();
         }
         break;
         case 2:
         {
-            type = 2;
-            full_calcul();
+            ndh.type = 2;
+            ndh.full_calcul();
         }
         break;
         case 3:
-            input_data();
+            ndh.input_data();
             break;
         case 4:
-            load_data();
+            ndh.load_data();
             break;
         case 5:
             visu();
             break;
         case 6:
-            eval_Texact();
+            ndh.eval_Texact();
             break;
         case 7:
-            save_Mfile();
+            ndh.save_Mfile();
             break;
         case 0:
         default:

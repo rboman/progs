@@ -61,7 +61,7 @@ void param2(char *texte, int *par)
 //--------------------------------------------------------------------
 // Routine de modification des paramétres
 //--------------------------------------------------------------------
-
+/*
 void input_data()
 {
       //char entree[20];
@@ -104,3 +104,4 @@ void input_data()
       create_vectors();
       define_geometry();
 }
+*/

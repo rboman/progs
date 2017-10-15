@@ -21,9 +21,11 @@
 
 void titre()
 {
+    /*
     std::cout << "\n\t\t+++++++++++++++++++++++++++++++++++++++++++\n";
     std::cout << "\t\t|  Travail N.D.H. (version C++) 24.11.96  |\n";
     std::cout << "\t\t+++++++++++++++++++++++++++++++++++++++++++\n";
+    */
 }
 
 //--------------------------------------------------------------------
@@ -42,7 +44,7 @@ void dot(double x1, double y1)
 
 void dot2(double x1, double y1)
 {
-    double x = x1 * zoom + xo, y = yo - y1 * zoom;
+    //double x = x1 * zoom + xo, y = yo - y1 * zoom;
     //line(x - 2, y - 2, x + 2, y + 2);
     //line(x + 2, y - 2, x - 2, y + 2);
 }
@@ -186,7 +188,7 @@ void visu()
 // Routine de recherche des valeurs max. et min. de T
 // (pour la jauge et les couleurs)
 //--------------------------------------------------------------------
-
+/*
 void find_minmax()
 {
     int i, j;
@@ -201,3 +203,4 @@ void find_minmax()
                 Tmin = T[i][j];
         }
 }
+*/

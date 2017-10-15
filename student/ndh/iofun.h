@@ -14,8 +14,8 @@
 
 #ifndef IOFUN_H
 #define IOFUN_H
-
+/*
 void load_data();
 void save_Mfile();
-
+*/
 #endif //IOFUN_H

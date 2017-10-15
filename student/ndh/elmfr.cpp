@@ -15,53 +15,72 @@
 #include "elmfr.h"
 
 // VARIABLES GLOBALES! ------------------------
+Ndh::Ndh()
+{
+    N = 40;        // Nombre d'éléments frontiéres sur le contour.
+    istep = 20;    // Nombre de pas d'intégration sur un élément.
+    density = 15;  // Densité de visualisation de la solution
+                    // (nombre de mailles sur un rayon).
+    ideg = 1;      // Type d'intégration de Newton-Cotes
+                    // (1=trapéze, 2=Simpson,...).
+    type = 1;      // Méthode de calcul (1=full, 2=symétrique).
+    maillag = 1;   // 1=Dessine le maillage.
+    probleme = 1;  // Type de probléme (1=cercle, 2=carré, 3=qcq.).
+    whitebg = 1;   // 1=Fond blanc pour l'impression.
+    cartesien = 0; // 1=maillage rectangulaire (density x density)
+                    // (uniquement pour le carré).
+    calcul = 0;    // 1=calculs effectués.
 
-int N = 40;        // Nombre d'éléments frontiéres sur le contour.
-int istep = 20;    // Nombre de pas d'intégration sur un élément.
-int density = 15;  // Densité de visualisation de la solution
-                   // (nombre de mailles sur un rayon).
-int d_old;         // Ancienne valeur de la densité (utile pour
-                   // détruire correctement le tableau des T).
-int range;         // Nbre de ray. sur lesquels la sol. est calculée.
-int ideg = 1;      // Type d'intégration de Newton-Cotes
-                   // (1=trapéze, 2=Simpson,...).
-int type = 1;      // Méthode de calcul (1=full, 2=symétrique).
-int maillag = 1;   // 1=Dessine le maillage.
-int probleme = 1;  // Type de probléme (1=cercle, 2=carré, 3=qcq.).
-int whitebg = 1;   // 1=Fond blanc pour l'impression.
-int cartesien = 0; // 1=maillage rectangulaire (density x density)
-                   // (uniquement pour le carré).
-int calcul = 0;    // 1=calculs effectués.
+    // int précédemment pas init...
+    d_old=0;         // Ancienne valeur de la densité (utile pour
+                    // détruire correctement le tableau des T).
+    range=0;         // Nbre de ray. sur lesquels la sol. est calculée.
+    d_old = density;
+    range = N;
 
-clock_t time1 = 0, time2 = 0; // temps de début et de fin de calcul.
+    // clock_t
+    time1 = 0;
+    time2 = 0; // temps de début et de fin de calcul.
 
-double xo = 220, yo = 240; // (x,y) de l'origine des axes absolus.
-double zoom = 200.0 / 1.2; // Zoom de visualisation.
-double *alpha;             // Vecteur temporaire [N].
-double *xf, *yf;           // (x,y) des extrémités des éléments [N+1].
-double *xel, *yel;         // (x,y) des connecteurs [N].
-double *xint, *yint;       // (x,y) des points d'intégration [istep+1].
-double *fct, *fct2;        // Valeurs des fonctions é intégrer [istep+1].
-double *G1, *H1;           // Vect. auxilaires pour le calcul des T [N].
-double *u;                 // Tempétatures sur les éléments [N].
-double *q;                 // Flux de chaleur sur les éléments [N].
-double **G, **H;           // Matrices G et H [N,N].
-double **T;                // Tableau des T calculées [density,range].
-double beta = 80;          // Paramétre du probléme.
-double k = 400;            // Conductivité thermique.
-double R = 1.2;            // Rayon du cercle.
-double a = 1.2;            // Longueur du cété du carré.
-double pi = 4 * atan(1.0);                 // 3.141592.
-double Tmin, Tmax;         // Valeurs min et max des T calculées.
+    // doubles
+    xo = 220;
+    yo = 240; // (x,y) de l'origine des axes absolus.
+    zoom = 200.0 / 1.2; // Zoom de visualisation.
 
-// Coefficients de l'intégration de Newton-Cotes:
-double icoeff[6][7] = {{1, 1, 0, 0, 0, 0, 0},
-                      {1, 4, 1, 0, 0, 0, 0},
-                      {1, 3, 3, 1, 0, 0, 0},
-                      {7, 32, 12, 32, 7, 0, 0},
-                      {19, 75, 50, 50, 75, 19},
-                      {41, 216, 27, 272, 27, 216, 41}};
-double idiv[6] = {2, 6, 8, 90, 288, 840};
+    alpha=nullptr;             // Vecteur temporaire [N].
+    xf=nullptr;
+    yf=nullptr;           // (x,y) des extrémités des éléments [N+1].
+    xel=nullptr;
+    yel=nullptr;         // (x,y) des connecteurs [N].
+    xint=nullptr;
+    yint=nullptr;       // (x,y) des points d'intégration [istep+1].
+    fct=nullptr;
+    fct2=nullptr;        // Valeurs des fonctions é intégrer [istep+1].
+    G1=nullptr;
+    H1=nullptr;           // Vect. auxilaires pour le calcul des T [N].
+    u=nullptr;                 // Tempétatures sur les éléments [N].
+    q=nullptr;                 // Flux de chaleur sur les éléments [N].
+    G=nullptr;
+    H=nullptr;          // Matrices G et H [N,N].
+    T=nullptr;                // Tableau des T calculées [density,range].
+
+    beta = 80;          // Paramétre du probléme.
+    k = 400;            // Conductivité thermique.
+    R = 1.2;            // Rayon du cercle.
+    a = 1.2;            // Longueur du cété du carré.
+    pi = 4 * atan(1.0);                 // 3.141592.
+
+
+    // doubles precedemment pas init...
+    Tmin=0.0;
+    Tmax=0.0;         // Valeurs min et max des T calculées.
+
+    // Coefficients de l'intégration de Newton-Cotes:
+
+}
+
+
+
 
 // ---------------------------------------------------
 
@@ -80,7 +99,7 @@ void clrscr()
 //  . si probleme=2 -> création d'un carré.
 //--------------------------------------------------------------------
 
-void define_geometry()
+void Ndh::define_geometry()
 {
     if (probleme == 1) // cercle
     {
@@ -121,7 +140,7 @@ void define_geometry()
 //           -les coord. x,y de l'origine des axes.
 //--------------------------------------------------------------------
 
-void eval_GH(double *g, double *h, int i, int j, double x, double y)
+void Ndh::eval_GH(double *g, double *h, int i, int j, double x, double y)
 {
     if (j == i)
     { 
@@ -182,7 +201,7 @@ void eval_GH(double *g, double *h, int i, int j, double x, double y)
 // Routine d'évaluation des températures sur chaque élément.
 //--------------------------------------------------------------------
 
-void eval_u()
+void Ndh::eval_u()
 {
     for (int i = 0; i < N; i++)
         u[i] = -beta / (2 * k) * (xel[i] * xel[i] + yel[i] * yel[i]);
@@ -196,7 +215,7 @@ void eval_u()
 //         - type=2 : calculs optimisés compte tenu de la symétrie.
 //--------------------------------------------------------------------
 
-void full_calcul()
+void Ndh::full_calcul()
 {
     int i, j, i1, j1, t;
     double temp, r, xb, yb;
@@ -345,7 +364,7 @@ void full_calcul()
 // Routine de calcul des tempétatures exactes (dans le tableau T).
 //--------------------------------------------------------------------
 
-void eval_Texact()
+void Ndh::eval_Texact()
 {
     //void titre(), visu(), find_minmax();
     int i1, j1, i;
@@ -406,7 +425,7 @@ void eval_Texact()
 //--------------------------------------------------------------------
 
 //void tester()
-void generate()
+void Ndh::generate()
 {
     int i;
     char nom_fich[50];
@@ -452,6 +471,237 @@ void generate()
     calcul = 0;
     visu();
 }
+
+
+
+
+
+
+
+//--------------------------------------------------------------------
+// Routines de gestion des tableaux dynamiques.
+// (création, destruction,...)
+//--------------------------------------------------------------------
+
+void Ndh::create_aux()
+{
+      T = new double *[density];
+      for (int i = 0; i < density; i++)
+            T[i] = new double[range];
+}
+
+void Ndh::create_GH()
+{
+      H = new double *[N];
+      for (int i = 0; i < N; i++)
+            H[i] = new double[N];
+      G = new double *[N];
+      for (int i = 0; i < N; i++)
+            G[i] = new double[N];
+}
+
+void Ndh::create_vectors()
+{
+      alpha = new double[N + 1];
+      xf = new double[N + 1];
+      yf = new double[N + 1];
+      xel = new double[N];
+      yel = new double[N];
+      xint = new double[istep + 1];
+      yint = new double[istep + 1];
+      u = new double[N];
+      q = new double[N];
+      fct = new double[istep + 1];
+      fct2 = new double[istep + 1];
+      G1 = new double[N];
+      H1 = new double[N];
+      create_aux();
+}
+
+void Ndh::destroy_aux()
+{
+      for (int i = 0; i < d_old; i++)
+            delete T[i];
+      delete T;
+      d_old = density;
+}
+
+void Ndh::destroy_GH()
+{
+      for (int i = 0; i < N; i++)
+            delete H[i];
+      delete H;
+      for (int i = 0; i < N; i++)
+            delete G[i];
+      delete G;
+}
+
+void Ndh::destroy_vectors()
+{
+      delete alpha, xf, yf, xel, yel, xint, yint, u, q, fct, fct2;
+      delete G1, H1;
+      destroy_aux();
+}
+
+
+// ------------
+
+
+//--------------------------------------------------------------------
+// Routine de modification des paramétres
+//--------------------------------------------------------------------
+
+void Ndh::input_data()
+{
+      //char entree[20];
+
+      clrscr();
+      titre();
+      param2("Problème (1=cercle,2=carré,3=autre)", &probleme);
+      param("Beta", &beta);
+      param("k", &k);
+      if (probleme == 1)
+            param("Rayon", &R);
+      else
+            param("Coté", &a);
+      param2("Nbre d'éléments aux frontières", &N);
+      if (probleme == 2) // Le nbre d'élém. doit étre un multiple de 4.
+      {
+            N = 4 * (N / 4);
+      } // si le probléme est le carré.
+      if (N < 2)
+            N = 20;
+      param2("Nbre de pas d'intégration par élément", &istep);
+      if (istep < 2)
+            istep = 5;
+      if (probleme == 1)
+            zoom = 200.0 / R;
+      else
+            zoom = 200.0 / a;
+      param2("Type d'intégration (1=trapèze,2=Simpson,...,6=Weddle)", &ideg);
+      if ((ideg < 1) || (ideg > 6))
+            ideg = 1;
+      istep = (istep / ideg) * ideg; // le nbre d'intervalles d'intégr.
+      if (istep == 0)
+            istep = ideg; // doit étre un mult. de 'ideg'.
+      param2("Densité de visualisation", &density);
+      param2("Maillage (1=on 2=off)", &maillag);
+      param2("White Bg (1=on 2=off)", &whitebg);
+
+      // Re-dimensionement des tableaux:
+      destroy_vectors();
+      create_vectors();
+      define_geometry();
+}
+
+
+
+//--------------------------------------------------------------------
+// Récupération d'un fichier de donnée (chargement)
+// (attention : pas de vérification de l'existence du fichier!)
+//--------------------------------------------------------------------
+
+void Ndh::load_data()
+{
+      char nom_fich[50];
+      int i;
+      //void titre(), destroy_vectors(), create_vectors();
+
+      clrscr();
+      titre();
+      range = N;
+      probleme = 3;
+      std::cout << "\nNom du fichier (.DAT) :";
+      //gets(nom_fich);
+      std::ifstream fich(nom_fich, std::ios::in);
+      fich >> N; // Lecture du nombre d'éléments.
+      fich >> zoom;
+      destroy_vectors(); // Dimensionnement des tableaux
+      create_vectors();  // en conséquence.
+      for (i = 0; i <= N; i++)
+      {
+            fich >> xf[i];
+            fich >> yf[i];
+      }
+      for (i = 0; i < N; i++)
+      {
+            xel[i] = (xf[i] + xf[i + 1]) / 2;
+            yel[i] = (yf[i] + yf[i + 1]) / 2;
+      }
+      fich.close();
+      calcul = 0;
+}
+
+//--------------------------------------------------------------------
+// Sauvegarde des résultats dans un fichier MATLAB (*.M)
+//--------------------------------------------------------------------
+
+void Ndh::save_Mfile()
+{
+      char nom_fich[50];
+      double xb, yb;
+      int i1, j1;
+      void titre();
+
+      clrscr();
+      titre();
+      std::cout << "\nNom du fichier (.M) :";
+      //gets(nom_fich);
+      std::ofstream fich(nom_fich, std::ios::out);
+      fich << "probleme =" << probleme << ';';
+      fich << "\ndensity =" << density << ';';
+      fich << "\nrange =" << range << ';';
+      fich << "\nistep =" << istep << ';';
+      fich << "\nN =" << N << ';';
+      fich << "\nideg =" << ideg << ';';
+      fich << "\ncpu =" << (double)(time2 - time1) / CLK_TCK << ';';
+      fich << "\nTmin =" << Tmin << ';';
+      fich << "\nTmax =" << Tmax << ';';
+      for (i1 = 0; i1 < density; i1++)
+            for (j1 = 0; j1 < range; j1++)
+            {
+                  if ((probleme == 1) && (range == 1))
+                  {
+                        xb = R / (density)*i1;
+                        yb = 0.0;
+                  }
+                  else if (cartesien == 1)
+                  {
+                        xb = a / density * i1;
+                        yb = a / range * j1;
+                  }
+                  else
+                  {
+                        xb = xel[j1] / density * i1 + (xel[j1] / density) / 2.0;
+                        yb = yel[j1] / density * i1 + (yel[j1] / density) / 2.0;
+                  }
+                  fich << "\nxb(" << i1 + 1 << "," << j1 + 1 << ")=" << xb << ";";
+                  fich << "\nyb(" << i1 + 1 << "," << j1 + 1 << ")=" << yb << ";";
+                  fich << "\nT(" << i1 + 1 << "," << j1 + 1 << ")=" << T[i1][j1] << ";";
+            }
+      if ((probleme == 1) && (range == 1)) // Commandes de visualisation
+            fich << "\nplot(xb,T); grid;";
+      else
+            fich << "\nmesh(xb,yb,T); grid;";
+      fich.close();
+}
+
+
+void Ndh::find_minmax()
+{
+    int i, j;
+    Tmin = 1e10;
+    Tmax = 1e-10;
+    for (i = 0; i < density; i++)
+        for (j = 0; j < range; j++)
+        {
+            if (T[i][j] > Tmax)
+                Tmax = T[i][j];
+            if (T[i][j] < Tmin)
+                Tmin = T[i][j];
+        }
+}
+
 
 
 

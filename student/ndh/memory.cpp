@@ -14,7 +14,7 @@
 
 #include "elmfr.h"
 #include "memory.h"
-
+/*
 //--------------------------------------------------------------------
 // Routines de gestion des tableaux dynamiques.
 // (création, destruction,...)
@@ -79,3 +79,4 @@ void destroy_vectors()
       delete G1, H1;
       destroy_aux();
 }
+*/
