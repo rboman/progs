@@ -23,6 +23,15 @@ def main():
     bem = ndh.BemSolver()
     bem.exec_full();
 
+    sol = bem.getSolution()
+    plt.plot(sol, label='solution')
+    plt.xlabel('to be fixed')
+    plt.ylabel('Temperature')
+    plt.title('Solution')
+    plt.grid(True)
+    plt.legend()
+    plt.show() 
+
 
 if __name__ == "__main__":
     main()

@@ -234,8 +234,8 @@ void BemSolver::full_calcul()
     int i, j, i1, j1, t;
     double temp, r, xb, yb;
 
-    clrscr();
-    titre();
+    //clrscr();
+    //titre();
     if (((probleme < 1) || (probleme > 2)) && (type == 2))
     {
         // Cas du probléme qcq. avec calculs optimisés.
@@ -330,7 +330,7 @@ void BemSolver::full_calcul()
             cartesien = 0;
         create_aux();
 
-        // Calcul des points xb,yb oé va étre évaluée la T.
+        // Calcul des points xb,yb où va étre évaluée la T.
         for (i1 = 0; i1 < density; i1++)
             for (j1 = 0; j1 < range; j1++)
             {
@@ -369,11 +369,20 @@ void BemSolver::full_calcul()
                       << T[i][0];
 
         // Visualisation graphique:
-        std::cout << "\n       <SPACE> pour solution graphique";
+        //std::cout << "\n       <SPACE> pour solution graphique";
         //getch();
-        visu();
+        //visu();
     }
 }
+
+std::vector<double> BemSolver::getSolution()
+{
+    std::vector<double> vec(density);
+    for (int i = 0; i < density; i++)
+        vec[i] = T[i][0];    
+    return vec;
+}
+
 
 //--------------------------------------------------------------------
 // Routine de calcul des tempétatures exactes (dans le tableau T).
@@ -423,9 +432,9 @@ void BemSolver::eval_Texact()
             }
         time2 = clock();
         find_minmax();
-        std::cout << "\nCalcul effectué\n<ESPACE> pour voir la solution...";
+        //std::cout << "\nCalcul effectué\n<ESPACE> pour voir la solution...";
         //getch();
-        visu(); // Visualisation graphique des résultats.
+        //visu(); // Visualisation graphique des résultats.
     }
 }
 //--------------------------------------------------------------------
@@ -687,11 +696,10 @@ void BemSolver::save_Mfile()
 
 void BemSolver::find_minmax()
 {
-    int i, j;
     Tmin = 1e10;
     Tmax = 1e-10;
-    for (i = 0; i < density; i++)
-        for (j = 0; j < range; j++)
+    for (int i = 0; i < density; i++)
+        for (int j = 0; j < range; j++)
         {
             if (T[i][j] > Tmax)
                 Tmax = T[i][j];

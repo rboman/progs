@@ -21,6 +21,7 @@
 #include <fstream>
 #include <string>
 #include <time.h>
+#include <vector>
 
 namespace ndh {
 
@@ -81,7 +82,8 @@ public:
 
     void exec_full();
     void exec_sym();
-    
+
+    std::vector<double> getSolution();
 
     // protos 
     void eval_Texact();
