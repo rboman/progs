@@ -58,7 +58,7 @@ void load_data()
 void save_Mfile()
 {
       char nom_fich[50];
-      float xb, yb;
+      double xb, yb;
       int i1, j1;
       void titre();
 

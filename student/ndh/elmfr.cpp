@@ -35,33 +35,33 @@ int calcul = 0;    // 1=calculs effectués.
 
 clock_t time1 = 0, time2 = 0; // temps de début et de fin de calcul.
 
-float xo = 220, yo = 240; // (x,y) de l'origine des axes absolus.
-float zoom = 200.0 / 1.2; // Zoom de visualisation.
-float *alpha;             // Vecteur temporaire [N].
-float *xf, *yf;           // (x,y) des extrémités des éléments [N+1].
-float *xel, *yel;         // (x,y) des connecteurs [N].
-float *xint, *yint;       // (x,y) des points d'intégration [istep+1].
-float *fct, *fct2;        // Valeurs des fonctions é intégrer [istep+1].
-float *G1, *H1;           // Vect. auxilaires pour le calcul des T [N].
-float *u;                 // Tempétatures sur les éléments [N].
-float *q;                 // Flux de chaleur sur les éléments [N].
-float **G, **H;           // Matrices G et H [N,N].
-float **T;                // Tableau des T calculées [density,range].
-float beta = 80;          // Paramétre du probléme.
-float k = 400;            // Conductivité thermique.
-float R = 1.2;            // Rayon du cercle.
-float a = 1.2;            // Longueur du cété du carré.
-float pi = 4 * atan(1.0);                 // 3.141592.
-float Tmin, Tmax;         // Valeurs min et max des T calculées.
+double xo = 220, yo = 240; // (x,y) de l'origine des axes absolus.
+double zoom = 200.0 / 1.2; // Zoom de visualisation.
+double *alpha;             // Vecteur temporaire [N].
+double *xf, *yf;           // (x,y) des extrémités des éléments [N+1].
+double *xel, *yel;         // (x,y) des connecteurs [N].
+double *xint, *yint;       // (x,y) des points d'intégration [istep+1].
+double *fct, *fct2;        // Valeurs des fonctions é intégrer [istep+1].
+double *G1, *H1;           // Vect. auxilaires pour le calcul des T [N].
+double *u;                 // Tempétatures sur les éléments [N].
+double *q;                 // Flux de chaleur sur les éléments [N].
+double **G, **H;           // Matrices G et H [N,N].
+double **T;                // Tableau des T calculées [density,range].
+double beta = 80;          // Paramétre du probléme.
+double k = 400;            // Conductivité thermique.
+double R = 1.2;            // Rayon du cercle.
+double a = 1.2;            // Longueur du cété du carré.
+double pi = 4 * atan(1.0);                 // 3.141592.
+double Tmin, Tmax;         // Valeurs min et max des T calculées.
 
 // Coefficients de l'intégration de Newton-Cotes:
-float icoeff[6][7] = {{1, 1, 0, 0, 0, 0, 0},
+double icoeff[6][7] = {{1, 1, 0, 0, 0, 0, 0},
                       {1, 4, 1, 0, 0, 0, 0},
                       {1, 3, 3, 1, 0, 0, 0},
                       {7, 32, 12, 32, 7, 0, 0},
                       {19, 75, 50, 50, 75, 19},
                       {41, 216, 27, 272, 27, 216, 41}};
-float idiv[6] = {2, 6, 8, 90, 288, 840};
+double idiv[6] = {2, 6, 8, 90, 288, 840};
 
 // ---------------------------------------------------
 
@@ -121,18 +121,18 @@ void define_geometry()
 //           -les coord. x,y de l'origine des axes.
 //--------------------------------------------------------------------
 
-void eval_GH(float *g, float *h, int i, int j, float x, float y)
+void eval_GH(double *g, double *h, int i, int j, double x, double y)
 {
     //int t, tt;
-    //float dx, dy, dL, temp, r, nx, ny;
+    //double dx, dy, dL, temp, r, nx, ny;
  
     if (j == i)
     { 
         // terme diagonal -> on applique les formules spéciales.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        float dx = xf[i + 1] - xf[i];
-        float dy = yf[i + 1] - yf[i];
-        float dL = sqrt(dx * dx + dy * dy);
+        double dx = xf[i + 1] - xf[i];
+        double dy = yf[i + 1] - yf[i];
+        double dL = sqrt(dx * dx + dy * dy);
         *g = dL / (2 * pi) * (log(2 / dL) + 1);
         *h = 0.5;
     }
@@ -141,9 +141,9 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
         // cas général d'un terme non diagonal.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // calcul de la normale (normée) à l'élément:
-        float nx = yf[j + 1] - yf[j];
-        float ny = xf[j] - xf[j + 1];
-        float temp = sqrt(nx * nx + ny * ny);
+        double nx = yf[j + 1] - yf[j];
+        double ny = xf[j] - xf[j + 1];
+        double temp = sqrt(nx * nx + ny * ny);
         nx = nx / temp;
         ny = ny / temp;
 
@@ -155,7 +155,7 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
         // et stockage des valeurs dans fct et fct2:
         for (int t = 0; t < istep + 1; t++)
         {
-            float temp = sqrt((xint[t] - x) * (xint[t] - x) + (yint[t] - y) * (yint[t] - y));
+            double temp = sqrt((xint[t] - x) * (xint[t] - x) + (yint[t] - y) * (yint[t] - y));
             fct[t] = (log(1.0 / temp) / (2 * pi));
             fct2[t] = (-nx * (xint[t] - x) - ny * (yint[t] - y)) / (2 * pi * temp * temp);
         }
@@ -165,9 +165,9 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
         *h = 0.0;
 
         // calcul de la longueur d'un pas d'intégration:
-        float dx = xint[1] - xint[0];
-        float dy = yint[1] - yint[0];
-        float dL = sqrt(dx * dx + dy * dy);
+        double dx = xint[1] - xint[0];
+        double dy = yint[1] - yint[0];
+        double dL = sqrt(dx * dx + dy * dy);
 
         // intégration de Newton-Cotes:
         for (int t = 0; t < istep - ideg + 1; t += ideg)
@@ -202,7 +202,7 @@ void eval_u()
 void full_calcul()
 {
     int i, j, i1, j1, t;
-    float temp, r, xb, yb;
+    double temp, r, xb, yb;
 
     clrscr();
     titre();
@@ -352,7 +352,7 @@ void eval_Texact()
 {
     //void titre(), visu(), find_minmax();
     int i1, j1, i;
-    float temp, xb, yb, r;
+    double temp, xb, yb, r;
 
     clrscr();
     titre();
@@ -414,7 +414,7 @@ void generate()
     int i;
     char nom_fich[50];
     /*
-    void fillvector(float *, float, float, int);
+    void fillvector(double *, double, double, int);
     void create_vectors(), visu();
     */
     R = 1;

@@ -45,34 +45,34 @@ extern int calcul;    // 1=calculs effectués.
 
 extern clock_t time1, time2; // temps de début et de fin de calcul.
 
-extern float xo, yo; // (x,y) de l'origine des axes absolus.
-extern float zoom; // Zoom de visualisation.
-extern float *alpha;             // Vecteur temporaire [N].
-extern float *xf, *yf;           // (x,y) des extrémités des éléments [N+1].
-extern float *xel, *yel;         // (x,y) des connecteurs [N].
-extern float *xint, *yint;       // (x,y) des points d'intégration [istep+1].
-extern float *fct, *fct2;        // Valeurs des fonctions é intégrer [istep+1].
-extern float *G1, *H1;           // Vect. auxilaires pour le calcul des T [N].
-extern float *u;                 // Tempétatures sur les éléments [N].
-extern float *q;                 // Flux de chaleur sur les éléments [N].
-extern float **G, **H;           // Matrices G et H [N,N].
-extern float **T;                // Tableau des T calculées [density,range].
-extern float beta;          // Paramétre du probléme.
-extern float k;            // Conductivité thermique.
-extern float R;            // Rayon du cercle.
-extern float a;            // Longueur du cété du carré.
-extern float pi;                 // 3.141592.
-extern float Tmin, Tmax;         // Valeurs min et max des T calculées.
+extern double xo, yo; // (x,y) de l'origine des axes absolus.
+extern double zoom; // Zoom de visualisation.
+extern double *alpha;             // Vecteur temporaire [N].
+extern double *xf, *yf;           // (x,y) des extrémités des éléments [N+1].
+extern double *xel, *yel;         // (x,y) des connecteurs [N].
+extern double *xint, *yint;       // (x,y) des points d'intégration [istep+1].
+extern double *fct, *fct2;        // Valeurs des fonctions é intégrer [istep+1].
+extern double *G1, *H1;           // Vect. auxilaires pour le calcul des T [N].
+extern double *u;                 // Tempétatures sur les éléments [N].
+extern double *q;                 // Flux de chaleur sur les éléments [N].
+extern double **G, **H;           // Matrices G et H [N,N].
+extern double **T;                // Tableau des T calculées [density,range].
+extern double beta;          // Paramétre du probléme.
+extern double k;            // Conductivité thermique.
+extern double R;            // Rayon du cercle.
+extern double a;            // Longueur du cété du carré.
+extern double pi;                 // 3.141592.
+extern double Tmin, Tmax;         // Valeurs min et max des T calculées.
 
 // Coefficients de l'intégration de Newton-Cotes:
-extern float icoeff[6][7];
-extern float idiv[6];
+extern double icoeff[6][7];
+extern double idiv[6];
 
 
 // protos 
 
 void define_geometry();
-void eval_GH(float *g, float *h, int i, int j, float x, float y);
+void eval_GH(double *g, double *h, int i, int j, double x, double y);
 void eval_u();
 void full_calcul();
 void eval_Texact();

@@ -16,9 +16,9 @@
 #define GRAPH_H
 
 void titre();
-void ligne(float x1, float y1, float x2, float y2);
-void dot(float x1, float y1);
-void dot2(float x1, float y1);
+void ligne(double x1, double y1, double x2, double y2);
+void dot(double x1, double y1);
+void dot2(double x1, double y1);
 void visu();
 void find_minmax();
 

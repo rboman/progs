@@ -17,7 +17,7 @@
 
 // routines de modification de paramétres
 
-void param(char *texte, float *par);
+void param(char *texte, double *par);
 void param2(char *texte, int *par);
 void input_data();
 

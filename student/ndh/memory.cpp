@@ -23,39 +23,39 @@
 void create_aux()
 {
       int i;
-      T = new float *[density];
+      T = new double *[density];
       for (i = 0; i < density; i++)
-            T[i] = new float[range];
+            T[i] = new double[range];
 }
 
 void create_GH()
 {
       int i;
-      H = new float *[N];
+      H = new double *[N];
       for (i = 0; i < N; i++)
-            H[i] = new float[N];
-      G = new float *[N];
+            H[i] = new double[N];
+      G = new double *[N];
       for (i = 0; i < N; i++)
-            G[i] = new float[N];
+            G[i] = new double[N];
 }
 
 void create_vectors()
 {
       int i;
       //void create_aux();
-      alpha = new float[N + 1];
-      xf = new float[N + 1];
-      yf = new float[N + 1];
-      xel = new float[N];
-      yel = new float[N];
-      xint = new float[istep + 1];
-      yint = new float[istep + 1];
-      u = new float[N];
-      q = new float[N];
-      fct = new float[istep + 1];
-      fct2 = new float[istep + 1];
-      G1 = new float[N];
-      H1 = new float[N];
+      alpha = new double[N + 1];
+      xf = new double[N + 1];
+      yf = new double[N + 1];
+      xel = new double[N];
+      yel = new double[N];
+      xint = new double[istep + 1];
+      yint = new double[istep + 1];
+      u = new double[N];
+      q = new double[N];
+      fct = new double[istep + 1];
+      fct2 = new double[istep + 1];
+      G1 = new double[N];
+      H1 = new double[N];
       create_aux();
 }
 

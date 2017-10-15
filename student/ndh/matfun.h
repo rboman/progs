@@ -17,10 +17,10 @@
 
 // routines de manipulation matricielles
 
-void fillvector(float *vect, float v1, float step, int nel);
-void mmv(int dim, float **A, float *b, float *c);
-void gauss(int dim, float **A, float *x, float *b);
-void vectaff(int dim, float *v);
-void copy_block(float **A, int i2, int j2, int i1, int j1, int sizebloc);
+void fillvector(double *vect, double v1, double step, int nel);
+void mmv(int dim, double **A, double *b, double *c);
+void gauss(int dim, double **A, double *x, double *b);
+void vectaff(int dim, double *v);
+void copy_block(double **A, int i2, int j2, int i1, int j1, int sizebloc);
 
 #endif // MATFUN_H

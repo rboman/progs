@@ -30,19 +30,19 @@ void titre()
 // Affichage des éléments
 //--------------------------------------------------------------------
 
-void ligne(float x1, float y1, float x2, float y2)
+void ligne(double x1, double y1, double x2, double y2)
 {
     //line(x1 * zoom + xo, yo - y1 * zoom, x2 * zoom + xo, yo - y2 * zoom);
 }
 
-void dot(float x1, float y1)
+void dot(double x1, double y1)
 {
     //circle(x1 * zoom + xo, yo - y1 * zoom, 3);
 }
 
-void dot2(float x1, float y1)
+void dot2(double x1, double y1)
 {
-    float x = x1 * zoom + xo, y = yo - y1 * zoom;
+    double x = x1 * zoom + xo, y = yo - y1 * zoom;
     //line(x - 2, y - 2, x + 2, y + 2);
     //line(x + 2, y - 2, x - 2, y + 2);
 }
@@ -57,7 +57,7 @@ void visu()
     /*
     int gdriver = 9, gmode = 2, i, j, ncol = 16, color;
     int poly[8];
-    float temp, dT, jx = 500, jy = 20;
+    double temp, dT, jx = 500, jy = 20;
     char buffer[30];
     */
     //void find_minmax();

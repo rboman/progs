@@ -20,7 +20,7 @@
 // ( x=a:b:c  -> fillvector(x,a,b,(c-a)/b+1); )
 //--------------------------------------------------------------------
 
-void fillvector(float *vect, float v1, float step, int nel)
+void fillvector(double *vect, double v1, double step, int nel)
 {
       int i;
       vect[0] = v1;
@@ -33,10 +33,10 @@ void fillvector(float *vect, float v1, float step, int nel)
 // ( c=A*b avec A(dim,dim), b(dim), c(dim) )
 //--------------------------------------------------------------------
 
-void mmv(int dim, float **A, float *b, float *c)
+void mmv(int dim, double **A, double *b, double *c)
 {
       int i, j;
-      float temp;
+      double temp;
       for (i = 0; i < dim; i++)
       {
             temp = 0.0;
@@ -50,10 +50,10 @@ void mmv(int dim, float **A, float *b, float *c)
 //  Solveur de A*x=b : Gauss sans pivotage
 //--------------------------------------------------------------------
 
-void gauss(int dim, float **A, float *x, float *b)
+void gauss(int dim, double **A, double *x, double *b)
 {
       int i, j, t;
-      float m;
+      double m;
 
       for (t = 0; t < dim - 1; t++)
             for (i = t + 1; i < dim; i++)
@@ -77,7 +77,7 @@ void gauss(int dim, float **A, float *x, float *b)
 // Affichage d'un vecteur é l'écran.
 //--------------------------------------------------------------------
 
-void vectaff(int dim, float *v)
+void vectaff(int dim, double *v)
 {
       int i;
       for (i = 0; i < dim; i++)
@@ -92,7 +92,7 @@ void vectaff(int dim, float *v)
 // de la position i1,j1 é la position i2,j2.
 //--------------------------------------------------------------------
 
-void copy_block(float **A, int i2, int j2, int i1, int j1, int sizebloc)
+void copy_block(double **A, int i2, int j2, int i1, int j1, int sizebloc)
 {
       int i, j;
       for (i = 0; i < sizebloc; i++)

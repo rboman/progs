@@ -16,13 +16,13 @@
 #include "param.h"
 
 //--------------------------------------------------------------------
-// Routine d'introduction d'un float au clavier
+// Routine d'introduction d'un double au clavier
 //--------------------------------------------------------------------
 
-void param(char *texte, float *par)
+void param(char *texte, double *par)
 {
       char entree[20];
-      float prm = 0.0;
+      double prm = 0.0;
       printf("  %s [%f] =", texte, *par);
       //gets(entree);
       sscanf(entree, "%f", &prm);
@@ -52,7 +52,7 @@ void param2(char *texte, int *par)
 void input_data()
 {
       void destroy_vectors(), create_vectors(), define_geometry();
-      void param(char *, float *), param2(char *, int *), titre();
+      void param(char *, double *), param2(char *, int *), titre();
       char entree[20];
       int j;
 
