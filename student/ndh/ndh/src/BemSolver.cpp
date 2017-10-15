@@ -76,6 +76,10 @@ BemSolver::BemSolver()
     Tmax = 0.0; // Valeurs min et max des T calculées.
 
     // Coefficients de l'intégration de Newton-Cotes:
+
+
+    create_vectors();
+    define_geometry();    
 }
 
 // ---------------------------------------------------
@@ -202,6 +206,20 @@ void BemSolver::eval_u()
     for (int i = 0; i < N; i++)
         u[i] = -beta / (2 * k) * (xel[i] * xel[i] + yel[i] * yel[i]);
 }
+
+
+void BemSolver::exec_full()
+{
+    type = 1;
+    full_calcul();
+}
+
+void BemSolver::exec_sym()
+{
+    type = 2;
+    full_calcul();
+}
+
 
 //--------------------------------------------------------------------
 // Routine de calcul des tempétatures (remplissage du tableau T).

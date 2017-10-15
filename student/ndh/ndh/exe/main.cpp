@@ -19,10 +19,7 @@ void main()
 {
     // Initialisation des variables
 
-    BemSolver ndh;
-
-    ndh.create_vectors();
-    ndh.define_geometry();
+    BemSolver bem;
 
     // Menu
     int exit = 0;
@@ -31,9 +28,9 @@ void main()
         clrscr();
         titre();
         std::cout << "\n\nProblème courant :";
-        if (ndh.probleme == 1)
+        if (bem.probleme == 1)
             std::cout << " CERCLE de rayon a";
-        else if (ndh.probleme == 2)
+        else if (bem.probleme == 2)
             std::cout << " CARRE de côté a";
         else
             std::cout << "QUELCONQUE";
@@ -48,43 +45,36 @@ void main()
         std::cout << "\n\n\n\nFLOPS     : non disponible";
         //std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLK_TCK << " sec.";
         std::cout << "\n\nChoix\?+<ENTER>: ";
-        
+
         int choix;
         std::cin >> choix;
 
         switch (choix)
         {
         case 1:
-        {
-            ndh.type = 1;
-            ndh.full_calcul();
-        }
-        break;
+            bem.exec_full();
+            break;
         case 2:
-        {
-            ndh.type = 2;
-            ndh.full_calcul();
-        }
-        break;
+            bem.exec_sym();
+            break;
         case 3:
-            ndh.input_data();
+            bem.input_data();
             break;
         case 4:
-            ndh.load_data();
+            bem.load_data();
             break;
         case 5:
             visu();
             break;
         case 6:
-            ndh.eval_Texact();
+            bem.eval_Texact();
             break;
         case 7:
-            ndh.save_Mfile();
+            bem.save_Mfile();
             break;
         case 0:
         default:
             exit = 1;
         }
     }
-    //clrscr();
 }

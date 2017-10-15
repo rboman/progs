@@ -79,32 +79,38 @@ private:
 public:
     BemSolver();
 
-    // protos 
+    void exec_full();
+    void exec_sym();
+    
 
-    void define_geometry();
-    void eval_GH(double *g, double *h, int i, int j, double x, double y);
-    void eval_u();
-    void full_calcul();
+    // protos 
     void eval_Texact();
+    void input_data();
+    
+    void load_data();
+    void save_Mfile();
+
+    void find_minmax();
+
+    // pas appelé
     void generate();   //void tester()
 
-    void create_vectors();
 private:
+    void full_calcul();
+
+
+    void eval_GH(double *g, double *h, int i, int j, double x, double y);
+    void eval_u();
+
+    void create_vectors();
+    void define_geometry();
+
     void create_aux();
     void create_GH();
 
     void destroy_aux();
     void destroy_GH();
     void destroy_vectors();
-
-public:
-    void input_data();
-
-    void load_data();
-    void save_Mfile();
-
-    void find_minmax();
-
 };
 
 #ifndef SWIG

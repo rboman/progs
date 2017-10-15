@@ -21,7 +21,7 @@ def main():
     import matplotlib.pyplot as plt
     import ndh
     bem = ndh.BemSolver()
-    #bem.calcule()
+    bem.exec_full();
 
 
 if __name__ == "__main__":
