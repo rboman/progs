@@ -17,39 +17,54 @@
 
 def main():
     
+    import numpy as np
+    import matplotlib.pyplot as plt
     import dcm
     plane = dcm.Plane()
     plane.calcule()
 
-    # postprocessing
+    # -- postprocessing --
     
+    # traduction mi.m
+    x = np.linspace(-plane.enverg, plane.enverg, 101)
+    h = (plane.c1-plane.c0)/plane.enverg*np.abs(x)+plane.c0
+    l = 10*h
+    i = (l*h**3 - (l-2*plane.ep)*(h-2*plane.ep)**3)/12.
+    m = plane.densite*2*plane.ep*(11*h-2*plane.ep)
+
+    plt.plot(x,h,label='h(x)')
+    plt.plot(x, 1.0e-2 *m, label='m(x)/100')
+    plt.plot(x, 200*i, label='200*i(x)')
+    plt.grid()
+    plt.legend()
+    plt.title("Evolution de la masse et de l'inertie")
+    plt.show()
+
+    # traduction "mpvp.m"
     vp = plane.getValPro()
     print vp
     mp = plane.getModPro(1)  
     print mp
+
+
     print plane.getNoPoly()
 
-    import numpy as np
-    import matplotlib.pyplot as plt
 
-
-
+    # traduction "graphe.m"
     xx = np.array(plane.getXX())
-    nopoly = plane.getNoPoly()
+    #nopoly = plane.getNoPoly()
     for i in range(plane.Nmodes):
         mode = np.array(plane.getMODES(i))
         plt.plot(xx, mode, label='mode %d' %(i+1))
-   
     plt.xlabel('x')
     plt.ylabel('Yi(x)')
-    #plt.ylim(0,150)
     plt.title('Modes propres (normes)')
     plt.grid(True)
     plt.legend()
     plt.show()    
 
+    # traduction "mt.m"
     time = np.linspace(0,plane.Nperiod*plane.T, plane.Nperiod * plane.np2 + 1)
-
     moment = np.array(plane.getMoment()) 
     tranchant = np.array(plane.getTranchant()) 
     plt.plot(time, moment, label='Moment')
@@ -59,6 +74,10 @@ def main():
     plt.ylabel('M(t) & T(t) en x=0')
     plt.xlabel('temps')
     plt.title('Moment et effort tranchant a l'' emplanture de l'' aile')
+
+
+
+
 
     plt.show()
 
