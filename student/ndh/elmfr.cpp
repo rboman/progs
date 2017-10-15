@@ -51,7 +51,7 @@ float beta = 80;          // Paramétre du probléme.
 float k = 400;            // Conductivité thermique.
 float R = 1.2;            // Rayon du cercle.
 float a = 1.2;            // Longueur du cété du carré.
-float pi;                 // 3.141592.
+float pi = 4 * atan(1.0);                 // 3.141592.
 float Tmin, Tmax;         // Valeurs min et max des T calculées.
 
 // Coefficients de l'intégration de Newton-Cotes:
@@ -65,12 +65,13 @@ float idiv[6] = {2, 6, 8, 90, 288, 840};
 
 // ---------------------------------------------------
 
-
-
-
-
-
-
+#include <stdlib.h>
+void clrscr()
+{
+#ifdef WIN32
+    system("cls");
+#endif
+}
 
 //--------------------------------------------------------------------
 // Routine de définition de la géométrie :
@@ -81,24 +82,21 @@ float idiv[6] = {2, 6, 8, 90, 288, 840};
 
 void define_geometry()
 {
-    int i, j;
-    //void fillvector(float *, float, float, int);
-
-    if (probleme == 1)
+    if (probleme == 1) // cercle
     {
         fillvector(alpha, 0.0, (2 * pi) / N, N + 1);
-        for (i = 0; i < N + 1; i++)
+        for (int i = 0; i < N + 1; i++)
         {
             xf[i] = R * cos(alpha[i]);
             yf[i] = R * sin(alpha[i]);
         }
     }
-    else if (probleme == 2)
+    else if (probleme == 2) // carré
     {
-        j = N / 4;
+        int j = N / 4;
         N = 4 * j;
         fillvector(alpha, -a, (2 * a) / j, j + 1);
-        for (i = 0; i <= j; i++)
+        for (int i = 0; i <= j; i++)
         {
             xf[i] = a;
             yf[i] = alpha[i];
@@ -110,7 +108,7 @@ void define_geometry()
             yf[i + 3 * j] = -a;
         }
     }
-    for (i = 0; i < N; i++)
+    for (int i = 0; i < N; i++)
     {
         xel[i] = (xf[i] + xf[i + 1]) / 2;
         yel[i] = (yf[i] + yf[i + 1]) / 2;
@@ -119,32 +117,33 @@ void define_geometry()
 
 //--------------------------------------------------------------------
 // Routine d'évaluation d'un élém. des matrices G et H.
-//   .reéoit -les indices i et j de l'élém. é calculer.
+//   .reéoit -les indices i et j de l'élém. à calculer.
 //           -les coord. x,y de l'origine des axes.
 //--------------------------------------------------------------------
 
 void eval_GH(float *g, float *h, int i, int j, float x, float y)
 {
-    int t, tt;
-    float dx, dy, dL, temp, r, nx, ny;
-    //void fillvector(float *, float, float, int);
-
+    //int t, tt;
+    //float dx, dy, dL, temp, r, nx, ny;
+ 
     if (j == i)
-    { // terme diagonal -> on applique les formules spéciales.
+    { 
+        // terme diagonal -> on applique les formules spéciales.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        dx = xf[i + 1] - xf[i];
-        dy = yf[i + 1] - yf[i];
-        dL = sqrt(dx * dx + dy * dy);
+        float dx = xf[i + 1] - xf[i];
+        float dy = yf[i + 1] - yf[i];
+        float dL = sqrt(dx * dx + dy * dy);
         *g = dL / (2 * pi) * (log(2 / dL) + 1);
         *h = 0.5;
     }
     else
-    { // cas général d'un terme non diagonal.
+    { 
+        // cas général d'un terme non diagonal.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        // calcul de la normale (normée) é l'élément:
-        nx = yf[j + 1] - yf[j];
-        ny = xf[j] - xf[j + 1];
-        temp = sqrt(nx * nx + ny * ny);
+        // calcul de la normale (normée) à l'élément:
+        float nx = yf[j + 1] - yf[j];
+        float ny = xf[j] - xf[j + 1];
+        float temp = sqrt(nx * nx + ny * ny);
         nx = nx / temp;
         ny = ny / temp;
 
@@ -152,11 +151,11 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
         fillvector(xint, xf[j], (xf[j + 1] - xf[j]) / istep, istep + 1);
         fillvector(yint, yf[j], (yf[j + 1] - yf[j]) / istep, istep + 1);
 
-        // évaluation des deux fonctions é intégrer sur l'élément
+        // évaluation des deux fonctions à intégrer sur l'élément
         // et stockage des valeurs dans fct et fct2:
-        for (t = 0; t < istep + 1; t++)
+        for (int t = 0; t < istep + 1; t++)
         {
-            temp = sqrt((xint[t] - x) * (xint[t] - x) + (yint[t] - y) * (yint[t] - y));
+            float temp = sqrt((xint[t] - x) * (xint[t] - x) + (yint[t] - y) * (yint[t] - y));
             fct[t] = (log(1.0 / temp) / (2 * pi));
             fct2[t] = (-nx * (xint[t] - x) - ny * (yint[t] - y)) / (2 * pi * temp * temp);
         }
@@ -166,13 +165,13 @@ void eval_GH(float *g, float *h, int i, int j, float x, float y)
         *h = 0.0;
 
         // calcul de la longueur d'un pas d'intégration:
-        dx = xint[1] - xint[0];
-        dy = yint[1] - yint[0];
-        dL = sqrt(dx * dx + dy * dy);
+        float dx = xint[1] - xint[0];
+        float dy = yint[1] - yint[0];
+        float dL = sqrt(dx * dx + dy * dy);
 
         // intégration de Newton-Cotes:
-        for (t = 0; t < istep - ideg + 1; t += ideg)
-            for (tt = 0; tt <= ideg; tt++)
+        for (int t = 0; t < istep - ideg + 1; t += ideg)
+            for (int tt = 0; tt <= ideg; tt++)
             {
                 *g = *g + fct[t + tt] * icoeff[ideg - 1][tt] / idiv[ideg - 1];
                 *h = *h + fct2[t + tt] * icoeff[ideg - 1][tt] / idiv[ideg - 1];
@@ -204,19 +203,12 @@ void full_calcul()
 {
     int i, j, i1, j1, t;
     float temp, r, xb, yb;
-    /*
-    void titre(), destroy_aux(), create_aux(), create_GH(), eval_u();
-    void destroy_GH(), visu(), fillvector(float *, float, float, int);
-    void gauss(int, float **, float *, float *);
-    void mmv(int, float **, float *, float *);
-    void eval_GH(float *, float *, int, int, float, float);
-    void copy_block(float **, int, int, int, int, int);
-*/
 
-    //clrscr();
+    clrscr();
     titre();
     if (((probleme < 1) || (probleme > 2)) && (type == 2))
-    { // Cas du probléme qcq. avec calculs optimisés.
+    { 
+        // Cas du probléme qcq. avec calculs optimisés.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         std::cout << "\nPas de solution rapide pour un probléme QCQ !\n<ESPACE>";
         //getch();
@@ -230,13 +222,16 @@ void full_calcul()
         create_GH();
         std::cout << "Ok\nCalcul des matrices H et G...";
         if (type == 1)
+        {
             // Cas du probléme non optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             for (i = 0; i < N; i++)
                 for (j = 0; j < N; j++)
                     eval_GH(&(G[i][j]), &(H[i][j]), i, j, xel[i], yel[i]);
+        }
         else
-        { // Cas du probléme optimisé:
+        { 
+            // Cas du probléme optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~
             if (probleme == 1) // *** CERCLE ***
             {                  // Une seule ligne de H utile:            ******
@@ -359,7 +354,7 @@ void eval_Texact()
     int i1, j1, i;
     float temp, xb, yb, r;
 
-    //clrscr();
+    clrscr();
     titre();
     if ((probleme < 1) || (probleme > 2))
         std::cout << "\n\nPas de solution exacte disponible !";
@@ -407,91 +402,6 @@ void eval_Texact()
 //--------------------------------------------------------------------
 //  Procédure main() : boucle principale
 //--------------------------------------------------------------------
-
-void main()
-{
-    // Initialisation des variables
-    // ----------------------------
-    char entree[20];
-    int i, j, t, i1, j1, prm, exit = 0, choix;
-
-    float nx, ny, temp, dL, dx, dy, r;
-    /*
-    void tester(), create_vectors(), define_geometry(), titre();
-    void full_calcul(), input_data(), load_data(), visu();
-    void eval_Texact(), save_Mfile();*/
-
-    // Initialisation
-    // --------------
-    pi = 4 * atan(1);
-    d_old = density;
-    range = N;
-
-    create_vectors();
-    define_geometry();
-
-    // Menu
-    // ----
-
-    while (exit == 0)
-    {
-        //clrscr();
-        titre();
-        std::cout << "\n\nProbléme courant :";
-        if (probleme == 1)
-            std::cout << " CERCLE de rayon a";
-        else if (probleme == 2)
-            std::cout << " CARRE de cété a";
-        else
-            std::cout << "QUELCONQUE";
-        std::cout << "\n\n\t [1]  Lancer le calcul complet.";
-        std::cout << "\n\t [2]  Lancer le calcul rapide.";
-        std::cout << "\n\t [3]  Paramétres.";
-        std::cout << "\n\t [4]  Charger fichier données.";
-        std::cout << "\n\t [5]  Visualisation graphique.";
-        std::cout << "\n\t [6]  Evaluation de la solution analytique.";
-        std::cout << "\n\t [7]  Sauvegarde vers MATLAB";
-        std::cout << "\n\t [0]  Quitter.";
-        std::cout << "\n\nChoix \?";
-        std::cout << "\n\n\n\nFLOPS     : non disponible";
-        std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLK_TCK << " sec.";
-        choix = 1; //getch();
-        switch (choix)
-        {
-        case '1':
-        {
-            type = 1;
-            full_calcul();
-        }
-        break;
-        case '2':
-        {
-            type = 2;
-            full_calcul();
-        }
-        break;
-        case '3':
-            input_data();
-            break;
-        case '4':
-            load_data();
-            break;
-        case '5':
-            visu();
-            break;
-        case '6':
-            eval_Texact();
-            break;
-        case '7':
-            save_Mfile();
-            break;
-        case '0':
-            exit = 1;
-            break;
-        }
-    }
-    //clrscr();
-}
 
 //--------------------------------------------------------------------
 // Routine de génération d'une géométrie donnée et sauvegarde

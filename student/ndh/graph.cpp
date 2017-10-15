@@ -54,10 +54,12 @@ void dot2(float x1, float y1)
 void visu()
 {
     //palettetype pal;
+    /*
     int gdriver = 9, gmode = 2, i, j, ncol = 16, color;
     int poly[8];
     float temp, dT, jx = 500, jy = 20;
     char buffer[30];
+    */
     //void find_minmax();
 /*
     // initialisation du driver graphique et de la palette:

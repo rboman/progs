@@ -26,7 +26,7 @@ void load_data()
       int i;
       //void titre(), destroy_vectors(), create_vectors();
 
-      //clrscr();
+      clrscr();
       titre();
       range = N;
       probleme = 3;
@@ -62,7 +62,7 @@ void save_Mfile()
       int i1, j1;
       void titre();
 
-      //clrscr();
+      clrscr();
       titre();
       std::cout << "\nNom du fichier (.M) :";
       //gets(nom_fich);

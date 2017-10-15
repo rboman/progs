@@ -15,8 +15,6 @@
 #ifndef ELMFR_H
 #define ELMFR_H
 
-//#include <conio.h>
-//#include <stdio.h>
 #include <cmath>
 #include <iostream>
 #include <fstream>
@@ -28,7 +26,7 @@
 #include "memory.h"
 #include "param.h"
 
-extern int N;        // Nombre d'éléments frontiéres sur le contour.
+extern int N;        // Nombre d'éléments frontières sur le contour.
 extern int istep;    // Nombre de pas d'intégration sur un élément.
 extern int density;  // Densité de visualisation de la solution
                    // (nombre de mailles sur un rayon).
@@ -69,6 +67,19 @@ extern float Tmin, Tmax;         // Valeurs min et max des T calculées.
 // Coefficients de l'intégration de Newton-Cotes:
 extern float icoeff[6][7];
 extern float idiv[6];
+
+
+// protos 
+
+void define_geometry();
+void eval_GH(float *g, float *h, int i, int j, float x, float y);
+void eval_u();
+void full_calcul();
+void eval_Texact();
+void generate();   //void tester()
+
+void clrscr();
+
 
 #endif //ELMFR_H
 

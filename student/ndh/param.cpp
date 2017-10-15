@@ -56,7 +56,7 @@ void input_data()
       char entree[20];
       int j;
 
-      //clrscr();
+      clrscr();
       titre();
       param2("Probléme (1=cercle,2=carré,3=autre)", &probleme);
       param("Beta", &beta);
