@@ -99,7 +99,7 @@ void ndh::visu()
                     poly[1] = -temp * zoom;
                     temp = a / range * (j + 1);
                     poly[3] = -temp * zoom;
-                    if ((probleme == 1) && (range == 1))
+                    if ((probleme == CIRCLE) && (range == 1))
                         color = (ncol - 3) * (T[i][0] - Tmin) / dT + 1;
                     else
                         color = (ncol - 3) * (T[i][j] - Tmin) / dT + 1;
@@ -138,7 +138,7 @@ void ndh::visu()
                     poly[5] = -temp * zoom + yo;
                     temp = yf[j + 1] / density * i;
                     poly[7] = -temp * zoom + yo;
-                    if ((probleme == 1) && (range == 1))
+                    if ((probleme == CIRCLE) && (range == 1))
                         color = (ncol - 3) * (T[i][0] - Tmin) / dT + 1;
                     else
                         color = (ncol - 3) * (T[i][j] - Tmin) / dT + 1;

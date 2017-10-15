@@ -28,9 +28,9 @@ void main()
         clrscr();
         titre();
         std::cout << "\n\nProblème courant :";
-        if (bem.probleme == 1)
+        if (bem.probleme == CIRCLE)
             std::cout << " CERCLE de rayon a";
-        else if (bem.probleme == 2)
+        else if (bem.probleme == SQUARE)
             std::cout << " CARRE de côté a";
         else
             std::cout << "QUELCONQUE";

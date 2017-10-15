@@ -24,9 +24,9 @@ BemSolver::BemSolver()
                    // (nombre de mailles sur un rayon).
     ideg = 1;      // Type d'intégration de Newton-Cotes
                    // (1=trapéze, 2=Simpson,...).
-    type = 1;      // Méthode de calcul (1=full, 2=symétrique).
+    type = FULL;      // Méthode de calcul (1=full, 2=symétrique).
     maillag = 1;   // 1=Dessine le maillage.
-    probleme = 1;  // Type de probléme (1=cercle, 2=carré, 3=qcq.).
+    probleme = CIRCLE;  // Type de probléme (1=cercle, 2=carré, 3=qcq.).
     whitebg = 1;   // 1=Fond blanc pour l'impression.
     cartesien = 0; // 1=maillage rectangulaire (density x density)
                    // (uniquement pour le carré).
@@ -95,13 +95,13 @@ NDH_API void ndh::clrscr()
 //--------------------------------------------------------------------
 // Routine de définition de la géométrie :
 //  Remplit les vecteurs xf,yf et xel,yel.
-//  . si probleme=1 -> création d'un cercle.
-//  . si probleme=2 -> création d'un carré.
+//  . si probleme=CIRCLE -> création d'un cercle.
+//  . si probleme=SQUARE -> création d'un carré.
 //--------------------------------------------------------------------
 
 void BemSolver::define_geometry()
 {
-    if (probleme == 1) // cercle
+    if (probleme == CIRCLE) // cercle
     {
         fillvector(alpha, 0.0, (2 * pi) / N, N + 1);
         for (int i = 0; i < N + 1; i++)
@@ -110,7 +110,7 @@ void BemSolver::define_geometry()
             yf[i] = R * sin(alpha[i]);
         }
     }
-    else if (probleme == 2) // carré
+    else if (probleme == SQUARE) // carré
     {
         int j = N / 4;
         N = 4 * j;
@@ -210,13 +210,13 @@ void BemSolver::eval_u()
 
 void BemSolver::exec_full()
 {
-    type = 1;
+    type = FULL;
     full_calcul();
 }
 
 void BemSolver::exec_sym()
 {
-    type = 2;
+    type = SYMMETRIC;
     full_calcul();
 }
 
@@ -225,8 +225,8 @@ void BemSolver::exec_sym()
 // Routine de calcul des tempétatures (remplissage du tableau T).
 // (Cette routine résoud le probléme posé)
 //   .reéoit le 'type' de calculs é effectuer:
-//         - type=1 : calculs sans tenir compte de la symétrie.
-//         - type=2 : calculs optimisés compte tenu de la symétrie.
+//         - type=FULL : calculs sans tenir compte de la symétrie.
+//         - type=SYMMETRIC : calculs optimisés compte tenu de la symétrie.
 //--------------------------------------------------------------------
 
 void BemSolver::full_calcul()
@@ -236,7 +236,7 @@ void BemSolver::full_calcul()
 
     //clrscr();
     //titre();
-    if (((probleme < 1) || (probleme > 2)) && (type == 2))
+    if ( (probleme == OTHER) && (type == SYMMETRIC) )
     {
         // Cas du probléme qcq. avec calculs optimisés.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -251,7 +251,7 @@ void BemSolver::full_calcul()
         std::cout << "\n\nCréation des matrices H et G...";
         create_GH();
         std::cout << "Ok\nCalcul des matrices H et G...";
-        if (type == 1)
+        if (type == FULL)
         {
             // Cas du probléme non optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -263,7 +263,7 @@ void BemSolver::full_calcul()
         {
             // Cas du probléme optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~
-            if (probleme == 1) // *** CERCLE ***
+            if (probleme == CIRCLE) // *** CERCLE ***
             {                  // Une seule ligne de H utile:            ******
                 for (j = 0; j < N; j++)
                     eval_GH(&(G[0][j]), &(H[0][j]), 0, j, xel[0], yel[0]);
@@ -276,7 +276,7 @@ void BemSolver::full_calcul()
                         G[i][j] = G[0][j - i];
                 }
             }
-            if (probleme == 2) // *** CARRE ***
+            if (probleme == SQUARE) // *** CARRE ***
             {
                 t = N / 4; //     *****
                 for (i = 0; i < t; i++)
@@ -301,7 +301,7 @@ void BemSolver::full_calcul()
         // systéme par Gauss:
         std::cout << "Ok\nRésolution de G q = H u...";
         eval_u();
-        if ((type == 2) && (probleme == 1)) // cas du cercle optimisé
+        if ((type == SYMMETRIC) && (probleme == CIRCLE)) // cas du cercle optimisé
         {
             temp = 0.0;
             for (j = 0; j < N; j++)
@@ -318,13 +318,13 @@ void BemSolver::full_calcul()
         destroy_GH();
 
         std::cout << "Ok\nCalcul des T intérieures...";
-        if ((probleme == 1) && (type == 2))
+        if ((probleme == CIRCLE) && (type == SYMMETRIC))
             range = 1;
-        else if ((probleme == 2) && (type == 2))
+        else if ((probleme == SQUARE) && (type == SYMMETRIC))
             range = density;
         else
             range = N;
-        if ((probleme == 2) && (type == 2))
+        if ((probleme == SQUARE) && (type == SYMMETRIC))
             cartesien = 1;
         else
             cartesien = 0;
@@ -334,12 +334,12 @@ void BemSolver::full_calcul()
         for (i1 = 0; i1 < density; i1++)
             for (j1 = 0; j1 < range; j1++)
             {
-                if ((probleme == 1) && (type == 2))
+                if ((probleme == CIRCLE) && (type == SYMMETRIC))
                 {
                     xb = R / (density)*i1;
                     yb = 0.0;
                 }
-                else if ((probleme == 2) && (type == 2))
+                else if ((probleme == SQUARE) && (type == SYMMETRIC))
                 {
                     xb = a / density * i1;
                     yb = a / range * j1;
@@ -395,7 +395,7 @@ void BemSolver::eval_Texact()
 
     clrscr();
     titre();
-    if ((probleme < 1) || (probleme > 2))
+    if (probleme == OTHER)
         std::cout << "\n\nPas de solution exacte disponible !";
     else
     {
@@ -404,12 +404,12 @@ void BemSolver::eval_Texact()
         for (i1 = 0; i1 < density; i1++)
             for (j1 = 0; j1 < range; j1++)
             {
-                if ((probleme == 1) && (range == 1))
+                if ((probleme == CIRCLE) && (range == 1))
                 {
                     xb = R / (density)*i1;
                     yb = 0.0;
                 }
-                else if ((probleme == 2) && (cartesien == 1))
+                else if ((probleme == SQUARE) && (cartesien == 1))
                 {
                     xb = a / density * i1;
                     yb = a / range * j1;
@@ -420,9 +420,9 @@ void BemSolver::eval_Texact()
                     yb = yel[j1] / density * i1 + (yel[j1] / density) / 2.0;
                 }
                 r = sqrt(xb * xb + yb * yb);
-                if (probleme == 1)
+                if (probleme == CIRCLE)
                     T[i1][j1] = beta / (2 * k) * (r * r - R * R);
-                if (probleme == 2)
+                if (probleme == SQUARE)
                 {
                     temp = 0.0;
                     for (i = 1; i < 100; i += 2)
@@ -456,7 +456,7 @@ void BemSolver::generate()
     zoom = 200.0 / R;
     pi = 4 * atan(1);
     range = N;
-    probleme = 3;
+    probleme = OTHER;
     create_vectors();
 
     // Génération:
@@ -567,15 +567,17 @@ void BemSolver::input_data()
 
     clrscr();
     titre();
-    param2("Problème (1=cercle,2=carré,3=autre)", &probleme);
+    int prob;
+    param2("Problème (1=cercle,2=carré,3=autre)", &prob);
+    probleme = static_cast<Prb>(prob); // tester!
     param("Beta", &beta);
     param("k", &k);
-    if (probleme == 1)
+    if (probleme == CIRCLE)
         param("Rayon", &R);
     else
         param("Coté", &a);
     param2("Nbre d'éléments aux frontières", &N);
-    if (probleme == 2) // Le nbre d'élém. doit étre un multiple de 4.
+    if (probleme == SQUARE) // Le nbre d'élém. doit étre un multiple de 4.
     {
         N = 4 * (N / 4);
     } // si le probléme est le carré.
@@ -584,7 +586,7 @@ void BemSolver::input_data()
     param2("Nbre de pas d'intégration par élément", &istep);
     if (istep < 2)
         istep = 5;
-    if (probleme == 1)
+    if (probleme == CIRCLE)
         zoom = 200.0 / R;
     else
         zoom = 200.0 / a;
@@ -613,12 +615,11 @@ void BemSolver::load_data()
 {
     char nom_fich[50];
     int i;
-    //void titre(), destroy_vectors(), create_vectors();
 
     clrscr();
     titre();
     range = N;
-    probleme = 3;
+    probleme = OTHER;
     std::cout << "\nNom du fichier (.DAT) :";
     //gets(nom_fich);
     std::ifstream fich(nom_fich, std::ios::in);
@@ -668,7 +669,7 @@ void BemSolver::save_Mfile()
     for (i1 = 0; i1 < density; i1++)
         for (j1 = 0; j1 < range; j1++)
         {
-            if ((probleme == 1) && (range == 1))
+            if ((probleme == CIRCLE) && (range == 1))
             {
                 xb = R / (density)*i1;
                 yb = 0.0;
@@ -687,7 +688,7 @@ void BemSolver::save_Mfile()
             fich << "\nyb(" << i1 + 1 << "," << j1 + 1 << ")=" << yb << ";";
             fich << "\nT(" << i1 + 1 << "," << j1 + 1 << ")=" << T[i1][j1] << ";";
         }
-    if ((probleme == 1) && (range == 1)) // Commandes de visualisation
+    if ((probleme == CIRCLE) && (range == 1)) // Commandes de visualisation
         fich << "\nplot(xb,T); grid;";
     else
         fich << "\nmesh(xb,yb,T); grid;";

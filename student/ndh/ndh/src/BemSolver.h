@@ -25,6 +25,20 @@
 
 namespace ndh {
 
+enum Meth
+{
+    FULL = 1,
+    SYMMETRIC = 2
+};
+
+enum Prb
+{
+    CIRCLE = 1,
+    SQUARE = 2,
+    OTHER = 3
+};
+
+
 class NDH_API BemSolver
 {
     int N;                   // Nombre d'éléments frontières sur le contour.
@@ -37,14 +51,14 @@ class NDH_API BemSolver
     int ideg;                // Type d'intégration de Newton-Cotes
                                     // (1=trapéze, 2=Simpson,...).
 public:
-    int type;                // Méthode de calcul (1=full, 2=symétrique).
-    int probleme;            // Type de probléme (1=cercle, 2=carré, 3=qcq.).
+    Meth type;                // Méthode de calcul (1=full, 2=symétrique).
+    Prb probleme;            // Type de problème (1=cercle, 2=carré, 3=qcq.).
     
 private:
     int maillag;             // 1=Dessine le maillage.
     int whitebg;             // 1=Fond blanc pour l'impression.
     int cartesien;           // 1=maillage rectangulaire (density x density)
-                                    // (uniquement pour le carré).
+                             // (uniquement pour le carré).
     int calcul;              // 1=calculs effectués.
 
     clock_t time1, time2;    // temps de début et de fin de calcul.
