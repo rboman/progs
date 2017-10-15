@@ -36,16 +36,31 @@ def main():
 
     xx = np.array(plane.getXX())
     nopoly = plane.getNoPoly()
-    for i in range(5):
+    for i in range(plane.Nmodes):
         mode = np.array(plane.getMODES(i))
         plt.plot(xx, mode, label='mode %d' %(i+1))
    
     plt.xlabel('x')
+    plt.ylabel('Yi(x)')
     #plt.ylim(0,150)
-    plt.title('modes')
+    plt.title('Modes propres (normes)')
     plt.grid(True)
     plt.legend()
     plt.show()    
+
+    time = np.linspace(0,plane.Nperiod*plane.T, plane.Nperiod * plane.np2 + 1)
+
+    moment = np.array(plane.getMoment()) 
+    tranchant = np.array(plane.getTranchant()) 
+    plt.plot(time, moment, label='Moment')
+    plt.plot(time, tranchant, label='Tranchant')
+    plt.grid(True)
+    plt.legend()
+    plt.ylabel('M(t) & T(t) en x=0')
+    plt.xlabel('temps')
+    plt.title('Moment et effort tranchant a l'' emplanture de l'' aile')
+
+    plt.show()
 
 if __name__ == "__main__":
     main()

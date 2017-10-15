@@ -31,6 +31,7 @@ namespace dcm {
 
 class DCM_API Plane
 {
+public:
     double densite; // Aluminium
     double enverg;
     double Mmoteurs;
@@ -56,12 +57,17 @@ private:
     double *XX;
     double **MODES;
 
+    double *Moment;
+    double *Tranchant;
+
 public:
     int getNoPoly() const { return nopoly; }
     std::vector<double> getValPro() const;
     std::vector<double> getModPro(int i) const;
     std::vector<double> getXX() const;
     std::vector<double> getMODES(int i) const;
+    std::vector<double> getMoment() const;
+    std::vector<double> getTranchant() const;
     
 public: 
     Plane();

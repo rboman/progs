@@ -29,8 +29,8 @@ Plane::Plane()
     c1 = 0.30;
     T = 1.0;
     F0 = 150000.0;
-    np = 80;     // précision du tracé en x ds MATLAB    [TODO] changer en "int" ??
-    np2 = 40;    //                    en t              [TODO] changer en "int" ??
+    np = 80;     // précision du tracé en x ds MATLAB
+    np2 = 40;    //                    en t
     Nperiod = 2; // nbre de périodes en t (pour MATLAB)
     Nmodes = 6;    // nbre de modes à calculer avec prec.
     PREC = 1E-4;
@@ -41,7 +41,10 @@ Plane::Plane()
     ValPro = NULL;
     ModPro = NULL; 
     XX = NULL;      // Matrice abcisse.
-    MODES = NULL; // Matrice des Yi(x)    
+    MODES = NULL; // Matrice des Yi(x) 
+
+    Moment = NULL;
+    Tranchant = NULL;
 }
 
 void Plane::calcule()
@@ -290,8 +293,8 @@ void Plane::calcule()
     //             de l'effort tranchant à l'emplanture de l'aile
     //-------------------------------------------------------------------------
 
-    double *Moment = new double[Nperiod * np2 + 1];
-    double *Tranchant = new double[Nperiod * np2 + 1];
+    Moment = new double[Nperiod * np2 + 1];
+    Tranchant = new double[Nperiod * np2 + 1];
     double alp0 = -2 * F0 * T / pi * MP[0](0.0);
 
     // M et T pdt l'appl. de la force
@@ -471,5 +474,22 @@ void Plane::toMatlab3(double *Moment, double *Tranchant, int compt)
     fich2 << "xlabel('temps');\nylabel('M(t) & T(t) en x=0');\n";
     fich2.close();
     std::cout << "mt.m cree.\n";
+}
+
+std::vector<double> Plane::getMoment() const // size = Nperiod * np2 + 1
+{
+    // convert to std::vector
+    std::vector<double> vec(np+1);
+    for (int i = 0; i < Nperiod * np2 + 1; i++)
+        vec[i] = Moment[i];
+    return vec;    
+}
+std::vector<double> Plane::getTranchant() const // size = Nperiod * np2 + 1
+{
+    // convert to std::vector
+    std::vector<double> vec(np+1);
+    for (int i = 0; i < Nperiod * np2 + 1; i++)
+        vec[i] = Tranchant[i];
+    return vec; 
 }
 
