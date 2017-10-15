@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python
+# -*- coding: latin-1 -*-
+
 """A simple interactive demo to illustrate the use of IPython's Demo class.
 
 Any python script can be run as a demo, but that does little more than showing
