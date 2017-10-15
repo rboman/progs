@@ -22,10 +22,7 @@
 #include <string>
 #include <time.h>
 
-#include "graph.h"
-#include "matfun.h"
-#include "param.h"
-
+namespace ndh {
 
 class NDH_API BemSolver
 {
@@ -113,6 +110,8 @@ public:
 #ifndef SWIG
 NDH_API void clrscr();
 #endif
+
+}
 
 #endif //BEMSOLVER_H
 

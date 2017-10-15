@@ -13,6 +13,7 @@
 //   limitations under the License.
 
 #include "BemSolver.h"
+using namespace ndh;
 
 // VARIABLES GLOBALES! ------------------------
 BemSolver::BemSolver()
@@ -80,7 +81,7 @@ BemSolver::BemSolver()
 // ---------------------------------------------------
 
 #include <stdlib.h>
-NDH_API void clrscr()
+NDH_API void ndh::clrscr()
 {
 #ifdef WIN32
     //system("cls");

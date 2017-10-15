@@ -25,9 +25,14 @@
 #define NDH_API
 #endif
 
-//namespace ndh
-//{
+namespace ndh
+{
     class BemSolver;
-//}
+}
+
+#include "graph.h"
+#include "matfun.h"
+#include "param.h"
+
 
 #endif //NDH_H

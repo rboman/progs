@@ -13,6 +13,7 @@
 //   limitations under the License.
 
 #include "BemSolver.h"
+using namespace ndh;
 
 void main()
 {

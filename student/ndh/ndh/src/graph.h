@@ -17,10 +17,14 @@
 
 #include "ndh.h"
 
+namespace ndh {
+    
 NDH_API void titre();
 NDH_API void ligne(double x1, double y1, double x2, double y2);
 NDH_API void dot(double x1, double y1);
 NDH_API void dot2(double x1, double y1);
 NDH_API void visu();
+
+}
 
 #endif //GRAPH_H

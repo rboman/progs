@@ -14,12 +14,13 @@
 
 #include "BemSolver.h"
 #include "graph.h"
+using namespace ndh;
 
 //--------------------------------------------------------------------
 // Affichage du titre
 //--------------------------------------------------------------------
 
-void titre()
+void ndh::titre()
 {
     /*
     std::cout << "\n\t\t+++++++++++++++++++++++++++++++++++++++++++\n";
@@ -32,17 +33,17 @@ void titre()
 // Affichage des éléments
 //--------------------------------------------------------------------
 
-void ligne(double x1, double y1, double x2, double y2)
+void ndh::ligne(double x1, double y1, double x2, double y2)
 {
     //line(x1 * zoom + xo, yo - y1 * zoom, x2 * zoom + xo, yo - y2 * zoom);
 }
 
-void dot(double x1, double y1)
+void ndh::dot(double x1, double y1)
 {
     //circle(x1 * zoom + xo, yo - y1 * zoom, 3);
 }
 
-void dot2(double x1, double y1)
+void ndh::dot2(double x1, double y1)
 {
     //double x = x1 * zoom + xo, y = yo - y1 * zoom;
     //line(x - 2, y - 2, x + 2, y + 2);
@@ -53,7 +54,7 @@ void dot2(double x1, double y1)
 // Visualisation graphique
 //-------------------------------------------------------------
 
-void visu()
+void ndh::visu()
 {
     //palettetype pal;
     /*

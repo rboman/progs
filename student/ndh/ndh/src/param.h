@@ -19,7 +19,11 @@
 
 // routines de modification de paramètres
 
+namespace ndh {
+    
 void param(char *texte, double *par);
 void param2(char *texte, int *par);
+
+}
 
 #endif //PARAM_H

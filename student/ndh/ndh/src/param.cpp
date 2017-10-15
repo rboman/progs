@@ -14,12 +14,13 @@
 
 #include "BemSolver.h"
 #include "param.h"
+using namespace ndh;
 
 //--------------------------------------------------------------------
 // Routine d'introduction d'un double au clavier
 //--------------------------------------------------------------------
 
-void param(char *texte, double *par)
+void ndh::param(char *texte, double *par)
 {
     double prm = *par;
     std::cout << std::string(texte) << " [" << *par << "] = ";
@@ -33,7 +34,7 @@ void param(char *texte, double *par)
 // Routine d'introduction d'un integer au clavier
 //--------------------------------------------------------------------
 
-void param2(char *texte, int *par)
+void ndh::param2(char *texte, int *par)
 {
     int prm = *par;
     std::cout << std::string(texte) << " [" << *par << "] = ";
