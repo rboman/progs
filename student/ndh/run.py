@@ -5,10 +5,10 @@
 if __name__=="__main__":    
     import sys, os
     # adds "." to the pythonpath
-    thisdir = os.path.split(__file__)[0]
+    thisdir = os.path.split(os.path.abspath(__file__))[0]
     thisdir = os.path.normcase(thisdir)
     sys.path.append(thisdir)
-    
+
     # add binary dir to PYTHONPATH
     pyexe = os.path.basename(sys.executable)
     if pyexe.find('_d.exe')>=0:

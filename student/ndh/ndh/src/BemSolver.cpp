@@ -662,7 +662,7 @@ void BemSolver::save_Mfile(std::string const &filename)
     fich << "\nistep =" << istep << ';';
     fich << "\nN =" << N << ';';
     fich << "\nideg =" << ideg << ';';
-    fich << "\ncpu =" << (double)(time2 - time1) / CLK_TCK << ';';
+    fich << "\ncpu =" << (double)(time2 - time1) / CLOCKS_PER_SEC << ';';
     fich << "\nTmin =" << Tmin << ';';
     fich << "\nTmax =" << Tmax << ';';
     for (i1 = 0; i1 < density; i1++)
