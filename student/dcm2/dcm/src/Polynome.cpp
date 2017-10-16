@@ -13,6 +13,7 @@
 //   limitations under the License.
 
 #include "Polynome.h"
+#include <cmath>
 using namespace dcm;
 
 Polynome::Polynome(indice _taille)

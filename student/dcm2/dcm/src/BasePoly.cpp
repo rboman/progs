@@ -14,6 +14,7 @@
 
 #include "VarArray.h"
 #include "BasePoly.h"
+#include <cmath>
 using namespace dcm;
 
 BasePoly::BasePoly(Masses *_MsX,

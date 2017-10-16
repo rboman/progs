@@ -17,11 +17,12 @@
 #include "Plane.h"
 using namespace dcm;
 
-void main()
+int main()
 {
     Polynome::demo();
     std::cout << "\n\n---\n\n";
     Plane Plane;
     Plane.calcule();
+    return 0;
 }
 
