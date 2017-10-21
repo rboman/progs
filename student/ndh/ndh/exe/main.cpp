@@ -15,7 +15,7 @@
 #include "BemSolver.h"
 using namespace ndh;
 
-void main()
+int main()
 {
     // Initialisation des variables
 
@@ -27,23 +27,23 @@ void main()
     {
         clrscr();
         titre();
-        std::cout << "\n\nProblème courant :";
+        std::cout << "\n\nProblï¿½me courant :";
         if (bem.probleme == CIRCLE)
             std::cout << " CERCLE de rayon a";
         else if (bem.probleme == SQUARE)
-            std::cout << " CARRE de côté a";
+            std::cout << " CARRE de cï¿½tï¿½ a";
         else
             std::cout << "QUELCONQUE";
         std::cout << "\n\n\t [1]  Lancer le calcul complet.";
         std::cout << "\n\t [2]  Lancer le calcul rapide.";
-        std::cout << "\n\t [3]  Paramètres.";
-        std::cout << "\n\t [4]  Charger fichier données.";
+        std::cout << "\n\t [3]  Paramï¿½tres.";
+        std::cout << "\n\t [4]  Charger fichier donnï¿½es.";
         std::cout << "\n\t [5]  Visualisation graphique.";
         std::cout << "\n\t [6]  Evaluation de la solution analytique.";
         std::cout << "\n\t [7]  Sauvegarde vers MATLAB";
         std::cout << "\n\t [0]  Quitter.";
         std::cout << "\n\n\n\nFLOPS     : non disponible";
-        //std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLK_TCK << " sec.";
+        //std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLOCKS_PER_SEC << " sec.";
         std::cout << "\n\nChoix\?+<ENTER>: ";
 
         int choix;
@@ -77,4 +77,5 @@ void main()
             exit = 1;
         }
     }
+    return 0;
 }

@@ -16,6 +16,7 @@
 #define VARARRAY_H
 
 #include "dcm.h"
+#include <iostream>
 
 template <class T>
 class VarArray

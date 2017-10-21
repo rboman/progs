@@ -17,12 +17,12 @@
 
 #include "ndh.h"
 
-// routines de modification de paramètres
+// routines de modification de paramï¿½tres
 
 namespace ndh {
     
-void param(char *texte, double *par);
-void param2(char *texte, int *par);
+void param(char const *texte, double *par);
+void param2(char const *texte, int *par);
 
 }
 

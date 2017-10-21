@@ -15,6 +15,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+import matplotlib
+matplotlib.use('Qt5Agg')  # force PyQt5
+
 def main():
     
     import numpy as np
@@ -23,6 +26,7 @@ def main():
     bem = ndh.BemSolver()
     bem.exec_full();
     bem.save_Mfile("resfrompy.m")
+
 
 
     sol = bem.getSolution()
