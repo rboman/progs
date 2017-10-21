@@ -81,25 +81,25 @@
  *   QUAD BI-LINEAIRE 2D/3D
  */
 
-double *quad_xg[GAUSS_MAX_NG];
-double *quad_pg[GAUSS_MAX_NG];
-double ***quad_psi[GAUSS_MAX_NG];
+extern double *quad_xg[GAUSS_MAX_NG];
+extern double *quad_pg[GAUSS_MAX_NG];
+extern double ***quad_psi[GAUSS_MAX_NG];
 
 /*
  *   SEGMENT LINEAIRE 1D/2D/3D
  */
 
-double *line_xg[GAUSS_MAX_NG];
-double *line_pg[GAUSS_MAX_NG];
-double ***line_psi[GAUSS_MAX_NG];
+extern double *line_xg[GAUSS_MAX_NG];
+extern double *line_pg[GAUSS_MAX_NG];
+extern double ***line_psi[GAUSS_MAX_NG];
 
 /*
  *   HEXAEDRE TRI-LINEAIRE 3D
  */
 
-double *hexa_xg[GAUSS_MAX_NG];
-double *hexa_pg[GAUSS_MAX_NG];
-double ***hexa_psi[GAUSS_MAX_NG];
+extern double *hexa_xg[GAUSS_MAX_NG];
+extern double *hexa_pg[GAUSS_MAX_NG];
+extern double ***hexa_psi[GAUSS_MAX_NG];
 
 /* 
  *   ELEM HERMITE 2 NOEUDS (CUBIQUE) // n'est pas ajoute au cas "generique"
@@ -107,15 +107,15 @@ double ***hexa_psi[GAUSS_MAX_NG];
 
 // hermite_xg = line_xg
 // hermite_pg = line_pg
-double ***hermite_psi[GAUSS_MAX_NG];
+extern double ***hermite_psi[GAUSS_MAX_NG];
 
 /*
  *   ROUTINE GENERALE
  */
 
-double *generic_xg[GAUSS_MAX_EL][GAUSS_MAX_NG];
-double *generic_pg[GAUSS_MAX_EL][GAUSS_MAX_NG];
-double ***generic_psi[GAUSS_MAX_EL][GAUSS_MAX_NG];
+extern double *generic_xg[GAUSS_MAX_EL][GAUSS_MAX_NG];
+extern double *generic_pg[GAUSS_MAX_EL][GAUSS_MAX_NG];
+extern double ***generic_psi[GAUSS_MAX_EL][GAUSS_MAX_NG];
 
 /* ---------------------------------------------------------------------------------- */
 
@@ -185,5 +185,7 @@ int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp, int type,
 int gauss_hermite_get_psi(int ng, double ****psi, double *xg);
 
 /* ---------------------------------------------------------------------------------- */
+
+void gauss_line_getf2(int no, double ***psi, double *ff, double *x, double upw);
 
 #endif

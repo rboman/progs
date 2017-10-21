@@ -127,7 +127,7 @@ int sky_print(FILE *fich, S_SKYMAT *A)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -169,7 +169,7 @@ int sky_init(S_SKYMAT *A)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -233,7 +233,7 @@ int sky_reinit(S_SKYMAT *A)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -265,7 +265,7 @@ int sky_setname(S_SKYMAT *A, char *name)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -320,7 +320,7 @@ int sky_pre_start(S_SKYMAT *A, int nsys)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -419,7 +419,7 @@ int sky_alloc(S_SKYMAT *A, int type)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -497,7 +497,7 @@ int sky_pre_close(S_SKYMAT *A, int type, int opt)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -612,7 +612,7 @@ int sky_fill(S_SKYMAT *A, double val)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -1375,7 +1375,7 @@ int sky_solve(S_SKYMAT *A, double *q, double *x, int type)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }
@@ -1749,7 +1749,7 @@ int sky_test()
 
     // FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }

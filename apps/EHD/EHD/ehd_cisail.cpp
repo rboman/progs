@@ -75,8 +75,8 @@ int ehd_cisail(double eta0, double alpha,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FUNCTION__
-               " in "__FILE__
+        printf("\n\t-->" __FUNCTION__
+               " in " __FILE__
                "\n");
     return iop;
 ERR1:

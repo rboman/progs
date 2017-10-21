@@ -124,7 +124,7 @@ int gauss_generic(int ng, int ndim,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -236,7 +236,7 @@ int gauss_generic_get_psi(int ng, double ****psi, double *xg,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 
@@ -376,7 +376,7 @@ int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp, int type,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 

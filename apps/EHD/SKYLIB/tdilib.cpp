@@ -83,7 +83,7 @@ int tdi_init(S_TDIMAT *A)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -134,7 +134,7 @@ int tdi_reinit(S_TDIMAT *A)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -166,7 +166,7 @@ int tdi_setname(S_TDIMAT *A, char *name)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -221,7 +221,7 @@ int tdi_setsize(S_TDIMAT *A, int nsys)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -258,7 +258,7 @@ int tdi_ass(S_TDIMAT *A, int i, int j, double val)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -285,7 +285,7 @@ int tdi_set(S_TDIMAT *A, int i, int j, double val)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -315,7 +315,7 @@ int tdi_fill(S_TDIMAT *A, double val)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -495,7 +495,7 @@ int tdi_test()
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }

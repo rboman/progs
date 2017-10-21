@@ -15,23 +15,18 @@
  */
 
 /*
- * Calcule la viscosite en fct de la pression
- * et sa derivee.
+ * Initialisation du module EHD
  */
 
 #include "ehd.h"
 
-int ehd_visco(double eta0, double alpha, double p, double *eta, double *etad)
+int ehd_init()
 {
     int iop = 0;
 
-    *eta = eta0 * exp(alpha * p);
-
-    *etad = alpha * (*eta);
-
-    //FIN:
+    // FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }

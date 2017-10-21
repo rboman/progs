@@ -1,6 +1,6 @@
 # LIB
 
-FILE(GLOB SRCS *.h *.c)
+FILE(GLOB SRCS *.h *.cpp)
 
 ADD_LIBRARY(gausslib STATIC ${SRCS})
 

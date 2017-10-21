@@ -35,7 +35,7 @@ int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
     double xr = 0.9;
     double visc = 0.1;
 
-    double xx;
+    //double xx;
 
     S_TDIMAT K;
     double *dp2 = (double *)malloc(nn * sizeof(double));
@@ -131,8 +131,8 @@ int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FUNCTION__
-               " in "__FILE__
+        printf("\n\t-->" __FUNCTION__
+               " in " __FILE__
                "\n");
     return iop;
 }

@@ -59,7 +59,7 @@ int ehd_flux(double h, double u, double v,
     }
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }

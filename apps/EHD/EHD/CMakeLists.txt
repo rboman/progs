@@ -1,6 +1,6 @@
 # Exe 
 
-FILE(GLOB SRCS *.h *.c)
+FILE(GLOB SRCS *.h *.cpp)
 
 ADD_EXECUTABLE(EHD ${SRCS})
 IF(WIN32)

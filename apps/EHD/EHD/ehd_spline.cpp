@@ -93,7 +93,7 @@ int ehd_spline_y(int nn, double *xi, double *yi, double *ki,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 ERR1:
@@ -171,7 +171,7 @@ int ehd_spline_ki(S_TDIMAT *K, int nn, double *xi, double *yi, double *ki)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }
@@ -269,7 +269,7 @@ int main()
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }

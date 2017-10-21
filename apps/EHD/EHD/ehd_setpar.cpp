@@ -33,7 +33,7 @@ int ehd_setpar(int nn, double *x, double *h, double *h_t0, double *um,
     double xr = 0.9;
     double visc = 0.1;
 
-    double xx;
+    //double xx;
 
 // positions
 

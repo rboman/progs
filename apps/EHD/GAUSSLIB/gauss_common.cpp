@@ -20,6 +20,48 @@
 
 #include "gausslib.h"
 
+ /* ---------------------------------------------------------------------------------- */
+
+ /*
+ *   QUAD BI-LINEAIRE 2D/3D
+ */
+
+double *quad_xg[GAUSS_MAX_NG];
+double *quad_pg[GAUSS_MAX_NG];
+double ***quad_psi[GAUSS_MAX_NG];
+
+/*
+*   SEGMENT LINEAIRE 1D/2D/3D
+*/
+
+double *line_xg[GAUSS_MAX_NG];
+double *line_pg[GAUSS_MAX_NG];
+double ***line_psi[GAUSS_MAX_NG];
+
+/*
+*   HEXAEDRE TRI-LINEAIRE 3D
+*/
+
+double *hexa_xg[GAUSS_MAX_NG];
+double *hexa_pg[GAUSS_MAX_NG];
+double ***hexa_psi[GAUSS_MAX_NG];
+
+/*
+*   ELEM HERMITE 2 NOEUDS (CUBIQUE) // n'est pas ajoute au cas "generique"
+*/
+
+// hermite_xg = line_xg
+// hermite_pg = line_pg
+double ***hermite_psi[GAUSS_MAX_NG];
+
+/*
+*   ROUTINE GENERALE
+*/
+
+double *generic_xg[GAUSS_MAX_EL][GAUSS_MAX_NG];
+double *generic_pg[GAUSS_MAX_EL][GAUSS_MAX_NG];
+double ***generic_psi[GAUSS_MAX_EL][GAUSS_MAX_NG];
+
 /* ---------------------------------------------------------------------------------- */
 
 int gauss_common_init()
@@ -142,7 +184,7 @@ int gauss_common_pp(double *xg, double *wg, int ng)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 

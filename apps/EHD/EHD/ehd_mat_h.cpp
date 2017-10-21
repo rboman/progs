@@ -197,7 +197,7 @@ int ehd_mat_h(double *x, double *h, double *u,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }

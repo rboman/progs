@@ -132,8 +132,8 @@ int ehd_flow_factors(double h, double gam_s,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FUNCTION__
-               " in "__FILE__
+        printf("\n\t-->" __FUNCTION__
+               " in " __FILE__
                "\n");
     return iop;
 ERR1:

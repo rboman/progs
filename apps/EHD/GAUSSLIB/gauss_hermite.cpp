@@ -88,7 +88,7 @@ int gauss_hermite_get_psi(int ng, double ****psi, double *xg)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 

@@ -1,6 +1,6 @@
 # Exe 
 
-FILE(GLOB SRCS *.h *.c)
+FILE(GLOB SRCS *.h *.cpp)
 
 ADD_EXECUTABLE(gausstest ${SRCS})
 IF(WIN32)

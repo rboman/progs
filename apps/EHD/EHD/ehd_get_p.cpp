@@ -360,7 +360,7 @@ int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"__FILE__
+        printf("\n\t-->" __FILE__
                "\n");
     return iop;
 }
