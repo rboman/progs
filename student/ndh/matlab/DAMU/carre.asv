@@ -10,6 +10,8 @@
 
 clear all; close all;
 
+%flops(0);
+
 a=1.2;     % Demi côté du carré
 B=80.;     % BETA (en W/m^3)
 K=400.;    % Coeff. de conductivité thermique (en W/m.K)
