@@ -80,5 +80,42 @@ writer.SetInputData(ugrid)
 writer.SetFileName('mesh.vtu')
 writer.Write()
 
+# display (DEBUG)
 
+
+
+
+mapper = vtk.vtkDataSetMapper() 
+mapper.SetInputData(ugrid)
+actor = vtk.vtkActor()
+actor.SetMapper(mapper)
+
+gridMapper = vtk.vtkDataSetMapper() 
+gridMapper.SetResolveCoincidentTopologyToPolygonOffset()
+gridMapper.ScalarVisibilityOff()
+gridMapper.SetInputData(ugrid)
+gridActor = vtk.vtkActor()
+gridActor.GetProperty().SetRepresentationToWireframe()
+gridActor.GetProperty().SetColor(0.1 * 2, 0.2 * 2, 0.4 * 2)
+gridActor.GetProperty().SetAmbient(1.0)
+gridActor.GetProperty().SetDiffuse(0.0)
+gridActor.GetProperty().SetSpecular(0.0)
+gridActor.SetMapper(gridMapper)
+
+
+ren = vtk.vtkRenderer()
+   
+renWin = vtk.vtkRenderWindow()
+renWin.SetSize(640, 480)    
+renWin.AddRenderer(ren)
+iren = vtk.vtkRenderWindowInteractor()
+iren.SetRenderWindow(renWin)
+
+ren.AddActor(actor) 
+ren.AddActor(gridActor) 
+ren.ResetCamera()
+
+iren.Initialize()
+renWin.Render()
+iren.Start()
 
