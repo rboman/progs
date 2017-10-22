@@ -62,7 +62,6 @@ int main()
     double *h = (double *)malloc(nbnode * sizeof(double));
     double *tau = (double *)malloc(nbnode * sizeof(double));
 
-    TdiMat K;
 
     // fixations
     int nbfix = 1;          // nbre de fix
@@ -79,38 +78,29 @@ int main()
     // Init du module d'integration de Gauss
 
     iop = gauss_common_init();
-    if (iop != 0)
-        goto FIN;
+
 
     // Init du module EHD
 
     iop = ehd_init();
-    if (iop != 0)
-        goto FIN;
+
 
     // Mise en place des donnees
 
     iop = ehd_setpar2(nbnode, x, h, h_t0, p, dp, &eta0, &alpha, u, um, v, &dt);
-    if (iop != 0)
-        goto FIN;
+
 
     iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_NEW, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "x", x, nbnode, MLAB_OLD, MLAB_VERBOSE);
-    if (iop != 0)
-        goto FIN;
+
 
     // Initialisation de la matrice d'iteration (tri-diag)
 
-    iop = K.initmat();
-    if (iop != 0)
-        goto FIN;
-    iop = K.setname("K");
-    if (iop != 0)
-        goto FIN;
+    TdiMat K("K");
+
     iop = K.setsize(nbnode);
-    if (iop != 0)
-        goto FIN;
+
 
     for (nt = 0, ttot = 0.0; nt < npas; nt++)
     {
@@ -125,8 +115,7 @@ int main()
                         Rq1, Rq2, gam_s,
                         &K, nbfix,
                         nnfix, ndfix, vfix, EHD_NO_IO, loi, scheme);
-        if (iop != 0)
-            goto FIN;
+
 
         // update h_t0
 
@@ -139,16 +128,14 @@ int main()
         {
             iop = ehd_cisail(eta0, alpha, v[i], p[i], dp[i], h[i],
                              Rq, Rq1, Rq2, loi, &(tau[i]));
-            if (iop != 0)
-                goto FIN;
+
         }
 
     } // endfor(nt)
 
     iop = mlab_vec("pipo.m", "h", h, nbnode, MLAB_OLD, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "tau", tau, nbnode, MLAB_OLD, MLAB_VERBOSE);
-    if (iop != 0)
-        goto FIN;
+
 
     free(eta);
     free(x);
@@ -166,12 +153,5 @@ int main()
     free(h);
     free(tau);
 
-/***/
-
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FUNCTION__
-               " in " __FILE__
-               "\n");
     return iop;
 }

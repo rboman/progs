@@ -154,7 +154,7 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
     rhs[nn - 1] = 0.0;
 
     /*
-  mlab_tdi("tri.m","",K,TDI_A,MLAB_NEW);
+  K->mlab_tdi("tri.m","",TDI_A,MLAB_NEW);
   mlab_vec("tri.m","rhs",rhs,nn,MLAB_OLD);
   */
 
@@ -185,7 +185,6 @@ FIN:
 int main()
 {
     int iop = 0;
-    TdiMat K;
     int nn = 10;
     double xi[nn], yi[nn], ki[nn];
     int i;
@@ -197,13 +196,7 @@ int main()
 
     // init matrice tridiag
 
-    iop = K->initmat();
-    if (iop != 0)
-        goto FIN;
-
-    iop = K->setname("K");
-    if (iop != 0)
-        goto FIN;
+    TdiMat K("K");
 
     // fichier resultat
 

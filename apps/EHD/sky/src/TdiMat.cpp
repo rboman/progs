@@ -52,51 +52,16 @@
 #undef VERBOSE
 #define VERBOSE 0
 
-char *nulname = "noname";
-
-
-TdiMat::TdiMat()
+TdiMat::TdiMat(std::string const &_name) : name(_name)
 {
-
-
+    this->nsys = 0;
+    this->nsys_a = 0;
+    for (int i = 0; i < 3; i++)
+        this->s[i] = NULL;
 }
 
-/**************************************************************************
-                        Routines d'initialisation
- **************************************************************************/
-
-/*
- *                    Initialise une matrice TRIDIAG
- *                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- */
-
-int TdiMat::initmat()
+TdiMat::~TdiMat()
 {
-    int iop = 0;
-    int i;
-
-    if (this->init == 1)
-        goto ERR1;
-
-        this->nsys = 0;
-        this->nsys_a = 0;
-    for (i = 0; i < 3; i++)
-    this->s[i] = NULL;
-    this->name = nulname;
-
-    this->init = 1;
-
-/***/
-
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
-    return iop;
-ERR1:
-    printf("\nerreur: la matrice \"%s\" a deja ete initialisee !", this->name);
-    iop = 990;
-    goto FIN;
 }
 
 /**************************************************************************/
@@ -111,9 +76,6 @@ int TdiMat::reinit()
     int iop = 0;
     int i, mem;
 
-    if (this->init != 1)
-        goto ERR1;
-
     // PURGE LA MEMOIRE
 
     // s[]
@@ -125,19 +87,16 @@ int TdiMat::reinit()
         mem = 3 * this->nsys_a;
         this->nsys_a = 0;
     }
-    // nom
-    if (this->name != nulname)
-        free(this->name);
 
 #if VERBOSE
     printf("liberation de %d doubles\n", mem);
 #endif
     // INITIALISATION
 
-    this->init = 0;
-    iop = this->initmat();
-    if (iop != 0)
-        goto FIN;
+    this->nsys = 0;
+    this->nsys_a = 0;
+    for (int i = 0; i < 3; i++)
+        this->s[i] = NULL;
 
 FIN:
     if (iop > 900)
@@ -146,42 +105,6 @@ FIN:
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
-    iop = 990;
-    goto FIN;
-}
-
-/**************************************************************************/
-
-/*
- *                Donne un nom a une matrice (pour output)
- *                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- */
-
-int TdiMat::setname(char *name)
-{
-    int iop = 0;
-    size_t l;
-
-    if (this->init != 1)
-        goto ERR1;
-
-    l = strlen(name);
-    this->name = (char *)calloc(l + 1, sizeof(char));
-    if (this->name == NULL)
-        goto ERR2;
-    strcpy(this->name, name);
-
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
-    return iop;
-ERR1:
-    printf("\nerreur: la matrice n'est pas initialisee !");
-    iop = 990;
-    goto FIN;
-ERR2:
-    printf("\nerreur: pas assez de memoire !");
     iop = 990;
     goto FIN;
 }
@@ -197,9 +120,6 @@ int TdiMat::setsize(int nsys)
 {
     int iop = 0;
     int i;
-
-    if (this->init != 1)
-        goto ERR1;
 
     if (nsys > 0)
     {
@@ -313,9 +233,6 @@ int TdiMat::fill(double val)
     int iop = 0;
     int i, j;
 
-    if (this->init != 1)
-        goto ERR1;
-
     for (i = 0; i < 3; i++)
         for (j = 0; j < this->nsys; j++)
             this->s[i][j] = val;
@@ -428,12 +345,9 @@ void TdiMat::print_err(FILE *fich, int code)
                        Routines de test de la librairie
  **************************************************************************/
 
-
 int TdiMat::test()
 {
     int iop = 0;
-    TdiMat K;
-    int i, j, n;
 
     double A[5][5] = {{1, 3, 0, 0, 0},
                       {1, 2, 0, 0, 0},
@@ -443,23 +357,17 @@ int TdiMat::test()
 
     double q[5] = {1, 1, 1, 1, 1};
     double x[5], xs[5];
-    n = 5;
+    int n = 5;
 
     // initialisation
 
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         x[i] = 0;
         xs[i] = 0;
     }
 
-    iop = K.initmat();
-    if (iop != 0)
-        goto FIN;
-
-    iop = K.setname("K");
-    if (iop != 0)
-        goto FIN;
+    TdiMat K("K");
 
     iop = K.setsize(n);
     if (iop != 0)
@@ -467,9 +375,9 @@ int TdiMat::test()
 
     // assemblage Ks
 
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (j = 0; j < n; j++)
+        for (int j = 0; j < n; j++)
         {
             if (A[i][j] != 0.0)
             {
@@ -480,7 +388,7 @@ int TdiMat::test()
         }
     }
 
-    mlab_tdi("tri.m", "1", &K, TDI_A, MLAB_NEW, MLAB_VERBOSE);
+    K.mlab("tri.m", "1", TDI_A, MLAB_NEW, MLAB_VERBOSE);
 
     // resolution
 
@@ -489,7 +397,7 @@ int TdiMat::test()
 
     // verification matlab
 
-    mlab_tdi("tri.m", "2", &K, TDI_LU, MLAB_OLD, MLAB_VERBOSE);
+    K.mlab("tri.m", "2", TDI_LU, MLAB_OLD, MLAB_VERBOSE);
     mlab_vec("tri.m", "q", q, n, MLAB_OLD, MLAB_VERBOSE);
     mlab_vec("tri.m", "x", x, n, MLAB_OLD, MLAB_VERBOSE);
 
@@ -503,5 +411,54 @@ FIN:
     if (iop > 900)
         printf("\n\t-->" __FILE__
                "\n");
+    return iop;
+}
+
+/*
+ *  Ecriture d'une matrice TRIDIAG dans un fichier MATLAB existant ou non
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+SKY_API int TdiMat::mlab(char *filename, char *id_txt, int type, int nfile, int opt)
+{
+    int iop = 0;
+
+    char *pre[3] = {"", "L", "U"};
+
+    char *pre1 = (type == TDI_LU) ? pre[1] : pre[0];
+    char *pre2 = (type == TDI_LU) ? pre[2] : pre[0];
+
+    FILE *fich;
+    if (nfile == MLAB_OLD)
+        fich = fopen(filename, "a");
+    else
+        fich = fopen(filename, "w");
+    if (fich == NULL)
+        throw std::runtime_error("impossible d'ouvrir le fichier "+name);
+
+    for (int i = 0; i < this->nsys; i++)
+    {
+
+        int i1 = i + 1;
+        if (type == TDI_LU)
+            fprintf(fich, "%s%s%s(%d,%d) = 1.0;\n",
+                    name.c_str(), id_txt, pre1, i1, i1);
+        fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
+                name.c_str(), id_txt, pre2, i1, i1, this->s[1][i]);
+        if (i != 0)
+            fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
+                    name.c_str(), id_txt, pre1, i1, i1 - 1, this->s[2][i]);
+        if (i != this->nsys - 1)
+            fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
+                    name.c_str(), id_txt, pre2, i1, i1 + 1, this->s[0][i]);
+    }
+
+    fclose(fich);
+
+    if (VERBOSE || (opt == MLAB_VERBOSE))
+        printf("matrice \"%s\" sauvee dans le fichier matlab \"%s\" (%s)\n",
+               name.c_str(), filename,
+               (nfile == MLAB_OLD) ? "append" : "new");
+
     return iop;
 }

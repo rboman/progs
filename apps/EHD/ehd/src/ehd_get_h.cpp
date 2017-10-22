@@ -268,7 +268,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         printf("\tite %4d:\tres = %+E\n", ite, res);
 
 #if 0   
-    mlab_tdi("tri.m","",K,TDI_A,MLAB_NEW, MLAB_VERBOSE);
+    K->mlab("tri.m","",TDI_A,MLAB_NEW, MLAB_VERBOSE);
     mlab_vec("tri.m","rhs",rhs,nsys,MLAB_OLD, MLAB_VERBOSE);
 #endif
 
@@ -288,7 +288,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         }
 
 #if 0
-    mlab_tdi("tri.m","",K,TDI_LU,MLAB_OLD, MLAB_VERBOSE);
+    K->mlab("tri.m","",TDI_LU,MLAB_OLD, MLAB_VERBOSE);
     mlab_vec("tri.m","inc",inc,nsys,MLAB_OLD, MLAB_VERBOSE);
     //exit(0);
 #endif
@@ -336,7 +336,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         iop = mlab_vec("pipo.m", "rhs", rhs, nsys, MLAB_OLD, MLAB_SILENT);
         iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_OLD, MLAB_SILENT);
         iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_SILENT);
-        //iop = mlab_tdi("pipo.m","",K,TDI_LU,MLAB_OLD, MLAB_SILENT);
+        //iop = K->mlab("pipo.m","",TDI_LU,MLAB_OLD, MLAB_SILENT);
         if (iop != 0)
             goto FIN;
     }

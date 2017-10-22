@@ -19,6 +19,9 @@
 
 #include "sky.h"
 
+#include <string>
+#include <vector>
+
 /* codes d'erreurs renvoyes par le solveur */
 
 #define TDI_ERR_OK 0
@@ -41,20 +44,18 @@
  *   - Solver non symetrique (sans gestion de pivots nuls)
  */
 
-struct SKY_API TdiMat
+class SKY_API TdiMat
 {
-    int init;
     int nsys;
     int nsys_a;
     double *s[3];
-    char *name;
-
-    TdiMat();
+    std::string name;
+public:
+    TdiMat(std::string const &_name="noname");
+    ~TdiMat();
 
     // Routines d'initialisation
-    int initmat();
     int reinit();
-    int setname(char *name);
     int setsize(int nsys);
 
     // Routines de manipulation de la matrice
@@ -67,6 +68,11 @@ struct SKY_API TdiMat
     void print_err(FILE *fich, int code);
 
     static int test();  
+
+    int mlab(char *filename, char *id_txt, int type, int nfile, int opt);
+
+private:
+
 };
 
 #endif // __TDILIB_H__

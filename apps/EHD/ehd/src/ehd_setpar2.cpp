@@ -37,7 +37,6 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
     //double xx;
 
-    TdiMat K;
     double *dp2 = (double *)malloc(nn * sizeof(double));
     double y, yp;
 
@@ -87,13 +86,7 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
     // init
 
-    iop = K.initmat();
-    if (iop != 0)
-        goto FIN;
-
-    iop = K.setname("K");
-    if (iop != 0)
-        goto FIN;
+    TdiMat K("K");
 
     // calcul des derivees secondes (dp2)
 
