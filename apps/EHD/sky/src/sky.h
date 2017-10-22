@@ -27,7 +27,7 @@
 
 /*
 #include "skylib.h"
-#include "tdilib.h"
+#include "TdiMat.h"
 #include "mlab.h"
 */
 namespace sky

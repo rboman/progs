@@ -50,7 +50,7 @@
  *
  * Utilisation:
  * ~~~~~~~~~~~~
- * 1. commencer tjs par appeler "sky_init" sur la matrice concernee
+ * 1. commencer tjs par appeler "sky_initmat" sur la matrice concernee
  * 2. det de la ligne de ciel:
  *        - sky_pre_start (init le calcul)
  *        - sky_pre_ass   (simule un assemblage)
@@ -145,7 +145,7 @@ ERR1:
  *                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_init(SkyMat *A)
+SKY_API int sky_initmat(SkyMat *A)
 {
     int iop = 0;
 
@@ -227,7 +227,7 @@ SKY_API int sky_reinit(SkyMat *A)
     // INITIALISATION
 
     A->init = 0;
-    iop = sky_init(A);
+    iop = sky_initmat(A);
     if (iop != 0)
         goto FIN;
 
@@ -1618,8 +1618,8 @@ SKY_API int sky_test()
         xs[i] = 0;
     }
 
-    sky_init(&K);
-    sky_init(&Ks);
+    sky_initmat(&K);
+    sky_initmat(&Ks);
 
     sky_setname(&K, "K");
     sky_setname(&Ks, "Ks");

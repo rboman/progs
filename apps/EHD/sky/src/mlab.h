@@ -25,7 +25,7 @@
 
 #include "sky.h"
 #include "skylib.h"
-#include "tdilib.h"
+#include "TdiMat.h"
 
 /**************************************************************************
                                     Macros

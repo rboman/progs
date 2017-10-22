@@ -118,13 +118,13 @@ int main1()
 
     // Initialisation skyline
 
-    iop = sky_init(&K);
+    iop = sky_initmat(&K);
     if (iop != 0)
         goto FIN;
     iop = sky_setname(&K, "K");
     if (iop != 0)
         goto FIN;
-    iop = sky_init(&K2);
+    iop = sky_initmat(&K2);
     if (iop != 0)
         goto FIN;
     iop = sky_setname(&K2, "K2");

@@ -10,7 +10,7 @@
 
 #include "sky.h"
 #include "skylib.h"
-#include "tdilib.h"
+#include "TdiMat.h"
 #include "mlab.h"
 
 #include <string>
@@ -31,5 +31,5 @@ namespace std {
 %include "sky.h"
 
 %include "skylib.h"
-%include "tdilib.h"
+%include "TdiMat.h"
 %include "mlab.h"

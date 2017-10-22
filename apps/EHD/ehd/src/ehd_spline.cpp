@@ -20,7 +20,7 @@
 
 #include "ehd.h"
 
-#include "tdilib.h"
+#include "TdiMat.h"
 
 //#define STANDALONE
 

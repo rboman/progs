@@ -35,7 +35,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "tdilib.h"
+#include "TdiMat.h"
 #include "mlab.h"
 
 /**************************************************************************

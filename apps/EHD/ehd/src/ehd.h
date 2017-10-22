@@ -38,7 +38,7 @@
 
 #include "gausslib.h"
 #include "skylib.h"
-#include "tdilib.h"
+#include "TdiMat.h"
 #include "mlab.h"
 
 // MACROS
