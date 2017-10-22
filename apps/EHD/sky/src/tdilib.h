@@ -14,23 +14,10 @@
  *   limitations under the License.
  */
 
-/*
- * TdiLib
- * ======
- *   - Gestion de Matrices TriDIagonales
- *   - Solver non symetrique (sans gestion de pivots nuls)
- *
- * RoBo 27-09-00
- */
-
 #ifndef __TDILIB_H__
 #define __TDILIB_H__
 
 #include "sky.h"
-
-/**************************************************************************
-                                    Macros
- **************************************************************************/
 
 /* codes d'erreurs renvoyes par le solveur */
 
@@ -47,9 +34,12 @@
 #define TDI_A 0
 #define TDI_LU 1
 
-/**************************************************************************
-                                    Objet(s)
- **************************************************************************/
+/**
+ * @brief Tridiagonal Matrix / Solver
+ * 
+ *   - Gestion de Matrices TriDIagonales
+ *   - Solver non symetrique (sans gestion de pivots nuls)
+ */
 
 struct SKY_API TdiMat
 {
@@ -58,25 +48,25 @@ struct SKY_API TdiMat
     int nsys_a;
     double *s[3];
     char *name;
+
+    TdiMat();
+
+    // Routines d'initialisation
+    int initmat();
+    int reinit();
+    int setname(char *name);
+    int setsize(int nsys);
+
+    // Routines de manipulation de la matrice
+    int ass(int i, int j, double val);
+    int set(int i, int j, double val);
+    int fill(double val);
+
+    // Solveur
+    int solve(double *q, double *x, int type);
+    void print_err(FILE *fich, int code);
+
+    static int test();  
 };
-
-/**************************************************************************
-                                   Prototypes
- **************************************************************************/
-
-// Routines d'initialisation
-SKY_API int tdi_init(TdiMat *A);
-SKY_API int tdi_reinit(TdiMat *A);
-SKY_API int tdi_setname(TdiMat *A, char *name);
-SKY_API int tdi_setsize(TdiMat *A, int nsys);
-
-// Routines de manipulation de la matrice
-SKY_API int tdi_ass(TdiMat *A, int i, int j, double val);
-SKY_API int tdi_set(TdiMat *A, int i, int j, double val);
-SKY_API int tdi_fill(TdiMat *A, double val);
-
-// Solveur
-SKY_API int tdi_solve(TdiMat *A, double *q, double *x, int type);
-SKY_API void tdi_print_err(FILE *fich, int code);
 
 #endif // __TDILIB_H__

@@ -106,7 +106,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
 
     // Ajuste taille systeme
 
-    iop = tdi_setsize(K, nsys);
+    iop = K->setsize(nsys);
     if (iop != 0)
         goto FIN;
 
@@ -137,7 +137,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         //bzero(rhs,nbnode*sizeof(double));
         // init matrice tridiag
 
-        tdi_fill(K, 0.0);
+        K->fill(0.0);
 
         // init vecteur inc (facultatif)
 
@@ -206,12 +206,12 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
                     }
                     else
                     {
-                        tdi_ass(K, ni, nj,
+                        K->ass(ni, nj,
                                 dSp[i][j] - dSu[i][j] - C2[i][j] - dSv[i][j] * Rq);
                         if (scheme == EHD_EULER)
-                            tdi_ass(K, ni, nj, C1[i][j] / dt);
+                        K->ass(ni, nj, C1[i][j] / dt);
                     }
-                    //tdi_ass(K,ni,nj,-dSu[i][j]);
+                    //K->ass(ni,nj,-dSu[i][j]);
                 }
 
             } // endfor(i)
@@ -232,7 +232,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
             ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
                      PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
             rhs[ni] += sign * flux; // rhs = - residu
-            tdi_ass(K, ni, ni, -sign * fluxd[2]);
+            K->ass(ni, ni, -sign * fluxd[2]);
             //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
         }
 
@@ -248,7 +248,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
             ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
                      PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
             rhs[ni] += -sign * flux; // rhs = - residu :  SIGN (-) OK cov pure
-            tdi_ass(K, ni, ni, sign * fluxd[2]);
+            K->ass(ni, ni, sign * fluxd[2]);
             //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
         }
 
@@ -280,10 +280,10 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
 
         // Solution systeme
 
-        iop = tdi_solve(K, rhs, inc, SKY_DO_LU | SKY_DO_SUBST);
+        iop = K->solve(rhs, inc, SKY_DO_LU | SKY_DO_SUBST);
         if (iop != 0)
         {
-            tdi_print_err(stdout, iop);
+            K->print_err(stdout, iop);
             goto FIN;
         }
 

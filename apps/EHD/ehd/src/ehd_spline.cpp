@@ -117,14 +117,14 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
 
     double hi1, hi2, di1, di2;
 
-    iop = tdi_setsize(K, nn);
+    iop = K->setsize(nn);
     if (iop != 0)
         goto FIN;
 
     // assemblage
 
-    iop = tdi_ass(K, 0, 0, 1.0);
-    iop = tdi_ass(K, 0, 1, 0.0);
+    iop = K->ass(0, 0, 1.0);
+    iop = K->ass(0, 1, 0.0);
     if (iop != 0)
         goto FIN;
 
@@ -138,16 +138,16 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
         di1 = (yi[i] - yi[i - 1]) / hi1;
         di2 = (yi[i + 1] - yi[i]) / hi2;
 
-        iop = tdi_ass(K, i, i - 1, hi1);
-        iop = tdi_ass(K, i, i, 2.0 * (hi1 + hi2));
-        iop = tdi_ass(K, i, i + 1, hi2);
+        iop = K->ass(i, i - 1, hi1);
+        iop = K->ass(i, i, 2.0 * (hi1 + hi2));
+        iop = K->ass(i, i + 1, hi2);
         if (iop != 0)
             goto FIN;
 
         rhs[i] = 6.0 * (di2 - di1);
     }
-    iop = tdi_ass(K, nn - 1, nn - 2, 0.0);
-    iop = tdi_ass(K, nn - 1, nn - 1, 1.0);
+    iop = K->ass(nn - 1, nn - 2, 0.0);
+    iop = K->ass(nn - 1, nn - 1, 1.0);
     if (iop != 0)
         goto FIN;
 
@@ -160,8 +160,8 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
 
     // resolution
 
-    iop = tdi_solve(K, rhs, ki, TDI_DO_LU | TDI_DO_SUBST);
-    tdi_print_err(stdout, iop);
+    iop = K->solve(rhs, ki, TDI_DO_LU | TDI_DO_SUBST);
+    K->print_err(stdout, iop);
     if (iop != 0)
         goto FIN;
 
@@ -197,11 +197,11 @@ int main()
 
     // init matrice tridiag
 
-    iop = tdi_init(&K);
+    iop = K->initmat();
     if (iop != 0)
         goto FIN;
 
-    iop = tdi_setname(&K, "K");
+    iop = K->setname("K");
     if (iop != 0)
         goto FIN;
 
@@ -259,7 +259,7 @@ int main()
 
     // purge memoire du systeme tridiag
 
-    iop = tdi_reinit(&K);
+    iop = K->reinit();
     if (iop != 0)
         goto FIN;
 

@@ -102,13 +102,13 @@ int main()
 
     // Initialisation de la matrice d'iteration (tri-diag)
 
-    iop = tdi_init(&K);
+    iop = K.initmat();
     if (iop != 0)
         goto FIN;
-    iop = tdi_setname(&K, "K");
+    iop = K.setname("K");
     if (iop != 0)
         goto FIN;
-    iop = tdi_setsize(&K, nbnode);
+    iop = K.setsize(nbnode);
     if (iop != 0)
         goto FIN;
 

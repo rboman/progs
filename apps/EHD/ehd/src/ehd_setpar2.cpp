@@ -87,11 +87,11 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
     // init
 
-    iop = tdi_init(&K);
+    iop = K.initmat();
     if (iop != 0)
         goto FIN;
 
-    iop = tdi_setname(&K, "K");
+    iop = K.setname("K");
     if (iop != 0)
         goto FIN;
 
@@ -116,7 +116,7 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
     // purge memoire du systeme tridiag
 
-    iop = tdi_reinit(&K);
+    iop = K.reinit();
     if (iop != 0)
         goto FIN;
 

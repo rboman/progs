@@ -52,7 +52,14 @@
 #undef VERBOSE
 #define VERBOSE 0
 
-char *tdi_nulname = "noname";
+char *nulname = "noname";
+
+
+TdiMat::TdiMat()
+{
+
+
+}
 
 /**************************************************************************
                         Routines d'initialisation
@@ -63,21 +70,21 @@ char *tdi_nulname = "noname";
  *                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int tdi_init(TdiMat *A)
+int TdiMat::initmat()
 {
     int iop = 0;
     int i;
 
-    if (A->init == 1)
+    if (this->init == 1)
         goto ERR1;
 
-    A->nsys = 0;
-    A->nsys_a = 0;
+        this->nsys = 0;
+        this->nsys_a = 0;
     for (i = 0; i < 3; i++)
-        A->s[i] = NULL;
-    A->name = tdi_nulname;
+    this->s[i] = NULL;
+    this->name = nulname;
 
-    A->init = 1;
+    this->init = 1;
 
 /***/
 
@@ -87,7 +94,7 @@ FIN:
                "\n");
     return iop;
 ERR1:
-    printf("\nerreur: la matrice \"%s\" a deja ete initialisee !", A->name);
+    printf("\nerreur: la matrice \"%s\" a deja ete initialisee !", this->name);
     iop = 990;
     goto FIN;
 }
@@ -99,36 +106,36 @@ ERR1:
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int tdi_reinit(TdiMat *A)
+int TdiMat::reinit()
 {
     int iop = 0;
     int i, mem;
 
-    if (A->init != 1)
+    if (this->init != 1)
         goto ERR1;
 
     // PURGE LA MEMOIRE
 
     // s[]
     mem = 0;
-    if (A->nsys_a > 0)
+    if (this->nsys_a > 0)
     {
         for (i = 0; i < 3; i++)
-            free(A->s[i]);
-        mem = 3 * A->nsys_a;
-        A->nsys_a = 0;
+            free(this->s[i]);
+        mem = 3 * this->nsys_a;
+        this->nsys_a = 0;
     }
     // nom
-    if (A->name != tdi_nulname)
-        free(A->name);
+    if (this->name != nulname)
+        free(this->name);
 
 #if VERBOSE
     printf("liberation de %d doubles\n", mem);
 #endif
     // INITIALISATION
 
-    A->init = 0;
-    iop = tdi_init(A);
+    this->init = 0;
+    iop = this->initmat();
     if (iop != 0)
         goto FIN;
 
@@ -150,19 +157,19 @@ ERR1:
  *                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int tdi_setname(TdiMat *A, char *name)
+int TdiMat::setname(char *name)
 {
     int iop = 0;
     size_t l;
 
-    if (A->init != 1)
+    if (this->init != 1)
         goto ERR1;
 
     l = strlen(name);
-    A->name = (char *)calloc(l + 1, sizeof(char));
-    if (A->name == NULL)
+    this->name = (char *)calloc(l + 1, sizeof(char));
+    if (this->name == NULL)
         goto ERR2;
-    strcpy(A->name, name);
+    strcpy(this->name, name);
 
 FIN:
     if (iop > 900)
@@ -186,34 +193,34 @@ ERR2:
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int tdi_setsize(TdiMat *A, int nsys)
+int TdiMat::setsize(int nsys)
 {
     int iop = 0;
     int i;
 
-    if (A->init != 1)
+    if (this->init != 1)
         goto ERR1;
 
     if (nsys > 0)
     {
-        if (A->nsys_a < nsys)
+        if (this->nsys_a < nsys)
         {
             for (i = 0; i < 3; i++)
             {
-                A->s[i] = (double *)realloc(A->s[i], nsys * sizeof(double));
-                if (A->s[i] == NULL)
+                this->s[i] = (double *)realloc(this->s[i], nsys * sizeof(double));
+                if (this->s[i] == NULL)
                     goto ERR2;
-                A->nsys_a = nsys;
+                this->nsys_a = nsys;
             }
         }
-        A->nsys = nsys;
+        this->nsys = nsys;
     }
     else
         goto ERR3;
 
     // Init
 
-    iop = tdi_fill(A, 0.0);
+    iop = this->fill(0.0);
     if (iop != 0)
         goto FIN;
 
@@ -247,14 +254,14 @@ ERR3:
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int tdi_ass(TdiMat *A, int i, int j, double val)
+int TdiMat::ass(int i, int j, double val)
 {
     int iop = 0;
 
     if (abs(i - j) > 1)
         goto ERR1;
 
-    A->s[1 + i - j][i] += val;
+    this->s[1 + i - j][i] += val;
 
 FIN:
     if (iop > 900)
@@ -274,14 +281,14 @@ ERR1:
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int tdi_set(TdiMat *A, int i, int j, double val)
+int TdiMat::set(int i, int j, double val)
 {
     int iop = 0;
 
     if (abs(i - j) > 1)
         goto ERR1;
 
-    A->s[1 + i - j][i] = val;
+    this->s[1 + i - j][i] = val;
 
 FIN:
     if (iop > 900)
@@ -301,17 +308,17 @@ ERR1:
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int tdi_fill(TdiMat *A, double val)
+int TdiMat::fill(double val)
 {
     int iop = 0;
     int i, j;
 
-    if (A->init != 1)
+    if (this->init != 1)
         goto ERR1;
 
     for (i = 0; i < 3; i++)
-        for (j = 0; j < A->nsys; j++)
-            A->s[i][j] = val;
+        for (j = 0; j < this->nsys; j++)
+            this->s[i][j] = val;
 
 FIN:
     if (iop > 900)
@@ -328,7 +335,7 @@ ERR1:
                                   Solveur
  **************************************************************************/
 
-SKY_API int tdi_solve(TdiMat *A, double *q, double *x, int type)
+int TdiMat::solve(double *q, double *x, int type)
 {
     int iop = TDI_ERR_OK;
     double *s[3];
@@ -338,8 +345,8 @@ SKY_API int tdi_solve(TdiMat *A, double *q, double *x, int type)
     // Raccourcis
 
     for (i = 0; i < 3; i++)
-        s[i] = A->s[i];
-    nn = A->nsys;
+        s[i] = this->s[i];
+    nn = this->nsys;
 
     // Decomposition LU
 
@@ -397,7 +404,7 @@ ERR1:
  *             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API void tdi_print_err(FILE *fich, int code)
+void TdiMat::print_err(FILE *fich, int code)
 {
     char *err[3] = {"ok", "pivot nul", "code inconnu"};
     char *e;
@@ -421,9 +428,8 @@ SKY_API void tdi_print_err(FILE *fich, int code)
                        Routines de test de la librairie
  **************************************************************************/
 
-#ifdef TDI_STANDALONE
 
-int tdi_test()
+int TdiMat::test()
 {
     int iop = 0;
     TdiMat K;
@@ -447,15 +453,15 @@ int tdi_test()
         xs[i] = 0;
     }
 
-    iop = tdi_init(&K);
+    iop = K.initmat();
     if (iop != 0)
         goto FIN;
 
-    iop = tdi_setname(&K, "K");
+    iop = K.setname("K");
     if (iop != 0)
         goto FIN;
 
-    iop = tdi_setsize(&K, n);
+    iop = K.setsize(n);
     if (iop != 0)
         goto FIN;
 
@@ -467,7 +473,7 @@ int tdi_test()
         {
             if (A[i][j] != 0.0)
             {
-                iop = tdi_ass(&K, i, j, A[i][j]);
+                iop = K.ass(i, j, A[i][j]);
                 if (iop != 0)
                     goto FIN;
             }
@@ -478,8 +484,8 @@ int tdi_test()
 
     // resolution
 
-    iop = tdi_solve(&K, q, x, TDI_DO_LU | TDI_DO_SUBST);
-    tdi_print_err(stdout, iop);
+    iop = K.solve(q, x, TDI_DO_LU | TDI_DO_SUBST);
+    K.print_err(stdout, iop);
 
     // verification matlab
 
@@ -489,7 +495,7 @@ int tdi_test()
 
     // purge memoire (facultatif)
 
-    iop = tdi_reinit(&K);
+    iop = K.reinit();
     if (iop != 0)
         goto FIN;
 
@@ -499,13 +505,3 @@ FIN:
                "\n");
     return iop;
 }
-
-/**************************************************************************/
-
-int main()
-{
-    tdi_test();
-    return 0;
-}
-
-#endif

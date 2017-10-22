@@ -21,6 +21,7 @@ def main():
     import matplotlib.pyplot as plt
     import sky
 
+    sky.TdiMat.test()
 
 if __name__ == "__main__":
     main()
