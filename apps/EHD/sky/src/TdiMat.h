@@ -37,6 +37,8 @@
 #define TDI_A 0
 #define TDI_LU 1
 
+SKY_API std::ostream &operator<<(std::ostream &out, TdiMat const &obj);
+
 /**
  * @brief Tridiagonal Matrix / Solver
  * 
@@ -70,6 +72,8 @@ public:
     static void test();  
 
     void mlab(char *filename, char *id_txt, int type, int nfile, int opt);
+
+    friend SKY_API std::ostream &operator<<(std::ostream &out, TdiMat const &obj);
 
 private:
 

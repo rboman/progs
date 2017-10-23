@@ -316,3 +316,9 @@ void TdiMat::mlab(char *filename, char *id_txt, int type, int nfile, int opt)
                name.c_str(), filename,
                (nfile == MLAB_OLD) ? "append" : "new");
 }
+
+SKY_API std::ostream &operator<<(std::ostream &out, TdiMat const &obj)
+{
+    out << "TdiMat '" << obj.name << "'\n";
+    return out;
+}

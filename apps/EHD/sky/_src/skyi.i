@@ -18,6 +18,8 @@
  
 %}
 
+%ignore operator<<;
+
 %include "std_string.i"
 
 
@@ -73,3 +75,10 @@ namespace std {
 %include "SkyMat.h"
 %include "TdiMat.h"
 %include "mlab.h"
+
+%extend TdiMat {
+    std::string __str__() {
+        std::stringstream str; str << *self;
+        return str.str();
+    }
+}

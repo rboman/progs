@@ -41,6 +41,9 @@
 #include "TdiMat.h"
 #include "mlab.h"
 */
+
+class TdiMat;
+
 namespace sky
 {
 
