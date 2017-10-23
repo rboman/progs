@@ -117,16 +117,12 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
 
     double hi1, hi2, di1, di2;
 
-    iop = K->setsize(nn);
-    if (iop != 0)
-        goto FIN;
+    K->setsize(nn);
 
     // assemblage
 
-    iop = K->ass(0, 0, 1.0);
-    iop = K->ass(0, 1, 0.0);
-    if (iop != 0)
-        goto FIN;
+    K->ass(0, 0, 1.0);
+    K->ass(0, 1, 0.0);
 
     rhs[0] = 0.0;
 
@@ -138,18 +134,14 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
         di1 = (yi[i] - yi[i - 1]) / hi1;
         di2 = (yi[i + 1] - yi[i]) / hi2;
 
-        iop = K->ass(i, i - 1, hi1);
-        iop = K->ass(i, i, 2.0 * (hi1 + hi2));
-        iop = K->ass(i, i + 1, hi2);
-        if (iop != 0)
-            goto FIN;
+        K->ass(i, i - 1, hi1);
+        K->ass(i, i, 2.0 * (hi1 + hi2));
+        K->ass(i, i + 1, hi2);
 
         rhs[i] = 6.0 * (di2 - di1);
     }
-    iop = K->ass(nn - 1, nn - 2, 0.0);
-    iop = K->ass(nn - 1, nn - 1, 1.0);
-    if (iop != 0)
-        goto FIN;
+    K->ass(nn - 1, nn - 2, 0.0);
+    K->ass(nn - 1, nn - 1, 1.0);
 
     rhs[nn - 1] = 0.0;
 

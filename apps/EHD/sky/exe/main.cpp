@@ -15,7 +15,7 @@
  */
 
 #include "sky.h"
-#include "skylib.h"
+#include "SkyMat.h"
 
 int main()
 {

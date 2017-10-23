@@ -24,7 +24,7 @@
 #define __MLAB_H__
 
 #include "sky.h"
-#include "skylib.h"
+#include "SkyMat.h"
 #include "TdiMat.h"
 
 /**************************************************************************

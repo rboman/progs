@@ -24,8 +24,8 @@
  * RoBo 27-09-00
  */
 
-#ifndef __SKYLIB_H__
-#define __SKYLIB_H__
+#ifndef __SKYMAT_H__
+#define __SKYMAT_H__
 
 #include "sky.h"
 #include <stdio.h>
@@ -126,4 +126,4 @@ SKY_API void sky_f_solve_usym(double *sitl, double *situ,
 
 SKY_API int sky_test();
 
-#endif // __SKYLIB_H__
+#endif // __SKYMAT_H__

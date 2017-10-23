@@ -84,7 +84,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "skylib.h"
+#include "SkyMat.h"
 #include "mlab.h"
 
 /**************************************************************************

@@ -19,7 +19,7 @@
  */
 
 #include "ehd.h"
-#include "skylib.h"
+#include "SkyMat.h"
 
 EHD_API int ehd_preass(SkyMat *K, int *loc2, int nbelem, int nsys, int nddl)
 {

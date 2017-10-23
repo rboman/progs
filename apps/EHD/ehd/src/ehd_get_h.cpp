@@ -106,9 +106,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
 
     // Ajuste taille systeme
 
-    iop = K->setsize(nsys);
-    if (iop != 0)
-        goto FIN;
+    K->setsize(nsys);
 
     // Extraction de la solution en p et dp
 

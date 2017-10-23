@@ -99,7 +99,7 @@ int main()
 
     TdiMat K("K");
 
-    iop = K.setsize(nbnode);
+    K.setsize(nbnode);
 
 
     for (nt = 0, ttot = 0.0; nt < npas; nt++)

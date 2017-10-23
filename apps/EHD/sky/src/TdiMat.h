@@ -14,8 +14,8 @@
  *   limitations under the License.
  */
 
-#ifndef __TDILIB_H__
-#define __TDILIB_H__
+#ifndef __TDIMAT_H__
+#define __TDIMAT_H__
 
 #include "sky.h"
 
@@ -55,24 +55,24 @@ public:
     ~TdiMat();
 
     // Routines d'initialisation
-    int reinit();
-    int setsize(int nsys);
+    void reinit();
+    void setsize(int nsys);
 
     // Routines de manipulation de la matrice
-    int ass(int i, int j, double val);
-    int set(int i, int j, double val);
-    int fill(double val);
+    void ass(int i, int j, double val);
+    void set(int i, int j, double val);
+    void fill(double val);
 
     // Solveur
     int solve(double *q, double *x, int type);
     void print_err(FILE *fich, int code);
 
-    static int test();  
+    static void test();  
 
-    int mlab(char *filename, char *id_txt, int type, int nfile, int opt);
+    void mlab(char *filename, char *id_txt, int type, int nfile, int opt);
 
 private:
 
 };
 
-#endif // __TDILIB_H__
+#endif // __TDIMAT_H__

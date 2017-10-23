@@ -25,6 +25,17 @@
 #define GAUSS_API
 #endif
 
+#ifdef _MSC_VER
+#if !defined(_CRT_SECURE_NO_WARNINGS)
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
+
+#pragma warning( disable : 4251)  // DLL/templates non exportes
+#pragma warning( disable : 4275)  // non - DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
+
+#endif //_MSC_VER
+
+
 namespace gauss
 {
 

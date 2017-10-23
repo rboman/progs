@@ -109,9 +109,7 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
     // purge memoire du systeme tridiag
 
-    iop = K.reinit();
-    if (iop != 0)
-        goto FIN;
+    K.reinit();
 
     /*
   iop = mlab_vec("pipo.m", "p", p, nn, MLAB_NEW, MLAB_VERBOSE);
