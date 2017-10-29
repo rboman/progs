@@ -3,7 +3,8 @@
 # Licensed under the terms of the MIT License
 # Copyright (c) 2015 Pierre Raybaut
 
-# from  https://github.com/PierreRaybaut/plotpy/wiki/Using-Qt-Charts-(PyQtChart)-to-plot-curves-efficiently-in-Python!
+# from
+# https://github.com/PierreRaybaut/plotpy/wiki/Using-Qt-Charts-(PyQtChart)-to-plot-curves-efficiently-in-Python!
 
 
 """
@@ -27,11 +28,11 @@ def series_to_polyline(xdata, ydata):
     polyline = QPolygonF(size)
     pointer = polyline.data()
     dtype, tinfo = np.float, np.finfo  # integers: = np.int, np.iinfo
-    pointer.setsize(2*polyline.size()*tinfo(dtype).dtype.itemsize)
+    pointer.setsize(2 * polyline.size() * tinfo(dtype).dtype.itemsize)
     memory = np.frombuffer(pointer, dtype)
-    memory[:(size-1)*2+1:2] = xdata
-    memory[1:(size-1)*2+2:2] = ydata
-    return polyline    
+    memory[:(size - 1) * 2 + 1:2] = xdata
+    memory[1:(size - 1) * 2 + 2:2] = ydata
+    return polyline
 
 
 class TestWindow(QMainWindow):
@@ -73,8 +74,8 @@ if __name__ == '__main__':
     xdata = np.linspace(0., 10., npoints)
     window.add_data(xdata, np.sin(xdata), color=Qt.red)
     window.add_data(xdata, np.cos(xdata), color=Qt.blue)
-    window.set_title("Simple example with %d curves of %d points "\
-                     "(OpenGL Accelerated Series)"\
+    window.set_title("Simple example with %d curves of %d points "
+                     "(OpenGL Accelerated Series)"
                      % (window.ncurves, npoints))
     window.setWindowTitle("Simple performance example")
     window.show()

@@ -34,7 +34,7 @@ class MyWidget(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         
-        if 0:
+        if 1:
             painter.setPen(QPen(Qt.blue, 1, Qt.DashLine))
             painter.drawRect(0, 0, 100, 100)
     
@@ -52,7 +52,6 @@ class MyWidget(QWidget):
     
         rect = painter.viewport()
         wind = painter.window()
-    
         print "rest=", rect.x(), rect.y(), rect.height(), rect.width()
         print "wind=", wind.x(), wind.y(), wind.height(), wind.width()
     
