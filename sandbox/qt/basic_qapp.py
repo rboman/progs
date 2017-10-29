@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
-# inspired from http://zetcode.com/gui/pyqt5/
+# from http://zetcode.com/gui/pyqt5/
 
 import sys
 import os
