@@ -1,8 +1,24 @@
 #! /usr/bin/env python
 # -*- coding: latin-1 -*-
+#
+#   Copyright 2017 Romain Boman
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+# I play with vtk commands...
 
 import vtk
-version=vtk.vtkVersion().GetVTKMajorVersion()
+version = vtk.vtkVersion().GetVTKMajorVersion()
 
 # data
 
@@ -13,7 +29,7 @@ reader.Update()
 # stupid filter
 
 shrink = vtk.vtkShrinkPolyData()
-if version>5:
+if version > 5:
     shrink.SetInputData(reader.GetOutput())
 else:
     shrink.SetInput(reader.GetOutput())
@@ -24,7 +40,7 @@ shrink.SetShrinkFactor(0.8)
 mapper = vtk.vtkPolyDataMapper()
 mapper.SetInputConnection(shrink.GetOutputPort())
 actor = vtk.vtkActor()
-actor.GetProperty().SetColor(1.0,1.0,1.0)
+actor.GetProperty().SetColor(1.0, 1.0, 1.0)
 actor.SetMapper(mapper)
 
 # actor 2
@@ -38,9 +54,9 @@ actor2.GetProperty().SetAmbient(0.5)
 actor2.GetProperty().SetDiffuse(0.5)
 actor2.GetProperty().SetSpecular(1.0)
 actor2.GetProperty().SetSpecularPower(10.0)
-actor2.SetScale(1.2,1.2,0.8)
-actor2.AddPosition(100,0,0)
-actor2.GetProperty().SetColor(1.0,0.0,0.0)
+actor2.SetScale(1.2, 1.2, 0.8)
+actor2.AddPosition(100, 0, 0)
+actor2.GetProperty().SetColor(1.0, 0.0, 0.0)
 actor2.RotateX(90)
 actor2.RotateZ(90)
 
@@ -49,13 +65,13 @@ actor2.RotateZ(90)
 #gen = vtk.vtkTextureMapToPlane()
 gen = vtk.vtkTextureMapToCylinder()
 #gen = vtk.vtkTextureMapToSphere()
-#gen.PreventSeamOn()
+# gen.PreventSeamOn()
 gen.SetInputConnection(reader.GetOutputPort())
-#gen.PreventSeamOn()
+# gen.PreventSeamOn()
 
 xform = vtk.vtkTransformTextureCoords()
 xform.SetInputConnection(gen.GetOutputPort())
-xform.SetScale(3,-3,0)
+xform.SetScale(3, -3, 0)
 
 
 bmpReader = vtk.vtkBMPReader()
@@ -69,7 +85,7 @@ mapper3.SetInputConnection(xform.GetOutputPort())
 actor3 = vtk.vtkActor()
 actor3.SetMapper(mapper3)
 actor3.SetTexture(texture)
-actor3.AddPosition(-200,0,0)
+actor3.AddPosition(-200, 0, 0)
 actor3.GetProperty().SetOpacity(1.0)
 actor3.GetProperty().SetAmbient(0.0)
 actor3.GetProperty().SetDiffuse(1.0)
@@ -78,10 +94,10 @@ actor3.GetProperty().SetDiffuse(1.0)
 # renderer ---
 
 ren = vtk.vtkRenderer()
-ren.SetBackground(0.1, 0.2, 0.4) 
-       
+ren.SetBackground(0.1, 0.2, 0.4)
+
 renWin = vtk.vtkRenderWindow()
-renWin.SetSize(640, 480)    
+renWin.SetSize(640, 480)
 renWin.AddRenderer(ren)
 iren = vtk.vtkRenderWindowInteractor()
 iren.SetRenderWindow(renWin)
@@ -93,16 +109,16 @@ ren.AddActor(actor3)
 cam1 = vtk.vtkCamera()
 cam1.ParallelProjectionOn()
 cam1.SetParallelScale(230)
-cam1.SetClippingRange(0,10000000)
-cam1.SetFocalPoint(125,125,100)
-cam1.SetPosition(-4000,0,0)
-#cam1.ComputeViewPlaneNormal()
-cam1.SetViewUp(0,0,1)
+cam1.SetClippingRange(0, 10000000)
+cam1.SetFocalPoint(125, 125, 100)
+cam1.SetPosition(-4000, 0, 0)
+# cam1.ComputeViewPlaneNormal()
+cam1.SetViewUp(0, 0, 1)
 ren.SetActiveCamera(cam1)
 
 
 light = vtk.vtkLight()
-light.SetColor(1,1,1)
+light.SetColor(1, 1, 1)
 light.SetFocalPoint(cam1.GetFocalPoint())
 light.SetPosition(cam1.GetPosition())
 
@@ -119,14 +135,14 @@ axes.SetZAxisLabelText("z")
 axes.SetTotalLength(1, 1, 1)
 tprop = vtk.vtkTextProperty()
 tprop.ItalicOn()
-#tprop.ShadowOn()
-#tprop.SetFontFamilyToTimes()
+# tprop.ShadowOn()
+# tprop.SetFontFamilyToTimes()
 axes.GetXAxisCaptionActor2D().SetCaptionTextProperty(tprop)
-tprop2 = vtk.vtkTextProperty() # inutile
-tprop2.ShallowCopy(tprop) # inutile
+tprop2 = vtk.vtkTextProperty()  # inutile
+tprop2.ShallowCopy(tprop)  # inutile
 axes.GetYAxisCaptionActor2D().SetCaptionTextProperty(tprop2)
-tprop3 = vtk.vtkTextProperty() # inutile
-tprop3.ShallowCopy(tprop) # inutile
+tprop3 = vtk.vtkTextProperty()  # inutile
+tprop3.ShallowCopy(tprop)  # inutile
 axes.GetZAxisCaptionActor2D().SetCaptionTextProperty(tprop3)
 
 marker = vtk.vtkOrientationMarkerWidget()
@@ -141,20 +157,19 @@ marker.InteractiveOff()
 
 # picker
 
-def myPickFun(object,event):
+def myPickFun(object, event):
     global picker
     print 'plouf! ', picker.GetPickPosition()
+
 
 picker = vtk.vtkCellPicker()
 picker.AddObserver("EndPickEvent", myPickFun)
 iren.SetPicker(picker)
-    
+
 print "\nuse <p> to pick an actor..."
 
 iren.Initialize()
 renWin.Render()
 iren.Start()
-    
+
 print cam1
-  
-    
