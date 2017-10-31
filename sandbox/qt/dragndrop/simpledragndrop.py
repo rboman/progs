@@ -27,6 +27,11 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
+        
+        label = QLabel(self)
+        label.setText("drag some text from the linedit to the button")
+        label.move(30, 35)
+
         edit = QLineEdit('', self)
         edit.setDragEnabled(True)
         edit.move(30, 65)
@@ -35,7 +40,7 @@ class Example(QWidget):
         button.move(190, 65)
 
         self.setWindowTitle('Simple drag and drop')
-        self.setGeometry(300, 300, 300, 150)
+        self.setGeometry(300, 300, 400, 150)
 
 
 if __name__ == '__main__':
