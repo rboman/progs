@@ -9,3 +9,5 @@
 [sample code](https://wiki.python.org/moin/PyQt/SampleCode)
 
 [tutorialspoint.com](https://www.tutorialspoint.com/pyqt/index.htm)
+
+srcs de PyQt: /examples/qtdemo/qtdemo.py
