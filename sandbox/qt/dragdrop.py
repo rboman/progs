@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys, os
+import sys
+import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
@@ -12,19 +13,27 @@ class Widget(QWidget):
         self.setAcceptDrops(True)
 
     def initUI(self):
-        self.label=QLabel(self)
-        self.label.setText("pipo")
-        self.label.setScaledContents(True)
-        self.label.move(10,10)
+        
+        self.ltxt = QLabel(self)
+        self.ltxt.setText("/")
+        self.lhtml = QLabel(self)
+        self.lhtml.setText("/")
 
+
+        flo = QFormLayout()
+        flo.addRow("text:", self.ltxt)
+        flo.addRow("html:", self.lhtml)
+
+        self.setLayout(flo)
 
     def dragEnterEvent(self, e):
-        e.accept() # accepte tout!
+        e.accept()  # accepte tout!
 
     def dropEvent(self, e):
-        self.label.setText(e.mimeData().text())
-
-
+        self.ltxt.setText(e.mimeData().text())
+        self.ltxt.adjustSize()
+        self.lhtml.setText(e.mimeData().html())
+        self.lhtml.adjustSize()
 
 class MainWindow(QMainWindow):
 
@@ -39,7 +48,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
 
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Main window')
+        self.setWindowTitle('Drop something into this Window')
         self.show()
 
 
