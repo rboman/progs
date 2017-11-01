@@ -1,4 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
+
 # from https://stackoverflow.com/questions/38645674/issues-with-pyqt5s-opengl-module-and-versioning-calls-for-incorrect-qopenglfu
+# requiert python/OpenGL
 
 import sys
 import math
