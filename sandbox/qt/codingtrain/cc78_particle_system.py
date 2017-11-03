@@ -31,7 +31,7 @@ class Particle(object):
     def show(self, painter): 
         painter.setPen(QPen(Qt.NoPen))
         painter.setBrush(QBrush(QColor(255,255,255,self.alpha)))
-        painter.drawEllipse(self.x, self.y, 16, 16)
+        painter.drawEllipse(QPointF(self.x, self.y), 8, 8)
 
 
 class Window(QWidget):

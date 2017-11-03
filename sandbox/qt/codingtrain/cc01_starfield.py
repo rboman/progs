@@ -1,0 +1,118 @@
+#!/usr/bin/env python
+# -*- coding: latin-1 -*-
+
+# from "Simple Particle System" (Daniel Shiffman)
+# Edited Video: https://www.youtube.com/watch?v=UcdigVaIYAk
+
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+import random
+
+
+def mapFromTo(x, a, b, c, d):
+    y = (float(x) - float(a)) / (float(b) - float(a)) * (float(d) - float(c)) + float(c)
+    return y
+
+speed=0
+width=0
+height=0
+
+class Star(object):
+
+    def __init__(self):
+        global width, height
+
+        self.x=random.uniform(-width, width)
+        self.y=random.uniform(-height, height)
+        self.z=random.uniform(0, width)
+        self.pz=self.z;
+
+    def update(self):
+        global speed, width, height
+        self.z=self.z - speed  # speed
+        if (self.z < 1):
+            self.x=random.uniform(-width, width)
+            self.y=random.uniform(-height, height)
+            self.z=random.uniform(0, width)
+            self.pz=self.z
+
+    def show(self, painter):
+
+        painter.setBrush(QBrush(Qt.white))
+        painter.setPen(QPen(Qt.NoPen))
+
+        sx=mapFromTo(self.x / self.z, 0, 1, 0, width)
+        sy=mapFromTo(self.y / self.z, 0, 1, 0, height)
+
+        r=mapFromTo(self.z, 0, width, 8, 0)
+        painter.drawEllipse(QPointF(sx, sy), r, r)
+
+        px=mapFromTo(self.x / self.pz, 0, 1, 0, width)
+        py=mapFromTo(self.y / self.pz, 0, 1, 0, height)
+
+        self.pz=self.z
+
+        painter.setPen(QPen(Qt.white))
+        painter.drawLine(px, py, sx, sy)
+
+
+
+
+
+class Window(QWidget):
+    def __init__(self):
+        QWidget.__init__(self)
+        self.myTimerId=None
+
+        self.setWindowTitle("Coding Train - Star field")
+        self.setFixedSize(600, 600)
+        global width, height
+        width=600
+        height=600
+
+        # black background
+        p=self.palette()
+        p.setColor(self.backgroundRole(), Qt.black)
+        self.setPalette(p)
+
+        self.stars=[]
+        for i in xrange(500):
+            s=Star()
+            self.stars.append(s)
+
+
+    def timerEvent(self, event):
+        if event.timerId() == self.myTimerId:
+            self.repaint()
+        else:
+            QWidget.timerEvent(self, event)
+
+    def showEvent(self, event):
+        self.myTimerId=self.startTimer(1000 / 60)  # in ms
+
+    def hideEvent(self, event):
+        self.killTimer(self.myTimerId)
+
+    def paintEvent(self, event):
+        painter=QPainter(self)
+
+        global speed, width, height
+
+        p = self.mapFromGlobal(QCursor.pos()) # retreive mouse position
+        speed = mapFromTo(p.x(), 0, width, 0, 50);
+        if speed<0: speed=0
+
+        painter.translate(width / 2.0, height / 2.0);
+        for s in self.stars:
+            s.update()
+            s.show(painter)
+
+
+
+if __name__ == '__main__':
+    app=QApplication(sys.argv)
+    ex=Window()
+    ex.show()
+    sys.exit(app.exec_())
