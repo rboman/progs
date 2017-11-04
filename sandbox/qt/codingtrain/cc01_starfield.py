@@ -17,70 +17,67 @@ def mapFromTo(x, a, b, c, d):
         (float(d) - float(c)) + float(c)
     return y
 
-# global variables
-speed = 0
-width = 0
-height = 0
-
-
 class Star(object):
 
-    def __init__(self):
-        global width, height
+    factor = 4
 
+    def __init__(self, parent):
+        self.w = parent
+        self.respawn()
+
+    def update(self):
+        self.z = self.z - self.w.speed/Star.factor  # speed
+        if (self.z < 1):
+            self.respawn()
+
+    def respawn(self):
+        width = self.w.width()/Star.factor
+        height = self.w.height()/Star.factor
         self.x = random.uniform(-width, width)
         self.y = random.uniform(-height, height)
         self.z = random.uniform(0, width)
-        self.pz = self.z
-
-    def update(self):
-        global speed, width, height
-        self.z = self.z - speed  # speed
-        if (self.z < 1):
-            self.x = random.uniform(-width, width)
-            self.y = random.uniform(-height, height)
-            self.z = random.uniform(0, width)
-            self.pz = self.z
+        self.px = mapFromTo(self.x / self.z, 0, 1, 0, width)        
+        self.py = mapFromTo(self.y / self.z, 0, 1, 0, height)        
 
     def show(self, painter):
 
-        painter.setBrush(QBrush(Qt.white))
-        painter.setPen(QPen(Qt.NoPen))
+        painter.setBrush(Qt.white)
+        painter.setPen(Qt.NoPen)
 
+        width = self.w.width()/Star.factor
+        height = self.w.height()/Star.factor
+        # draw a circle
         sx = mapFromTo(self.x / self.z, 0, 1, 0, width)
         sy = mapFromTo(self.y / self.z, 0, 1, 0, height)
-
-        r = mapFromTo(self.z, 0, width, 8, 0)
+        r = mapFromTo(self.z, 0, width, 4, 0)
         painter.drawEllipse(QPointF(sx, sy), r, r)
 
-        px = mapFromTo(self.x / self.pz, 0, 1, 0, width)
-        py = mapFromTo(self.y / self.pz, 0, 1, 0, height)
+        painter.setPen(Qt.white)
+        painter.drawLine(self.px, self.py, sx, sy)
 
-        self.pz = self.z
+        # keep previous pos in memory
+        self.px = sx
+        self.py = sy
 
-        painter.setPen(QPen(Qt.white))
-        painter.drawLine(px, py, sx, sy)
 
 
 class Window(QWidget):
-    def __init__(self):
+    def __init__(self, nstars=500):
         QWidget.__init__(self)
         self.myTimerId = None
 
-        self.setWindowTitle("Coding Train - Star field")
+        self.setWindowTitle("Coding Train - Star Field")
         self.setFixedSize(600, 600)
-        global width, height
-        width = 600
-        height = 600
 
         # black background
         p = self.palette()
         p.setColor(self.backgroundRole(), Qt.black)
         self.setPalette(p)
 
+        # build nstars objects
         self.stars = []
-        for i in xrange(500):
-            s = Star()
+        for i in xrange(nstars):
+            s = Star(self)
             self.stars.append(s)
 
     def timerEvent(self, event):
@@ -98,16 +95,17 @@ class Window(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
 
-        global speed, width, height
-
         # set speed according to mouse x position
+        maxspeed = 50
         p = self.mapFromGlobal(QCursor.pos())  # retreive mouse position
-        speed = mapFromTo(p.x(), 0, width, 0, 50)
-        if speed < 0:
-            speed = 0
+        self.speed = mapFromTo(p.x(), 0, self.width(), 0, maxspeed)
+        if self.speed < 0:
+            self.speed = 0
+        if self.speed > maxspeed:
+            self.speed = maxspeed
 
         # display stars
-        painter.translate(width / 2.0, height / 2.0)
+        painter.translate(self.width() / 2.0, self.height() / 2.0)
         for s in self.stars:
             s.update()
             s.show(painter)
@@ -122,29 +120,26 @@ class Window(QWidget):
 
         metrics = QFontMetrics(font)
         rectangle = QRect(10, self.height()-metrics.height(), self.width()-20, metrics.height())
-        painter.drawText(rectangle, Qt.AlignCenter, "Move the mouse along X to change the speed")
+        painter.drawText(rectangle, Qt.AlignCenter, "- Move the mouse along X to change the speed -")
 
 
-        # writes infos
-
+        # write info
         rectangle = QRect(10, 10, 300, 300)
-
-        text = "speed = %d\n" % speed
-        text += "width = %d\n" % width
-        text += "height = %d\n" % height
+        text = "speed = %d\n" % self.speed
         text += "w.width() = %d\n" % self.width()
         text += "w.height() = %d\n" % self.height()
-
         boundingRect = painter.drawText(rectangle, 0, text)
 
-        pen = painter.pen()
-        pen.setStyle(Qt.DotLine)
-        painter.setPen(pen)
-        painter.drawRect(boundingRect.adjusted(0, 0, -pen.width(), -pen.width()))
+        # display text-related boxes 
+        if 0:
+            pen = painter.pen()
+            pen.setStyle(Qt.DotLine)
+            painter.setPen(pen)
+            painter.drawRect(boundingRect.adjusted(0, 0, -pen.width(), -pen.width()))
 
-        pen.setStyle(Qt.DashLine);
-        painter.setPen(pen);
-        painter.drawRect(rectangle.adjusted(0, 0, -pen.width(), -pen.width()))       
+            pen.setStyle(Qt.DashLine);
+            painter.setPen(pen);
+            painter.drawRect(rectangle.adjusted(0, 0, -pen.width(), -pen.width()))       
 
 
 
