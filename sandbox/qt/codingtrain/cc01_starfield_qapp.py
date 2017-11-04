@@ -155,16 +155,19 @@ class MainWindow(QMainWindow):
         self.addDockWidget(Qt.LeftDockWidgetArea, dock)
         #dock.setFixedWidth(250) 
 
-        self.speedTextEdit = QTextEdit()
-        self.cxTextEdit = QTextEdit()
-        self.cyTextEdit = QTextEdit()
+        dockW = QWidget()
+        dock.setWidget(dockW)
+        self.speedTextEdit = QLineEdit(dockW)
+        self.cxTextEdit = QLineEdit(dockW)
+        self.cyTextEdit = QLineEdit(dockW)
 
 
         layout = QFormLayout()
         layout.addRow("speed:", self.speedTextEdit)
         layout.addRow("cx:", self.cxTextEdit)
         layout.addRow("cy:", self.cyTextEdit)
-        dock.setLayout(layout)
+        dockW.setLayout(layout)
+
 
         # action(s)
         if 0:
