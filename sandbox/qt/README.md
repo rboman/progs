@@ -9,4 +9,5 @@
   * [tutorialspoint.com](https://www.tutorialspoint.com/pyqt/index.htm)
   * [Doc Qt (wiki)](http://wiki.qt.io/Main)
   * srcs de PyQt: /examples/qtdemo/qtdemo.py
-
+  * [Doc Qt](http://doc.qt.io/)
+  
