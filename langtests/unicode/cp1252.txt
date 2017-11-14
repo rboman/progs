@@ -1,0 +1,8 @@
+hello!
+
+e accent: é
+a accent: à
+i accent: ï
+euro: €
+
+EOF!
