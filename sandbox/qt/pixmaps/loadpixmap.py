@@ -4,6 +4,7 @@
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 import sys, os
 
 class Example(QWidget):
@@ -24,10 +25,19 @@ class Example(QWidget):
         hbox.addWidget(lbl)
         self.setLayout(hbox)
         
-        self.move(300, 200)
+        # move the windows at the centre of the screen
+        self.setGeometry(
+            QStyle.alignedRect( 
+                Qt.LeftToRight,
+                Qt.AlignCenter,
+                pixmap.size(),
+                qApp.desktop().availableGeometry()
+            )
+        )
+
+        #self.move(300, 200)
         self.setWindowTitle('snipercat')
         self.show()        
-        
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
