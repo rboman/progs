@@ -32,8 +32,8 @@ boost = set(boost.split())
 
 def main():
     with reg.OpenKey(reg.HKEY_LOCAL_MACHINE,
-            r'SOFTWARE\Microsoft\Windows\CurrentVersion'
-            r'\Explorer\ShellIconOverlayIdentifiers') as base:
+                     r'SOFTWARE\Microsoft\Windows\CurrentVersion'
+                     r'\Explorer\ShellIconOverlayIdentifiers') as base:
 
         names = set()
         renames = []
