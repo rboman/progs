@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,
+			top=1cm,bottom=2cm,
+			textwidth=16cm,
+			includeheadfoot
+			]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[final]{graphicx}
+\usepackage{epstopdf} % permet d'include des .eps avec pdflatex
+\usepackage{showframe} % [debug] trace les limites
+\begin{document}
+
+Figure matlab par défaut (.eps + eps2pdf):
+
+\centerline{\fbox{\includegraphics[width=8cm]{figmatlab1.eps}}}	
+
+Figure matlab par défaut (.pdf + PaperSize ajusté):
+
+\centerline{\fbox{\includegraphics[width=8cm]{figmatlab1.pdf}}}	
+
+\pagebreak
+
+\noindent\includegraphics[width=8cm]{figmatlab1.pdf}
+
+\noindent\fbox{\includegraphics[width=8cm]{figmatlab1.pdf}}
+
+\noindent
+\begin{minipage}{.48\textwidth}
+   \centerline{\fbox{\includegraphics[width=8cm]{figmatlab1.pdf}}}
+\end{minipage} \hfill
+\begin{minipage}{.48\textwidth}
+   \centerline{\fbox{\includegraphics[width=8cm]{figmatlab1.pdf}}}
+\end{minipage}
+
+\end{document}
