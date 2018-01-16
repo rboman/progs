@@ -50,23 +50,28 @@ f_blueberry boman parasolid
 
 # github perso
 f_github rboman progs
-f_github rboman femcode
+f_github rboman sph
 f_github rboman fsi
+f_github rboman femcode
 f_github rboman math0471
 f_github rboman plot-applet
 f_github rboman gmshio
 
 # github a&m
-f_github ulgltas linuxbin
 f_github ulgltas waves
+f_github ulgltas linuxbin
 f_github ulgltas plotter2d
-f_github ulgltas ceci     
+f_github ulgltas SPH_method
+f_github ulgltas beams
+f_github ulgltas CUPyDO
 f_github ulgltas PFEM     
+f_github ulgltas ceci
+f_github ulgltas Multiphysique
 
 # bitbucket (privé)
-f_bitbucket rboman lamtools
 f_bitbucket rboman CT
 f_bitbucket rboman idm 
+f_bitbucket rboman lamtools
 f_bitbucket rboman math0024 
 
 
