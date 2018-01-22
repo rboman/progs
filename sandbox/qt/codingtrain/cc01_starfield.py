@@ -4,6 +4,17 @@
 # from "Starfield" (Daniel Shiffman)
 # Video: https://youtu.be/17WoOqgXsRM
 
+# python 2/3 compatibility ----------------
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+# from future import standard_library
+# standard_library.install_aliases()
+from builtins import range
+from builtins import *
+from builtins import object
+# python 2/3 compatibility ----------------
+
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -26,13 +37,13 @@ class Star(object):
         self.respawn()
 
     def update(self):
-        self.z = self.z - self.w.speed/Star.factor  # speed
+        self.z = self.z - self.w.speed / Star.factor  # speed
         if (self.z < 1):
             self.respawn()
 
     def respawn(self):
-        width = self.w.width()/Star.factor
-        height = self.w.height()/Star.factor
+        width = self.w.width() / Star.factor
+        height = self.w.height() / Star.factor
         self.x = random.uniform(-width, width)
         self.y = random.uniform(-height, height)
         self.z = random.uniform(0, width)
@@ -44,8 +55,8 @@ class Star(object):
         painter.setBrush(Qt.white)
         painter.setPen(Qt.NoPen)
 
-        width = self.w.width()/Star.factor
-        height = self.w.height()/Star.factor
+        width = self.w.width() / Star.factor
+        height = self.w.height() / Star.factor
         # draw a circle
         sx = mapFromTo(self.x / self.z, 0, 1, 0, width)
         sy = mapFromTo(self.y / self.z, 0, 1, 0, height)
@@ -77,7 +88,7 @@ class Window(QWidget):
 
         # build nstars objects
         self.stars = []
-        for i in xrange(nstars):
+        for i in range(nstars):
             s = Star(self)
             self.stars.append(s)
 
@@ -88,7 +99,7 @@ class Window(QWidget):
             QWidget.timerEvent(self, event)
 
     def showEvent(self, event):
-        self.myTimerId = self.startTimer(1000 / 60)  # in ms
+        self.myTimerId = self.startTimer(1000 // 60)  # in ms
 
     def hideEvent(self, event):
         self.killTimer(self.myTimerId)
@@ -141,8 +152,6 @@ class Window(QWidget):
             pen.setStyle(Qt.DashLine);
             painter.setPen(pen);
             painter.drawRect(rectangle.adjusted(0, 0, -pen.width(), -pen.width()))       
-
-
 
 
 if __name__ == '__main__':

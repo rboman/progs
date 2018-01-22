@@ -16,6 +16,9 @@
 #   limitations under the License.
 
 
+from __future__ import print_function
+from past.builtins import execfile
+
 def execpyfile(fname, searchdir):
 
     if os.path.isfile(os.path.abspath(fname)):
@@ -32,11 +35,11 @@ def execpyfile(fname, searchdir):
 
     # start test
     import time, platform
-    print '-' * 79
-    print "starting test", testname
-    print "time:", time.strftime("%c")
-    print "hostname:", platform.node()
-    print '-' * 79
+    print('-' * 79)
+    print("starting test", testname)
+    print("time:", time.strftime("%c"))
+    print("hostname:", platform.node())
+    print('-' * 79)
 
     env = globals()
     env['__file__'] = testname
@@ -50,7 +53,7 @@ if __name__ == "__main__":
     # adds ".." to the pythonpath
     thisdir = os.path.split(__file__)[0]
     parentdir = os.path.abspath(os.path.join(thisdir, '..'))
-    print "adding '%s' to PYTHONPATH" % parentdir
+    print("adding '%s' to PYTHONPATH" % parentdir)
     sys.path.append(parentdir)
 
     scriptdir = os.path.join(thisdir, 'scripts')
@@ -58,11 +61,11 @@ if __name__ == "__main__":
     # reads args
     import pytools.utils as pyu
     args = pyu.parseargs()
-    print args
+    print(args)
 
     for testname in args.file:
         (root, ext) = os.path.splitext(testname)
         if ext.lower() == '.py':
             execpyfile(testname, scriptdir)
         else:
-            print "I don't know what to do with '%s'" % testname
+            print("I don't know what to do with '%s'" % testname)
