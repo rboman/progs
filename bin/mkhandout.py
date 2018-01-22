@@ -20,7 +20,6 @@ import sys, os, os.path
 
 
 def handout(infile):
-
     _, ext = os.path.splitext(infile)
     if ext != ".pdf":
         raise Exception("file should be a PDF")
