@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
 #
@@ -15,24 +15,25 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
 import sys, os, os.path
+
 
 def handout(infile):
 
-    file, ext = os.path.splitext(infile)
-    if ext!=".pdf":
+    _, ext = os.path.splitext(infile)
+    if ext != ".pdf":
         raise Exception("file should be a PDF")
-    #outfile=file+"-handout.pdf"
-    #cmd='pdfnup --a4paper --keepinfo --nup 1x2 --frame true --scale 0.92 --no-landscape --outfile "%s" "%s"' % (outfile, infile)
-    cmd=r'pdfnup --a4paper --keepinfo --nup 1x2 --frame true ' \
-         ' --scale 0.92 --no-landscape ' \
-         ' --trim \'-0.2cm -0.2cm -0.2cm -0.2cm\' --delta \'10 10\' ' \
-         ' --suffix 1x2 "%s"' % infile
-    print cmd
+
+    cmd = r'pdfnup --a4paper --keepinfo --nup 1x2 --frame true ' \
+           ' --scale 0.92 --no-landscape ' \
+           ' --trim \'-0.2cm -0.2cm -0.2cm -0.2cm\' --delta \'10 10\' ' \
+           ' --suffix 1x2 "%s"' % infile
+    print(cmd)
     os.system(cmd)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
+    print("running with python", sys.version)
     for f in sys.argv[1:]:
         handout(f)
-
-
