@@ -15,6 +15,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
+from builtins import input
 import os, shutil, platform, subprocess, multiprocessing
 import pytools.utils as pu
 import pytools.versioning as vrs
@@ -26,7 +28,7 @@ def guessSystem():
 
     # machine name
     machine_name = node.split('.')[0].split('-')[0].lower()
-    print 'machine_name =', machine_name
+    print('machine_name =', machine_name)
     guesses.append(machine_name)
 
     # robo's libs
@@ -35,25 +37,25 @@ def guessSystem():
         guesses.append('garfield')
 
     # system name
-    print 'system =', system
+    print('system =', system)
     if system=='Darwin':
         mac_release, mac_versioninfo, mac_machine = platform.mac_ver()  
-        print '\tmac_release =', mac_release
-        print '\tmac_versioninfo =', mac_versioninfo
-        print '\tmac_machine =', mac_machine
+        print('\tmac_release =', mac_release)
+        print('\tmac_versioninfo =', mac_versioninfo)
+        print('\tmac_machine =', mac_machine)
         guesses.append('macos')
     if system=='Linux':
         lin_distname, lin_version, lin_id = platform.linux_distribution()
-        print '\tlin_distname =', lin_distname
-        print '\tlin_version =', lin_version
-        print '\tlin_id =', lin_id
+        print('\tlin_distname =', lin_distname)
+        print('\tlin_version =', lin_version)
+        print('\tlin_id =', lin_id)
         guesses.append(lin_distname.lower())
     if system=='Windows':
         win_release, win_version, win_csd, win_ptype = platform.win32_ver()
-        print '\twin_release =', win_release
-        print '\twin_version =', win_version
-        print '\twin_csd =', win_csd
-        print '\twin_ptype =', win_ptype
+        print('\twin_release =', win_release)
+        print('\twin_version =', win_version)
+        print('\twin_csd =', win_csd)
+        print('\twin_ptype =', win_ptype)
         guesses.append(system.lower())
 
     guesses = list(set(guesses))  # remove duplicates
@@ -74,15 +76,14 @@ def chooseCfg():
     #print cfiles
 
     # ask
-    print 'Choose a config file:'
+    print('Choose a config file:')
     for i, cf in enumerate(cfiles):
-        print '\t%d: %s' % (i+1, cf)
-    ii = raw_input('? ')
+        print('\t%d: %s' % (i+1, cf))
+    ii = input('? ')
     return cfiles[int(ii)-1]
-        
+
 
 def main(repos):
-
     # checkout/update everything
     if 1:
         for rep in repos:
@@ -92,7 +93,7 @@ def main(repos):
 
     # clean build dir
     if 1:
-        print 'removing build dir'
+        print('removing build dir')
         if os.path.isdir('oo_metaB'):
             os.rename('oo_metaB','oo_metaB_trash') # avoid the failure of os.mkdir() is same name is used
             shutil.rmtree('oo_metaB_trash')
@@ -111,14 +112,14 @@ def main(repos):
         
     if 1:
         if pu.isInstalled("BuildConsole") and os.path.isfile('Metafor.sln'):
-            print "[using incredibuild]"
+            print("[using incredibuild]")
             os.system('BuildConsole Metafor.sln /rebuild /cfg="Release|x64"')
         else:
             ncores = multiprocessing.cpu_count()
-            print "[using cmake --build] with %d core(s)" % ncores
+            print("[using cmake --build] with %d core(s)" % ncores)
             os.system('cmake --build . --config Release -- -j%d' % ncores)
 
-if __name__=="__main__":
+if __name__ == "__main__":
     repos = []
     repos.append(vrs.GITRepo('keygen', 'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/keygen.git'))
     repos.append(vrs.GITRepo('MetaforSetup', 'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/MetaforSetup.git'))

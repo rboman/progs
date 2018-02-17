@@ -15,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
 import sys
 import datetime
 import time
@@ -25,12 +26,14 @@ import subprocess
 pid = sys.argv[1]
 proc = subprocess.Popen(['ps','-eo','pid,etime'], stdout=subprocess.PIPE)
 # get data from stdout
-proc.wait()
-results = proc.stdout.readlines()
+#proc.wait()
+#results = proc.stdout.readlines()
+out, err = proc.communicate()
+results = out.decode().strip().split('\n')
+
 # parse data (should only be one)
 for result in results:
     try:
-        result.strip()
         if result.split()[0] == pid:
             pidInfo = result.split()[1]
             # stop after the first one we find
@@ -39,10 +42,10 @@ for result in results:
         pass # ignore it
 else:
     # didn't find one
-    print "Process PID", pid, "doesn't seem to exist!"
+    print("Process PID", pid, "doesn't seem to exist!")
     sys.exit(0)
-pidInfo = [result.split()[1] for result in results
-           if result.split()[0] == pid][0]
+
+pidInfo = [result.split()[1] for result in results if result.split()[0] == str(pid)][0]
 pidInfo = pidInfo.partition("-")
 if pidInfo[1] == '-':
     # there is a day
@@ -72,5 +75,5 @@ secondsSinceStart = days*24*3600 + hours*3600 + minutes*60 + seconds
 # unix time (in seconds) of start
 startTime = time.time() - secondsSinceStart
 # final result
-print "Process started on",
-print datetime.datetime.fromtimestamp(startTime).strftime("%a %b %d at %I:%M:%S %p")
+print("Process started on", end=' ')
+print(datetime.datetime.fromtimestamp(startTime).strftime("%a %b %d at %I:%M:%S %p"))

@@ -4,6 +4,7 @@
 # python
 *.pyc
 *~
+*.bak
 
 # java
 *.class
