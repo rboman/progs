@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.0)
 project(Cpp11 CXX)
 
 #ADD_DEFINITIONS( /Qstd=c++11 )
@@ -9,5 +9,5 @@ IF(STD11CHECK)
     ADD_DEFINITIONS(-std=c++11 )
 ENDIF()
 
-set(SRCS main.cpp)
+FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
 add_executable(cpp11 ${SRCS})
