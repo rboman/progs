@@ -1,4 +1,4 @@
-PROJECT(TestDAXPY Fortran C)
+PROJECT(TestSCALAPACK Fortran)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 # configure Fortran compiler
@@ -40,6 +40,6 @@ else()
 endif()
 
 
-file(GLOB SRCS *.f *.c)      # .f90/.f95 => free format | .f/.for => fixed
-ADD_EXECUTABLE(testdaxpy ${SRCS}) 
-TARGET_LINK_LIBRARIES(testdaxpy ${LAPACK_LIBRARIES})
+file(GLOB SRCS *.f )      # .f90/.f95 => free format | .f/.for => fixed
+ADD_EXECUTABLE(testscalapack ${SRCS}) 
+TARGET_LINK_LIBRARIES(testscalapack ${LAPACK_LIBRARIES})
