@@ -6,12 +6,15 @@
 #ifdef __MINGW32__
 
 //extern "C" {
-int __security_cookie;
+//int __security_cookie;
 //}
 
 //extern "C" 
-void _fastcall __security_check_cookie(int i) {
-//do nothing
-}
+//void _fastcall __security_check_cookie(int i) 
+//extern "C" 
+
+void __fastcall __GSHandlerCheck() {}
+void __fastcall __security_check_cookie(unsigned* p) {}
+unsigned* __security_cookie;
 
 #endif //__MINGW32__

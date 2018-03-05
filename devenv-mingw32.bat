@@ -27,4 +27,6 @@ set PATH=c:\MinGW\bin
 set PATH=%PATH%;C:\Program Files\CMake\bin\
 set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
 
+call "C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\mkl\bin\mklvars.bat" ia32 vs2015
+
 %comspec%

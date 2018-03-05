@@ -18,17 +18,25 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 # ifort...
 #SET(LAPACK_LIBRARIES "mkl_intel_lp64_dll.lib mkl_intel_thread_dll.lib mkl_core_dll.lib libiomp5md.lib")
 
-# mingw (x86)...
-SET(LAPACK_LIBRARIES "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/ia32_win/mkl_intel_c_dll.lib" 
-"C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/ia32_win/mkl_intel_thread_dll.lib"
-#"C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/ia32_win/mkl_sequential_dll.lib"
-"C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/ia32_win/mkl_core_dll.lib"
-"C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017.2.187/windows/compiler/lib/ia32_win/libiomp5md.lib"
+if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+    message(STATUS "Target is 64 bits")
+    SET(LAPACK_LIBRARIES 
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/intel64/mkl_intel_lp64_dll.lib"
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/intel64/mkl_core_dll.lib"
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/intel64/mkl_intel_thread_dll.lib"  
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/compiler/lib/intel64/libiomp5md.lib"
+    )
+else()
+    # mingw (x86)... // works!
+    message(STATUS "Target is 32 bits")
+    SET(LAPACK_LIBRARIES 
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/ia32_win/mkl_intel_c_dll.lib" 
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/ia32_win/mkl_intel_thread_dll.lib"
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/mkl/lib/ia32_win/mkl_core_dll.lib"
+    "C:/Program Files (x86)/IntelSWTools/compilers_and_libraries_2017/windows/compiler/lib/ia32_win/libiomp5md.lib"
+    )
+endif()
 
-
-#"C:/Program Files (x86)/Windows Kits/8.1/Lib/winv6.3/um/x86/bufferoverflow.lib"
-#"C:/Program Files (x86)/Windows Kits/8.1/Lib/winv6.3/um/x86/uuid.lib"
-)
 
 file(GLOB SRCS *.f90 *.c)      # .f90/.f95 => free format | .f/.for => fixed
 ADD_EXECUTABLE(testdaxpy ${SRCS}) 
