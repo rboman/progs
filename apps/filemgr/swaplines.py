@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 fname = "test.txt"
 
 filein = open(fname, 'r')
-fileout = open(fname+".rev", 'wt')
+fileout = open(fname + ".rev", 'wt')
 
 lines = filein.readlines()
 lines.reverse()

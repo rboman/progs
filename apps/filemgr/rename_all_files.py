@@ -1,19 +1,19 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
-import os, fnmatch
+import os
+import fnmatch
 
 lst = os.listdir(".")
-#print lst
+# print lst
 
 for file in lst:
-    if fnmatch.fnmatch(file,'*.ascii'):
-        newname = file.replace(" ","_")
-        newname = newname.replace("sens_profilage_bord_gauche","bord_gauche")
+    if fnmatch.fnmatch(file, '*.ascii'):
+        newname = file.replace(" ", "_")
+        newname = newname.replace("sens_profilage_bord_gauche", "bord_gauche")
         print file, '->', newname
-        os.rename(file,newname)
+        os.rename(file, newname)
 
 
 print "fini"
 raw_input()
-

@@ -1,9 +1,10 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 import copy
 import math
 import pyPdf
+
 
 def split_pages(src, dst):
     src_f = file(src, 'r+b')
@@ -22,7 +23,7 @@ def split_pages(src, dst):
 
         x1, x2 = math.floor(x1), math.floor(x2)
         x3, x4 = math.floor(x3), math.floor(x4)
-        x5, x6 = math.floor(x3/2), math.floor(x4/2)
+        x5, x6 = math.floor(x3 / 2), math.floor(x4 / 2)
 
         if x3 > x4:
             # horizontal
@@ -46,6 +47,5 @@ def split_pages(src, dst):
     src_f.close()
     dst_f.close()
 
+
 split_pages('English4RealEstate.pdf', 'out.pdf')
-
-
