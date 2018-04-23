@@ -21,7 +21,7 @@ function f_github()
     #    git clone https://github.com/$1/$2.git    
     #fi
     git clone git@github.com:$1/$2.git     # use SSH key
-    tar czf $2-$DATE.tar.gz $2
+    tar czf blueberry-$1-$2-$DATE.tar.gz $2
     rm -rf $2
 }
 
@@ -29,14 +29,14 @@ function f_bitbucket()
 {
     #git clone https://$1@bitbucket.com/$1/$2.git
     git clone git@bitbucket.com:$1/$2.git  # use SSH key
-    tar czf $2-$DATE.tar.gz $2
+    tar czf bitbucket-$1-$2-$DATE.tar.gz $2
     rm -rf $2
 }
 
 function f_blueberry()
 {
     git clone $1@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/$2.git
-    tar czf $2-$DATE.tar.gz $2
+    tar czf blueberry-$1-$2-$DATE.tar.gz $2
     rm -rf $2
 }
 
@@ -44,16 +44,19 @@ function f_blueberry()
 f_blueberry boman MetaforSetup
 f_blueberry boman keygen
 f_blueberry boman mumps-4.10.0
+f_blueberry boman mumps-5.1.2
 f_blueberry boman tetgen-1.4.3
 f_blueberry boman triangle-1.6
 f_blueberry boman parasolid
 
 # github perso
+f_github rboman rboman.github.io
 f_github rboman progs
 f_github rboman sph
 f_github rboman fsi
 f_github rboman femcode
 f_github rboman math0471
+f_github rboman math0471_latex
 f_github rboman plot-applet
 f_github rboman gmshio
 
@@ -63,10 +66,15 @@ f_github ulgltas linuxbin
 f_github ulgltas plotter2d
 f_github ulgltas SPH_method
 f_github ulgltas beams
-f_github ulgltas CUPyDO
-f_github ulgltas PFEM     
+#f_github ulgltas CUPyDO
+#f_github ulgltas PFEM     
 f_github ulgltas ceci
 f_github ulgltas Multiphysique
+
+# others
+f_github mlucio89 CUPyDO
+f_github mlucio89 PFEM
+f_github mlucio89 Trusses
 
 # bitbucket (privé)
 f_bitbucket rboman CT
