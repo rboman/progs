@@ -65,7 +65,6 @@ f_github ulgltas waves
 f_github ulgltas linuxbin
 f_github ulgltas plotter2d
 f_github ulgltas SPH_method
-f_github ulgltas beams
 #f_github ulgltas CUPyDO
 #f_github ulgltas PFEM     
 f_github ulgltas ceci

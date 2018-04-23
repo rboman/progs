@@ -1,5 +1,8 @@
 #!/bin/bash
-# scripts de backup rsync
+# scripts de backup rsync (cron)
+# edit: crontab -e
+# list: crontab -l
+# 30 0 * * * ~/dev/progs/bin/rsync_repos.sh
 
 echo "======= rsyncing blueberry/Metafor repo => localhost..."
 rsync -e ssh -avz \
