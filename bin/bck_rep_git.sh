@@ -21,7 +21,7 @@ function f_github()
     #    git clone https://github.com/$1/$2.git    
     #fi
     git clone git@github.com:$1/$2.git     # use SSH key
-    tar czf blueberry-$1-$2-$DATE.tar.gz $2
+    tar czf github-$1-$2-$DATE.tar.gz $2
     rm -rf $2
 }
 
