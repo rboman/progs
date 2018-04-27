@@ -56,12 +56,14 @@ f_github rboman sph
 f_github rboman fsi
 f_github rboman femcode
 f_github rboman math0471
+f_github rboman math0471.wiki
 f_github rboman math0471_latex
 f_github rboman plot-applet
 f_github rboman gmshio
 
 # github a&m
 f_github ulgltas waves
+f_github ulgltas waves.wiki
 f_github ulgltas linuxbin
 f_github ulgltas plotter2d
 f_github ulgltas SPH_method
