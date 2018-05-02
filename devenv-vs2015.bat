@@ -6,7 +6,7 @@
 ::    - definir la variable d'env MYLOCAL  (=c:\local p. expl. )
 ::    - double cliquer sur myenv.bat
 ::    - cd build
-::    - cmake -G "Visual Studio 14 2015 Win64" ..
+::    - cmake -G "Visual Studio 14 2015 Win64" ..    (or "cmake -A x64 ..")
 ::    - cmake --build . --config Release -- -j6
 ::    - ctest -C Release
 :: Incredibuild (http://www.incredibuild.com/webhelp/#BuildConsole.html)
