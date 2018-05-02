@@ -24,14 +24,14 @@ class GITRepo(Repo):
         if not os.path.isdir(self.name):
             #print "skipping %s" % self.name  # should checkout instead
             #return
-            if pu.isUnix():
-                cmd = 'git clone %s' % self.repo
-            else:
-                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git clone %s"' % self.repo
+            cmd = 'git clone %s' % self.repo
+            if not pu.isUnix():
+                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
             status = subprocess.call(cmd, shell=True)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            print('status=', status)
+            print('status =', status)
+
         else:
             pu.chDir(self.name)
             if pu.isUnix():
@@ -46,6 +46,18 @@ class GITRepo(Repo):
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
             print('status=', status)
             pu.chDir('..')
+        
+        # set core.filemode=false in .git/config on windows!
+        # (otherwise executable files are considered as diffs)
+        if not pu.isUnix():
+            pu.chDir(self.name)
+            cmd = 'git config core.filemode false'
+            cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
+            print(cmd)
+            status = subprocess.call(cmd, shell=True)
+            if status:
+                raise Exception('"%s" FAILED with error %d' % (cmd, status))
+            pu.chDir('..')        
 
 
 class SVNRepo(Repo):
