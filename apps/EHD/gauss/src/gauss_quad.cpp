@@ -28,9 +28,9 @@
  */
 
 GAUSS_API int gauss_quad(int ng, int ndim,
-               double *x1, double *x2, double *x3, double *x4,
-               int (*fct)(double *, double *, void *, int, double *),
-               void *par, double *res)
+                         double *x1, double *x2, double *x3, double *x4,
+                         int (*fct)(double *, double *, void *, int, double *),
+                         void *par, double *res)
 {
     int iop = 0;
     int i;
@@ -184,7 +184,7 @@ GAUSS_API int gauss_quad_get_psi(int ng, double ****psi, double *xg)
 
     *psi = quad_psi[ng1];
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
@@ -209,7 +209,7 @@ ERR2:
  */
 
 GAUSS_API void gauss_quad_jaco(double **xx, double jaco[][3], int no,
-                     double *xg, double ***psi, int ndim)
+                               double *xg, double ***psi, int ndim)
 {
     int i, j, k;
     double va;
@@ -288,7 +288,7 @@ GAUSS_API int gauss_quad_get_xgpg(int ng, double **xg, double **pg)
     (*xg) = quad_xg[ng1];
     (*pg) = quad_pg[ng1];
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)

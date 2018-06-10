@@ -25,10 +25,10 @@
 #define TOL_NR 1.0e-18
 
 EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
-              double alpha, double *x, double *um,
-              double *u, double *h_t0, double dt,
-              double *p, double *dp, SkyMat *K, int nbfix,
-              int *nnfix, int *ndfix, double *vfix, int opt, int scheme)
+                      double alpha, double *x, double *um,
+                      double *u, double *h_t0, double dt,
+                      double *p, double *dp, SkyMat *K, int nbfix,
+                      int *nnfix, int *ndfix, double *vfix, int opt, int scheme)
 {
     int iop = 0;
     int i, j, ni, nj, n;
@@ -356,7 +356,7 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
     free(inc);
     free(pipo);
 
-/****/
+    /****/
 
 FIN:
     if (iop > 900)

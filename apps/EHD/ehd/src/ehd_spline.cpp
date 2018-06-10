@@ -33,7 +33,7 @@
  */
 
 EHD_API int ehd_spline_seg(double *xi, double *yi, double *ki,
-                   double *x, double *y, double *yp, int n)
+                           double *x, double *y, double *yp, int n)
 {
 
     double ai, bi, hi, k2, hi2;
@@ -70,7 +70,7 @@ EHD_API int ehd_spline_seg(double *xi, double *yi, double *ki,
  */
 
 EHD_API int ehd_spline_y(int nn, double *xi, double *yi, double *ki,
-                 double x, double *y, double *yp)
+                         double x, double *y, double *yp)
 {
     int iop = 0;
     int i;

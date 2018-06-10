@@ -20,7 +20,7 @@
 
 #include "ehd.h"
 
-int main3()
+EHD_API int ehd_main3()
 {
     int iop = 0;
 
@@ -77,12 +77,11 @@ int main3()
     free(dPhiS);
     free(dPhiP);
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FUNCTION__
-               " in " __FILE__
-               "\n");
+        printf("\n\t-->" __FUNCTION__ " in " __FILE__
+                                      "\n");
     return iop;
 }

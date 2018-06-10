@@ -20,10 +20,9 @@
 
 #include "ehd.h"
 
-int main()
+EHD_API int ehd_main2()
 {
     int iop = 0;
-    int i;
 
     int npas = 10;
     const int nbelem = 100;
@@ -35,7 +34,7 @@ int main()
 
     double Rq1 = 1.0e-1;
     double Rq2 = 1.0e-1;
-    double Rq;
+    
     double gam_s = 1.0;
 
     // variables
@@ -55,8 +54,6 @@ int main()
     double *dPhiS = (double *)malloc(nbnode * sizeof(double));
 
     double dt;
-    int nt;
-    double ttot;
 
     // inc
     double *h = (double *)malloc(nbnode * sizeof(double));
@@ -73,42 +70,34 @@ int main()
 
     if (scheme == EHD_STATIO)
         npas = 1;
-    Rq = sqrt(Rq1 * Rq1 + Rq2 * Rq2);
+
+    double Rq = sqrt(Rq1 * Rq1 + Rq2 * Rq2);
 
     // Init du module d'integration de Gauss
-
     iop = gauss_common_init();
 
-
     // Init du module EHD
-
     iop = ehd_init();
 
 
     // Mise en place des donnees
-
     iop = ehd_setpar2(nbnode, x, h, h_t0, p, dp, &eta0, &alpha, u, um, v, &dt);
-
 
     iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_NEW, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "x", x, nbnode, MLAB_OLD, MLAB_VERBOSE);
 
-
     // Initialisation de la matrice d'iteration (tri-diag)
-
     TdiMat K("K");
-
     K.setsize(nbnode);
 
-
-    for (nt = 0, ttot = 0.0; nt < npas; nt++)
+    double ttot = 0.0;
+    for (int nt = 0; nt < npas; ++nt)
     {
-
-        printf("PAS %d : t = %E\n", nt + 1, ttot += dt);
+        ttot += dt;
+        printf("PAS %d : t = %E\n", nt + 1, ttot);
 
         // Resolution h(x) -> p(x)
-
         iop = ehd_get_h(nbelem, nbnode, h, eta0, alpha, x,
                         u, um, v, h_t0, dt, p, dp,
                         PhiP, PhiS, dPhiP, dPhiS,
@@ -118,24 +107,20 @@ int main()
 
 
         // update h_t0
-
-        for (i = 0; i < nbnode; i++)
+        for (int i = 0; i < nbnode; i++)
             h_t0[i] = h[i];
 
         // calcul du cisaillement
-
-        for (i = 0; i < nbnode; i++)
+        for (int i = 0; i < nbnode; i++)
         {
             iop = ehd_cisail(eta0, alpha, v[i], p[i], dp[i], h[i],
                              Rq, Rq1, Rq2, loi, &(tau[i]));
-
         }
 
-    } // endfor(nt)
+    }
 
     iop = mlab_vec("pipo.m", "h", h, nbnode, MLAB_OLD, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "tau", tau, nbnode, MLAB_OLD, MLAB_VERBOSE);
-
 
     free(eta);
     free(x);

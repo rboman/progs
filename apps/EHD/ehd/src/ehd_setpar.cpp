@@ -22,7 +22,7 @@
 #include "math.h"
 
 EHD_API int ehd_setpar(int nn, double *x, double *h, double *h_t0, double *um,
-               double *eta0, double *alpha, double *u, double *dt)
+                       double *eta0, double *alpha, double *u, double *dt)
 {
     int iop = 0;
     int i;
@@ -35,7 +35,7 @@ EHD_API int ehd_setpar(int nn, double *x, double *h, double *h_t0, double *um,
 
     //double xx;
 
-// positions
+    // positions
 
 #if 1
     for (i = 0; i < nn; i++)

@@ -25,14 +25,14 @@
 #define TOL_NR 1.0e-10
 
 EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alpha,
-              double *x, double *u, double *um, double *v,
-              double *h_t0, double dt,
-              double *p, double *dp,
-              double *PhiP, double *PhiS, double *dPhiP, double *dPhiS,
-              double Rq1, double Rq2, double gam_s,
-              TdiMat *K, int nbfix,
-              int *nnfix, int *ndfix, double *vfix, int opt,
-              int loi, int scheme)
+                      double *x, double *u, double *um, double *v,
+                      double *h_t0, double dt,
+                      double *p, double *dp,
+                      double *PhiP, double *PhiS, double *dPhiP, double *dPhiS,
+                      double Rq1, double Rq2, double gam_s,
+                      TdiMat *K, int nbfix,
+                      int *nnfix, int *ndfix, double *vfix, int opt,
+                      int loi, int scheme)
 {
     int iop = 0;
 
@@ -205,9 +205,9 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
                     else
                     {
                         K->ass(ni, nj,
-                                dSp[i][j] - dSu[i][j] - C2[i][j] - dSv[i][j] * Rq);
+                               dSp[i][j] - dSu[i][j] - C2[i][j] - dSv[i][j] * Rq);
                         if (scheme == EHD_EULER)
-                        K->ass(ni, nj, C1[i][j] / dt);
+                            K->ass(ni, nj, C1[i][j] / dt);
                     }
                     //K->ass(ni,nj,-dSu[i][j]);
                 }
@@ -346,7 +346,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
     free(rhs);
     free(inc);
 
-/****/
+    /****/
 
 FIN:
     if (iop > 900)

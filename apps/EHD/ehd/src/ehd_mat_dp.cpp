@@ -24,8 +24,8 @@
 #define VERBOSE 0
 
 EHD_API int ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *u, double *um,
-               double *p, double *dp, double Sp[2][2], double Se[2][2],
-               double Fu[2], double C1[2][2], double Fum[2])
+                       double *p, double *dp, double Sp[2][2], double Se[2][2],
+                       double Fu[2], double C1[2][2], double Fum[2])
 {
 
     int iop = 0;
@@ -160,7 +160,7 @@ EHD_API int ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *
             printf("Fu: %d = %E\n", i, Fu[i]);
     }
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)

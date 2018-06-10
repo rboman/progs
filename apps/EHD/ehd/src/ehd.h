@@ -36,11 +36,10 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #endif
 
-#pragma warning( disable : 4251)  // DLL/templates non exportes
-#pragma warning( disable : 4275)  // non - DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
+#pragma warning(disable : 4251) // DLL/templates non exportes
+#pragma warning(disable : 4275) // non - DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
 
 #endif //_MSC_VER
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -141,5 +140,11 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
 EHD_API int ehd_flow_cisail(double h,
                             double Rq, double Rq1, double Rq2, int loi,
                             double *PhiF, double *PhiFS, double *PhiFP);
+
+// mains
+
+EHD_API int ehd_main1();
+EHD_API int ehd_main2();
+EHD_API int ehd_main3();
 
 #endif // __EHD_H__

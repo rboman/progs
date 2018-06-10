@@ -22,9 +22,9 @@
 #include "math.h"
 
 EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
-                double *p, double *dp,
-                double *eta0, double *alpha, double *u, double *um,
-                double *v, double *dt)
+                        double *p, double *dp,
+                        double *eta0, double *alpha, double *u, double *um,
+                        double *v, double *dt)
 {
     int iop = 0;
     int i;
@@ -40,7 +40,7 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
     double *dp2 = (double *)malloc(nn * sizeof(double));
     double y, yp;
 
-// positions
+    // positions
 
 #if 1
     for (i = 0; i < nn; i++)
@@ -122,8 +122,7 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FUNCTION__
-               " in " __FILE__
-               "\n");
+        printf("\n\t-->" __FUNCTION__ " in " __FILE__
+                                      "\n");
     return iop;
 }

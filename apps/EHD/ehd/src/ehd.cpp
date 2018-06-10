@@ -22,7 +22,7 @@
 
 #define TOL_NR 1.0e-8
 
-int main1()
+EHD_API int ehd_main1()
 {
     int iop = 0;
     //int i,j,ni,nj,n;
@@ -88,7 +88,7 @@ int main1()
     double dt;
 
     int scheme = EHD_STATIO;
-//int scheme=EHD_EULER;
+    //int scheme=EHD_EULER;
 
 #if 0
   double h2[nbnode];
@@ -131,8 +131,8 @@ int main1()
     if (iop != 0)
         goto FIN;
 
-// NEWTON-RAPHSON
-// --------------
+        // NEWTON-RAPHSON
+        // --------------
 
 #if 0  
   fich = fopen("pipo.m","w");
@@ -247,14 +247,7 @@ int main1()
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FUNCTION__
-               " in " __FILE__
-               "\n");
+        printf("\n\t-->" __FUNCTION__ " in " __FILE__
+                                      "\n");
     return iop;
-    /*
- ERR1:
-  printf("\nerreur: pas assez de memoire !");
-  iop = 990;
-  goto FIN;
-  */
 }

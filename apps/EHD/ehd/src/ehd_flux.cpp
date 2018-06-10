@@ -24,12 +24,12 @@
 #define VERBOSE 0
 
 EHD_API int ehd_flux(double h, double u, double v,
-             double eta0, double alpha,
-             double p, double dp,
-             double Rq,
-             double phis, double phip,
-             double dphis, double dphip,
-             double *flux, double *fluxd)
+                     double eta0, double alpha,
+                     double p, double dp,
+                     double Rq,
+                     double phis, double phip,
+                     double dphis, double dphip,
+                     double *flux, double *fluxd)
 {
     int iop = 0;
     double eta, etad;

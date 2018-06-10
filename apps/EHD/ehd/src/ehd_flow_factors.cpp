@@ -21,9 +21,9 @@
 #include "ehd.h"
 
 EHD_API int ehd_flow_factors(double h, double gam_s,
-                     double Rq, double Rq1, double Rq2,
-                     double *PhiP, double *PhiS,
-                     double *dPhiP, double *dPhiS, int loi)
+                             double Rq, double Rq1, double Rq2,
+                             double *PhiP, double *PhiS,
+                             double *dPhiP, double *dPhiS, int loi)
 {
 
     int iop = 0;
@@ -35,7 +35,7 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
     switch (loi)
     {
 
-    /*
+        /*
      *  Surfaces lisses
      *  ---------------
      */
@@ -50,7 +50,7 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
 
         break;
 
-    /*
+        /*
      *  Flow Factors de Patir & Cheng
      *  -----------------------------
      */
@@ -89,7 +89,7 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
 
         break;
 
-    /*
+        /*
      *  Flow Factors de Tripp
      *  ---------------------
      */
@@ -128,13 +128,12 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
     (*PhiS) *= xex;
     (*dPhiS) *= xex;
 
-/* ------------------------------------------------------------ */
+    /* ------------------------------------------------------------ */
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FUNCTION__
-               " in " __FILE__
-               "\n");
+        printf("\n\t-->" __FUNCTION__ " in " __FILE__
+                                      "\n");
     return iop;
 ERR1:
     printf("Modele de rugosite non implemente !\n");

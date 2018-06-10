@@ -24,9 +24,9 @@
 #include "ehd.h"
 
 EHD_API int ehd_cisail(double eta0, double alpha,
-               double v, double p, double dp, double h,
-               double Rq, double Rq1, double Rq2,
-               int loi, double *tau)
+                       double v, double p, double dp, double h,
+                       double Rq, double Rq1, double Rq2,
+                       int loi, double *tau)
 {
 
     int iop = 0;
@@ -58,7 +58,6 @@ EHD_API int ehd_cisail(double eta0, double alpha,
 
     if (h != 0.0)
     {
-
         tmp = eta * v / h;
         tmp *= PhiF + PhiFS;
         tmp += h / 2.0 * PhiFP * dp;
@@ -71,13 +70,12 @@ EHD_API int ehd_cisail(double eta0, double alpha,
         goto ERR1;
     }
 
-/* ------------------------------------------------------------ */
+    /* ------------------------------------------------------------ */
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FUNCTION__
-               " in " __FILE__
-               "\n");
+        printf("\n\t-->" __FUNCTION__ " in " __FILE__
+                                      "\n");
     return iop;
 ERR1:
     printf("Epaisseur de film nulle -> division par 0 !\n");

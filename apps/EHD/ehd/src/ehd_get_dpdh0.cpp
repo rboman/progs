@@ -21,10 +21,10 @@
 #include "ehd.h"
 
 EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double alpha,
-                  double *x, double *u, double *um, double dt,
-                  double *p, double *dp, SkyMat *K, int nbfix,
-                  int *nnfix, int *ndfix, double *vfix, double *dpdh0,
-                  int opt, int scheme)
+                          double *x, double *u, double *um, double dt,
+                          double *p, double *dp, SkyMat *K, int nbfix,
+                          int *nnfix, int *ndfix, double *vfix, double *dpdh0,
+                          int opt, int scheme)
 {
     int iop = 0;
     int i, j, ni, nj, n;
@@ -226,7 +226,7 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
     free(rhs);
     free(inc);
 
-/****/
+    /****/
 
 FIN:
     if (iop > 900)
