@@ -19,103 +19,66 @@
  */
 
 #include "ehd.h"
-
 #include "TdiMat.h"
 
 //#define STANDALONE
 
-/*********************************************************************/
-
-/*
- * Calcule un morceau de spline en n points x[0-(n-1)] 
+/**
+ * @brief Calcule un morceau de spline en n points x[0-(n-1)] 
+ * 
  * si xi[0-1], yi[0-1], ki[0-1] sont connus
  * (renvoie y[0-(n-1)] et yp[0-(n-1)])
  */
 
-EHD_API int ehd_spline_seg(double *xi, double *yi, double *ki,
-                           double *x, double *y, double *yp, int n)
+EHD_API void ehd_spline_seg(double *xi, double *yi, double *ki,
+                            double *x, double *y, double *yp, int n)
 {
-
-    double ai, bi, hi, k2, hi2;
-    int i;
-    double t, t2, t3;
-
     // ctes du segment concerne
-    bi = yi[0];
-    hi = xi[1] - xi[0];
-    ai = (yi[1] - yi[0]) / hi - hi / 6.0 * (ki[1] + 2.0 * ki[0]);
+    double bi = yi[0];
+    double hi = xi[1] - xi[0];
+    double ai = (yi[1] - yi[0]) / hi - hi / 6.0 * (ki[1] + 2.0 * ki[0]);
 
-    k2 = ki[1] - ki[0];
-    hi2 = hi * hi;
+    double k2 = ki[1] - ki[0];
+    double hi2 = hi * hi;
 
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        t = (x[i] - xi[0]) / hi;
-        t2 = t * t;
-        t3 = t2 * t;
-
+        double t = (x[i] - xi[0]) / hi;
+        double t2 = t * t;
+        double t3 = t2 * t;
         yp[i] = hi * ki[0] * t + hi * k2 * t2 / 2.0 + ai;
-
         y[i] = hi2 * ki[0] * t2 / 2.0 + hi2 * k2 * t3 / 6.0 + hi * ai * t + bi;
     }
-
-    return 0;
 }
 
-/*********************************************************************/
-
-/*
- * Evalue une spline en x et renvoie y (y=f(x)) et y' (derivee)
- *
+/**
+ * @brief Evalue une spline en x et renvoie y (y=f(x)) et y' (derivee)
  */
 
-EHD_API int ehd_spline_y(int nn, double *xi, double *yi, double *ki,
+EHD_API void ehd_spline_y(int nn, double *xi, double *yi, double *ki,
                          double x, double *y, double *yp)
 {
-    int iop = 0;
-    int i;
-
     // recherche du morceau
-
+    int i;
     for (i = 0; i < nn - 1; i++)
         if (x >= xi[i] && x <= xi[i + 1])
             break;
-
     if (i == nn - 1)
-        goto ERR1;
+        throw std::runtime_error("evaluation hors de la spline!");
 
     // evaluation sur le segment 'i'
-
-    iop = ehd_spline_seg(&(xi[i]), &(yi[i]), &(ki[i]),
-                         &x, y, yp, 1);
-    if (iop != 0)
-        goto FIN;
-
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
-    return iop;
-ERR1:
-    printf("\nerreur: evaluation hors de la spline !");
-    iop = 990;
-    goto FIN;
+    ehd_spline_seg(&(xi[i]), &(yi[i]), &(ki[i]), &x, y, yp, 1);
 }
 
-/*********************************************************************/
-
-/*
- * Calcule les ki (derivees 2nd)
- *
+/**
+ *  @brief Calcule les ki (derivees 2nd)
  */
 
 EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
 {
     int iop = 0;
-    int i;
-    double *rhs = (double *)malloc(nn * sizeof(double));
 
-    double hi1, hi2, di1, di2;
+    double *rhs = (double *)malloc(nn * sizeof(double));
 
     K->setsize(nn);
 
@@ -126,13 +89,13 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
 
     rhs[0] = 0.0;
 
-    for (i = 1; i < nn - 1; i++)
+    for (int i = 1; i < nn - 1; i++)
     {
 
-        hi1 = xi[i] - xi[i - 1];
-        hi2 = xi[i + 1] - xi[i];
-        di1 = (yi[i] - yi[i - 1]) / hi1;
-        di2 = (yi[i + 1] - yi[i]) / hi2;
+        double hi1 = xi[i] - xi[i - 1];
+        double hi2 = xi[i + 1] - xi[i];
+        double di1 = (yi[i] - yi[i - 1]) / hi1;
+        double di2 = (yi[i + 1] - yi[i]) / hi2;
 
         K->ass(i, i - 1, hi1);
         K->ass(i, i, 2.0 * (hi1 + hi2));
@@ -146,18 +109,15 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
     rhs[nn - 1] = 0.0;
 
     /*
-  K->mlab_tdi("tri.m","",TDI_A,MLAB_NEW);
-  mlab_vec("tri.m","rhs",rhs,nn,MLAB_OLD);
-  */
+    K->mlab_tdi("tri.m","",TDI_A,MLAB_NEW);
+    mlab_vec("tri.m","rhs",rhs,nn,MLAB_OLD);
+*/
 
     // resolution
-
     iop = K->solve(rhs, ki, TDI_DO_LU | TDI_DO_SUBST);
     K->print_err(stdout, iop);
     if (iop != 0)
         goto FIN;
-
-    /***/
 
     free(rhs);
 
@@ -169,7 +129,7 @@ FIN:
 }
 
 /*********************************************************************
- *                             ROUTINE DE TEST                         *
+ *                             ROUTINE DE TEST                       *
  *********************************************************************/
 
 #ifdef STANDALONE
@@ -260,5 +220,3 @@ FIN:
 }
 
 #endif
-
-/*********************************************************************/

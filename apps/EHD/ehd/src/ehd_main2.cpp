@@ -14,8 +14,8 @@
  *   limitations under the License.
  */
 
-/*
- * Test de la determination de h(x)
+/**
+ * @brief Test de la determination de h(x)
  */
 
 #include "ehd.h"
@@ -75,10 +75,6 @@ EHD_API int ehd_main2()
 
     // Init du module d'integration de Gauss
     iop = gauss_common_init();
-
-    // Init du module EHD
-    iop = ehd_init();
-
 
     // Mise en place des donnees
     iop = ehd_setpar2(nbnode, x, h, h_t0, p, dp, &eta0, &alpha, u, um, v, &dt);

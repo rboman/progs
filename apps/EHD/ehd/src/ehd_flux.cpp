@@ -23,7 +23,7 @@
 #undef VERBOSE
 #define VERBOSE 0
 
-EHD_API int ehd_flux(double h, double u, double v,
+EHD_API void ehd_flux(double h, double u, double v,
                      double eta0, double alpha,
                      double p, double dp,
                      double Rq,
@@ -31,12 +31,8 @@ EHD_API int ehd_flux(double h, double u, double v,
                      double dphis, double dphip,
                      double *flux, double *fluxd)
 {
-    int iop = 0;
     double eta, etad;
-
-    iop = ehd_visco(eta0, alpha, p, &eta, &etad);
-    if (iop != 0)
-        goto FIN;
+    ehd_visco(eta0, alpha, p, &eta, &etad);
 
     *flux = -phip * h * h * h / 12.0 / eta * dp + h * u + v * Rq / 2.0 * phis;
 
@@ -57,9 +53,4 @@ EHD_API int ehd_flux(double h, double u, double v,
         printf("d(flux)/d(dp) = %E\n", fluxd[1]);
         printf("d(flux)/d(h) = %E\n", fluxd[2]);
     }
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
-    return iop;
 }

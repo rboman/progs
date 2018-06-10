@@ -14,15 +14,15 @@
  *   limitations under the License.
  */
 
-/*
- * Test des flow factors
- */
-
 #include "ehd_main3.h"
 
 Main3::Main3(int _nn) : nn(_nn), h(_nn), PhiS(_nn), PhiP(_nn), dPhiS(_nn), dPhiP(_nn)
 {
 }
+
+/**
+ * @brief Test des flow factors
+ */
 
 int Main3::execute()
 {

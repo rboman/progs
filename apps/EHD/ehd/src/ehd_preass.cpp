@@ -14,34 +14,31 @@
  *   limitations under the License.
  */
 
-/*
- * Determination de la ligne de ciel
- */
-
 #include "ehd.h"
 #include "SkyMat.h"
+
+/**
+ * @brief Determination de la ligne de ciel
+ */
 
 EHD_API int ehd_preass(SkyMat *K, int *loc2, int nbelem, int nsys, int nddl)
 {
     int iop = 0;
-    int i, j, ni, nj;
-    int n;
 
     // init de la ligne de ciel
-
     sky_pre_start(K, nsys);
 
     // boucle de pre-assemblage
-
-    for (n = 0; n < nbelem; n++)
+    for (int n = 0; n < nbelem; n++)
     {
-
-        for (i = 0; i < 2 * nddl; i++)
+        for (int i = 0; i < 2 * nddl; i++)
         {
+            int ni;
             if ((ni = loc2[nddl * n + i]) < 0)
                 continue;
-            for (j = 0; j < 2 * nddl; j++)
+            for (int j = 0; j < 2 * nddl; j++)
             {
+                int nj;
                 if ((nj = loc2[nddl * n + j]) < 0)
                     continue;
                 sky_pre_ass(K, ni, nj);

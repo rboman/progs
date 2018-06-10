@@ -14,25 +14,25 @@
  *   limitations under the License.
  */
 
-/*
- * Test determination CL
- */
-
 #include "ehd.h"
 
 #define TOL_NR 1.0e-8
+
+/**
+ * @brief Test determination CL
+ */
 
 EHD_API int ehd_main1()
 {
     int iop = 0;
     //int i,j,ni,nj,n;
-    int i, n;
+    //int i, n;
 
     const int nbelem = 1000;
     const int nbnode = nbelem + 1;
 
     // variables
-    double eta0, alpha;
+    //double eta0, alpha;
 
     double *h = (double *)malloc(nbnode * sizeof(double));
     double *h_t0 = (double *)malloc(nbnode * sizeof(double));
@@ -46,8 +46,7 @@ EHD_API int ehd_main1()
     double *dp = (double *)malloc(nbnode * sizeof(double));
     double *dpdh0 = (double *)malloc(nbnode * sizeof(double));
 
-    SkyMat K;
-    SkyMat K2;
+
 
 #if 1
     // fixations
@@ -101,22 +100,19 @@ EHD_API int ehd_main1()
     if (iop != 0)
         goto FIN;
 
-    // Init du module EHD
-
-    iop = ehd_init();
-    if (iop != 0)
-        goto FIN;
-
     // Mise en place des donnees
 
+    double eta0, alpha;
     iop = ehd_setpar(nbnode, x, h, h_t0, um, &eta0, &alpha, u, &dt);
     if (iop != 0)
         goto FIN;
 
-    for (i = 0; i < nbnode; i++)
+    for (int i = 0; i < nbnode; i++)
         eta[i] = eta0;
 
     // Initialisation skyline
+
+    SkyMat K;
 
     iop = sky_initmat(&K);
     if (iop != 0)
@@ -124,6 +120,8 @@ EHD_API int ehd_main1()
     iop = sky_setname(&K, "K");
     if (iop != 0)
         goto FIN;
+
+    SkyMat K2;    
     iop = sky_initmat(&K2);
     if (iop != 0)
         goto FIN;
@@ -131,8 +129,8 @@ EHD_API int ehd_main1()
     if (iop != 0)
         goto FIN;
 
-        // NEWTON-RAPHSON
-        // --------------
+    // NEWTON-RAPHSON
+    // --------------
 
 #if 0  
   fich = fopen("pipo.m","w");
@@ -156,12 +154,10 @@ EHD_API int ehd_main1()
 
     dh0t = 0.0;
     rester = 1;
-    n = 0;
+    int n = 0;
     while (rester)
     {
-
         // Resolution h(x) -> p(x)
-
         iop = ehd_get_p(nbelem, nbnode, h, eta0, alpha, x, um,
                         u, h_t0, dt, p, dp,
                         &K, nbfix,
@@ -209,7 +205,7 @@ EHD_API int ehd_main1()
 
         printf("dh0 = %+E\tdh0t = %+E\n", dh0, dh0t);
 
-        for (i = 0; i < nbnode; i++)
+        for (int i = 0; i < nbnode; i++)
             h[i] += dh0;
 
         n++;
