@@ -25,6 +25,24 @@ def main():
     code = ehd.Main3()
     code.execute()
 
+    # retrieve results
+    h = np.array(code.h) 
+    phis = np.array(code.PhiS) 
+    phip = np.array(code.PhiP) 
+    dphis = np.array(code.dPhiS) 
+    dphip = np.array(code.dPhiP) 
+    
+    # display results
+    plt.plot(h, phis, label='phis')
+    plt.plot(h, phip, label='phip')    
+    plt.plot(h, dphis, label='dphis')
+    plt.plot(h, dphip, label='dphip')
+    plt.grid(True)
+    plt.legend()
+    plt.ylabel('Phi')
+    plt.xlabel('h')
+    plt.title('Patir & Cheng flow factors')
+    plt.show()
 
 if __name__ == "__main__":
     main()

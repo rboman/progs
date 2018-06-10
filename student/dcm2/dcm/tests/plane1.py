@@ -74,11 +74,6 @@ def main():
     plt.ylabel('M(t) & T(t) en x=0')
     plt.xlabel('temps')
     plt.title('Moment et effort tranchant a l'' emplanture de l'' aile')
-
-
-
-
-
     plt.show()
 
 if __name__ == "__main__":

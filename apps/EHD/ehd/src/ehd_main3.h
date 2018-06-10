@@ -22,10 +22,17 @@
 
 class EHD_API Main3
 {
+    int nn;
 public:
-    Main3();
+    Main3(int _nn=100);
 
     int execute();
+
+    std::vector<double> h;
+    std::vector<double> PhiS;
+    std::vector<double> PhiP;
+    std::vector<double> dPhiS;
+    std::vector<double> dPhiP;
 };
 
 #endif // __EHD_MAIN3_H__

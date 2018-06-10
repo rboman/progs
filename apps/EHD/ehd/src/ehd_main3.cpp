@@ -20,32 +20,17 @@
 
 #include "ehd_main3.h"
 
-Main3::Main3()
+Main3::Main3(int _nn) : nn(_nn), h(_nn), PhiS(_nn), PhiP(_nn), dPhiS(_nn), dPhiP(_nn)
 {
-
 }
 
 int Main3::execute()
 {
     int iop = 0;
-
     int loi = EHD_PATIR;
-    const int nn = 100;
+    //const int nn = 100;
     double h_max = 10;
     double h_min = 1;
-
-    std::vector<double> h(nn);
-    //double *h = (double *)malloc(nn * sizeof(double));
-
-    std::vector<double> PhiS(nn);
-    std::vector<double> PhiP(nn);
-    std::vector<double> dPhiS(nn);
-    std::vector<double> dPhiP(nn);
-
-    //double *PhiS = (double *)malloc(nn * sizeof(double));
-    //double *PhiP = (double *)malloc(nn * sizeof(double));
-    //double *dPhiS = (double *)malloc(nn * sizeof(double));
-    //double *dPhiP = (double *)malloc(nn * sizeof(double));
 
     // Calcule l'abscisse
     for (int i = 0; i < nn; i++)
@@ -76,8 +61,6 @@ int Main3::execute()
     iop = mlab_vec("pipo.m", "dPhiS", &(dPhiS[0]), nn, MLAB_OLD, MLAB_VERBOSE);
     if (iop != 0)
         goto FIN;
-
-
 
 FIN:
     if (iop > 900)
