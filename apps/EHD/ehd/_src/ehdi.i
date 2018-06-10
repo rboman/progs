@@ -9,6 +9,7 @@
 %{
 
 #include "ehd.h"
+#include "ehd_main3.h"
 
 #include <string>
 #include <sstream>
@@ -71,3 +72,4 @@ namespace std {
 
 // ----------- EHD CLASSES ---------------
 %include "ehd.h"
+%include "ehd_main3.h"

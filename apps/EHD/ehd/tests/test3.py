@@ -22,7 +22,8 @@ def main():
     import matplotlib.pyplot as plt
     import ehd
 
-    ehd.ehd_main3()
+    code = ehd.Main3()
+    code.execute()
 
 
 if __name__ == "__main__":

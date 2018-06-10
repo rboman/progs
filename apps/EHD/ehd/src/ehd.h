@@ -145,6 +145,6 @@ EHD_API int ehd_flow_cisail(double h,
 
 EHD_API int ehd_main1();
 EHD_API int ehd_main2();
-EHD_API int ehd_main3();
+//EHD_API int ehd_main3();
 
 #endif // __EHD_H__
