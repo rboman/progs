@@ -15,7 +15,7 @@
 
 class Dictionary : public IoObject
 {
-public:
+  public:
     typedef std::list<Entry> MyList;
     typedef MyList::const_iterator MyListItC;
     MyList words;
@@ -24,7 +24,7 @@ public:
 
     void load(const std::string &fileName);
     void save(const std::string &fileName) const;
-    void print(FILE *file=stdout) const;
+    void print(FILE *file = stdout) const;
     void sort();
 };
 

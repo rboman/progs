@@ -15,12 +15,12 @@ class Converter : public IoObject
 {
     std::string fileNameIn;
 
-public:
+  public:
     Converter(const std::string &in);
 
     void execute(const Dictionary &dic) const;
 
-private:
+  private:
     void renameFiles() const;
     void printRenameError(const std::string &file1, const std::string &file2) const;
 };

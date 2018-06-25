@@ -4,8 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 
-void
-printUsageAndExit(const char *progName)
+void printUsageAndExit(const char *progName)
 {
     std::cout << std::endl;
     std::cout << "eConv V4 by RoBo - A simplified Search/Replace Tool that" << std::endl;
@@ -24,26 +23,27 @@ printUsageAndExit(const char *progName)
  * @since  September 2003
  */
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    const char defaultDicFile[]="dic.txt";
+    const char defaultDicFile[] = "dic.txt";
     const char *dicFile = &defaultDicFile[0];
-    bool sortDic=false;
+    bool sortDic = false;
 
-    if(argc==1) printUsageAndExit(argv[0]);
+    if (argc == 1)
+        printUsageAndExit(argv[0]);
 
-    int noarg=1;
-    while(noarg<argc)
+    int noarg = 1;
+    while (noarg < argc)
     {
         char *cmd = argv[noarg];
-        if(strcmp(cmd, "-d")==0)
+        if (strcmp(cmd, "-d") == 0)
         {
-            if(++noarg>=argc) printUsageAndExit(argv[0]);
+            if (++noarg >= argc)
+                printUsageAndExit(argv[0]);
             dicFile = argv[noarg];
             noarg++;
         }
-        else if(strcmp(cmd, "-s")==0)
+        else if (strcmp(cmd, "-s") == 0)
         {
             sortDic = true;
             noarg++;
@@ -56,19 +56,19 @@ main(int argc, char *argv[])
     {
         Dictionary dic;
         dic.load(dicFile);
-        if(sortDic)
+        if (sortDic)
         {
             dic.sort();
             dic.save(std::string(dicFile) + ".sort");
         }
         int i;
-        for(i=noarg; i<argc; ++i)
+        for (i = noarg; i < argc; ++i)
         {
             Converter converter(argv[i]);
             converter.execute(dic);
         }
     }
-    catch(IoError &e)
+    catch (IoError &e)
     {
         e.print();
         return 1;
@@ -76,4 +76,3 @@ main(int argc, char *argv[])
 
     return 0;
 }
-

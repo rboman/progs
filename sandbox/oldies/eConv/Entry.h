@@ -12,7 +12,7 @@
 
 class Entry
 {
-public:
+  public:
     std::string first;
     std::string second;
 

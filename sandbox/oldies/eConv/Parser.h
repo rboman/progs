@@ -16,14 +16,14 @@ class Parser : public IoObject
     FILE *fileIN;
     unsigned long offset;
 
-public:
+  public:
     Parser(const std::string &fileName);
     ~Parser();
 
     bool findNext(const std::string &word, unsigned long &off);
     static void printAsciiTable();
 
-private:
+  private:
     bool isABoundingChar(char c) const;
     bool isARegularWord(const std::string &word) const;
 };
