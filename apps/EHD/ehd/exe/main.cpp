@@ -15,11 +15,12 @@
  */
 
 /*
- * Calcul des forces externes de lubri
+ * Test de la determination de h(x)
  */
 
 #include "ehd.h"
 
-EHD_API void ehdd_fext()
+int main()
 {
+    return ehd_main2();
 }

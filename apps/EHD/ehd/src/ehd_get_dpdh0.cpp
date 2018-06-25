@@ -14,22 +14,18 @@
  *   limitations under the License.
  */
 
-/*
- * Cherche dp/dh0
- */
-
 #include "ehd.h"
 
+/**
+ * @brief Cherche dp/dh0
+ */
 EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double alpha,
-                  double *x, double *u, double *um, double dt,
-                  double *p, double *dp, SkyMat *K, int nbfix,
-                  int *nnfix, int *ndfix, double *vfix, double *dpdh0,
-                  int opt, int scheme)
+                          double *x, double *u, double *um, double dt,
+                          double *p, double *dp, SkyMat *K, int nbfix,
+                          int *nnfix, int *ndfix, double *vfix, double *dpdh0,
+                          int opt, int scheme)
 {
     int iop = 0;
-    int i, j, ni, nj, n;
-    double flux, sign, nor;
-    double eta, etad;
 
     // locels
     int *loc = (int *)malloc(nbnode * sizeof(int));
@@ -38,15 +34,14 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
 
     // matrices
     double Sp[2][2], Fu[2], C1[2][2], Fh[2], Se[2][2], Fum[2];
+
     double *rhs = (double *)malloc(nbnode * sizeof(double));
     double *inc = (double *)malloc(nbnode * sizeof(double));
-    int nsys;
 
     // CALCUL DES LOCELS
 
     // init
-
-    for (i = 0; i < nbnode; i++)
+    for (int i = 0; i < nbnode; i++)
     {
         loc[i] = i;
         loc2[i] = 0;
@@ -54,24 +49,20 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
     }
 
     // supprime fix et code la valeur
-
-    for (i = 0; i < nbfix; i++)
-    {
+    for (int i = 0; i < nbfix; i++)
         loc2[nnfix[i] + ndfix[i]] = -1 - i;
-    }
 
     // calcule le locs et le loc2
 
-    nsys = 0;
-    for (i = 0; i < nbnode; i++)
-    {
+    int nsys = 0;
+    for (int i = 0; i < nbnode; i++)
         if (loc2[i] >= 0)
         {
             loc2[i] = nsys;
             locs[nsys] = i;
             nsys++;
         }
-    }
+
     /*
   printf("nsys=%d\n",nsys);
   printf("nddl=%d\n",nbnode);
@@ -84,19 +75,18 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
 
     // init 2nd membre
 
-    for (i = 0; i < nbnode; i++)
+    for (int i = 0; i < nbnode; i++)
         rhs[i] = 0.0;
 
     // init vecteur inc (facultatif)
 
-    for (i = 0; i < nbnode; i++)
+    for (int i = 0; i < nbnode; i++)
         inc[i] = 0.0;
 
     // Construction du systeme
 
-    for (n = 0; n < nbelem; n++)
+    for (int n = 0; n < nbelem; n++)
     {
-
         // calcul de Sp(elem) et Fu(elem)
         iop = ehd_mat_dp(&(x[n]),
                          &(h[n]),
@@ -106,16 +96,17 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
         if (iop != 0)
             goto FIN;
 
-        for (i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             Fh[i] = 0.0;
-            for (j = 0; j < 2; j++)
+            for (int j = 0; j < 2; j++)
                 Fh[i] += C1[i][j] / dt;
         }
 
         // assemblage
-        for (i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
+            int ni;
             if ((ni = loc2[n + i]) < 0)
                 continue;
 
@@ -126,8 +117,9 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
 
             rhs[ni] -= Fum[i];
 
-            for (j = 0; j < 2; j++)
+            for (int j = 0; j < 2; j++)
             {
+                int nj;
                 if ((nj = loc2[n + j]) < 0)
                 {
                     rhs[ni] += -(Sp[i][j]) * vfix[-loc2[n + j] - 1];
@@ -143,20 +135,19 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
 
     // Gestion des CL en 0 et (nbnode-1)
 
-    n = 0;
-    nor = x[n + 1] - x[n];
-    sign = 1.0;
+    int n = 0;
+    double nor = x[n + 1] - x[n];
+    double sign = 1.0;
     if (nor > 0.0)
         sign = 1.0;
 
     if (loc2[n] >= 0)
     {
-        nj = loc2[n];
-        iop = ehd_visco(eta0, alpha, p[n], &eta, &etad);
-        if (iop != 0)
-            goto FIN;
+        int nj = loc2[n];
+        double eta, etad;
+        ehd_visco(eta0, alpha, p[n], &eta, &etad);
 
-        flux = u[n] - h[n] * h[n] / 4.0 / eta * dp[n];
+        double flux = u[n] - h[n] * h[n] / 4.0 / eta * dp[n];
         rhs[nj] += sign * flux;
 
         sky_ass(K, nj, nj, -sign * h[n] * h[n] * h[n] / 12.0 / eta / eta * etad * dp[n]);
@@ -171,13 +162,11 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
 
     if (loc2[n] >= 0)
     {
-        nj = loc2[n];
+        int nj = loc2[n];
+        double eta, etad;
+        ehd_visco(eta0, alpha, p[n], &eta, &etad);
 
-        iop = ehd_visco(eta0, alpha, p[n], &eta, &etad);
-        if (iop != 0)
-            goto FIN;
-
-        flux = u[n] - h[n] * h[n] / 4.0 / eta * dp[n];
+        double flux = u[n] - h[n] * h[n] / 4.0 / eta * dp[n];
         rhs[nj] += -sign * flux;
 
         flux = sign * h[n] * h[n] * h[n] / 12.0 / eta / eta * etad * dp[n];
@@ -212,7 +201,7 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
 
     // extraction dpdh0
 
-    for (i = 0; i < nbnode; i++)
+    for (int i = 0; i < nbnode; i++)
     {
         if (loc2[i] >= 0)
             dpdh0[i] = inc[loc2[i]];
@@ -225,8 +214,6 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
     free(locs);
     free(rhs);
     free(inc);
-
-/****/
 
 FIN:
     if (iop > 900)

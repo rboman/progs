@@ -36,11 +36,10 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #endif
 
-#pragma warning( disable : 4251)  // DLL/templates non exportes
-#pragma warning( disable : 4275)  // non - DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
+#pragma warning(disable : 4251) // DLL/templates non exportes
+#pragma warning(disable : 4275) // non - DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
 
 #endif //_MSC_VER
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,14 +64,13 @@
 #define EHD_TRIPP 2
 
 // PROTOS
-EHD_API int ehd_flux(double h, double u, double v,
+EHD_API void ehd_flux(double h, double u, double v,
                      double eta0, double alpha,
                      double p, double dp,
                      double Rq,
                      double phis, double phip,
                      double dphis, double dphip,
                      double *flux, double *fluxd);
-EHD_API int ehd_init();
 EHD_API int ehd_mat_p(double *x, double *h, double eta0, double alpha,
                       double *p, double *dp, double *u, double *um,
                       double Sp[4][4], double Se[4][4], double Fu[4],
@@ -95,14 +93,14 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
                           double *p, double *dp, SkyMat *K, int nbfix,
                           int *nnfix, int *ndfix, double *vfix, double *dpdh0,
                           int opt, int scheme);
-EHD_API int ehd_visco(double eta0, double alpha, double p, double *eta, double *etad);
-EHD_API int ehd_spp(double Sp[4][4], double *p, double *dp, double *res);
+EHD_API void ehd_visco(double eta0, double alpha, double p, double *eta, double *etad);
+EHD_API void ehd_spp(double Sp[4][4], double *p, double *dp, double *res);
 
 // splines
 
-EHD_API int ehd_spline_seg(double *xi, double *yi, double *ki,
+EHD_API void ehd_spline_seg(double *xi, double *yi, double *ki,
                            double *x, double *y, double *yp, int n);
-EHD_API int ehd_spline_y(int nn, double *xi, double *yi, double *ki,
+EHD_API void ehd_spline_y(int nn, double *xi, double *yi, double *ki,
                          double x, double *y, double *yp);
 EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki);
 
@@ -138,8 +136,14 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
                       TdiMat *K, int nbfix,
                       int *nnfix, int *ndfix, double *vfix, int opt,
                       int loi, int scheme);
-EHD_API int ehd_flow_cisail(double h,
+EHD_API void ehd_flow_cisail(double h,
                             double Rq, double Rq1, double Rq2, int loi,
                             double *PhiF, double *PhiFS, double *PhiFP);
+
+// mains
+
+EHD_API int ehd_main1();
+EHD_API int ehd_main2();
+//EHD_API int ehd_main3();
 
 #endif // __EHD_H__

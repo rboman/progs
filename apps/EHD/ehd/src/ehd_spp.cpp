@@ -14,18 +14,14 @@
  *   limitations under the License.
  */
 
-/*
- * Calule le produit Sp p
- */
-
 #include "ehd.h"
 
-EHD_API int ehd_spp(double Sp[4][4], double *p, double *dp, double *res)
+/**
+ * @brief Calcule le produit Sp p
+ */
+
+EHD_API void ehd_spp(double Sp[4][4], double *p, double *dp, double *res)
 {
-    int i;
-
-    for (i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
         res[i] += Sp[i][0] * p[0] + Sp[i][1] * dp[0] + Sp[i][2] * p[1] + Sp[i][3] * dp[1];
-
-    return 0;
 }

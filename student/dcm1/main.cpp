@@ -17,10 +17,9 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication *app = new QApplication(argc, argv);
-	Barres *win = new Barres();
-	win->show();
-	app->exec();
-	return 0;
+    QApplication *app = new QApplication(argc, argv);
+    Barres *win = new Barres();
+    win->show();
+    app->exec();
+    return 0;
 }
-

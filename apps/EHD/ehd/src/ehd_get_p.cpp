@@ -14,8 +14,8 @@
  *   limitations under the License.
  */
 
-/*
- * Resoud Reynolds direct (p(x),dp(x) from h(x))
+/**
+ * @brief Resout Reynolds direct (p(x),dp(x) from h(x))
  *
  * Elements finis type Hermite (3eme degre)
  */
@@ -25,16 +25,13 @@
 #define TOL_NR 1.0e-18
 
 EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
-              double alpha, double *x, double *um,
-              double *u, double *h_t0, double dt,
-              double *p, double *dp, SkyMat *K, int nbfix,
-              int *nnfix, int *ndfix, double *vfix, int opt, int scheme)
+                      double alpha, double *x, double *um,
+                      double *u, double *h_t0, double dt,
+                      double *p, double *dp, SkyMat *K, int nbfix,
+                      int *nnfix, int *ndfix, double *vfix, int opt, int scheme)
 {
     int iop = 0;
-    int i, j, ni, nj, n;
-    double flux, sign, nor, fluxd[3];
-    int ite, rester;
-    double res;
+
     double *residu = (double *)malloc(2 * nbnode * sizeof(double));
 
     // locels
@@ -44,25 +41,25 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
     // matrices
     double Sp[4][4], Fu[4], C1[4][2], Fh[4], Se[4][4], Fum[4];
-    int nsys;
 
     double *rhs = (double *)malloc(2 * nbnode * sizeof(double));
     double *inc = (double *)malloc(2 * nbnode * sizeof(double));
     double *pipo = (double *)malloc(nbnode * sizeof(double));
 
     // init p,dp
-    /*
-  for(i=0;i<nbnode;i++){
-    p[i]=0.0;
-    dp[i]=0.0;
-  }
-  */
+/*
+    for(i=0;i<nbnode;i++)
+    {
+        p[i]=0.0;
+        dp[i]=0.0;
+    }
+*/
 
     // CALCUL DES LOCELS
 
     // init
 
-    for (i = 0; i < 2 * nbnode; i++)
+    for (int i = 0; i < 2 * nbnode; i++)
     {
         loc[i] = i;
         loc2[i] = 0;
@@ -71,15 +68,15 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
     // supprime fix et code la valeur
 
-    for (i = 0; i < nbfix; i++)
+    for (int i = 0; i < nbfix; i++)
     {
         loc2[2 * nnfix[i] + ndfix[i]] = -1 - i;
     }
 
     // calcule le locs et le loc2
 
-    nsys = 0;
-    for (i = 0; i < 2 * nbnode; i++)
+    int nsys = 0;
+    for (int i = 0; i < 2 * nbnode; i++)
     {
         if (loc2[i] >= 0)
         {
@@ -88,10 +85,10 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
             nsys++;
         }
     }
-    /*
-  printf("nsys=%d\n",nsys);
-  printf("nddl=%d\n",2*nbnode);
-  */
+/*
+    printf("nsys=%d\n",nsys);
+    printf("nddl=%d\n",2*nbnode);
+*/
 
     // Init de la ligne de ciel
 
@@ -101,17 +98,16 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
     // init de p et dp (inutile : a verifier)
 
-    for (i = 0; i < nbnode; i++)
+    for (int i = 0; i < nbnode; i++)
     {
         p[i] = 0.0;
         dp[i] = 0.0;
     }
 
     // Extraction de la solution en p et dp
-
     // La valeur de depart (p=0.0) pourrait etre la valeur au pas prec !
 
-    for (i = 0; i < nbnode; i++)
+    for (int i = 0; i < nbnode; i++)
     {
         if (loc2[2 * i] >= 0)
             p[i] = 0.0;
@@ -127,30 +123,28 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
     // NEWTON-RAPHSON ( 1 ite si eta ne depend pas de p)
     // -------------------------------------------------
 
-    rester = 1;
-    ite = 0;
+    int rester = 1;
+    int ite = 0;
     while (rester)
     {
-
         // init 2nd membre & residu
-
-        for (i = 0; i < 2 * nbnode; i++)
+        for (int i = 0; i < 2 * nbnode; i++)
         {
             rhs[i] = 0.0;
             residu[i] = 0.0;
         }
-        // init matrice skyline
 
+        // init matrice skyline
         sky_fill(K, 0.0);
 
         // init vecteur inc (facultatif)
 
-        for (i = 0; i < 2 * nbnode; i++)
+        for (int i = 0; i < 2 * nbnode; i++)
             inc[i] = 0.0;
 
         // Construction du systeme
 
-        for (n = 0; n < nbelem; n++)
+        for (int n = 0; n < nbelem; n++)
         {
 
             // calcul de Sp(elem) et Fu(elem)
@@ -163,10 +157,10 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
                 goto FIN;
 
             // terme transitoire
-            for (i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Fh[i] = 0.0;
-                for (j = 0; j < 2; j++)
+                for (int j = 0; j < 2; j++)
                     Fh[i] += C1[i][j] * (h[n + j] - h_t0[n + j]) / dt;
             }
 
@@ -174,9 +168,9 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
             ehd_spp(Sp, &(p[n]), &(dp[n]), &(residu[2 * n]));
 
             // assemblage
-            for (i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-
+                int ni;
                 if ((ni = loc2[2 * n + i]) < 0)
                     continue;
 
@@ -187,8 +181,9 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
                 rhs[ni] += -Fum[i];
 
-                for (j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
+                    int nj;
                     if ((nj = loc2[2 * n + j]) < 0)
                     {
                         // deja applique dans le produit Sp*p
@@ -204,16 +199,18 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
         // Gestion des CL en 0 et (nbnode-1)
 
-        n = 0;
-        nor = x[n + 1] - x[n];
-        sign = 1.0;
+        int n = 0;
+        double nor = x[n + 1] - x[n];
+        double sign = 1.0;
         if (nor > 0.0)
             sign = 1.0;
 
         if (loc2[2 * n] >= 0)
-        { // si p libre
-            ni = loc2[2 * n + 1];
-            nj = loc2[2 * n];
+        { 
+            // si p libre
+            int ni = loc2[2 * n + 1];
+            int nj = loc2[2 * n];
+            double flux, fluxd[3];
             ehd_flux(h[n], u[n], 0.0, eta0, alpha, p[n], vfix[-ni - 1], 0.0,
                      1.0, 0.0, 0.0, 0.0, &flux, fluxd);
             rhs[nj] += sign * flux;
@@ -228,9 +225,11 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
             sign = 1.0;
 
         if (loc2[2 * n] >= 0)
-        { // si p libre
-            ni = loc2[2 * n + 1];
-            nj = loc2[2 * n];
+        { 
+            // si p libre
+            int ni = loc2[2 * n + 1];
+            int nj = loc2[2 * n];
+            double flux, fluxd[3];
             ehd_flux(h[n], u[n], 0.0, eta0, alpha, p[n], vfix[-ni - 1], 0.0,
                      1.0, 0.0, 0.0, 0.0, &flux, fluxd);
             rhs[nj] += -sign * flux;
@@ -241,8 +240,8 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
         // Suite du calcul du residu
         // Norme au carre du residu (sans les fixations) - rendre adim + tard
 
-        res = 0.0;
-        for (i = 0; i < 2 * nbnode; i++)
+        double res = 0.0;
+        for (int i = 0; i < 2 * nbnode; i++)
             if (loc2[i] >= 0)
             {
                 residu[i] -= rhs[loc2[i]];
@@ -250,14 +249,11 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
             }
 
         // A VIRER ???? residu ne sert a rien ??? -> rhs
-        for (i = 0; i < 2 * nbnode; i++)
+        for(int i = 0; i < 2 * nbnode; i++)
             if (loc2[i] >= 0)
-            {
                 rhs[loc2[i]] = -residu[i];
-            }
 
         // Test residu
-
         printf("\tite %4d:\tres = %+E\n", ite, res);
 
         if (res < TOL_NR)
@@ -265,18 +261,18 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
         if (ite == 2)
             break;
 
-        /*
-      for(i=0;i<2*nbnode;i++)
-      printf("loc2[%d]=%d\n",i,loc2[i]);
-    */
+/*
+    for(i=0;i<2*nbnode;i++)
+        printf("loc2[%d]=%d\n",i,loc2[i]);
+*/
 
-        /*
+/*
     iop = mlab_sky("pipo.m","",K,SKY_A,MLAB_NEW, MLAB_SILENT);
     iop = mlab_vec("pipo.m", "inc", inc, nsys, MLAB_OLD, MLAB_SILENT);
     iop = mlab_vec("pipo.m", "rhs", rhs, nsys, MLAB_OLD, MLAB_SILENT);
     if(iop!=0) goto FIN;
     if(ite==2) exit(1);
-    */
+*/
 
         // Solution systeme
 
@@ -289,7 +285,7 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
         // Extraction de la solution en p et dp
 
-        for (i = 0; i < nbnode; i++)
+        for (int i = 0; i < nbnode; i++)
         {
             if (loc2[2 * i] >= 0)
                 p[i] += inc[loc2[2 * i]];
@@ -309,27 +305,28 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
 
     // verif de la solution (le flux ou sa derivee doit etre une constante)
 
-    /*
-  for(n=0;n<nbnode;n++) {
-    ehd_flux(h[n], u[n], 0.0, eta0, alpha, p[n], dp[n], 0.0,
-             1.0, 0.0, 0.0, 0.0, &flux, fluxd);
-    printf("flux x=%E : %E\n",x[n],flux);
-    pipo[n]=flux;
-  }
-  */
-    /*
-  for(n=0;n<nbnode-1;n++)
-    pipo[n]=pipo[n+1]-pipo[n];
-  iop = mlab_vec("tmp.m", "pipo", pipo, nbnode-1, MLAB_NEW, MLAB_SILENT);
-  if(iop!=0) goto FIN;
-  */
+/*
+    for(n=0;n<nbnode;n++) 
+    {
+        ehd_flux(h[n], u[n], 0.0, eta0, alpha, p[n], dp[n], 0.0,
+                 1.0, 0.0, 0.0, 0.0, &flux, fluxd);
+        printf("flux x=%E : %E\n",x[n],flux);
+        pipo[n]=flux;
+    }
+*/
+/*
+    for(n=0;n<nbnode-1;n++)
+        pipo[n]=pipo[n+1]-pipo[n];
+    iop = mlab_vec("tmp.m", "pipo", pipo, nbnode-1, MLAB_NEW, MLAB_SILENT);
+    if(iop!=0) goto FIN;
+*/
 
-    /*
-  iop = mlab_mat_mxn("syst.m", "Sp", 4, 4, Sp, MLAB_OLD, MLAB_SILENT);
-  if(iop!=0) goto FIN;
-  iop = mlab_vec("syst.m", "Fu", Fu, 4, MLAB_OLD, MLAB_SILENT);
-  if(iop!=0) goto FIN;
-  */
+/*
+    iop = mlab_mat_mxn("syst.m", "Sp", 4, 4, Sp, MLAB_OLD, MLAB_SILENT);
+    if(iop!=0) goto FIN;
+    iop = mlab_vec("syst.m", "Fu", Fu, 4, MLAB_OLD, MLAB_SILENT);
+    if(iop!=0) goto FIN;
+*/
 
     // Output Matlab
 
@@ -355,8 +352,6 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
     free(rhs);
     free(inc);
     free(pipo);
-
-/****/
 
 FIN:
     if (iop > 900)

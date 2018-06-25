@@ -1,13 +1,17 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
-prognames=[ 'skytest', 'gausstest' ]
+prognames = ['skytest', 'gausstest']
 
-import os, sys, subprocess, platform
+import os
+import sys
+import subprocess
+import platform
 
 try:
     # create build dir
-    if not os.path.isdir('build'): os.mkdir('build')
+    if not os.path.isdir('build'):
+        os.mkdir('build')
     os.chdir('build')
     # cmake
     if 'Windows' in platform.uname():
@@ -15,11 +19,14 @@ try:
     else:
         subprocess.call('cmake ..', shell=True)
     subprocess.call('cmake --build . --config Release', shell=True)
-    if 'Windows' in platform.uname(): os.chdir('bin/Release')
+    if 'Windows' in platform.uname():
+        os.chdir('bin/Release')
     # run progs
     for p in prognames:
-        subprocess.check_call(os.path.join('.',p), shell=True)
-        print "<press ENTER to continue>"; raw_input()
+        subprocess.check_call(os.path.join('.', p), shell=True)
+        print "<press ENTER to continue>"
+        raw_input()
 except Exception as e:
     print e
-    print "<press ENTER to quit>"; raw_input()
+    print "<press ENTER to quit>"
+    raw_input()

@@ -14,19 +14,25 @@
  *   limitations under the License.
  */
 
-/*
- * Initialisation du module EHD
- */
+#ifndef __EHD_MAIN3_H__
+#define __EHD_MAIN3_H__
 
 #include "ehd.h"
 
-EHD_API int ehd_init()
-{
-    int iop = 0;
 
-    // FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
-    return iop;
-}
+class EHD_API Main3
+{
+    int nn;
+public:
+    Main3(int _nn=100);
+
+    int execute();
+
+    std::vector<double> h;
+    std::vector<double> PhiS;
+    std::vector<double> PhiP;
+    std::vector<double> dPhiS;
+    std::vector<double> dPhiP;
+};
+
+#endif // __EHD_MAIN3_H__

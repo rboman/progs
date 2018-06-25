@@ -22,7 +22,7 @@ def main():
     import matplotlib.pyplot as plt
     import ehd
 
-    ehd.ehd_main1()
+    ehd.ehd_main2()
 
 
 if __name__ == "__main__":
