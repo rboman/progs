@@ -1,0 +1,24 @@
+
+dist: trusty
+sudo: false
+language: cpp
+
+#addons:
+#  apt:
+#    packages:
+      #- cmake    # inutile
+      #- doxygen
+      #- graphviz
+      #- python-pip
+
+before_install:
+  - export PROG_BASE_DIR=$(pwd)
+  #- sudo apt-get update
+  #- sudo apt-get install gfortran
+  #- sudo apt-get install mpich2
+  #- sudo apt-get install libmumps-dev
+
+script:
+  - cd ${PROG_BASE_DIR}/apps/EHD
+  - ./travis.sh
+
