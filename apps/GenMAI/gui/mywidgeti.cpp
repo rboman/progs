@@ -80,7 +80,7 @@ void MyWidgetI::updateTextLineEdit(QLineEdit *ledit, double val)
     s.setNum( val ); ledit->setText(s);
 }
 
-// -- paramètres maillage
+// -- paramï¿½tres maillage
 
 void MyWidgetI::origx_slot()
 {
@@ -120,7 +120,7 @@ void MyWidgetI::deltype_slot()
     qWarning( "MyWidget::deltype_slot(): Not implemented yet!" );
 }
 
-// -- paramètres matrice
+// -- paramï¿½tres matrice
 
 void MyWidgetI::centrex_slot()
 {
@@ -163,12 +163,12 @@ void MyWidgetI::aspn_slot()
 
 void MyWidgetI::tload_slot()
 {
-    tpar.load("mesh.par");
+    tpar.load("mesh.txt");
     update();
 }
 void MyWidgetI::tsave_slot()
 {
-    tpar.save("mesh.par");
+    tpar.save("mesh.txt");
     update();
 }
 
@@ -176,12 +176,12 @@ void MyWidgetI::tsave_slot()
 
 void MyWidgetI::mload_slot()
 {
-    mpar.load("matrix.par");
+    mpar.load("matrix.txt");
     update();
 }
 void MyWidgetI::msave_slot()
 {
-    mpar.save("matrix.par");
+    mpar.save("matrix.txt");
     update();
 }
 

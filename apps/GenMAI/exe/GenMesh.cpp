@@ -20,6 +20,7 @@
 #include "BaconMeshExporter.h"
 #include "MatlabMeshExporter.h"
 #include "NodeRenumberer.h"
+#include "genmai_config.h"
 
 /**
  * @brief Automatic Mesh generation: loads the parameters and uses all exporters
@@ -28,8 +29,8 @@
 void genMesh()
 {
     MeshParameters par; 
-    par.load("mesh.par");
-    par.save("mesh_2.par");
+    par.load(PROJECT_SOURCE_DIR "/mesh.txt");
+    par.save("mesh_2.txt");
 
     Mesh mesh;
     MeshBuilder mesher(mesh);

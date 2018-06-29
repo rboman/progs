@@ -14,7 +14,7 @@
 
 #include "Global.h"
 #include "Tool.h"
-#include "curve.h"
+#include "Curve.h"
 
 Tool::Tool() : TargetObject(), point(0), courbe(0)
 {

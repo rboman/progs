@@ -33,7 +33,7 @@ public:
     void save();
 
     std::string getFileName() const;
-    void setBaseFileName(std::string &_name);
+    void setBaseFileName(std::string const &_name);
     std::string getBaseFileName() const;
 
 protected:

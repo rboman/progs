@@ -60,6 +60,12 @@ Point::operator-(const Point &pt) const
     return Point(getX()-pt.getX(), getY()-pt.getY());
 }
 
+inline Point
+cosin(double angle)
+{
+    return Point(cos(angle), sin(angle));
+}
+
 inline Point 
 Point::rotate(double angle) const
 {
@@ -72,12 +78,6 @@ inline double
 Point::length() const
 {
     return sqrt(getX()*getX()+getY()*getY());
-}
-
-inline Point
-cosin(double angle)
-{
-    return Point(cos(angle), sin(angle));
 }
 
 inline Point 

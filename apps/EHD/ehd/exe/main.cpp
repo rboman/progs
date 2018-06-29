@@ -19,8 +19,23 @@
  */
 
 #include "ehd.h"
+#include <stdexcept>
+#include <iostream>
 
 int main()
 {
-    return ehd_main2();
+    try
+    {
+        return ehd_main2();
+    }
+    catch(std::exception &e) 
+    {
+        std::cerr << "\n** ERROR:" << e.what() << '\n';
+        return 1;
+    }
+    catch(...) 
+    {
+        std::cerr << "\n** ERROR: Unknown C++ Runtime Error\n";
+        return 1;
+    } 
 }

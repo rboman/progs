@@ -1,7 +1,8 @@
 # CMake file for the SWIG interface of genmai
 
 # -- Search for Python
-FIND_PACKAGE(PythonLibs REQUIRED)
+FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
+FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
 
 
 # -- Search for SWIG

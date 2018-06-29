@@ -57,7 +57,7 @@ Exporter::getFileName() const
  */
 
 void 
-Exporter::setBaseFileName(std::string &_name)
+Exporter::setBaseFileName(std::string const &_name)
 {
     fileName = _name;
 }

@@ -29,13 +29,13 @@ Arc::print() const
     std::cout << "Arc " << getPointNumber(0) << ' ' << getPointNumber(1) << ' ' << getPointNumber(2) ;
 }
 
-char *
+char const *
 Arc::name() const 
 { 
     return "Arc"; 
 }
 
-char *
+char const *
 Arc::carteBacon() const
 { 
     return ".arc"; 

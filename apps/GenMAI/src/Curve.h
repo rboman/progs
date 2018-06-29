@@ -33,11 +33,11 @@ public:
     void setPointNumber(int i, int j);
 
     virtual void  print() const = 0;
-    virtual char *name() const = 0;
-    virtual char *carteBacon() const = 0;
+    virtual char const *name() const = 0;
+    virtual char const *carteBacon() const = 0;
     virtual int   typeDon() const = 0;
 };
 
-#include "curve.inl"
+#include "Curve.inl"
 
 #endif

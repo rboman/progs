@@ -28,13 +28,13 @@ Line::print() const
     std::cout << "Line " << getPointNumber(0) << ' ' << getPointNumber(1) ;
 }
 
-char *
+char const *
 Line::name() const 
 { 
     return "Line"; 
 }
 
-char *
+char const *
 Line::carteBacon() const
 { 
     return ".dro"; 

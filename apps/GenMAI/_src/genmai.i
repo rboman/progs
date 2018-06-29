@@ -50,8 +50,9 @@
 
 %}
 
-%ignore *::operator<<;
-%ignore operator=;
+%ignore operator<<;
+%ignore *::operator=;
+%ignore operator*;
 %ignore Point::operator*(double, const Point &);
 %ignore Point::atan2;
 %ignore Point::cosin;

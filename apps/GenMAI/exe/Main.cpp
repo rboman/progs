@@ -13,6 +13,8 @@
 //   limitations under the License.
 
 #include "Global.h"
+#include <stdexcept>
+#include <iostream>
 
 extern void genMesh();
 extern void genTool();
@@ -22,8 +24,21 @@ extern void genTool();
  */
 
 int main(int argc, char **argv) 
-{
-    genMesh();
-    genTool();
+{   
+    try
+    {
+        genMesh();
+        genTool();
+    }
+    catch(std::exception &e) 
+    {
+        std::cerr << "\n** ERROR:" << e.what() << '\n';
+        return 1;
+    }
+    catch(...) 
+    {
+        std::cerr << "\n** ERROR: Unknown C++ Runtime Error\n";
+        return 1;
+    } 
     return 0;
 }

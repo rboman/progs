@@ -17,8 +17,8 @@ IF(WIN32)
 ENDIF(WIN32)
 
 # -- Search for Python
-
-FIND_PACKAGE(PythonLibs REQUIRED)
+FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
+FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
 
 # -- Search for SWIG
 

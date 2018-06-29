@@ -15,7 +15,7 @@
 #ifndef LINE_H
 #define LINE_H
 
-#include "curve.h"
+#include "Curve.h"
 
 /**
  * @brief Defines a segment of Line with 2 points.
@@ -26,8 +26,8 @@ public:
     Line(int p1, int p2);
 
     void print() const;
-    char * name() const;
-    char * carteBacon() const;
+    char const * name() const;
+    char const * carteBacon() const;
     int typeDon() const;
 };
 

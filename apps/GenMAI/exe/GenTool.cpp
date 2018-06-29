@@ -20,6 +20,7 @@
 #include "BaconToolExporter.h"
 #include "BaconDatToolExporter.h"
 #include "MatlabToolExporter.h"
+#include "genmai_config.h"
 
 /**
  * @brief Automatic Tool generation: loads the parameters and uses all exporters
@@ -31,9 +32,9 @@ void genTool()
 
     std::cout << "loading parameters...\n";
     ToolParameters        par;
-    par.load("matrix.par");
+    par.load(PROJECT_SOURCE_DIR "/matrix.txt");
     std::cout << "parameters loaded.\n";
-    par.save("matrix_2.par");
+    par.save("matrix_2.txt");
     std::cout << "parameters saved.\n";
 
     Tool        matrix;

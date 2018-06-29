@@ -14,6 +14,8 @@
 
 #include "Global.h"
 #include "Parameters.h"
+#include <stdexcept>
+#include <sstream>
 
 /**
  * @brief Constructor
@@ -112,6 +114,12 @@ Parameters::load(const std::string &file)
 {
     std::cout << "opening file " << file << "\n";
     FILE *fich = fopen(file.c_str(),"r+t");
+    if(!fich)
+        {
+            std::stringstream str; str << "file \"" << file << "\"" << " not found!";
+            throw std::runtime_error(str.str());
+        }
+
 
     MyMap::const_iterator it;
     for(it=paramMap.begin(); it!=paramMap.end(); ++it)

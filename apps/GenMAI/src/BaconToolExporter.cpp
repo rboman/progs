@@ -24,7 +24,7 @@ void
 BaconToolExporter::writeHeader()
 {
     // entete
-    fprintf(fich,"%% Fichier généré par 'gendon' ( RoBo - 21-05-99 )\n"); 
+    fprintf(fich,"%% Fichier gï¿½nï¿½rï¿½ par 'gendon' ( RoBo - 21-05-99 )\n"); 
     fprintf(fich,"\nNbre de matrices\n1");
     int i;
     for(i=0; i<14;i++) 
@@ -49,7 +49,7 @@ BaconToolExporter::writePoints()
 void
 BaconToolExporter::writeCurves()
 {
-    fprintf(fich,"\n%d",matrix.numberOfCurves()-matrix.getFirstCurve());
+    fprintf(fich,"\n%d",(int)(matrix.numberOfCurves()-matrix.getFirstCurve()));
 
     for(int i=matrix.getFirstCurve(); i<matrix.numberOfCurves(); i++)
     {  

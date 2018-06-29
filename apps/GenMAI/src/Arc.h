@@ -27,8 +27,8 @@ public:
     Arc(int p1, int p2, int p3);
 
     void print() const;
-    char *name() const;
-    char *carteBacon() const;
+    char const *name() const;
+    char const *carteBacon() const;
     int typeDon() const;
 };
 

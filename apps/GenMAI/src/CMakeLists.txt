@@ -2,7 +2,7 @@
 
 FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
 
-ADD_LIBRARY(genmai STATIC ${SRCS})
+ADD_LIBRARY(genmai SHARED ${SRCS})
 
 IF(WIN32)
     SET_TARGET_PROPERTIES(genmai PROPERTIES DEBUG_POSTFIX "_d")

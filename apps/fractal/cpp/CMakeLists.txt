@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 2.8.11)
-project(QtFract CXX)
-
 FIND_PACKAGE(Qt4 QUIET)
 IF(NOT Qt4_FOUND)
     FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED)

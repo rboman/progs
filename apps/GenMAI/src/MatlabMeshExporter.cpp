@@ -23,7 +23,7 @@ MatlabMeshExporter::MatlabMeshExporter(Mesh &_mesh) : MeshExporter(_mesh)
 void
 MatlabMeshExporter::writeHeader()
 {
-    fprintf(fich,"# fichier crée par \'genmai\'\n#\n");
+    fprintf(fich,"# fichier crï¿½e par \'genmai\'\n#\n");
 }
 
 void
@@ -43,7 +43,7 @@ MatlabMeshExporter::writeElements()
     {
         for(auto j=0; j<4; j++)
             fprintf(fich,"mai(%d,%d)=%d;\n", i+1, j+1,
-            mesh.getNodeNumber( mesh.getNodeNumberFromElement(i,j) ) );
+            mesh.getNodeNumber( mesh.getNodeNumberFromElement(i,j) ).getInt() );
     }
 }
 
