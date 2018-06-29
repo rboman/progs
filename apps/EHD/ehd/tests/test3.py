@@ -18,6 +18,9 @@
 
 def main():
 
+    import sys
+    if '--nogui' in sys.argv: return
+
     import numpy as np
     import matplotlib.pyplot as plt
     import ehd

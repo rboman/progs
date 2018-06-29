@@ -26,6 +26,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-v", "--verb", help="increase output verbosity", action="count", default=0)
+    parser.add_argument("--nogui", help="disable any graphical output",
+                        action="store_true")
     parser.add_argument('file', nargs='*', help='python files')
     args = parser.parse_args()
 

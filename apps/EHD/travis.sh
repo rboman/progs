@@ -7,3 +7,4 @@ cmake ..
 make -j2
 
 # run tests
+ctest --verbose
