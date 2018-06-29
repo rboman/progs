@@ -65,7 +65,7 @@ ELSE()
 ENDIF()
 
 # -- CTest
-#enable_testing()
+enable_testing()
 
 # -- Sub directories
 
