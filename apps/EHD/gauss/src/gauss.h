@@ -35,7 +35,8 @@
 
 #endif //_MSC_VER
 
-
+#include <stdexcept>
+#include <sstream>
 namespace gauss
 {
 

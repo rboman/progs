@@ -41,6 +41,8 @@
 #include "TdiMat.h"
 #include "mlab.h"
 */
+#include <stdexcept>
+#include <sstream>
 
 class TdiMat;
 
