@@ -1,12 +1,12 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C     TRANSFO.FOR : Transforme le problème primal -> dual
+C     TRANSFO.FOR : Transforme le probleme primal -> dual
 C
-C Dernière modification : 08.02.97           
+C Derniere modification : 08.02.97           
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       SUBROUTINE TRANSFO(A,b,C,d,x,A2,b2,x2,N,m,F2)
 C      
-C     Déclaration des variables
+C     Declaration des variables
 C     -------------------------
       IMPLICIT REAL*8(a-h,o-z)
       DIMENSION A(*),b(*),C(N,m),d(m),A2(*),b2(*),x(*),x2(*)
@@ -38,7 +38,7 @@ C
          ENDDO
       ENDDO
 C
-C     -- Termes linéaires --
+C     -- Termes lineaires --
 C
       DO i=1,m
          b2(i)=0.
@@ -50,7 +50,7 @@ C
          b2(i)=b2(i)-d(i)
       ENDDO
 C
-C     Initialisation du vecteur lamda0 à 0.0
+C     Initialisation du vecteur lamda0 a 0.0
 C     --------------------------------------
       DO i=1,m
          x2(i)=0.0D0

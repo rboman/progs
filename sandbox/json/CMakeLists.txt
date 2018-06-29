@@ -12,3 +12,7 @@ if(NOT RAPIDJSON_INCLUDE_DIRS)
     message(FATAL_ERROR "RapidJSON include dir not found!")
 endif()
 include_directories(${RAPIDJSON_INCLUDE_DIRS})
+
+enable_testing()
+add_test(NAME json COMMAND ${EXECUTABLE_OUTPUT_PATH}/json ${PROJECT_SOURCE_DIR}/test1.json
+         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

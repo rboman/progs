@@ -1,22 +1,22 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C             MINIM2.FOR : Routine de minimisation
 C
-C dernière modification : 09.02.97
+C derniere modification : 09.02.97
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       SUBROUTINE MINIM2(A,X,B,G,Z,EPS,F0,N,METH,IASS,NCHECK,
      #                  ICONST,ISA)
 
-C     Déclaration des variables
+C     Declaration des variables
 C     -------------------------
       IMPLICIT REAL*8 (A-H,O-Z)
       DIMENSION A(1),X(1),B(1),G(1),Z(1),ISA(*)
 C
-C     Ouverture du fichier résultat
+C     Ouverture du fichier resultat
 C     -----------------------------
       OPEN(UNIT = 1, FILE = 'RES.M', STATUS = 'UNKNOWN')
 C
-C     Définition des variables
+C     Definition des variables
 C     ------------------------
       ZERO = 0.D 00
       TOL  = EPS*EPS
@@ -44,13 +44,13 @@ C     -------------------------------------------
       ENDDO
 C
 C     ---------------------------------------------------------
-C                      Boucle des itérations
+C                      Boucle des iterations
 C     ---------------------------------------------------------
 C
    2  CONTINUE
 C
-C        Calcul du gradient et mise à jour de f(x)
-C        Projection du gradient (si nécessaire)
+C        Calcul du gradient et mise a jour de f(x)
+C        Projection du gradient (si necessaire)
 C        -----------------------------------------
          CALL TLVECT (A,X,G,N)
          FCT=F0+DOTPRO(X,G,N)/2.-DOTPRO(X,B,N)
@@ -131,7 +131,7 @@ C        ------------------------------------
          IF(METH.EQ.0) GAM=ZERO
          ICONJ=1
 C
-C        Mise à jour de la direction de recherche
+C        Mise ï¿½ jour de la direction de recherche
 C        ----------------------------------------
          DO 6 I=1,N
    6        Z(I)=-G(I)+GAM*Z(I)

@@ -21,7 +21,6 @@ matplotlib.use('Qt5Agg')  # force PyQt5
 def main():
     
     import numpy as np
-    import matplotlib.pyplot as plt
     import ndh
     bem = ndh.BemSolver()
     bem.exec_full();
@@ -30,6 +29,8 @@ def main():
 
 
     sol = bem.getSolution()
+
+    import matplotlib.pyplot as plt
     plt.plot(sol, label='solution')
     plt.xlabel('to be fixed')
     plt.ylabel('Temperature')

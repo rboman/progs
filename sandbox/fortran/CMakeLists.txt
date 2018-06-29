@@ -20,3 +20,6 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
 ADD_EXECUTABLE(prog01 prog01.f90 progmod.f90) # .f90/.f95 => free format | .f/.for => fixed
 
+enable_testing()
+add_test(NAME prog01 COMMAND ${EXECUTABLE_OUTPUT_PATH}/prog01
+         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

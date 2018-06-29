@@ -4,43 +4,43 @@ C                    TRAVAIL FLEURY 'T123.FOR'
 C                    ~~~~~~~~~~~~~~~~~~~~~~~~~
 C 02.01.97  . ajout de commentaires
 C           . division en plusieurs fichiers
-C           . réponse Travail #1 & 2
-C 06.02.97  . début de réponse Travail #3
+C           . reponse Travail #1 & 2
+C 06.02.97  . debut de reponse Travail #3
 C 08.02.97  . correction Travail #3
 C           . nettoyage et commentaires
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C 
 C Var. : IMAX	: Taille du vecteur S
-C ~~~~   S	: Vecteur d'allocation dynamique de mémoire
-C                 (pour plus de détails, voir ALLOC.FOR)
+C ~~~~   S	: Vecteur d'allocation dynamique de memoire
+C                 (pour plus de details, voir ALLOC.FOR)
 C        II	: Vecteur contenant les pos. des tabl. dans S
-C        MEMORY	: Mémoire libre
-C        EPS	: Précision voulue
+C        MEMORY	: Memoire libre
+C        EPS	: Precision voulue
 C        N	: Nbre de variables
 C        m	: Nbre de contraintes
-C        METH	: Méthode d'opti (1 = Steep. des.; 2 = CG)
-C        METHD	: Méthode primale (0) ou duale (1)
-C        NCHECK	: Fréquence d'évaluation de l'ASS  
-C        IASS	: Type de stratégie des contraintes actives
-C        ICONST : Problème contraint (1) ou non contraint (0)
+C        METH	: Methode d'opti (1 = Steep. des.; 2 = CG)
+C        METHD	: Methode primale (0) ou duale (1)
+C        NCHECK	: Frequence d'evaluation de l'ASS  
+C        IASS	: Type de strategie des contraintes actives
+C        ICONST : Probleme contraint (1) ou non contraint (0)
 C
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
 C Rem :.Il faut bien distinguer le contenu du fichier *.DAT
-C ~~~   chargé en mémoire et le problème à résoudre. Par expl.,
+C ~~~   charge en memoire et le probleme a resoudre. Par expl.,
 C       on peut charger un fichier contenant des contraintes 
-C       linéaires (matrices C et D) et demander au programme de
-C       résoudre le problème non contraint. Il ignore alors 
+C       lineaires (matrices C et D) et demander au programme de
+C       resoudre le probleme non contraint. Il ignore alors 
 C       ces matrices.
 C      .Si on charge un Hessien non diagonal et qu'on demande
-C       une formulation duale, le prog. ignore les éléments
+C       une formulation duale, le prog. ignore les elements
 C       hors diag.
 C      .Il n'y a pas de formulation primale pour des 
-C       contraintes linéaires
+C       contraintes lineaires
 C 
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
-C     Déclaration des variables
+C     Declaration des variables
 C     -------------------------
       IMPLICIT REAL*8 (A-H,O-Z)
       PARAMETER (IMAX=10000)
@@ -48,7 +48,7 @@ C     -------------------------
 C
       DIMENSION S(IMAX),II(12)
 C
-C     Définition des variables (clavier/fichier)
+C     Definition des variables (clavier/fichier)
 C     ------------------------------------------
       EPS=1.D-06
       MEMORY=IMAX
@@ -72,19 +72,19 @@ C
          CALL GENDAT(N,S,II,F,MEMORY,m)
       ENDIF
 C
-C     Choix de la méthode d'optimisation (SD - CG)
+C     Choix de la methode d'optimisation (SD - CG)
 C     --------------------------------------------
    2  WRITE (*,360) 
       READ  (*,*) METH
       IF((METH.LT.0).OR.(METH.GT.1)) GOTO 2
 C
-C     Choix du type de problème (contraint - non contraint)
+C     Choix du type de probleme (contraint - non contraint)
 C     -----------------------------------------------------
    3  WRITE (*,370) 
       READ  (*,*) ICONST
       IF((ICONST.LT.0).OR.(ICONST.GT.1)) GOTO 3
 C
-C     Choix de la méthode (primale - duale)
+C     Choix de la methode (primale - duale)
 C     -------------------------------------
       IF(ICONST.EQ.1) THEN
    4     WRITE (*,380)
@@ -103,7 +103,7 @@ C     -------------------------------------
          METHD=0
       ENDIF
 C
-C     Choix de la stratégie des contraintes actives
+C     Choix de la strategie des contraintes actives
 C     ---------------------------------------------
       IF(ICONST.EQ.1) THEN
   5      WRITE(*,340) 
@@ -146,26 +146,26 @@ C     -------------------------------------
       GOTO 10
 C
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 300  FORMAT(/' Attention : ‚l‚ments diagonaux du Hessien ignor‚s!'/)
- 310  FORMAT(/' Attention : contraintes lin‚aires ignor‚es!'/)
+ 300  FORMAT(/' Attention : elements diagonaux du Hessien ignores!'/)
+ 310  FORMAT(/' Attention : contraintes lineaires ignorees!'/)
  320  FORMAT(/' <ENTER> pour voir la solution'/)
  330  FORMAT('  X(',I3,') = ',D20.10)
- 340  FORMAT(' Active set strategy : 0 = ‚valuation … chaque it.:'/,
+ 340  FORMAT(' Active set strategy : 0 = evaluation a chaque it.:'/,
      #       '                     : 1 = attendre un pt stat.   :'/,
-     #       '                     : 2 = ‚val. toutes les n it. :')
+     #       '                     : 2 = eval. toutes les n it. :')
  350  FORMAT(/' Nbre de variables   :',I3/,
      #        ' Nbre de contraintes :',I3/)
- 360  FORMAT( ' M‚thode  : 0 = STEEPEST DESCENT   :'/,
+ 360  FORMAT( ' Methode  : 0 = STEEPEST DESCENT   :'/,
      #        '          : 1 = CONJUGATE GRADIENT :')
- 370  FORMAT( ' ProblŠme : 0 = NON CONTRAINT      :'/,
+ 370  FORMAT( ' Probleme : 0 = NON CONTRAINT      :'/,
      #        '          : 1 = CONTRAINT          :')
- 380  FORMAT( ' M‚thode  : 0 = PRIMALE (Xi>=0)    :'/,
+ 380  FORMAT( ' Methode  : 0 = PRIMALE (Xi>=0)    :'/,
      #        '          : 1 = DUALE (c. lin.)    :')
  390  FORMAT( ' Fichier inexistant !')
  400  FORMAT( ' Entrez n :')
- 410  FORMAT( ' Nom du fichier de donn‚es (0=clavier) :')
- 420  FORMAT(/' Attention : Pas de contraintes lin. d‚finies'/,
-     #        '   -> M‚thode primale utilis‚e avec Xi>=0'/)
+ 410  FORMAT( ' Nom du fichier de donnees (0=clavier) :')
+ 420  FORMAT(/' Attention : Pas de contraintes lin. definies'/,
+     #        '   -> Methode primale utilisee avec Xi>=0'/)
 C+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       END
 

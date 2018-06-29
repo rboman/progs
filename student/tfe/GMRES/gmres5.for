@@ -5,14 +5,14 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C Updates : 27.10.96 : GMRES restarted (full matrix)
 C ~~~~~~~   16.11.96 : GMRES restarted (sparse matrix)
 C                        - compres. de H et A.
-C                        - essai de réorthogonalisation.
-C                        - optimisation de la mémoire (temp)
+C                        - essai de rï¿½orthogonalisation.
+C                        - optimisation de la mï¿½moire (temp)
 C                          et du temps C.P.U.
 C                        - adaptation en REAL*8.
 C           17.11.96 : - A au format CSR
-C                      - précond. SSOR.
-C           08.12.96 : - précond. ILU(0)
-C           12.12.96 : - précond. ILUT, ILUTP, ILU0, MILU0,
+C                      - prï¿½cond. SSOR.
+C           08.12.96 : - prï¿½cond. ILU(0)
+C           12.12.96 : - prï¿½cond. ILUT, ILUTP, ILU0, MILU0,
 C                                 ILUD, ILUDP (de Saad)
 C                      - nettoyage (pas transf. vers Matlab)
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -20,31 +20,31 @@ C
       SUBROUTINE gmres(N, x, b, A, IA, JA, ALU, JLU, JU,epsilon, 
      #                 it_max, m, V, H, w, co, si, g, y, FLAG)
 C
-C Input  : N           : Dim. du système.
+C Input  : N           : Dim. du systï¿½me.
 C ~~~~~    x (N)       : Vecteur initial x0.
 C          b (N)       : Second membre.
 C          A,IA,JA     : Matrice du syst. au format CSR.
-C             .A  (NELEM) = éléments non nuls.
+C             .A  (NELEM) = ï¿½lï¿½ments non nuls.
 C             .JA (NELEM) = colonnes corresp.
 C             .IA (N+1)   = pointeur vers les sauts de ligne.
-C          ALU, JLU,JU : préconditionneur (MSR).
-C             .ALU(PRESIZE) = éléments du précondit.
-C             .JLU(2*N+1)   = pointeur vers les élém. diag.
-C             .JU (N)       = pointeur vers début de U.
-C          epsilon     : Précision relative du résultat.
-C          it_max      : Nbre d'itérations max. à effectuer.
-C          m           : paramètre 'restart'   (m<N) .
+C          ALU, JLU,JU : prï¿½conditionneur (MSR).
+C             .ALU(PRESIZE) = ï¿½lï¿½ments du prï¿½condit.
+C             .JLU(2*N+1)   = pointeur vers les ï¿½lï¿½m. diag.
+C             .JU (N)       = pointeur vers dï¿½but de U.
+C          epsilon     : Prï¿½cision relative du rï¿½sultat.
+C          it_max      : Nbre d'itï¿½rations max. ï¿½ effectuer.
+C          m           : paramï¿½tre 'restart'   (m<N) .
 C          autres...   : Variables auxiliaires:
 C             - V (N,m)   : contient les vecteurs de la base de Krylov.
 C             - H ((m*(m+3))/2) : Mat. d'Hessenberg (format vect.).
 C             - w, y (N)  : Vecteurs temporaires (r, w, x, Ax).
 C             - co,si (m) : Coeff. de la matrice de rotation.
 C             - g (m+1)   : Second membre de Hy=g.
-C          FLAG        : =1 -> précond. actif.
+C          FLAG        : =1 -> prï¿½cond. actif.
 C
-C Output : x           : Solution du système Ax=b.
+C Output : x           : Solution du systï¿½me Ax=b.
 C ~~~~~~
-C Variables : no_it       : compteur d'itération.
+C Variables : no_it       : compteur d'itï¿½ration.
 C ~~~~~~~~~   i,j,k,kk    : compteurs de boucle
 C             temp        : var. temporaire.
 C             normV,normW : normes de AVi et w.
@@ -52,11 +52,11 @@ C             sizeH       : contient (m*(m+3))/2.
 C             residu      : ...
 C             
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C Compilation : nécessite MATFUN.OBJ,SPARFUN2.OBJ
+C Compilation : nï¿½cessite MATFUN.OBJ,SPARFUN2.OBJ
 C ~~~~~~~~~~~             PREFUN.OBJ
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-C     -- Déclarations --------------------------------------
+C     -- Dï¿½clarations --------------------------------------
       implicit real*8(a-h,o-z)
 
       INTEGER N, i, j, k, no_it, m, IA, JA, JLU,
@@ -77,7 +77,7 @@ C     -- Initialisations -----------------------------------
 
       tol   = epsilon*VectNorm(N, b)
 
-C     -- Début de la boucle de 'restart'--------------------
+C     -- Dï¿½but de la boucle de 'restart'--------------------
 
 1     no_it = 0
       j     = 0 
@@ -107,7 +107,7 @@ C                --------------------------------------
        WRITE(*,210)no_it, g(j)
        no_it = no_it+1
        WRITE(1,*)'residu(',no_it,')=',g(j),';'
-C Préconditionnement
+C Prï¿½conditionnement
        
        IF (FLAG.NE.0) THEN
          CALL LUSOL(N, V(1,j), y, ALU, JLU, JU)
@@ -151,7 +151,7 @@ C Calcul du nouveau v. (orthog. aux autres).
          NormW = VectNorm(N, w)
          H(j+1,j)=NormW
 
-C Réorthogonalisation ?
+C Rï¿½orthogonalisation ?
 
       IF (DABS(NormV-NormW).LT.1D-1) THEN
 C         write(*,*)DABS(NormV-NormW)
@@ -184,10 +184,10 @@ C Teste le Happy breakdown et norme le vecteur v.
          ENDIF
 
 C      ------------------------------------------------------   
-C      Solver du système de Hessenberg (par rotations planes)
+C      Solver du systï¿½me de Hessenberg (par rotations planes)
 C      ------------------------------------------------------
 
-C Rotation de la dernière colonne
+C Rotation de la derniï¿½re colonne
 
          
          DO 90 i=1, j-1
@@ -219,13 +219,13 @@ C Test du residu
          IF (no_it.EQ.it_max) GOTO 99
          IF (j.EQ.m) GOTO 99
 
-20    GOTO 5
+      GOTO 5
 
 C     -- SORTIE ou restart ---------------------------------
 
 C          ---------------------------------------------
-C          Calcul de la solution  (substitution arrière)
-C             du système H w = g avec H de dim. j*j.
+C          Calcul de la solution  (substitution arriï¿½re)
+C             du systï¿½me H w = g avec H de dim. j*j.
 C          ---------------------------------------------
 
 99    DO 300 i = j, 1, -1
@@ -237,7 +237,7 @@ C          ---------------------------------------------
 300   CONTINUE
 
 C                   --------------------------
-C                   Mise à jour de la solution
+C                   Mise ï¿½ jour de la solution
 C                   --------------------------
       DO 320 i=1, N
          temp=0.0D0
@@ -247,7 +247,7 @@ C                   --------------------------
          y(i)=temp
 320   CONTINUE
 
-C Préconditionnement
+C Prï¿½conditionnement
 
       IF (FLAG.NE.0) THEN
           CALL LUSOL(N, y, y, ALU, JLU, JU)
@@ -265,7 +265,7 @@ C      CALL condi(H,j,m,co,si,conda)
         H(i+1,i)=0.0D0
       ENDDO
       write(*,*)' calcul des vp:'
-46    DO i=j,1,-1
+      DO i=j,1,-1
             h3=h(i  , 1  )
             h4=h(i+1, 1  )
             c=co(i)
@@ -285,7 +285,7 @@ C      CALL condi(H,j,m,co,si,conda)
          ENDDO
       ENDDO
 
-45    ierr=0
+      ierr=0
       CALL hqr(m+1,j,1,j,H,co,si,ierr)
       WRITE(*,*)'ierr=',ierr
       xlmin=1.0D100
@@ -309,7 +309,7 @@ C
       WRITE(*,*)'lmax (P)  =',xxlmax,ierr
 C >>>>>>>>>>--- Calcul des vp ---<<<<<<<<<<<<<
 
-47    IF (j.EQ.m) THEN
+      IF (j.EQ.m) THEN
          WRITE(*,*)'-> Restart <ENTER>:'
          CALL SMMV(N, A, IA, JA, x, w)
          CALL VectSub(N, b, w, w)
@@ -320,7 +320,7 @@ C >>>>>>>>>>--- Calcul des vp ---<<<<<<<<<<<<<
 
 C     -- Commentaires finaux -------------------------------
 
-999   WRITE(*,*)
+      WRITE(*,*)
       IF (no_it.EQ.it_max) THEN
          WRITE(*,*)'Nbre max d it atteint -> divergence possible !'
       ELSE

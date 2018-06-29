@@ -1,8 +1,8 @@
 c-----------------------------------------------------------------------
-	subroutine lusol(n, y, x, alu, jlu, ju)
+        subroutine lusol(n, y, x, alu, jlu, ju)
         integer n, jlu(*), ju(*)
         real*8 x(n), y(n), alu(*)
-	
+        
 c-----------------------------------------------------------------------
 c
 c This routine solves the system (LU) x = y, 
@@ -39,25 +39,25 @@ c
 c
 c     backward solve.
 c
-	do 90 i = n, 1, -1
-	   do 91 k=ju(i),jlu(i+1)-1
+        do 90 i = n, 1, -1
+           do 91 k=ju(i),jlu(i+1)-1
               x(i) = x(i) - alu(k)*x(jlu(k))
- 91	   continue
+ 91        continue
            x(i) = alu(i)*x(i)
  90     continue
 c
-  	return
+        return
 c----------------end of lusol ------------------------------------------
 c-----------------------------------------------------------------------
-	end
+        end
 
 c+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 c-----------------------------------------------------------------------
-	subroutine lutsol(n, y, x, alu, jlu, ju) 
+        subroutine lutsol(n, y, x, alu, jlu, ju) 
         integer n, jlu(*), ju(*)
         real*8 x(n), y(n), alu(*)
-	
+        
 c-----------------------------------------------------------------------
 c
 c This routine solves the system  Transp(LU) x = y,
@@ -97,16 +97,16 @@ c
 c     
 c     backward solve (with L^T)
 c     
-	do 40 i = n, 1, -1 
-	   do 50 k=jlu(i),ju(i)-1
+        do 40 i = n, 1, -1 
+           do 50 k=jlu(i),ju(i)-1
               x(jlu(k)) = x(jlu(k)) - alu(k)*x(i)
  50        continue
  40     continue
 c
-  	return
+        return
 c----------------end of lutsol -----------------------------------------
 c-----------------------------------------------------------------------
-	end
+        end
 
 c+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

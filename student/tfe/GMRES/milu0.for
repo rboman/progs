@@ -1,8 +1,8 @@
 c----------------------------------------------------------------------
-	subroutine milu0(n, a, ja, ia, alu, jlu, ju, iw, ierr)
-	implicit real*8 (a-h,o-z)
-	real*8 a(*), alu(*)
-	integer ja(*), ia(*), ju(*), jlu(*), iw(*)
+      subroutine milu0(n, a, ja, ia, alu, jlu, ju, iw, ierr)
+      implicit real*8 (a-h,o-z)
+      real*8 a(*), alu(*)
+      integer ja(*), ia(*), ju(*), jlu(*), iw(*)
 c----------------------------------------------------------------------*
 c                *** simple milu(0) preconditioner. ***                *
 c----------------------------------------------------------------------*
@@ -51,13 +51,13 @@ c-----------------------------------------------------------
           ju0 = n+2
           jlu(1) = ju0
 c initialize work vector to zero's
-	do 31 i=1, n
+      do 31 i=1, n
            iw(i) = 0
 31      continue
 c
 c-------------- MAIN LOOP ----------------------------------
 c
-	do 500 ii = 1, n
+      do 500 ii = 1, n
            js = ju0
 c
 c generating row number ii or L and U.

@@ -19,8 +19,8 @@ import os
 
 def main():
     
-    import numpy as np
-    import matplotlib.pyplot as plt
+    #import numpy as np
+    #import matplotlib.pyplot as plt
     import ndh
 
     for i in range(1,9): # run all custom geometries!

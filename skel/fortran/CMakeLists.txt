@@ -15,3 +15,7 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
 file(GLOB SRCS *.f90)      # .f90/.f95 => free format | .f/.for => fixed
 ADD_EXECUTABLE(skelfortran ${SRCS}) 
+
+enable_testing()
+add_test(NAME skelfortran COMMAND ${EXECUTABLE_OUTPUT_PATH}/skelfortran
+         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

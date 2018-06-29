@@ -1,7 +1,7 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C       ALLOC : Allocation pseudo-dynamique de variables
 C
-C dernière modification : 02.01.97
+C derniere modification : 02.01.97
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
 C Ouput : IERR=1 si 'Out of memory'
@@ -22,7 +22,7 @@ C     Vecteur b
          II(3) = II(2) + N
 C     Contraintes (C)
          II(4) = II(3) + N*m
-C     Termes indépendants des contraintes (Cmin)
+C     Termes indï¿½pendants des contraintes (Cmin)
          II(5) = II(4) + m
 C     Vecteur X
          II(6) = II(5) + N
@@ -40,7 +40,7 @@ C     Vecteur X2
 C     Vecteur ISA (integer*4)
          II(12) = II(11) + (IDIM+1)/2
 C
-C     Assez de mémoire ?
+C     Assez de memoire ?
 C     ------------------
       IF (II(11).GT.MEMORY) THEN
          WRITE(*,100)
@@ -50,7 +50,7 @@ C
       RETURN
 C
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 100  FORMAT(' Pas assez de mémoire !')
+ 100  FORMAT(' Pas assez de memoire !')
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       END

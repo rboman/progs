@@ -1,17 +1,17 @@
       PROGRAM TESGMRE4
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C   SOLVER : GMRES for sparse matrix             12.12.96
-C            (Restarted version + précond.)
+C            (Restarted version + precond.)
 C
 C   Ce programme teste la routine 'gmres' avec
 C   ILUT, ILUTP, ILU0, MILU0, ILUD, ILUDP
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C Compilation : nécessite GMRES4.OBJ, MATFUN.OBJ, LOADMAT.OBJ
-C ~~~~~~~~~~~             SPARFUN2.OBJ + précondit.
+C Compilation : necessite GMRES4.OBJ, MATFUN.OBJ, LOADMAT.OBJ
+C ~~~~~~~~~~~             SPARFUN2.OBJ + precondit.
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-C     -- Déclarations ---------------------------------------
+C     -- Declarations ---------------------------------------
 
       INTEGER N, m, IA, JA, NELEM, ierr, iwk, 
      #        lfil, jw, FLAG, JLU, JU, mbloc, iperm
@@ -30,21 +30,21 @@ C     -- Déclarations ---------------------------------------
 C     -- Chargement de la matrice A et du vecteur b ---------
       CALL loadmat(A,IA,JA,b,ierr)
 
-C     -- Initialisation du vecteur x à 0.0d0 ----------------
+C     -- Initialisation du vecteur x ï¿½ 0.0d0 ----------------
       CALL vectinit(N,x)
 
-C     -- Paramètres du GMRES --------------------------------
+C     -- Paramï¿½tres du GMRES --------------------------------
       epsilon = 1.0D-8
       it_max  = 300
 
-C     -- Paramètres du préconditionneur ---------------------
+C     -- Paramï¿½tres du prï¿½conditionneur ---------------------
       droptol = 0.05
       lfil    = 20
       permtol = 1
       mbloc   = N 
       alph    = 0.5     
 
-C     -- Demande s'il faut préconditionner ------------------
+C     -- Demande s'il faut prï¿½conditionner ------------------
 
       WRITE(*,*)
       FLAG  = 0
@@ -53,7 +53,7 @@ C     -- Demande s'il faut préconditionner ------------------
       write(*,*)' (7=ROILU0, 8=ROILUT, 9=ROILUTP, 10=SSOR)'
       read(*,*)FLAG
 
-C     -- Création du préconditionneur -----------------------
+C     -- Crï¿½ation du prï¿½conditionneur -----------------------
 
       ierr=0
       IF (FLAG.EQ.1) THEN
@@ -131,7 +131,7 @@ C     -- Création du préconditionneur -----------------------
 
 
       IF(ierr.NE.0) THEN
-         write(*,*)'erreur de préconditionnement !!!!!',ierr
+         write(*,*)'erreur de prï¿½conditionnement !!!!!',ierr
          read(*,*)
       ENDIF
       WRITE(*,*)'Entrez m :'
@@ -141,7 +141,7 @@ C     -- Appel de la sous-routine GMRES ---------------------
       CALL gmres(N, x, b, A, IA, JA, ALU, JLU, JU,epsilon, 
      #           it_max, mm, V, H, w, co, si, g, y, FLAG)
      
-C     -- Permutation de la solution (si pivotage employé) --
+C     -- Permutation de la solution (si pivotage employï¿½) --
 
       IF(FLAG.EQ.2) THEN
          DO 101 i=1,N
@@ -152,7 +152,7 @@ C     -- Permutation de la solution (si pivotage employé) --
 102      CONTINUE
       ENDIF
 
-C     -- Sauvegarde du résultat vers MATLAB ----------------
+C     -- Sauvegarde du rï¿½sultat vers MATLAB ----------------
 
       OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='unknown')
       DO 100 i = 1, N

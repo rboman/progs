@@ -1,13 +1,13 @@
       PROGRAM GENERATE
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C         GENERATE.FOR : Genere un problème par formule
+C         GENERATE.FOR : Genere un probleme par formule
 C
-C dernière modification : 02.01.97
+C derniere modification : 02.01.97
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C Link : GENERATE.FOR, ALLOC.FOR
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-C     Déclaration des variables
+C     Declaration des variables
 C     -------------------------
       IMPLICIT REAL*8 (A-H,O-Z)
       PARAMETER(N=10)
@@ -22,7 +22,7 @@ C     ----------------------------
       IERR=0
       CALL ALLOC(N,II,MEMORY,IERR)
 
-C     Calcul des données
+C     Calcul des donnees
 C     ------------------
       k=0
       F=0.0D0

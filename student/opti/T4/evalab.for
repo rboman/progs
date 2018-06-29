@@ -6,7 +6,7 @@ C
 C
       l=360.0
 C
-      RAC2=DSQRT(2.0)
+      RAC2=DSQRT(2.0D0)
 C
 C     Calcul de A
 C     -----------

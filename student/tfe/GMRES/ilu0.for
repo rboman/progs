@@ -1,7 +1,7 @@
 c----------------------------------------------------------------------
-	subroutine ilu0(n, a, ja, ia, alu, jlu, ju, iw, ierr)
-	implicit real*8 (a-h,o-z)
-	real*8 a(*), alu(*)
+        subroutine ilu0(n, a, ja, ia, alu, jlu, ju, iw, ierr)
+        implicit real*8 (a-h,o-z)
+        real*8 a(*), alu(*)
         integer ja(*), ia(*), ju(*), jlu(*), iw(*)
 c------------------ right preconditioner ------------------------------*
 c                    ***   ilu(0) preconditioner.   ***                *
@@ -55,13 +55,13 @@ c-----------------------------------------------------------------------
 c
 c initialize work vector to zero's
 c
-	do 31 i=1, n
+        do 31 i=1, n
            iw(i) = 0
  31     continue
 c
 c main loop
 c
-	do 500 ii = 1, n
+        do 500 ii = 1, n
            js = ju0
 c
 c generating row number ii of L and U.

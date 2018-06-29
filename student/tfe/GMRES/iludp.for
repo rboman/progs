@@ -238,18 +238,18 @@ c     no fill-in element --
                  w(jpos) = w(jpos) - s
               endif
            endif
- 203	continue
+ 203    continue
         len = len+1 
         w(len) = fact
         jw(len)  = jrow
-	goto 150
+        goto 150
  160    continue
 c
 c     reset double-pointer to zero (U-part)
 c     
         do 308 k=1, lenu
            jw(n+jw(ii+k-1)) = 0
- 308	continue
+ 308    continue
 c
 c     update L-matrix
 c
@@ -317,7 +317,7 @@ c
            jlu(ju0) = iperm(jw(k))
            alu(ju0) = w(k)
            ju0 = ju0+1
- 302	continue
+ 302    continue
 c
 c     define diagonal element 
 c 
@@ -331,7 +331,7 @@ c
 c
 c     update pointer to beginning of next row of U.
 c
-	jlu(ii+1) = ju0
+        jlu(ii+1) = ju0
 c-----------------------------------------------------------------------
 c     end main loop
 c-----------------------------------------------------------------------

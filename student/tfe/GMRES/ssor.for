@@ -1,15 +1,15 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++
 C                 SSOR preconditioner
 C
-C Rem : A ne peut pas avoir d'élém. diag. nul !
+C Rem : A ne peut pas avoir d'elem. diag. nul !
 C       Diverge si cond(A) >>
-C       Sinon, donne de bons résultats
-C       Colonnes triées sinon crash !
+C       Sinon, donne de bons rï¿½sultats
+C       Colonnes triees sinon crash !
 C
 C++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 C----------------------------------------------------
-C    Création du préconditionneur -> ALU
+C    Creation du preconditionneur -> ALU
 C----------------------------------------------------
 
       SUBROUTINE SSOR(N,A,IA,JA,ALU,JLU,JU,omega,ierr)
