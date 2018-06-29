@@ -16,7 +16,7 @@
 #   limitations under the License.
 
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from sky import *
 
 def main():

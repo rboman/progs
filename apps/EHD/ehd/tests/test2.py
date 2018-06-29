@@ -17,13 +17,8 @@
 
 
 def main():
-
-    import numpy as np
-    import matplotlib.pyplot as plt
     import ehd
-
     ehd.ehd_main2()
-
 
 if __name__ == "__main__":
     main()

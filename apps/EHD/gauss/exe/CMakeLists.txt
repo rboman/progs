@@ -9,3 +9,5 @@ MACRO_DebugPostfix(gauss_app)
 
 INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/gauss/src )
 TARGET_LINK_LIBRARIES(gauss_app gauss)
+
+add_test(NAME gauss_app COMMAND ${EXECUTABLE_OUTPUT_PATH}/gauss_app)

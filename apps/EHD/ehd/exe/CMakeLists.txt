@@ -12,3 +12,5 @@ INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/ehd/src
                      ${PROJECT_SOURCE_DIR}/sky/src 
 )
 TARGET_LINK_LIBRARIES(ehd_app ehd)
+
+add_test(NAME ehd_app COMMAND ${EXECUTABLE_OUTPUT_PATH}/ehd_app)
