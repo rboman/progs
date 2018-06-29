@@ -15,6 +15,7 @@
  */
 
 #include "ehd.h"
+#include <stdio.h>
 
 /**
  * @brief Calcule le cisaillement (tau) en un point donne
@@ -49,16 +50,11 @@ EHD_API int ehd_cisail(double eta0, double alpha,
         *tau = -tmp;
     }
     else
-        goto ERR1;
+    {
+        std::stringstream str; str << __FUNCTION__ << " in " << __FILE__ << ": ";
+        str << "Epaisseur de film nulle -> division par 0 !";
+        throw std::runtime_error(str.str());
+    }
 
-
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FUNCTION__ " in " __FILE__
-                                      "\n");
     return iop;
-ERR1:
-    printf("Epaisseur de film nulle -> division par 0 !\n");
-    iop = 990;
-    goto FIN;
 }

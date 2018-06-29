@@ -70,8 +70,6 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
     // Init de la ligne de ciel & init matrice
 
     iop = ehd_preass(K, loc2, nbelem, nsys, 1);
-    if (iop != 0)
-        goto FIN;
 
     // init 2nd membre
 
@@ -93,8 +91,6 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
                          eta0, alpha,
                          &(u[n]), &(um[n]), &(p[n]), &(dp[n]),
                          Sp, Se, Fu, C1, Fum);
-        if (iop != 0)
-            goto FIN;
 
         for (int i = 0; i < 2; i++)
         {
@@ -178,25 +174,22 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
     if (opt == EHD_IO)
     {
         iop = mlab_sky("syst2.m", "", K, SKY_A, MLAB_NEW, MLAB_SILENT);
-        if (iop != 0)
-            goto FIN;
     }
 
     // Solution systeme
 
     iop = sky_solve(K, rhs, inc, SKY_DO_LU | SKY_DO_SUBST);
+    /*
     if (iop != 0)
     {
         sky_print_err(stdout, iop);
         goto FIN;
-    }
+    }*/
 
     if (opt == EHD_IO)
     {
         iop = mlab_vec("pipo2.m", "inc", inc, nsys, MLAB_NEW, MLAB_SILENT);
         iop = mlab_vec("pipo2.m", "rhs", rhs, nsys, MLAB_OLD, MLAB_SILENT);
-        if (iop != 0)
-            goto FIN;
     }
 
     // extraction dpdh0
@@ -215,9 +208,5 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
     free(rhs);
     free(inc);
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
     return iop;
 }

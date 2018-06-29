@@ -71,7 +71,7 @@ public:
 
     static void test();  
 
-    void mlab(char *filename, char *id_txt, int type, int nfile, int opt);
+    void mlab(char const *filename, char const *id_txt, int type, int nfile, int opt);
 
     friend SKY_API std::ostream &operator<<(std::ostream &out, TdiMat const &obj);
 

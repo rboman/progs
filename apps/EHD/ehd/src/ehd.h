@@ -45,6 +45,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <stdexcept>
+#include <sstream>
 
 #include "gausslib.h"
 #include "SkyMat.h"

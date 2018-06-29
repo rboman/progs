@@ -76,8 +76,6 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
     // calcul des derivees secondes (dp2)
     iop = ehd_spline_ki(&K, nn, x, p, dp2);
-    if (iop != 0)
-        goto FIN;
 
     // evaluation spline (calcul des derivees dp)
     for (int i = 0; i < nn; i++)
@@ -96,9 +94,5 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 */
     free(dp2);
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FUNCTION__ " in " __FILE__
-                                      "\n");
     return iop;
 }

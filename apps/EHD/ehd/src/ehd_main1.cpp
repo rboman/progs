@@ -97,15 +97,11 @@ EHD_API int ehd_main1()
     // Init du module d'integration de Gauss
 
     iop = gauss_common_init();
-    if (iop != 0)
-        goto FIN;
 
     // Mise en place des donnees
 
     double eta0, alpha;
     iop = ehd_setpar(nbnode, x, h, h_t0, um, &eta0, &alpha, u, &dt);
-    if (iop != 0)
-        goto FIN;
 
     for (int i = 0; i < nbnode; i++)
         eta[i] = eta0;
@@ -115,19 +111,13 @@ EHD_API int ehd_main1()
     SkyMat K;
 
     iop = sky_initmat(&K);
-    if (iop != 0)
-        goto FIN;
     iop = sky_setname(&K, "K");
-    if (iop != 0)
-        goto FIN;
+
 
     SkyMat K2;    
     iop = sky_initmat(&K2);
-    if (iop != 0)
-        goto FIN;
     iop = sky_setname(&K2, "K2");
-    if (iop != 0)
-        goto FIN;
+
 
     // NEWTON-RAPHSON
     // --------------
@@ -162,8 +152,6 @@ EHD_API int ehd_main1()
                         u, h_t0, dt, p, dp,
                         &K, nbfix,
                         nnfix, ndfix, vfix, EHD_NO_IO, scheme);
-        if (iop != 0)
-            goto FIN;
 
         //iop = mlab_vec("pipo2.m", "p1", p, nbnode, MLAB_NEW, MLAB_VERBOSE);
 
@@ -184,8 +172,6 @@ EHD_API int ehd_main1()
                             u, um, dt, p, dp, &K2, nbfix2,
                             nnfix2, ndfix2, vfix2, dpdh0,
                             EHD_NO_IO, scheme);
-        if (iop != 0)
-            goto FIN;
 
         /*
     iop = mlab_vec("pipo2.m", "dpdh0", dpdh0, nbnode, MLAB_OLD, MLAB_VERBOSE);
@@ -219,8 +205,6 @@ EHD_API int ehd_main1()
                     u, h_t0, dt, p, dp,
                     &K, nbfix,
                     nnfix, ndfix, vfix, EHD_IO, scheme);
-    if (iop != 0)
-        goto FIN;
 
     /*
   for(i=0;i<nbnode;i++)
@@ -241,9 +225,5 @@ EHD_API int ehd_main1()
     free(dp);
     free(dpdh0);
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FUNCTION__ " in " __FILE__
-                                      "\n");
     return iop;
 }

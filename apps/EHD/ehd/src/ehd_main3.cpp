@@ -48,8 +48,6 @@ int Main3::execute()
                                Rq, Rq1, Rq2,
                                &(PhiP[i]), &(PhiS[i]),
                                &(dPhiP[i]), &(dPhiS[i]), loi);
-        if (iop != 0)
-            goto FIN;
     }
 
     // Resultats vers matlab
@@ -59,12 +57,6 @@ int Main3::execute()
     iop = mlab_vec("pipo.m", "PhiS", &(PhiS[0]), nn, MLAB_OLD, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "dPhiP", &(dPhiP[0]), nn, MLAB_OLD, MLAB_VERBOSE);
     iop = mlab_vec("pipo.m", "dPhiS", &(dPhiS[0]), nn, MLAB_OLD, MLAB_VERBOSE);
-    if (iop != 0)
-        goto FIN;
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FUNCTION__ " in " __FILE__
-                                      "\n");
     return iop;
 }

@@ -43,7 +43,7 @@
  *       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int mlab_vec(char *filename, char *id_txt, double *v, int n,
+SKY_API int mlab_vec(char const *filename, char const *id_txt, double *v, int n,
              int nfile, int opt)
 {
     int iop = 0;
@@ -87,7 +87,7 @@ ERR1:
  *       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int mlab_mat(char *filename, char *id_txt, double **v, int m, int n,
+SKY_API int mlab_mat(char const *filename, char const *id_txt, double **v, int m, int n,
              int nfile, int opt)
 {
     int iop = 0;
@@ -126,7 +126,7 @@ ERR1:
 }
 /**************************************************************************/
 
-SKY_API int mlab_mat_mxn(char *filename, char *id_txt, int m, int n,
+SKY_API int mlab_mat_mxn(char const *filename, char const *id_txt, int m, int n,
                  double **v, int nfile, int opt)
 {
     int iop = 0;
@@ -155,7 +155,7 @@ FIN:
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int mlab_sky(char *filename, char *id_txt, SkyMat *A,
+SKY_API int mlab_sky(char const *filename, char const *id_txt, SkyMat *A,
              int type, int nfile, int opt)
 {
     int iop = 0;
@@ -163,8 +163,8 @@ SKY_API int mlab_sky(char *filename, char *id_txt, SkyMat *A,
     int *loc;
     int i, j, ic, il;
     char *name;
-    char *pre1, *pre2;
-    char *pre[3] = {"", "L", "U"};
+    char const *pre1, *pre2;
+    char const *pre[3] = {"", "L", "U"};
 
     if (A->init != 1)
         goto ERR1;
@@ -254,5 +254,3 @@ ERR2:
     iop = 990;
     goto FIN;
 }
-
-/**************************************************************************/

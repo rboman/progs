@@ -95,7 +95,7 @@ SKY_API int sky_print(FILE *fich, SkyMat *A);
 // Routines d'initialisation
 SKY_API int sky_initmat(SkyMat *A);
 SKY_API int sky_reinit(SkyMat *A);
-SKY_API int sky_setname(SkyMat *A, char *name);
+SKY_API int sky_setname(SkyMat *A, char const *name);
 
 // Routines de (re)determination de la ligne de ciel
 SKY_API int sky_pre_start(SkyMat *A, int nsys);

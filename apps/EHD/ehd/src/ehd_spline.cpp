@@ -116,15 +116,9 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
     // resolution
     iop = K->solve(rhs, ki, TDI_DO_LU | TDI_DO_SUBST);
     K->print_err(stdout, iop);
-    if (iop != 0)
-        goto FIN;
 
     free(rhs);
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
     return iop;
 }
 

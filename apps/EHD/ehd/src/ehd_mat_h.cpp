@@ -47,14 +47,10 @@ EHD_API int ehd_mat_h(double *x, double *h, double *u,
     // recupere les pos & poids de Gauss (->xg, pg)
     double *xg, *pg;
     iop = gauss_line_get_xgpg(ng, &xg, &pg);
-    if (iop != 0)
-        goto FIN;
 
     // recupere les valeurs des fct de forme lineaires & derivees (->psil)
     double ***psil;
     iop = gauss_line_get_psi(ng, &psil, xg);
-    if (iop != 0)
-        goto FIN;
 
     // initialisation
     for (int i = 0; i < 2; i++)
@@ -185,10 +181,6 @@ EHD_API int ehd_mat_h(double *x, double *h, double *u,
             for (int j = 0; j < 2; j++)
                 printf("dSu %d,%d = %E\n", i, j, dSu[i][j]);
     }
-
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+    
     return iop;
 }

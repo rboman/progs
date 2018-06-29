@@ -93,8 +93,6 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
     // Init de la ligne de ciel
 
     iop = ehd_preass(K, loc2, nbelem, nsys, 2);
-    if (iop != 0)
-        goto FIN;
 
     // init de p et dp (inutile : a verifier)
 
@@ -153,8 +151,6 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
                             eta0, alpha, &(p[n]), &(dp[n]),
                             &(u[n]), &(um[n]),
                             Sp, Se, Fu, C1, Fum);
-            if (iop != 0)
-                goto FIN;
 
             // terme transitoire
             for (int i = 0; i < 4; i++)
@@ -277,12 +273,13 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
         // Solution systeme
 
         iop = sky_solve(K, rhs, inc, SKY_DO_LU | SKY_DO_SUBST);
+        /*
         if (iop != 0)
         {
             sky_print_err(stdout, iop);
             goto FIN;
         }
-
+        */
         // Extraction de la solution en p et dp
 
         for (int i = 0; i < nbnode; i++)
@@ -341,8 +338,6 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
         iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_OLD, MLAB_SILENT);
         iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_SILENT);
         //iop = mlab_sky("pipo.m","",K,SKY_LU,MLAB_OLD, MLAB_SILENT);
-        if (iop != 0)
-            goto FIN;
     }
 
     free(residu);
@@ -352,10 +347,6 @@ EHD_API int ehd_get_p(int nbelem, int nbnode, double *h, double eta0,
     free(rhs);
     free(inc);
     free(pipo);
-
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+    
     return iop;
 }

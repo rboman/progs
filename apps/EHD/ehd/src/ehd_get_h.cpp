@@ -144,8 +144,6 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
             iop = ehd_flow_factors(h[i], gam_s, Rq, Rq1, Rq2,
                                    &(PhiP[i]), &(PhiS[i]),
                                    &(dPhiP[i]), &(dPhiS[i]), loi);
-            if (iop != 0)
-                goto FIN;
         }
 
         // Construction du systeme
@@ -160,8 +158,6 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
                             &(PhiS[n]), &(dPhiS[n]),
                             &(PhiP[n]), &(dPhiP[n]),
                             Su, Sp, dSu, dSp, C1, C2, Sv, dSv);
-            if (iop != 0)
-                goto FIN;
 
             // residu elementaire
             double Re[2];
@@ -278,11 +274,12 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         // Solution systeme
 
         iop = K->solve(rhs, inc, SKY_DO_LU | SKY_DO_SUBST);
+        /*
         if (iop != 0)
         {
             K->print_err(stdout, iop);
             goto FIN;
-        }
+        }*/
 
 #if 0
     K->mlab("tri.m","",TDI_LU,MLAB_OLD, MLAB_VERBOSE);
@@ -334,8 +331,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_OLD, MLAB_SILENT);
         iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_SILENT);
         //iop = K->mlab("pipo.m","",TDI_LU,MLAB_OLD, MLAB_SILENT);
-        if (iop != 0)
-            goto FIN;
+
     }
 
     free(loc);
@@ -347,9 +343,5 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
 
     /****/
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
     return iop;
 }

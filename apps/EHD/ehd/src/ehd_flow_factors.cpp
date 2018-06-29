@@ -94,7 +94,9 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
         break;
     }
     default:
-        goto ERR1;
+        std::stringstream str; str << __FUNCTION__ << " in " << __FILE__ << ": ";
+        str << "Modele de rugosite non implemente !";
+        throw std::runtime_error(str.str());
     }
 
     // Recalcul de PhiS en fct des rugosites des deux surfaces
@@ -105,13 +107,5 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
     (*PhiS) *= xex;
     (*dPhiS) *= xex;
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FUNCTION__ " in " __FILE__
-                                      "\n");
     return iop;
-ERR1:
-    printf("Modele de rugosite non implemente !\n");
-    iop = 990;
-    goto FIN;
 }

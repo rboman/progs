@@ -206,8 +206,8 @@ int TdiMat::solve(double *q, double *x, int type)
 
 void TdiMat::print_err(FILE *fich, int code)
 {
-    char *err[3] = {"ok", "pivot nul", "code inconnu"};
-    char *e;
+    char const *err[3] = {"ok", "pivot nul", "code inconnu"};
+    char const *e;
 
     switch (code)
     {
@@ -278,12 +278,12 @@ void TdiMat::test()
  * @brief Ecriture d'une matrice TRIDIAG dans un fichier MATLAB existant ou non
  */
 
-void TdiMat::mlab(char *filename, char *id_txt, int type, int nfile, int opt)
+void TdiMat::mlab(char const*filename, char const *id_txt, int type, int nfile, int opt)
 {
-    char *pre[3] = {"", "L", "U"};
+    char const*pre[3] = {"", "L", "U"};
 
-    char *pre1 = (type == TDI_LU) ? pre[1] : pre[0];
-    char *pre2 = (type == TDI_LU) ? pre[2] : pre[0];
+    char const*pre1 = (type == TDI_LU) ? pre[1] : pre[0];
+    char const*pre2 = (type == TDI_LU) ? pre[2] : pre[0];
 
     FILE *fich;
     if (nfile == MLAB_OLD)

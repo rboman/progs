@@ -39,21 +39,15 @@ EHD_API int ehd_mat_p(double *x, double *h, double eta0, double alpha,
     // recupere les pos & poids de Gauss (->xg, pg)
     double *xg, *pg;
     iop = gauss_line_get_xgpg(ng, &xg, &pg);
-    if (iop != 0)
-        goto FIN;
 
     // recupere les valeurs des fct de forme lineaires & derivees (->psil)
     double ***psil;
     iop = gauss_line_get_psi(ng, &psil, xg);
-    if (iop != 0)
-        goto FIN;
 
     // recupere les valeurs des fct de forme cubiques & derivees (->psih)
 
     double ***psih;
     iop = gauss_hermite_get_psi(ng, &psih, xg);
-    if (iop != 0)
-        goto FIN;
 
     // initialisation
 
@@ -143,9 +137,5 @@ EHD_API int ehd_mat_p(double *x, double *h, double eta0, double alpha,
                 printf("%d,%d = %E\n", i, j, Sp[i][j]);
     }
 
-FIN:
-    if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
     return iop;
 }

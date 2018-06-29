@@ -101,7 +101,7 @@
 #undef VERBOSE
 #define VERBOSE 0
 
-char *sky_nulname = "noname";
+char const*sky_nulname = "noname";
 
 /**************************************************************************
                                   Debug
@@ -160,7 +160,7 @@ SKY_API int sky_initmat(SkyMat *A)
     A->nsitl_a = 0;
     A->nsitu_a = 0;
     A->locsit = NULL;
-    A->name = sky_nulname;
+    sky_setname(A, sky_nulname);
     A->sym = SKY_MAT_UNKNOWN;
 
     A->init = 1;
@@ -249,7 +249,7 @@ ERR1:
  *                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_setname(SkyMat *A, char *name)
+SKY_API int sky_setname(SkyMat *A, char const *name)
 {
     int iop = 0;
     size_t l;
@@ -1087,7 +1087,6 @@ SKY_API void sky_f_solve_usym(double *sitl, double *situ,
 {
     int type;
     SkyMat M;
-    char *name = "M";
 
     M.init = 1;
     M.sym = SKY_MAT_USYM;
@@ -1095,8 +1094,8 @@ SKY_API void sky_f_solve_usym(double *sitl, double *situ,
     M.situ = situ - 1;
     M.locsit = locsit;
     M.nsys = *nsys;
-    M.name = name;
     M.nsit = *nsit;
+    sky_setname(&M, "M");
 
     //mlab_sky("res.m","1",&M,SKY_A,MLAB_NEW, MLAB_VERBOSE);
 
@@ -1389,8 +1388,8 @@ FIN:
 
 SKY_API void sky_print_err(FILE *fich, int code)
 {
-    char *err[4] = {"ok", "pivot nul", "pivot negatif", "code inconnu"};
-    char *e;
+    char const*err[4] = {"ok", "pivot nul", "pivot negatif", "code inconnu"};
+    char const*e;
 
     switch (code)
     {
