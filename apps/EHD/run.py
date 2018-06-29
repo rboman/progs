@@ -38,12 +38,16 @@ if __name__ == "__main__":
         # create workspace
         common = os.path.commonprefix((testname, thisdir + os.sep))
         resdir = testname[len(common):].replace(os.sep, "_")
-        resdir = os.path.splitext(resdir)[0]
+        resdir,ext = os.path.splitext(resdir)
         wdir = os.path.join('workspace', resdir)
         print 'workspace=', wdir
         if not os.path.isdir(wdir):
             os.makedirs(wdir)
         os.chdir(wdir)
-
-        __file__ = testname
-        execfile(testname)
+        if ext=='.py':
+            # python script
+            __file__ = testname
+            execfile(testname)
+        else:
+            # executable
+            os.system(testname)

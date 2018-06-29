@@ -254,8 +254,8 @@ SKY_API int sky_setname(SkyMat *A, char const *name)
     int iop = 0;
     size_t l;
 
-    if (A->init != 1)
-        goto ERR1;
+    //if (A->init != 1)
+    //    goto ERR1;
 
     l = strlen(name);
     A->name = (char *)calloc(l + 1, sizeof(char));
@@ -268,10 +268,11 @@ FIN:
         printf("\n\t-->" __FILE__
                "\n");
     return iop;
+    /*
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
     iop = 990;
-    goto FIN;
+    goto FIN;*/
 ERR2:
     printf("\nerreur: pas assez de memoire !");
     iop = 990;
