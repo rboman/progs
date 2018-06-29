@@ -15,6 +15,7 @@
 #ifndef CURVE_H
 #define CURVE_H
 
+#include <cstddef> // size_t for travis
 #include <vector>
 
 /**
