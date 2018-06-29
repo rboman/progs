@@ -10,7 +10,8 @@ Gnuplot::Gnuplot()
 
 	// because I choose the terminal to output files so I don't want to see the window
 
-	gnuplotpipe=_popen("gnuplot","w");
+	//gnuplotpipe=_popen("gnuplot","w");
+	gnuplotpipe=popen("gnuplot","w");
 
 	if (!gnuplotpipe) 
 	{
@@ -21,7 +22,8 @@ Gnuplot::Gnuplot()
 Gnuplot::~Gnuplot() 
 {
 	fprintf(gnuplotpipe,"exit\n");
-	_pclose(gnuplotpipe);
+	//_pclose(gnuplotpipe);
+	pclose(gnuplotpipe);
 }
 
 void 

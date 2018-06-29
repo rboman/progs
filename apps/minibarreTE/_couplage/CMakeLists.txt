@@ -36,6 +36,5 @@ INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/_couplage
 
 SWIG_LINK_LIBRARIES(couplage 
                     couplage
-		      debug ${PYTHON_DEBUG_LIBRARY} 
-		      optimized ${PYTHON_LIBRARY}
+                    ${PYTHON_LIBRARIES}
 	              )

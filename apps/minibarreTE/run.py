@@ -5,7 +5,7 @@
 if __name__=="__main__": 
     import sys, os.path
     thisdir = os.path.split(__file__)[0]
-    bindir = os.path.join(thisdir,'build/bin/Release')
+    bindir = os.path.abspath(os.path.join(thisdir,'build/bin'))
     if os.path.isdir(bindir):
         sys.path.append(bindir)
         print '%s added to PATH' % bindir
@@ -13,7 +13,8 @@ if __name__=="__main__":
         print '%s not found' % bindir
         sys.exit()
 
-    if len(sys.argv)!=2:
+    if len(sys.argv)==1:
         print 'missing argument.\nusage: %s file.py' % os.path.basename(sys.argv[0])
         sys.exit()
+    __file__ = os.path.abspath(sys.argv[1])
     execfile(sys.argv[1])
