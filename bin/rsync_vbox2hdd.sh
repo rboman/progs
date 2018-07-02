@@ -1,6 +1,8 @@
 #!/bin/bash
 # script de backup rsync machines vbox de garfield => hdd
 
+# ! n'est plus à jour depuis Ubuntu 18.04 !
+
 echo "***** BACKUP Win10-x64 => hdd"
 
 rsync -avz \
