@@ -1,35 +1,28 @@
 #!/bin/bash
 # backup NAS => hdd (USB)
-# to be run on the NAS
+# can be run from garfield
 
-echo "***** BACKUP web => hdd"
 
-if [ -d /volumeUSB1/usbshare/web/ ] ; then
-    rsync -avz \
-      --delete --delete-excluded \
-	--exclude=/robots.txt \
-      --exclude=cache/ \
-      --exclude=locks/ \
-	  /volume1/web/ \
-	  /volumeUSB1/usbshare/web/
-else
-    echo "ERROR: /volumeUSB1/usbshare/web/ not present!"
-    echo "       /volumeUSB1/usbshare/ not mounted?"
+HOST=rboman@metafor
+
+# try to get the absolute path of this script
+abspath="$(readlink -f ${BASH_SOURCE[0]} 2>/dev/null)"
+if [ -z "$abspath" ]; then
+    abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
+fi
+if [ -z "$abspath" ]; then
+    echo "cannot guess 'abspath' on this system"
+    exit 1
 fi
 
-# ---
+REMOTESCRIPT="$(dirname $abspath )/rsync_nas2hdd_remote.sh"
 
-echo
-echo "***** BACKUP ftp => hdd"
+echo ""
+echo "=> executing $REMOTESCRIPT"
+echo "   on $HOST..."
+echo ""
 
-if [ -d /volumeUSB1/usbshare/ftp/ ] ; then
-    rsync -avz \
-      --delete --delete-excluded \
-      --exclude="@eaDir" \
-      /volume1/ftp/ \
-      /volumeUSB1/usbshare/ftp/
-else
-    echo "ERROR: /volumeUSB1/usbshare/ftp/ not present!"
-    echo "       /volumeUSB1/usbshare/ not mounted?"
-fi
+REMOTESCRIPT="$(dirname $abspath )/rsync_nas2hdd_remote.sh"
+
+ssh $HOST "bash -s" -- < "$REMOTESCRIPT"
 
