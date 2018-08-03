@@ -117,7 +117,10 @@ def main(repos):
         else:
             ncores = multiprocessing.cpu_count()
             print("[using cmake --build] with %d core(s)" % ncores)
-            os.system('cmake --build . --config Release -- -j%d' % ncores)
+            if pu.isUnix():
+                os.system('cmake --build . --config Release -- -j%d' % ncores)
+            else:
+                os.system('cmake --build . --config Release')
 
 if __name__ == "__main__":
     repos = []
