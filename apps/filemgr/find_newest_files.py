@@ -15,6 +15,8 @@ def newest(dirs=('.', ), exts=('*.*', )):
 
     print "building file list..."
     for dir in dirs:
+        if not os.path.isdir(dir):
+            raise Exception("%s does not exist!" % dir)
         for path, subdirs, files in os.walk(dir):
             # files.extend(subdirs)
             for name in files:
