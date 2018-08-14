@@ -1,10 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# examples:
+# link_sync.py /hdd2/boman/Dropbox/
+#    simulation (nothing created/deleted) - counts bookmarks
+# link_sync.py --convert /hdd2/boman/Dropbox/
+#    convert .desktop (gnome links) to .url (internet shortcuts) [keep both files]
+# link_sync.py --convert --delete /hdd2/boman/Dropbox/
+#    convert .desktop (gnome links) to .url (internet shortcuts) [delete .desktop]
+# link_sync.py --delete /hdd2/boman/Dropbox/
+#    delete .desktop when .url exists
+
+
 import os, re
 import fnmatch
 
 def findlinks(dirs=('.', )):
+    """build a list of bookmarks [ (filename1, url1), (filename2, url2), ...]
+    """
     fmap = []
     urlregex = re.compile("URL=(.+)")
 
@@ -13,9 +26,7 @@ def findlinks(dirs=('.', )):
         if not os.path.isdir(dir):
             raise Exception("%s does not exist!" % dir)
         for path, subdirs, files in os.walk(dir):
-            # files.extend(subdirs)
             for name in files:
-                # *.url
                 for ext in ['*.url','*.desktop']:
                     if fnmatch.fnmatch(name, ext):
                         fullname = os.path.join(path, name)
@@ -24,25 +35,52 @@ def findlinks(dirs=('.', )):
                             if match:
                                 g = match.groups()
                                 fmap.append((fullname, g[0].strip()))
-                            #else:
-                            #    raise Exception('URL= not found in %s' % fullname) # not a link
     return fmap
-
-
 
 if __name__ == '__main__':
 
-    fmap = findlinks()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--convert", help="create .url from .desktop", action="store_true")
+    parser.add_argument("--delete", help="delete .desktop when .url exists", action="store_true")
+    parser.add_argument('dirs', nargs='+', help='directories')
+    args = parser.parse_args()
 
+    fmap = findlinks(args.dirs)
+
+    nprocessed=0
+    nskipped=0
+    nremoved=0
     # convert .desktop to .url
-    if 0:
-        for f, url in fmap:
-            base, ext = os.path.splitext(f)
-            if ext=='.desktop':
-                otherf = base+'.url'
-                if not os.path.isfile(otherf):
+    for f, url in fmap:
+        base, ext = os.path.splitext(f)
+        if ext=='.desktop':
+            nprocessed+=1
+            otherf = base+'.url'
+            if not os.path.isfile(otherf):
+                if args.convert:
                     f2 = open(otherf,'w')
                     f2.write('[InternetShortcut]\n')
                     f2.write('URL=%s'%url)
                     f2.close()
                     print 'creating', otherf
+                    if args.delete:
+                        print "removing %s" % f
+                        os.remove(f) 
+                        nremoved+=1                       
+                else:
+                    print 'could create %s' % otherf                  
+            else:
+                if args.delete:
+                    print "removing %s (.url exists)" % f
+                    os.remove(f)
+                    nremoved+=1
+                else:
+                    print "skipping %s (.url exists)" % f
+                    nskipped+=1
+
+    print "\nSUMMARY:"
+    print ". nb of bookmarks (total):", len(fmap)    
+    print ". nb of desktop files    :", nprocessed
+    print ". nb of desktop+url pairs:", nskipped
+    print ". nb of deleted files    :", nremoved

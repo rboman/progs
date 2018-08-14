@@ -1,6 +1,5 @@
 #!/bin/bash
 # make a backup of my git repos on github/bitbucket
-# RoBo
 
 git config --global credential.helper "cache --timeout=3600"
 
