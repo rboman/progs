@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+#
+# this script converts *.desktop links (gnome desktop) to *.url files (windows) 
+#
 # examples:
 # link_sync.py /hdd2/boman/Dropbox/
 #    simulation (nothing created/deleted) - counts bookmarks
