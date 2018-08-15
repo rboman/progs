@@ -16,8 +16,12 @@ class Window(QWidget, Ui_Form):
     def __init__(self, parent=None):        
         super(Window, self).__init__(parent)
         self.setupUi(self)
+        settings = QSettings()
+        self.restoreGeometry(settings.value("Geometry", self.saveGeometry()))
+
     def on_play_Button_pressed(self):
         print "play!"
+
     def on_convert_Button_pressed(self):
         print "convert!"
         
@@ -33,16 +37,37 @@ class Window(QWidget, Ui_Form):
         cmd +="-pix_fmt yuv420p "
         #cmd +="-vf 'scale=trunc(iw/2)*2:trunc(ih/2)*2' " # scale if not multiple of 2
         #cmd +="-vf 'scale=trunc(iw/2)*2:trunc(ih/2)*2, setsar=1' "
-        cmd +="-vf 'crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0' " # crop to odd dimensions...
+        #cmd +="-vf 'crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0' " # crop to odd dimensions...
         outfile = os.path.join(self.workspace_lineEdit.text(),"video.mp4")
         cmd += outfile
         print cmd
         self.textEdit.append(cmd)
         os.system(cmd)
 
+    def on_ffmpegfolder_Button_pressed(self):
+        #print "ffmpegfolder_Button!"
+        dir = QFileDialog.getExistingDirectory(self, "Find ffmpeg folder")
+        if dir:             
+            self.ffmpegfolder_lineEdit.setText(dir)  
 
+    def on_workspace_Button_pressed(self):
+        #print "workspace_Button!"
+        dir = QFileDialog.getExistingDirectory(self, "Find workspace folder")
+        if dir:             
+            self.workspace_lineEdit.setText(dir)
+
+    def closeEvent(self, event):
+        print "close!"
+        settings = QSettings()
+        settings.setValue("Geometry", QVariant(self.saveGeometry()))        
+        settings.setValue("ffmpegfolder", QVariant(self.ffmpegfolder_lineEdit.text()))
+        settings.setValue("workspace", QVariant(self.workspace_lineEdit.text()))
+        event.accept()
+        
 def main():
     app = QApplication(sys.argv)
+    app.setOrganizationName("RoBo")
+    app.setApplicationName("ffmpeg_GUI")
     win = Window()
     win.setWindowTitle('%s' % os.path.basename(sys.argv[0]))
     win.show()
