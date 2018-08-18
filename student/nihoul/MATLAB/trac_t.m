@@ -1,3 +1,5 @@
+
+figure()
 N=size(a);
 j=0;
 for i=1:2:N(1)/N(2)

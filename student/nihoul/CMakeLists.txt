@@ -13,7 +13,10 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS          : " ${CMAKE_Fortran_FLAGS})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_RELEASE  : " ${CMAKE_Fortran_FLAGS_RELEASE})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
-file(GLOB SRCS *.for)      # .f90/.f95 => free format | .f/.for => fixed
+# reference executable (unmodified)
+ADD_EXECUTABLE(nihoul_orig nihoul_orig.for) 
+
+file(GLOB SRCS nihoul.for)      # .f90/.f95 => free format | .f/.for => fixed
 ADD_EXECUTABLE(nihoul ${SRCS}) 
 
 enable_testing()

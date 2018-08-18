@@ -101,7 +101,7 @@ C ------------------------------------------------------------------
 C       Ouverture du fichier RES.M et sauv. le profil initial
 C ------------------------------------------------------------------
 
-      open (UNIT = 1, FILE = 'res.m', STATUS ='unknown')
+      open (UNIT = 1, FILE = 'res_orig.m', STATUS ='unknown')
 
       do 111 i=2,pasx+1
          do 111 j=1,pasy
@@ -416,8 +416,8 @@ C ------------------------------------------------------------------
 C                     Commentaires finaux
 C ------------------------------------------------------------------
 
-      write(*,*)'Calcul effectu‚ sur ',Nmax*T*dt,'sec.'
-      write(*,*)'Nb it‚rations (moy) ',kmoy/Nmax
-      write(*,*)'R‚sultats dans RES.M'
+      write(*,*)'Calcul effectué sur ',Nmax*T*dt,'sec.'
+      write(*,*)'Nb itérations (moy) ',kmoy/Nmax
+      write(*,*)'Résultats dans RES.M'
       
       end
