@@ -45,14 +45,14 @@ program NIHOUL
     kmoy  = 0.
     save  = 1
 
-    write(*,*) 'Ly/L =',Ly,'(',(3./4.+g*h0/(2.*f*U*L)),')'
-    write(*,*) 'Bu   =',Bu,'Ro   =',Ro
-    write(*,*) 'dx   =',dx,' ; dy   =',dy 
-    write(*,*) 'pasx =',pasx,' ; pasy =',pasy
-    write(*,*) 'T    =',T,'dH   =',f*L*U/g
-    write(*,*) 'dt (max) =',dt,'sec.' 
-    write(*,*) 'Le canal fait ',2*Lx*L,'mŠtres de long'
-    write(*,*) '           et ',2*Ly*L,'mŠtres de large'
+    write(*,*) 'Ly/L =', Ly, '(', (3./4. + g*h0/(2.*f*U*L)), ')'
+    write(*,*) 'Bu   =', Bu,'Ro   =', Ro
+    write(*,*) 'dx   =', dx, ' ; dy   =', dy 
+    write(*,*) 'pasx =', pasx,' ; pasy =', pasy
+    write(*,*) 'T    =', T, 'dH   =', f*L*U/g
+    write(*,*) 'dt (max) =', dt, 'sec.' 
+    write(*,*) 'Le canal fait ', 2*Lx*L, 'mètres de long'
+    write(*,*) '           et ', 2*Ly*L, 'mètres de large'
     write(*,*) 'tol (1D-6)?'
     read(*,*) tol
     write(*,*) 'w (1.825)?'
@@ -71,7 +71,7 @@ program NIHOUL
     endif
 
     write(*,*)
-    write(*,*)'Un pas de temps =',T*dt,'sec.'
+    write(*,*)'Un pas de temps =', T*dt, 'sec.'
 
     ! ------------------------------------------------------------------      
     !                      Calcul du profil initial
@@ -81,21 +81,21 @@ program NIHOUL
         x(i) = (i-2)*dx
     end do
 
-    x(1)=x(pasx)
-    x(2)=x(pasx+1)
+    x(1) = x(pasx)
+    x(2) = x(pasx+1)
 
-    do j=1,pasy      
-        y(j)=-Ly+(j-1)*dy
+    do j = 1, pasy      
+        y(j) = -Ly+(j-1)*dy
     end do
 
     temp1 = g*h0/f/L/U
-    do i=1,pasx+1
+    do i = 1, pasx+1
         temp2 = 0.01*sin(pi*x(i)/Lx)
-        do j=1,pasy
+        do j = 1,pasy
             if(abs(y(j)).LT.1) then
-                eta(i,j)=temp1*temp2-0.5*y(j)**2*(1+temp2)
+                eta(i,j) = temp1*temp2 - 0.5*y(j)**2*(1+temp2)
             else
-                eta(i,j)=temp1*temp2+(0.5-abs(y(j)))*(1+temp2)
+                eta(i,j) = temp1*temp2 + (0.5-abs(y(j)))*(1+temp2)
             endif
         end do
     end do
@@ -106,9 +106,9 @@ program NIHOUL
 
     open (UNIT = 1, FILE = 'res.m', STATUS ='unknown')
 
-    do i=2,pasx+1
-        do j=1,pasy
-            write(1,*)'a(',(save-1)*pasx+i-1,',',j,')=',eta(i,j),';'
+    do i = 2, pasx+1
+        do j = 1, pasy
+            write(1,*) 'a(', (save-1)*pasx+i-1, ',', j, ')=', eta(i,j), ';'
         end do
     end do
 
@@ -117,8 +117,8 @@ program NIHOUL
     !            Boucle principale (progression dans le temps)
     ! ------------------------------------------------------------------
       
-    do n=1,Nmax
-        write(*,*)'Pas de temps n :',n
+    do n = 1, Nmax
+        write(*,*) 'Pas de temps n :', n
 
     !        ------------------------------------
     !        -- Calcul de Beta et du laplacien --
@@ -126,43 +126,43 @@ program NIHOUL
 
     !        -- Interieur --
 
-        do i=2,pasx
-            do j=2,pasy-1
-                temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx)        &
-                    +(eta(i,j-1)+eta(i,j+1)-2*eta(i,j))/(dy*dy)
-                temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2               &
-                    +((eta(i,j+1)-eta(i,j-1))/(2*dy))**2
-                b(i,j)=(Bu+Ro*eta(i,j))*temp1+Ro/2*temp2
-                q(i,j)=temp1
+        do i = 2, pasx
+            do j = 2, pasy-1
+                temp1 = (eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx)        &
+                      + (eta(i,j-1)+eta(i,j+1)-2*eta(i,j))/(dy*dy)
+                temp2 = ((eta(i+1,j)-eta(i-1,j))/(2*dx))**2               &
+                      + ((eta(i,j+1)-eta(i,j-1))/(2*dy))**2
+                b(i,j) = (Bu+Ro*eta(i,j))*temp1 + Ro/2*temp2
+                q(i,j) = temp1
             end do
         end do
      
         !        -- Bords y --
 
-        do i=2,pasx
-            j=1
-            temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx)   &
-                +(eta(i,j)+eta(i,j+2)-2*eta(i,j+1))/(dy*dy)
-            temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2  &
-                 +((4*eta(i,j+1)-eta(i,j+2)-3*eta(i,j))/(2*dy))**2
+        do i = 2, pasx
+            j = 1
+            temp1 = (eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx)        &
+                  + (eta(i,j)+eta(i,j+2)-2*eta(i,j+1))/(dy*dy)
+            temp2 = ((eta(i+1,j)-eta(i-1,j))/(2*dx))**2               &
+                  + ((4*eta(i,j+1)-eta(i,j+2)-3*eta(i,j))/(2*dy))**2
             b(i,j)=(Bu+Ro*eta(i,j))*temp1+Ro/2*temp2
             q(i,j)=temp1
             j=pasy
-            temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx)   &
-                 +(eta(i,j)+eta(i,j-2)-2*eta(i,j-1))/(dy*dy)
-            temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2          &
-            +((-4*eta(i,j-1)+eta(i,j-2)+3*eta(i,j))/(2*dy))**2
-            b(i,j)=(Bu+Ro*eta(i,j))*temp1+Ro/2*temp2
-            q(i,j)=temp1
+            temp1 = (eta(i-1,j) + eta(i+1,j) - 2*eta(i,j))   /(dx*dx)   &
+                  + (eta(i,j)   + eta(i,j-2) - 2*eta(i,j-1)) /(dy*dy)
+            temp2 = ((eta(i+1,j)-eta(i-1,j))/(2*dx))**2          &
+                  + ((-4*eta(i,j-1)+eta(i,j-2) + 3*eta(i,j))/(2*dy))**2
+            b(i,j) = (Bu+Ro*eta(i,j))*temp1 + Ro/2*temp2
+            q(i,j) = temp1
         end do
      
         !        -- Ajout des lignes i=1 et i=pasx+1 --
 
-        do j=1,pasy
-            b(1,j)=b(pasx,j)
-            b(pasx+1,j)=b(2,j)
-            q(1,j)=q(pasx,j)
-            q(pasx+1,j)=q(2,j)
+        do j = 1, pasy
+            b(1,j) = b(pasx,j)
+            b(pasx+1,j) = b(2,j)
+            q(1,j) = q(pasx,j)
+            q(pasx+1,j) = q(2,j)
         end do
 
 !        ------------------------     
