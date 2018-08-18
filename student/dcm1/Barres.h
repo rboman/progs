@@ -53,6 +53,16 @@ protected:
     virtual void timerEvent(QTimerEvent *event);
     virtual void showEvent(QShowEvent *event);
     virtual void hideEvent(QHideEvent *event);
+
+public slots:
+    virtual void set_a1_slot(int i);  
+    virtual void set_a2_slot(int i);  
+    virtual void set_a3_slot(int i);  
+    virtual void set_xb_slot(int i);  
+    virtual void set_ya_slot(int i);  
+    virtual void set_L_slot(int i);  
+    virtual void set_e_slot(int i);  
+    virtual void set_dp_slot(int i);  
 };
 
 #endif

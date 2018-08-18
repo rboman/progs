@@ -208,4 +208,98 @@ Barres::paintEvent(QPaintEvent *event)
     //painter.end();   // avoids "qpainter : cannot destroy paint device that is being painted" 
 }
 
+void 
+Barres::set_a1_slot(int i)
+{
+    double a1min = 0.1;
+    double a1max = 2.0;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    a1 = a1min + i*(a1max-a1min)/range;
+}
 
+void 
+Barres::set_a2_slot(int i)
+{
+    double a2min = 2.5;
+    double a2max = 4.5;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    a2 = a2min + i*(a2max-a2min)/range;
+}
+
+void 
+Barres::set_a3_slot(int i)
+{
+    double a3min = 1.0;
+    double a3max = 3.0;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    a3 = a3min + i*(a3max-a3min)/range;
+}
+
+void 
+Barres::set_xb_slot(int i)
+{
+    double xbmin = 2.0;
+    double xbmax = 4.0;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    xb = xbmin + i*(xbmax-xbmin)/range;
+}
+
+void 
+Barres::set_ya_slot(int i)
+{
+    double yamin = 0.5;
+    double yamax = 2.5;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    ya = yamin + i*(yamax-yamin)/range;
+}
+
+void 
+Barres::set_L_slot(int i)
+{
+    double Lmin = 4.0;
+    double Lmax = 8.0;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    L = Lmin + i*(Lmax-Lmin)/range;
+}
+
+void 
+Barres::set_e_slot(int i)
+{
+    double emin = 0.0;
+    double emax = 3.0;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    e = emin + i*(emax-emin)/range;
+}
+
+void 
+Barres::set_dp_slot(int i)
+{
+    double dpmin = 0.5;
+    double dpmax = 1.5;
+    int range = 100;
+    if(i<0) i=0;
+    if(i>range) i=range;
+    
+    dp = dpmin + i*(dpmax-dpmin)/range;
+}
