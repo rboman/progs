@@ -8,6 +8,7 @@
 
 program NIHOUL
 
+    implicit none
     ! ------------------------------------------------------------------
     !                            Declarations
     ! ------------------------------------------------------------------      
@@ -22,6 +23,7 @@ program NIHOUL
     double precision eta(pasx2,pasy), b(pasx2,pasy), q(pasx2,pasy)
     double precision aeta1, aeta2, jacob(pasx2,pasy), deta(pasx2,2)
     double precision leta(pasx2,pasy), v1(pasx2,pasy), v2(pasx2,pasy)
+    double precision d1, d2, d3
 
     ! ------------------------------------------------------------------
     !                            Donnees
@@ -32,27 +34,27 @@ program NIHOUL
     write(*,*) 'Lx/L (5)?'
     read(*,*) Lx
 
-    pi    = acos(-1.)
+    pi    = acos(-1.0D0)
     h0    = 1D2
     T     = L/U
-    Ly    = amin1((3./4.+g*h0/(2.*f*U*L)), 4.)
+    Ly    = min((3.0D0/4.0D0 + g*h0/(2.0D0*f*U*L)), 4.0D0)
     Bu    = g*h0/(f*L)**2
     Ro    = U/(f*L) 
-    Et    = 1/(f*T)
-    dx    = 2.*Lx/(pasx-1) 
-    dt    = dx*dx/2.
-    dy    = 2.*Ly/(pasy-1)
-    kmoy  = 0.
+    Et    = 1.0D0/(f*T)
+    dx    = 2.0D0*Lx/(pasx-1) 
+    dt    = dx*dx/2.0D0
+    dy    = 2.0D0*Ly/(pasy-1)
+    kmoy  = 0.0D0
     save  = 1
 
-    write(*,*) 'Ly/L =', Ly, '(', (3./4. + g*h0/(2.*f*U*L)), ')'
+    write(*,*) 'Ly/L =', Ly, '(', (3.0D0/4.0D0 + g*h0/(2.0D0*f*U*L)), ')'
     write(*,*) 'Bu   =', Bu,'Ro   =', Ro
     write(*,*) 'dx   =', dx, ' ; dy   =', dy 
     write(*,*) 'pasx =', pasx,' ; pasy =', pasy
     write(*,*) 'T    =', T, 'dH   =', f*L*U/g
     write(*,*) 'dt (max) =', dt, 'sec.' 
-    write(*,*) 'Le canal fait ', 2*Lx*L, 'mètres de long'
-    write(*,*) '           et ', 2*Ly*L, 'mètres de large'
+    write(*,*) 'Le canal fait ', 2.0D0*Lx*L, 'mètres de long'
+    write(*,*) '           et ', 2.0D0*Ly*L, 'mètres de large'
     write(*,*) 'tol (1D-6)?'
     read(*,*) tol
     write(*,*) 'w (1.825)?'
