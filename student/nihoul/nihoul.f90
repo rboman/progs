@@ -1,58 +1,49 @@
 ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!                       Fluides géophysiques  v14         (11.04.96)
+!                       Fluides geophysiques  v14         (11.04.96)
 !                       -------------------------
 !   . Red Black
 !   . Calcul des vitesses
 !   . Sauvegarde tous les X pas de temps
 ! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+module GEOPHY
+
+    integer, parameter :: DP  = KIND(1.0D0)            !< double precision
+
+    real(DP), parameter :: U = 1D-1
+    real(DP), parameter :: g = 1D-2
+    real(DP), parameter :: f = 1D-4
+
+    integer, parameter :: pasx  = 31    
+    integer, parameter :: pasy  = 31
+
+end module GEOPHY    
+
+
+
 program NIHOUL
 
+    use GEOPHY    
     implicit none
 
     ! Declarations
 
-    double precision, parameter :: U = 1D-1
-    double precision, parameter :: g = 1D-2
-    double precision, parameter :: f = 1D-4
-
-    integer, parameter :: pasx  = 31
-    !integer, parameter :: pasx2 = 32    
-    integer, parameter :: pasy  = 31
-
     integer :: Nmax
     logical :: fin
     integer :: i, j, n, compt, startj, start, nsave, fsave, saveu
-    double precision :: pi, h0, L, T, Lx, Ly, Bu, Ro, Et, w
-    double precision :: dx, dy, dt, tol, kmoy
-    !double precision :: x(pasx2), y(pasx)
-    double precision, allocatable :: x(:), y(:)
+    real(DP) :: pi, h0, L, T, Lx, Ly, Bu, Ro, Et, w
+    real(DP) :: dx, dy, dt, tol, kmoy
+
+    real(DP), allocatable :: x(:), y(:)
     
-    double precision :: temp1, temp2, temp3, temp4, temp5, erreur
-    double precision :: d1, d2, d3
-    double precision :: aeta1, aeta2     
+    real(DP) :: temp1, temp2, temp3, temp4, temp5, erreur
+    real(DP) :: d1, d2, d3
+    real(DP) :: aeta1, aeta2     
     
-    !double precision :: eta(pasx2,pasy), b(pasx2,pasy), q(pasx2,pasy)
-    !double precision :: jacob(pasx2,pasy), deta(pasx2,2)
-    !double precision :: leta(pasx2,pasy), v1(pasx2,pasy), v2(pasx2,pasy)
-    double precision, allocatable :: eta(:,:), b(:,:), q(:,:)
-    double precision, allocatable :: jacob(:,:), deta(:,:)
-    double precision, allocatable :: leta(:,:), v1(:,:), v2(:,:)
+    real(DP), allocatable :: eta(:,:), b(:,:), q(:,:)
+    real(DP), allocatable :: jacob(:,:), deta(:,:)
+    real(DP), allocatable :: leta(:,:), v1(:,:), v2(:,:)
 
-    ! dynamic arrays
-    allocate( x(pasx+1) )
-    allocate( y(pasx) )
-
-    allocate( eta(pasx+1, pasy) )
-    allocate( b(pasx+1, pasy) )
-    allocate( q(pasx+1, pasy) )
-
-    allocate( jacob(pasx+1, pasy) )
-    allocate( deta(pasx+1, 2) )
-
-    allocate( leta(pasx+1, pasy) )
-    allocate( v1(pasx+1, pasy) )
-    allocate( v2(pasx+1, pasy) )
 
     ! Donnees
 
@@ -99,8 +90,24 @@ program NIHOUL
         fsave = Nmax
     endif
 
-    write(*,*)
+    print *
     print *, 'Un pas de temps =', T*dt, 'sec.'
+
+
+    ! dynamic arrays
+    allocate( x(pasx+1) )
+    allocate( y(pasx) )
+
+    allocate( eta(pasx+1, pasy) )
+    allocate( b(pasx+1, pasy) )
+    allocate( q(pasx+1, pasy) )
+
+    allocate( jacob(pasx+1, pasy) )
+    allocate( deta(pasx+1, 2) )
+
+    allocate( leta(pasx+1, pasy) )
+    allocate( v1(pasx+1, pasy) )
+    allocate( v2(pasx+1, pasy) )
 
     ! Calcul du profil initial
       
@@ -321,7 +328,7 @@ program NIHOUL
                 eta(i,j) = temp5
             end do
 
-            ! Périodicité
+            ! Periodicite
             do j = 1, pasy
                 eta(1,j) = eta(pasx,j)
                 eta(pasx+1,j) = eta(2,j)      
@@ -414,7 +421,7 @@ program NIHOUL
                              - Ro*(temp2*temp5 - temp1*temp4)
                 end do
 
-                ! périodicité
+                ! periodicite
 
                 do j = 1, pasy
                     v1(pasx+1,j) = v1(2,j)
@@ -443,11 +450,10 @@ program NIHOUL
     close (UNIT=1)
 
     !  Commentaires finaux
+    print "('Calcul effectue sur :', F10.1,'s')", Nmax*T*dt
+    print "('Nb iterations (moy) :', F5.1)", kmoy/Nmax
+    print "('Resultats dans RES.M')"
 
-    print *, 'Calcul effectué sur ', Nmax*T*dt, 'sec.'
-    print *, 'Nb itérations (moy) ', kmoy/Nmax
-    print *, 'Résultats dans RES.M'
-      
     ! free memory
     deallocate( x )
     deallocate( y )
