@@ -1,15 +1,16 @@
-C ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C                       Fluides géophysiques  v14         (11.04.96)
-C                       -------------------------
-C   . Red Black
-C   . Calcul des vitesses
-C   . Sauvegarde tous les X pas de temps
-C ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!                       Fluides géophysiques  v14         (11.04.96)
+!                       -------------------------
+!   . Red Black
+!   . Calcul des vitesses
+!   . Sauvegarde tous les X pas de temps
+! ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+program NIHOUL
 
-C ------------------------------------------------------------------
-C                            Declarations
-C ------------------------------------------------------------------      
+! ------------------------------------------------------------------
+!                            Declarations
+! ------------------------------------------------------------------      
       double precision U, g, f
       integer pasx, pasy, pasx2, Nmax
       parameter(U=1D-1, g=1D-2, f=1D-4)
@@ -22,9 +23,9 @@ C ------------------------------------------------------------------
       double precision aeta1, aeta2, jacob(pasx2,pasy), deta(pasx2,2)
       double precision leta(pasx2,pasy), v1(pasx2,pasy), v2(pasx2,pasy)
 
-C ------------------------------------------------------------------
-C                            Donnees
-C ------------------------------------------------------------------
+! ------------------------------------------------------------------
+!                            Donnees
+! ------------------------------------------------------------------
 
       write(*,*) 'L (5000)?'
       read(*,*) L
@@ -72,9 +73,9 @@ C ------------------------------------------------------------------
       write(*,*)
       write(*,*)'Un pas de temps =',T*dt,'sec.'
 
-C ------------------------------------------------------------------      
-C                      Calcul du profil initial
-C ------------------------------------------------------------------      
+! ------------------------------------------------------------------      
+!                      Calcul du profil initial
+! ------------------------------------------------------------------      
       
       do i = 2, pasx+1
          x(i) = (i-2)*dx
@@ -99,9 +100,9 @@ C ------------------------------------------------------------------
         end do
       end do
 
-C ------------------------------------------------------------------      
-C       Ouverture du fichier RES.M et sauv. le profil initial
-C ------------------------------------------------------------------
+! ------------------------------------------------------------------      
+!       Ouverture du fichier RES.M et sauv. le profil initial
+! ------------------------------------------------------------------
 
       open (UNIT = 1, FILE = 'res.m', STATUS ='unknown')
 
@@ -112,50 +113,46 @@ C ------------------------------------------------------------------
       end do
 
 
-C ------------------------------------------------------------------      
-C            Boucle principale (progression dans le temps)
-C ------------------------------------------------------------------
+! ------------------------------------------------------------------      
+!            Boucle principale (progression dans le temps)
+! ------------------------------------------------------------------
       
       do n=1,Nmax
       write(*,*)'Pas de temps n :',n
 
-C        ------------------------------------
-C        -- Calcul de Beta et du laplacien --
-C        ------------------------------------
+!        ------------------------------------
+!        -- Calcul de Beta et du laplacien --
+!        ------------------------------------
 
-C        -- Interieur --
+!        -- Interieur --
 
       do i=2,pasx
          do j=2,pasy-1
-            temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx) 
-     *            +(eta(i,j-1)+eta(i,j+1)-2*eta(i,j))/(dy*dy)
-            temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2 
-     *            +((eta(i,j+1)-eta(i,j-1))/(2*dy))**2
+            temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx)        &
+                  +(eta(i,j-1)+eta(i,j+1)-2*eta(i,j))/(dy*dy)
+            temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2              &
+                  +((eta(i,j+1)-eta(i,j-1))/(2*dy))**2
             b(i,j)=(Bu+Ro*eta(i,j))*temp1+Ro/2*temp2
             q(i,j)=temp1
          end do
       end do
      
-C        -- Bords y --
+!        -- Bords y --
 
       do i=2,pasx
          j=1
-         temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx) 
-     *         +(eta(i,j)+eta(i,j+2)-2*eta(i,j+1))/(dy*dy)
-         temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2 
-     *         +((4*eta(i,j+1)-eta(i,j+2)-3*eta(i,j))/(2*dy))**2
+         temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx) +(eta(i,j)+eta(i,j+2)-2*eta(i,j+1))/(dy*dy)
+         temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2  +((4*eta(i,j+1)-eta(i,j+2)-3*eta(i,j))/(2*dy))**2
          b(i,j)=(Bu+Ro*eta(i,j))*temp1+Ro/2*temp2
          q(i,j)=temp1
          j=pasy
-         temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx) 
-     *         +(eta(i,j)+eta(i,j-2)-2*eta(i,j-1))/(dy*dy)
-         temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2 
-     *         +((-4*eta(i,j-1)+eta(i,j-2)+3*eta(i,j))/(2*dy))**2
+         temp1=(eta(i-1,j)+eta(i+1,j)-2*eta(i,j))/(dx*dx)   +(eta(i,j)+eta(i,j-2)-2*eta(i,j-1))/(dy*dy)
+         temp2=((eta(i+1,j)-eta(i-1,j))/(2*dx))**2     +((-4*eta(i,j-1)+eta(i,j-2)+3*eta(i,j))/(2*dy))**2
          b(i,j)=(Bu+Ro*eta(i,j))*temp1+Ro/2*temp2
          q(i,j)=temp1
       end do
      
-C        -- Ajout des lignes i=1 et i=pasx+1 --
+!        -- Ajout des lignes i=1 et i=pasx+1 --
 
       do j=1,pasy
          b(1,j)=b(pasx,j)
@@ -164,36 +161,36 @@ C        -- Ajout des lignes i=1 et i=pasx+1 --
          q(pasx+1,j)=q(2,j)
       end do
 
-C        ------------------------     
-C        -- Calcul du Jacobien --
-C        ------------------------
+!        ------------------------     
+!        -- Calcul du Jacobien --
+!        ------------------------
 
       do i=2,pasx
          do j=2,pasy-1
-         temp1=((eta(i+1,j)-eta(i-1,j))*(b(i,j+1)-b(i,j-1))-
-     *          (eta(i,j+1)-eta(i,j-1))*(b(i+1,j)-b(i-1,j)))/4/dx/dy
-         temp2=(eta(i+1,j)*(b(i+1,j+1)-b(i+1,j-1))-eta(i-1,j)*
-     *          (b(i-1,j+1)-b(i-1,j-1))-eta(i,j+1)*(b(i+1,j+1)
-     *          -b(i-1,j+1))+eta(i,j-1)*(b(i+1,j-1)-b(i-1,j-1)))
-     *          /4/dx/dy
-         temp3=(b(i,j+1)*(eta(i+1,j+1)-eta(i-1,j+1))-b(i,j-1)*
-     *          (eta(i+1,j-1)-eta(i-1,j-1))-b(i+1,j)*(eta(i+1,j+1)-
-     *          eta(i+1,j-1))+b(i-1,j)*(eta(i-1,j+1)-eta(i-1,j-1)))
-     *          /4/dx/dy
+         temp1=((eta(i+1,j)-eta(i-1,j))*(b(i,j+1)-b(i,j-1))-               &
+          (eta(i,j+1)-eta(i,j-1))*(b(i+1,j)-b(i-1,j)))/4/dx/dy
+         temp2=(eta(i+1,j)*(b(i+1,j+1)-b(i+1,j-1))-eta(i-1,j)*             &
+                (b(i-1,j+1)-b(i-1,j-1))-eta(i,j+1)*(b(i+1,j+1)             &
+                        -b(i-1,j+1))+eta(i,j-1)*(b(i+1,j-1)-b(i-1,j-1)))   &
+                              /4/dx/dy
+         temp3=(b(i,j+1)*(eta(i+1,j+1)-eta(i-1,j+1))-b(i,j-1)*             &
+                (eta(i+1,j-1)-eta(i-1,j-1))-b(i+1,j)*(eta(i+1,j+1)-        &
+                eta(i+1,j-1))+b(i-1,j)*(eta(i-1,j+1)-eta(i-1,j-1)))        &
+                /4/dx/dy
          jacob(i,j)=(temp1+temp2+temp3)/3
          end do
       end do
      
-C        -- Ajout des lignes i=1 et i=pasx+1 --
+!        -- Ajout des lignes i=1 et i=pasx+1 --
       
       do j=1,pasy
          jacob(1,j)=jacob(pasx,j)
          jacob(pasx+1,j)=jacob(2,j)
       end do
      
-C        -----------------      
-C        -- Calcul de q --
-C        -----------------      
+!        -----------------      
+!        -- Calcul de q --
+!        -----------------      
 
       do i=1,pasx+1
         do j=1,pasy
@@ -202,19 +199,18 @@ C        -----------------
          end do
       end do
 
-C        ----------------------------------------     
-C        -- Calcul de d(eta)/dy pour les bords --
-C        ----------------------------------------
+!        ----------------------------------------     
+!        -- Calcul de d(eta)/dy pour les bords --
+!        ----------------------------------------
       
       do i=1,pasx+1
          deta(i,1)=(4*eta(i,2)-eta(i,3)-3*eta(i,1))/(2*dy)
-         deta(i,2)=(-4*eta(i,pasy-1)+eta(i,pasy-2)+3*eta(i,pasy))
-     *              /(2*dy)
+         deta(i,2)=(-4*eta(i,pasy-1)+eta(i,pasy-2)+3*eta(i,pasy))  /(2*dy)
       end do
      
-C        ---------------
-C        -- Red Black --
-C        ---------------
+!        ---------------
+!        -- Red Black --
+!        ---------------
 
       fin=0
       compt=0
@@ -223,15 +219,15 @@ C        ---------------
       do while (fin.eq.0)
          compt=compt+1
       fin=1
-C                 - Deux passages alternes -
+!                 - Deux passages alternes -
       do startj=1,2
          start=startj      
-C                       - Red Black -
+!                       - Red Black -
          do i=2,pasx
             do j=start+1,pasy-1,2
                temp1=-2/dx**2-2/dy**2-1/Bu
-               temp1=(q(i,j)/Bu-(eta(i+1,j)+eta(i-1,j))/dx**2
-     *               -(eta(i,j+1)+eta(i,j-1))/dy**2)/temp1
+               temp1=(q(i,j)/Bu-(eta(i+1,j)+eta(i-1,j))/dx**2       &
+                     -(eta(i,j+1)+eta(i,j-1))/dy**2)/temp1
                temp1=eta(i,j)+w*(temp1-eta(i,j))
                if(abs(eta(i,j)).GT.0) then
                   erreur=abs((temp1-eta(i,j))/eta(i,j))
@@ -250,13 +246,13 @@ C                       - Red Black -
          end do
 
          do j=1,pasy
-            eta(1,j)=eta(pasx,j)
+            eta(1,j)=eta(pasx,j) 
             eta(pasx+1,j)=eta(2,j)   
          end do
 
       end do
 
-C                  - Conditions aux limites -
+!                  - Conditions aux limites -
       aeta1=eta(1,1)
       aeta2=eta(1,pasy)
 
@@ -269,9 +265,9 @@ C                  - Conditions aux limites -
           d3=(eta(i+1,j+2)-eta(i-1,j+2))/(2*dx)
          temp3=(4*d2-d3-3*d1)/(2*dy)              
          temp4=-3*Et/(2*dy*dt)+3*Ro*temp3/(2*dy)+Ro*temp1/dy**2
-         temp5=(temp1-Et*((4*eta(i,j+1)-eta(i,j+2))/(2*dy*dt)-
-     *         deta(i,1)/dt)-Ro*temp1*temp2+Ro*temp3*
-     *         (4*eta(i,j+1)-eta(i,j+2))/(2*dy))/temp4
+         temp5=(temp1-Et*((4*eta(i,j+1)-eta(i,j+2))/(2*dy*dt)-     &
+               deta(i,1)/dt)-Ro*temp1*temp2+Ro*temp3*              &
+               (4*eta(i,j+1)-eta(i,j+2))/(2*dy))/temp4
          temp5=eta(i,j)+w*(temp5-eta(i,j))
          if(abs(eta(i,j)).GT.0) then
             erreur=abs((temp5-eta(i,j))/eta(i,j))
@@ -290,9 +286,9 @@ C                  - Conditions aux limites -
           d3=(eta(i+1,j-2)-eta(i-1,j-2))/(2*dx)
          temp3=(-4*d2+d3+3*d1)/(2*dy)   
          temp4=3*Et/(2*dy*dt)-3*Ro*temp3/(2*dy)+Ro*temp1/dy**2
-         temp5=(temp1-Et*((-4*eta(i,j-1)+eta(i,j-2))/(2*dy*dt)
-     *         -deta(i,2)/dt)-Ro*temp1*temp2+Ro*temp3*
-     *         (-4*eta(i,j-1)+eta(i,j-2))/(2*dy))/temp4
+         temp5=(temp1-Et*((-4*eta(i,j-1)+eta(i,j-2))/(2*dy*dt)    &
+               -deta(i,2)/dt)-Ro*temp1*temp2+Ro*temp3*         &
+               (-4*eta(i,j-1)+eta(i,j-2))/(2*dy))/temp4
          temp5=eta(i,j)+w*(temp5-eta(i,j))
          if(abs(eta(i,j)).GT.0) then
             erreur=abs((temp5-eta(i,j))/eta(i,j))
@@ -303,7 +299,7 @@ C                  - Conditions aux limites -
          aeta2=eta(i,j)
          eta(i,j)=temp5
       end do
-C                         -  Periodicite -
+!                         -  Periodicite -
       do j=1,pasy
          eta(1,j)=eta(pasx,j)
          eta(pasx+1,j)=eta(2,j)      
@@ -314,9 +310,9 @@ C                         -  Periodicite -
       write(*,*)'    no it. =',compt
       kmoy=kmoy+compt
 
-C        ----------------------------------------------
-C        -- Copie de eta (futur calcul des vitesses) --
-C        ----------------------------------------------
+!        ----------------------------------------------
+!        -- Copie de eta (futur calcul des vitesses) --
+!        ----------------------------------------------
 
       if(n.EQ.save*fsave-1) then
          do i=1,pasx2
@@ -326,35 +322,35 @@ C        ----------------------------------------------
          end do
       endif
 
-C        -------------------------
-C        -- Calcul des vitesses --
-C        -------------------------
+!        -------------------------
+!        -- Calcul des vitesses --
+!        -------------------------
       if(saveu.EQ.1) then
       if(n.EQ.save*fsave) then
       do i=2,pasx
          do j=2,pasy-1
 
-C                        - u (interieur) -            
+!                        - u (interieur) -            
 
             temp1=(eta(i,j+1)-eta(i,j-1))/2/dy
             temp2=(eta(i+1,j)-eta(i-1,j))/2/dx
             temp3=(leta(i+1,j)-leta(i-1,j))/2/dx
-            temp4=(eta(i+1,j+1)-eta(i-1,j+1)-eta(i+1,j-1)
-     *            +eta(i-1,j-1))/(4*dy*dy)
+            temp4=(eta(i+1,j+1)-eta(i-1,j+1)-eta(i+1,j-1)         &
+                  +eta(i-1,j-1))/(4*dy*dy)
             temp5=(eta(i+1,j)+eta(i-1,j)-2*eta(i,j))/(dx*dx)
-            v1(i,j)=-temp1-Et*(temp2-temp3)/dt-Ro*
-     *             (temp2*temp4-temp1*temp5)
+            v1(i,j)=-temp1-Et*(temp2-temp3)/dt-Ro*              &
+                   (temp2*temp4-temp1*temp5)
 
-C                        - v (interieur) -      
+!                        - v (interieur) -      
 
             temp3=(leta(i,j+1)-leta(i,j-1))/2/dy
             temp5=(eta(i,j+1)+eta(i,j-1)-2*eta(i,j))/(dy*dy)
-            v2(i,j)=temp2-Et*(temp1-temp3)/dt-Ro*
-     *             (temp2*temp5-temp1*temp4)
+            v2(i,j)=temp2-Et*(temp1-temp3)/dt-Ro*               &
+                   (temp2*temp5-temp1*temp4)
           end do
           j=1
 
-C                          - u (j=1) -            
+!                          - u (j=1) -            
 
             temp1=(4*eta(i,j+1)-eta(i,j+2)-3*eta(i,j))/2/dy
             temp2=(eta(i+1,j)-eta(i-1,j))/2/dx
@@ -364,18 +360,18 @@ C                          - u (j=1) -
             d3=(eta(i+1,j+2)-eta(i-1,j+2))/(2*dx)
             temp4=(4*d2-d3-3*d1)/(2*dy)              
             temp5=(eta(i+1,j)+eta(i-1,j)-2*eta(i,j))/(dx*dx)
-            v1(i,j)=-temp1-Et*(temp2-temp3)/dt-Ro*
-     *             (temp2*temp4-temp1*temp5)
+            v1(i,j)=-temp1-Et*(temp2-temp3)/dt-Ro*            &
+                   (temp2*temp4-temp1*temp5)
 
-C                          - v (j=1) -      
+!                          - v (j=1) -      
 
             temp3=(4*leta(i,j+1)-leta(i,j+2)-3*leta(i,j))/2/dy 
             temp5=(eta(i,j+2)+eta(i,j)-2*eta(i,j+1))/(dy*dy)
-            v2(i,j)=temp2-Et*(temp1-temp3)/dt-Ro*
-     *             (temp2*temp5-temp1*temp4)
+            v2(i,j)=temp2-Et*(temp1-temp3)/dt-Ro*              &
+                   (temp2*temp5-temp1*temp4)
             j=pasy
            
-C                         - u (j=pasy) -            
+!                         - u (j=pasy) -            
 
             temp1=(-4*eta(i,j-1)+eta(i,j-2)+3*eta(i,j))/2/dy
             temp2=(eta(i+1,j)-eta(i-1,j))/2/dx
@@ -385,18 +381,18 @@ C                         - u (j=pasy) -
              d3=(eta(i+1,j-2)-eta(i-1,j-2))/(2*dx)
             temp4=(-4*d2+d3+3*d1)/(2*dy)   
             temp5=(eta(i+1,j)+eta(i-1,j)-2*eta(i,j))/(dx*dx)
-            v1(i,j)=-temp1-Et*(temp2-temp3)/dt-Ro*
-     *             (temp2*temp4-temp1*temp5)
+            v1(i,j)=-temp1-Et*(temp2-temp3)/dt-Ro*             &
+                         (temp2*temp4-temp1*temp5)
 
-C                         - v (j=pasy) -      
+!                         - v (j=pasy) -      
 
             temp3=(-4*leta(i,j-1)+leta(i,j-2)+3*leta(i,j))/2/dy 
             temp5=(eta(i,j-2)+eta(i,j)-2*eta(i,j-1))/(dy*dy)
-            v2(i,j)=temp2-Et*(temp1-temp3)/dt-Ro*
-     *             (temp2*temp5-temp1*temp4)
+            v2(i,j)=temp2-Et*(temp1-temp3)/dt-Ro*             &
+                   (temp2*temp5-temp1*temp4)
       end do
 
-C                         - periodicite -
+!                         - periodicite -
       do j=1,pasy
          v1(pasx+1,j)=v1(2,j)
          v2(pasx+1,j)=v2(2,j)
@@ -404,9 +400,9 @@ C                         - periodicite -
       endif
       endif
 
-C        --------------------------------
-C        -- Resultats (save -> Matlab) --
-C        --------------------------------
+!        --------------------------------
+!        -- Resultats (save -> Matlab) --
+!        --------------------------------
 
       if(n.EQ.save*fsave) then     
          do i=2,pasx+1
@@ -424,12 +420,12 @@ C        --------------------------------
       end do  
       close (UNIT=1)
 
-C ------------------------------------------------------------------
-C                     Commentaires finaux
-C ------------------------------------------------------------------
+! ------------------------------------------------------------------
+!                     Commentaires finaux
+! ------------------------------------------------------------------
 
       write(*,*)'Calcul effectué sur ',Nmax*T*dt,'sec.'
       write(*,*)'Nb itérations (moy) ',kmoy/Nmax
       write(*,*)'Résultats dans RES.M'
       
-      end
+end program NIHOUL
