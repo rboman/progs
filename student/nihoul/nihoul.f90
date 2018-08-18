@@ -71,11 +71,9 @@ program NIHOUL
     endif
 
     write(*,*)
-    write(*,*)'Un pas de temps =', T*dt, 'sec.'
+    write(*,*) 'Un pas de temps =', T*dt, 'sec.'
 
-    ! ------------------------------------------------------------------      
-    !                      Calcul du profil initial
-    ! ------------------------------------------------------------------      
+    ! Calcul du profil initial
       
     do i = 2, pasx+1
         x(i) = (i-2)*dx
@@ -91,18 +89,16 @@ program NIHOUL
     temp1 = g*h0/f/L/U
     do i = 1, pasx+1
         temp2 = 0.01*sin(pi*x(i)/Lx)
-        do j = 1,pasy
-            if(abs(y(j)).LT.1) then
-                eta(i,j) = temp1*temp2 - 0.5*y(j)**2*(1+temp2)
+        do j = 1, pasy
+            if (abs(y(j)).LT.1) then
+                eta(i,j) = temp1*temp2 - 0.5*y(j)**2*(1 + temp2)
             else
-                eta(i,j) = temp1*temp2 + (0.5-abs(y(j)))*(1+temp2)
+                eta(i,j) = temp1*temp2 + (0.5-abs(y(j)))*(1 + temp2)
             endif
         end do
     end do
 
-    ! ------------------------------------------------------------------      
-    !       Ouverture du fichier RES.M et sauv. le profil initial
-    ! ------------------------------------------------------------------
+    ! Ouverture du fichier RES.M et sauvegarde du profil initial
 
     open (UNIT = 1, FILE = 'res.m', STATUS ='unknown')
 
@@ -112,19 +108,14 @@ program NIHOUL
         end do
     end do
 
+    ! Boucle principale (progression dans le temps)
 
-    ! ------------------------------------------------------------------      
-    !            Boucle principale (progression dans le temps)
-    ! ------------------------------------------------------------------
-      
     do n = 1, Nmax
         write(*,*) 'Pas de temps n :', n
 
-    !        ------------------------------------
-    !        -- Calcul de Beta et du laplacien --
-    !        ------------------------------------
+        ! Calcul de Beta et du laplacien
 
-    !        -- Interieur --
+        ! Interieur
 
         do i = 2, pasx
             do j = 2, pasy-1
@@ -137,21 +128,22 @@ program NIHOUL
             end do
         end do
      
-        !        -- Bords y --
+        ! Bords y
 
         do i = 2, pasx
             j = 1
-            temp1 = (eta(i-1,j) + eta(i+1,j) - 2*eta(i,j))   /(dx*dx)        &
+            temp1 = (eta(i-1,j) + eta(i+1,j) - 2*eta(i,j))   /(dx*dx)       &
                   + (eta(i,j)   + eta(i,j+2) - 2*eta(i,j+1)) /(dy*dy)
             temp2 = ((  eta(i+1,j) - eta(i-1,j)) / (2*dx))**2               &
                   + ((4*eta(i,j+1) - eta(i,j+2) - 3*eta(i,j)) / (2*dy))**2
-            b(i,j)=(Bu+Ro*eta(i,j))*temp1 + Ro/2*temp2
-            q(i,j)=temp1
-            j=pasy
-            temp1 = (eta(i-1,j) + eta(i+1,j) - 2*eta(i,j))   /(dx*dx)   &
+            b(i,j) = (Bu+Ro*eta(i,j))*temp1 + Ro/2*temp2
+            q(i,j) = temp1
+
+            j = pasy
+            temp1 = (eta(i-1,j) + eta(i+1,j) - 2*eta(i,j))   /(dx*dx)       &
                   + (eta(i,j)   + eta(i,j-2) - 2*eta(i,j-1)) /(dy*dy)
-            temp2 = ((eta(i+1,j)-eta(i-1,j))/(2*dx))**2          &
-                  + ((-4*eta(i,j-1)+eta(i,j-2) + 3*eta(i,j))/(2*dy))**2
+            temp2 = ((eta(i+1,j)-eta(i-1,j))/(2*dx))**2                     &
+                  + ((-4*eta(i,j-1)+eta(i,j-2) + 3*eta(i,j)) / (2*dy))**2
             b(i,j) = (Bu+Ro*eta(i,j))*temp1 + Ro/2*temp2
             q(i,j) = temp1
         end do
@@ -169,17 +161,17 @@ program NIHOUL
 
         do i = 2, pasx
             do j = 2, pasy-1
-                temp1 = ((eta(i+1,j)-eta(i-1,j))*(b(i,j+1)-b(i,j-1))-               &
+                temp1 = ((eta(i+1,j)-eta(i-1,j))*(b(i,j+1)-b(i,j-1))-          &
                 (eta(i,j+1)-eta(i,j-1))*(b(i+1,j)-b(i-1,j)))/4/dx/dy
-                temp2 = (eta(i+1,j)*(b(i+1,j+1)-b(i+1,j-1))-eta(i-1,j)*             &
+                temp2 = (eta(i+1,j)*(b(i+1,j+1)-b(i+1,j-1))-eta(i-1,j)*        &
                     (b(i-1,j+1)-b(i-1,j-1))-eta(i,j+1)*(b(i+1,j+1)             &
                             -b(i-1,j+1))+eta(i,j-1)*(b(i+1,j-1)-b(i-1,j-1)))   &
                                     /4/dx/dy
-                temp3 = (b(i,j+1)*(eta(i+1,j+1)-eta(i-1,j+1))-b(i,j-1)*             &
+                temp3 = (b(i,j+1)*(eta(i+1,j+1)-eta(i-1,j+1))-b(i,j-1)*        &
                     (eta(i+1,j-1)-eta(i-1,j-1))-b(i+1,j)*(eta(i+1,j+1)-        &
                     eta(i+1,j-1))+b(i-1,j)*(eta(i-1,j+1)-eta(i-1,j-1)))        &
                     /4/dx/dy
-                jacob(i,j) = (temp1+temp2+temp3)/3
+                jacob(i,j) = (temp1 + temp2 + temp3)/3
             end do
         end do
      
@@ -223,11 +215,11 @@ program NIHOUL
                 ! Red Black
 
                 do i = 2,pasx
-                    do j = start+1, pasy-1,2
-                        temp1 = -2/dx**2-2/dy**2-1/Bu
-                        temp1 = (q(i,j)/Bu-(eta(i+1,j)+eta(i-1,j))/dx**2       &
-                              - (eta(i,j+1)+eta(i,j-1))/dy**2)/temp1
-                        temp1 = eta(i,j)+w*(temp1-eta(i,j))
+                    do j = start+1, pasy-1, 2
+                        temp1 = -2/dx**2 - 2/dy**2 - 1/Bu
+                        temp1 = (q(i,j)/Bu - (eta(i+1,j)+eta(i-1,j))/dx**2   &
+                                           - (eta(i,j+1)+eta(i,j-1))/dy**2  ) / temp1
+                        temp1 = eta(i,j) + w*(temp1-eta(i,j))
                         if(abs(eta(i,j)).GT.0) then
                             erreur = abs( (temp1-eta(i,j))/eta(i,j) )
                             if(erreur.GT.tol) then
@@ -258,16 +250,16 @@ program NIHOUL
 
             do i = 2, pasx
                 j = 1
-                temp1 = (eta(i+1,j)-aeta1)/(2*dx)
-                temp2 = (eta(i,j+2)-2*eta(i,j+1))/dy**2
-                d1 = (eta(i+1,j)-aeta1)/(2*dx)
+                temp1 = (eta(i+1,j)-aeta1) / (2*dx)
+                temp2 = (eta(i,j+2)-2*eta(i,j+1)) / dy**2
+                d1 = (eta(i+1,j)-aeta1) / (2*dx)
                 d2 = (eta(i+1,j+1)-eta(i-1,j+1))/(2*dx)
                 d3 = (eta(i+1,j+2)-eta(i-1,j+2))/(2*dx)
                 temp3 = (4*d2-d3-3*d1)/(2*dy)              
                 temp4 = -3*Et/(2*dy*dt)+3*Ro*temp3/(2*dy)+Ro*temp1/dy**2
-                temp5 = (temp1-Et*((4*eta(i,j+1)-eta(i,j+2))/(2*dy*dt)    &
-                        -deta(i,1)/dt) -Ro*temp1*temp2+Ro*temp3*          &
-                        (4*eta(i,j+1)-eta(i,j+2))/(2*dy))/temp4
+                temp5 = (temp1  -Et*((4*eta(i,j+1) - eta(i,j+2)) / (2*dy*dt)    &
+                        -deta(i,1)/dt) - Ro*temp1*temp2 + Ro*temp3*             &
+                        (4*eta(i,j+1) - eta(i,j+2))/(2*dy) ) / temp4
                 temp5 = eta(i,j) + w*(temp5-eta(i,j))
                 if(abs(eta(i,j)).GT.0) then
                     erreur = abs( (temp5-eta(i,j))/eta(i,j) )
@@ -279,20 +271,20 @@ program NIHOUL
                 eta(i,j) = temp5
 
                 j = pasy
-                temp1 = (eta(i+1,j)-aeta2)/(2*dx)
-                temp2 = (eta(i,j-2)-2*eta(i,j-1))/dy**2
+                temp1 = (eta(i+1,j) - aeta2) / (2*dx)
+                temp2 = (eta(i,j-2) - 2*eta(i,j-1)) / dy**2
                 d1 = (eta(i+1,j) - aeta2) / (2*dx)
                 d2 = (eta(i+1,j-1) - eta(i-1,j-1)) / (2*dx)
                 d3 = (eta(i+1,j-2) - eta(i-1,j-2)) / (2*dx)
-                temp3 = (-4*d2+d3+3*d1) / (2*dy)   
-                temp4 = 3*Et/(2*dy*dt) -3*Ro*temp3/(2*dy)+Ro*temp1/dy**2
-                temp5 = (temp1-Et*((-4*eta(i,j-1)+eta(i,j-2))/(2*dy*dt)    &
-                        -deta(i,2)/dt) -Ro*temp1*temp2+Ro*temp3*           &
-                        (-4*eta(i,j-1)+eta(i,j-2))/(2*dy))/temp4
+                temp3 = (-4*d2 + d3 + 3*d1) / (2*dy)   
+                temp4 = 3*Et/(2*dy*dt) - 3*Ro*temp3/(2*dy) + Ro*temp1/dy**2
+                temp5 = (temp1 - Et*((-4*eta(i,j-1) + eta(i,j-2)) / (2*dy*dt)    &
+                        - deta(i,2)/dt) - Ro*temp1*temp2 + Ro*temp3*             &
+                        (-4*eta(i,j-1) + eta(i,j-2))/(2*dy) ) / temp4
                 temp5 = eta(i,j) + w*(temp5-eta(i,j))
-                if(abs(eta(i,j)).GT.0) then
-                    erreur = abs((temp5-eta(i,j))/eta(i,j))
-                    if(erreur.GT.tol) then
+                if (abs(eta(i,j)).GT.0) then
+                    erreur = abs( (temp5-eta(i,j)) / eta(i,j) )
+                    if (erreur.GT.tol) then
                         fin = 0
                     endif
                 endif
@@ -321,7 +313,6 @@ program NIHOUL
             end do
         endif
 
-
         ! Calcul des vitesses
 
         if(saveu.EQ.1) then
@@ -331,64 +322,64 @@ program NIHOUL
 
                         ! u (interieur)            
 
-                        temp1 = (eta(i,j+1)-eta(i,j-1))/2/dy
-                        temp2 = (eta(i+1,j)-eta(i-1,j))/2/dx
-                        temp3 = (leta(i+1,j)-leta(i-1,j))/2/dx
-                        temp4 = (eta(i+1,j+1)-eta(i-1,j+1)-eta(i+1,j-1)     &
-                                + eta(i-1,j-1))/(4*dy*dy)
-                        temp5 = (eta(i+1,j)+eta(i-1,j)-2*eta(i,j))/(dx*dx)
-                        v1(i,j) = -temp1-Et*(temp2-temp3)/dt - Ro*          &
-                                  (temp2*temp4-temp1*temp5)
+                        temp1 = (eta(i,j+1) - eta(i,j-1))/2/dy
+                        temp2 = (eta(i+1,j) - eta(i-1,j))/2/dx
+                        temp3 = (leta(i+1,j) - leta(i-1,j))/2/dx
+                        temp4 = (eta(i+1,j+1) - eta(i-1,j+1) - eta(i+1,j-1)     &
+                                + eta(i-1,j-1)) / (4*dy*dy)
+                        temp5 = (eta(i+1,j) + eta(i-1,j) - 2*eta(i,j)) / (dx*dx)
+                        v1(i,j) = -temp1 - Et*(temp2 - temp3)/dt           &
+                                - Ro*(temp2*temp4 - temp1*temp5)
 
                         ! v (interieur)    
 
-                        temp3 = (leta(i,j+1)-leta(i,j-1))/2/dy
-                        temp5 = (eta(i,j+1)+eta(i,j-1)-2*eta(i,j))/(dy*dy)
-                        v2(i,j) = temp2-Et*(temp1-temp3)/dt - Ro*           &
-                                (temp2*temp5 - temp1*temp4)
+                        temp3 = (leta(i,j+1) - leta(i,j-1))/2/dy
+                        temp5 = (eta(i,j+1) + eta(i,j-1) - 2*eta(i,j))/(dy*dy)
+                        v2(i,j) = temp2 - Et*(temp1 - temp3)/dt            &
+                                - Ro*(temp2*temp5 - temp1*temp4)
                     end do
                     j=1
 
                     ! u (j=1)            
 
-                    temp1 = (4*eta(i,j+1)-eta(i,j+2)-3*eta(i,j))/2/dy
-                    temp2 = (eta(i+1,j)-eta(i-1,j))/2/dx
-                    temp3 = (leta(i+1,j)-leta(i-1,j))/2/dx
+                    temp1 = (4*eta(i,j+1)  -eta(i,j+2) - 3*eta(i,j))/2/dy
+                    temp2 = (eta(i+1,j) - eta(i-1,j))/2/dx
+                    temp3 = (leta(i+1,j) - leta(i-1,j))/2/dx
                     d1 = temp2
-                    d2 = (eta(i+1,j+1)-eta(i-1,j+1))/(2*dx)
-                    d3 = (eta(i+1,j+2)-eta(i-1,j+2))/(2*dx)
-                    temp4 = (4*d2-d3-3*d1)/(2*dy)              
-                    temp5 = (eta(i+1,j)+eta(i-1,j)-2*eta(i,j))/(dx*dx)
-                    v1(i,j) = -temp1-Et*(temp2-temp3)/dt-Ro*            &
-                              (temp2*temp4 - temp1*temp5)
+                    d2 = (eta(i+1,j+1) - eta(i-1,j+1))/(2*dx)
+                    d3 = (eta(i+1,j+2) - eta(i-1,j+2))/(2*dx)
+                    temp4 = (4*d2 - d3 - 3*d1)/(2*dy)              
+                    temp5 = (eta(i+1,j) + eta(i-1,j) - 2*eta(i,j))/(dx*dx)
+                    v1(i,j) = -temp1 - Et*(temp2-temp3)/dt            &
+                              -Ro*(temp2*temp4 - temp1*temp5)
 
                     ! v (j=1)      
 
-                    temp3 = (4*leta(i,j+1)-leta(i,j+2)-3*leta(i,j))/2/dy 
-                    temp5 = (eta(i,j+2)+eta(i,j)-2*eta(i,j+1))/(dy*dy)
-                    v2(i,j) = temp2-Et*(temp1-temp3)/dt - Ro*              &
-                             (temp2*temp5 - temp1*temp4)
+                    temp3 = (4*leta(i,j+1) - leta(i,j+2) - 3*leta(i,j))/2/dy 
+                    temp5 = (eta(i,j+2) + eta(i,j) - 2*eta(i,j+1))/(dy*dy)
+                    v2(i,j) = temp2-Et*(temp1 - temp3)/dt             &
+                             - Ro*(temp2*temp5 - temp1*temp4)
                     j = pasy
            
                     ! u (j=pasy)            
 
-                    temp1 = (-4*eta(i,j-1)+eta(i,j-2)+3*eta(i,j))/2/dy
-                    temp2 = (eta(i+1,j)-eta(i-1,j))/2/dx
-                    temp3 = (leta(i+1,j)-leta(i-1,j))/2/dx
+                    temp1 = (-4*eta(i,j-1) + eta(i,j-2) + 3*eta(i,j))/2/dy
+                    temp2 = (eta(i+1,j) - eta(i-1,j))/2/dx
+                    temp3 = (leta(i+1,j) - leta(i-1,j))/2/dx
                     d1 = temp2
-                    d2 = (eta(i+1,j-1)-eta(i-1,j-1))/(2*dx)
-                    d3 = (eta(i+1,j-2)-eta(i-1,j-2))/(2*dx)
-                    temp4 = (-4*d2+d3+3*d1)/(2*dy)   
-                    temp5 = (eta(i+1,j)+eta(i-1,j)-2*eta(i,j))/(dx*dx)
-                    v1(i,j) = -temp1-Et*(temp2-temp3)/dt - Ro*             &
-                              (temp2*temp4-temp1*temp5)
+                    d2 = (eta(i+1,j-1) - eta(i-1,j-1))/(2*dx)
+                    d3 = (eta(i+1,j-2) - eta(i-1,j-2))/(2*dx)
+                    temp4 = (-4*d2 + d3 + 3*d1)/(2*dy)   
+                    temp5 = (eta(i+1,j) + eta(i-1,j) - 2*eta(i,j))/(dx*dx)
+                    v1(i,j) = -temp1 - Et*(temp2 - temp3)/dt            &
+                               - Ro*(temp2*temp4 - temp1*temp5)
 
                     ! v (j=pasy)     
 
-                    temp3 = (-4*leta(i,j-1)+leta(i,j-2)+3*leta(i,j))/2/dy 
-                    temp5 = (eta(i,j-2)+eta(i,j)-2*eta(i,j-1))/(dy*dy)
-                    v2(i,j) = temp2-Et*(temp1-temp3)/dt-Ro*             &
-                             (temp2*temp5-temp1*temp4)
+                    temp3 = (-4*leta(i,j-1) + leta(i,j-2) + 3*leta(i,j))/2/dy 
+                    temp5 = (eta(i,j-2) + eta(i,j) - 2*eta(i,j-1))/(dy*dy)
+                    v2(i,j) = temp2 - Et*(temp1 - temp3)/dt         &
+                             - Ro*(temp2*temp5 - temp1*temp4)
                 end do
 
                 ! périodicité
@@ -419,9 +410,7 @@ program NIHOUL
 
     close (UNIT=1)
 
-    ! ------------------------------------------------------------------
-    !                     Commentaires finaux
-    ! ------------------------------------------------------------------
+    !  Commentaires finaux
 
     write(*,*) 'Calcul effectué sur ', Nmax*T*dt, 'sec.'
     write(*,*) 'Nb itérations (moy) ', kmoy/Nmax
