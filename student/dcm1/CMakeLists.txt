@@ -9,7 +9,7 @@ ENDIF()
 FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED)
 
 FILE(GLOB SRCS *.h *.cpp)
-set (MOC_HEADERS Barres.h)
+set (MOC_HEADERS Barres.h Window.h)
 
 qt5_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
 

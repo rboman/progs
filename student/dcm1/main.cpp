@@ -12,13 +12,13 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Barres.h"
+#include "Window.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication *app = new QApplication(argc, argv);
-    Barres *win = new Barres();
+    Window *win = new Window();
     win->show();
     app->exec();
     return 0;

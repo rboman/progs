@@ -12,47 +12,22 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef BARRES_H
-#define BARRES_H
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <QWidget>
+class Barres;
 
-#include <QPainter>
-#include <iostream>
-#include <vector>
-
-class Barres : public QWidget
+class Window : public QWidget
 {
     Q_OBJECT;
 
-    static constexpr int nframes = 50;
+private:
+    Barres *viewer;
 
-    double pi;     
-    
-    int ox;
-    int oy;
-
-
-    double zoom;
-
-    double a1; 
-    double a2; 
-    double a3; 
-    double xb; 
-    double ya; 
-    double L; 
-    double e; 
-    double dp;
-
-    int myTimerId;
-    int frame;
 public:
-    Barres(QWidget* parent = 0);
-protected: 
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void timerEvent(QTimerEvent *event);
-    virtual void showEvent(QShowEvent *event);
-    virtual void hideEvent(QHideEvent *event);
+    Window(QWidget* parent = 0);
+
 };
 
 #endif
