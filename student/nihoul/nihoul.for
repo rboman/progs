@@ -220,8 +220,8 @@ C        ---------------
       compt=0
 
       
-
-120   compt=compt+1
+      do while (fin.eq.0)
+         compt=compt+1
       fin=1
 C                 - Deux passages alternes -
       do startj=1,2
@@ -249,7 +249,7 @@ C                       - Red Black -
             endif
          end do
 
-         j=1,pasy
+         do j=1,pasy
             eta(1,j)=eta(pasx,j)
             eta(pasx+1,j)=eta(2,j)   
          end do
@@ -309,7 +309,7 @@ C                         -  Periodicite -
          eta(pasx+1,j)=eta(2,j)      
       end do
 
-      if(fin.EQ.0) goto 120  
+      end do  
        
       write(*,*)'    no it. =',compt
       kmoy=kmoy+compt
