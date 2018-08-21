@@ -86,7 +86,7 @@ class Window(QWidget, Ui_Form):
             lowno=0
             highno=0
             self.pix = []
-            for f in os.listdir(self.workspace_lineEdit.text()):
+            for f in sorted(os.listdir(self.workspace_lineEdit.text())):
                 match = pattern.match(f)
                 if(match):
                     nofiles+=1
@@ -96,7 +96,7 @@ class Window(QWidget, Ui_Form):
                     lowno = min(no, lowno)
                     self.pix.append(QPixmap(os.path.join(self.workspace_lineEdit.text(),f)))
             print ". %d files found ranging from %d to %d" % (nofiles, lowno, highno)
-        
+            
             if len(self.pix):
                 p = self.pix[0]
                 w = min(p.width(), 500)
