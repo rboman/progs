@@ -33,7 +33,7 @@ class Window(QWidget, Ui_Form):
         self.filenames_lineEdit.setText(settings.value("filenames","anim%4d.bmp"))
         self.input_fps_lineEdit.setText(settings.value("input_fps","10"))
         self.output_fps_lineEdit.setText(settings.value("output_fps","25"))
-        self.quality_Slider.setValue(settings.value("quality",21))
+        self.quality_Slider.setValue(int(settings.value("quality",21)))
 
     def on_play_Button_pressed(self):
         #print "play!"
@@ -132,23 +132,39 @@ class Window(QWidget, Ui_Form):
         
         exeffmpeg = self.getExe("ffmpeg")
 
-        cmd = "%s -y " % exeffmpeg
-        cmd +="-r %s " % self.input_fps_lineEdit.text()
+        cmd = []
+        cmd.append(exeffmpeg)
+        cmd.append('-y')
+        #cmd +="-r %s " % 
+        cmd.extend(['-r', self.input_fps_lineEdit.text()])
         inpfiles = os.path.join(self.workspace_lineEdit.text(), self.filenames_lineEdit.text())
-        cmd +="-i %s " % inpfiles
-        cmd +="-vf fps=%s " % self.output_fps_lineEdit.text()
-        cmd +="-c:v libx264 "
-        cmd +="-crf %d " % self.quality_Slider.value()
-        cmd +="-pix_fmt yuv420p "
+        #cmd +="-i %s " % inpfiles
+        cmd.extend(['-i', inpfiles])
+        #cmd +="-vf fps=%s " % self.output_fps_lineEdit.text()
+        cmd.extend(['-vf', 'fps=%s'% self.output_fps_lineEdit.text()])
+        #cmd +="-c:v libx264 "
+        cmd.extend(['-c:v', 'libx264'])
+        #cmd +="-crf %d " % self.quality_Slider.value()
+        cmd.extend(['-crf', '%d' % self.quality_Slider.value()])
+        #cmd +="-pix_fmt yuv420p "
+        cmd.extend(['-pix_fmt', 'yuv420p'])
         #cmd +="-vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" " # scale if not multiple of 2
         #cmd +="-vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2, setsar=1\" "
-        cmd +="-vf \"crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0\" " # crop to odd dimensions...
+        #cmd +="-vf \"crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0\" " # crop to odd dimensions...
+        cmd.extend(['-vf', 'crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0' ])
 
         outfile = os.path.join(self.workspace_lineEdit.text(), "video.mp4")
-        cmd += outfile
+        #cmd += outfile
+        cmd.append(outfile)
         print cmd
-        self.textEdit.append(cmd)
+        #self.textEdit.append(cmd)
+        
+        # sous linux, cmd doit etre une liste a moins que shell=True (pas safe)
+        # dans ce cas, python se charge d'ajouter des guillemets là ou il faut.
+        # sous windows, ca marche sans shell=True avec une bete string.
+        # => on utilise une liste
         retcode = subprocess.call(cmd)
+
         print "retcode =", retcode
 
     def on_ffmpegfolder_Button_pressed(self):
