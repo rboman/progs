@@ -17,6 +17,7 @@
 *.lo
 *.o
 *.obj
+*.mod
 
 # Compiled Dynamic libraries
 *.so
