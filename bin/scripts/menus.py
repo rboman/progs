@@ -21,6 +21,15 @@ opts = {
     'do_build': {
         'type': 'bool',
         'value': True
+    },
+    'platform' : {
+        'type': 'combo',
+        'value': 'unix',
+        'values': ['unix', 'windows', 'linux']
+    },
+    'name' : {
+        'type': 'str',
+        'value': 'blabla'
     }
 }
 
@@ -28,6 +37,7 @@ opts = {
 def run():
     print("run")
     import sys; sys.exit()
+
 def quit():
     print("quit()!")
     import sys; sys.exit()
@@ -39,8 +49,8 @@ actions = {
 
 def menu():
     
-    quitmenu=False
-    msg=""
+    quitmenu = False
+    msg = ""
 
     while not quitmenu:
         pu.cls()
@@ -52,11 +62,11 @@ def menu():
         for k in opts:
             opts_k[key] = k
             print(' %s/ '%key, k.ljust(20,' '), ':', opts[k]['value'])
-            key=chr(ord(key)+1)
+            key = chr(ord(key)+1)
 
         print("\nActions:")
         actions_k = {} 
-        key='1'
+        key = '1'
         for k in actions:
             actions_k[key] = k
             print(' %s/ '%key, k)
@@ -64,13 +74,31 @@ def menu():
 
         print('\n%s' % msg)
         print(">> your choice: ")
+        # wait for a key
         c = pu.getch()
 
+        # manage keypress
         if opts_k.has_key(c):
-            msg="[v] option '%s' chosen!" % opts_k[c]
+            opt_name=opts_k[c]
+            msg="[v] option '%s' chosen!" % opt_name
+            o=opts[opt_name]
+            if o['type']=='bool':
+                o['value'] = not o['value']
+            elif o['type']=='combo':
+                try:
+                    i = o['values'].index(o['value'])
+                except:
+                    i = 0
+                i+=1
+                if i>=len(o['values']):
+                    i=0
+                o['value'] = o['values'][i]
+            elif o['type']=='str':
+                o['value'] = raw_input('new str:')
         elif actions_k.has_key(c):
-            msg="[v] action '%s' chosen!" % actions_k[c]
-            return actions[actions_k[c]]
+            action_name=actions_k[c]
+            msg="[v] action '%s' chosen!" % action_name
+            return actions[action_name]
         else:
             msg="[!] unknown option (%s)!" %c
 
