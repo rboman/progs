@@ -20,11 +20,11 @@ plot(x*scaling,y2);
 xlabel('xlabel')
 ylabel('ylabel')
 
-saveas(fig, 'figmatlab1.eps', 'epsc')
+saveas(fig, 'figure1.eps', 'epsc')
 %saveas(fig, 'figmatlab1.pdf') % 1 page complete
 %print(gcf, '-dpdf', 'figmatlab1.pdf');
 
 fig.PaperPositionMode = 'auto';
 fig_pos = fig.PaperPosition;
 fig.PaperSize = [fig_pos(3) fig_pos(4)];
-print(fig,'figmatlab1','-dpdf')
+print(fig,'figure1','-dpdf')
