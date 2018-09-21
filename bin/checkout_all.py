@@ -11,17 +11,21 @@ def main():
 
 
     reps = [
-        # bitbucket
-        'git@bitbucket.org:rboman/CT.git',
-        'git@bitbucket.org:rboman/idm.git',
-        'git@bitbucket.org:rboman/lamtools.git',
-        'git@bitbucket.org:rboman/math0024.git',
+        # gitlab uliege
+        'git@gitlab.uliege.be:R.Boman/ceci_copy.git', 
+        'git@gitlab.uliege.be:R.Boman/lamtools.git',
+        'git@gitlab.uliege.be:R.Boman/idm.git',
+        'git@gitlab.uliege.be:R.Boman/mogador.git', 
+        'git@gitlab.uliege.be:R.Boman/CT.git', 
+        'git@gitlab.uliege.be:R.Boman/math0024.git', 
+        'git@gitlab.uliege.be:R.Boman/math0471_latex.git',
         # github/ulgltas
         'git@github.com:ulgltas/waves.git',
+        'git@github.com:ulgltas/waves.wiki.git',
         'git@github.com:ulgltas/linuxbin.git',
         'git@github.com:ulgltas/plotter2d.git',
         'git@github.com:ulgltas/ceci.git',
-        'git@github.com:ulgltas/SPH_method.git',
+        'git@github.com:ulgltas/SPH.git',
         'git@github.com:ulgltas/PFEM.git',
         'git@github.com:ulgltas/CUPyDO.git',
         'git@github.com:ulgltas/fdtd_brain.git',
@@ -30,9 +34,8 @@ def main():
         # github/rboman
         'git@github.com:rboman/fsi.git',
         'git@github.com:rboman/math0471.git',
+        'git@github.com:rboman/math0471.wiki.git',
         'git@github.com:rboman/math0471_latex.git',
-        'git@github.com:rboman/progs.git',
-        'git@github.com:rboman/sph.git',
         'git@github.com:rboman/progs.git',
         'git@github.com:rboman/femcode.git',
         'git@github.com:rboman/rboman.github.io.git',

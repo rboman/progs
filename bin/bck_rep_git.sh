@@ -1,5 +1,5 @@
 #!/bin/bash
-# make a backup of my git repos on github/bitbucket
+# make a backup of my git repos on github/gitlab/bitbucket/etc.
 
 git config --global credential.helper "cache --timeout=3600"
 
@@ -8,17 +8,8 @@ DATE=`date '+%Y-%m-%d'`
 mkdir -p gits-$DATE
 cd gits-$DATE
 
-#  f_github gitaccount repo login
-#  (e.g. f_github math0471 waves rboman)
-
 function f_github()
 {
-    #if [ "x$3" != "x" ]
-    #then
-    #    git clone https://$3@github.com/$1/$2.git
-    #else
-    #    git clone https://github.com/$1/$2.git    
-    #fi
     git clone git@github.com:$1/$2.git     # use SSH key
     tar czf github-$1-$2-$DATE.tar.gz $2
     rm -rf $2
@@ -29,6 +20,13 @@ function f_bitbucket()
     #git clone https://$1@bitbucket.com/$1/$2.git
     git clone git@bitbucket.com:$1/$2.git  # use SSH key
     tar czf bitbucket-$1-$2-$DATE.tar.gz $2
+    rm -rf $2
+}
+
+function f_gituliege()
+{  
+    git@bitbucket.com:$1/$2.git  # use SSH key
+    tar czf f_gituliege-$1-$2-$DATE.tar.gz $2
     rm -rf $2
 }
 
@@ -51,12 +49,10 @@ f_blueberry boman parasolid
 # github perso
 f_github rboman rboman.github.io
 f_github rboman progs
-f_github rboman sph
 f_github rboman fsi
 f_github rboman femcode
 f_github rboman math0471
 f_github rboman math0471.wiki
-f_github rboman math0471_latex
 f_github rboman plot-applet
 f_github rboman gmshio
 
@@ -65,23 +61,22 @@ f_github ulgltas waves
 f_github ulgltas waves.wiki
 f_github ulgltas linuxbin
 f_github ulgltas plotter2d
-f_github ulgltas SPH_method
-#f_github ulgltas CUPyDO
-#f_github ulgltas PFEM     
+f_github ulgltas SPH
+#f_github ulgltas CUPyDO   # cfr "others"
+#f_github ulgltas PFEM     # cfr "others"
 f_github ulgltas ceci
-f_github ulgltas Multiphysique
+f_github ulgltas fe2
 
 # others
 f_github mlucio89 CUPyDO
 f_github mlucio89 PFEM
 f_github mlucio89 Trusses
 
-# bitbucket (privé)
-f_bitbucket rboman CT
-f_bitbucket rboman idm 
-f_bitbucket rboman lamtools
-f_bitbucket rboman math0024 
-
-
-
-
+# gitlab uliege
+f_gituliege R.Boman ceci_copy
+f_gituliege R.Boman lamtools
+f_gituliege R.Boman idm
+f_gituliege R.Boman mogador
+f_gituliege R.Boman CT
+f_gituliege R.Boman math0024
+f_gituliege R.Boman math0471_latex
