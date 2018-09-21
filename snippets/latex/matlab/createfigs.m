@@ -21,10 +21,11 @@ xlabel('xlabel')
 ylabel('ylabel')
 
 saveas(fig, 'figure1.eps', 'epsc')
-%saveas(fig, 'figmatlab1.pdf') % 1 page complete
-%print(gcf, '-dpdf', 'figmatlab1.pdf');
+%saveas(fig, 'figmatlab1.pdf')             % 1 full page
+%print(gcf, '-dpdf', 'figmatlab1.pdf');    % 1 full page
 
-fig.PaperPositionMode = 'auto';
+warning('off', 'MATLAB:print:FigureTooLargeForPage'); % sometimes, the margins are too tight, but it is OK
+fig.PaperPositionMode = 'auto'; % export your figures at the same size as they are on the screen
 fig_pos = fig.PaperPosition;
-fig.PaperSize = [fig_pos(3) fig_pos(4)];
-print(fig,'figure1','-dpdf')
+fig.PaperSize = [fig_pos(3) fig_pos(4)]; % set papersize to figure size (otherwise it is a full page!)
+print(fig, 'figure1', '-dpdf')
