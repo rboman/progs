@@ -19,6 +19,13 @@ def main():
         'git@gitlab.uliege.be:R.Boman/CT.git', 
         'git@gitlab.uliege.be:R.Boman/math0024.git', 
         'git@gitlab.uliege.be:R.Boman/math0471_latex.git',
+        'git@gitlab.uliege.be:am-dept/MN2L/keygen.git',
+        'git@gitlab.uliege.be:am-dept/MN2L/MetaforSetup.git',
+        'git@gitlab.uliege.be:am-dept/MN2L/mumps-4.10.0.git',
+        'git@gitlab.uliege.be:am-dept/MN2L/mumps-5.1.2.git',
+        'git@gitlab.uliege.be:am-dept/MN2L/tetgen-1.4.3.git',
+        'git@gitlab.uliege.be:am-dept/MN2L/triangle-1.6.git',
+        'git@gitlab.uliege.be:UEE/Lagamine.git',
         # github/ulgltas
         'git@github.com:ulgltas/waves.git',
         'git@github.com:ulgltas/waves.wiki.git',
@@ -42,13 +49,7 @@ def main():
         'git@github.com:rboman/plot-applet.git',
         'git@github.com:rboman/travis-cpp.git',
         # blueberry
-        'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/keygen.git',
-        'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/MetaforSetup.git',
-        'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/mumps-4.10.0.git',
         'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/parasolid.git',
-        'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/tetgen-1.4.3.git',
-        'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/triangle-1.6.git',
-        'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/mumps-5.1.2.git'
             ]
 
     for rep in reps:

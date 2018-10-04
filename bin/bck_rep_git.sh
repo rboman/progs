@@ -25,8 +25,8 @@ function f_bitbucket()
 
 function f_gituliege()
 {  
-    git@bitbucket.com:$1/$2.git  # use SSH key
-    tar czf f_gituliege-$1-$2-$DATE.tar.gz $2
+    git@gitlab.uliege.be:$1/$2.git  # use SSH key
+    tar czf f_gituliege-${1//\//_}-$2-$DATE.tar.gz $2
     rm -rf $2
 }
 
@@ -38,12 +38,6 @@ function f_blueberry()
 }
 
 # deja dans l'archive blueberry....
-f_blueberry boman MetaforSetup
-f_blueberry boman keygen
-f_blueberry boman mumps-4.10.0
-f_blueberry boman mumps-5.1.2
-f_blueberry boman tetgen-1.4.3
-f_blueberry boman triangle-1.6
 f_blueberry boman parasolid
 
 # github perso
@@ -80,3 +74,12 @@ f_gituliege R.Boman mogador
 f_gituliege R.Boman CT
 f_gituliege R.Boman math0024
 f_gituliege R.Boman math0471_latex
+
+f_gituliege am-dept/MN2L keygen
+f_gituliege am-dept/MN2L MetaforSetup
+f_gituliege am-dept/MN2L mumps-4.10.0
+f_gituliege am-dept/MN2L mumps-5.1.2
+f_gituliege am-dept/MN2L tetgen-1.4.3
+f_gituliege am-dept/MN2L triangle-1.6
+
+f_gituliege UEE Lagamine.git 

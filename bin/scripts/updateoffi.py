@@ -124,14 +124,14 @@ def main(repos):
 
 if __name__ == "__main__":
     repos = []
-    repos.append(vrs.GITRepo('MetaforSetup', 'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/MetaforSetup.git'))
+    repos.append(vrs.GITRepo('MetaforSetup', 'git@gitlab.uliege.be:am-dept/MN2L/MetaforSetup.git'))
     repos.append(vrs.GITRepo('linuxbin', 'git@github.com:ulgltas/linuxbin.git'))        
     repos.append(vrs.SVNRepo('oo_meta', 'svn+ssh://boman@blueberry.ltas.ulg.ac.be/home/metafor/SVN/oo_meta/trunk'))
 
-    if 0:
+    if 1:
         repos.append(vrs.SVNRepo('oo_nda', 'svn+ssh://boman@blueberry.ltas.ulg.ac.be/home/metafor/SVN/oo_nda/trunk'))
         repos.append(vrs.GITRepo('parasolid', 'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/parasolid.git'))
-        repos.append(vrs.GITRepo('keygen', 'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/keygen.git'))
+        repos.append(vrs.GITRepo('keygen', 'git@gitlab.uliege.be:am-dept/MN2L/keygen.git'))
 
     main(repos)
     
