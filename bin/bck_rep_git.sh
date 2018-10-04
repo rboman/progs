@@ -1,6 +1,8 @@
 #!/bin/bash
 # make a backup of my git repos on github/gitlab/bitbucket/etc.
 
+set -e # stops bash if any command fails
+
 git config --global credential.helper "cache --timeout=3600"
 
 DATE=`date '+%Y-%m-%d'`
@@ -25,8 +27,8 @@ function f_bitbucket()
 
 function f_gituliege()
 {  
-    git@gitlab.uliege.be:$1/$2.git  # use SSH key
-    tar czf f_gituliege-${1//\//_}-$2-$DATE.tar.gz $2
+    git clone git@gitlab.uliege.be:$1/$2.git  # use SSH key
+    tar czf gituliege-${1//\//_}-$2-$DATE.tar.gz $2
     rm -rf $2
 }
 
@@ -36,6 +38,7 @@ function f_blueberry()
     tar czf blueberry-$1-$2-$DATE.tar.gz $2
     rm -rf $2
 }
+f_gituliege UEE Lagamine
 
 # deja dans l'archive blueberry....
 f_blueberry boman parasolid
@@ -82,4 +85,4 @@ f_gituliege am-dept/MN2L mumps-5.1.2
 f_gituliege am-dept/MN2L tetgen-1.4.3
 f_gituliege am-dept/MN2L triangle-1.6
 
-f_gituliege UEE Lagamine.git 
+f_gituliege UEE Lagamine
