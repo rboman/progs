@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
 import os, subprocess
+import pytools.versioning as vrs
+import pytools.utils as pyu
+    
+def main(destdir):
 
-def main():
-
-    destdir = '/hdd2/boman/Backups/repos'
+    
 
     if not os.path.isdir(destdir):
         raise Exception('destdir does not exist (%s)' % destdir)
@@ -57,6 +59,11 @@ def main():
         os.chdir(destdir) 
         # extract folder name       
         folder, ext = os.path.splitext(os.path.basename(rep))
+
+        repo = vrs.GITRepo(folder, rep)
+        repo.update()
+
+        """
         #print folder
         if os.path.isdir(folder):
             # git pull
@@ -72,6 +79,15 @@ def main():
             #print '**out =', out
             # 0 = ok
             # 128 = Could not read from remote repository.
+        """
 
 if __name__=='__main__':
-    main()
+
+    # maniere tres pourrie de recup l'argument (repertoire dans lequel on veut cloner)
+    # (=>reflechir pour faire mieux)
+    args = pyu.parseargs()
+    destdir = '/hdd2/boman/Backups/repos'
+    if len(args.file)>1:
+        destdir = args.file[-1]
+
+    main(destdir)
