@@ -4,13 +4,13 @@
 # this script converts *.desktop links (gnome desktop) to *.url files (windows) 
 #
 # examples:
-# link_sync.py /hdd2/boman/Dropbox/
+# bookmark_cleaner.py /hdd2/boman/Dropbox/
 #    simulation (nothing created/deleted) - counts bookmarks
-# link_sync.py --convert /hdd2/boman/Dropbox/
+# bookmark_cleaner.py --convert /hdd2/boman/Dropbox/
 #    convert .desktop (gnome links) to .url (internet shortcuts) [keep both files]
-# link_sync.py --convert --delete /hdd2/boman/Dropbox/
+# bookmark_cleaner.py --convert --delete /hdd2/boman/Dropbox/
 #    convert .desktop (gnome links) to .url (internet shortcuts) [delete .desktop]
-# link_sync.py --delete /hdd2/boman/Dropbox/
+# bookmark_cleaner.py --delete /hdd2/boman/Dropbox/
 #    delete .desktop when .url exists
 
 
