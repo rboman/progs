@@ -64,8 +64,8 @@ def guessSystem():
 def chooseCfg():
     guesses = guessSystem()
     #print guesses
-
-    avfiles = os.listdir('oo_meta/CMake')
+    print('current working dir=', os.getcwd())
+    avfiles = os.listdir(os.path.join('oo_meta','CMake'))
     #print avfiles
     cfiles=[]
     for g in guesses:
@@ -108,12 +108,12 @@ def main(repos, opts):
 
     if build_required:
 
-        cfg = chooseCfg()
-
         # update
         for rep in repos:
             rep.update()
         
+        cfg = chooseCfg() # requires oo_meta to be checked out!
+
         # clean build dir
         
         if os.path.isdir('oo_metaB'): 
@@ -129,24 +129,32 @@ def main(repos, opts):
 
         # cmake
 
+        cmd = ['cmake', '-C', os.path.join('..','oo_meta','CMake',cfg), os.path.join('..','oo_meta') ]
+        subprocess.call(cmd)
+        """
         if pu.isUnix():
             cmd='cmake -C ../oo_meta/CMake/%s ../oo_meta' %cfg
         else:
             cmd=r'cmake -C ..\oo_meta\CMake\%s ..\oo_meta' %cfg
         os.system(cmd)
-    
+        """
+
+
+
         # build
 
         if pu.isInstalled("BuildConsole") and os.path.isfile('Metafor.sln'):
             print("[using incredibuild]")
-            os.system('BuildConsole Metafor.sln /rebuild /cfg="Release|x64"')
+            cmd = ['BuildConsole', 'Metafor.sln', '/rebuild', '/cfg=Release|x64']
+            subprocess.call(cmd)
+            #os.system('BuildConsole Metafor.sln /rebuild /cfg="Release|x64"')
         else:
             ncores = multiprocessing.cpu_count()
             print("[using cmake --build] with %d core(s)" % ncores)
+            cmd = ['cmake', '--build', '.', '--config', 'Release']
             if pu.isUnix():
-                os.system('cmake --build . --config Release -- -j%d' % ncores)
-            else:
-                os.system('cmake --build . --config Release')
+                cmd.extend([ '--', '-j%d' % ncores])
+            subprocess.call(cmd)
 
 
 

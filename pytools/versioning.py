@@ -13,32 +13,6 @@ class Repo(object):
     def update(self):
         pass
 
-    def outdated(self):
-        "checks whether the working copy is outdated"
-
-        if not os.path.isdir(self.name):
-            return True
-        else:
-            pu.chDir(self.name, verb=False)
-
-        # git remote -v update (fetch everything)
-        cmd = ['git', 'remote', '-v', 'update']
-        with open(os.devnull, 'w') as FNULL:
-            status = subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
-        if status:
-            raise Exception('"%s" FAILED with error %d' % (cmd, status))
-        #print('status =', status)
-
-        # git status -uno  (check "Your branch is up to date") 
-        out = subprocess.check_output(['git', 'status', '-uno'])
-        out = out.decode()  # python 3 returns bytes
-        #print(out)
-        m = re.search(r'Your branch is up to date', out)
-        pu.chDir('..', verb=False)
-
-        return (m==None)
-
-
 class GITRepo(Repo):
     def __init__(self, name, repo):
         self.name = name
@@ -82,7 +56,35 @@ class GITRepo(Repo):
             status = subprocess.call(cmd, shell=True)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            pu.chDir('..')        
+            pu.chDir('..')  
+
+    def outdated(self):
+        "checks whether the working copy is outdated"
+
+        if not os.path.isdir(self.name):
+            return True
+        else:
+            os.chdir(self.name)
+
+        # git remote -v update (fetch everything)
+        cmd = ['git', 'remote', '-v', 'update']
+        if not pu.isUnix():
+            cmd = [r'C:\Program Files\Git\bin\sh.exe', '--login', '-c', ' '.join(cmd) ]
+        with open(os.devnull, 'w') as FNULL:
+            status = subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+        if status:
+            raise Exception('"%s" FAILED with error %d' % (cmd, status))
+       
+        # git status -uno  (check "Your branch is up to date") 
+        cmd = ['git', 'status', '-uno']
+        if not pu.isUnix():
+            cmd = [r'C:\Program Files\Git\bin\sh.exe', '--login', '-c', ' '.join(cmd) ]
+        out = subprocess.check_output(cmd)
+        out = out.decode()  # python 3 returns bytes
+        m = re.search(r'Your branch is up to date', out)
+        os.chdir('..')
+
+        return (m==None)
 
 
 class SVNRepo(Repo):
