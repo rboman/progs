@@ -24,10 +24,10 @@ def parseargs():
     return args
 
 
-def chDir(dirname):
+def chDir(dirname, verb=True):
     import os
     os.chdir(dirname)
-    print("[in %s]" % os.getcwd())
+    if verb: print("[in %s]" % os.getcwd())
 
 
 def isUnix():

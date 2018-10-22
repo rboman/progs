@@ -83,34 +83,60 @@ def chooseCfg():
     return cfiles[int(ii)-1]
 
 
-def main(repos):
+def main(repos, opts):
+
     # checkout/update everything
-    if 1:
+    build_required = False
+    for rep in repos:
+        outdated = rep.outdated()
+        print(rep.name, ": outdated =", outdated)
+        if outdated:
+            build_required = True
+
+    if not os.path.isdir('oo_metaB'):
+        print('oo_metaB folder is missing!')
+        build_required = True
+
+    if not build_required:
+        print('=> build is NOT required')
+        print('do you want to force the build (y/[n])?')
+        c = pu.getch()
+        if c=='y' or c=='Y':
+            build_required=True
+    else:
+        print('=> build is required')    
+
+    if build_required:
+
+        cfg = chooseCfg()
+
+        # update
         for rep in repos:
             rep.update()
-
-    cfg = chooseCfg()
-
-    # clean build dir
-    if 1:
-        print('removing build dir')
-        if os.path.isdir('oo_metaB'):
+        
+        # clean build dir
+        
+        if os.path.isdir('oo_metaB'): 
+            print('removing build dir')
+            # http://stackoverflow.com/questions/16373747/permission-denied-doing-os-mkdird-after-running-shutil-rmtreed-in-python   
             os.rename('oo_metaB','oo_metaB_trash') # avoid the failure of os.mkdir() is same name is used
             shutil.rmtree('oo_metaB_trash')
-        os.mkdir('oo_metaB') # could fail (access denied) on Windows: 
-        # http://stackoverflow.com/questions/16373747/permission-denied-doing-os-mkdird-after-running-shutil-rmtreed-in-python
-    
-    pu.chDir('oo_metaB')
-    
-    # make
-    if 1:
+
+        # create folder
+
+        os.mkdir('oo_metaB') # could fail (access denied) on Windows:
+        pu.chDir('oo_metaB')
+
+        # cmake
+
         if pu.isUnix():
             cmd='cmake -C ../oo_meta/CMake/%s ../oo_meta' %cfg
         else:
             cmd=r'cmake -C ..\oo_meta\CMake\%s ..\oo_meta' %cfg
         os.system(cmd)
-        
-    if 1:
+    
+        # build
+
         if pu.isInstalled("BuildConsole") and os.path.isfile('Metafor.sln'):
             print("[using incredibuild]")
             os.system('BuildConsole Metafor.sln /rebuild /cfg="Release|x64"')
@@ -122,16 +148,27 @@ def main(repos):
             else:
                 os.system('cmake --build . --config Release')
 
+
+
 if __name__ == "__main__":
+
+    opts = {
+        'build_type' : {
+            'type': 'combo',
+            'value': 'full',
+            'values': ['full', 'student']
+        },
+    }
+
     repos = []
     repos.append(vrs.GITRepo('MetaforSetup', 'git@gitlab.uliege.be:am-dept/MN2L/MetaforSetup.git'))
     repos.append(vrs.GITRepo('linuxbin', 'git@github.com:ulgltas/linuxbin.git'))        
     repos.append(vrs.SVNRepo('oo_meta', 'svn+ssh://boman@blueberry.ltas.ulg.ac.be/home/metafor/SVN/oo_meta/trunk'))
 
-    if 1:
+    if opts['build_type']['value']=='full':
         repos.append(vrs.SVNRepo('oo_nda', 'svn+ssh://boman@blueberry.ltas.ulg.ac.be/home/metafor/SVN/oo_nda/trunk'))
         repos.append(vrs.GITRepo('parasolid', 'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/parasolid.git'))
         repos.append(vrs.GITRepo('keygen', 'git@gitlab.uliege.be:am-dept/MN2L/keygen.git'))
 
-    main(repos)
+    main(repos, opts)
     
