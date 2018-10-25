@@ -6,11 +6,8 @@ import pytools.utils as pyu
     
 def main(destdir):
 
-    
-
     if not os.path.isdir(destdir):
         raise Exception('destdir does not exist (%s)' % destdir)
-
 
     reps = [
         # gitlab uliege
@@ -27,6 +24,7 @@ def main(destdir):
         'git@gitlab.uliege.be:am-dept/MN2L/mumps-5.1.2.git',
         'git@gitlab.uliege.be:am-dept/MN2L/tetgen-1.4.3.git',
         'git@gitlab.uliege.be:am-dept/MN2L/triangle-1.6.git',
+        'git@gitlab.uliege.be:am-dept/MN2L/LagamineAPI.git',
         'git@gitlab.uliege.be:UEE/Lagamine.git',
         # github/ulgltas
         'git@github.com:ulgltas/waves.git',
