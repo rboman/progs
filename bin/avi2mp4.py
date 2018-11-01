@@ -23,8 +23,9 @@ def convert(f):
     cmd.extend(['-c:v', 'libx264'])
     cmd.extend(['-crf', '%d' % quality])
     cmd.extend(['-pix_fmt', 'yuv420p'])
-    cmd.extend(['-vf', 'crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0' ])
-    cmd.extend(['-vf', 'fps=%d'% fps])    
+    # chain of 2 filters (crop & fps) delimited by a comma
+    cmd.extend(['-vf', '[in]crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0,fps=%d[out]'% fps ])
+    #cmd.extend(['-vf', 'fps=%d'% fps])    
     outfile = name+".mp4"
     cmd.append(outfile)
     print cmd    
