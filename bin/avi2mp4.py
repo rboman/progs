@@ -12,9 +12,9 @@ f:\local\ffmpeg\bin\ffmpeg.exe -i animation_trapez.avi -vf fps=30 -crf 18 -pix_f
 
 def convert(f):
     name,ext = os.path.splitext(f)
-    if ext.lower()!='.avi':
-        print 'ignoring %s (not .avi)' % f
-        return
+    #if ext.lower()!='.avi':
+    #    print 'ignoring %s (not .avi)' % f
+    #    return
     
     cmd = []
     cmd.append(exeffmpeg)    
