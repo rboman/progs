@@ -1,11 +1,22 @@
 #! /usr/bin/env python
 # -*- coding: latin-1; -*-
+# $Id: generalTools.py 1574 2012-03-06 13:05:34Z mengoni $
+# Vinciane d'Otreppe
 
 # vtk functions to load & save XML VTK and RAW images, cast images
 
 
 import vtk
 import sys, os
+    
+def setWorkspacePath(path):
+    import os
+    workspacePath = os.path.abspath(path)
+    if not os.path.isdir(os.path.abspath(path+'/..')):
+        os.mkdir(os.path.abspath(path+'/..')) 
+    if not os.path.isdir(workspacePath):
+        os.mkdir(workspacePath) 
+    os.chdir(workspacePath)
     
 def castImage(image, coding='uchar'):
     caster = vtk.vtkImageCast()
@@ -48,6 +59,90 @@ def convert16to8bits(name16, name8, extent=(0,255,0,255,0,59)):
     value = (typeDataOut,)+value
     outfile.write(struct.pack(*value))
     outfile.close()
+    
+def genisoMeshToPolyData(mesh):
+    '''
+    Transform mesh resulting from geniso to vtk polydata
+    '''
+    
+    import vtk
+    polydata = vtk.vtkPolyData()
+    points   = vtk.vtkPoints()
+    polys    = vtk.vtkCellArray()
+
+    nodeNearestVolume = vtk.vtkIntArray()
+    nodeNearestVolume.SetName("nodeNearestVolume");
+    nodeNearestVolume.SetNumberOfValues(len(mesh.getNodes()));
+
+    nodeFix = vtk.vtkIntArray()
+    nodeFix.SetName("nodeFix");
+    nodeFix.SetNumberOfValues(len(mesh.getNodes()));
+
+    nodeInterf = vtk.vtkIntArray()
+    nodeInterf.SetName("nodeInterf");
+    nodeInterf.SetNumberOfValues(len(mesh.getNodes()));
+
+    nodeLabels = vtk.vtkIntArray()
+    nodeLabels.SetName("nodeLabels");
+    nodeLabels.SetNumberOfValues(len(mesh.getNodes()));
+    
+    approxErrorArray = vtk.vtkDoubleArray();
+    approxErrorArray.SetName("nodeApproxError");
+    approxErrorArray.SetNumberOfValues(len(mesh.getNodes()));
+    
+    rArray = vtk.vtkDoubleArray();
+    rArray.SetName("nodeR");
+    rArray.SetNumberOfValues(len(mesh.getNodes()));
+       
+    for i,n in enumerate(mesh.getNodes()):
+        points.InsertPoint(i, n.getPos()[0], n.getPos()[1], n.getPos()[2])
+        try:
+            nodeNearestVolume.InsertValue(i, int(n.getSurfaceId()))
+        except:
+            nodeNearestVolume.InsertValue(i, -1) 
+        try:
+            nodeFix.InsertValue(i, int(n.isFixed()))
+        except:
+            nodeFix.InsertValue(i, 0) 
+        try:
+            nodeInterf.InsertValue(i, int(n.isInterf()))
+        except:
+            nodeInterf.InsertValue(i, 0) 
+        try:
+            nodeLabels.InsertValue(i, int(n.getLabel()))
+        except:
+            nodeLabels.InsertValue(i, 10) 
+        try:
+            if (n.getNearestDistVal() != -1000):
+                approxErrorArray.InsertValue(i,double(n.getNearestDistVal()))
+            else:
+                approxErrorArray.InsertValue(i,0)
+        except:
+            approxErrorArray.InsertValue(i,0);
+        try:  
+            if (n.getR() >= 0):
+                rArray.InsertValue(i,double(n.getR()));
+            else:
+                rArray.InsertValue(i,0);  
+                
+        except: 
+            rArray.InsertValue(i,0);            
+                    
+    for i,v in enumerate(mesh.getCells()):
+        polys.InsertNextCell(3)
+        polys.InsertCellPoint(v.getNodes()[0].getNo()-1)
+        polys.InsertCellPoint(v.getNodes()[1].getNo()-1)
+        polys.InsertCellPoint(v.getNodes()[2].getNo()-1)
+                    
+    polydata.SetPoints(points)
+    polydata.SetPolys(polys)
+    polydata.GetPointData().AddArray(nodeNearestVolume)
+    polydata.GetPointData().AddArray(nodeFix)
+    polydata.GetPointData().AddArray(nodeInterf)
+    polydata.GetPointData().AddArray(nodeLabels)
+    polydata.GetPointData().AddArray(approxErrorArray)
+    polydata.GetPointData().AddArray(rArray)
+    return polydata   
     
 def loadRawImage(name, extent=(0,255,0,255,0,59), spacing=(1,1,1), coding='uchar',byteorder='little'):
     """
@@ -176,6 +271,11 @@ def loadNRRDImage(filename):
         reader.SetDataScalarTypeToDouble()
     reader.Update()
     im = reader.GetOutput()
+#    if (space == "left-posterior-superior") or (space == "LPS"):
+#        im = imagingTools.permute(im,0,2,1) 
+#        im = imagingTools.flipImage(im,2) 
+#        #im = imagingTools.flipImage(im,0) 
+#        im = imagingTools.flipImage(im,1) 
     return im
     
 def saveTiffImage(name, image, coding='uchar'):
@@ -472,6 +572,107 @@ def createBoxWidget(image, iren):
     selectedOutlineProperty.SetAmbientColor(1, 0, 0)
     selectedOutlineProperty.SetLineWidth(3)
     return boxWidget
+
+def vtk2tetgen(polydata, filename='out.poly', arrayName = False, regionSeeds = [], regionVolMax = [], holeSeeds = [], regionLabels = []):
+#
+#    ex. nbreg = 2
+#        regionSeeds = [ [point1x,point1y,point1z] [point2x,point2y, point2z]] points situés dans chacune des régions
+#        regionVolmax = [20,30] volume max à imposer à la région
+#
+    file = open(filename,'w')
+    print 'regionseeds',regionSeeds
+    print 'regionVolmax',regionVolMax
+    print 'holeseeds',holeSeeds
+    
+    nbnod = polydata.GetNumberOfPoints()
+    nbelm = polydata.GetNumberOfCells()
+    nbreg = len(regionSeeds)
+    nbholes = len(holeSeeds)
+    
+    print 'writing',nbnod,'nodes and',nbelm,'elements'
+    file.write("# surface mesh exported by vtk2tetgen: geniso-generalTools\n")
+    file.write("\n# points\n")
+    
+    if polydata.GetPointData().GetNumberOfArrays() != 0:
+        file.write("%d 3 1 1\n" % (nbnod)) 
+        nodeArray2 = polydata.GetPointData().GetArray(arrayName)
+        for i in range(0,nbnod):
+            line=polydata.GetPoints().GetPoint(i)
+            file.write("%d %e %e %e %d\n" % (i+1, float(line[0]), float(line[1]), float(line[2]), nodeArray2.GetValue(i)+1)) # +1 car renumerotation 1 - nnod
+    else:
+        file.write("%d 3 0 1\n" % (nbnod)) # 1 bound marker=99
+        for i in range(0,nbnod):
+            line=polydata.GetPoints().GetPoint(i)
+            file.write("%d %e %e %e 99\n" % (i+1, float(line[0]), float(line[1]), float(line[2])))
+    file.write("\n# faces\n")
+    file.write("%d 1\n" % (nbelm))
+    for i in range(0,nbelm):
+        cell=polydata.GetCell(i)
+        if cell.GetNumberOfPoints()!=3:
+            print "bad elem (%d nodes)" % cell.GetNumberOfPoints()
+            file.close()
+            sys.exit()
+        n1=cell.GetPointId(0)+1
+        n2=cell.GetPointId(1)+1
+        n3=cell.GetPointId(2)+1
+        file.write("1 0 1\n3 %d %d %d 88\n" % (n1, n2, n3))
+        
+    if nbholes == 0:
+        file.write("\n# holes\n0\n")
+    else:
+        file.write("\n# holes\n")
+        file.write("%d\n" % (nbholes))
+        for i in range(nbholes):
+            file.write("%d %e %e %e\n" %(i+1,holeSeeds[i][0],holeSeeds[i][1],holeSeeds[i][2]))
+    
+    if nbreg == 0:
+        file.write("\n# regions\n0\n")
+    else:
+        file.write("\n# regions\n")
+        file.write("%d\n" % (nbreg))
+        for i in range(nbreg):
+            if nbreg == len(regionLabels):
+                file.write("%d %e %e %e %d %e\n" %(i+1,regionSeeds[i][0],regionSeeds[i][1],regionSeeds[i][2],regionLabels[i],regionVolMax[i]))
+            else:
+                file.write("%d %e %e %e %d %e\n" %(i+1,regionSeeds[i][0],regionSeeds[i][1],regionSeeds[i][2],i+1,regionVolMax[i]))
+    file.close()
+
+def vtk2tetgenMarkingBoundaryNodes(polydata, box, marker = 1, filename='out.poly'):
+    '''
+    Set Boundary marker to lower mesh nodes -> nodes to which boundary conditions will be applied in Metafor
+    box = [xmin,xmax,ymin,ymax,zmin,zmax] -> nodes in this box are given marker value; others marker == 99
+    '''
+    file = open(filename,'w')
+
+    nbnod = polydata.GetNumberOfPoints()
+    nbelm = polydata.GetNumberOfCells()
+    print 'writing',nbnod,'nodes and',nbelm,'elements'
+    file.write("# surface mesh exported by vtk2tetgen\n")
+    file.write("\n# points\n")
+    file.write("%d 3 0 1\n" % (nbnod)) # 1 bound marker=99
+    for i in range(0,nbnod):
+        line=polydata.GetPoints().GetPoint(i)
+        x,y,z = float(line[0]), float(line[1]), float(line[2])
+        if ((x>=box[0])and(x<=box[1])and(y>=box[2])and(y<=box[3])and(z>=box[4])and(z<=box[5])):
+            file.write("%d %e %e %e %d\n" % (i+1, x, y, z, marker))
+        else:
+            file.write("%d %e %e %e 99\n" % (i+1, x, y, z))
+    file.write("\n# faces\n")
+    file.write("%d 1\n" % (nbelm))
+    for i in range(0,nbelm):
+        cell=polydata.GetCell(i)
+        if cell.GetNumberOfPoints()!=3:
+            print "bad elem (%d nodes)" % cell.GetNumberOfPoints()
+            file.close()
+            sys.exit()
+        n1=cell.GetPointId(0)+1
+        n2=cell.GetPointId(1)+1
+        n3=cell.GetPointId(2)+1
+        file.write("1 0 1\n3 %d %d %d 88\n" % (n1, n2, n3))
+        
+    file.write("\n# holes\n0\n")
+    file.write("\n# regions\n0\n")
+    file.close()
            
 def vtk2gmsh(polydata, filename='out.geo'):
     file = open(filename,'w')
@@ -809,3 +1010,79 @@ def printOneLineOfData(filename, slice=30, line=128, extent=(0,255,0,255,0,59), 
         print value,
         start=start+sizIn
     print ''
+
+def vtkImageDataToCpp(vtkImageData):
+    if not vtkImageData.IsA("vtkImageData"):
+        print 'ERROR - Not a vtkImageData',vtkImageData
+    else: 
+        # obtain the address string
+        addr_str = vtkImageData.GetAddressAsString('vtkImageData')
+        # remove prefix addr= and convert it to a pyhton integer. 
+        # note RB: !! python est incapable de recup une adresse >2^32 (ULONG_MAX)
+        #             => on passe une string et on effectue la conversion en C++
+        return str(int(addr_str[5:],16))
+
+def vtkImplicitFunctionToCpp(vtkImplicitFunction):
+    if not vtkImplicitFunction.IsA("vtkImplicitFunction"):
+        print 'ERROR - Not a vtkImageData',vtkImageData
+    else: 
+        addr_str = vtkImplicitFunction.GetAddressAsString('vtkImplicitFunction') 
+        return str(int( addr_str[5:],16 ))
+
+def ugridToCpp(ugrid):
+    if not ugrid.IsA("vtkUnstructuredGrid"):
+        print 'ERROR - Not a vtkUnstructuredGrid',ugrid
+    else: 
+        addr_str = ugrid.GetAddressAsString('vtkUnstructuredGrid')
+        return str(int( addr_str[5:],16 ))
+        
+def polydataToCpp(poly): # doesnt work on Linux64 , why ??  (j'ai corrigé, ca marche - voir vtkImageDataToCpp - RoBo)
+    if not poly.IsA('vtkPolyData'):
+        print 'ERROR - Not a vtkPolyData',poly
+    else: 
+        addr_str = poly.GetAddressAsString('vtkPolyData')
+        return str(int( addr_str[5:],16 ))
+        
+def vtkImageDataFromCpp(vtkImageDataSwigPtr):
+ # ok sous win32 mais nok sinon
+    swigPtr = str(vtkImageDataSwigPtr)
+    a = len(swigPtr) - len('vtkImageData')
+    if swigPtr[a:] != 'vtkImageData':        
+        print 'ERROR - Not a vtkImageData pointer',vtkImageDataSwigPtr
+    else:
+        cppPtr = swigPtr[0]+swigPtr[7:9]+swigPtr[5:7]+swigPtr[3:5]+swigPtr[1:3]+swigPtr[9:]
+        image = vtk.vtkImageData(cppPtr)
+        return image
+
+def ugridFromCpp(ugridSwigPtr):
+ # ok sous win32 mais nok sinon
+    swigPtr = str(ugridSwigPtr)
+    a = len(swigPtr) - len('vtkUnstructuredGrid')
+    if swigPtr[a:] != 'vtkUnstructuredGrid':        
+        print 'ERROR - Not a vtkUnstructuredGrid pointer',ugridSwigPtr
+    else:
+        cppPtr = swigPtr[0]+swigPtr[7:9]+swigPtr[5:7]+swigPtr[3:5]+swigPtr[1:3]+swigPtr[9:]
+        image = vtk.vtkUnstructuredGrid(cppPtr)
+        return image
+        
+def polydataFromCpp(polySwigPtr):
+ # ok sous win32 mais nok sinon
+    swigPtr = str(polySwigPtr)
+    a = len(swigPtr) - len('vtkPolyData')
+    if swigPtr[a:] != 'vtkPolyData':        
+        print 'ERROR - Not a vtkPolyData pointer',polySwigPtr
+    else:
+        cppPtr = swigPtr[0]+swigPtr[7:9]+swigPtr[5:7]+swigPtr[3:5]+swigPtr[1:3]+swigPtr[9:]
+        image = vtk.vtkPolyData(cppPtr)
+        return image
+        
+def openworkspaceAndSaveViews(dirname,polyname,eraseExistingViews):
+    # parcourir dir, ouvrir tous les polyname trouvés et faire des printscreens
+    import renderingToolsQt
+    for root, dirs, files in os.walk(dirname):
+        for name in files:
+            if name == polyname:
+                file = os.path.join(root,name)
+                poly = loadPolyDataXML(file)
+                name = os.path.splitext(name)[0]
+                renderingToolsQt.saveView(poly,root,name,eraseExistingViews)

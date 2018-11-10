@@ -7,6 +7,7 @@
 
 import vtk
 import generalTools
+import meshingTools
     
 def displaySlice(image, slice=30, window=255, level=127):
     viewer = vtk.vtkImageViewer2() # permet de zoomer dans l'image
@@ -20,7 +21,7 @@ def displaySlice(image, slice=30, window=255, level=127):
     viewer.SetupInteractor(interact)
     interact.Initialize()
     interact.Start()    
-              
+
 def displayPolyAnd3Planes(poly, image, title = 'Polydata and 3 Planes'):
     """
     display a poly and 3 planes
@@ -32,7 +33,7 @@ def displayPolyAnd3Planes(poly, image, title = 'Polydata and 3 Planes'):
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
     actor.GetProperty().SetRepresentationToWireframe()
-    actor.GetProperty().SetColor(0,0,0)
+    actor.GetProperty().SetColor(0,0,0) #RED
     
     ren= vtk.vtkRenderer()
     ren.AddActor(actor)
@@ -61,6 +62,80 @@ def displayPolyAnd3Planes(poly, image, title = 'Polydata and 3 Planes'):
     axes.SetViewProp(outline)
     ren.AddActor(axes)
 
+    ren.ResetCamera()
+    cam1 = ren.GetActiveCamera()
+    cam1.Elevation(-90)
+    cam1.SetViewUp(0, 0, 1)
+    cam1.Azimuth(45)
+    ren.ResetCameraClippingRange()
+        
+    iren.Initialize()
+    renwin.Render()
+    iren.Start()
+    
+def displayPolyAndDataLabels(poly, title = 'Polydata'):
+    """
+    display a poly and 3 planes
+    """
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInput(poly)
+
+    actor1 = vtk.vtkActor()
+    actor1.SetMapper(mapper)
+    actor1.GetProperty().SetColor(1,0,0) #RED
+    actor1.GetProperty().SetOpacity(1.0)
+
+    mapper2 = vtk.vtkPolyDataMapper()
+    mapper2.SetResolveCoincidentTopologyToPolygonOffset()
+    mapper2.ScalarVisibilityOff()
+    mapper2.SetInput(poly)
+        
+    actor2 = vtk.vtkActor()
+    actor2.SetMapper(mapper2)
+    actor2.GetProperty().SetRepresentationToWireframe()
+    actor2.GetProperty().SetColor(1,1,1)
+    actor2.GetProperty().SetAmbient(1.0)
+    actor2.GetProperty().SetDiffuse(0.0)
+    actor2.GetProperty().SetSpecular(0.0)
+
+    ids = vtk.vtkIdFilter()
+    ids.SetInput(poly)
+    ids.PointIdsOn()
+    ids.CellIdsOn()
+    ids.FieldDataOn()
+
+    ren= vtk.vtkRenderer()
+    ren.AddActor(actor1)
+    ren.AddActor(actor2)
+    ren.SetBackground(1,1,1)
+    
+    # Create labels for points
+    visPts = vtk.vtkSelectVisiblePoints()
+    visPts.SetInputConnection(ids.GetOutputPort())
+    visPts.SetRenderer(ren)
+    
+    # Create the mapper to display the point ids.  Specify the format to
+    # use for the labels.  Also create the associated actor.
+    ldm = vtk.vtkLabeledDataMapper()
+    ldm.GetLabelTextProperty().ShadowOff()
+    ldm.GetLabelTextProperty().SetColor(0,0,0)
+    # ldm.SetLabelFormat("%g")
+    ldm.SetInputConnection(visPts.GetOutputPort())
+    ldm.SetLabelModeToLabelFieldData()
+    pointLabels = vtk.vtkActor2D()
+    pointLabels.SetMapper(ldm)
+    ren.AddActor2D(pointLabels)
+
+    renwin = vtk.vtkRenderWindow()
+    renwin.AddRenderer(ren)
+    renwin.SetSize( 700, 700 )
+    renwin.SetWindowName(title)
+    
+    iren = vtk.vtkRenderWindowInteractor()
+    iren.SetRenderWindow(renwin)
+    style = vtk.vtkInteractorStyleTrackballCamera()
+    iren.SetInteractorStyle(style)
+    
     ren.ResetCamera()
     cam1 = ren.GetActiveCamera()
     cam1.Elevation(-90)
@@ -115,7 +190,125 @@ def view3Planes(image, title = 'Image and 3 Planes'):
     iren.Initialize()
     renwin.Render()
     iren.Start() 
-   
+
+def getDistancesBetweenTwoPolysScalarsLara(poly1, poly2, axis = 'a', title = 'Distance between two polydatas' ):
+    """
+    display poly1 and distance values between points of poly2 and poly1
+    axis = {'a','x','y','z'}    'a' = euclidean distance between two points; 'x' = x axis, 'y'= y axis, 'z' = z axis
+    """
+    import math
+    darray = vtk.vtkDoubleArray()
+    darray.SetNumberOfComponents(1)
+    nbpt = poly1.GetPoints().GetNumberOfPoints()
+    darray.SetNumberOfValues(nbpt)
+    darray.SetName('distance between polys')
+    if nbpt != poly2.GetPoints().GetNumberOfPoints():
+        print ' ERROR in renderingTools.displayDistancesBetweenTwoPolys() : poly1 and poly must have same number of nodes '
+ 
+    for ii in range(0, nbpt):
+        pointIni = poly1.GetPoint(ii)
+        pointFin = poly2.GetPoint(ii)
+        dispX = (pointIni[0] - pointFin[0])
+        dispY = (pointIni[1] - pointFin[1])
+        dispZ = (pointIni[2] - pointFin[2])
+        if axis == 'x':
+            displ = dispX
+        elif axis == 'y':
+            displ = dispY
+        elif axis == 'z':
+            displ = dispZ
+        elif axis == 'a':
+            displ = math.sqrt(dispX*dispX+dispY*dispY+dispZ*dispZ)
+        darray.InsertValue(ii,displ)
+        
+    return darray
+
+def setDistancesBetweenTwoPolysScalars(refPoly, poly2):
+    """
+    display poly1 and distance values between points of poly2 and poly1
+    axis = {'a','x','y','z'}    'a' = euclidean distance between two points; 'x' = x axis, 'y'= y axis, 'z' = z axis
+    """
+    import math
+    
+    # double array to store distances
+    darray = vtk.vtkDoubleArray()
+    darray.SetNumberOfComponents(1)
+    nbpt = refPoly.GetPoints().GetNumberOfPoints()
+    darray.SetNumberOfValues(nbpt)
+ 
+    # cellLocator needed to locate nearest point on the reference polydata: vtkCellLocator.FindClosestPoint() non dispo en Python
+#    cellId=0;
+#    subId=0;
+#    dist=0.0;
+#    clospoint=[0,0,0]
+#    m=[0,0,0] 
+#    cellLocator = vtk.vtkCellLocator();
+#    cellLocator.SetDataSet(poly2);
+#    cellLocator.BuildLocator();
+
+    for cellId in range(refPoly.GetNumberOfCells()):
+        cell = refPoly.GetCell(cellId)
+        center = meshingTools.computeCenter(cell)
+        # Find closest point on the surface defined by the reference data
+        #m[0] = center[0]; m[1] = center[1]; m[2] = center[2];
+        #cellLocator.FindClosestPoint(m, clospoint, cellId, subId, dist); 
+        dist = 0
+        for cellId2 in range(poly2.GetNumberOfCells()):
+            cell2 = refPoly.GetCell(cellId2)
+            center2 = meshingTools.computeCenter(cell2)
+            d = (center[0]-center2[0])*(center[0]-center2[0])+(center[1]-center2[1])*(center[1]-center2[1])+(center[2]-center2[2])*(center[2]-center2[2])
+            if cellId2 == 0:
+                dist = d
+            if d < dist:
+                dist = d
+        darray.InsertValue(cellId,math.sqrt(dist))
+        
+    refPoly.GetCellData().AddArray(darray)
+    return darray
+
+def displayDistancesBetweenTwoPolysVectors(poly1, poly2, title = 'Distance between two polydatas' ):
+    """
+    display poly1 and distance between points of poly2 and poly1 (represented by vectors)
+    """
+    # actor #1 : poly1
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInput(poly1)
+
+    actor = vtk.vtkActor()
+    actor.SetMapper( mapper )
+    actor.GetProperty().SetColor(1,0,0)
+
+    # actor#2 : hedgehog
+    poly = poly1  # poly = duplicate(poly1)
+    
+    darray = vtk.vtkDoubleArray()
+    darray.SetNumberOfComponents(3)
+    nbpt = poly.GetPoints().GetNumberOfPoints()
+    darray.SetNumberOfValues(nbpt)
+
+    for k in range(0,nbpt):
+        point1 = poly.GetPoint(k)
+        point2 = poly2.GetPoint(k)
+        DiX = point2[0] - point1[0]
+        DiY = point2[1] - point1[1]
+        DiZ = point2[2] - point1[2]
+        darray.InsertTuple3(k, DiX,DiY,DiZ)
+
+    poly.GetPointData().SetVectors(darray)
+
+    hedgehog = vtk.vtkHedgeHog()
+    hedgehog.SetInput(poly)
+    hedgehog.SetScaleFactor(1.0)
+    hedgehog.SetVectorModeToUseVector()
+
+    hhMapper = vtk.vtkPolyDataMapper()
+    hhMapper.SetInput(hedgehog.GetOutput())
+    hhActor = vtk.vtkActor()
+    hhActor.GetProperty().SetColor(0,1,0)
+    hhActor.SetMapper(hhMapper)
+    
+    display3D( (actor, hhActor), title)   
+    
 def display2UG(UG1, UG2, title = 'Two Unstructured Grids'):
     """
     display 2 data sets (unstructured grid)
@@ -161,7 +354,51 @@ def display3D(actors, title):
 
     iren.Initialize()
     iren.Start()
+    
+def displaySliceColors(image,sliceNo):
+    """
+    display 1 slice image in colors
+    par rapport a la GUI, on a la couleur, et possibilite de faire un zoom
+    (par contre, c'est pour 2D seulement)
+    """
+    
+    lookup=vtk.vtkColorTransferFunction()
+    lookup.AddRGBPoint(image.GetScalarRange()[0],0,0,0)
+    lookup.AddRGBPoint(image.GetScalarRange()[1],0.0,1.0,0)
+    lookup.AddRGBPoint(image.GetScalarRange()[1]*2,1.0,0.0,0)
+       
+    viewer = vtk.vtkImageViewer2()
+    viewer.SetInput(image)
+    viewer.SetSlice (sliceNo)
+    viewer.GetWindowLevel().SetLookupTable(lookup)
+    
+    iren = vtk.vtkRenderWindowInteractor()
+    viewer.SetupInteractor(iren)
+    viewer.Render()
+    
+    iren.Initialize()
+    iren.Start() 
+    
+def displaySliceContours(slice,numberOfContours=5, title='displaySliceContours'):
+    '''
+    Display slice and isovalue-contours
+    '''
+    imActor = vtk.vtkImageActor()
+    imActor.SetInput(generalTools.castImage(slice,'uchar'))
 
+    skinExtractor = vtk.vtkContourFilter()
+    skinExtractor.SetInput(slice)
+    skinExtractor.GenerateValues(numberOfContours,slice.GetScalarRange())
+    contour = skinExtractor.GetOutput()
+    mapper = vtk.vtkPolyDataMapper()
+    mapper.SetInput(contour)
+    mapper.ScalarVisibilityOff()
+    actor = vtk.vtkActor()
+    actor.SetMapper(mapper)
+    actor.GetProperty().SetColor(1,0,0)
+    
+    display3D((actor,imActor),title)
+    
 def create3Planes(image):
     xMin, xMax, yMin, yMax, zMin, zMax = image.GetWholeExtent()
 
@@ -364,25 +601,108 @@ def displayVolume(image,title='volume'):
     iren.Initialize()
     iren.Start()
 
-def displayPoints(vtkpoints):
-    polydata = vtk.vtkPolyData()
-    polydata.SetPoints(vtkpoints);
-    mask = vtk.vtkMaskPoints()
-    mask.SetInput(polydata)
-    mask.GenerateVerticesOn()
-    poly = mask.GetOutput()
-    import gui2
-    gui = gui2.MeshViewer()
-    gui.add(gui2.SurfMesh(poly,name,"black"))
-    gui.start()    
+def tetviewFromFile(fname = "tmp.1.ele"):
+    import os
+    cmd = "tetview.exe %s" % (fname);
+    #os.system(cmd)
+    import subprocess
+    subprocess.call(cmd, shell=True)
+    
+    
+def displaySliceContours(image, th=None, res = 1):
+    '''
+    display contours of slices of image; res == 1 -> all contours are displayed, image must be a segmeneted image
+    '''
+    import imagingTools
+    aRenderer = vtk.vtkRenderer()
+    aRenderer.SetBackground(1.0, 1.0, 1.0) 
+    
+    i = 0
+    if th == None:
+        th = image.GetScalarRange()[1]
+    while i < image.GetDimensions()[2] :
+        slice = imagingTools.extract1Slice(image,i)
+        skinExtractor = vtk.vtkContourFilter()
+        skinExtractor.SetInput(slice)
+        skinExtractor.SetValue(0,th)
+        contour = skinExtractor.GetOutput()
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInput(contour)
+        mapper.ScalarVisibilityOff()
+        actor = vtk.vtkActor()
+        actor.SetMapper(mapper)
+        actor.GetProperty().SetColor(0,0,1)
+        actor.GetProperty().SetLineWidth(2.0)
+        aRenderer.AddActor(actor)
+        i += res
+
+    aRenderer.ResetCamera()
+    cam1 = aRenderer.GetActiveCamera()
+    cam1.Elevation(-85)
+    cam1.SetViewUp(0, 0, 1)
+    cam1.Azimuth(45)         
+    renWin = vtk.vtkRenderWindow()
+    renWin.SetSize(700, 700)    
+    renWin.AddRenderer(aRenderer)
+    renWin.Render()
+    renWin.SetWindowName("Slice Contours")
+        
+    iren = vtk.vtkRenderWindowInteractor()
+    iren.SetRenderWindow(renWin)
+
+    iren.Initialize()
+    iren.Start()
+
+def displaySliceContours2(image, labels, res = 1):
+    '''
+    display contours of slices of image; res == 1 -> all contours are displayed, image must be a segmeneted image
+    '''
+    import imagingTools
+    aRenderer = vtk.vtkRenderer()
+    aRenderer.SetBackground(1.0, 1.0, 1.0) 
+    
+    i = 0
+    while i < image.GetDimensions()[2] :
+        slice = imagingTools.extract1Slice(image,i)
+        
+        for j in labels:
+            skinExtractor = vtk.vtkContourFilter()
+            skinExtractor.SetInput(slice)
+            skinExtractor.SetValue(1,j)
+            contour = skinExtractor.GetOutput()
+            mapper = vtk.vtkPolyDataMapper()
+            mapper.SetInput(contour)
+            mapper.ScalarVisibilityOff()    
+            actor = vtk.vtkActor()
+            actor.SetMapper(mapper)
+            actor.GetProperty().SetColor(0,0,1)
+            actor.GetProperty().SetLineWidth(2.5)
+            aRenderer.AddActor(actor)
+            i += res
+
+    aRenderer.ResetCamera()
+    cam1 = aRenderer.GetActiveCamera()
+    cam1.Elevation(-85)
+    cam1.SetViewUp(0, 0, 1)
+    cam1.Azimuth(45)         
+    renWin = vtk.vtkRenderWindow()
+    renWin.SetSize(700, 700)    
+    renWin.AddRenderer(aRenderer)
+    renWin.Render()
+    renWin.SetWindowName("Slice Contours")
+        
+    iren = vtk.vtkRenderWindowInteractor()
+    iren.SetRenderWindow(renWin)
+
+    iren.Initialize()
+    iren.Start()
+
+
 
 def createVolume(image):
     '''
-    create volume of image
+    create volume of image - image must be a typical irm image with gray values comprised between 0 and 255
     '''
-    sMin,sMax = image.GetScalarRange()
-    def rescaleToGV(i):
-        return sMin+(sMax-sMin)/255*i
     # Create transfer mapping scalar value to opacity
     opacityTransferFunction = vtk.vtkPiecewiseFunction()
     opacityTransferFunction.AddPoint(0, 0.0)

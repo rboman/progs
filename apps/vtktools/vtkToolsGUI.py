@@ -1,8 +1,20 @@
 #! /usr/bin/env python
 # -*- coding: latin-1; -*-
+# $Id: vtkToolsGUI.py 1709 2013-03-11 14:49:09Z papeleux $
+# 28/janv./2009 14:48
 #
-# vtkToolsGUI - VTK/Tk/Python interface by RoBo - modified by MM
-   
+# vtkToolsGUI - VTK/Tk/Python interface by RoBo - modified by vidot
+# - modified by MM to create a distributable exe independent of Metafor
+
+createExe = True
+
+if __name__=="__main__" and not createExe: 
+    import os,sys
+    rcfile = os.environ.get('PYTHONSTARTUP')
+    if  os.path.isfile(rcfile):
+        sys.path.append(os.path.dirname(rcfile))
+        execfile(rcfile)
+
 import vtk
 from vtk.tk.vtkTkRenderWidget import *
 from vtk.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor
@@ -14,6 +26,8 @@ import Pmw
 import os, os.path
 import renderingTools
 import generalTools
+import imagingTools
+import meshingTools
 
 if 0:
     # disable warnings!
@@ -21,10 +35,6 @@ if 0:
     obj.GlobalWarningDisplayOff()
     del obj
 
-root = Tk()
-Pmw.initialise(root)
-root.title('vtkToolsGUI -  a VTK/Tk/Python interface by ULg/MN2L')
-      
 # ----------------------------------------------------------------------
 
 class VtkWindow3DPoly(Frame):
@@ -36,7 +46,8 @@ class VtkWindow3DPoly(Frame):
     def createWidgets(self):
         self.vtkwidget = vtkTkRenderWidget(self,width=600,height=600)
         self.ren = vtk.vtkRenderer()
-        self.ren.SetBackground(1.,1.,1.)
+        if createExe: self.ren.SetBackground(1.,1.,1.)
+        else: self.ren.SetBackground(0.2,0.3,0.6)
         self.vtkwidget.GetRenderWindow().AddRenderer(self.ren)        
         self.vtkwidget.pack(side="top", expand=TRUE, fill=BOTH)
         title = Label(self, text='3D View')
@@ -168,7 +179,8 @@ class VtkWindow3Planes(Frame):
         
     def createWidgets(self):
         self.ren = vtk.vtkRenderer()
-        self.ren.SetBackground(1.,1.,1.)
+        if createExe: self.ren.SetBackground(1.,1.,1.)
+        else: self.ren.SetBackground(0.2,0.3,0.6)
         
         self.renWin = vtk.vtkRenderWindow()
         self.renWin.AddRenderer(self.ren)
@@ -246,7 +258,9 @@ class VtkWindowVolumic(Frame):
         
     def createWidgets(self):
         self.ren = vtk.vtkRenderer()
-        self.ren.SetBackground(1.,1.,1.)
+        if createExe: self.ren.SetBackground(1.,1.,1.)
+        else: self.ren.SetBackground(0.2,0.3,0.6)
+
         
         self.renWin = vtk.vtkRenderWindow()
         self.renWin.AddRenderer(self.ren)
@@ -385,9 +399,9 @@ class MainWindow:
         helpmenu.add_command(label="About", command=self.aboutCallback)
 
     def createStatusBar(self):
-    	# status bar
+        # status bar
         statusFrame = Frame(self.master, borderwidth=1)#, background="red")
-       	statusFrame.pack(fill = X, expand = NO)
+        statusFrame.pack(fill = X, expand = NO)
         Label(statusFrame, textvariable=self.status, bd=1, relief=SUNKEN, anchor=W).pack(fill=X, expand=YES, pady=2, padx=2)
         
     def quitCallback(self):
@@ -447,7 +461,6 @@ class MainWindow:
             self.status.set("Config saved to %s." % fname)
         else:
             self.status.set("Canceled.")
-
     def showHelp(self):
         message="""
 - ne pas manipuler des fichiers avec des espaces dans le nom
@@ -466,7 +479,7 @@ class ImagingFrame(Frame):
         self.balloon = Pmw.Balloon(master) # aide "ballon"        
         self.image  = None # image
         self.vtkwin = None # fenetre VTK
-        self.datadir = '.'
+        self.datadir = '../../geniso/data/'
         self.lastloaddir = '.'
         self.lastsavedir = '.'
         self.createWidgets()
@@ -485,7 +498,7 @@ class ImagingFrame(Frame):
         self.balloon.bind(label, "filename of the image")
         self.filename = StringVar(); self.filename.set('')
         self.fnameField = Pmw.ScrolledField(frame2, entry_width = 30, entry_relief=GROOVE,
-	                                    text = self.filename.get())
+                                        text = self.filename.get())
         self.fnameField.grid(row=nrow, column=1, padx=5, pady=2, columnspan=2, sticky = NSEW)
         
         nrow=nrow+1 # next line
@@ -545,7 +558,193 @@ class ImagingFrame(Frame):
         Label(frame, textvariable=self.scalarrange).pack(side=LEFT, padx=2)
         button = Button(frame, text='More Info', command=self.moreInfo, anchor="w"); button.pack(side=RIGHT, padx=0)
         self.balloon.bind(button, "print more info concerning the VTK object")
+
+    def createCreateFrame(self):
+        group = Pmw.Group(self, tag_text = 'Create')
+        group.pack(fill=X, expand=NO, pady=5)
+        creFrame = group.interior()
+        creFrame.columnconfigure(8,weight=1)
+   
+        nrow=0
+        button = Button(creFrame, text='Ellispoid', command=self.creEllispoid, anchor="w"); button.grid(row=nrow, column=0, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "create an ellipsoid with the parameters on the right")
+
+        frame = Frame(creFrame); frame.grid(row=0, column=2, padx=5, pady=2, sticky = W)
+              
+        label = Label(frame, text="C"); label.grid(row=0, column=0, padx=5, pady=2, sticky = E)
+        self.balloon.bind(label, "center position (x,y,z) of the ellipsoid")        
+        self.cx = IntVar(); self.cx.set(127)
+        Entry(frame, textvariable=self.cx, width=5).grid(row=0, column=1, padx=5, pady=2, sticky = W)
+        self.cy = IntVar(); self.cy.set(127)
+        Entry(frame, textvariable=self.cy, width=5).grid(row=0, column=2, padx=5, pady=2, sticky = W)
+        self.cz = IntVar(); self.cz.set(127)
+        Entry(frame, textvariable=self.cz, width=5).grid(row=0, column=3, padx=5, pady=2, sticky = W)
+        label = Label(frame, text="V"); label.grid(row=nrow, column=4, sticky = E)        
+        self.balloon.bind(label, "values (in, out) of the ellipsoid")        
+        self.valin = IntVar(); self.valin.set(255)
+        Entry(frame, textvariable=self.valin, width=5).grid(row=0, column=5, padx=5, pady=2, sticky = W)
+        self.valout = IntVar(); self.valout.set(0)
+        Entry(frame, textvariable=self.valout, width=5).grid(row=0, column=6, padx=5, pady=2, sticky = W)        
+
+        label = Label(frame, text="R"); label.grid(row=1, column=0, padx=5, pady=2, sticky = E)        
+        self.balloon.bind(label, "radii (rx,ry,rz) of the ellipsoid")        
+        self.rx = IntVar(); self.rx.set(50)
+        Entry(frame, textvariable=self.rx, width=5).grid(row=1, column=1, padx=5, pady=2, sticky = W)
+        self.ry = IntVar(); self.ry.set(70)
+        Entry(frame, textvariable=self.ry, width=5).grid(row=1, column=2, padx=5, pady=2, sticky = W)
+        self.rz = IntVar(); self.rz.set(90)
+        Entry(frame, textvariable=self.rz, width=5).grid(row=1, column=3, padx=5, pady=2, sticky = W)
         
+    def createModifyFrame(self): 
+        group = Pmw.Group(self, tag_text = 'Modify/Filters')
+        group.pack(fill=X, expand=NO, pady=5)
+        modFrame = group.interior()
+        modFrame.columnconfigure(5,weight=1)
+
+        nrow=0
+        button = Button(modFrame, text='Flip Image', command=self.modFlip, anchor="w"); button.grid(row=nrow, column=0, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "apply a vtkImageFlip")  
+              
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="Axis"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "Specify axis to flip")
+        self.flipAxis = DoubleVar(); self.flipAxis.set(1)
+        Entry(frame, textvariable=self.flipAxis, width=5).pack(side=LEFT, padx=2)
+        
+        button = Button(modFrame, text='Permute', command=self.permute, anchor="w"); button.grid(row=nrow, column=2, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "Permute Image")
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=3, sticky = W+E)
+        label = Label(frame, text="Axis"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "Specify the input axes that will become X, Y, Z")
+        self.axX = DoubleVar(); self.axX.set(1)
+        Entry(frame, textvariable=self.axX, width=5).pack(side=LEFT, padx=2)
+        self.axY = DoubleVar(); self.axY.set(1)
+        Entry(frame, textvariable=self.axY, width=5).pack(side=LEFT, padx=2)
+        self.axZ = DoubleVar(); self.axZ.set(1)
+        Entry(frame, textvariable=self.axZ, width=5).pack(side=LEFT, padx=2)
+                
+        nrow = nrow + 1  
+        
+        button = Button(modFrame, text='Negative', command=self.modNegative, anchor="w"); button.grid(row=nrow, column=1, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "apply a vtkImageMathematics (SetOperationToInvert)")        
+           
+        button = Button(modFrame, text='Distance map', command=self.modCreateSignedEuclideanDistanceMap, anchor="w"); button.grid(row=nrow, column=2,padx=5,pady=2, sticky = W+E)
+        self.balloon.bind(button, "build the energy map")
+        
+        nrow=nrow+1 
+        button = Button(modFrame, text='Reslice Nearest', command=self.resliceWithNearestNeighbor, anchor="w"); button.grid(row=nrow, column=0, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "resliceWithNearestNeighbor")        
+
+        button = Button(modFrame, text='Reslice Linear', command=self.resliceWithLinearInterpolation, anchor="w"); button.grid(row=nrow, column=1, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "resliceWithLinearInterpolation")        
+           
+        button = Button(modFrame, text='Reslice Cubic', command=self.resliceWithCubicInterpolation, anchor="w"); button.grid(row=nrow, column=2,padx=5,pady=2, sticky = W+E)
+        self.balloon.bind(button, "resliceWithCubicInterpolation")        
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=3, sticky = W+E)
+        label = Label(frame, text="spacing"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "spacing to witch to reslice")
+        self.spx = DoubleVar(); self.spx.set(1)
+        Entry(frame, textvariable=self.spx, width=5).pack(side=LEFT, padx=2)
+        self.spy = DoubleVar(); self.spy.set(1)
+        Entry(frame, textvariable=self.spy, width=5).pack(side=LEFT, padx=2)
+        self.spz = DoubleVar(); self.spz.set(1)
+        Entry(frame, textvariable=self.spz, width=5).pack(side=LEFT, padx=2)
+
+        nrow=nrow+1 
+        button = Button(modFrame, text='Erode', command=self.erode, anchor="w"); button.grid(row=nrow, column=0, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "Erode")        
+
+        button = Button(modFrame, text='Dilate', command=self.dilate, anchor="w"); button.grid(row=nrow, column=1, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "Dilate")        
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=2, sticky = W+E)
+        label = Label(frame, text="kernel"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "kernel")
+        self.kx = IntVar(); self.kx.set(3)
+        Entry(frame, textvariable=self.kx, width=5).pack(side=LEFT, padx=2)
+        self.ky = IntVar(); self.ky.set(3)
+        Entry(frame, textvariable=self.ky, width=5).pack(side=LEFT, padx=2)
+        self.kz = IntVar(); self.kz.set(3)
+        Entry(frame, textvariable=self.kz, width=5).pack(side=LEFT, padx=2)
+                   
+        nrow=nrow+1 
+        
+        button = Button(modFrame, text='OpenClose3D', command=self.openClose3D, anchor="w"); button.grid(row=nrow, column=0,padx=5,pady=2, sticky = W+E)
+        self.balloon.bind(button, "OpenClose3D")        
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="openValue"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "openValue")
+        self.openValue = DoubleVar(); self.openValue.set(0)
+        Entry(frame, textvariable=self.openValue, width=5).pack(side=LEFT, padx=2)
+        label = Label(frame, text="closeValue"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "closeValue")
+        self.closeValue = DoubleVar(); self.closeValue.set(3)
+        Entry(frame, textvariable=self.closeValue, width=5).pack(side=LEFT, padx=2)
+        label = Label(frame, text="kernel"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "kernel")
+        self.kx = IntVar(); self.kx.set(3)
+        Entry(frame, textvariable=self.kx, width=5).pack(side=LEFT, padx=2)
+        self.ky = IntVar(); self.ky.set(3)
+        Entry(frame, textvariable=self.ky, width=5).pack(side=LEFT, padx=2)
+        self.kz = IntVar(); self.kz.set(3)
+        Entry(frame, textvariable=self.kz, width=5).pack(side=LEFT, padx=2)
+            
+        nrow=nrow+1 
+        button = Button(modFrame, text='Threshold', command=self.modThreshold, anchor="w"); button.grid(row=nrow, column=0,padx=5,pady=2, sticky = W+E)
+        self.balloon.bind(button, "threshold image")
+        
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="threshold"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "threshold used to segment image")
+        self.th = IntVar(); self.th.set(4)
+        Entry(frame, textvariable=self.th, width=5).pack(side=LEFT, padx=2)
+
+        nrow=nrow+1
+        button = Button(modFrame, text='Extract Iso', command=self.buildIsoValue, anchor="w"); button.grid(row=nrow, column=0,padx=5,pady=2, sticky = W+E)
+        self.balloon.bind(button, "build the skin of the image using vtkContourFilter\n (resulting mesh on the \"Polydata\" tab)")
+        
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="range"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "range used by vtkContourFilter")               
+        self.range1 = IntVar(); self.range1.set(0)
+        Entry(frame, textvariable=self.range1, width=5).pack(side=LEFT, padx=2)
+        self.range2 = IntVar(); self.range2.set(2)
+        Entry(frame, textvariable=self.range2, width=5).pack(side=LEFT, padx=2)
+
+        nrow=nrow+1 
+        button = Button(modFrame, text='Isosurf', command=self.execIsosurf, anchor="w"); button.grid(row=nrow, column=0,padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "run Isosurf (resulting mesh on the \"Polydata\" tab)")        
+    
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="res"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "resolution used by isosurf")
+        self.isores = IntVar(); self.isores.set(4)
+        Entry(frame, textvariable=self.isores, width=5).pack(side=LEFT, padx=2)
+       
+        #nrow=nrow+1 
+#        frame = Frame(modFrame); frame.grid(row=nrow, column=2, sticky = W+E)
+#        label = Label(frame, text="exec"); label.pack(side=LEFT, padx=2)
+#        self.balloon.bind(label, "Isosurf executable")
+#        self.isosurf = StringVar(); self.isosurf.set('E:/local/bin/isosurf.v1_5d.exe')
+#        self.isosurfField = Pmw.ScrolledField(frame, entry_width = 30, entry_relief='groove',
+#                                              text = self.isosurf.get())
+#        self.isosurfField.pack(side=LEFT, fill=X, expand=YES, padx=2)
+#        button = Button(frame, text="...", command=self.findIsosurf); button.pack(side=LEFT, padx=2)
+#        self.balloon.bind(button, "search for Isosurf exec...")
+        
+        nrow=nrow+1
+        button = Button(modFrame, text='Geniso', command=self.callGeniso, anchor="w"); button.grid(row=nrow, column=0,padx=5,pady=2, sticky = W+E)
+        self.balloon.bind(button, "Call Geniso")
+        
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="res"); label.pack(side=LEFT, padx=2)       
+        self.balloon.bind(label, "resolution used by geniso")
+        self.genisoRes = DoubleVar(); self.genisoRes.set(4.0)
+        Entry(frame, textvariable=self.genisoRes, width=5).pack(side=LEFT, padx=2)
+
     def createImportFrame(self):
         group = Pmw.Group(self, tag_text = 'Import')
         group.pack(fill=X, expand=NO, pady=5)
@@ -556,12 +755,14 @@ class ImagingFrame(Frame):
         button = Button(impFrame, text='Load XML', command=self.loadXmlImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
         self.balloon.bind(button, "load a .vti file using vtkXMLImageDataReader")               
         button = Button(impFrame, text='Load RAW', command=self.loadRawImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
-        self.balloon.bind(button, "load a .raw/.img file using vtkImageReader")
+        self.balloon.bind(button, "load a .raw/.img file using vtkImageReader")               
+        button = Button(impFrame, text='Load GE', command=self.loadGEImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
+        self.balloon.bind(button, "load I.* files using vtkGESignaReader")
+        button = Button(impFrame, text='Load NRRD', command=self.loadNrrdImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
+        self.balloon.bind(button, "load NRRD files")
         button = Button(impFrame, text='Load DICOM', command=self.loadDicomImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
         self.balloon.bind(button, "load DICOM files using vtkDICOMImageReader")
-        button = Button(impFrame, text='Load TIFF', command=self.loadTiffImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
-        self.balloon.bind(button, "load TIFF files using vtkTIFFReader")
-        
+
     def createExportFrame(self):
         group = Pmw.Group(self, tag_text = 'Export')
         group.pack(fill=X, expand=NO, pady=5)
@@ -572,8 +773,8 @@ class ImagingFrame(Frame):
         self.balloon.bind(button, "save a .vtk file using vtkStructuredPointsWriter")               
         button = Button(frame, text='Save XML Image', command=self.saveXmlImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
         self.balloon.bind(button, "save a .vti file using vtkXMLImageDataWriter")               
-        button = Button(frame, text='Save TIFF Image', command=self.saveTiffImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
-        self.balloon.bind(button, "save a .tiff file using vtkImageWriter")               
+        button = Button(frame, text='Save RAW Image', command=self.saveRawImage, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
+        self.balloon.bind(button, "save a .raw/.img file using vtkImageWriter") 
 
         frame = Frame(expFrame); frame.pack(side=TOP, fill=X)       
         label = Label(frame, text="type"); label.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
@@ -619,14 +820,54 @@ class ImagingFrame(Frame):
         self.balloon.bind(button, "Display the image using a volumic renderer (ray casting)\nuse \"i\" for enabling/disabling the clipping box widget")
 
     def createWidgets(self):
-    	self.createDataFrame()
-    	self.createImportFrame()
-    	self.createExportFrame()
-    	self.createViewFrame()
+        self.createDataFrame()
+        if not createExe:
+            self.createCreateFrame()
+            self.createModifyFrame()
+        self.createImportFrame()
+        self.createExportFrame()
+        self.createViewFrame()
         Frame(self).pack(fill=BOTH,expand=TRUE) # espace vide
 
     def codingCallBack(self, val):
         self.coding.set(val)  
+         
+    def creEllispoid(self):
+        ext = (self.extx1.get(),self.extx2.get(),self.exty1.get(),self.exty2.get(),self.extz1.get(),self.extz2.get())
+        center = (self.cx.get(),self.cy.get(),self.cz.get())
+        radius = (self.rx.get(),self.ry.get(),self.rz.get())
+        values = (self.valin.get(), self.valout.get())
+        coding = self.coding.get()
+        self.image = imagingTools.createEllipsoid(ext,center,radius,coding,values)
+        self.filename.set("") 
+        self.fnameField.configure(text = self.filename.get())
+        self.status.set("Ellipsoid created.") 
+        
+    def modNegative(self):
+        if not self.image:
+            self.warningNoImage()
+            self.status.set("Filter canceled.")
+        else:
+            self.image = imagingTools.createNegative(self.image)
+            self.status.set("Negative filter applied.")
+         
+    def modFlip(self):
+        if not self.image:
+            self.warningNoImage()
+            self.status.set("Filter canceled.")
+        else:
+            self.image = imagingTools.flipImage(self.image,self.flipAxis.get())
+            self.setParamFromImage()
+            self.status.set("Flip filter applied.")
+    
+    def permute(self):
+        if not self.image:
+            self.warningNoImage()
+            self.status.set("Permute canceled.")
+        else:
+            self.image = imagingTools.permute(self.image,self.axX.get(),self.axY.get(),self.axZ.get())
+            self.setParamFromImage()
+            self.status.set("Image Permuted.")
                 
     def loadVtkImage(self):
         fname = tkFileDialog.Open(filetypes=[('VTK file','*.vtk'), ('All Files','*.*')],
@@ -703,7 +944,8 @@ class ImagingFrame(Frame):
             self.status.set("Load canceled.")
             
     def loadRawImage(self):
-        fname = tkFileDialog.Open(filetypes=[('RAW file','*.raw'), ('All Files','*.*')],
+        fname = tkFileDialog.Open(filetypes=[('Analyze file','*.img'),
+                                  ('Raw file','*.raw'), ('All Files','*.*')],
                                   initialdir=self.lastloaddir).show()
         if fname:
             self.lastloaddir = os.path.split(fname)[0]
@@ -717,34 +959,194 @@ class ImagingFrame(Frame):
         else:
             self.status.set("Load canceled.")
             
-    def saveTiffImage(self):
+    def saveRawImage(self):
         if self.image:
-            fname = tkFileDialog.SaveAs(filetypes=[('TIFF file','*.tiff')],
+            fname = tkFileDialog.SaveAs(filetypes=[('All files','*.*')],
                                         initialdir=self.lastsavedir).show()
             if fname:
                 self.lastsavedir = os.path.split(fname)[0]
                 self.filename.set(fname)
                 self.fnameField.configure(text = self.filename.get())
-                generalTools.saveTiffImage(fname, self.image)
+                generalTools.saveRawImage(fname, self.image, self.coding.get())
                 self.status.set("Image saved as %s." % fname) 
             else:
-                self.status.set("Save canceled.")
+                self.status.set("Save canceled.")                   
         else:
             self.warningNoImage()
             self.status.set("Save canceled.")
-       
-    def loadTiffImage(self):
-        fname = tkFileDialog.Open(filetypes=[('TIFF file','*.tiff'), ('All Files','*.*')],
+            
+    def loadGEImage(self):
+        fname = tkFileDialog.Open(filetypes=[('GE Signa file','*.001'),
+                                  ('All files','*.*')],
+                                  initialdir=self.lastloaddir).show()
+        # possibilité d'utiliser tkFileDialog.askdirectory(parent=root,initialdir="/",title='Choisissez un repertoire')
+        if fname:
+            self.lastloaddir = os.path.split(fname)[0]
+            dirname = os.path.split(fname)[0]
+            self.image = generalTools.loadGenesisImage(dirname, (1,len(os.listdir(dirname))-1))
+            self.setParamFromImage()
+            self.status.set("Image loaded (GE Signa).")
+        else:
+            self.status.set("Load canceled.")
+
+    def loadNrrdImage(self):
+        fname = tkFileDialog.Open(filetypes=[('NRRD file','*.nrrd'), ('All Files','*.*')],
                                   initialdir=self.lastloaddir).show()
         if fname:
             self.lastloaddir = os.path.split(fname)[0]
             self.filename.set(fname)
             self.fnameField.configure(text = self.filename.get())
-            self.image = generalTools.loadTifImage(fname)
+            self.image = generalTools.loadNRRDImage(fname)
             self.setParamFromImage()
-            self.status.set("Image loaded (TIFF).")
+            self.status.set("Image loaded (NRRD).")
         else:
             self.status.set("Load canceled.")
+
+    def loadDicomImage(self):
+        dname = tkFileDialog.askdirectory(parent=root,initialdir=self.lastloaddir,title='Choose a DICOM directory')
+        if dname:
+            self.lastloaddir = dname
+            self.image = generalTools.loadDicomImage(dname)
+            self.setParamFromImage()
+            self.status.set("Image loaded (DICOM).")
+        else:
+            self.status.set("Load canceled.")
+
+#    def findIsosurf(self):
+#        fname = tkFileDialog.Open(filetypes=[('Isosurf Executable','*.exe')]).show()
+#        if fname:
+#            self.isosurf.set(fname)
+#            self.status.set("Isosurf set to %s." % fname)
+#            self.isosurfField.configure(text = self.isosurf.get())
+#        else:
+#            self.status.set("Canceled.")
+
+    def execIsosurf(self):
+        if self.image:
+            polydata = meshingTools.callIsosurf(self.image,self.isores.get())
+            self.mainW.setPolydata(polydata)
+        else:
+            self.warningNoImage()
+            self.status.set("Execute Isosurf canceled.")      
+              
+#        if self.filename.get()!="": 
+#            range=(1,255)
+#            ext = (self.extx2.get()-self.extx1.get()+1,self.exty2.get()-self.exty1.get()+1,self.extz2.get()-self.extz1.get()+1)
+#            print ext
+#            sp = (self.sx.get(),self.sy.get(),self.sz.get())        
+#            print sp
+#            codflag='c' # 'c'='uchar' 'u'='ushort'
+#            filter ='b' # 'n'= none 'o'=opening, 'c' = closing, 'b'=both (default)
+#            cmd = "\"%s\" -t %d,%d -i %s -d %d,%d,%d -s %g,%g,%g -r %g -f %s -m %s" % (self.isosurf.get(), 
+#                               range[0], range[1], self.filename.get(), ext[0],ext[1], ext[2], 
+#                               sp[0], sp[1], sp[2], self.isores.get(), codflag, filter);
+#            self.status.set("Exec Isosurf.")
+#            print "exec:", cmd
+#            import os
+#            try:
+#                os.system(cmd)
+#            except:
+#                tkMessageBox.Message(icon='warning', type='ok',  message='Error in isosurf!', title='Warning').show() 
+#                return               
+#            polydata = generalTools.off2vtk(name="surface.off")
+#            self.mainW.setPolydata(polydata)
+#        else:
+#            tkMessageBox.Message(icon='warning', type='ok',
+#                             message='Image must be saved to/loaded from disk!', 
+#                             title='Warning').show()
+#            self.status.set("Exec Isosurf cancelled.") 
+                   
+    def buildIsoValue(self):
+        if self.image:
+            polydata = imagingTools.createContourPolydata(self.image, value = (self.range1.get(), self.range2.get()))
+            polydata.Update()
+            self.mainW.setPolydata(polydata)
+            self.status.set("Skin has been extracted.")
+        else:
+            self.warningNoImage()
+            self.status.set("Skin extraction canceled.")
+
+    def callGeniso(self):
+        if self.image:
+            import meshingToolsGeniso
+            polydata = meshingToolsGeniso.callGeniso(self.image, self.genisoRes.get())
+            self.mainW.setPolydata(polydata)
+            self.status.set("Polydata has been created.")
+        else:
+            self.warningNoImage()
+            self.status.set("Geniso call canceled.")
+    
+    def modThreshold(self):
+        if self.image:
+            #self.image = imagingTools.thresholdByUpper(self.image,self.th.get(),self.th.get(),0) 
+            self.image = imagingTools.thresholdByUpper(self.image,self.th.get(),3,0) 
+            self.status.set("Image has been thresholded.")            
+        else:
+            self.warningNoImage()
+            self.status.set("Threshold canceled")
+                     
+    def modCreateSignedEuclideanDistanceMap(self):
+        if self.image:
+            self.status.set("Creating Signed Euclidean Distance Map...")
+            self.image = imagingTools.createSignedEuclideanDistanceMap(self.image)
+            self.filename.set("") 
+            self.fnameField.configure(text = self.filename.get())
+            self.setParamFromImage()          
+            self.status.set("Signed Euclidean Distance Map created.")
+        else:
+            self.warningNoImage()
+            self.status.set("Signed Euclidean Distance Map canceled.")
+            
+    def resliceWithNearestNeighbor(self):
+        if self.image:
+            self.image = imagingTools.resliceWithNearestNeighbor(self.image,[self.spx.get(), self.spy.get(), self.spz.get()]) 
+            self.setParamFromImage()  
+            self.status.set("Image has been resliced.")            
+        else:
+            self.warningNoImage()
+            self.status.set("Reslice canceled")
+
+    def resliceWithLinearInterpolation(self):
+        if self.image:
+            self.image = imagingTools.resliceWithLinearInterpolation(self.image,[self.spx.get(), self.spy.get(), self.spz.get()]) 
+            self.setParamFromImage()  
+            self.status.set("Image has been resliced.")          
+        else:
+            self.warningNoImage()
+            self.status.set("Reslice canceled")
+
+    def resliceWithCubicInterpolation(self):
+        if self.image:
+            self.image = imagingTools.resliceWithCubicInterpolation(self.image,[self.spx.get(), self.spy.get(), self.spz.get()]) 
+            self.setParamFromImage()  
+            self.status.set("Image has been resliced.")         
+        else:
+            self.warningNoImage()
+            self.status.set("Reslice canceled")
+
+    def erode(self):
+        if self.image:
+            self.image = imagingTools.erode(self.image,[self.kx.get(), self.ky.get(), self.kz.get()]) 
+            self.status.set("Erode filter has been applied.")         
+        else:
+            self.warningNoImage()
+            self.status.set("Erode canceled")
+
+    def dilate(self):
+        if self.image:
+            self.image = imagingTools.erode(self.image,[self.kx.get(), self.ky.get(), self.kz.get()]) 
+            self.status.set("Dilate filter has been applied.")         
+        else:
+            self.warningNoImage()
+            self.status.set("Dilate canceled")
+
+    def openClose3D(self):
+        if self.image:
+            self.image = imagingTools.openClose3D(self.image, self.openValue.get(), self.closeValue.get(), [self.kx.get(), self.ky.get(), self.kz.get()]) 
+            self.status.set("OpenClose3D filter has been applied.")         
+        else:
+            self.warningNoImage()
+            self.status.set("OpenClose3D canceled")
             
     def viewSlice(self):
         if self.image:
@@ -823,6 +1225,7 @@ class ImagingFrame(Frame):
                              title='Warning').show()
             
     def saveConfig(self, var, file):
+        #file.write('self.%s.isosurf.set("%s")\n' % (var,self.isosurf.get()))
         file.write('self.%s.coding.set("%s")\n' % (var,self.coding.get()))
         file.write('self.%s.byteorder.set("%s")\n' % (var,self.byteorder.get()))
         file.write('self.%s.sx.set(%g)\n' % (var,self.sx.get()))
@@ -837,7 +1240,15 @@ class ImagingFrame(Frame):
         file.write('self.%s.window.set(%d)\n' % (var,self.window.get()))
         file.write('self.%s.level.set(%d)\n' % (var,self.level.get()))
         file.write('self.%s.sliceno.set(%d)\n' % (var,self.sliceno.get()))
-
+        if not createExe:
+            file.write('self.%s.range1.set(%d)\n' % (var,self.range1.get()))
+            file.write('self.%s.range2.set(%d)\n' % (var,self.range2.get()))
+            file.write('self.%s.isores.set(%d)\n' % (var,self.isores.get()))
+            file.write('self.%s.cx.set(%d)\n' % (var,self.cx.get()))
+            file.write('self.%s.cy.set(%d)\n' % (var,self.cy.get()))
+            file.write('self.%s.cz.set(%d)\n' % (var,self.cz.get()))
+            file.write('self.%s.valin.set(%d)\n' % (var,self.valin.get()))
+            file.write('self.%s.valout.set(%d)\n' % (var,self.valout.get()))
         file.write('self.%s.asciiorbin.set("%s")\n' % (var,self.asciiorbin.get()))
             
     def loadConfig(self): # synchro uniqt
@@ -893,7 +1304,7 @@ class PolyDataFrame(Frame):
         self.balloon.bind(label, "filename of the polydata")
         self.filename = StringVar(); self.filename.set('')
         self.fnameField = Pmw.ScrolledField(frame2, entry_width = 30, entry_relief=GROOVE,
-	                                    text = self.filename.get())
+                                        text = self.filename.get())
         self.fnameField.grid(row=nrow, column=1, padx=5, pady=2, columnspan=2, sticky = NSEW)
 
         nrow=nrow+1
@@ -907,6 +1318,83 @@ class PolyDataFrame(Frame):
         Label(frame, text="cells.").pack(side=LEFT)
         button = Button(frame, text='More Info', command=self.moreInfo, anchor="w"); button.pack(side=RIGHT, padx=0)
         self.balloon.bind(button, "print more info concerning the VTK object")
+
+    def createModifyFrame(self):
+        group = Pmw.Group(self, tag_text = 'Modify/Filters')
+        group.pack(fill=X, expand=NO, pady=5)
+        modFrame = group.interior()
+        modFrame.columnconfigure(1,weight=1)
+
+        nrow=0
+        button = Button(modFrame, text='Extract largest', command=self.modExtractLargest, anchor="w"); button.grid(row=nrow, column=0, padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "apply a vtkPolyDataConnectivityFilter (extract largest region)")
+
+        nrow=nrow+1
+        button = Button(modFrame, text='Clean Nodes', command=self.modMergeNodes, anchor="w"); button.grid(row=nrow, column=0,padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "Find duplicate nodes and merge them using vtkCleanpolyData")
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="tol"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "tolerance")
+        self.mergeTol = DoubleVar(); self.mergeTol.set(0.0001)
+        Entry(frame, textvariable=self.mergeTol, width=5).pack(side=LEFT, padx=2)
+        
+        nrow=nrow+1
+        button = Button(modFrame, text='Smooth', command=self.modSmooth, anchor="w"); button.grid(row=nrow, column=0,padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "Smooth the polydata using vtkSmoothPolyDataFilter")
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="relax"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "relaxation factor")
+        self.smRelax = DoubleVar(); self.smRelax.set(0.1)
+        Entry(frame, textvariable=self.smRelax, width=5).pack(side=LEFT, padx=2)
+
+        nrow=nrow+1
+        button = Button(modFrame, text='Extract Closed Polys', command=self.modExtractClosedPolys, anchor="w"); button.grid(row=nrow, column=0,padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "Extract all closed polys")
+
+        nrow=nrow+1
+        button = Button(modFrame, text='TetGen From File', command=self.execTetGenFromFile, anchor="w"); button.grid(row=nrow, column=0,padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "run TetGen (resulting mesh using Geniso generated .poly file on the \"Ugrid\" tab)")
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="q"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "quality used by TetGen (e.g. 2.0)")
+        self.tetgenq = DoubleVar(); self.tetgenq.set(2.0)
+        Entry(frame, textvariable=self.tetgenq, width=8).pack(side=LEFT, padx=2)
+        label = Label(frame, text="V"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "Suppresses the creation of Steiner points on the exterior boundary")
+        self.tetgenV = BooleanVar(); self.tetgenV.set(1)
+        Entry(frame, textvariable=self.tetgenV, width=8).pack(side=LEFT, padx=2)
+
+        nrow=nrow+1
+        button = Button(modFrame, text='TetGen', command=self.execTetGen, anchor="w"); button.grid(row=nrow, column=0,padx=5, pady=2, sticky = W+E)
+        self.balloon.bind(button, "run TetGen (resulting mesh on the \"Ugrid\" tab)")
+
+        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+        label = Label(frame, text="q"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "quality used by TetGen (e.g. 2.0)")
+        self.tetgenq = DoubleVar(); self.tetgenq.set(2.0)
+        Entry(frame, textvariable=self.tetgenq, width=8).pack(side=LEFT, padx=2)
+        label = Label(frame, text="a"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "maximum cell volume used by TetGen")
+        self.tetgena = DoubleVar(); self.tetgena.set(500)
+        Entry(frame, textvariable=self.tetgena, width=8).pack(side=LEFT, padx=2)
+        label = Label(frame, text="V"); label.pack(side=LEFT, padx=2)
+        self.balloon.bind(label, "Suppresses the creation of Steiner points on the exterior boundary")
+        self.tetgenV = BooleanVar(); self.tetgenV.set(1)
+        Entry(frame, textvariable=self.tetgenV, width=8).pack(side=LEFT, padx=2)
+        
+#        nrow=nrow+1
+#        frame = Frame(modFrame); frame.grid(row=nrow, column=1, sticky = W+E)
+#        label = Label(frame, text="exec"); label.pack(side=LEFT, padx=2)
+#        self.balloon.bind(label, "TetGen executable")
+#        self.tetgen = StringVar(); self.tetgen.set('E:/dev/tetgen1.4.1/tetgen.exe')
+#        self.tetgenField = Pmw.ScrolledField(frame, entry_width = 30, entry_relief='groove',
+#                                            text = self.tetgen.get())
+#        self.tetgenField.pack(side=LEFT, fill=X, expand=YES, padx=2)
+#        button = Button(frame, text="...", command=self.findTetGen); button.pack(side=LEFT, padx=2)
+#        self.balloon.bind(button, "search for TetGen exec...")
 
     def createImportFrame(self):
         group = Pmw.Group(self, tag_text = 'Import')
@@ -964,20 +1452,34 @@ class PolyDataFrame(Frame):
         self.but3 = Checkbutton(frame, text = 'GrayScale scalars', variable = self.colorMap, 
         onvalue='GrayScale', offvalue='colors', state=DISABLED)
         self.but3.pack(side=LEFT)
+        
+        if not createExe:
+            nrow=nrow+1
+            button = Button(viewFrame, text='MeshViewer', command=self.viewPolydataInGui, anchor="w"); button.grid(row=nrow, column=0,padx=5,pady=2, sticky = W+E)
+            self.balloon.bind(button, "View with the MeshViewer")
+            frame = Frame(viewFrame); frame.grid(row=nrow, column=1, padx=5, pady=2, sticky = W+E)
+            Label(frame, text="View with the MeshViewer").pack(side=LEFT, padx=5, pady=2)   
     
     def disableColorMap(self):    
         self.but3.configure(state='normal')
        
     def createWidgets(self):
         self.createDataFrame()
+        self.createModifyFrame()
         self.createImportFrame()
         self.createExportFrame()
         self.createViewFrame()
         Frame(self).pack(fill=BOTH,expand=TRUE) # espace vide
 
     def saveConfig(self, var, file):
+        #file.write('self.%s.tetgen.set("%s")\n' % (var,self.tetgen.get()))
+        file.write('self.%s.mergeTol.set(%g)\n' % (var,self.mergeTol.get()))
+        file.write('self.%s.smRelax.set(%g)\n' % (var,self.smRelax.get()))
+        file.write('self.%s.tetgena.set(%g)\n' % (var,self.tetgena.get()))
+        file.write('self.%s.tetgenq.set(%g)\n' % (var,self.tetgenq.get()))
         file.write('self.%s.asciiorbin.set("%s")\n' % (var,self.asciiorbin.get()))
 
+    
     def loadConfig(self): # synchro uniqt
         pass
             #self.tetgenField.configure(text = self.tetgen.get())
@@ -1110,7 +1612,16 @@ class PolyDataFrame(Frame):
         else:
             self.warningNoPolydata()
             self.status.set("View canceled.")
-            
+
+    def viewPolydataInGui(self):
+        if self.polydata:
+            import renderingToolsQt
+            renderingToolsQt.displayPoly(self.polydata)
+            self.status.set("Viewing 3D.")
+        else:
+            self.warningNoPolydata()
+            self.status.set("View canceled.")
+                     
     def warningNoPolydata(self):
         tkMessageBox.Message(icon='warning', type='ok',
                              message='No polydata in memory!', 
@@ -1136,7 +1647,73 @@ class PolyDataFrame(Frame):
            msgFrame.pack(fill=BOTH, expand=YES)
            win.transient(root) 
         else:
-           self.warningNoPolydata()            
+           self.warningNoPolydata()
+                             
+    def modExtractLargest(self):
+        if not self.polydata:
+            self.warningNoPolydata()
+            self.status.set("Filter canceled.")
+        else:
+            self.polydata = meshingTools.extractLargestPoly(self.polydata)
+            self.status.set("Extract Largest Region filter applied.")
+            self.setParamFromPolydata()
+
+    def modMergeNodes(self):
+        if not self.polydata:
+            self.warningNoPolydata()
+            self.status.set("Filter canceled.")
+        else:
+            self.polydata = meshingTools.mergeDuplicateNodes(self.polydata, self.mergeTol.get())
+            self.status.set("Merge Nodes filter applied.")
+            self.setParamFromPolydata()
+
+    def modSmooth(self):
+        if not self.polydata:
+            self.warningNoPolydata()
+            self.status.set("Filter canceled.")
+        else:
+            self.polydata = meshingTools.smoothPolyData(self.polydata, self.smRelax.get())
+            self.status.set("Smooth polydata filter applied.")
+            self.setParamFromPolydata()
+        
+    def modExtractClosedPolys(self):
+        if not self.polydata:
+            self.warningNoPolydata()
+            self.status.set("Filter canceled.")
+        else:
+            polys = meshingTools.extractClosedSurfacesFromPoly(self.polydata)
+            import renderingToolsQt
+            renderingToolsQt.displayVectorOfPolys(polys)
+            self.status.set("extractClosedSurfacesFromPoly filter applied.")
+             
+#    def findTetGen(self):
+#        fname = tkFileDialog.Open(filetypes=[('TetGen Executable','*.exe')]).show()
+#        if fname:
+#            self.tetgen.set(fname)
+#            self.status.set("TetGen set to %s." % fname)
+#            self.tetgenField.configure(text = self.tetgen.get())
+#        else:
+#            self.status.set("Canceled.")
+
+    def execTetGen(self):
+        if not self.polydata:
+            self.warningNoPolydata()
+            self.status.set("Exec TetGen cancelled.")
+        else:
+            ugrid = meshingTools.callTetgen(self.polydata, self.tetgenq.get(), self.tetgena.get(), self.tetgenV.get(), 0)
+            self.mainW.setUgrid(ugrid)    
+    
+    def execTetGenFromFile(self):
+        fname = tkFileDialog.Open(filetypes=[('Tetgen file','*.poly'),
+                                  ('All Files','*.*')],
+                                  initialdir=self.lastloaddir).show()
+        if fname:
+            ugrid = meshingTools.callTetgenMultipleRegionsFromFile(os.path.splitext(fname)[0], self.tetgenq.get(), self.tetgenV.get())
+            self.mainW.setUgrid(ugrid)
+            self.status.set("Ugrid created.")
+        else:
+            self.status.set("Exec TetGen cancelled.")
+            
 
 # ----------------------------------------------------------------------
 
@@ -1166,7 +1743,7 @@ class UgridFrame(Frame):
         self.balloon.bind(label, "filename of the ugrid")
         self.filename = StringVar(); self.filename.set('')
         self.fnameField = Pmw.ScrolledField(frame2, entry_width = 30, entry_relief=GROOVE,
-	                                    text = self.filename.get())
+                                        text = self.filename.get())
         self.fnameField.grid(row=nrow, column=1, padx=5, pady=2, columnspan=2, sticky = NSEW)
 
         nrow=nrow+1
@@ -1199,6 +1776,9 @@ class UgridFrame(Frame):
         self.balloon.bind(button, "save a .vtk ugrid using vtkUnstructuredGridWriter")
         button = Button(frame, text='Save XML Ugrid', command=self.saveXmlUgrid, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
         self.balloon.bind(button, "save a .vtu ugrid using vtkXMLUnstructuredGridWriter")
+        if not createExe:       
+            button = Button(frame, text='Export to Metafor', command=self.exportToMetafor, anchor="w"); button.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
+            self.balloon.bind(button, "save a .py file for Metafor")
 
         frame = Frame(expFrame); frame.pack(side=TOP, fill=X)
         label = Label(frame, text="type"); label.pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
@@ -1209,6 +1789,7 @@ class UgridFrame(Frame):
         but2 = Radiobutton(frame, text = 'binary', variable = self.asciiorbin, value='binary')
         but2.pack(side=LEFT)
         but2.select()
+        
 
     def loadVtkUgrid(self):
         fname = tkFileDialog.Open(filetypes=[('VTK file','*.vtk'),
@@ -1270,6 +1851,10 @@ class UgridFrame(Frame):
             self.warningUgrid()
             self.status.set("Save canceled.")
 
+
+    def exportToMetafor(self):
+        pass
+
     def createViewFrame(self):
         group = Pmw.Group(self, tag_text = 'Views')
         group.pack(fill=X, expand=NO, pady=5)
@@ -1297,12 +1882,19 @@ class UgridFrame(Frame):
         self.balloon.bind(button, "Cut and view 3D view of the ugrid in memory")
         frame = Frame(viewFrame); frame.grid(row=nrow, column=1, padx=5, pady=2, sticky = W+E)
         Label(frame, text="cut 3D view").pack(side=LEFT, padx=5, pady=2)
+
+
+        if not createExe:
+            nrow=1
+            button = Button(viewFrame, text='Tetview', command=self.tetview, anchor="w"); button.grid(row=nrow, column=0,padx=5,pady=2, sticky = W+E)
+            self.balloon.bind(button, "View with Tetview")
+            frame = Frame(viewFrame); frame.grid(row=nrow, column=1, padx=5, pady=2, sticky = W+E)
+            Label(frame, text="view in tetview").pack(side=LEFT, padx=5, pady=2)
     
         
     def disableColorMap(self):    
         self.but3.configure(state='normal')
 
-        
     def createWidgets(self):
         self.createDataFrame()
         #self.createModifyFrame()
@@ -1337,6 +1929,20 @@ class UgridFrame(Frame):
                 self.status.set("Viewing 3D.")
         else:
             self.warningNoUgrid()
+            self.status.set("View canceled.")
+
+    def tetview(self):
+        fname = tkFileDialog.Open(filetypes=[('Tetgen file','*.ele'),
+                                  ('All Files','*.*')],
+                                  initialdir=self.lastloaddir).show()
+        if fname:
+            cmd = "tetview.exe %s" % (fname);
+            #os.system(cmd)
+            import subprocess
+            subprocess.call(cmd, shell=True)
+            
+            self.status.set("Ugrid viewed in TetView window")
+        else:
             self.status.set("View canceled.")
             
     def viewClippedUgrid(self):
@@ -1383,7 +1989,6 @@ class UgridFrame(Frame):
         tkMessageBox.Message(icon='warning', type='ok',
                              message='No ugrid in memory!',
                              title='Warning').show()
-
     def setUgrid(self, ugrid):
         if ugrid:
             self.ugrid = ugrid
@@ -1398,7 +2003,10 @@ class UgridFrame(Frame):
 
 #general_font = ('Helvetica',10,'roman')
 #root.option_add('*Font', general_font)
-win = MainWindow(root)
-root.mainloop()
-            
+if __name__=="__main__":
+    root = Tk()
+    Pmw.initialise(root)
+    root.title('vtkToolsGUI -  a VTK/Tk/Python interface by ULg/MN2L')
+    win = MainWindow(root)
+    root.mainloop()
 
