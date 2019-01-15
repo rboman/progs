@@ -15,7 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# Splitte un pdf PPT 4pages/feuilles (nécessite ImageMagick dans le PATH)
+# Splitte un pdf PPT 4pages/feuilles (nÃ©cessite ImageMagick dans le PATH)
 #
 # . nommer le pdf "cours.pdf"
 # . exporter le pdf en PNG en 300DPI
