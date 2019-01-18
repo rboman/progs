@@ -116,7 +116,7 @@ class SVNRepo(Repo):
 
         # svn info 
         out = subprocess.check_output(['svn', 'info', self.name])
-        out = out.decode()  # python 3 returns bytes
+        out = out.decode(errors='ignore')  # python 3 returns bytes
         m = re.search(r'Last Changed Rev: (\d+)', out)
         if m and len(m.groups()) > 0:
             version = m.group(1)
@@ -125,7 +125,7 @@ class SVNRepo(Repo):
 
         # svn info -r HEAD
         out = subprocess.check_output(['svn', 'info', '-r', 'HEAD', self.name])
-        out = out.decode()  # python 3 returns bytes
+        out = out.decode(errors='ignore')  # python 3 returns bytes
         m = re.search(r'Last Changed Rev: (\d+)', out)
         if m and len(m.groups()) > 0:
             version_HEAD = m.group(1)
