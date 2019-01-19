@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-prognames = ['skytest', 'gausstest']
+prognames = ['sky_app', 'gauss_app']
 
 import os
 import sys
@@ -15,10 +15,10 @@ try:
     os.chdir('build')
     # cmake
     if 'Windows' in platform.uname():
-        subprocess.call('cmake -G "Visual Studio 14 Win64" ..', shell=True)
+        subprocess.call(['cmake', '-A', 'x64', '..'])
     else:
-        subprocess.call('cmake ..', shell=True)
-    subprocess.call('cmake --build . --config Release', shell=True)
+        subprocess.call(['cmake', '..'])
+    subprocess.call(['cmake', '--build', '.', '--config', 'Release'])
     if 'Windows' in platform.uname():
         os.chdir('bin/Release')
     # run progs
