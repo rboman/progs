@@ -6,6 +6,10 @@
 # vtkToolsGUI - VTK/Tk/Python interface by RoBo - modified by vidot
 # - modified by MM to create a distributable exe independent of Metafor
 
+# jan 2019: 
+#  F:\src\VTK-7.1.0\Wrapping\Python\vtk\tk\vtkLoadPythonTkWidgets.py
+#  change "vtkCommonCorePython" => "vtk.vtkCommonCorePython"
+
 createExe = True
 
 if __name__=="__main__" and not createExe: 
