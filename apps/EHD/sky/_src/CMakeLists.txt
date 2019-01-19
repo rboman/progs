@@ -23,10 +23,6 @@ ELSE ()
 ENDIF ()
 MACRO_DebugPostfix(_skyi)
 
-# ---
-
-INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/sky/src
-)
 
 SWIG_LINK_LIBRARIES(skyi 
                     sky ${PYTHON_LIBRARIES}

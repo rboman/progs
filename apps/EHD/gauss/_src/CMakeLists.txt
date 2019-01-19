@@ -23,10 +23,6 @@ ELSE ()
 ENDIF ()
 MACRO_DebugPostfix(_gaussi)
 
-# ---
-
-INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR}/gauss/src
-)
 
 SWIG_LINK_LIBRARIES(gaussi 
                     gauss ${PYTHON_LIBRARIES}
