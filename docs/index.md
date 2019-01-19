@@ -1,3 +1,8 @@
 # Hello this is the documentation
 
-Test
+## Useful commands
+
+Windows' `rm -rf *` equivalent:
+```
+del /s /q *.*
+```
