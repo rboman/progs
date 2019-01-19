@@ -1,4 +1,4 @@
-subroutine froutine(int i, double d)
+subroutine froutine()
 
     implicit none
 
