@@ -6,3 +6,5 @@ Windows' `rm -rf *` equivalent:
 ```
 del /s /q *.*
 ```
+
+Markdown preview: CTRL-SHIFT-V
