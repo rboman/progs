@@ -22,7 +22,7 @@ This code should compile on Linux, Windows and macOS.
 mkdir build
 cd build
 cmake -A x64 ..
-cmake --build. --config Release
+cmake --build . --config Release
 ctest
 ```
 You may also double click on `build_and_run.py` and cross your fingers.
