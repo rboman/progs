@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Launch sandbox/fortran",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/sandbox/fortran/build/prog01",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/sandbox/fortran/build/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+    
+        {
+            "name": "(gdb) Launch langtests/cpp11",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/langtests/cpp11/build/cpp11",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/langtests/cpp11/build/",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
+
