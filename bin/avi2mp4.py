@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#
+# TODO: make it work on linux
+# TODO: find ffmpeg more automatically
 
 import sys, os, subprocess, glob
 
