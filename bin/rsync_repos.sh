@@ -17,13 +17,13 @@ rsync -e ssh -avz \
       boman@blueberry:/home/metafor/SVN2/ \
       /hdd2/boman/Backups/rsync/SVN2/
 echo "======= done."
-echo
-echo "======= rsyncing blueberry/GIT repo => localhost..."
-rsync -e ssh -avz \
-      --delete --delete-excluded \
-      boman@blueberry:/home/metafor/GIT/ \
-      /hdd2/boman/Backups/rsync/GIT/
-echo "======= done."
+# echo
+# echo "======= rsyncing blueberry/GIT repo => localhost..."
+# rsync -e ssh -avz \
+#       --delete --delete-excluded \
+#       boman@blueberry:/home/metafor/GIT/ \
+#       /hdd2/boman/Backups/rsync/GIT/
+# echo "======= done."
 echo
 echo "======= rsyncing synology/web => localhost..."
 rsync -e ssh -avz \

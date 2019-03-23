@@ -38,10 +38,7 @@ function f_blueberry()
     tar czf blueberry-$1-$2-$DATE.tar.gz $2
     rm -rf $2
 }
-f_gituliege UEE Lagamine
 
-# deja dans l'archive blueberry....
-f_blueberry boman parasolid
 
 # github perso
 f_github rboman rboman.github.io
@@ -59,19 +56,25 @@ f_github ulgltas waves.wiki
 f_github ulgltas linuxbin
 f_github ulgltas plotter2d
 f_github ulgltas SPH
-#f_github ulgltas CUPyDO   # cfr "others"
-#f_github ulgltas PFEM     # cfr "others"
+f_github ulgltas CUPyDO   # cfr "others"
+f_github ulgltas PFEM     # cfr "others"
+f_github ulgltas PFEM.wiki
 f_github ulgltas ceci
 f_github ulgltas fe2
 
 # others
-f_github mlucio89 CUPyDO
-f_github mlucio89 PFEM
+#f_github mlucio89 CUPyDO
+#f_github mlucio89 PFEM
 f_github mlucio89 Trusses
 
 # gitlab uliege
-f_gituliege R.Boman ceci_copy
 f_gituliege R.Boman lamtools
+f_gituliege R.Boman lam3_postpro
+f_gituliege R.Boman lam3_xmesher
+f_gituliege R.Boman lam3_user
+f_gituliege R.Boman lam3
+f_gituliege R.Boman lam3_chaining
+f_gituliege R.Boman ceci_copy
 f_gituliege R.Boman idm
 f_gituliege R.Boman mogador
 f_gituliege R.Boman CT
@@ -84,5 +87,10 @@ f_gituliege am-dept/MN2L mumps-4.10.0
 f_gituliege am-dept/MN2L mumps-5.1.2
 f_gituliege am-dept/MN2L tetgen-1.4.3
 f_gituliege am-dept/MN2L triangle-1.6
+f_gituliege am-dept/MN2L LagamineAPI
+f_gituliege am-dept/MN2L MetaforF
+f_gituliege am-dept/MN2L parasolid
 
 f_gituliege UEE Lagamine
+
+

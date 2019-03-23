@@ -175,7 +175,7 @@ if __name__ == "__main__":
 
     if opts['build_type']['value']=='full':
         repos.append(vrs.SVNRepo('oo_nda', 'svn+ssh://boman@blueberry.ltas.ulg.ac.be/home/metafor/SVN/oo_nda/trunk'))
-        repos.append(vrs.GITRepo('parasolid', 'boman@blueberry.ltas.ulg.ac.be:/home/metafor/GIT/parasolid.git'))
+        repos.append(vrs.GITRepo('parasolid', 'git@gitlab.uliege.be:am-dept/MN2L/parasolid.git'))
         repos.append(vrs.GITRepo('keygen', 'git@gitlab.uliege.be:am-dept/MN2L/keygen.git'))
 
     main(repos, opts)
