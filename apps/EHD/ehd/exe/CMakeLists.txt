@@ -7,6 +7,6 @@ MACRO_DebugPostfix(ehd_app)
 
 TARGET_LINK_LIBRARIES(ehd_app ehd)
 
-add_test(NAME ehd_app
+ADD_TEST(NAME ehd_app
          COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/run.py --nogui ${EXECUTABLE_OUTPUT_PATH}/ehd_app
          WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

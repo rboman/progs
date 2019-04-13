@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
-project(Abaqus2OO C)
-set(SRCS main.c)
-add_executable(abaqus2oo ${SRCS})
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Abaqus2OO C)
+SET(SRCS main.c)
+ADD_EXECUTABLE(abaqus2oo ${SRCS})

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
-project(Binary CXX)
-set(SRCS main.cpp)
-add_executable(binary ${SRCS})
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Binary CXX)
+SET(SRCS main.cpp)
+ADD_EXECUTABLE(binary ${SRCS})

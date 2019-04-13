@@ -1,26 +1,25 @@
-# $Id: CMakeLists.txt 1086 2013-07-26 14:49:44Z Boman $
-
-
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 PROJECT(minibarreTE)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
-                        "Single output directory for building all libraries.")
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH
-                        "Single output directory for building all executables.")
+# send all binaries to ./bin
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH "")
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH "")
 MARK_AS_ADVANCED(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 
-#LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake")
+# on Linux, set optimisation by default
+IF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+ENDIF()
 
-IF(WIN32)
-    add_definitions(-D_SCL_SECURE_NO_DEPRECATE)
-ENDIF(WIN32)
+# compiler settings
+IF(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_DEPRECATE)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  # parallel build with MSVC
+ENDIF()
 
 # -- Search for Python
 FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
-
-# -- Search for SWIG
 
 # -- Search for SWIG
 FIND_PACKAGE(SWIG REQUIRED)
@@ -31,10 +30,10 @@ ELSE()
 ENDIF()
 
 # -- GMM --
-find_path(GMM_INCLUDE_DIRS "gmm/gmm.h")
-include_directories(${GMM_INCLUDE_DIRS})
-#add_definitions(-DGMM_USES_LAPACK)  
-#add_definitions(-DGMM_USES_MUMPS)
+FIND_PATH(GMM_INCLUDE_DIRS "gmm/gmm.h")
+INCLUDE_DIRECTORIES(${GMM_INCLUDE_DIRS})
+#ADD_DEFINITIONS(-DGMM_USES_LAPACK)  
+#ADD_DEFINITIONS(-DGMM_USES_MUMPS)
 
 # -- Sub directories
 

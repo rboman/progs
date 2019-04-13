@@ -1,21 +1,19 @@
-cmake_minimum_required(VERSION 3.0)
-project(TLS CXX)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(TLS CXX)
 
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-std=c++11" STD11CHECK)
-IF(STD11CHECK)
-    ADD_DEFINITIONS(-std=c++11 )
-ENDIF()
+# -- C++11
+SET(CMAKE_CXX_STANDARD 11) # newer way to set C++11 (requires cmake>=3.1)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # TBB
 
 FIND_PATH(TBB_INCLUDE_DIRS NAMES  tbb/tbb.h HINTS "$ENV{TBBROOT}/include")
 MESSAGE("TBB_INCLUDE_DIRS=${TBB_INCLUDE_DIRS}")
-include_directories(${TBB_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${TBB_INCLUDE_DIRS})
 
-FIND_LIBRARY(TBB_LIBRARIES tbb ENV LD_LIBRARY_PATH)  # serach paths in LD_LIBRARY_PATH
+FIND_LIBRARY(TBB_LIBRARIES tbb ENV LD_LIBRARY_PATH)  # search paths in LD_LIBRARY_PATH
 MESSAGE("TBB_LIBRARIES=${TBB_LIBRARIES}")
 
 FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
-add_executable(tls ${SRCS})
-target_link_libraries(tls ${TBB_LIBRARIES})
+ADD_EXECUTABLE(tls ${SRCS})
+TARGET_LINK_LIBRARIES(tls ${TBB_LIBRARIES})

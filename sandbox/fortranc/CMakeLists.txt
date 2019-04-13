@@ -1,8 +1,8 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 PROJECT(FPROGS CXX C Fortran)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 # CMake management of fortran name mangling
-include(FortranCInterface)
+INCLUDE(FortranCInterface)
 FortranCInterface_HEADER(FC.h MACRO_NAMESPACE "FC_")
 FortranCInterface_VERIFY(CXX) # test facultatif
 
@@ -11,7 +11,7 @@ FortranCInterface_VERIFY(CXX) # test facultatif
 # configure Fortran compiler
 GET_FILENAME_COMPONENT(Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
 
-IF (Fortran_COMPILER_NAME MATCHES "f95")
+IF(Fortran_COMPILER_NAME MATCHES "f95")
     SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall") 
 ENDIF()
 
@@ -28,10 +28,10 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 ADD_LIBRARY(codef f_routines.f90)
 ADD_LIBRARY(codec c_routines.cpp)
 ADD_EXECUTABLE(fortranc main.f90) 
-target_link_libraries(fortranc codec codef) # avec VS, on peut intervertir l'ordre des libs! (pas avec gcc)
+TARGET_LINK_LIBRARIES(fortranc codec codef) # avec VS, on peut intervertir l'ordre des libs! (pas avec gcc)
 
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})  # for FC.h
 
-enable_testing()
-add_test(NAME fortranc COMMAND ${EXECUTABLE_OUTPUT_PATH}/fortranc
+ENABLE_TESTING()
+ADD_TEST(NAME fortranc COMMAND ${EXECUTABLE_OUTPUT_PATH}/fortranc
          WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 2.6)
-project(Singleton CXX)
-file(GLOB SRCS *.h *.cpp *.inl *.hpp)
-add_executable(singleton ${SRCS})
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Singleton CXX)
+
+FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
+ADD_EXECUTABLE(singleton ${SRCS})

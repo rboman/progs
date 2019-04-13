@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 2.6)
-project(Skel CXX)
-file(GLOB SRCS *.h *.cpp *.inl *.hpp)
-add_executable(skelcpp ${SRCS})
-enable_testing()
-add_test(NAME skelcpp COMMAND ${EXECUTABLE_OUTPUT_PATH}/skelcpp
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Skel CXX)
+
+FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
+ADD_EXECUTABLE(skelcpp ${SRCS})
+ENABLE_TESTING()
+ADD_TEST(NAME skelcpp COMMAND ${EXECUTABLE_OUTPUT_PATH}/skelcpp
          WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

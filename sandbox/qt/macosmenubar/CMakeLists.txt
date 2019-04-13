@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 2.8.12)
-project(testproject)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(macOSmenubar)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
+SET(CMAKE_AUTOMOC ON)
 
-find_package(Qt5Widgets)
-add_executable(testapp main.cpp)
-target_link_libraries(testapp Qt5::Widgets)
+FIND_PACKAGE(Qt5Widgets)
+ADD_EXECUTABLE(testapp main.cpp)
+TARGET_LINK_LIBRARIES(testapp Qt5::Widgets)

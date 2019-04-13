@@ -2,19 +2,17 @@
 # http://www.cmake.org/cmake/help/v2.8.10/cmake.html
 #
 
-cmake_minimum_required(VERSION 2.8)
-message(STATUS "hello")
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+MESSAGE(STATUS "hello")
 
-project(Hello)
+PROJECT(Hello)
 
-set(HELLO_SRCS main.cpp)
+SET(HELLO_SRCS main.cpp)
 
-add_executable(Hello ${HELLO_SRCS})
+ADD_EXECUTABLE(Hello ${HELLO_SRCS})
 
-get_source_file_property(MYPRP main.cpp LOCATION)
-message(STATUS "MYPRP=" ${MYPRP})
-
-
+GET_SOURCE_FILE_PROPERTY(MYPRP main.cpp LOCATION)
+MESSAGE(STATUS "MYPRP=" ${MYPRP})
 
 
 SET(MKL_LIB_PATH_DESC "directory containing mkl*.lib")
@@ -25,28 +23,28 @@ FIND_PATH(MKL_LIB_PATH
             )
 IF(NOT MKL_LIB_PATH)
     MESSAGE(FATAL_ERROR ${MKL_LIB_PATH_MESG})
-ENDIF(NOT MKL_LIB_PATH)
+ENDIF()
 
 
 
 
 
-# set(MKL_LIB_PATH "C:\\Program Files (x86)\\Intel\\ComposerXE-2011\\mkl\\lib\\intel64")
+# SET(MKL_LIB_PATH "C:\\Program Files (x86)\\Intel\\ComposerXE-2011\\mkl\\lib\\intel64")
 # 
-# find_library(MKL_SOLVER_LIBRARY
+# FIND_LIBRARY(MKL_SOLVER_LIBRARY
 # NAMES mkl_solver_lp64
 # PATHS ${MKL_LIB_PATH}
 # )
-# message(STATUS "MKL_SOLVER_LIBRARY=" ${MKL_SOLVER_LIBRARY})
+# MESSAGE(STATUS "MKL_SOLVER_LIBRARY=" ${MKL_SOLVER_LIBRARY})
 # 
-# find_library(MKL_CORE_LIBRARY
+# FIND_LIBRARY(MKL_CORE_LIBRARY
 # NAMES mkl_core
 # PATHS ${MKL_LIB_PATH}
 # )
-# message(STATUS "MKL_CORE_LIBRARY=" ${MKL_CORE_LIBRARY})
+# MESSAGE(STATUS "MKL_CORE_LIBRARY=" ${MKL_CORE_LIBRARY})
 # 
-# if(MKL_CORE_LIBRARY)
-#    target_link_libraries (Hello ${MKL_SOLVER_LIBRARY} ${MKL_CORE_LIBRARY})
-# endif()
+# IF(MKL_CORE_LIBRARY)
+#    TARGET_LINK_LIBRARIES (Hello ${MKL_SOLVER_LIBRARY} ${MKL_CORE_LIBRARY})
+# ENDIF()
 
 

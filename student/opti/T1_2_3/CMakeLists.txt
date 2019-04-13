@@ -1,10 +1,10 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 PROJECT(Opti Fortran)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 # configure Fortran compiler
 GET_FILENAME_COMPONENT(Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
 
-IF (Fortran_COMPILER_NAME MATCHES "f95")
+IF(Fortran_COMPILER_NAME MATCHES "f95")
     SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall") 
 ENDIF()
 
@@ -13,9 +13,9 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS          : " ${CMAKE_Fortran_FLAGS})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_RELEASE  : " ${CMAKE_Fortran_FLAGS_RELEASE})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
-file(GLOB SRCS *.for)      # .f90/.f95 => free format | .f/.for => fixed
+FILE(GLOB SRCS *.for)      # .f90/.f95 => free format | .f/.for => fixed
 ADD_EXECUTABLE(t123 ${SRCS}) 
 
-#enable_testing()
-#add_test(NAME t123 COMMAND ${EXECUTABLE_OUTPUT_PATH}/t123
+#ENABLE_TESTING()
+#ADD_TEST(NAME t123 COMMAND ${EXECUTABLE_OUTPUT_PATH}/t123
 #         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
