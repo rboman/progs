@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "MeshExporter.h"
 #include "Mesh.h"
 
@@ -22,11 +21,10 @@
 
 MeshExporter::MeshExporter(Mesh &_mesh) : Exporter(), mesh(_mesh)
 {
-    setBaseFileName( std::string("mydomain") );
+    setBaseFileName(std::string("mydomain"));
 }
 
-void
-MeshExporter::writeBody()
+void MeshExporter::writeBody()
 {
     writeNodes();
     writeElements();
@@ -37,8 +35,7 @@ MeshExporter::writeBody()
  * @brief Writes the nodes to the file
  */
 
-void 
-MeshExporter::writeNodes() 
+void MeshExporter::writeNodes()
 {
 }
 
@@ -46,8 +43,7 @@ MeshExporter::writeNodes()
  * @brief Writes the elements to the file
  */
 
-void 
-MeshExporter::writeElements() 
+void MeshExporter::writeElements()
 {
 }
 
@@ -55,7 +51,6 @@ MeshExporter::writeElements()
  * @brief Writes the contact elements to the file
  */
 
-void 
-MeshExporter::writeContactElements() 
+void MeshExporter::writeContactElements()
 {
 }

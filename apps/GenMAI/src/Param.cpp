@@ -12,13 +12,12 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "Param.h"
 
 Param &
 Param::getNull()
 {
-    static Param nul((ParamEnum)0,"null");
+    static Param nul((ParamEnum)0, "null");
     return nul;
 }
 
@@ -26,13 +25,12 @@ Param::Param(ParamEnum id, const std::string &name) : id(id), name(name)
 {
 }
 
-int 
-Param::getInt() const
+int Param::getInt() const
 {
-    exit(1);   
+    exit(1);
 }
 
-double 
+double
 Param::getDouble() const
 {
     exit(1);
@@ -50,38 +48,34 @@ Param::getPoint()
     exit(1);
 }
 
-std::string 
+std::string
 Param::getName() const
 {
     return name;
 }
 
-ParamEnum   
+ParamEnum
 Param::getId() const
 {
     return id;
 }
 
-
-void 
-Param::set(int value)
+void Param::set(int value)
 {
     exit(1);
 }
 
-void 
-Param::set(double value)
+void Param::set(double value)
 {
     exit(1);
 }
 
-void 
-Param::set(Point value)
+void Param::set(Point value)
 {
     exit(1);
 }
 
-Param * 
+Param *
 Param::clone() const
 {
     return new Param(*this);
@@ -93,8 +87,7 @@ Param::getLayer(int i) const
     exit(1);
 }
 
-void 
-Param::add(LayerType value)
+void Param::add(LayerType value)
 {
     exit(1);
 }
@@ -105,8 +98,7 @@ Param::size() const
     return 1;
 }
 
-void 
-Param::print() const
+void Param::print() const
 {
     std::cout << getName().c_str() << " : ";
 }
@@ -115,23 +107,24 @@ Param::print() const
  * @brief Saves a double to the given file
  */
 
-void 
-Param::saveDouble(FILE *file, double val, bool newline) const
+void Param::saveDouble(FILE *file, double val, bool newline) const
 {
     fprintf(file, "%16.8E", val);
-    if(newline) saveNewLine(file);
+    if (newline)
+        saveNewLine(file);
 }
 
 /**
  * @brief Loads a double to the given file
  */
 
-double 
+double
 Param::loadDouble(FILE *file, bool newline) const
 {
     double val;
     fscanf(file, "%16lE", &val);
-    if(newline) loadNewLine(file);
+    if (newline)
+        loadNewLine(file);
     return val;
 }
 
@@ -139,23 +132,23 @@ Param::loadDouble(FILE *file, bool newline) const
  * @brief Saves a int to the given file
  */
 
-void 
-Param::saveInteger(FILE *file, int val, bool newline) const
+void Param::saveInteger(FILE *file, int val, bool newline) const
 {
     fprintf(file, "%8d", val);
-    if(newline) saveNewLine(file);
+    if (newline)
+        saveNewLine(file);
 }
 
 /**
  * @brief Loads a int to the given file
  */
 
-int 
-Param::loadInteger(FILE *file, bool newline) const
+int Param::loadInteger(FILE *file, bool newline) const
 {
     int val;
     fscanf(file, "%8d", &val);
-    if(newline) loadNewLine(file);
+    if (newline)
+        loadNewLine(file);
     return val;
 }
 
@@ -163,8 +156,7 @@ Param::loadInteger(FILE *file, bool newline) const
  * @brief Saves a newline
  */
 
-void 
-Param::saveNewLine(FILE *file) const
+void Param::saveNewLine(FILE *file) const
 {
     fprintf(file, "\n");
 }
@@ -173,9 +165,8 @@ Param::saveNewLine(FILE *file) const
  * @brief Loads a newline
  */
 
-void 
-Param::loadNewLine(FILE *file) const
-{    
+void Param::loadNewLine(FILE *file) const
+{
     fscanf(file, "\n");
 }
 
@@ -183,36 +174,31 @@ Param::loadNewLine(FILE *file) const
  * @brief Go to the end of the line
  */
 
-void 
-Param::loadEmptyLine(FILE *file) const
-{    
+void Param::loadEmptyLine(FILE *file) const
+{
     char buf;
-    while((buf = fgetc(file))!='\n') ;
+    while ((buf = fgetc(file)) != '\n')
+        ;
 }
 
 /**
  * @brief Loads the parameters from a given file
  */
 
-void 
-Param::load(FILE *file)
+void Param::load(FILE *file)
 {
-    loadEmptyLine(file);    
+    loadEmptyLine(file);
 }
 
 /**
  * @brief Saves the parameters to a given file
  */
 
-void 
-Param::save(FILE *file) const
-{ 
+void Param::save(FILE *file) const
+{
     fprintf(file, "%s\n", getName().c_str());
 }
 
-void 
-Param::setToDefault() 
+void Param::setToDefault()
 {
-
 }
-

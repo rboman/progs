@@ -15,6 +15,7 @@
 #ifndef T_IOOBJECT_H
 #define T_IOOBJECT_H
 
+#include "genmai.h"
 #include <map>
 #include <string>
 #include "Param.h"
@@ -23,16 +24,16 @@
  * @brief Mother class for Parameters (I/O routines)
  */
 
-class Parameters
+class GENMAI_API Parameters
 {
-private:
-    typedef std::map<ParamEnum, Param*> MyMap ;   // ptr car on utilise fcts virtuelles
+  private:
+    typedef std::map<ParamEnum, Param *> MyMap; // ptr car on utilise fcts virtuelles
     MyMap paramMap;
-    
-protected:
+
+  protected:
     void addParam(const Param &param);
 
-public:
+  public:
     Parameters();
 
     Parameters(const Parameters &obj);
@@ -48,4 +49,3 @@ public:
 };
 
 #endif
-

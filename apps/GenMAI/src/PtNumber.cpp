@@ -12,18 +12,17 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "PtNumber.h"
 
-const PtNumber 
-PtNumber::Null() 
-{ 
-    return PtNumber(0); 
+const PtNumber
+PtNumber::Null()
+{
+    return PtNumber(0);
 }
 
-std::ostream & 
+std::ostream &
 operator<<(std::ostream &o, const PtNumber &v)
-{ 
-    o << v.no; return o; 
+{
+    o << v.no;
+    return o;
 }
-

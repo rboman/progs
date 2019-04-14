@@ -48,4 +48,3 @@ PolarPoint::getR() const
     return r;
 }
 
-

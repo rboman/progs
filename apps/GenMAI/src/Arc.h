@@ -15,15 +15,16 @@
 #ifndef ARC_H
 #define ARC_H
 
+#include "genmai.h"
 #include "Curve.h"
 
 /**
  * @brief Defines an Arc of circle with 3 points.
  */
 
-class Arc : public Curve
+class GENMAI_API Arc : public Curve
 {
-public:
+  public:
     Arc(int p1, int p2, int p3);
 
     void print() const;

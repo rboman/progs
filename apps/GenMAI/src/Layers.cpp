@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "Layers.h"
 
 Layers *Layers::_instance = NULL;
@@ -24,7 +23,7 @@ Layers *Layers::_instance = NULL;
 Layers *
 Layers::Instance()
 {
-    if(_instance==NULL)
+    if (_instance == NULL)
         _instance = new Layers();
     return _instance;
 }
@@ -33,8 +32,7 @@ Layers::Instance()
  * @brief Adds a Layer (used by the constructor)
  */
 
-void 
-Layers::addLayer(const Layer &layer)
+void Layers::addLayer(const Layer &layer)
 {
     layerMap[layer.getType()] = layer;
 }
@@ -45,7 +43,7 @@ Layers::addLayer(const Layer &layer)
 
 Layers::Layers()
 {
-    addLayer(Layer(CONSTANT,  "Constant"));
+    addLayer(Layer(CONSTANT, "Constant"));
     addLayer(Layer(REDUCTION, "Reduction"));
 }
 

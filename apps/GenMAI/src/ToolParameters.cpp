@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "ToolParameters.h"
 #include "DoubleParam.h"
 #include "IntegerParam.h"
@@ -31,13 +30,12 @@ ToolParameters::ToolParameters(const ToolParameters &obj) : Parameters(obj)
 {
 }
 
-void
-ToolParameters::operator=(const ToolParameters &obj)
+void ToolParameters::operator=(const ToolParameters &obj)
 {
-    Parameters::operator =(obj);
+    Parameters::operator=(obj);
 }
 
-ToolParameters::~ToolParameters() 
+ToolParameters::~ToolParameters()
 {
 }
 
@@ -45,8 +43,7 @@ ToolParameters::~ToolParameters()
  * @brief Sets the parameters to the default values
  */
 
-void
-ToolParameters::setToDefault()
+void ToolParameters::setToDefault()
 {
     addParam(DoubleParam(P_R, "Radius", 100.0));
     addParam(DoubleParam(P_A1, "Initial Angle", 0.050));
@@ -57,5 +54,3 @@ ToolParameters::setToDefault()
     addParam(DoubleParam(P_ABS_INT, "Asperity Interval", 5.0));
     addParam(IntegerParam(P_ASP_NBR, "Number Of Asperities", 10));
 }
-
-

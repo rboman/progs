@@ -15,18 +15,19 @@
 #ifndef BACONTOOLEXPORTER_H
 #define BACONTOOLEXPORTER_H
 
+#include "genmai.h"
 #include "ToolExporter.h"
 
 /**
  *  @brief Exports a DON file in order to use the Tool in Metafor FORTRAN 
  */
 
-class BaconToolExporter : public ToolExporter
+class GENMAI_API BaconToolExporter : public ToolExporter
 {
-public:
+  public:
     BaconToolExporter(Tool &_matrix);
 
-private:
+  private:
     virtual std::string getName() const;
     virtual std::string getFileExtension() const;
     virtual void writeHeader();

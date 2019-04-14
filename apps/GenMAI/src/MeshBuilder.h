@@ -15,6 +15,7 @@
 #ifndef MESHER_H
 #define MESHER_H
 
+#include "genmai.h"
 #include <vector>
 #include "Point.h"
 #include "Element.h"
@@ -28,23 +29,23 @@ class Mesh;
  *        Parameters are defined in a MeshParameters object.
  */
 
-class MeshBuilder : public Builder
+class GENMAI_API MeshBuilder : public Builder
 {
     Mesh &target;
     MeshParameters par;
 
-public:
+  public:
     MeshBuilder(Mesh &_target);
 
-    void         setParameters(const MeshParameters &p);
+    void setParameters(const MeshParameters &p);
     virtual void printParameters() const;
     virtual void genere();
 
-private:
-    double currentHeight;        ///< ordonnee courante
-    double dx;                   ///< largeur des mailles courantes
-    int    first;                ///< no du premier noeud de la ligne
-    int    last;                 ///< no du dernier noeud de la ligne
+  private:
+    double currentHeight; ///< ordonnee courante
+    double dx;            ///< largeur des mailles courantes
+    int first;            ///< no du premier noeud de la ligne
+    int last;             ///< no du dernier noeud de la ligne
 
     double computeBoundaryHeight();
     double computeReductionFactor();

@@ -15,6 +15,7 @@
 #ifndef TOOLEXPORTER_H
 #define TOOLEXPORTER_H
 
+#include "genmai.h"
 #include "Exporter.h"
 class Tool;
 
@@ -22,20 +23,20 @@ class Tool;
  *  @brief Mother class for Tool export.
  */
 
-class ToolExporter : public Exporter
+class GENMAI_API ToolExporter : public Exporter
 {
-protected:
+  protected:
     const Tool &matrix;
 
-public:
+  public:
     ToolExporter(Tool &_matrix);
 
-protected:
+  protected:
     virtual void writePoints();
     virtual void writeCurves();
     virtual void writeContours();
 
-private:
+  private:
     virtual void writeBody();
 };
 

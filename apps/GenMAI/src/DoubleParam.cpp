@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "DoubleParam.h"
 
 DoubleParam::DoubleParam(ParamEnum id, const std::string &name, double defvalue) : Param(id, name)
@@ -21,47 +20,42 @@ DoubleParam::DoubleParam(ParamEnum id, const std::string &name, double defvalue)
     setToDefault();
 }
 
-void 
-DoubleParam::setToDefault()
+void DoubleParam::setToDefault()
 {
     value = defvalue;
 }
 
-double 
+double
 DoubleParam::getDouble() const
 {
     return value;
 }
 
-void 
-DoubleParam::set(double value)
+void DoubleParam::set(double value)
 {
     this->value = value;
 }
 
-Param * 
+Param *
 DoubleParam::clone() const
 {
     return new DoubleParam(*this);
 }
 
-void 
-DoubleParam::print() const
+void DoubleParam::print() const
 {
     Param::print();
     std::cout << " " << value;
 }
 
-void 
-DoubleParam::load(FILE *file)
+void DoubleParam::load(FILE *file)
 {
     Param::load(file);
     set(loadDouble(file, true));
 }
 
-void 
-DoubleParam::save(FILE *file) const
-{ 
+void DoubleParam::save(FILE *file) const
+{
     Param::save(file);
     saveDouble(file, getDouble(), true);
 }

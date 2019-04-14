@@ -15,6 +15,7 @@
 #ifndef T_MPARAM_H
 #define T_MPARAM_H
 
+#include "genmai.h"
 #include "Parameters.h"
 #include <vector>
 #include "Point.h"
@@ -23,9 +24,9 @@
  * @brief Defines the Parameters for the ToolBuilder object, accessors and I/O routines
  */
 
-class ToolParameters : public Parameters
+class GENMAI_API ToolParameters : public Parameters
 {
-public:
+  public:
     ToolParameters();
 
     ToolParameters(const ToolParameters &obj);
@@ -37,27 +38,27 @@ public:
     // Get/Set
 
     double getRadius() const;
-    void   setRadius(double arg);
+    void setRadius(double arg);
 
     double getInitialAngle() const;
-    void   setInitialAngle(double arg);
+    void setInitialAngle(double arg);
 
     double getAsperityLength() const;
-    void   setAsperityLength(double arg);
+    void setAsperityLength(double arg);
 
     double getAsperityAngle() const;
-    void   setAsperityAngle(double arg);
+    void setAsperityAngle(double arg);
 
     double getSmoothnessAngle() const;
-    void   setSmoothnessAngle(double arg);
+    void setSmoothnessAngle(double arg);
 
     double getAsperityInterval() const;
-    void   setAsperityInterval(double arg);
+    void setAsperityInterval(double arg);
 
-    int  getNumberOfAsperities() const;
+    int getNumberOfAsperities() const;
     void setNumberOfAsperities(int arg);
 
-    Point const & getCentre() const;
+    Point const &getCentre() const;
     void setCentre(const Point &arg);
     void setCentreX(double arg);
     void setCentreY(double arg);

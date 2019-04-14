@@ -12,13 +12,13 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline void 
+inline void
 ToolBuilder::addPoint(const Point &arg)
 {
     target.addPoint(arg);
 }
 
-inline void 
+inline void
 ToolBuilder::addCurve(Curve *arg)
 {
     target.addCurve(arg);

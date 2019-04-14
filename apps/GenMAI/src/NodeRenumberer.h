@@ -15,9 +15,11 @@
 #ifndef NODERENUMBERER_H
 #define NODERENUMBERER_H
 
+#include "genmai.h"
+
 class Mesh;
 
-enum RenumberStyle 
+enum RenumberStyle
 {
     NORMALSTYLE = 0,
     BACONSTYLE
@@ -28,17 +30,17 @@ enum RenumberStyle
  *         numbers are forbidden)
  */
 
-class NodeRenumberer
+class GENMAI_API NodeRenumberer
 {
     RenumberStyle style;
-    Mesh &mesh; 
+    Mesh &mesh;
 
-public:
+  public:
     NodeRenumberer(Mesh &mesh);
     void setStyle(RenumberStyle style);
     void execute();
 
-private:
+  private:
     void executeBaconStyle();
     void executeNormalStyle();
 };

@@ -15,18 +15,19 @@
 #ifndef OOFELIEMESHEXPORTER_H
 #define OOFELIEMESHEXPORTER_H
 
+#include "genmai.h"
 #include "MeshExporter.h"
 
 /**
  *  @brief Exports a E file that defines the Mesh for Oofelie.
  */
 
-class OofelieMeshExporter : public MeshExporter
+class GENMAI_API OofelieMeshExporter : public MeshExporter
 {
-public:
+  public:
     OofelieMeshExporter(Mesh &_mesh);
 
-private:
+  private:
     virtual std::string getName() const;
     virtual std::string getFileExtension() const;
 

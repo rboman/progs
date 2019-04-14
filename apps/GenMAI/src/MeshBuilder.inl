@@ -16,11 +16,11 @@ inline void
 MeshBuilder::setContactNodes(int first, int last)
 {
     this->first = first;
-    this->last  = last;
+    this->last = last;
 }
 
 inline void
 MeshBuilder::increaseHeight(double dh)
 {
-    currentHeight+=dh;
+    currentHeight += dh;
 }

@@ -15,15 +15,18 @@
 #ifndef INTNUMBER_H
 #define INTNUMBER_H
 
+#include "genmai.h"
+
 /**
  * @brief Single int for numbering internal points of Element objects 
  */
 
-class IntNumber
+class GENMAI_API IntNumber
 {
     int no;
-public:
-    explicit IntNumber(int _no=0);
+
+  public:
+    explicit IntNumber(int _no = 0);
     int getInt();
     IntNumber(const IntNumber &obj);
     void operator=(const IntNumber &obj);

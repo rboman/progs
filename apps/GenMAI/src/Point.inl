@@ -54,10 +54,10 @@ atan2(const Point &pt)
     return atan2(pt.getY(), pt.getX());
 }
 
-inline Point 
+inline Point
 Point::operator-(const Point &pt) const
 {
-    return Point(getX()-pt.getX(), getY()-pt.getY());
+    return Point(getX() - pt.getX(), getY() - pt.getY());
 }
 
 inline Point
@@ -66,40 +66,40 @@ cosin(double angle)
     return Point(cos(angle), sin(angle));
 }
 
-inline Point 
+inline Point
 Point::rotate(double angle) const
 {
     const Point cs = cosin(angle);
-    return Point( getX()*cs.getX() - getY()*cs.getY(), 
-                    getX()*cs.getY() + getY()*cs.getX());
+    return Point(getX() * cs.getX() - getY() * cs.getY(),
+                 getX() * cs.getY() + getY() * cs.getX());
 }
 
 inline double
 Point::length() const
 {
-    return sqrt(getX()*getX()+getY()*getY());
+    return sqrt(getX() * getX() + getY() * getY());
 }
 
-inline Point 
+inline Point
 operator*(double alpha, const Point &pt)
 {
-    return Point(alpha*pt.getX(), alpha*pt.getY());
+    return Point(alpha * pt.getX(), alpha * pt.getY());
 }
 
-inline Point 
+inline Point
 Point::operator+(const Point &pt) const
 {
-    return Point(getX()+pt.getX(), getY()+pt.getY());
+    return Point(getX() + pt.getX(), getY() + pt.getY());
 }
 
-inline double 
-Point::operator*(const Point &pt) const
+inline double
+    Point::operator*(const Point &pt) const
 {
-    return ( getX()*pt.getX() + getY()*pt.getY() );
+    return (getX() * pt.getX() + getY() * pt.getY());
 }
 
-inline double 
+inline double
 Point::operator^(const Point &pt) const
 {
-    return ( getX()*pt.getY() - getY()*pt.getX() );
+    return (getX() * pt.getY() - getY() * pt.getX());
 }

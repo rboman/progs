@@ -15,6 +15,7 @@
 #ifndef CURVE_H
 #define CURVE_H
 
+#include "genmai.h"
 #include <cstddef> // size_t for travis
 #include <vector>
 
@@ -22,21 +23,21 @@
  * @brief Mother class of Curve objects
  */
 
-class Curve
+class GENMAI_API Curve
 {
     std::vector<int> pt;
-public:
 
+  public:
     Curve(int nbpt);
 
-    size_t  numberOfPoints() const;
-    int  getPointNumber(int i) const;
+    size_t numberOfPoints() const;
+    int getPointNumber(int i) const;
     void setPointNumber(int i, int j);
 
-    virtual void  print() const = 0;
+    virtual void print() const = 0;
     virtual char const *name() const = 0;
     virtual char const *carteBacon() const = 0;
-    virtual int   typeDon() const = 0;
+    virtual int typeDon() const = 0;
 };
 
 #include "Curve.inl"

@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "IntegerParam.h"
 
 IntegerParam::IntegerParam(ParamEnum id, const std::string &name, int defvalue) : Param(id, name)
@@ -21,47 +20,41 @@ IntegerParam::IntegerParam(ParamEnum id, const std::string &name, int defvalue) 
     setToDefault();
 }
 
-void 
-IntegerParam::setToDefault()
+void IntegerParam::setToDefault()
 {
     value = defvalue;
 }
 
-int 
-IntegerParam::getInt() const
+int IntegerParam::getInt() const
 {
     return value;
 }
 
-void 
-IntegerParam::set(int value)
+void IntegerParam::set(int value)
 {
     this->value = value;
 }
 
-Param * 
+Param *
 IntegerParam::clone() const
 {
     return new IntegerParam(*this);
 }
 
-void 
-IntegerParam::print() const
+void IntegerParam::print() const
 {
     Param::print();
     std::cout << " " << value;
 }
 
-void 
-IntegerParam::load(FILE *file)
+void IntegerParam::load(FILE *file)
 {
     Param::load(file);
     set(loadInteger(file, true));
 }
 
-void 
-IntegerParam::save(FILE *file) const
-{ 
+void IntegerParam::save(FILE *file) const
+{
     Param::save(file);
     saveInteger(file, getInt(), true);
 }

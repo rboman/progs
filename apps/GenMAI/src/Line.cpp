@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "Line.h"
 #include <iostream>
 
@@ -22,28 +21,24 @@ Line::Line(int p1, int p2) : Curve(2)
     setPointNumber(1, p2);
 }
 
-void
-Line::print() const
+void Line::print() const
 {
-    std::cout << "Line " << getPointNumber(0) << ' ' << getPointNumber(1) ;
+    std::cout << "Line " << getPointNumber(0) << ' ' << getPointNumber(1);
 }
 
 char const *
-Line::name() const 
-{ 
-    return "Line"; 
+Line::name() const
+{
+    return "Line";
 }
 
 char const *
 Line::carteBacon() const
-{ 
-    return ".dro"; 
+{
+    return ".dro";
 }
 
-int 
-Line::typeDon() const
-{ 
-    return 1; 
+int Line::typeDon() const
+{
+    return 1;
 }
-
-

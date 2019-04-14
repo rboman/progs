@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "Parameters.h"
 #include <stdexcept>
 #include <sstream>
@@ -21,30 +20,28 @@
  * @brief Constructor
  */
 
-Parameters::Parameters() 
+Parameters::Parameters()
 {
-
 }
 
 Parameters::Parameters(const Parameters &obj)
 {
     MyMap::const_iterator it;
-    for(it=obj.paramMap.begin(); it!=obj.paramMap.end(); ++it)
+    for (it = obj.paramMap.begin(); it != obj.paramMap.end(); ++it)
         paramMap[it->first] = it->second->clone();
 }
 
-void
-Parameters::operator=(const Parameters &obj)
+void Parameters::operator=(const Parameters &obj)
 {
     MyMap::const_iterator it;
-    for(it=obj.paramMap.begin(); it!=obj.paramMap.end(); ++it)
+    for (it = obj.paramMap.begin(); it != obj.paramMap.end(); ++it)
         paramMap[it->first] = it->second->clone();
 }
 
-Parameters::~Parameters() 
+Parameters::~Parameters()
 {
     MyMap::const_iterator it;
-    for(it=paramMap.begin(); it!=paramMap.end(); ++it)
+    for (it = paramMap.begin(); it != paramMap.end(); ++it)
         delete it->second;
 }
 
@@ -52,8 +49,7 @@ Parameters::~Parameters()
  * @brief Adds a Layer (used by the constructor)
  */
 
-void 
-Parameters::addParam(const Param &param)
+void Parameters::addParam(const Param &param)
 {
     paramMap[param.getId()] = param.clone();
 }
@@ -67,7 +63,7 @@ Parameters::get(const ParamEnum t) const
 {
     MyMap::const_iterator it;
     it = paramMap.find(t);
-    if(it!=paramMap.end())
+    if (it != paramMap.end())
         return *(it->second);
     else
         return Param::getNull();
@@ -83,46 +79,44 @@ Parameters::get(const ParamEnum t)
  * @brief Prints the parameters to stdout
  */
 
-void 
-Parameters::print() const
+void Parameters::print() const
 {
     std::cout << "PARAMETRES:" << std::endl;
     std::cout << "-----------" << std::endl;
 
     MyMap::const_iterator it;
-    for(it=paramMap.begin(); it!=paramMap.end(); ++it)
+    for (it = paramMap.begin(); it != paramMap.end(); ++it)
     {
         it->second->print();
         std::cout << std::endl;
     }
 }
 
-void 
-Parameters::save(const std::string &file) const
+void Parameters::save(const std::string &file) const
 {
-    FILE *fich = fopen(file.c_str(),"w+t");
+    FILE *fich = fopen(file.c_str(), "w+t");
 
     MyMap::const_iterator it;
-    for(it=paramMap.begin(); it!=paramMap.end(); ++it)
+    for (it = paramMap.begin(); it != paramMap.end(); ++it)
         it->second->save(fich);
 
     fclose(fich);
 }
 
-void 
-Parameters::load(const std::string &file)
+void Parameters::load(const std::string &file)
 {
     std::cout << "opening file " << file << "\n";
-    FILE *fich = fopen(file.c_str(),"r+t");
-    if(!fich)
-        {
-            std::stringstream str; str << "file \"" << file << "\"" << " not found!";
-            throw std::runtime_error(str.str());
-        }
-
+    FILE *fich = fopen(file.c_str(), "r+t");
+    if (!fich)
+    {
+        std::stringstream str;
+        str << "file \"" << file << "\""
+            << " not found!";
+        throw std::runtime_error(str.str());
+    }
 
     MyMap::const_iterator it;
-    for(it=paramMap.begin(); it!=paramMap.end(); ++it)
+    for (it = paramMap.begin(); it != paramMap.end(); ++it)
         it->second->load(fich);
 
     fclose(fich);

@@ -67,15 +67,13 @@ Mesh::getLastContactNode() const
 }
 
 inline size_t
-Mesh::numberOfNodes()  const 
-{ 
-    return nodes.size(); 
+Mesh::numberOfNodes() const
+{
+    return nodes.size();
 }
 
 inline size_t
-Mesh::numberOfElements()  const 
-{ 
-    return elements.size(); 
+Mesh::numberOfElements() const
+{
+    return elements.size();
 }
-
-

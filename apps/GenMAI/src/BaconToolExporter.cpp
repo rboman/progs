@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "BaconToolExporter.h"
 #include "Tool.h"
 
@@ -20,68 +19,64 @@ BaconToolExporter::BaconToolExporter(Tool &_matrix) : ToolExporter(_matrix)
 {
 }
 
-void
-BaconToolExporter::writeHeader()
+void BaconToolExporter::writeHeader()
 {
     // entete
-    fprintf(fich,"%% Fichier g�n�r� par 'gendon' ( RoBo - 21-05-99 )\n"); 
-    fprintf(fich,"\nNbre de matrices\n1");
+    fprintf(fich, "%% Fichier g�n�r� par 'gendon' ( RoBo - 21-05-99 )\n");
+    fprintf(fich, "\nNbre de matrices\n1");
     int i;
-    for(i=0; i<14;i++) 
-        fprintf(fich,"\n");
+    for (i = 0; i < 14; i++)
+        fprintf(fich, "\n");
 
     // carte .MAT
-    fprintf(fich,".MAT\n");
-    fprintf(fich,"0 0 0 %lf %lf\n0 0 0", 0.0, 0.0);
-    fprintf(fich,"0 0 0");
+    fprintf(fich, ".MAT\n");
+    fprintf(fich, "0 0 0 %lf %lf\n0 0 0", 0.0, 0.0);
+    fprintf(fich, "0 0 0");
 }
 
-void
-BaconToolExporter::writePoints()
+void BaconToolExporter::writePoints()
 {
-    fprintf(fich,"\n%zd",matrix.numberOfPoints()-matrix.getFirstPoint());
+    fprintf(fich, "\n%zd", matrix.numberOfPoints() - matrix.getFirstPoint());
     int i;
-    for(i=matrix.getFirstPoint(); i<matrix.numberOfPoints(); i++)
-        fprintf(fich,"\n%lf %lf",
-        matrix.getPointX(i),
-        matrix.getPointY(i));
+    for (i = matrix.getFirstPoint(); i < matrix.numberOfPoints(); i++)
+        fprintf(fich, "\n%lf %lf",
+                matrix.getPointX(i),
+                matrix.getPointY(i));
 }
-void
-BaconToolExporter::writeCurves()
+void BaconToolExporter::writeCurves()
 {
-    fprintf(fich,"\n%d",(int)(matrix.numberOfCurves()-matrix.getFirstCurve()));
+    fprintf(fich, "\n%d", (int)(matrix.numberOfCurves() - matrix.getFirstCurve()));
 
-    for(int i=matrix.getFirstCurve(); i<matrix.numberOfCurves(); i++)
-    {  
-        fprintf(fich,"\n%d ",matrix.getCurve(i).typeDon());
+    for (int i = matrix.getFirstCurve(); i < matrix.numberOfCurves(); i++)
+    {
+        fprintf(fich, "\n%d ", matrix.getCurve(i).typeDon());
 
-        for(int j=0; j<3; j++)
+        for (int j = 0; j < 3; j++)
         {
             int va;
-            if(j>=matrix.getCurve(i).numberOfPoints())
-                va=0;
+            if (j >= matrix.getCurve(i).numberOfPoints())
+                va = 0;
             else
                 va = matrix.getCurve(i).getPointNumber(j) - matrix.getFirstCurve();
-            fprintf(fich," %d ",va);
+            fprintf(fich, " %d ", va);
         }
-    } 
-    fprintf(fich,"\n\n");
+    }
+    fprintf(fich, "\n\n");
 }
 
-void
-BaconToolExporter::writeFooter()
+void BaconToolExporter::writeFooter()
 {
-    fprintf(fich,"return\n\n\n");
+    fprintf(fich, "return\n\n\n");
 }
 
-std::string 
+std::string
 BaconToolExporter::getFileExtension() const
 {
     return ".don";
 }
 
-std::string 
-BaconToolExporter::getName() const 
-{ 
-    return "Bacon"; 
+std::string
+BaconToolExporter::getName() const
+{
+    return "Bacon";
 }
