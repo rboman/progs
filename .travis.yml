@@ -33,4 +33,4 @@ install:
   - sudo apt-get install libgmm++-dev
 
 script:
-  - cd ${PROG_BASE_DIR}/apps/EHD  && ./build_all.sh
+  - cd ${PROG_BASE_DIR}  && ./build_all.sh
