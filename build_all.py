@@ -6,7 +6,10 @@ import os
 
 basedir = os.path.dirname(__file__)
 #print 'basedir=', basedir
-os.chdir(os.path.join(basedir,'apps','EHD'))
+# os.chdir(os.path.join(basedir,'apps','EHD'))
+# execfile('build.py')
+
+os.chdir(os.path.join(basedir,'apps','fractal', 'cpp'))
 execfile('build.py')
 
 
