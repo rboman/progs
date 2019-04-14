@@ -2,7 +2,7 @@
 
 1D Elasto-Hydro-Dynamic simulation. This old code was part of my PhD research, written in 1998-99.
 Solves the Reynolds' equation using cubic finite elements.
-Inspired from [Vilaine Cahouet's PhD thesis](http://www.theses.fr/1997ISAL0054) "Contribution à l'étude de la lubrification plasto-hydrodynamique" (INSA Lyon, 1997). 
+Inspired from [Violaine Cahouet's PhD thesis](http://www.theses.fr/1997ISAL0054) "Contribution à l'étude de la lubrification plasto-hydrodynamique" (INSA Lyon, 1997). 
 
 Also included:
   * a basic skyline solver packaged in a library,
@@ -23,9 +23,9 @@ mkdir build
 cd build
 cmake -A x64 ..
 cmake --build . --config Release
-ctest
+ctest -C Release
 ```
-You may also double click on `build_and_run.py` and cross your fingers.
+You may also double click on `build.py` and cross your fingers.
 
 ## Notes/TODO
 

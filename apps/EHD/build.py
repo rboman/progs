@@ -1,26 +1,15 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import subprocess
-import platform
+def addroot():
+    import sys, os.path
+    print "__file__=", __file__
+    rootdir = os.path.abspath(os.path.join(os.path.split(__file__)[0],'..','..','..'))
+    sys.path.append(rootdir)
+    print '%s added to PATH' % rootdir    
 
-
-def build():
-    # create build dir
-    if not os.path.isdir('build'):
-        os.mkdir('build')
-    os.chdir('build')
-    # cmake
-    if 'Windows' in platform.uname():
-        subprocess.call(['cmake', '-A', 'x64', '..'])
-    else:
-        subprocess.call(['cmake', '..'])
-    subprocess.call(['cmake', '--build', '.', '--config', 'Release'])
-
-def test():
-    subprocess.call(['ctest', '--verbose', '-C', 'Release'])
-
-if __name__ == "__main__":
-    build()
-    test()
+if __name__=="__main__":
+    addroot()
+    import pytools.build as b
+    b.build()
+    b.test()

@@ -1,14 +1,12 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-prognames = ['sky_app', 'gauss_app']
-
 import os
-import sys
 import subprocess
 import platform
 
-try:
+
+def build():
     # create build dir
     if not os.path.isdir('build'):
         os.mkdir('build')
@@ -19,14 +17,19 @@ try:
     else:
         subprocess.call(['cmake', '..'])
     subprocess.call(['cmake', '--build', '.', '--config', 'Release'])
-    if 'Windows' in platform.uname():
-        os.chdir('bin/Release')
-    # run progs
-    for p in prognames:
-        subprocess.check_call(os.path.join('.', p), shell=True)
-        print "<press ENTER to continue>"
-        raw_input()
-except Exception as e:
-    print e
-    print "<press ENTER to quit>"
-    raw_input()
+    # go back to where we were
+    os.chdir('..')
+
+def test():
+    os.chdir('build')    
+    subprocess.call(['ctest', '--verbose', '-C', 'Release'])
+    os.chdir('..')
+
+def run(progname):
+    os.chdir('build')
+    if 'Windows' in platform.uname(): 
+        os.chdir('Release')
+    print 'running', progname
+    subprocess.check_output([progname])
+    os.chdir('..')
+    
