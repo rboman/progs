@@ -61,6 +61,7 @@
 
 // utils 
 
+%include "genmai.h"
 %include "IntNumber.h"
 %include "PtNumber.h"
 %include "Point.h"

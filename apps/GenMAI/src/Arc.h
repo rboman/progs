@@ -12,8 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef ARC_H
-#define ARC_H
+#ifndef GENMAI_ARC_H
+#define GENMAI_ARC_H
 
 #include "genmai.h"
 #include "Curve.h"

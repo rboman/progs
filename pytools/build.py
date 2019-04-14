@@ -16,13 +16,17 @@ def build():
         subprocess.call(['cmake', '-A', 'x64', '..'])
     else:
         subprocess.call(['cmake', '..'])
-    subprocess.call(['cmake', '--build', '.', '--config', 'Release'])
+    iop = subprocess.call(['cmake', '--build', '.', '--config', 'Release'])
+    if iop!=0:
+        raise Exception("cmake FAILED!")
     # go back to where we were
     os.chdir('..')
 
 def test():
     os.chdir('build')    
-    subprocess.call(['ctest', '--verbose', '-C', 'Release'])
+    iop = subprocess.call(['ctest', '--verbose', '-C', 'Release'])
+    if iop!=0:
+        raise Exception("ctest FAILED!")
     os.chdir('..')
 
 def run(progname):
