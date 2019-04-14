@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, subprocess
+import os
+import subprocess
 
 progs = [
     {
@@ -10,7 +11,7 @@ progs = [
     },
     {
         'path': 'apps/fractal/cpp',
-        'travis': True
+        'travis': False
     },
     {
         'path': 'apps/GenMAI',
@@ -38,58 +39,32 @@ progs = [
     }
 ]
 
-def runprog(basedir,p):
-    path = p['path']
-    travis = p['travis']
 
-    fullpath = os.path.join(basedir,*(p['path'].split('/')))
-    
-
+def build_one(basedir, p):
+    fullpath = os.path.join(basedir, *(p['path'].split('/')))
     if(p['travis']):
-        print 'running', fullpath
+        print '=> running build.py in', fullpath
         os.chdir(fullpath)
-        execfile('build.py')
-        #iop = subprocess.call(['python', 'build.py'])
-        #print 'iop=',iop
-        #raw_input()
-        #execfile('build.py')
-        
+        subprocess.call(['python', 'build.py'])
 
-def main(basedir):
-    
-    # print 'basedir=', basedir
 
+def build_all(basedir):
     for p in progs:
-        runprog(basedir, p)
+        build_one(basedir, p)
 
-    # os.chdir(os.path.join(basedir, 'apps', 'EHD'))
-    # execfile('build.py')
 
-    # os.chdir(os.path.join(basedir, 'apps', 'fractal', 'cpp'))
-    # execfile('build.py')
-
-    # os.chdir(os.path.join(basedir, 'apps', 'GenMAI'))
-    # execfile('build.py')
-
-    # os.chdir(os.path.join(basedir, 'apps', 'md5'))
-    # execfile('build.py')
-
-    # os.chdir(os.path.join(basedir, 'apps', 'minibarreTE'))  # requires gmm
-    # execfile('build.py')
-
-    # # os.chdir(os.path.join(basedir,'student','dcm1'))   # requires Qt
-    # # execfile('build.py')
-
-    # os.chdir(os.path.join(basedir, 'student', 'dcm2'))
-    # execfile('build.py')
-
-    # os.chdir(os.path.join(basedir, 'student', 'ndh'))
-    # execfile('build.py')
+def rm_builds(basedir):
+    import shutil
+    for path, subdirs, files in os.walk(basedir):
+        for name in subdirs:
+            # print name
+            if name == 'build':
+                fullname = os.path.join(path, name)
+                print 'removing', fullname
+                shutil.rmtree(fullname)
 
 
 if __name__ == "__main__":
-
-
-
     basedir = os.path.abspath(os.path.dirname(__file__))
-    main(basedir)
+    rm_builds(basedir)
+    build_all(basedir)
