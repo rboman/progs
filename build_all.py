@@ -4,7 +4,7 @@
 import os
 
 
-basedir = os.path.dirname(__file__)
+basedir = os.path.abspath(os.path.dirname(__file__))
 #print 'basedir=', basedir
 
 os.chdir(os.path.join(basedir,'apps','EHD'))
