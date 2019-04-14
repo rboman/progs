@@ -34,7 +34,7 @@ install:
 
 script:
   - cd ${PROG_BASE_DIR}/apps/EHD  && ./travis.sh
-  - cd ${PROG_BASE_DIR}/apps/fractal  && ./travis.sh
+  - cd ${PROG_BASE_DIR}/apps/cpp/fractal  && ./travis.sh
   - cd ${PROG_BASE_DIR}/apps/GenMAI  && ./travis.sh
   - cd ${PROG_BASE_DIR}/apps/md5  && ./travis.sh
   - cd ${PROG_BASE_DIR}/apps/minibarreTE  && ./travis.sh
