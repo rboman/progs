@@ -7,3 +7,4 @@
 
 * CTRL-SHIFT-O: rechercher une fct dans un fichier
 
+* CRTL-: : block comment
