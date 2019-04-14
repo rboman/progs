@@ -1,5 +1,3 @@
-// $Id$
-
 #ifndef MESH_H
 #define MESH_H
 
@@ -9,12 +7,13 @@
 
 class COUPLAGE_API Mesh
 {
-public:
+  public:
     int m;
-public:
+
+  public:
     Mesh();
     friend COUPLAGE_API std::ostream &operator<<(std::ostream &out, Mesh const &obj);
-	void save(std::string const &filename) const;
+    void save(std::string const &filename) const;
 };
 
 #endif

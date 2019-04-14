@@ -42,4 +42,3 @@ ADD_SUBDIRECTORY( _couplage )
 
 ADD_SUBDIRECTORY( minib )
 ADD_SUBDIRECTORY( etage )
-

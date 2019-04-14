@@ -1,18 +1,16 @@
-
 #include "Bar.h"
 
-
-Bar::Bar() 
+Bar::Bar()
 {
     kappa = 170;
-    rho   = 2300;
-    cv    = 711;
-    Q     = 1e8;
-    f     = 1e5;
-    E     = 1.58e11;
+    rho = 2300;
+    cv = 711;
+    Q = 1e8;
+    f = 1e5;
+    E = 1.58e11;
     alpha = 2.5e-3;
-    T0    = 273;
-    L     = 45e-6;    
+    T0 = 273;
+    L = 45e-6;
 }
 
 std::ostream &

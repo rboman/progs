@@ -1,5 +1,3 @@
-
-
 #ifndef EQUATION1_H
 #define EQUATION1_H
 
@@ -7,7 +5,7 @@
 
 class Equation1
 {
-public:
+  public:
     Equation1() {}
 };
 
