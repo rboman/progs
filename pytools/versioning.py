@@ -34,9 +34,9 @@ class GITRepo(Repo):
         else:
             pu.chDir(self.name)
             if pu.isUnix():
-                cmd = 'git pull origin master'
+                cmd = 'git pull'
             else:
-                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull origin master"'
+                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull"'
             print(cmd)
             # os.system necessite des "" en plus autour de la cmd)
             #os.system('"%s"' % cmd)
@@ -85,6 +85,17 @@ class GITRepo(Repo):
         os.chdir('..')
 
         return (m==None)
+
+    def checkout(self, branch='master'):
+        os.chdir(self.name)
+        cmd = ['git', 'checkout', branch]
+        if not pu.isUnix():
+            cmd = [r'C:\Program Files\Git\bin\sh.exe', '--login', '-c', ' '.join(cmd) ]
+        with open(os.devnull, 'w') as FNULL:
+            status = subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+        if status:
+            raise Exception('"%s" FAILED with error %d' % (cmd, status))
+        os.chdir('..')
 
 
 class SVNRepo(Repo):
