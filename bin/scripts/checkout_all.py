@@ -2,7 +2,7 @@
 
 import os, subprocess
 import pytools.versioning as vrs
-import pytools.utils as pyu
+import pytools.utils as pu
     
 def main(destdir):
 
@@ -82,7 +82,7 @@ if __name__=='__main__':
 
     # maniere tres pourrie de recup l'argument (repertoire dans lequel on veut cloner)
     # (=>reflechir pour faire mieux)
-    args = pyu.parseargs()
+    args = pu.parseargs()
     destdir = '/hdd2/boman/Backups/repos'
     if len(args.file)>1:
         destdir = args.file[-1]

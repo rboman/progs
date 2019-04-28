@@ -10,14 +10,14 @@ import os
 import subprocess
 import shutil
 import pytools.versioning as vrs
-import pytools.utils as pyu
+import pytools.utils as pu
 import datetime
 
 
 def main():
 
     o = {
-        'target_folder': '/opt' if pyu.isUnix() else 'f:/local',
+        'target_folder': '/opt' if pu.isUnix() else 'f:/local',
         'target_name': 'lagamine',
         'branch': 'romain'
     }
@@ -57,7 +57,7 @@ def main():
 
     # create folder 'build'
     os.mkdir('build')  # could fail (access denied) on Windows:
-    pyu.chDir('build')
+    pu.chDir('build')
 
     # configure
     cmd = [
@@ -72,7 +72,7 @@ def main():
     subprocess.call(cmd)
 
     # build/install
-    if pyu.isUnix():
+    if pu.isUnix():
         # Release only then sudo for install
         cmd = ['cmake', '--build', '.',
                '--config', 'Release']

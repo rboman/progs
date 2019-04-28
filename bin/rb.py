@@ -59,8 +59,8 @@ if __name__ == "__main__":
     scriptdir = os.path.join(thisdir, 'scripts')
 
     # reads args
-    import pytools.utils as pyu
-    args = pyu.parseargs()
+    import pytools.utils as pu
+    args = pu.parseargs()
     print(args)
 
     for testname in args.file:
