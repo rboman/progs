@@ -16,8 +16,14 @@ progs = [
     {'path': 'langtests/cpp11', 'travis': True},
     {'path': 'langtests/exporttpl', 'travis': True},
     {'path': 'langtests/singleton', 'travis': True},
+    {'path': 'metafor/arbre', 'travis': True},
+    {'path': 'metafor/drmeta', 'travis': True},
+    {'path': 'metafor/mailsph', 'travis': False},
+    {'path': 'sandbox/fortran', 'travis': True},
+    {'path': 'sandbox/fortranc', 'travis': True},
     {'path': 'student/dcm1', 'travis': False},
     {'path': 'student/dcm2', 'travis': True},
+    {'path': 'student/mico', 'travis': True},
     {'path': 'student/ndh', 'travis': True},
 ]
 
