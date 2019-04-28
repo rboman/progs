@@ -3,3 +3,7 @@ PROJECT(Singleton CXX)
 
 FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
 ADD_EXECUTABLE(singleton ${SRCS})
+
+ENABLE_TESTING()
+ADD_TEST(NAME singleton COMMAND ${EXECUTABLE_OUTPUT_PATH}/singleton
+         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

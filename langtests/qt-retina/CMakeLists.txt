@@ -10,6 +10,11 @@ INCLUDE(${VTK_USE_FILE})
 FIND_PACKAGE(Qt5Core REQUIRED QUIET)
 FIND_LIBRARY( LIB_COCOA cocoa )
 
-ADD_EXECUTABLE(qtimageviewer main.cxx osxHelper.mm)
+SET(SRCS main.cxx)
+IF(APPLE)
+    LIST(APPEND SRCS osxHelper.mm)
+ENDIF()
+
+ADD_EXECUTABLE(qtimageviewer ${SRCS})
 qt5_use_modules(qtimageviewer Core Gui Widgets)
 TARGET_LINK_LIBRARIES(qtimageviewer ${VTK_LIBRARIES})
