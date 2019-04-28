@@ -8,3 +8,7 @@
 * CTRL-SHIFT-O: rechercher une fct dans un fichier
 
 * CRTL-: : block comment
+
+* CTRL-SHIFT-V : Markdown preview
+
+

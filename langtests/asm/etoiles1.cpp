@@ -1,74 +1,73 @@
 /***********************************************************************
 *                      Starfield 1  (C++ & Asm)                        *
 *                                                                      *
-* . D‚placement lat‚ral des ‚toiles       			       *
-*							      12.08.96 *	       *                                                                     *
+* . Déplacement latéral des étoiles                                    *
+*                                                             12.08.96 *
 ************************************************************************/
-
-
 
 #include <stdlib.h>
 #include <conio.h>
 #include <stdio.h>
 
-struct etoiles{ int x, y, plan; } ;
+struct etoiles
+{
+    int x, y, plan;
+};
 etoiles et[500];
 int nb_et;
 
-void putpixel(int x,int y, unsigned char col)
+void putpixel(int x, int y, unsigned char col)
 {
-   asm mov ax, 0xa000
-   asm mov es, ax
-   asm mov ax, 320
-   asm mul y
-   asm add ax, x
-   asm mov di, ax
-   asm mov al, byte ptr col
-   asm mov es:[di],al
-
+    asm mov ax, 0xa000;
+    asm mov es, ax;
+    asm mov ax, 320;
+    asm mul y;
+    asm add ax, x;
+    asm mov di, ax;
+    asm mov al, byte ptr col;
+    asm mov es : [di], al
 }
 
 void main()
 {
-   asm mov ax, 0x13;
-   asm int 0x10;
+    asm mov ax, 0x13;
+    asm int 0x10;
 
-   for(nb_et=0;nb_et<500;nb_et++)
-   {
-      et[nb_et].x	= 319-random(100);
-      et[nb_et].y	= random(199);
-      et[nb_et].plan	= random(255);
-   }
+    for (nb_et = 0; nb_et < 500; nb_et++)
+    {
+        et[nb_et].x = 319 - random(100);
+        et[nb_et].y = random(199);
+        et[nb_et].plan = random(255);
+    }
 
-   do {
-      for(nb_et=0; nb_et<500; nb_et++)
-      {
-	 /* Eteint l'‚toile */
-	 putpixel(et[nb_et].x, et[nb_et].y, 0);
+    do
+    {
+        for (nb_et = 0; nb_et < 500; nb_et++)
+        {
+            /* Eteint l'‚toile */
+            putpixel(et[nb_et].x, et[nb_et].y, 0);
 
-	 /* Calcule la vitesse */
-	 et[nb_et].x-=(et[nb_et].plan >> 6) + 1;
+            /* Calcule la vitesse */
+            et[nb_et].x -= (et[nb_et].plan >> 6) + 1;
 
-	 /* Teste la sortie du champ de vision */
-	 if(et[nb_et].x<=0)
-	 {
-	    et[nb_et].x	   = 319;
-	    et[nb_et].y	   = random(200);
-	    et[nb_et].plan = random(256);
-	 }
+            /* Teste la sortie du champ de vision */
+            if (et[nb_et].x <= 0)
+            {
+                et[nb_et].x = 319;
+                et[nb_et].y = random(200);
+                et[nb_et].plan = random(256);
+            }
 
-	 /* Dessine l'‚toile */
-	 putpixel(et[nb_et].x, et[nb_et].y, (et[nb_et].plan >> 4) + 16);
+            /* Dessine l'‚toile */
+            putpixel(et[nb_et].x, et[nb_et].y, (et[nb_et].plan >> 4) + 16);
 
-	 /* Boucle d'attente */
-	 for(int i=0;i<500;i++)
-	    i=i;
-      }
+            /* Boucle d'attente */
+            for (int i = 0; i < 500; i++)
+                i = i;
+        }
 
-   } while(!kbhit());
+    } while (!kbhit());
 
-   asm mov ax, 3;                             /* Retour au mode texte */
-   asm int 0x10;
+    asm mov ax, 3; /* Retour au mode texte */
+    asm int 0x10;
 }
-
-

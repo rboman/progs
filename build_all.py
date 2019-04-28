@@ -13,6 +13,8 @@ progs = [
     {'path': 'apps/minibarreTE', 'travis': True},
     {'path': 'cmake/findGMM', 'travis': True},
     {'path': 'cmake/findMKL', 'travis': False},
+    {'path': 'langtests/cpp11', 'travis': True},
+    {'path': 'langtests/exporttpl', 'travis': True},
     {'path': 'student/dcm1', 'travis': False},
     {'path': 'student/dcm2', 'travis': True},
     {'path': 'student/ndh', 'travis': True},
