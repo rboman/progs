@@ -11,17 +11,27 @@ progs = [
     {'path': 'apps/GenMAI', 'travis': True},
     {'path': 'apps/md5', 'travis': True},
     {'path': 'apps/minibarreTE', 'travis': True},
+    {'path': 'cmake/FindGMM', 'travis': False},
     {'path': 'student/dcm1', 'travis': False},
     {'path': 'student/dcm2', 'travis': True},
-    {'path': 'student/ndh', 'travis': True}
+    {'path': 'student/ndh', 'travis': True},
 ]
 
+def getArgs():
+    # parse args
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--travis", help="run only travis tests",
+                        action="store_true")
+    args = parser.parse_args()
+    return args
 
 def build_one(basedir, p):
     """build project 'p'
     """
+    args = getArgs()
     fullpath = os.path.join(basedir, *(p['path'].split('/')))
-    if(p['travis']):
+    if(p['travis'] or not args.travis):
         print '=> running build.py in', fullpath
         os.chdir(fullpath)
         subprocess.call(['python', 'build.py'])
