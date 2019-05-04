@@ -23,6 +23,7 @@ progs = [
     {'path': 'sandbox/fortranc', 'travis': True},
     {'path': 'student/dcm1', 'travis': False},
     {'path': 'student/dcm2', 'travis': True},
+    {'path': 'student/lejeune', 'lejeune': True},
     {'path': 'student/mico', 'travis': True},
     {'path': 'student/ndh', 'travis': True},
 ]
