@@ -1,8 +1,9 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 
 import sys
+
 
 class StdoutCatcher:
     def __init__(self):
