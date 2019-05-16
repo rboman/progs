@@ -4,7 +4,7 @@
 # usage:
 #   rb.py compile_lagamine.py
 #
-# tested on Win10 only
+# works on Win10/linux
 
 import os
 import subprocess
