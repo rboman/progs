@@ -55,7 +55,7 @@ for i=1:N
    end
    IS(i+1)=NELEM+1;
 end
-%S
+
 % Sauvegarde dans SYSTEMx.BIN :
 % ---------------------------
 
