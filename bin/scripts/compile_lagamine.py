@@ -65,11 +65,16 @@ def main():
         '-DLAGAMINE_USE_METIS=OFF',
         '-DLAGAMINE_USE_MKL=OFF',
         '-DCMAKE_INSTALL_PREFIX=%s/%s' % (
-            o['target_folder'], o['target_name']),
-        '-A', 'x64',
-        '..'
+            o['target_folder'], o['target_name'])
     ]
-    subprocess.call(cmd)
+    if not pu.isUnix():
+        cmd.extend(['-A', 'x64'])
+    cmd.append('..')
+    print (cmd)
+    iop = subprocess.call(cmd)
+    if(iop):
+        raise Exception('\n\n\t** ERROR: cmake exited with status %d\n' % iop)
+    print ('iop=', iop)
 
     # build/install
     if pu.isUnix():
