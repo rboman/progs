@@ -34,11 +34,13 @@ disp('Création terminée')
 
 NELEM=0;
 IS(1)=1;
+S=[];
 for i=1:N
-   for j=find(A(i,:))';
+   for j=find(A(i,:))
       NELEM=NELEM+1;
       JS(NELEM)=j;        
-      S=[S A(i,j)];         
+      val = 0+A(i,j);
+      S=[S val];
    end
    IS(i+1)=NELEM+1;
 end
@@ -54,10 +56,10 @@ fprintf(fid, '%d\n',NELEM);
 
 for i=1:NELEM                  		% -- Save S et JS --
    fprintf(fid, '%18.16f\n',S(i));
-   fprintf(fid, '%18.16f\n',JS(i));
+   fprintf(fid, '%d\n',JS(i));
 end
 for i=1:N+1                  		% -- Save IS -------
-   fprintf(fid, '%18.16f\n',IS(i));  
+   fprintf(fid, '%d\n',IS(i));  
 end
 for i=1:N                 		% -- Save b --------
    fprintf(fid, '%18.16f\n',b(i));  
