@@ -14,6 +14,6 @@ set PATH=C:\msys64\mingw64\bin
 ::set PATH=%PATH%;C:\MinGW\msys\1.0\bin
 set PATH=%PATH%;C:\Program Files\CMake\bin\
 set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
-
+set PATH=%PATH%;C:\Program Files\Microsoft VS Code\bin
 
 %comspec%
