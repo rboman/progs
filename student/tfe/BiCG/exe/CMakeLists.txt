@@ -1,6 +1,6 @@
 
 
-ADD_EXECUTABLE(test_bicg test_bicg.for) # .f90/.f95 => free format | .f/.for => fixed
+ADD_EXECUTABLE(test_bicg test_bicg.f90) # .f90/.f95 => free format | .f/.for => fixed
 TARGET_LINK_LIBRARIES(test_bicg tfe common)
 
 ADD_EXECUTABLE(test_bicgst test_bicgst.for) # .f90/.f95 => free format | .f/.for => fixed
