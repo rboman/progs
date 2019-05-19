@@ -1,73 +1,88 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#            Création d'une matrice creuse 
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#            Création d'une matrice creuse
 #            et sauvegarde dans SYSTEM2.BIN
 #
 # Update : 31.01.96 pour SYMMLQ.FOR
 #          !!!!!!!OK 2019!!!!!!
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-mak1=0                 # mak1=0 : pas de SYSTEM.BIN
-                        #           (full matrix).
-ilu0=False                 # ilu0~=0 : élém. diag non nuls.
-isym=False                # isym=1 : matrice symetrique
-N      = 100           # dimension du syst.
-COND   = 0.001         # inverse de cond(A).
-DENSITY= 0.3           # densité approx.
-
-import numpy as np
-import scipy.stats as stats
-import scipy.sparse as sparse
 import matplotlib.pyplot as plt
-np.random.seed((3,14159))
+import scipy.sparse as sparse
+import scipy.stats as stats
+import numpy as np
+mak1 = 0                 # mak1=0 : pas de SYSTEM.BIN
+#           (full matrix).
+ilu0 = False                 # ilu0~=0 : élém. diag non nuls.
+isym = False                # isym=1 : matrice symetrique
+N = 100           # dimension du syst.
+COND = 0.001         # inverse de cond(A).
+DENSITY = 0.1           # densité approx.
+
+#np.random.seed((3, 14159))  # resultats prévisibles
+
 
 def sprandsym(n, density):
     rvs = stats.norm().rvs
-    X = sparse.random(n, n, density=density, data_rvs=rvs)
-    upper_X = sparse.triu(X) 
+    X = sparse.random(n, n, format='csr', density=density, data_rvs=rvs)
+    upper_X = sparse.triu(X)
     result = upper_X + upper_X.T - sparse.diags(X.diagonal())
     return result
 
-M = sprandsym(5000, 0.01)
-print(repr(M))
-# <5000x5000 sparse matrix of type '<class 'numpy.float64'>'
-#   with 249909 stored elements in Compressed Sparse Row format>
 
-# check that the matrix is symmetric. The difference should have no non-zero elements
-assert (M - M.T).nnz == 0
+def sprand(n, density):
+    rvs = stats.norm().rvs
+    X = sparse.random(n, n, format='csr', density=density, data_rvs=rvs)
+    return X
 
-statistic, pval = stats.kstest(M.data, 'norm')
-# The null hypothesis is that M.data was drawn from a normal distribution.
-# A small p-value (say, below 0.05) would indicate reason to reject the null hypothesis.
-# Since `pval` below is > 0.05, kstest gives no reason to reject the hypothesis
-# that M.data is normally distributed.
-print(statistic, pval)
-# 0.0015998040114 0.544538788914
 
-fig, ax = plt.subplots(nrows=2)
-ax[0].hist(M.data, normed=True, bins=50)
-stats.probplot(M.data, dist='norm', plot=ax[1])
-plt.show()
+print "generating random matrix..."
+if isym:
+    A = sprandsym(N, DENSITY)
+else:
+    A = sprand(N, DENSITY)
+
+print(repr(A))
+print "calculating cond number..."
+norm_A = sparse.linalg.norm(A)
+norm_invA = sparse.linalg.norm(sparse.linalg.inv(A))
+cond = norm_A*norm_invA
+print "cond(A)=", cond
+#print "nnz=", A.nnz
+#print "A.data", A.data
+#print "A.indices", A.indices
+#print "A.indptr", A.indptr
+
+print "generating random rhs..."
+b = np.random.rand(N)
+#print "b=", b
+
+print "solving with scipy..."
+x = sparse.linalg.spsolve(A, b)
+print "x=", x
+res = np.linalg.norm(b-A.dot(x))
+print "=> residual=", res
+
+print "saving matrix to system2.bin..."
+f = open('system2.bin', 'wt')
+f.write('%d\n' % N)
+f.write('%d\n' % A.nnz)
+for i in xrange(len(A.data)):
+    f.write('%18.16f\n' % A.data[i])
+    f.write('%d\n' % (A.indices[i]+1))
+for i in xrange(len(A.indptr)):
+    f.write('%d\n' % (A.indptr[i]+1))
+for v in b:
+    f.write('%18.16f\n' % v)
+for v in x:
+    f.write('%18.16f\n' % v)
+f.close()
+print 'done.'
+
 
 """
-if isym==1
-   A=sprandsym(N,DENSITY,COND,1);
-else
-   A=sprandn(N,N,DENSITY,COND); 
-end
-"""
-
-
-"""
-b=rand(1,N);
-
-%cd d:\tfe\test
-%matrice
-%cd d:\tfe\gmres
-%spy(A)
-
 P=symrcm(A);           % Réorg. de la matrice.
 A=A(P,P);
 N=size(A,1);
@@ -143,4 +158,3 @@ save a.mat A b
 disp('Done..') 
 
 """
-

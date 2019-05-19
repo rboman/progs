@@ -19,12 +19,12 @@ C
      #          ALU(iwk),JLU(iwk), JU(N),
      #          B(N),X(N),iw(2*N),
      #          r(N),r2(N),p(N),p2(N),s(N),s2(N),t(N),v(N),
-     #          iperm(2*N)
+     #          iperm(2*N),xref(N)
 
       ierr=0
 
 C     -- Chargement de la matrice A et du vecteur b ---------
-      CALL loadmat(A,IA,JA,b,ierr)
+      CALL loadmat(A,IA,JA,b,xref,ierr)
 
 C     -- Paramètres du SYMMLQ -------------------------------
       epsilon = 1.0D-8
@@ -77,6 +77,6 @@ C     -- Visualisation de la solution ----------------------
       WRITE(*,*)
       WRITE(*,*)' <ENTER> pour voir la solution'
       READ(*,*)
-      CALL VectAff(N, x)
+      CALL VectAff2(N, x, xref)
 
       END

@@ -20,15 +20,15 @@ C     -- Declarations ---------------------------------------
 
       REAL*8 epsilon, it_max, rbf,
      #       A, y, ALU, droptol, permtol,
-     #       b, x, V, H, w, co, si, g, alph
+     #       b, x, V, H, w, co, si, g, alph, xref
 
       DIMENSION A(NELEM), IA(N+1), JA(NELEM),
      #          b(N), x(N), V(N,m+1), y(N), ALU(iwk),
      #          H(m+1,m), w(N), co(m), si(m), g(m+1),
-     #          JLU(iwk), JU(N), jw(2*N), iperm(2*N)
+     #          JLU(iwk), JU(N), jw(2*N), iperm(2*N),xref(N)
 
 C     -- Chargement de la matrice A et du vecteur b ---------
-      CALL loadmat(A,IA,JA,b,ierr)
+      CALL loadmat(A,IA,JA,b,xref,ierr)
 
 C     -- Initialisation du vecteur x � 0.0d0 ----------------
       CALL vectinit(N,x)
@@ -165,6 +165,6 @@ C     -- Visualisation de la solution ----------------------
       WRITE(*,*)
       WRITE(*,*)' <ENTER> pour voir la solution'
       READ(*,*)
-      CALL VectAff(N, x)
+      CALL VectAff2(N, x, xref)
 
       END

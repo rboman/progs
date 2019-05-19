@@ -17,12 +17,12 @@ C
       DIMENSION A(NELEM), IA(N+1), JA(NELEM),
      #          ALU(iwk),JLU(iwk), JU(N),
      #          B(N),X(N),R1(N),R2(N),V(N),W(N),Y(N),
-     #          DR(N),JI(N)
+     #          DR(N),JI(N),xref(N)
       LOGICAL JT(N), JT2(N)
       ierr=0
 
 C     -- Chargement de la matrice A et du vecteur b ---------
-      CALL loadmat(A,IA,JA,b,ierr)
+      CALL loadmat(A,IA,JA,b,xref,ierr)
 
 C     -- Paramètres du SYMMLQ -------------------------------
       epsilon = 1.0D-8
@@ -59,6 +59,6 @@ C     -- Visualisation de la solution ----------------------
       WRITE(*,*)
       WRITE(*,*)' <ENTER> pour voir la solution'
       READ(*,*)
-      CALL VectAff(N, x)
+      CALL VectAff2(N, x, xref)
 
       END

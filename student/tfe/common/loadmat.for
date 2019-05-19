@@ -5,10 +5,10 @@ C------------------------------------------------------------
 C  return : ierr=0 si chargement ok.                 12.12.96
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-      SUBROUTINE loadmat(A,IA,JA,b,ierr)
+      SUBROUTINE loadmat(A,IA,JA,b,xref, ierr)
 
       integer NN, NNELEM, IA(*), JA(*), ierr
-      real*8  A(*), b(*)
+      real*8  A(*), b(*), xref(*)
 
 
       open(UNIT = 1, FILE = 'system2.bin', STATUS = 'unknown')
@@ -40,10 +40,16 @@ C        Chargement de la matrice :
 
 C        Chargement du vecteur b :
    
-         do 30 j = 1,NN
+        do 30 j = 1,NN
             read(1,*) b(j)
 30       continue
+
+C        Chargement du vecteur xref :
    
+        do 32 j = 1,NN
+            read(1,*) xref(j)
+32       continue
+
 C        Fermeture du fichier
 
          close (UNIT = 1)

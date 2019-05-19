@@ -12,12 +12,12 @@ C     -- Déclarations ---------------------------------------
       DIMENSION A(NELEM), IA(N+1), JA(NELEM),
      #          ALU(iwk),JLU(iwk),JU(N+1),
      #          b(N), x(N), z(N),
-     #          r(N), w(N), p(N),DR(N),JI(N)
+     #          r(N), w(N), p(N),DR(N),JI(N),xref(N)
       LOGICAL JT(N)
 
 
 C     -- Chargement de la matrice A et du vecteur b ---------
-      CALL loadmat(A,IA,JA,b,ierr)
+      CALL loadmat(A,IA,JA,b,xref,ierr)
 
 C     -- Initialisation du vecteur x à 0.0d0 ----------------
       CALL vectinit(N,x)
@@ -70,6 +70,6 @@ C     -- Visualisation de la solution ----------------------
       WRITE(*,*)
       WRITE(*,*)' <ENTER> pour voir la solution'
       READ(*,*)
-      CALL VectAff(N, x)
+      CALL VectAff2(N, x, xref)
 
       END

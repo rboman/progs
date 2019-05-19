@@ -102,17 +102,31 @@ C------------------------------------------------------------
 C------------------------------------------------------------
 C Affiche le vecteur v1 et attend un <ENTER>
 C------------------------------------------------------------
-      SUBROUTINE VectAff(N,v1)
-         INTEGER N, i
-         REAL*8 v1(*)
+        SUBROUTINE VectAff(N,v1)
+        INTEGER N, i
+        REAL*8 v1(*)
 
-         DO 1080 i = 1, N
+        DO 1080 i = 1, N
             WRITE(*,*) i,':',v1(i)
 1080     CONTINUE
-         write(*,*)'<ENTER>'
-         read(*,*)
-         RETURN
-      END
+        write(*,*)'<ENTER>'
+        read(*,*)
+        RETURN
+        END
+C------------------------------------------------------------
+C Affiche le vecteur v1 et attend un <ENTER>
+C------------------------------------------------------------
+        SUBROUTINE VectAff2(N,v1,v2)
+        INTEGER N, i
+        REAL*8 v1(*), v2(*)
+
+        DO 1080 i = 1, N
+            WRITE(*,*) i,':',v1(i),v2(i), v2(i)-v1(i)
+1080     CONTINUE
+        write(*,*)'<ENTER>'
+        read(*,*)
+        RETURN
+        END
 
 C------------------------------------------------------------
 C Initialise la matrice A(N,M) à 0.0d0   (full matrix)
