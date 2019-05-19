@@ -1,2 +1,2 @@
-FILE(GLOB SRCS *.for)
+FILE(GLOB SRCS *.for *.f90)
 ADD_LIBRARY(common STATIC ${SRCS})
