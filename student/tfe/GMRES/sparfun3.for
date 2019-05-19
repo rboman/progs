@@ -23,7 +23,27 @@ C------------------------------------------------------------
 1000     CONTINUE
          RETURN
       END
-
+C
+C------------------------------------------------------------
+C Calcule c = A^T * b    (sparse matrix - CSR format)
+C------------------------------------------------------------
+      SUBROUTINE SMMVT(N, A, IA, JA, b, c)
+         INTEGER N, i, j, IA(*), JA(*)
+         REAL*8 A(*), b(*), c(*)
+C
+         DO i=1,N
+            c(i)=0.0D0
+         ENDDO
+C
+         DO i=1,N
+            DO j=IA(i), IA(i+1)-1
+               k=JA(j)
+               c(k)=c(k)+A(j)*b(i)
+            ENDDO
+         ENDDO
+         RETURN
+      END
+C
 C------------------------------------------------------------
 C Fournit H(i,j)                     (où H est triu + diag)
 C------------------------------------------------------------

@@ -1,0 +1,2 @@
+FILE(GLOB SRCS *.for)
+ADD_LIBRARY(common STATIC ${SRCS})

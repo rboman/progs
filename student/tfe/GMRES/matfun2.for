@@ -29,9 +29,9 @@ C------------------------------------------------------------
          REAL*8 v1(*), v2(*), pro
 
          pro=0.0D0
-         DO 1020 i=1,N
+         DO i=1,N
             pro=pro+v1(i)*v2(i)
-1020     CONTINUE
+         ENDDO
          ProdScal=pro
          RETURN
       END
@@ -141,3 +141,18 @@ C------------------------------------------------------------
 1110     CONTINUE
          RETURN
       END
+C
+C------------------------------------------------------------
+C Effectue y=a*x+y
+C------------------------------------------------------------
+      SUBROUTINE DAXPY (N,A,X,Y)
+         REAL*8  A,X(N),Y(N)
+         INTEGER I
+
+         IF (A .EQ. 0.0) RETURN
+         DO I = 1, N
+            Y(I) = A*X(I) + Y(I)
+         ENDDO
+      RETURN
+      END
+
