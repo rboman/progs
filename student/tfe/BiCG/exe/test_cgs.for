@@ -1,12 +1,8 @@
       PROGRAM TCGS
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C   SOLVER : CGS (d'apres TEMPLATES)                 11.02.97
+C   SOLVER : CGS (d'après TEMPLATES)                 11.02.97
 C
 C   Utilise ILU0 & ILUTP
-C
-C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C Compilation : necessite CGS.OBJ, MATFUN.OBJ, LOADMAT.OBJ
-C ~~~~~~~~~~~             SPARFUN2.OBJ + precondit.
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
 C     -- Declarations ---------------------------------------

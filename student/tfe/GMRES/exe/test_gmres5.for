@@ -68,7 +68,7 @@ C     -- Cr�ation du pr�conditionneur -----------------------
          WRITE(*,*)'droptol [0.1]?'
          READ(*,*) droptol
          WRITE(*,*)'permtol [0.1]?'
-         READ(*,*) mbloc
+         READ(*,*) permtol
          WRITE(*,*)'mbloc [N] ?'
          READ(*,*) mbloc
          CALL ilutp(n,a,ja,ia,lfil,droptol,permtol,mbloc,alu,

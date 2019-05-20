@@ -1,6 +1,6 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C   SOLVER : BiCG                              11.02.97
-C            (d'après Templates)
+C            (d'aprÃ¨s Templates)
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       SUBROUTINE BICG(N, x, b, A, IA, JA, ALU, JLU, JU, epsilon,
@@ -39,7 +39,7 @@ C
       WRITE(*,210)j, residu
       WRITE(1,*)'residu2(',j,')=',residu,';'
 C
-C     Préconditionnement
+C     Prï¿½conditionnement
 C     ------------------
       IF(IFLAG.NE.0) THEN
          CALL LUSOL (n, r , z , alu, jlu, ju)
@@ -59,7 +59,7 @@ C     ----------------------------------
          GOTO 999
       ENDIF
 C
-C     Calcul des directions de recherche bi-conjuguées
+C     Calcul des directions de recherche bi-conjuguï¿½es
 C     ------------------------------------------------
       IF (j.EQ.1) THEN
          CALL VectAssign(N,p,z)
@@ -85,7 +85,7 @@ C
       ENDIF
       alpha=rho/alpha
 C
-C     Mise à jour de la solution et des résidus
+C     Mise ï¿½ jour de la solution et des rï¿½sidus
 C     -----------------------------------------
       DO i=1,N
          x(i)  = x(i)  + alpha * p(i)

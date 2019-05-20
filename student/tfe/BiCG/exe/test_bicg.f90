@@ -1,11 +1,8 @@
 
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-!   SOLVER : BICG (d'après TEMPLATES)           11.02.97
+!   SOLVER : BICG (d'aprÃ¨s TEMPLATES)           11.02.97
 !
 !   Utilise ILU0 & ILUTP
-!++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-! Compilation : nécessite BICG.OBJ, MATFUN.OBJ, LOADMAT.OBJ
-! ~~~~~~~~~~~             SPARFUN2.OBJ + précondit.
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 PROGRAM TEST_BICG
@@ -54,13 +51,13 @@ PROGRAM TEST_BICG
     ! -- Chargement de la matrice A et du vecteur b ---------
     CALL loadmat(A, IA, JA, b, xref, ierr)
 
-    ! -- Paramètres du SYMMLQ -------------------------------
+    ! -- ParamÃ¨tres du SYMMLQ -------------------------------
     epsilon = 1.0D-8
     it_max  = 800
     iflag   = 2
     ierr    = 0
 
-    ! -- Paramètres du préconditionneur ---------------------
+    ! -- Paramï¿½tres du prï¿½conditionneur ---------------------
     droptol = 0.0
     lfil    = 40
     permtol = 0.1
@@ -81,7 +78,7 @@ PROGRAM TEST_BICG
     CALL BICG(N, x, b, A, IA, JA, ALU, JLU, JU, epsilon,      &
               it_max, z, z2, r, r2, p, p2, q, q2, IFLAG, ierr)
 
-    ! -- Permutation de la solution (si pivotage employé) --
+    ! -- Permutation de la solution (si pivotage employï¿½) --
 
     IF(IFLAG.EQ.2) THEN
         DO i=1,N
@@ -92,7 +89,7 @@ PROGRAM TEST_BICG
     ENDDO
     ENDIF
 
-    ! -- Sauvegarde du résultat vers MATLAB ----------------
+    ! -- Sauvegarde du rï¿½sultat vers MATLAB ----------------
 
     OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='UNKNOWN')
     DO i = 1, N
