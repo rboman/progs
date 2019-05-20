@@ -20,3 +20,16 @@ pacman -S mingw64/mingw-w64-x86_64-gcc-libgfortran  # install
     - `mingw64/mingw-w64-x86_64-python2-enum34`    <= missing dep. of matplotlib/Qt
 
 If you have another `python` associated to `.py`, do not forget to run the scripts with `python script.py` instead of `script.py`
+
+# run the solvers
+
+```
+cd BiCG
+mkdir build
+cd build
+cmake ..
+make
+cd ..
+python ../examples/savspar.py    # <= generates a system and solves it using scipy
+build/exe/test_bicg
+```
