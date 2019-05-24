@@ -73,7 +73,7 @@ class GITRepo(Repo):
         with open(os.devnull, 'w') as FNULL:
             status = subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
         if status:
-            raise Exception('"%s" FAILED with error %d' % (cmd, status))
+            raise Exception('"%s" FAILED with error %d in cwd=%s' % (cmd, status, os.getcwd()))
        
         # git status -uno  (check "Your branch is up to date") 
         cmd = ['git', 'status', '-uno']
