@@ -12,7 +12,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline int 
+inline int
 Curve::getPointNumber(int i) const
 {
     return pt[i];
@@ -30,7 +30,6 @@ Curve::numberOfPoints() const
     return pt.size();
 }
 
-inline
-Curve::Curve(int nbpt) : pt(nbpt)
+inline Curve::Curve(int nbpt) : pt(nbpt)
 {
 }

@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 2.6)
-project(Md5Test CXX)
-set(SRCS main.cpp md5.cpp md5.h)
-add_executable(md5test ${SRCS})
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Md5Test CXX)
 
-enable_testing()
-add_test(NAME md5test COMMAND ${EXECUTABLE_OUTPUT_PATH}/md5test
+SET(SRCS main.cpp md5.cpp md5.h)
+ADD_EXECUTABLE(md5test ${SRCS})
+
+ENABLE_TESTING()
+ADD_TEST(NAME md5test COMMAND ${EXECUTABLE_OUTPUT_PATH}/md5test
          WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

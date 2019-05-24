@@ -15,6 +15,7 @@
 #ifndef TOOLBUILDER_H
 #define TOOLBUILDER_H
 
+#include "genmai.h"
 #include <vector>
 #include "Point.h"
 #include "Tool.h"
@@ -27,28 +28,28 @@ class Curve;
  *        The asperities can be smoothed.
  */
 
-class ToolBuilder : public Builder
+class GENMAI_API ToolBuilder : public Builder
 {
     static double pi;
     Tool &target;
     ToolParameters par;
 
-public:
+  public:
     ToolBuilder(Tool &_target);
 
-    void         setParameters(const ToolParameters &p);
+    void setParameters(const ToolParameters &p);
     virtual void printParameters() const;
     virtual void genere();
 
-private:
-    void genereAsperity();//, double base, double angle, double rayr);
+  private:
+    void genereAsperity(); //, double base, double angle, double rayr);
     void genereInterval();
     void genereSmoothMatrix(size_t np0, size_t *np1, size_t i);
 
     void addPoint(const Point &arg);
     void addCurve(Curve *arg);
 
-    Point const & getRollAxis() const;
+    Point const &getRollAxis() const;
 
     static double d2r(double angle);
     static double r2d(double angle);

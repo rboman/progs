@@ -12,12 +12,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline
-Layer::Layer(const LayerType type, const std::string &name) : type(type), name(name)
+inline Layer::Layer(const LayerType type, const std::string &name) : type(type), name(name)
 {
 }
 
-inline LayerType   
+inline LayerType
 Layer::getType() const
 {
     return type;
@@ -29,16 +28,16 @@ Layer::getName() const
     return name;
 }
 
-inline bool 
+inline bool
 Layer::operator!=(const Layer &l) const
 {
-    return type!=l.type;
+    return type != l.type;
 }
 
-inline bool 
+inline bool
 Layer::operator==(const Layer &l) const
 {
-    return type==l.type;
+    return type == l.type;
 }
 
 inline void
@@ -47,5 +46,3 @@ Layer::operator=(const Layer &l)
     name = l.name;
     type = l.type;
 }
-
-

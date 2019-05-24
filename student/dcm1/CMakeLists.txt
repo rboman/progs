@@ -1,22 +1,21 @@
-cmake_minimum_required(VERSION 2.8.11)
-project(Barres CXX)
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-std=c++11" STD11CHECK)
-IF(STD11CHECK)
-    ADD_DEFINITIONS(-std=c++11 )
-ENDIF()
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Barres CXX)
+
+# -- C++11
+SET(CMAKE_CXX_STANDARD 11) # newer way to set C++11 (requires cmake>=3.1)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED)
 
 FILE(GLOB SRCS *.h *.cpp)
-set (MOC_HEADERS Barres.h Window.h)
+SET(MOC_HEADERS Barres.h Window.h)
 
 qt5_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
 
 ADD_EXECUTABLE(barres ${SRCS} ${MOC_OUTFILES})
 
-if(POLICY CMP0043)
-    cmake_policy(SET CMP0043 OLD)
-endif()
+IF(POLICY CMP0043)
+    CMAKE_POLICY(SET CMP0043 OLD)
+ENDIF()
 QT5_USE_MODULES(barres Widgets)
 

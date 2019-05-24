@@ -1,17 +1,19 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
-pipo=True
+pipo = True
+
 
 def func1():
-    if pipo==True:
+    if pipo == True:
         print 'pipo=', pipo
-    
+
+
 def func2():
-    global pipo # necessaire ici car assignement dans la meme fct!!
+    global pipo  # necessaire ici car assignement dans la meme fct!!
     # python pense d'abord que "pipo" est une var local de la fct.
-    if pipo==True:
-        pipo=False             
+    if pipo == True:
+        pipo = False
         print 'pipo=', pipo
 
 

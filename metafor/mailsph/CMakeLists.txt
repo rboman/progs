@@ -1,28 +1,26 @@
 # cmake -G "Visual Studio 14 Win64" ..
 # cmake --build . --config Release
 
-cmake_minimum_required(VERSION 2.8.5 FATAL_ERROR)
-if(POLICY CMP0020)
-    cmake_policy(SET CMP0020 NEW)   # Automatically link Qt executables to qtmain target on Windows. (OLD=NO)
-endif()
-if(POLICY CMP0025)
-  cmake_policy(SET CMP0025 NEW)     # Compiler id for Apple Clang is now AppleClang.
-endif()
-if(POLICY CMP0053)
-    cmake_policy(SET CMP0053 NEW)   # Simplify variable reference and escape sequence evaluation
-endif()
-
-project (MailSph)
-
-include(CMakeToolsHelpers OPTIONAL)  # integration VSCode + CMake
-
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-std=c++11" STD11CHECK)
-IF(STD11CHECK)
-    ADD_DEFINITIONS(-std=c++11 )
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+IF(POLICY CMP0020)
+    CMAKE_POLICY(SET CMP0020 NEW)   # Automatically link Qt executables to qtmain target on Windows. (OLD=NO)
+ENDIF()
+IF(POLICY CMP0025)
+  CMAKE_POLICY(SET CMP0025 NEW)     # Compiler id for Apple Clang is now AppleClang.
+ENDIF()
+IF(POLICY CMP0053)
+    CMAKE_POLICY(SET CMP0053 NEW)   # Simplify variable reference and escape sequence evaluation
 ENDIF()
 
-find_package(VTK REQUIRED)
+PROJECT(MailSph)
+
+INCLUDE(CMakeToolsHelpers OPTIONAL)  # integration VSCode + CMake
+
+# -- C++11
+SET(CMAKE_CXX_STANDARD 11) # newer way to set C++11 (requires cmake>=3.1)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+FIND_PACKAGE(VTK REQUIRED)
 vtk_module_config(VTK
     vtkGUISupportQt   
     vtkInteractionWidgets
@@ -31,12 +29,13 @@ vtk_module_config(VTK
     vtkIOExport
     vtkIOXML
 )
-include(${VTK_USE_FILE})
+INCLUDE(${VTK_USE_FILE})
 
 IF(MSVC)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_DEPRECATE)
-ENDIF(MSVC)
+    ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_DEPRECATE)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  # parallel build with MSVC
+ENDIF()
 
 FILE(GLOB SRCS *.h *.cpp)
-add_executable(mailsph MACOSX_BUNDLE ${SRCS})
-target_link_libraries(mailsph ${VTK_LIBRARIES})
+ADD_EXECUTABLE(mailsph MACOSX_BUNDLE ${SRCS})
+TARGET_LINK_LIBRARIES(mailsph ${VTK_LIBRARIES})

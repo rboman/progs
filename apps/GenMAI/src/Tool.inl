@@ -12,13 +12,13 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline double 
+inline double
 Tool::getPointX(int i) const
 {
     return point[i].getX();
 }
 
-inline double 
+inline double
 Tool::getPointY(int i) const
 {
     return point[i].getY();
@@ -36,38 +36,38 @@ Tool::getCurve(int i) const
     return *courbe[i];
 }
 
-inline void 
+inline void
 Tool::setFirstCurve(int firstCurve)
 {
-    firstc=firstCurve;
+    firstc = firstCurve;
 }
 
-inline int  
+inline int
 Tool::getFirstCurve() const
 {
     return firstc;
 }
 
-inline void 
+inline void
 Tool::setFirstPoint(int firstPoint)
 {
-    firstp=firstPoint;
+    firstp = firstPoint;
 }
 
-inline int  
+inline int
 Tool::getFirstPoint() const
 {
     return firstp;
 }
 
 inline size_t
-Tool::numberOfPoints() const  
-{ 
-    return point.size(); 
+Tool::numberOfPoints() const
+{
+    return point.size();
 }
 
 inline size_t
 Tool::numberOfCurves() const
-{ 
-    return courbe.size(); 
+{
+    return courbe.size();
 }

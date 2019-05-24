@@ -28,7 +28,7 @@ C     -- Déclarations ---------------------------------------
      #          JLU(iwk), JU(N), jw(2*N), iperm(2*N)
 
 C     -- Chargement de la matrice A et du vecteur b ---------
-      CALL loadmat(A,IA,JA,b,ierr)
+      CALL loadmat(A,IA,JA,b,xref,ierr)
 
 C     -- Initialisation du vecteur x à 0.0d0 ----------------
       CALL vectinit(N,x)
@@ -127,6 +127,6 @@ C     -- Visualisation de la solution ----------------------
       WRITE(*,*)
       WRITE(*,*)' <ENTER> pour voir la solution'
       READ(*,*)
-      CALL VectAff(N, x)
+      CALL VectAff2(N, x, xref)
 
       END

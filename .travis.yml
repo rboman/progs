@@ -24,6 +24,8 @@ install:
   # C++14
   - sudo apt-get install g++-6
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+  # fortran
+  - sudo apt install gfortran
   # swig
   - sudo apt-get install swig3.0
   - sudo ln -s /usr/bin/swig3.0 /usr/bin/swig
@@ -33,10 +35,4 @@ install:
   - sudo apt-get install libgmm++-dev
 
 script:
-  - cd ${PROG_BASE_DIR}/apps/EHD  && ./travis.sh
-  - cd ${PROG_BASE_DIR}/apps/fractal  && ./travis.sh
-  - cd ${PROG_BASE_DIR}/apps/GenMAI  && ./travis.sh
-  - cd ${PROG_BASE_DIR}/apps/md5  && ./travis.sh
-  - cd ${PROG_BASE_DIR}/apps/minibarreTE  && ./travis.sh
-  #- cd ${PROG_BASE_DIR}/student/dcm1  && ./travis.sh    # requires Qt
-  - cd ${PROG_BASE_DIR}/student/dcm2  && ./travis.sh
+  - cd ${PROG_BASE_DIR}  && python ./build_all.py --travis

@@ -12,7 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "Arc.h"
 #include <iostream>
 
@@ -23,27 +22,24 @@ Arc::Arc(int p1, int p2, int p3) : Curve(3)
     setPointNumber(2, p3);
 }
 
-void
-Arc::print() const
+void Arc::print() const
 {
-    std::cout << "Arc " << getPointNumber(0) << ' ' << getPointNumber(1) << ' ' << getPointNumber(2) ;
+    std::cout << "Arc " << getPointNumber(0) << ' ' << getPointNumber(1) << ' ' << getPointNumber(2);
 }
 
 char const *
-Arc::name() const 
-{ 
-    return "Arc"; 
+Arc::name() const
+{
+    return "Arc";
 }
 
 char const *
 Arc::carteBacon() const
-{ 
-    return ".arc"; 
+{
+    return ".arc";
 }
 
-int 
-Arc::typeDon() const 
-{ 
-    return 2; 
+int Arc::typeDon() const
+{
+    return 2;
 }
-

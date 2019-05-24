@@ -15,18 +15,19 @@
 #ifndef BACONMESHEXPORTER_H
 #define BACONMESHEXPORTER_H
 
+#include "genmai.h"
 #include "MeshExporter.h"
 
 /**
  *  @brief Exports a DAT file that defines the nodes, the Mesh and the contact nodes 
  */
 
-class BaconMeshExporter : public MeshExporter
+class GENMAI_API BaconMeshExporter : public MeshExporter
 {
-public:
+  public:
     BaconMeshExporter(Mesh &_mesh);
 
-private:
+  private:
     virtual std::string getName() const;
     virtual std::string getFileExtension() const;
 

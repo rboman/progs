@@ -1,21 +1,18 @@
-cmake_minimum_required(VERSION 3.0)
-project(OpenMP_CXX CXX)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(OpenMP_CXX CXX)
 
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-std=c++11" STD11CHECK)
-IF(STD11CHECK)
-    ADD_DEFINITIONS(-std=c++11 )
-ENDIF()
+# -- C++11
+SET(CMAKE_CXX_STANDARD 11) # newer way to set C++11 (requires cmake>=3.1)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # OpenMP --
-find_package(OpenMP REQUIRED)
-if(OPENMP_FOUND)
+FIND_PACKAGE(OpenMP REQUIRED)
+IF(OPENMP_FOUND)
     MESSAGE ("OpenMP_CXX_FLAGS=${OpenMP_CXX_FLAGS}")
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif()
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+ENDIF()
 
 FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
-add_executable(omp ${SRCS})
-target_link_libraries(omp ${TBB_LIBRARIES})
-
+ADD_EXECUTABLE(omp ${SRCS})
+TARGET_LINK_LIBRARIES(omp ${TBB_LIBRARIES})

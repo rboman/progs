@@ -15,13 +15,15 @@
 #ifndef PARAMENUM_H
 #define PARAMENUM_H
 
+#include "genmai.h"
+
 /**
  * @brief List of id for parameters (used for fast access)
  */
 
 enum ParamEnum
 {
-    P_R,            // Tool
+    P_R, // Tool
     P_A1,
     P_ASP_B,
     P_ASP_A,
@@ -29,7 +31,7 @@ enum ParamEnum
     P_ABS_INT,
     P_CENTRE,
     P_ASP_NBR,
-    P_ORIG,         // Mesh
+    P_ORIG, // Mesh
     P_DIM,
     P_NOX,
     P_NBM,

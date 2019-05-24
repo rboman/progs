@@ -15,19 +15,21 @@
 #ifndef LINE_H
 #define LINE_H
 
+#include "genmai.h"
 #include "Curve.h"
 
 /**
  * @brief Defines a segment of Line with 2 points.
  */
 
-class Line : public Curve {
-public:
+class GENMAI_API Line : public Curve
+{
+  public:
     Line(int p1, int p2);
 
     void print() const;
-    char const * name() const;
-    char const * carteBacon() const;
+    char const *name() const;
+    char const *carteBacon() const;
     int typeDon() const;
 };
 

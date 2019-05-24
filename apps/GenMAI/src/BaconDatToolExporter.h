@@ -15,18 +15,19 @@
 #ifndef BACONDATTOOLEXPORTER_H
 #define BACONDATTOOLEXPORTER_H
 
+#include "genmai.h"
 #include "ToolExporter.h"
 
 /**
  * @brief Exports a DAT file for Bacon that can be used for displaying the Tool on the screen
  */
 
-class BaconDatToolExporter : public ToolExporter
+class GENMAI_API BaconDatToolExporter : public ToolExporter
 {
-public:
+  public:
     BaconDatToolExporter(Tool &_matrix);
 
-private:
+  private:
     virtual std::string getName() const;
     virtual std::string getFileExtension() const;
     virtual void writeHeader();

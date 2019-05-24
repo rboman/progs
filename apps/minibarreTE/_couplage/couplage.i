@@ -1,7 +1,3 @@
-//
-// $Id: couplage.i 1084 2013-02-18 08:46:33Z boman $
-//
-
 %feature("autodoc","1");
 
 %module(docstring=

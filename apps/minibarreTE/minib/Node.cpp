@@ -1,4 +1,3 @@
-
 #include "Node.h"
 
 std::ostream &

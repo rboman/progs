@@ -21,19 +21,21 @@ class Gnuplot;
 
 class COUPLAGE_API PlotWin
 {
-	Gnuplot *plot;
-	std::vector<double> *x;
-	std::vector<double> *inc;
+    Gnuplot *plot;
+    std::vector<double> *x;
+    std::vector<double> *inc;
     int nstep;
-public:
+
+  public:
     int freq;
     double ymin;
     double ymax;
-public:
-	PlotWin();
-	void init(std::vector<double> &_x, std::vector<double> &_inc);
-	~PlotWin();
-	void update();
+
+  public:
+    PlotWin();
+    void init(std::vector<double> &_x, std::vector<double> &_inc);
+    ~PlotWin();
+    void update();
 };
 
 #endif

@@ -12,18 +12,19 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef ARC_H
-#define ARC_H
+#ifndef GENMAI_ARC_H
+#define GENMAI_ARC_H
 
+#include "genmai.h"
 #include "Curve.h"
 
 /**
  * @brief Defines an Arc of circle with 3 points.
  */
 
-class Arc : public Curve
+class GENMAI_API Arc : public Curve
 {
-public:
+  public:
     Arc(int p1, int p2, int p3);
 
     void print() const;

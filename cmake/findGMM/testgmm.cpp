@@ -1,4 +1,4 @@
-#include <gmm/gmm.h>
+#include "gmm_gmm.h"
 //#include <gmm/gmm_MUMPS_interface.h>
 
 void testMUMPS()

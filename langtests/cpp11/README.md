@@ -1,4 +1,3 @@
-cpp11
-=====
+# langtests/cpp11
 
-Test C++11 features
+Test compilers with C++11 features

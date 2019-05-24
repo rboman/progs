@@ -1,9 +1,30 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
+#
+#   Copyright 2019 Romain Boman
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+"""
+Management of SVN and git commands
+"""
 
 from __future__ import print_function
 from builtins import object
 import pytools.utils as pu
-import os, os.path, subprocess, re
+import os
+import os.path
+import subprocess
+import re
 
 
 class Repo(object):
@@ -13,6 +34,7 @@ class Repo(object):
     def update(self):
         pass
 
+
 class GITRepo(Repo):
     def __init__(self, name, repo):
         self.name = name
@@ -21,8 +43,8 @@ class GITRepo(Repo):
     def update(self):
 
         if not os.path.isdir(self.name):
-            #print "skipping %s" % self.name  # should checkout instead
-            #return
+            # print "skipping %s" % self.name  # should checkout instead
+            # return
             cmd = 'git clone %s' % self.repo
             if not pu.isUnix():
                 cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
@@ -34,9 +56,9 @@ class GITRepo(Repo):
         else:
             pu.chDir(self.name)
             if pu.isUnix():
-                cmd = 'git pull origin master'
+                cmd = 'git pull'
             else:
-                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull origin master"'
+                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull"'
             print(cmd)
             # os.system necessite des "" en plus autour de la cmd)
             #os.system('"%s"' % cmd)
@@ -45,7 +67,7 @@ class GITRepo(Repo):
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
             print('status=', status)
             pu.chDir('..')
-        
+
         # set core.filemode=false in .git/config on windows!
         # (otherwise executable files are considered as diffs)
         if not pu.isUnix():
@@ -56,7 +78,7 @@ class GITRepo(Repo):
             status = subprocess.call(cmd, shell=True)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            pu.chDir('..')  
+            pu.chDir('..')
 
     def outdated(self):
         "checks whether the working copy is outdated"
@@ -69,22 +91,38 @@ class GITRepo(Repo):
         # git remote -v update (fetch everything)
         cmd = ['git', 'remote', '-v', 'update']
         if not pu.isUnix():
-            cmd = [r'C:\Program Files\Git\bin\sh.exe', '--login', '-c', ' '.join(cmd) ]
+            cmd = [r'C:\Program Files\Git\bin\sh.exe',
+                   '--login', '-c', ' '.join(cmd)]
         with open(os.devnull, 'w') as FNULL:
-            status = subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+            status = subprocess.call(
+                cmd, stdout=FNULL, stderr=subprocess.STDOUT)
         if status:
             raise Exception('"%s" FAILED with error %d in cwd=%s' % (cmd, status, os.getcwd()))
        
         # git status -uno  (check "Your branch is up to date") 
         cmd = ['git', 'status', '-uno']
         if not pu.isUnix():
-            cmd = [r'C:\Program Files\Git\bin\sh.exe', '--login', '-c', ' '.join(cmd) ]
+            cmd = [r'C:\Program Files\Git\bin\sh.exe',
+                   '--login', '-c', ' '.join(cmd)]
         out = subprocess.check_output(cmd)
         out = out.decode()  # python 3 returns bytes
         m = re.search(r'Your branch is up to date', out)
         os.chdir('..')
 
-        return (m==None)
+        return (m == None)
+
+    def checkout(self, branch='master'):
+        os.chdir(self.name)
+        cmd = ['git', 'checkout', branch]
+        if not pu.isUnix():
+            cmd = [r'C:\Program Files\Git\bin\sh.exe',
+                   '--login', '-c', ' '.join(cmd)]
+        with open(os.devnull, 'w') as FNULL:
+            status = subprocess.call(
+                cmd, stdout=FNULL, stderr=subprocess.STDOUT)
+        if status:
+            raise Exception('"%s" FAILED with error %d' % (cmd, status))
+        os.chdir('..')
 
 
 class SVNRepo(Repo):
@@ -106,7 +144,8 @@ class SVNRepo(Repo):
 
         print(cmd)
         status = subprocess.call(cmd, shell=True)
-        if status: raise Exception('"%s" FAILED with error %d' % (cmd, status))
+        if status:
+            raise Exception('"%s" FAILED with error %d' % (cmd, status))
 
     def outdated(self):
         "checks whether the working copy is outdated"
@@ -114,7 +153,7 @@ class SVNRepo(Repo):
         if not os.path.isdir(self.name):
             return True
 
-        # svn info 
+        # svn info
         out = subprocess.check_output(['svn', 'info', self.name])
         out = out.decode(errors='ignore')  # python 3 returns bytes
         m = re.search(r'Last Changed Rev: (\d+)', out)
@@ -135,4 +174,4 @@ class SVNRepo(Repo):
         #print('version =', version)
         #print('version_HEAD =', version_HEAD)
 
-        return version!=version_HEAD
+        return version != version_HEAD

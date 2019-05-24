@@ -15,6 +15,7 @@
 #ifndef PARAM_H
 #define PARAM_H
 
+#include "genmai.h"
 #include <string>
 #include "Point.h"
 #include "LayerType.h"
@@ -24,20 +25,21 @@
  * @brief Generic Parameter with print, load and save functions
  */
 
-class Param
+class GENMAI_API Param
 {
-    ParamEnum   id;
+    ParamEnum id;
     std::string name;
-public:
-    Param(ParamEnum id=(ParamEnum)0, const std::string &name="");
+
+  public:
+    Param(ParamEnum id = (ParamEnum)0, const std::string &name = "");
     virtual void setToDefault();
 
     std::string getName() const;
-    ParamEnum   getId() const;
+    ParamEnum getId() const;
 
     static Param &getNull();
 
-    virtual Param * clone() const;
+    virtual Param *clone() const;
     virtual void print() const;
     virtual void load(FILE *file);
     virtual void save(FILE *file) const;
@@ -55,15 +57,15 @@ public:
     virtual void set(Point value);
 
     virtual LayerType getLayer(int i) const;
-    virtual void      add(LayerType value);
+    virtual void add(LayerType value);
     virtual size_t size() const;
 
-protected:
-    void   saveDouble(FILE *file, double  val, bool newline) const;
+  protected:
+    void saveDouble(FILE *file, double val, bool newline) const;
     double loadDouble(FILE *file, bool newline) const;
 
-    void saveInteger(FILE *file, int  val, bool newline) const;
-    int  loadInteger(FILE *file, bool newline) const;
+    void saveInteger(FILE *file, int val, bool newline) const;
+    int loadInteger(FILE *file, bool newline) const;
 
     void saveNewLine(FILE *file) const;
     void loadNewLine(FILE *file) const;
@@ -71,4 +73,3 @@ protected:
 };
 
 #endif
-

@@ -15,6 +15,7 @@
 #ifndef MESHEXPORTER_H
 #define MESHEXPORTER_H
 
+#include "genmai.h"
 #include "Exporter.h"
 class Mesh;
 
@@ -22,22 +23,21 @@ class Mesh;
  *  @brief Mother class for Mesh export.
  */
 
-class MeshExporter : public Exporter
+class GENMAI_API MeshExporter : public Exporter
 {
-protected:
+  protected:
     const Mesh &mesh;
 
-public:
+  public:
     MeshExporter(Mesh &_mesh);
 
-protected:
+  protected:
     virtual void writeNodes();
     virtual void writeElements();
     virtual void writeContactElements();
 
-private:
+  private:
     virtual void writeBody();
 };
-
 
 #endif

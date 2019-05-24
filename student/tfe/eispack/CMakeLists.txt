@@ -1,0 +1,2 @@
+FILE(GLOB SRCS *.for *.f90)
+ADD_LIBRARY(eispack STATIC ${SRCS})

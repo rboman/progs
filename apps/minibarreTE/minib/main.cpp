@@ -1,10 +1,8 @@
-
 #include <iostream>
 #include <gmm/gmm.h>
 
 #include "Bar.h"
 #include "Mesh.h"
-
 
 int main()
 {
@@ -12,12 +10,11 @@ int main()
     Bar bar;
     std::cout << bar;
     Mesh mesh;
-    mesh.generate(0.0, bar.L/2.0, 100);
+    mesh.generate(0.0, bar.L / 2.0, 100);
     std::cout << mesh << '\n';
 
-    gmm::row_matrix<gmm::wsvector<double> > A(2, 2);
+    gmm::row_matrix<gmm::wsvector<double>> A(2, 2);
 
-	// pause
-	system("pause");
+    // pause
+    system("pause");
 }
-

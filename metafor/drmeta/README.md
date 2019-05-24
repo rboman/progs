@@ -1,23 +1,24 @@
-# Docteur METAFOR 
+# metafor/drmeta - Docteur METAFOR 
 
 par Romain BOMAN
 (r.boman@ulg.ac.be)
 
 Contenu:
 
-README        : ce fichier
-Makefile      : compilation: make
-dr.h          : header
-drf.c         : gestion fortran et main
-drc.c         : gestion c
-test/test.c   : routine test
-test/test.f   : routine test
+- README        : ce fichier
+- Makefile      : compilation: make
+- dr.h          : header
+- drf.c         : gestion fortran et main
+- drc.c         : gestion c
+- test/test.c   : routine test
+- test/test.f   : routine test
 
 Pour infos voir les 3 fichiers source.
 
 
 Lancer le test:
 
+```
 [boman@garfield Drmeta-2.0]$ make      
 gcc -c  -O3 -g  drc.c
 gcc -c  -O3 -g  drf.c
@@ -88,4 +89,4 @@ Au total:
          5       CALL(s) mal formule(s).
 
 [boman@garfield Drmeta-2.0]$ 
-
+```

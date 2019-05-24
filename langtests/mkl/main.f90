@@ -34,6 +34,4 @@ program mkltest
         print *, 'y(',i,')=', y(i)
     end do
 
-
-
 end program

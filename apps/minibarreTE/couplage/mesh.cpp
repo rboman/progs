@@ -1,9 +1,7 @@
-
 #include "mesh.h"
 #include <fstream>
 
-
-Mesh::Mesh() 
+Mesh::Mesh()
 {
     m = 101;
 }
@@ -14,11 +12,10 @@ operator<<(std::ostream &out, Mesh const &obj)
     out << "msh.m = " << obj.m << ";\n";
     return out;
 }
-	
-void 
-Mesh::save(std::string const &filename) const
+
+void Mesh::save(std::string const &filename) const
 {
-	std::ofstream file(filename.c_str());
-	file << *this;
-	file.close();
+    std::ofstream file(filename.c_str());
+    file << *this;
+    file.close();
 }

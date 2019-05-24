@@ -15,19 +15,20 @@
 #ifndef EXPORTER_H
 #define EXPORTER_H
 
+#include "genmai.h"
 #include <string>
 
 /**
  * @brief Mother class for exports.
  */
 
-class Exporter
+class GENMAI_API Exporter
 {
-    std::string fileName;          ///< filename (without extension)
-protected:
-    FILE *fich;                    ///< C file structure from stdio
+    std::string fileName; ///< filename (without extension)
+  protected:
+    FILE *fich; ///< C file structure from stdio
 
-public:
+  public:
     Exporter();
 
     void save();
@@ -36,7 +37,7 @@ public:
     void setBaseFileName(std::string const &_name);
     std::string getBaseFileName() const;
 
-protected:
+  protected:
     /// Gets the filename (without extension)
     virtual std::string getName() const = 0;
     /// Gets the file extension
@@ -48,7 +49,7 @@ protected:
     /// Writes the footer to the file
     virtual void writeFooter() = 0;
 
-private:
+  private:
     void openFile();
     void closeFile();
     void printBeginComment();
@@ -56,4 +57,3 @@ private:
 };
 
 #endif
-

@@ -21,24 +21,26 @@
 
 class COUPLAGE_API ResFiles
 {
-	std::ofstream *dispfile;
-	std::ofstream *tempfile;
-	std::ofstream *timefile;
-	std::ofstream *lightfile;
+    std::ofstream *dispfile;
+    std::ofstream *tempfile;
+    std::ofstream *timefile;
+    std::ofstream *lightfile;
 
-	std::vector<double> *inc;
-	double *time;
-	double *light;
+    std::vector<double> *inc;
+    double *time;
+    double *light;
     int nstep;
-public:
+
+  public:
     int freq;
-public:
-	ResFiles();
-	~ResFiles();
-    
+
+  public:
+    ResFiles();
+    ~ResFiles();
+
 #ifndef SWIG
-	void init(std::vector<double> &_inc, double &_time, double &_light);
-	void update();
+    void init(std::vector<double> &_inc, double &_time, double &_light);
+    void update();
 #endif
 };
 

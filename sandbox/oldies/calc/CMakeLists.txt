@@ -1,6 +1,5 @@
-cmake_minimum_required(VERSION 2.6)
-project(Calc C)
-set(SRCS calc.c calc.h)
-add_executable(calc ${SRCS})
-target_link_libraries(calc m)
-
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Calc C)
+SET(SRCS calc.c calc.h)
+ADD_EXECUTABLE(calc ${SRCS})
+TARGET_LINK_LIBRARIES(calc m)

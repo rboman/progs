@@ -1,14 +1,13 @@
-cmake_minimum_required(VERSION 2.8)
- 
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 PROJECT(HistogramXYPlot)
  
-find_package(VTK REQUIRED)
-include(${VTK_USE_FILE})
+FIND_PACKAGE(VTK REQUIRED)
+INCLUDE(${VTK_USE_FILE})
  
-add_executable(HistogramXYPlot HistogramXYPlot.cpp)
+ADD_EXECUTABLE(HistogramXYPlot HistogramXYPlot.cpp)
  
-if(VTK_LIBRARIES)
-    target_link_libraries(HistogramXYPlot ${VTK_LIBRARIES})
-else()
-    target_link_libraries(HistogramXYPlot vtkHybrid vtkWidgets)
-endif()
+IF(VTK_LIBRARIES)
+    TARGET_LINK_LIBRARIES(HistogramXYPlot ${VTK_LIBRARIES})
+ELSE()
+    TARGET_LINK_LIBRARIES(HistogramXYPlot vtkHybrid vtkWidgets)
+ENDIF()

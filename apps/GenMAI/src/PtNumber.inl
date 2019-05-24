@@ -12,21 +12,19 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline 
-PtNumber::PtNumber(int _no) 
+inline PtNumber::PtNumber(int _no)
 {
     no = _no;
 }
 
-inline int 
-PtNumber::getInt() 
-{ 
+inline int
+PtNumber::getInt()
+{
     return no;
 }
 
-inline bool 
-PtNumber::isValid() 
-{ 
-    return (no ? true : false) ;
+inline bool
+PtNumber::isValid()
+{
+    return (no ? true : false);
 }
-

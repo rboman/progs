@@ -1,4 +1,3 @@
-
 #include "bar.h"
 #include <fstream>
 

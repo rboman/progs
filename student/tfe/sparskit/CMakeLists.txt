@@ -1,0 +1,4 @@
+
+
+FILE(GLOB SRCS *.f)
+ADD_LIBRARY(sparskit STATIC ${SRCS})

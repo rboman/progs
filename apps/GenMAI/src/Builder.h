@@ -15,13 +15,15 @@
 #ifndef BUILDER_H
 #define BUILDER_H
 
+#include "genmai.h"
+
 /**
  * @brief Mother class of Builders
  */
 
-class Builder
+class GENMAI_API Builder
 {
-public:
+  public:
     Builder();
 
     virtual void genere() = 0;

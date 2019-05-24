@@ -12,7 +12,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
+#include "genmai.h"
 #include "Mesh.h"
 #include "MeshBuilder.h"
 

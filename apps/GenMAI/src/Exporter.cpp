@@ -12,32 +12,29 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
-#include <iostream>
 #include "Exporter.h"
+#include <iostream>
 
-Exporter::Exporter() 
-{ 
-    fich=NULL; 
+Exporter::Exporter()
+{
+    fich = NULL;
 }
 
 /**
  * @brief Opens the file
  */
 
-void
-Exporter::openFile()
+void Exporter::openFile()
 {
     std::string fname = getFileName();
-    fich = fopen(fname.c_str(),"w+t");
+    fich = fopen(fname.c_str(), "w+t");
 }
 
 /**
  * @brief Closes the file
  */
 
-void
-Exporter::closeFile()
+void Exporter::closeFile()
 {
     fclose(fich);
 }
@@ -46,7 +43,7 @@ Exporter::closeFile()
  * @brief Returns the filename with the extension
  */
 
-std::string 
+std::string
 Exporter::getFileName() const
 {
     return fileName + getFileExtension();
@@ -56,8 +53,7 @@ Exporter::getFileName() const
  * @brief Sets the filename
  */
 
-void 
-Exporter::setBaseFileName(std::string const &_name)
+void Exporter::setBaseFileName(std::string const &_name)
 {
     fileName = _name;
 }
@@ -66,7 +62,7 @@ Exporter::setBaseFileName(std::string const &_name)
  * @brief Gets the filename
  */
 
-std::string 
+std::string
 Exporter::getBaseFileName() const
 {
     return fileName;
@@ -76,8 +72,7 @@ Exporter::getBaseFileName() const
  * @brief Prints the name of the Exporter to stdout
  */
 
-void
-Exporter::printBeginComment()
+void Exporter::printBeginComment()
 {
     std::cout << getName().c_str() << "Exporter:" << std::endl;
     std::cout << "----------------" << std::endl;
@@ -87,18 +82,17 @@ Exporter::printBeginComment()
  * @brief Prints some comments to stdout
  */
 
-void
-Exporter::printEndComment()
+void Exporter::printEndComment()
 {
-    std::cout << "fichier " << getName().c_str() << " ("<< getFileName().c_str() <<") cree." << std::endl << std::endl;
+    std::cout << "fichier " << getName().c_str() << " (" << getFileName().c_str() << ") cree." << std::endl
+              << std::endl;
 }
 
 /**
  * @brief Main member function - exports the data to the file
  */
 
-void
-Exporter::save()
+void Exporter::save()
 {
     printBeginComment();
 
@@ -110,4 +104,3 @@ Exporter::save()
 
     printEndComment();
 }
-

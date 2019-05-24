@@ -12,26 +12,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline
-IntNumber::IntNumber(int _no) 
+inline IntNumber::IntNumber(int _no)
 {
-    no=_no;
+    no = _no;
 }
 
-inline int 
-IntNumber::getInt() 
-{ 
+inline int
+IntNumber::getInt()
+{
     return no;
 }
 
-inline 
-IntNumber::IntNumber(const IntNumber &obj) 
-{ 
-    no=obj.no; 
+inline IntNumber::IntNumber(const IntNumber &obj)
+{
+    no = obj.no;
 }
 
-inline void 
-IntNumber::operator=(const IntNumber &obj) 
-{ 
-    no=obj.no; 
+inline void
+IntNumber::operator=(const IntNumber &obj)
+{
+    no = obj.no;
 }

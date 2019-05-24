@@ -12,18 +12,15 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "PointParam.h"
 
-
-PointParam::PointParam(ParamEnum id, const std::string &name, double x, double y) : Param(id, name), 
-                        defvalue(x,y)
+PointParam::PointParam(ParamEnum id, const std::string &name, double x, double y) : Param(id, name),
+                                                                                    defvalue(x, y)
 {
     setToDefault();
 }
 
-void 
-PointParam::setToDefault()
+void PointParam::setToDefault()
 {
     value = defvalue;
 }
@@ -40,38 +37,33 @@ PointParam::getPoint()
     return value;
 }
 
-void 
-PointParam::set(Point value)
+void PointParam::set(Point value)
 {
     this->value = value;
 }
 
-Param * 
+Param *
 PointParam::clone() const
 {
     return new PointParam(*this);
 }
 
-void 
-PointParam::print() const
+void PointParam::print() const
 {
     Param::print();
     std::cout << " " << value;
 }
 
-void 
-PointParam::load(FILE *file)
+void PointParam::load(FILE *file)
 {
     Param::load(file);
-    getPoint().setX(loadDouble(file, true)); 
-    getPoint().setY(loadDouble(file, true)); 
+    getPoint().setX(loadDouble(file, true));
+    getPoint().setY(loadDouble(file, true));
 }
 
-void 
-PointParam::save(FILE *file) const
-{ 
+void PointParam::save(FILE *file) const
+{
     Param::save(file);
     saveDouble(file, getPoint().getX(), true);
     saveDouble(file, getPoint().getY(), true);
 }
-

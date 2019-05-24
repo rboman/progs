@@ -1,13 +1,13 @@
-cmake_minimum_required(VERSION 3.0)
-project(Cpp11 CXX)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+PROJECT(Cpp11 CXX)
 
-#ADD_DEFINITIONS( /Qstd=c++11 )
-
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-std=c++11" STD11CHECK)
-IF(STD11CHECK)
-    ADD_DEFINITIONS(-std=c++11 )
-ENDIF()
+# -- C++11
+SET(CMAKE_CXX_STANDARD 11) # newer way to set C++11 (requires cmake>=3.1)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 FILE(GLOB SRCS *.h *.cpp *.inl *.hpp)
-add_executable(cpp11 ${SRCS})
+ADD_EXECUTABLE(cpp11 ${SRCS})
+
+ENABLE_TESTING()
+ADD_TEST(NAME cpp11 COMMAND ${EXECUTABLE_OUTPUT_PATH}/cpp11
+         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})

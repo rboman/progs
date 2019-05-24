@@ -15,6 +15,7 @@
 #ifndef LAYERS_H
 #define LAYERS_H
 
+#include "genmai.h"
 #include "Layer.h"
 #include <map>
 
@@ -22,23 +23,24 @@
  * @brief Set of available Layer objects (singleton)
  */
 
-class Layers
+class GENMAI_API Layers
 {
     // Begin of Singleton Pattern -----
-public:
+  public:
     static Layers *Instance();
-protected:
+
+  protected:
     Layers();
-private:
+
+  private:
     static Layers *_instance;
     // End of Singleton Pattern -----
 
     std::map<LayerType, Layer> layerMap;
     void addLayer(const Layer &layer);
 
-public:
+  public:
     Layer const &get(const LayerType t);
 };
 
 #endif
-

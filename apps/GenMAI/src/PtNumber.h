@@ -15,24 +15,26 @@
 #ifndef PTNUMBER_H
 #define PTNUMBER_H
 
+#include "genmai.h"
 #include <iostream>
 
 /**
  * @brief Single int for numbering Point objects 
  */
 
-class PtNumber
+class GENMAI_API PtNumber
 {
     int no;
-public:
-    explicit PtNumber(int _no=0);
-    
+
+  public:
+    explicit PtNumber(int _no = 0);
+
     int getInt();
     bool isValid();
 
     static const PtNumber Null();
 
-	friend std::ostream & operator<<(std::ostream &o, const PtNumber &v);
+    friend std::ostream &operator<<(std::ostream &o, const PtNumber &v);
 };
 
 #include "PtNumber.inl"

@@ -1,5 +1,3 @@
-// $Id: problem.h 1084 2013-02-18 08:46:33Z boman $
-
 #ifndef PROBLEM_H
 #define PROBLEM_H
 
@@ -13,7 +11,7 @@
 
 class COUPLAGE_API Problem
 {
-public:
+  public:
     Bar bar;
     Light light;
     Mesh msh;
@@ -21,19 +19,20 @@ public:
     ResFiles results;
     PlotWin plot;
 
-public:
+  public:
     Problem();
     friend COUPLAGE_API std::ostream &operator<<(std::ostream &out, Problem const &obj);
-    Bar &getBar() { return bar;}
-    Light &getLight() { return light;}
-    Mesh &getMesh() { return msh;}
-    Newmark &getNewmark() { return nmark;}
-    ResFiles &getResFiles() { return results;}
-    PlotWin &getPlotWin() { return plot;}
+    Bar &getBar() { return bar; }
+    Light &getLight() { return light; }
+    Mesh &getMesh() { return msh; }
+    Newmark &getNewmark() { return nmark; }
+    ResFiles &getResFiles() { return results; }
+    PlotWin &getPlotWin() { return plot; }
 
     void solve();
-private:
-    void applyBC(gmm::row_matrix<gmm::wsvector<double> > &mat, int line);
+
+  private:
+    void applyBC(gmm::row_matrix<gmm::wsvector<double>> &mat, int line);
 };
 
 #endif

@@ -15,13 +15,15 @@
 #ifndef TARGETOBJECT_H
 #define TARGETOBJECT_H
 
+#include "genmai.h"
+
 /**
  * @brief Mother class of targets for Builder objects
  */
 
-class TargetObject
+class GENMAI_API TargetObject
 {
-public:
+  public:
     TargetObject();
     /// Prints a summary of the object to stdout
     virtual void print() const = 0;

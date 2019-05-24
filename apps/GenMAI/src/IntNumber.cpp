@@ -12,13 +12,10 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "IntNumber.h"
 
-const IntNumber 
-IntNumber::Null() 
-{ 
-    return IntNumber(0); 
+const IntNumber
+IntNumber::Null()
+{
+    return IntNumber(0);
 }
-
-

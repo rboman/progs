@@ -15,13 +15,15 @@
 #ifndef LAYERTYPE_H
 #define LAYERTYPE_H
 
+#include "genmai.h"
+
 /**
  * @brief Id for the Layer objects
  */
 
 enum LayerType
 {
-    CONSTANT  = 0,
+    CONSTANT = 0,
     REDUCTION
 };
 

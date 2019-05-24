@@ -12,20 +12,18 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Global.h"
 #include "ToolExporter.h"
 
 /**
  * @brief Constructor
  */
 
-ToolExporter::ToolExporter(Tool &_matrix): Exporter(), matrix(_matrix)
+ToolExporter::ToolExporter(Tool &_matrix) : Exporter(), matrix(_matrix)
 {
-    setBaseFileName( std::string("mymatrix") );
+    setBaseFileName(std::string("mymatrix"));
 }
 
-void
-ToolExporter::writeBody()
+void ToolExporter::writeBody()
 {
     writePoints();
     writeCurves();
@@ -36,8 +34,7 @@ ToolExporter::writeBody()
  * @brief Writes the points to the file
  */
 
-void 
-ToolExporter::writePoints() 
+void ToolExporter::writePoints()
 {
 }
 
@@ -45,8 +42,7 @@ ToolExporter::writePoints()
  * @brief Writes the curves to the file
  */
 
-void 
-ToolExporter::writeCurves() 
+void ToolExporter::writeCurves()
 {
 }
 
@@ -54,8 +50,6 @@ ToolExporter::writeCurves()
  * @brief Writes the contours to the file
  */
 
-void 
-ToolExporter::writeContours() 
+void ToolExporter::writeContours()
 {
 }
-
