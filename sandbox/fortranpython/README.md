@@ -1,21 +1,26 @@
 
 
-http://calcul.math.cnrs.fr/Documents/Journees/dec2006/python-fortran.pdf
+# Fortran + python
 
-C:\msys64\mingw64\bin\f2py2.exe
+- j'utilise f2py fourni avec numpy.
+- je compile sous windows avec msys2 / mingw64 / gfortran
+- f2py s'installe : C:\msys64\mingw64\bin\f2py2.exe
 
-f2py/cmake
-https://github.com/w2dynamics/w2dynamics
+intérêts de f2py ./. d'autres solutions:
+- maintenu/utilisé par numpy => risque moins de disparaitre
+- compatible numpy => interface np.array, matplotlib, scipy, etc.
+- simple  - gère l'interface automatiquement
+- pas de c++
+- possibilité de compiler avec cmake
+
+inconvénients:
+- ??
 
 
-git clone https://github.com/scikit-build/scikit-build
-
-
-
-regarder aussi https://github.com/mcfarljm/fortwrap
-fortran=>C++=>swig?
-
-
-https://github.com/jameskermode/f90wrap
-(couche au dessus de f2py)
+## autres ressources
+- http://calcul.math.cnrs.fr/Documents/Journees/dec2006/python-fortran.pdf
+- f2py/cmake https://github.com/w2dynamics/w2dynamics
+- git clone https://github.com/scikit-build/scikit-build
+- regarder aussi https://github.com/mcfarljm/fortwrap
+- fortran=>C++=>swig? https://github.com/jameskermode/f90wrap (couche au dessus de f2py)
 
