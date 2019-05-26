@@ -58,14 +58,15 @@ message("F2PY_SRC_DIR=${F2PY_SRC_DIR}")
 
 set(f2py_module_name vect)
 set(generated_module_file ${CMAKE_CURRENT_BINARY_DIR}/${f2py_module_name}${PYTHON_EXTENSION_MODULE_SUFFIX})
-set(fortran_src_file norme.f90)
+set(fortran_src_file ${CMAKE_CURRENT_SOURCE_DIR}/norme.f90 ${CMAKE_CURRENT_SOURCE_DIR}/fib.f)
 
 add_custom_command(
     OUTPUT vectmodule.c
     COMMAND ${F2PY_EXECUTABLE}
     -m ${f2py_module_name}
-    ${CMAKE_CURRENT_SOURCE_DIR}/${fortran_src_file}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${fortran_src_file}
+    --lower   # gcc cree du lowercase quel que soit le nom dans le code
+    ${fortran_src_file}
+    DEPENDS ${fortran_src_file}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
 

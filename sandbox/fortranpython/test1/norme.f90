@@ -19,3 +19,4 @@ subroutine norme ( a , b )
     c = sqrt ( a*a+b*b )
     print *, " la norme de ( " , a , " , " , b , " ) est " , c
 end subroutine norme
+
