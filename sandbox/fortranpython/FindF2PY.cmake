@@ -49,10 +49,22 @@ MESSAGE("F2PY_SRC_DIR=${F2PY_SRC_DIR}")
 
 # ----------------------------------------------------------------------------   
 
-MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST)
+MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST USEMODULES)
     MESSAGE(STATUS "Setting up f2py Fortran/Python interface \"${F2PYMODULE}\"")
+    MESSAGE("USEMODULES=${USEMODULES}")
+
+    SET(C_OUTPUTS ${F2PYMODULE}module.c)
+    SET(F_OUTPUTS ${F2PYMODULE}-f2pywrappers2.f90)
+
+    IF(${USEMODULES})
+        SET(OUTPUTS ${C_OUTPUTS} ${F_OUTPUTS})
+    ELSE()
+        SET(OUTPUTS ${C_OUTPUTS})
+    ENDIF()
+    MESSAGE("OUTPUTS=${OUTPUTS}")
+
     ADD_CUSTOM_COMMAND(
-        OUTPUT ${F2PYMODULE}module.c
+        OUTPUT ${OUTPUTS}
         COMMAND ${F2PY_EXECUTABLE}
         -m ${F2PYMODULE}
         --lower   # gcc cree du lowercase quel que soit le nom dans le code
@@ -62,7 +74,11 @@ MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST)
     )
 
     # static library "vectfor" with the source
-    ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}})
+    IF(${USEMODULES})
+        ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}} ${F_OUTPUTS}) 
+    ELSE()
+        ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}})
+    ENDIF()
 
     # shared .pyd "vect" 
     ADD_LIBRARY(${F2PYMODULE} SHARED ${F2PYMODULE}module.c ${F2PY_SRC_DIR}/fortranobject.c ) 
