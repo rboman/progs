@@ -47,12 +47,33 @@ MESSAGE("F2PY_PATH=${F2PY_PATH}")
 FIND_PATH(F2PY_SRC_DIR NAMES "fortranobject.h" HINTS ${F2PY_PATH}/src) # "C:/msys64/mingw64/lib/python2.7/site-packages/numpy/f2py/src")
 MESSAGE("F2PY_SRC_DIR=${F2PY_SRC_DIR}")
 
+# ----------------------------------------------------------------------------   
 
+MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST)
+    MESSAGE(STATUS "Setting up f2py Fortran/Python interface \"${F2PYMODULE}\"")
+    ADD_CUSTOM_COMMAND(
+        OUTPUT ${F2PYMODULE}module.c
+        COMMAND ${F2PY_EXECUTABLE}
+        -m ${F2PYMODULE}
+        --lower   # gcc cree du lowercase quel que soit le nom dans le code
+        ${${FSRCS_LIST}}
+        DEPENDS ${${FSRCS_LIST}}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
 
+    # static library "vectfor" with the source
+    ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}})
 
+    # shared .pyd "vect" 
+    ADD_LIBRARY(${F2PYMODULE} SHARED ${F2PYMODULE}module.c ${F2PY_SRC_DIR}/fortranobject.c ) 
+    SET_TARGET_PROPERTIES(${F2PYMODULE} PROPERTIES SUFFIX .pyd)
+    SET_TARGET_PROPERTIES(${F2PYMODULE} PROPERTIES PREFIX "")
+    TARGET_INCLUDE_DIRECTORIES(${F2PYMODULE} PRIVATE ${PYTHON_INCLUDE_PATH})
+    TARGET_INCLUDE_DIRECTORIES(${F2PYMODULE} PRIVATE ${F2PY_SRC_DIR})
 
+    TARGET_LINK_LIBRARIES(${F2PYMODULE} ${F2PYMODULE}for ${PYTHON_LIBRARY})
 
-
+ENDMACRO()
 
 
 

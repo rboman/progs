@@ -14,7 +14,7 @@ intérêts de f2py ./. d'autres solutions:
 - possibilité de compiler avec cmake
 
 inconvénients:
-- ??
+- n'interface pas les types dérivés (c à d les structures)
 
 
 ## autres ressources
