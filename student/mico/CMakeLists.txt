@@ -15,11 +15,11 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS          : " ${CMAKE_Fortran_FLAGS})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_RELEASE  : " ${CMAKE_Fortran_FLAGS_RELEASE})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
-ADD_EXECUTABLE(theoric theoric.for) # .f90/.f95 => free format | .f/.for => fixed
+# ADD_EXECUTABLE(theoric theoric.for) # .f90/.f95 => free format | .f/.for => fixed
 
-ENABLE_TESTING()
-ADD_TEST(NAME theoric COMMAND ${EXECUTABLE_OUTPUT_PATH}/theoric
-         WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
+# ENABLE_TESTING()
+# ADD_TEST(NAME theoric COMMAND ${EXECUTABLE_OUTPUT_PATH}/theoric
+#          WORKING_DIRECTORY ${PROJECT_BINARY_DIR})
 
 
 
@@ -28,5 +28,7 @@ LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../sandbox/fortranpython
 FIND_PACKAGE(F2PY REQUIRED)
 
 
-SET(SRCS_F ${CMAKE_CURRENT_SOURCE_DIR}/theoric.f90)
+SET(SRCS_F ${CMAKE_CURRENT_SOURCE_DIR}/theoric.f90
+           ${CMAKE_CURRENT_SOURCE_DIR}/newtonr.f90
+)
 F2PY_MACRO(mico SRCS_F TRUE)

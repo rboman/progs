@@ -18,12 +18,12 @@ module pars
 end module pars    
 
 
-
 subroutine theoric(x, y, P, ul, Pl)
+    use pars    
+    implicit none
 
-    use pars
-    real(DP), intent(inout) :: P(101), x(101), y(101)    
-    real(DP), intent(inout) :: Pl(16), ul(16)    
+    real(DP), intent(inout) :: P(101), x(101), y(101)    !< nonlinear response  
+    real(DP), intent(inout) :: Pl(16), ul(16)            !< linear response
     
     ! ----Declarations--------
     integer :: i, j
@@ -39,7 +39,7 @@ subroutine theoric(x, y, P, ul, Pl)
 
     Lh  = 2*a                       ! horizontal length
     Lv  = sqrt(h**2+(b+a)**2)       ! vertical length
-    TOL = 1e-5
+    TOL = 1e-5                      ! N-R tolerance
 
     ! ----Trace u fct. de v---
     i = 0 

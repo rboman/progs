@@ -1,8 +1,7 @@
-
-
 # Fortran + python
 
 - j'utilise f2py fourni avec numpy.
+- https://docs.scipy.org/doc/numpy/f2py/
 - je compile sous windows avec msys2 / mingw64 / gfortran
 - f2py s'installe : C:\msys64\mingw64\bin\f2py2.exe
 
