@@ -7,14 +7,13 @@ subroutine ricks(x, y, Force)
 ! ----Declarations--------
       
       integer i, boucle, t, ii, imax, n
-      
+
       parameter(n=10000)
       double precision, intent(inout) :: x(n), y(n), Force(n)
 
       double precision h, a, b, Vh, Vv, E, Lh, Lv, ETAMAX
       double precision TOL, u, Du1(2)
       double precision lambda, Beta, ETA, Du(2), Du2(2)
-      double precision, intent(inout) :: x(n), y(n), Force(n)
       double precision R(2), uu(2)
       double precision norm, F(2), Kt(2,2), MAT(2)
       double precision invKt(2,2), dtmKt, uut(2), lambdat, Fint(2)
@@ -59,7 +58,7 @@ subroutine ricks(x, y, Force)
       lambda=0.01
 
 ! ----1er pas de temps: N-R normal avec P=200------
-         t=t+1
+         t = t+1
          boucle=0
          ii=0
 20       u=uu(1) 
@@ -208,7 +207,7 @@ subroutine ricks(x, y, Force)
 !       write(1,*)'figure(2), plot(x,P), grid'
 !       close (UNIT=1)
 
-      write(*,*)'imax=',imax
+ 32     write(*,*)'imax=',imax
       write(*,*)'t   =',t
       write(*,*)'rmax=',rmax
 end subroutine ricks
