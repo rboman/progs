@@ -49,18 +49,23 @@ MESSAGE("F2PY_SRC_DIR=${F2PY_SRC_DIR}")
 
 # ----------------------------------------------------------------------------   
 
-MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST USEMODULES)
+MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST USEMODULES USEFUNCTIONS)
     MESSAGE(STATUS "Setting up f2py Fortran/Python interface \"${F2PYMODULE}\"")
     MESSAGE("USEMODULES=${USEMODULES}")
+    MESSAGE("USEFUNCTIONS=${USEFUNCTIONS}")
 
     SET(C_OUTPUTS ${F2PYMODULE}module.c)
-    SET(F_OUTPUTS ${F2PYMODULE}-f2pywrappers2.f90)
+    SET(F90_OUTPUTS ${F2PYMODULE}-f2pywrappers2.f90)  # if modules are presents
+    SET(F77_OUTPUTS ${F2PYMODULE}-f2pywrappers.f)     # if f77 functions (outside modules)
 
+    SET(F_OUTPUTS "")
     IF(${USEMODULES})
-        SET(OUTPUTS ${C_OUTPUTS} ${F_OUTPUTS})
-    ELSE()
-        SET(OUTPUTS ${C_OUTPUTS})
+        SET(F_OUTPUTS ${F_OUTPUTS} ${F90_OUTPUTS})
     ENDIF()
+    IF(${USEFUNCTIONS})
+        SET(F_OUTPUTS ${F_OUTPUTS} ${F77_OUTPUTS})
+    ENDIF()
+    SET(OUTPUTS ${C_OUTPUTS} ${F_OUTPUTS})
     MESSAGE("OUTPUTS=${OUTPUTS}")
 
     ADD_CUSTOM_COMMAND(
@@ -73,20 +78,16 @@ MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST USEMODULES)
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
 
-    # static library "vectfor" with the source
-    IF(${USEMODULES})
-        ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}} ${F_OUTPUTS}) 
-    ELSE()
-        ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}})
-    ENDIF()
+    # static library "XXXfor" with the fortran source and fortran wrappers
+    ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}} ${F_OUTPUTS}) 
 
-    # shared .pyd "vect" 
+    # shared python module XXX.pyd  
     ADD_LIBRARY(${F2PYMODULE} SHARED ${F2PYMODULE}module.c ${F2PY_SRC_DIR}/fortranobject.c ) 
     SET_TARGET_PROPERTIES(${F2PYMODULE} PROPERTIES SUFFIX .pyd)
     SET_TARGET_PROPERTIES(${F2PYMODULE} PROPERTIES PREFIX "")
     TARGET_INCLUDE_DIRECTORIES(${F2PYMODULE} PRIVATE ${PYTHON_INCLUDE_PATH})
     TARGET_INCLUDE_DIRECTORIES(${F2PYMODULE} PRIVATE ${F2PY_SRC_DIR})
-
+    # ...linked to fortran routines and python 
     TARGET_LINK_LIBRARIES(${F2PYMODULE} ${F2PYMODULE}for ${PYTHON_LIBRARY})
 
 ENDMACRO()
