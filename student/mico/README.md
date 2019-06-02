@@ -8,5 +8,5 @@ mkdir build
 cd build
 cmake -G "MinGW Makefiles" ..
 cmake --build .
-python ..\run.py ..\scripts\theo.py
+python ..\run.py ..\ricks.py
 ```
