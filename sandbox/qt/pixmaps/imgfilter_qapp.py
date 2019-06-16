@@ -50,14 +50,17 @@ class MainWindow(QMainWindow):
         resetAct = QAction('Reset', self)
         resetAct.triggered.connect(self.reset_image)
 
-        filter1Act = QAction('Filter 1', self)
+        filter1Act = QAction('Filter 1 - grid', self)
         filter1Act.triggered.connect(self.filter1)
 
-        filter2Act = QAction('Filter 2', self)
+        filter2Act = QAction('Filter 2 - mirror Y', self)
         filter2Act.triggered.connect(self.filter2)
 
-        filter3Act = QAction('Filter 3', self)
+        filter3Act = QAction('Filter 3 - chg colour', self)
         filter3Act.triggered.connect(self.filter3)
+
+        filter4Act = QAction('Filter 4 - blur', self)
+        filter4Act.triggered.connect(self.filter4)
 
         # status bar
         self.statusBar()
@@ -72,6 +75,7 @@ class MainWindow(QMainWindow):
         filterMenu.addAction(filter1Act)
         filterMenu.addAction(filter2Act)
         filterMenu.addAction(filter3Act)
+        filterMenu.addAction(filter4Act)
 
         # toolbar
         toolbar = self.addToolBar('Exit')
@@ -90,7 +94,7 @@ class MainWindow(QMainWindow):
         self.update_image()
 
     def filter1(self):
-        print 'filter1'
+        print 'filter1 - add grid'
         self.img2 = self.img1.copy()
         for i in xrange(0,self.img1.width(),2):
             for j in xrange(0,self.img1.height(),2):
@@ -98,12 +102,12 @@ class MainWindow(QMainWindow):
         self.update_image()
 
     def filter2(self):
-        print 'filter2 - mirror'
+        print 'filter2 - mirror Y'
         self.img2 = self.img1.mirrored()
         self.update_image()
 
     def filter3(self):
-        print 'filter3'
+        print 'filter3 - chg colour'
         self.img2 = self.img1.copy()
         for i in xrange(0,self.img1.width()):
             for j in xrange(0,self.img1.height()):
@@ -115,6 +119,55 @@ class MainWindow(QMainWindow):
                 newcol = QColor(mean, mean, mean)
                 self.img2.setPixelColor(i, j, newcol)
         self.update_image()
+
+    def filter4(self):
+        print 'filter4 - blur'
+        import numpy as np
+
+        # K = np.array([[1., 1., 1.],
+        #               [1., 1., 1.],
+        #               [1., 1., 1.] ])
+        K = np.ones((5,5))
+        # K = np.array([[1., 1., 1.],
+        #               [1., 0., 1.],
+        #               [1., 1., 1.] ])
+        # K = np.array([[0., 0., 1.],
+        #               [1., 0., 1.],
+        #               [0., 0., 1.] ])
+
+        iK, jK = K.shape
+        ni = (iK-1)/2
+        nj = (jK-1)/2
+        print iK, jK
+
+        self.img2 = self.img1.copy()
+
+
+        # for i in xrange(0,self.img1.width()/2):
+        #     for j in xrange(self.img1.height()/2,self.img1.height()):
+        for i in xrange(0,self.img1.width()):
+            for j in xrange(0,self.img1.height()):
+                r=0.0
+                g=0.0
+                b=0.0
+                np=0.0
+                for k in xrange(-ni,ni+1):
+                    for l in xrange(-nj,nj+1): 
+                        if(self.img1.valid(i+k,j+l)):
+                            col = self.img1.pixelColor(i+k,j+l)
+                            w = K[k+ni,l+nj]
+                            r+= col.redF()*w
+                            g+= col.greenF()*w
+                            b+= col.blueF()*w
+                            np+=w
+                r/=np
+                g/=np
+                b/=np
+                newcol = QColor()
+                newcol.setRgbF(r,g,b)
+                self.img2.setPixelColor(i, j, newcol)
+        self.update_image()
+
 
 
 if __name__ == '__main__':
