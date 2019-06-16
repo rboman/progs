@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 import sys
 import os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-"""QMainWindow skeleton
+"""Naive implementation of several image filters
 """
 
 
@@ -14,22 +14,16 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
-
         self.initUI()
 
     def initUI(self):
-
         # central widget
-        centralw = QWidget()        
+        centralw = QWidget()
         hbox = QHBoxLayout(centralw)
 
         imgfile = os.path.join(os.path.dirname(__file__), 'snipercat.jpg')
         self.img1 = QImage(imgfile)
         self.img2 = QImage(imgfile)
-
-        # for i in xrange(0,self.img1.width(),2):
-        #     for j in xrange(0,self.img1.height(),2):
-        #         self.img2.setPixelColor(i, j, QColor(255,0,0))
 
         self.lbl1 = QLabel(centralw)
         self.lbl1.setPixmap(QPixmap.fromImage(self.img1))
@@ -52,13 +46,10 @@ class MainWindow(QMainWindow):
 
         filter1Act = QAction('Filter 1 - grid', self)
         filter1Act.triggered.connect(self.filter1)
-
         filter2Act = QAction('Filter 2 - mirror Y', self)
         filter2Act.triggered.connect(self.filter2)
-
         filter3Act = QAction('Filter 3 - chg colour', self)
         filter3Act.triggered.connect(self.filter3)
-
         filter4Act = QAction('Filter 4 - blur', self)
         filter4Act.triggered.connect(self.filter4)
 
@@ -96,9 +87,9 @@ class MainWindow(QMainWindow):
     def filter1(self):
         print 'filter1 - add grid'
         self.img2 = self.img1.copy()
-        for i in xrange(0,self.img1.width(),2):
-            for j in xrange(0,self.img1.height(),2):
-                self.img2.setPixelColor(i, j, QColor(255,0,0))
+        for i in xrange(0, self.img1.width(), 2):
+            for j in xrange(0, self.img1.height(), 2):
+                self.img2.setPixelColor(i, j, QColor(255, 0, 0))
         self.update_image()
 
     def filter2(self):
@@ -109,9 +100,9 @@ class MainWindow(QMainWindow):
     def filter3(self):
         print 'filter3 - chg colour'
         self.img2 = self.img1.copy()
-        for i in xrange(0,self.img1.width()):
-            for j in xrange(0,self.img1.height()):
-                col = self.img1.pixelColor(i,j)
+        for i in xrange(0, self.img1.width()):
+            for j in xrange(0, self.img1.height()):
+                col = self.img1.pixelColor(i, j)
                 #newcol = col.darker()
                 #newcol = col.lighter()
                 #mean = (col.red() + col.green() + col.blue())/3
@@ -127,7 +118,7 @@ class MainWindow(QMainWindow):
         # K = np.array([[1., 1., 1.],
         #               [1., 1., 1.],
         #               [1., 1., 1.] ])
-        K = np.ones((5,5))
+        K = np.ones((5, 5))
         # K = np.array([[1., 1., 1.],
         #               [1., 0., 1.],
         #               [1., 1., 1.] ])
@@ -142,32 +133,30 @@ class MainWindow(QMainWindow):
 
         self.img2 = self.img1.copy()
 
-
         # for i in xrange(0,self.img1.width()/2):
         #     for j in xrange(self.img1.height()/2,self.img1.height()):
-        for i in xrange(0,self.img1.width()):
-            for j in xrange(0,self.img1.height()):
-                r=0.0
-                g=0.0
-                b=0.0
-                np=0.0
-                for k in xrange(-ni,ni+1):
-                    for l in xrange(-nj,nj+1): 
-                        if(self.img1.valid(i+k,j+l)):
-                            col = self.img1.pixelColor(i+k,j+l)
-                            w = K[k+ni,l+nj]
-                            r+= col.redF()*w
-                            g+= col.greenF()*w
-                            b+= col.blueF()*w
-                            np+=w
-                r/=np
-                g/=np
-                b/=np
+        for i in xrange(0, self.img1.width()):
+            for j in xrange(0, self.img1.height()):
+                r = 0.0
+                g = 0.0
+                b = 0.0
+                np = 0.0
+                for k in xrange(-ni, ni+1):
+                    for l in xrange(-nj, nj+1):
+                        if(self.img1.valid(i+k, j+l)):
+                            col = self.img1.pixelColor(i+k, j+l)
+                            w = K[k+ni, l+nj]
+                            r += col.redF()*w
+                            g += col.greenF()*w
+                            b += col.blueF()*w
+                            np += w
+                r /= np
+                g /= np
+                b /= np
                 newcol = QColor()
-                newcol.setRgbF(r,g,b)
+                newcol.setRgbF(r, g, b)
                 self.img2.setPixelColor(i, j, newcol)
         self.update_image()
-
 
 
 if __name__ == '__main__':
