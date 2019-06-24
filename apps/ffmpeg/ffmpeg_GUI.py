@@ -37,9 +37,11 @@ class Window(QWidget, Ui_Form):
         self.input_fps_lineEdit.setValidator(QIntValidator(0, 1000))
         self.output_fps_lineEdit.setValidator(QIntValidator(0, 1000))
 
-        # self.img_Label.setBackgroundRole(QPalette.Base)
-        #self.img_Label.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        #÷self.img_Label.setScaledContents(True)
+        self.quality_Slider.setTickPosition(QSlider.TicksBothSides)
+        self.quality_Slider.setTickInterval(1)
+        self.quality_Slider.valueChanged.connect(
+            lambda i: QToolTip.showText(QCursor.pos(), "%d" % i))
+
 
         # stdio redirection
         self.stdout, sys.stdout = sys.stdout, self
@@ -139,9 +141,10 @@ class Window(QWidget, Ui_Form):
 
     def on_img_Slider_valueChanged(self):
         no = self.img_Slider.value()
+        QToolTip.showText(QCursor.pos(), "%d" % no)
         #print "slider =",no
 
-        if len(self.pix) >= no:
+        if len(self.pix) > no:
             p = self.pix[no]
             w = min(p.width(), 500)
             self.img_Label.setPixmap(
