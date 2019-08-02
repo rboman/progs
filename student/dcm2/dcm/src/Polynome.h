@@ -18,7 +18,8 @@
 #include "dcm.h"
 #include <iostream>
 
-namespace dcm {
+namespace dcm
+{
 
 DCM_API Polynome operator*(double a, Polynome const &b);
 DCM_API Polynome operator*(Polynome const &b, double a);
@@ -39,7 +40,7 @@ private:
     indice degre;
     double *a;
 
-  public:
+public:
     explicit Polynome(indice _taille = 0);
     Polynome(const Polynome &b);
     ~Polynome();
@@ -52,7 +53,7 @@ private:
 #ifndef SWIG
     double &operator[](indice i);
     double operator[](indice i) const;
-    double operator()(double val) const;    
+    double operator()(double val) const;
     Polynome operator=(Polynome const &b);
     Polynome operator!();
     Polynome operator+(Polynome const &b) const;
@@ -68,6 +69,6 @@ private:
 
 #include "Polynome.inl"
 
-}
+} // namespace dcm
 
 #endif // POLYNOME_H

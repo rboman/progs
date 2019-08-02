@@ -23,7 +23,8 @@
 
 #define pi 3.141592
 
-namespace dcm {
+namespace dcm
+{
 
 /**
  * @brief Main class 
@@ -42,10 +43,10 @@ public:
     double c1;
     double T;
     double F0;
-    int np;     // précision du tracé en x ds MATLAB   
-    int np2;    //                    en t            
+    int np;      // précision du tracé en x ds MATLAB
+    int np2;     //                    en t
     int Nperiod; // nbre de périodes en t (pour MATLAB)
-    int Nmodes;    // nbre de modes à calculer avec prec. 
+    int Nmodes;  // nbre de modes à calculer avec prec.
     double PREC;
     double PREC2;
 
@@ -53,7 +54,7 @@ private:
     // Results
     double *ValPro;
     double **ModPro;
-    int nopoly;    
+    int nopoly;
     double *XX;
     double **MODES;
 
@@ -68,8 +69,8 @@ public:
     std::vector<double> getMODES(int i) const;
     std::vector<double> getMoment() const;
     std::vector<double> getTranchant() const;
-    
-public: 
+
+public:
     Plane();
 
     void calcule();
@@ -78,9 +79,9 @@ private:
     void toMatlab1();
     void toMatlab2(Polynome *MP);
     void toMatlab3(double *Moment, double *Tranchant, int compt);
-    void dswap(double *, double *);
+    void dswap(double *a, double *b);
 };
 
-}
+} // namespace dcm
 
 #endif //PLANE_H

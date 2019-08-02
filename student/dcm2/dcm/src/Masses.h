@@ -13,19 +13,21 @@
 //   limitations under the License.
 
 #ifndef MASSES_H
-#define MASSES_H 
+#define MASSES_H
 
 #include "dcm.h"
 
-namespace dcm {
-    
+namespace dcm
+{
+
 struct Masses
 {
-    explicit Masses(double _masse=0.0, double _x=0.0) : masse(_masse), x(_x) {}
     double masse;
     double x;
+
+    explicit Masses(double _masse = 0.0, double _x = 0.0) : masse(_masse), x(_x) {}
 };
 
-}
+} // namespace dcm
 
 #endif // MASSES_H

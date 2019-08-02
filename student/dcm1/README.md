@@ -6,4 +6,3 @@ The code has been rewritten with Qt 5 instead of Borland Graphics Interface.
 
 ![Screenshot](screenshot.png)
 
-

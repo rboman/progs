@@ -18,19 +18,19 @@ using namespace ndh;
 // VARIABLES GLOBALES! ------------------------
 BemSolver::BemSolver()
 {
-    N = 40;        // Nombre d'éléments frontiéres sur le contour.
-    istep = 20;    // Nombre de pas d'intégration sur un élément.
-    density = 15;  // Densité de visualisation de la solution
-                   // (nombre de mailles sur un rayon).
-    ideg = 1;      // Type d'intégration de Newton-Cotes
-                   // (1=trapéze, 2=Simpson,...).
-    type = FULL;      // Méthode de calcul (1=full, 2=symétrique).
-    maillag = 1;   // 1=Dessine le maillage.
-    probleme = CIRCLE;  // Type de probléme (1=cercle, 2=carré, 3=qcq.).
-    whitebg = 1;   // 1=Fond blanc pour l'impression.
+    N = 40;            // Nombre d'éléments frontiéres sur le contour.
+    istep = 20;        // Nombre de pas d'intégration sur un élément.
+    density = 15;      // Densité de visualisation de la solution
+                       // (nombre de mailles sur un rayon).
+    ideg = 1;          // Type d'intégration de Newton-Cotes
+                       // (1=trapéze, 2=Simpson,...).
+    type = FULL;       // Méthode de calcul (1=full, 2=symétrique).
+    maillag = 1;       // 1=Dessine le maillage.
+    probleme = CIRCLE; // Type de probléme (1=cercle, 2=carré, 3=qcq.).
+    whitebg = 1;       // 1=Fond blanc pour l'impression.
     cartesien = false; // 1=maillage rectangulaire (density x density)
-                   // (uniquement pour le carré).
-    calcul = 0;    // 1=calculs effectués.
+                       // (uniquement pour le carré).
+    calcul = 0;        // 1=calculs effectués.
 
     // int précédemment pas init...
     d_old = 0; // Ancienne valeur de la densité (utile pour
@@ -77,9 +77,8 @@ BemSolver::BemSolver()
 
     // Coefficients de l'intégration de Newton-Cotes:
 
-
     create_vectors();
-    define_geometry();    
+    define_geometry();
 }
 
 // ---------------------------------------------------
@@ -207,7 +206,6 @@ void BemSolver::eval_u()
         u[i] = -beta / (2 * k) * (xel[i] * xel[i] + yel[i] * yel[i]);
 }
 
-
 void BemSolver::exec_full()
 {
     type = FULL;
@@ -219,7 +217,6 @@ void BemSolver::exec_sym()
     type = SYMMETRIC;
     full_calcul();
 }
-
 
 //--------------------------------------------------------------------
 // Routine de calcul des tempétatures (remplissage du tableau T).
@@ -236,7 +233,7 @@ void BemSolver::full_calcul()
 
     //clrscr();
     //titre();
-    if ( (probleme == OTHER) && (type == SYMMETRIC) )
+    if ((probleme == OTHER) && (type == SYMMETRIC))
     {
         // Cas du probléme qcq. avec calculs optimisés.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -266,7 +263,7 @@ void BemSolver::full_calcul()
             // Cas du probléme optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~
             if (probleme == CIRCLE) // *** CERCLE ***
-            {                  // Une seule ligne de H utile:            ******
+            {                       // Une seule ligne de H utile:            ******
                 for (j = 0; j < N; j++)
                     eval_GH(&(G[0][j]), &(H[0][j]), 0, j, xel[0], yel[0]);
                 // Utilisation de la sym. pour construire G:
@@ -382,10 +379,9 @@ std::vector<double> BemSolver::getSolution()
 {
     std::vector<double> vec(density);
     for (int i = 0; i < density; i++)
-        vec[i] = T[i][0];    
+        vec[i] = T[i][0];
     return vec;
 }
-
 
 //--------------------------------------------------------------------
 // Routine de calcul des tempétatures exactes (dans le tableau T).

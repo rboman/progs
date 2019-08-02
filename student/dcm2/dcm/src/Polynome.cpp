@@ -75,7 +75,7 @@ Polynome::operator!()
 }
 
 double &
-Polynome::operator[](indice i)
+    Polynome::operator[](indice i)
 {
     if (i <= degre)
         return a[i];
@@ -86,8 +86,8 @@ Polynome::operator[](indice i)
         return a[0];
     }
 }
-double 
-Polynome::operator[](indice i) const
+double
+    Polynome::operator[](indice i) const
 {
     if (i <= degre)
         return a[i];
@@ -98,7 +98,6 @@ Polynome::operator[](indice i) const
         return a[0];
     }
 }
-
 
 double
 Polynome::operator()(double val) const
@@ -128,7 +127,7 @@ Polynome::operator-(Polynome const &b) const
 }
 
 Polynome
-Polynome::operator*(Polynome const &b) const
+    Polynome::operator*(Polynome const &b) const
 {
     Polynome res((indice)(degre + b.degre));
     for (indice i = 0; i <= b.degre; i++)
@@ -138,7 +137,7 @@ Polynome::operator*(Polynome const &b) const
 }
 
 DCM_API Polynome
-dcm::operator*(double a, Polynome const &b)
+    dcm::operator*(double a, Polynome const &b)
 {
     Polynome res(b.degre);
     for (Polynome::indice i = 0; i <= b.degre; i++)
@@ -147,7 +146,7 @@ dcm::operator*(double a, Polynome const &b)
 }
 
 DCM_API Polynome
-dcm::operator*(Polynome const &b, double a)
+    dcm::operator*(Polynome const &b, double a)
 {
     Polynome res(b.degre);
     for (Polynome::indice i = 0; i <= b.degre; i++)
@@ -215,8 +214,7 @@ dcm::operator<<(std::ostream &outp, Polynome const &po)
     return outp;
 }
 
-void 
-Polynome::demo()
+void Polynome::demo()
 {
     std::cout << "\nPolynome::demo()!\n\n";
 

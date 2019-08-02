@@ -32,16 +32,16 @@ Plane::Plane()
     np = 80;     // pr�cision du trac� en x ds MATLAB
     np2 = 40;    //                    en t
     Nperiod = 2; // nbre de p�riodes en t (pour MATLAB)
-    Nmodes = 6;    // nbre de modes � calculer avec prec.
+    Nmodes = 6;  // nbre de modes � calculer avec prec.
     PREC = 1E-4;
     PREC2 = 1E-2;
 
     // results
     nopoly = 0;
     ValPro = NULL;
-    ModPro = NULL; 
-    XX = NULL;      // Matrice abcisse.
-    MODES = NULL; // Matrice des Yi(x) 
+    ModPro = NULL;
+    XX = NULL;    // Matrice abcisse.
+    MODES = NULL; // Matrice des Yi(x)
 
     Moment = NULL;
     Tranchant = NULL;
@@ -94,14 +94,14 @@ void Plane::calcule()
 
     for (int i = 2; i < Nmodes + 1; i++) // Ajoute 5 poly.
         double **KM = Base.ajoute_suivant();
-    
+
     nopoly = Nmodes;
 
     double *ValPro2 = new double[Nmodes];
     ValPro2--; // Tableaux auxil. contenant
 
     double **ModPro2 = new double *[Nmodes];
-    ModPro2--;                       // les val. & vect. pr.
+    ModPro2--; // les val. & vect. pr.
 
     for (int i = 1; i < Nmodes + 1; i++) // pour (n-1) poly...
     {
@@ -130,7 +130,7 @@ void Plane::calcule()
             for (int j = 0; j < nopoly; j++)
                 COPY_K[i][j] = KM[i][j];
         }
-        COPY_K--;                         // indice minimal = 1 (pour Jacobi())
+        COPY_K--; // indice minimal = 1 (pour Jacobi())
         for (int j = 1; j <= nopoly; j++)
             COPY_K[j]--;
 
@@ -218,7 +218,7 @@ void Plane::calcule()
     for (int j = 1; j <= nopoly; j++)
         for (int k = 1; k <= nopoly; k++)
             if (fabs(ModPro[j][k]) < 1E-10)
-                ModPro[j][k] = 0.0;                
+                ModPro[j][k] = 0.0;
 
     //-------------------------------------------------------------------------
     //                       affichage des r�sultats
@@ -266,7 +266,7 @@ void Plane::calcule()
             MODES[i][j] = 0.0;
         }
     }
-    int compt; 
+    int compt;
     double t;
     for (compt = 0, t = -enverg; compt <= np; t += 2 * enverg / np, compt++)
     {
@@ -361,24 +361,23 @@ void Plane::dswap(double *a, double *b)
     *b = tmp;
 }
 
-
 std::vector<double> Plane::getValPro() const // size = nopoly[shift]
 {
     // convert to std::vector
     std::vector<double> vp(Nmodes);
-    for (int i = 1; i <Nmodes+1; i++)
-        vp[i-1] = sqrt(ValPro[i]);
+    for (int i = 1; i < Nmodes + 1; i++)
+        vp[i - 1] = sqrt(ValPro[i]);
     return vp;
 }
 
 std::vector<double> Plane::getModPro(int j) const // size = nopoly[shift] * nopoly[shift]
 {
-    if(j<0 || j>=Nmodes)
+    if (j < 0 || j >= Nmodes)
         throw std::runtime_error("getModPro(int j): bad j");
     // convert to std::vector
     std::vector<double> mod(Nmodes);
-    for (int i = 1; i <Nmodes; i++)
-        mod[i-1] = ModPro[j][i];
+    for (int i = 1; i < Nmodes; i++)
+        mod[i - 1] = ModPro[j][i];
     return mod;
 }
 
@@ -401,22 +400,21 @@ void Plane::toMatlab1()
     std::cout << "vpvp.m cree.\n";
 }
 
-
-std::vector<double> Plane::getXX() const   // size = np+1! - pas de shift
+std::vector<double> Plane::getXX() const // size = np+1! - pas de shift
 {
     // convert to std::vector
-    std::vector<double> xx(np+1);
-    for (int i = 0; i < np+1; i++)
+    std::vector<double> xx(np + 1);
+    for (int i = 0; i < np + 1; i++)
         xx[i] = XX[i];
     return xx;
 }
 std::vector<double> Plane::getMODES(int j) const // size = nopoly * np+1  - pas de shift
 {
-    if(j<0 || j>=Nmodes)
+    if (j < 0 || j >= Nmodes)
         throw std::runtime_error("getMODES(int j): bad j");
     // convert to std::vector
-    std::vector<double> mod(np+1);
-    for (int i = 0; i < np+1; i++)
+    std::vector<double> mod(np + 1);
+    for (int i = 0; i < np + 1; i++)
         mod[i] = MODES[j][i];
     return mod;
 }
@@ -479,17 +477,16 @@ void Plane::toMatlab3(double *Moment, double *Tranchant, int compt)
 std::vector<double> Plane::getMoment() const // size = Nperiod * np2 + 1
 {
     // convert to std::vector
-    std::vector<double> vec(np+1);
+    std::vector<double> vec(np + 1);
     for (int i = 0; i < Nperiod * np2 + 1; i++)
         vec[i] = Moment[i];
-    return vec;    
+    return vec;
 }
 std::vector<double> Plane::getTranchant() const // size = Nperiod * np2 + 1
 {
     // convert to std::vector
-    std::vector<double> vec(np+1);
+    std::vector<double> vec(np + 1);
     for (int i = 0; i < Nperiod * np2 + 1; i++)
         vec[i] = Tranchant[i];
-    return vec; 
+    return vec;
 }
-

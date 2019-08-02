@@ -44,7 +44,7 @@ BasePoly::BasePoly(Masses *_MsX,
     taille = 0;
     buildK();
     taille = 1;
-};
+}
 
 double **
 BasePoly::ajoute_suivant()
@@ -154,6 +154,3 @@ void BasePoly::affiche_K(int dim)
     }
     std::cout << '\n';
 }
-
-
-

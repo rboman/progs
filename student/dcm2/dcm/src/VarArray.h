@@ -27,7 +27,7 @@ class VarArray
     int maxsz;
     int last;
 
-  public:
+public:
     VarArray(int initsz = 8);
     VarArray(const VarArray<T> &);
     ~VarArray();
@@ -37,7 +37,7 @@ class VarArray
     T &operator[](int);
     VarArray<T> &operator=(const VarArray<T> &);
 
-  private:
+private:
     void resize(int);
 };
 

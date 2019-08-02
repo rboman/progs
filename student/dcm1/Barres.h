@@ -16,7 +16,6 @@
 #define BARRES_H
 
 #include <QWidget>
-
 #include <QPainter>
 #include <iostream>
 #include <vector>
@@ -27,42 +26,43 @@ class Barres : public QWidget
 
     static constexpr int nframes = 50;
 
-    double pi;     
-    
+    double pi;
+
     int ox;
     int oy;
 
-
     double zoom;
 
-    double a1; 
-    double a2; 
-    double a3; 
-    double xb; 
-    double ya; 
-    double L; 
-    double e; 
+    double a1;
+    double a2;
+    double a3;
+    double xb;
+    double ya;
+    double L;
+    double e;
     double dp;
 
     int myTimerId;
     int frame;
+
 public:
-    Barres(QWidget* parent = 0);
-protected: 
+    Barres(QWidget *parent = 0);
+
+protected:
     virtual void paintEvent(QPaintEvent *event);
     virtual void timerEvent(QTimerEvent *event);
     virtual void showEvent(QShowEvent *event);
     virtual void hideEvent(QHideEvent *event);
 
 public slots:
-    virtual void set_a1_slot(int i);  
-    virtual void set_a2_slot(int i);  
-    virtual void set_a3_slot(int i);  
-    virtual void set_xb_slot(int i);  
-    virtual void set_ya_slot(int i);  
-    virtual void set_L_slot(int i);  
-    virtual void set_e_slot(int i);  
-    virtual void set_dp_slot(int i);  
+    virtual void set_a1_slot(int i);
+    virtual void set_a2_slot(int i);
+    virtual void set_a3_slot(int i);
+    virtual void set_xb_slot(int i);
+    virtual void set_ya_slot(int i);
+    virtual void set_L_slot(int i);
+    virtual void set_e_slot(int i);
+    virtual void set_dp_slot(int i);
 };
 
 #endif

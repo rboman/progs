@@ -27,12 +27,11 @@
 
 namespace ndh
 {
-    class BemSolver;
+class BemSolver;
 }
 
 #include "graph.h"
 #include "matfun.h"
 #include "param.h"
-
 
 #endif //NDH_H

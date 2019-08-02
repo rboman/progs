@@ -3,7 +3,7 @@
 %          -------------------------------------------------                    
 
 
-epsilon=10^(-10);               %--Pr‚cision des resultats.
+epsilon=10^(-10);               %--Precision des resultats.
 theta1p=48*pi;
 
 while((theta1(2)-theta1(1))>epsilon),

@@ -19,14 +19,15 @@
 
 // routines de manipulation matricielles
 
-namespace ndh {
-    
+namespace ndh
+{
+
 void fillvector(double *vect, double v1, double step, int nel);
 void mmv(int dim, double **A, double *b, double *c);
 void gauss(int dim, double **A, double *x, double *b);
 void vectaff(int dim, double *v);
 void copy_block(double **A, int i2, int j2, int i1, int j1, int sizebloc);
 
-}
+} // namespace ndh
 
 #endif // MATFUN_H

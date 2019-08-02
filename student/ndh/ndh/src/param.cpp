@@ -41,5 +41,4 @@ void ndh::param2(char const *texte, int *par)
     std::cin >> prm;
     if (fabs(prm) > 1E-10)
         *par = prm;
-
 }

@@ -22,7 +22,8 @@
 
 #define max_pol 20
 
-namespace dcm {
+namespace dcm
+{
 
 DCM_API std::ostream &operator<<(std::ostream &outp, BasePoly &bp);
 
@@ -34,6 +35,7 @@ class BasePoly : public VarArray<Polynome>
 {
 public:
     typedef short unsigned int indice;
+
 private:
     indice taille;
     double **K;
@@ -44,7 +46,7 @@ private:
     Polynome m;
     VarArray<Polynome> ddBase;
 
-  public:
+public:
     BasePoly(Masses *_MsX, Polynome _I, Polynome _m,
              double _young, double _envergure,
              Polynome &P);
@@ -55,10 +57,10 @@ private:
 
     friend DCM_API std::ostream &operator<<(std::ostream &outp, BasePoly &bp);
 
-  private:
+private:
     void buildK();
 };
 
-}
+} // namespace dcm
 
 #endif // BASEPOLY_H

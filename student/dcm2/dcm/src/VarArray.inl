@@ -96,7 +96,7 @@ void VarArray<T>::resize(int fit)
 
     for (int i = 0; i <= maxsz; ++i)
         newdata[i] = data[i];
- 
+
     if (debug)
         std::cerr << "Resizing VarArray to size " << newsize
                   << " pointer " << this << " (" << data << ") ->" << newdata << "\n";

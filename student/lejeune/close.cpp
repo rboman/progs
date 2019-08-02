@@ -12,14 +12,14 @@ double Q0 = 0.1, // débit initial
     f = 0.02,    // coefficient de frottement
     tau = 0.6;   // paramètre d'ouverture de vanne
 
-int divs = 5,   // nbre de tronçons de la conduite
+int divs = 5,  // nbre de tronçons de la conduite
     tmax = 90; // nbre de pas de temps
 
 double a2 = (H0 - Hs - a1 * Q0) / (pow(Q0, 2)), // cte pompe
     Section = M_PI * pow(D, 2) / 4,
        g = 9.81,
        B = a / (g * Section),                            // voir rappel
-    R = f * (L / divs) / (2 * g * D * pow(Section, 2)),   //  théorique
+    R = f * (L / divs) / (2 * g * D * pow(Section, 2)),  //  théorique
     C1 = f * pow(Q0, 2) / (2 * g * D * pow(Section, 2)), // pertes de charge
     Cv = pow(Q0 * tau, 2) / (2 * (H0 - C1 * L));         // cte vanne
 

@@ -15,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+
 def main():
     from dcm import Polynome
     Polynome.demo()
@@ -26,7 +27,7 @@ def main():
     a[1] = 2.
     a[3] = 1.
 
-    b = Polynome(4)    
+    b = Polynome(4)
     b[1] = 1.3
     b[4] = 1.4
 
@@ -34,7 +35,7 @@ def main():
     d = a * b
 
     print "a(X)    = ", a
-    print  "a(.5)   = ", a(.5)
+    print "a(.5)   = ", a(.5)
     print "b(X)    = ", b
     print "b(.5)   = ", b(.5)
     print "c(X)=a+b= ", c
@@ -44,6 +45,7 @@ def main():
     print "d'(X)   = ", d.derive()
     print (d.primitive())(1) - (d.primitive())(0)
     print d.integrale(0, 1)
+
 
 if __name__ == "__main__":
     main()

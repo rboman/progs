@@ -75,7 +75,8 @@ void ndh::gauss(int dim, double **A, double *x, double *b)
 void ndh::vectaff(int dim, double *v)
 {
     for (int i = 0; i < dim; i++)
-        std::cout << "\n" << v[i];
+        std::cout << "\n"
+                  << v[i];
 }
 
 //--------------------------------------------------------------------
