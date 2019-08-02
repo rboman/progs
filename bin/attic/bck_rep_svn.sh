@@ -1,6 +1,8 @@
 #!/bin/bash
 # recupere les repositories SVN metafor, metalub et GIT sur blueberry 
 # pour en faire un backup
+#
+# ! juillet 2019: ce script n'est plus utile!
 
 set -eu
 
@@ -32,13 +34,6 @@ tar cjf \$FILE2 SVN2
 scp \$FILE2 $CLIENT:$HERE
 rm \$FILE2
 
-FILE3=~/metafor-git-\$DATE.tar.bz2
-echo "creating \$FILE3"
-cd ~metafor
-#ls ~ > \$FILE3
-tar cjf \$FILE3 GIT
-scp \$FILE3 $CLIENT:$HERE
-rm \$FILE3
 EOF
 
 # execute le script sur HOST

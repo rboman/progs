@@ -20,6 +20,9 @@
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
         <widget class="QLabel" name="label">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;folder containing ffmpeg(.exe)&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;can be left blank if ffmpeg is in the PATH.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>ffmpeg folder</string>
          </property>
@@ -41,6 +44,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;folder containing all the bitmap files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>workspace</string>
          </property>
@@ -62,6 +68,9 @@
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_3">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;pattern for the bitmap file names&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;anim%4d.bmp =&amp;gt; anim0000.bmp, anim0001.bmp, anim0002.bmp, etc.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>filenames</string>
          </property>
@@ -76,6 +85,9 @@
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_4">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;input frame rate&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;sets the number of images used to build 1 second of video&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>input fps</string>
          </property>
@@ -90,6 +102,9 @@
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_5">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;output frame rate&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;sets the number of frames used in the video. Usually 25 or 30 or higher. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if the input fps is lower, frames are added to the video&lt;/p&gt;&lt;p&gt;if the input fps is higher, some frames are dropped&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>output fps</string>
          </property>
@@ -104,6 +119,9 @@
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_6">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;quality of the video&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;a low value (e.g. 18) leads to a high quality video (and a large mp4 file).&lt;/p&gt;&lt;p&gt;a high value (e.g. 26) leads to poor quality video with many mpeg artifacts (but a small mp4 file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>quality</string>
          </property>
@@ -123,6 +141,9 @@
          <property name="tickPosition">
           <enum>QSlider::TicksBothSides</enum>
          </property>
+         <property name="tickInterval">
+          <number>1</number>
+         </property>
         </widget>
        </item>
       </layout>
@@ -131,6 +152,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QPushButton" name="check_Button">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check your files and load them into the preview widget&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Check</string>
          </property>
@@ -151,6 +175,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="convert_Button">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;run ffmpeg!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Convert</string>
          </property>
@@ -158,6 +185,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="play_Button">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;use ffplay (if available) to see the resulting mp4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Play</string>
          </property>
@@ -165,6 +195,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="probe_Button">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;use ffprobe (if available) to display info about the generated video&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Probe</string>
          </property>
@@ -200,7 +233,7 @@
         </size>
        </property>
        <property name="text">
-        <string>IMAGE</string>
+        <string>NO PREVIEW IMAGE - CLICK ON &quot;CHECK&quot;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

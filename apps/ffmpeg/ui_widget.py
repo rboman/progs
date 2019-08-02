@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'widget.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -62,6 +62,7 @@ class Ui_Form(object):
         self.quality_Slider.setMaximum(26)
         self.quality_Slider.setOrientation(QtCore.Qt.Horizontal)
         self.quality_Slider.setTickPosition(QtWidgets.QSlider.TicksBothSides)
+        self.quality_Slider.setTickInterval(1)
         self.quality_Slider.setObjectName("quality_Slider")
         self.gridLayout.addWidget(self.quality_Slider, 5, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
@@ -114,22 +115,32 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
+        self.label.setToolTip(_translate("Form", "<html><head/><body><p>folder containing ffmpeg(.exe)</p><p><br/></p><p>can be left blank if ffmpeg is in the PATH.</p></body></html>"))
         self.label.setText(_translate("Form", "ffmpeg folder"))
         self.ffmpegfolder_lineEdit.setText(_translate("Form", "/usr/bin"))
         self.ffmpegfolder_Button.setText(_translate("Form", "..."))
+        self.label_2.setToolTip(_translate("Form", "<html><head/><body><p>folder containing all the bitmap files</p></body></html>"))
         self.label_2.setText(_translate("Form", "workspace"))
         self.workspace_lineEdit.setText(_translate("Form", "/home/boman/Downloads/workspace/apps_ale_coining3D"))
         self.workspace_Button.setText(_translate("Form", "..."))
+        self.label_3.setToolTip(_translate("Form", "<html><head/><body><p>pattern for the bitmap file names</p><p><br/></p><p>anim%4d.bmp =&gt; anim0000.bmp, anim0001.bmp, anim0002.bmp, etc.</p></body></html>"))
         self.label_3.setText(_translate("Form", "filenames"))
         self.filenames_lineEdit.setText(_translate("Form", "anim%4d.bmp"))
+        self.label_4.setToolTip(_translate("Form", "<html><head/><body><p>input frame rate</p><p><br/></p><p>sets the number of images used to build 1 second of video</p></body></html>"))
         self.label_4.setText(_translate("Form", "input fps"))
         self.input_fps_lineEdit.setText(_translate("Form", "10"))
+        self.label_5.setToolTip(_translate("Form", "<html><head/><body><p>output frame rate</p><p><br/></p><p>sets the number of frames used in the video. Usually 25 or 30 or higher. </p><p><br/></p><p>if the input fps is lower, frames are added to the video</p><p>if the input fps is higher, some frames are dropped</p></body></html>"))
         self.label_5.setText(_translate("Form", "output fps"))
         self.output_fps_lineEdit.setText(_translate("Form", "25"))
+        self.label_6.setToolTip(_translate("Form", "<html><head/><body><p>quality of the video</p><p><br/></p><p>a low value (e.g. 18) leads to a high quality video (and a large mp4 file).</p><p>a high value (e.g. 26) leads to poor quality video with many mpeg artifacts (but a small mp4 file).</p></body></html>"))
         self.label_6.setText(_translate("Form", "quality"))
+        self.check_Button.setToolTip(_translate("Form", "<html><head/><body><p>Check your files and load them into the preview widget</p></body></html>"))
         self.check_Button.setText(_translate("Form", "Check"))
+        self.convert_Button.setToolTip(_translate("Form", "<html><head/><body><p>run ffmpeg!</p></body></html>"))
         self.convert_Button.setText(_translate("Form", "Convert"))
+        self.play_Button.setToolTip(_translate("Form", "<html><head/><body><p>use ffplay (if available) to see the resulting mp4</p></body></html>"))
         self.play_Button.setText(_translate("Form", "Play"))
+        self.probe_Button.setToolTip(_translate("Form", "<html><head/><body><p>use ffprobe (if available) to display info about the generated video</p></body></html>"))
         self.probe_Button.setText(_translate("Form", "Probe"))
-        self.img_Label.setText(_translate("Form", "IMAGE"))
+        self.img_Label.setText(_translate("Form", "NO PREVIEW IMAGE - CLICK ON \"CHECK\""))
 
