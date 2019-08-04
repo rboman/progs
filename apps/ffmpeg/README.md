@@ -15,7 +15,7 @@ This program uses `ffmpeg`.
   * Click on [Check] and read the output. A preview should be displayed.
   * Click on [Convert]. The output is named `video.mp4` in the workspace folder.
   * Click on [Play] to see the results (runs `ffplay`)
-  * Click on [Probe] to display statistics about `video.mp4` (runs `ffproble`).
+  * Click on [Probe] to display statistics about `video.mp4` (runs `ffprobe`).
 
 ![ffmpeg](screenshot.png)
 

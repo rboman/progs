@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
 #
@@ -15,7 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# Plot2DWidget: tracé de fonctions
+# Plot2DWidget: tracÃ© de fonctions
 
 import sys
 from PyQt5.QtCore import *

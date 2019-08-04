@@ -10,5 +10,3 @@ Applet java de tracé de fonction + simple parser
 javac *.java
 appletviewer PlotApplet.html
 ```
-
-

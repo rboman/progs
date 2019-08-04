@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
 #
@@ -15,33 +15,33 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-#Le serveur
+# Le serveur
 
-#Importe socket..
+# Importe socket..
 from socket import *
 
-#Variables, encore...
+# Variables, encore...
 host = "garfield.ltas.ulg.ac.be"
 port = 2074
 buf = 1024
-addr = (host,port)
+addr = (host, port)
 
-#On fait le socket
-#et bind l'addresse
-UDPSock = socket(AF_INET,SOCK_DGRAM)
+# On fait le socket
+# et bind l'addresse
+UDPSock = socket(AF_INET, SOCK_DGRAM)
 UDPSock.bind(addr)
 
-#On recoit le message
+# On recoit le message
 while 1:
-    data,addr = UDPSock.recvfrom(buf)
+    data, addr = UDPSock.recvfrom(buf)
     if not data:
         print "Le client a quitte"
         break
     else:
-        print "\nRecu: '",data,"'"
+        print "\nRecu: '", data, "'"
 
-#On ferme tout ca
-UDPSock.close() 
+# On ferme tout ca
+UDPSock.close()
 
 print "fini!"
 raw_input()

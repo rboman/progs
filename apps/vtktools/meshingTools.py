@@ -9,7 +9,8 @@ import vtk
 import math
 import generalTools
 import imagingTools
-    
+
+
 def callTetgen(poly, q=2.0, a=0, V=0, Y=0):
     """
     -q 	Quality mesh generation. A minimum radius-edge ratio may be specifyed (default 2.0).
@@ -21,27 +22,28 @@ def callTetgen(poly, q=2.0, a=0, V=0, Y=0):
     fname = "tmp"
     generalTools.vtk2tetgen(poly, fname+".poly")
     if (Y and V and (not a)):
-        cmd = "tetgen -pYVq%gA %s" % (q,fname)
+        cmd = "tetgen -pYVq%gA %s" % (q, fname)
     elif (Y and V and a):
-        cmd = "tetgen -pYVq%ga%g %s" % (q,a,fname)
+        cmd = "tetgen -pYVq%ga%g %s" % (q, a, fname)
     elif (Y and (not V)) and (not a):
-        cmd = "tetgen -pYVq%gA %s" % (q,fname)
+        cmd = "tetgen -pYVq%gA %s" % (q, fname)
     elif (Y and (not V) and a):
-        cmd = "tetgen -pYq%ga%g %s" % (q,a,fname)
-    elif ( (not Y) and V and (not a)):
-        cmd = "tetgen -pVq%g %s" % (q,fname)
-    elif ( (not Y) and (not V) and (not a) ):
-        cmd = "tetgen -pq%g %s" % (q,fname)
+        cmd = "tetgen -pYq%ga%g %s" % (q, a, fname)
+    elif ((not Y) and V and (not a)):
+        cmd = "tetgen -pVq%g %s" % (q, fname)
+    elif ((not Y) and (not V) and (not a)):
+        cmd = "tetgen -pq%g %s" % (q, fname)
     else:
-        cmd = "tetgen -pq%ga%g %s" % (q,a,fname)
-    
+        cmd = "tetgen -pq%ga%g %s" % (q, a, fname)
+
     print cmd
     #import os
-    #os.system(cmd)
+    # os.system(cmd)
     import subprocess
     subprocess.call(cmd, shell=True)
-    ugrid = generalTools.tetgen2vtk(fname)  
+    ugrid = generalTools.tetgen2vtk(fname)
     return ugrid
+
 
 def callTetgenMultipleRegions(poly, regionSeeds, regionVolmax=[], regionHoles=[], q=2.0, V=0, Y=0):
     """
@@ -57,38 +59,41 @@ def callTetgenMultipleRegions(poly, regionSeeds, regionVolmax=[], regionHoles=[]
         volmax = []
         for i in range(len(regionSeeds)):
             volmax.append(100)
-        generalTools.vtk2tetgen(poly,fname+".poly", arrayName, regionSeeds, volmax, regionHoles)
+        generalTools.vtk2tetgen(poly, fname+".poly",
+                                arrayName, regionSeeds, volmax, regionHoles)
     else:
-        generalTools.vtk2tetgen(poly,fname+".poly", arrayName, regionSeeds, regionVolmax, regionHoles)
+        generalTools.vtk2tetgen(
+            poly, fname+".poly", arrayName, regionSeeds, regionVolmax, regionHoles)
     if (V and Y and regionVolmax == []):
-        cmd = "tetgen -pYVq%gA %s" % (q,fname);
+        cmd = "tetgen -pYVq%gA %s" % (q, fname)
     elif (V and Y):
-        cmd = "tetgen -pYVq%gaA %s" % (q,fname);
-    elif ( Y and regionVolmax==[]):
-        cmd = "tetgen -pYq%gA %s" % (q,fname);
+        cmd = "tetgen -pYVq%gaA %s" % (q, fname)
+    elif (Y and regionVolmax == []):
+        cmd = "tetgen -pYq%gA %s" % (q, fname)
     elif (Y):
-        cmd = "tetgen -pYq%gaA %s" % (q,fname);
+        cmd = "tetgen -pYq%gaA %s" % (q, fname)
     elif (V and (not Y) and regionVolmax == []):
-        cmd = "tetgen -pVq%gA %s" % (q,fname);
+        cmd = "tetgen -pVq%gA %s" % (q, fname)
     elif (V and (not Y)):
-        cmd = "tetgen -pVq%gaA %s" % (q,fname);
-    elif ( (not Y) and regionVolmax==[]):
-        cmd = "tetgen -pq%gA %s" % (q,fname);
+        cmd = "tetgen -pVq%gaA %s" % (q, fname)
+    elif ((not Y) and regionVolmax == []):
+        cmd = "tetgen -pq%gA %s" % (q, fname)
     else:
-        cmd = "tetgen -pq%gaA %s" % (q,fname);
+        cmd = "tetgen -pq%gaA %s" % (q, fname)
 
     print cmd
-    
+
     print "tetgen start"
     #import os
-    #os.system(cmd)    
+    # os.system(cmd)
     import subprocess
     subprocess.call(cmd, shell=True)
-    
+
     print "tetgen done"
-    
+
     ugrid = generalTools.tetgen2vtk(fname)
     return ugrid
+
 
 def callTetgenMultipleRegionsFromGenisoMesh(genisoMesh, regionLabels, a, q=1.41, V=0):
     """
@@ -100,19 +105,21 @@ def callTetgenMultipleRegionsFromGenisoMesh(genisoMesh, regionLabels, a, q=1.41,
     print 'TETGEN'
     fname = "tmp"
     marker = 1
-    generalTools.vtk2tetgenMultipleRegionsFromGeniso(genisoMesh, regionLabels, a, fname+".poly")
-    cmd = "tetgen -pVq%gaA %s" % (q,fname);
+    generalTools.vtk2tetgenMultipleRegionsFromGeniso(
+        genisoMesh, regionLabels, a, fname+".poly")
+    cmd = "tetgen -pVq%gaA %s" % (q, fname)
     print cmd
     #import os
-    #os.system(cmd)
-    
+    # os.system(cmd)
+
     import subprocess
     subprocess.call(cmd, shell=True)
-    
+
     ugrid = generalTools.tetgen2vtk(fname)
     return ugrid
 
-def callTetgenMultipleRegionsFromFile(fname = "tmp", q=1.41, V=0):
+
+def callTetgenMultipleRegionsFromFile(fname="tmp", q=1.41, V=0):
     """
     -q 	Quality mesh generation. A minimum radius-edge ratio may be specifyed (default 2.0).
     -a 	Applies a maximum tetrahedron volume constraint.
@@ -120,40 +127,44 @@ def callTetgenMultipleRegionsFromFile(fname = "tmp", q=1.41, V=0):
     -A  activates multiple regions attributes
     """
     if (V):
-        cmd = "tetgen -pVq%gaA %s" % (q,fname);
+        cmd = "tetgen -pVq%gaA %s" % (q, fname)
     else:
-        cmd = "tetgen -pq%gaA %s" % (q,fname);
+        cmd = "tetgen -pq%gaA %s" % (q, fname)
     print cmd
     #import os
-    #os.system(cmd)
-    
+    # os.system(cmd)
+
     import subprocess
     subprocess.call(cmd, shell=True)
     ugrid = generalTools.tetgen2vtk(fname)
     return ugrid
-       
+
+
 def mergeDuplicateNodes(poly, tol=0.000001):
     cleaner = vtk.vtkCleanPolyData()
     cleaner.SetInput(poly)
     cleaner.SetTolerance(tol)
     cleaner.Update()
     return cleaner.GetOutput()
-    
+
+
 def extractLargestPoly(poly):
     connectivity = vtk.vtkPolyDataConnectivityFilter()
     connectivity.SetInput(poly)
     connectivity.SetExtractionModeToLargestRegion()
     connectivity.Update()
     return connectivity.GetOutput()
-	
+
+
 def extractNearestPoly(poly, x, y, z):
     # mergeDuplicateNodes may be needed before applying this filter
     connectivity = vtk.vtkPolyDataConnectivityFilter()
     connectivity.SetInput(poly)
     connectivity.SetExtractionModeToClosestPointRegion()
-    connectivity.SetClosestPoint(x,y,z)
-    connectivity.Update()  
+    connectivity.SetClosestPoint(x, y, z)
+    connectivity.Update()
     return connectivity.GetOutput()
+
 
 def extractSurfacesFromCompatiblePoly(poly):
     # Extract the set of polydata consituting the compatible polydata generated by geniso
@@ -162,19 +173,19 @@ def extractSurfacesFromCompatiblePoly(poly):
     if poly.GetPointData().GetNumberOfArrays() == 0:
         print "ERROR in extractSurfacesFromCompatiblePoly: no array in Poly Pointdata "
         raw_input()
-     
+
     intArray = poly.GetPointData().GetArray(0)
     print "intArray", intArray
-    
+
     nbnod = poly.GetNumberOfPoints()
     nbelm = poly.GetNumberOfCells()
-    
+
     nodeSurfId = []
     newPolyNodes = []
     newPolyCells = []
-    
-    for i in range(0,nbnod):
-        nodeMarker = intArray.GetValue(i);
+
+    for i in range(0, nbnod):
+        nodeMarker = intArray.GetValue(i)
         if nodeMarker not in nodeSurfId:
             nodeSurfId.append(nodeMarker)
             newPolyNodes.append(vtk.vtkPoints())
@@ -182,15 +193,15 @@ def extractSurfacesFromCompatiblePoly(poly):
         for j in enumerate(nodeSurfId):
             if j[1] == nodeMarker:
                 newPolyNodes[j[0]].InsertPoint(
-                i,poly.GetPoints().GetPoint(i)[0],poly.GetPoints().GetPoint(i)[1],poly.GetPoints().GetPoint(i)[2])
+                    i, poly.GetPoints().GetPoint(i)[0], poly.GetPoints().GetPoint(i)[1], poly.GetPoints().GetPoint(i)[2])
                 break
-    
-    for c in range(0,nbelm):
-        cell=poly.GetCell(c)
+
+    for c in range(0, nbelm):
+        cell = poly.GetCell(c)
         if cell.GetNumberOfPoints() != 3:
             print "Error in extractSurfacesFromCompatiblePoly: cell.GetNumberOfPoints != 3"
-            raw_input()     
-         
+            raw_input()
+
         for j in range(3):
             for i in enumerate(nodeSurfId):
                 if i[1] == intArray.GetValue(cell.GetPointId(j)):
@@ -201,22 +212,24 @@ def extractSurfacesFromCompatiblePoly(poly):
                     break
             for jj in range(3):
                 if jj != j:
-                    if intArray.GetValue(cell.GetPointId(jj)) != intArray.GetValue(cell.GetPointId(j)) :
+                    if intArray.GetValue(cell.GetPointId(jj)) != intArray.GetValue(cell.GetPointId(j)):
                         for i in enumerate(nodeSurfId):
-                            if i[1] == intArray.GetValue(cell.GetPointId(j)):  
-                                id =cell.GetPointId(jj)
-                                newPolyNodes[i[0]].InsertPoint(id,poly.GetPoints().GetPoint(id))  
+                            if i[1] == intArray.GetValue(cell.GetPointId(j)):
+                                id = cell.GetPointId(jj)
+                                newPolyNodes[i[0]].InsertPoint(
+                                    id, poly.GetPoints().GetPoint(id))
                                 break
 
     vtkPolys = []
-    for i in range( len(nodeSurfId) ):
+    for i in range(len(nodeSurfId)):
         vtkPoly = vtk.vtkPolyData()
         vtkPoly.SetPoints(newPolyNodes[i])
         vtkPoly.SetPolys(newPolyCells[i])
-        vtkPoly = mergeDuplicateNodes(vtkPoly,0.0001)
+        vtkPoly = mergeDuplicateNodes(vtkPoly, 0.0001)
         vtkPolys.append(vtkPoly)
-    
-    return vtkPolys        
+
+    return vtkPolys
+
 
 def extractSurfacesAndInterfaceFromCompatiblePoly(poly):
     # Extract the set of polydata consituting the compatible polydata generated by geniso
@@ -224,18 +237,18 @@ def extractSurfacesAndInterfaceFromCompatiblePoly(poly):
     if poly.GetPointData().GetNumberOfArrays() == 0:
         print "ERROR in extractSurfacesFromCompatiblePoly: no array in Poly Pointdata "
         raw_input()
-     
+
     intArray = poly.GetPointData().GetArray(0)
-    
+
     nbnod = poly.GetNumberOfPoints()
     nbelm = poly.GetNumberOfCells()
-    
+
     nodeSurfId = []
     newPolyNodes = []
     newPolyCells = []
-    
-    for i in range(0,nbnod):
-        nodeMarker = intArray.GetValue(i);
+
+    for i in range(0, nbnod):
+        nodeMarker = intArray.GetValue(i)
         if nodeMarker not in nodeSurfId:
             nodeSurfId.append(nodeMarker)
             newPolyNodes.append(vtk.vtkPoints())
@@ -243,21 +256,21 @@ def extractSurfacesAndInterfaceFromCompatiblePoly(poly):
         for j in enumerate(nodeSurfId):
             if j[1] == nodeMarker:
                 newPolyNodes[j[0]].InsertPoint(
-                i,poly.GetPoints().GetPoint(i)[0],poly.GetPoints().GetPoint(i)[1],poly.GetPoints().GetPoint(i)[2])
+                    i, poly.GetPoints().GetPoint(i)[0], poly.GetPoints().GetPoint(i)[1], poly.GetPoints().GetPoint(i)[2])
                 break
-    
+
     newPolyNodes.append(vtk.vtkPoints())
     newPolyCells.append(vtk.vtkCellArray())
-    
-    for c in range(0,nbelm):
-        cell=poly.GetCell(c)
+
+    for c in range(0, nbelm):
+        cell = poly.GetCell(c)
         if cell.GetNumberOfPoints() != 3:
             print "Error in extractSurfacesFromCompatiblePoly: cell.GetNumberOfPoints != 3"
-            raw_input()     
+            raw_input()
         marker0 = intArray.GetValue(cell.GetPointId(0))
         marker1 = intArray.GetValue(cell.GetPointId(1))
-        marker2   = intArray.GetValue(cell.GetPointId(2))
-        if( marker0 == marker1 and marker2 == marker1 ):
+        marker2 = intArray.GetValue(cell.GetPointId(2))
+        if(marker0 == marker1 and marker2 == marker1):
             for i in enumerate(nodeSurfId):
                 if i[1] == intArray.GetValue(cell.GetPointId(0)):
                     newPolyCells[i[0]].InsertNextCell(3)
@@ -268,18 +281,21 @@ def extractSurfacesAndInterfaceFromCompatiblePoly(poly):
         else:
             newPolyCells[len(newPolyCells)-1].InsertNextCell(3)
             for j in range(3):
-                newPolyCells[len(newPolyCells)-1].InsertCellPoint(cell.GetPointId(j)) 
-                newPolyNodes[len(newPolyCells)-1].InsertPoint(cell.GetPointId(j),poly.GetPoints().GetPoint(cell.GetPointId(j))) 
-                
+                newPolyCells[len(newPolyCells) -
+                             1].InsertCellPoint(cell.GetPointId(j))
+                newPolyNodes[len(newPolyCells)-1].InsertPoint(cell.GetPointId(j),
+                                                              poly.GetPoints().GetPoint(cell.GetPointId(j)))
+
     vtkPolys = []
-    for i in range( len(newPolyNodes)):
+    for i in range(len(newPolyNodes)):
         vtkPoly = vtk.vtkPolyData()
         vtkPoly.SetPoints(newPolyNodes[i])
         vtkPoly.SetPolys(newPolyCells[i])
         vtkPolys.append(vtkPoly)
-    
-    return vtkPolys        
-    
+
+    return vtkPolys
+
+
 def extractClosedSurfacesFromPoly(poly):
     # Extract the set of polydata consituting the compatible polydata generated by geniso
     # Poly must contain an intArray called "node surface markers" in poly.GetPointData()
@@ -287,57 +303,58 @@ def extractClosedSurfacesFromPoly(poly):
     if poly.GetPointData().GetNumberOfArrays() == 0:
         print "ERROR in extractSurfacesFromCompatiblePoly: no array in Poly Pointdata "
         raw_input()
-     
+
     intArray = poly.GetPointData().GetArray(0)
- 
+
     nbnod = poly.GetNumberOfPoints()
     nbelm = poly.GetNumberOfCells()
-    
+
     nodeSurfId = []
     newPolyNodes = []
     newPolyCells = []
 
-    for i in range(0,nbnod):
-        nodeMarker = intArray.GetValue(i);
+    for i in range(0, nbnod):
+        nodeMarker = intArray.GetValue(i)
         if nodeMarker not in nodeSurfId:
             nodeSurfId.append(nodeMarker)
             newPolyNodes.append(vtk.vtkPoints())
             newPolyCells.append(vtk.vtkCellArray())
-            
-    for i in range(0,nbnod): 
-        nodeMarker = intArray.GetValue(i);
+
+    for i in range(0, nbnod):
+        nodeMarker = intArray.GetValue(i)
         for j0, j1 in enumerate(nodeSurfId):
             if nodeMarker != j1:
                 newPolyNodes[j0].InsertPoint(
-                i,poly.GetPoints().GetPoint(i)[0],poly.GetPoints().GetPoint(i)[1],poly.GetPoints().GetPoint(i)[2])
-    
+                    i, poly.GetPoints().GetPoint(i)[0], poly.GetPoints().GetPoint(i)[1], poly.GetPoints().GetPoint(i)[2])
+
     for j0, j1 in enumerate(nodeSurfId):
         print j1
-           
-    for c in range(0,nbelm):
-        cell=poly.GetCell(c)
+
+    for c in range(0, nbelm):
+        cell = poly.GetCell(c)
         if cell.GetNumberOfPoints() != 3:
             print "Error in extractSurfacesFromCompatiblePoly: cell.GetNumberOfPoints != 3"
-            raw_input()     
+            raw_input()
         marker0 = intArray.GetValue(cell.GetPointId(0))
         marker1 = intArray.GetValue(cell.GetPointId(1))
-        marker2   = intArray.GetValue(cell.GetPointId(2))
+        marker2 = intArray.GetValue(cell.GetPointId(2))
         for j0, j1 in enumerate(nodeSurfId):
-            if( marker0 != j1 and marker1 != j1 and marker2 != j1 ):
+            if(marker0 != j1 and marker1 != j1 and marker2 != j1):
                 newPolyCells[j0].InsertNextCell(3)
                 newPolyCells[j0].InsertCellPoint(cell.GetPointId(0))
                 newPolyCells[j0].InsertCellPoint(cell.GetPointId(1))
                 newPolyCells[j0].InsertCellPoint(cell.GetPointId(2))
-                
+
     vtkPolys = []
-    for i in range( len(newPolyNodes)):
+    for i in range(len(newPolyNodes)):
         vtkPoly = vtk.vtkPolyData()
         vtkPoly.SetPoints(newPolyNodes[i])
         vtkPoly.SetPolys(newPolyCells[i])
         vtkPolys.append(vtkPoly)
-    
-    return vtkPolys    
-    
+
+    return vtkPolys
+
+
 def smoothPolyData(poly, relax=0.1):
     # mergeDuplicateNodes may be needed before applying this filter
     smoother = vtk.vtkSmoothPolyDataFilter()
@@ -346,34 +363,36 @@ def smoothPolyData(poly, relax=0.1):
     smoother.Update()
     return smoother.GetOutput()
 
+
 def activeSurface(segmentedImage, inputPolydata):
     '''
     Ferrant's Active surface Algorithm: The surface mesh (inputPolydata) given by mesh is deformed to cling as best as possible to the region boundary defined in segmentedImage. 
-    
+
     Inputs:
         segmentedImage = target Image
         inputPolydata = initial mesh
     '''
-    
+
     import vtkLocalPython
-       
+
     imagingTools.createEdgesDistanceMap(segmentedImage)
-    
+
     # Active Surface Algorithm
-    filtActiveSurface = vtkLocalPython.vtkActiveSurfacePolyDataFilter() # CPP function
-    filtActiveSurface.SetNumberOfIterations(100) # also used: 3, 200
+    filtActiveSurface = vtkLocalPython.vtkActiveSurfacePolyDataFilter()  # CPP function
+    filtActiveSurface.SetNumberOfIterations(100)  # also used: 3, 200
     filtActiveSurface.SetTimeStep(0.05)
-    filtActiveSurface.SetSmoothWeight(1.0) # also used: 0.01 
+    filtActiveSurface.SetSmoothWeight(1.0)  # also used: 0.01
     filtActiveSurface.SetImageWeight(0.1)
     filtActiveSurface.SetEnergyImage(energyMap)
-    filtActiveSurface.SetTargetImage(segmentedImage)    
+    filtActiveSurface.SetTargetImage(segmentedImage)
     filtActiveSurface.SetBoundaryConditionDistance(0.0)
     filtActiveSurface.SetLabelOfTargetStructure(100)
     filtActiveSurface.SetInput(inputPolydata)
     filtActiveSurface.WriteTmpResultsOff()
     filtActiveSurface.Update()
-    
-    return filtActiveSurface.GetOutput()    
+
+    return filtActiveSurface.GetOutput()
+
 
 def duplicatePoly(poly1):
     points = vtk.vtkPoints()
@@ -386,8 +405,9 @@ def duplicatePoly(poly1):
     poly.SetPolys(cells)
     poly.BuildLinks(0)
     return poly
-    
-def cutVolumeMeshAccordingToDistanceMap(volumeMesh,distMap):
+
+
+def cutVolumeMeshAccordingToDistanceMap(volumeMesh, distMap):
     '''
     donne sous forme d'un polydata la coupe d'un maillage volumique (unstructured grid) avec une fonction implicite
     coupe se fait ou la fonction implicite = 0
@@ -402,9 +422,10 @@ def cutVolumeMeshAccordingToDistanceMap(volumeMesh,distMap):
     cutter.SetInput(volumeMesh)
     cutter.SetCutFunction(implicitDataSet)
     cutter.Update()
-    return cutter.GetOutput() 
-    
-def vtkDecimatePro(poly,targetReduction):
+    return cutter.GetOutput()
+
+
+def vtkDecimatePro(poly, targetReduction):
     deci = vtk.vtkDecimatePro()
     deci.SetInput(poly)
     deci.SetTargetReduction(targetReduction)
@@ -416,25 +437,30 @@ def vtkDecimatePro(poly,targetReduction):
     deci.SetFeatureAngle(90)
     return deci.GetOutput()
 
-def vtkQuadricDecimation(poly,targetReduction):
+
+def vtkQuadricDecimation(poly, targetReduction):
     deci = vtk.vtkQuadricDecimation()
     deci.SetInput(poly)
     deci.SetTargetReduction(targetReduction)
     return deci.GetOutput()
-        
+
+
 def translate(poly, dx, dy, dz):
     t1 = vtk.vtkTransform()
-    t1.Translate(dx,dy,dz)
+    t1.Translate(dx, dy, dz)
     tr = vtk.vtkTransformPolyDataFilter()
     tr.SetInput(poly)
     tr.SetTransform(t1)
     poly = tr.GetOutput()
     poly.Update()
     return poly
-    
+
+
 def computeTriangleArea(vtkCell):
-    p0,p1,p2 = vtkCell.GetPoints().GetPoint(0),vtkCell.GetPoints().GetPoint(1),vtkCell.GetPoints().GetPoint(2)
-    return vtkCell.TriangleArea(p0,p1,p2)
+    p0, p1, p2 = vtkCell.GetPoints().GetPoint(
+        0), vtkCell.GetPoints().GetPoint(1), vtkCell.GetPoints().GetPoint(2)
+    return vtkCell.TriangleArea(p0, p1, p2)
+
 
 def computeTriangleQualityEdgeRatio(vtkCell):
     ''' 
@@ -446,8 +472,9 @@ def computeTriangleQualityEdgeRatio(vtkCell):
     reference: Verdict reference manual, Stimpson, 2007
     '''
     qual = vtk.vtkMeshQuality()
-    return qual.TriangleEdgeRatio (vtkCell)
-    
+    return qual.TriangleEdgeRatio(vtkCell)
+
+
 def computeTriangleQualityAspectRatio(vtkCell):
     ''' 
     Returns aspect ratio of the triangle.
@@ -458,7 +485,8 @@ def computeTriangleQualityAspectRatio(vtkCell):
     reference: Verdict reference manual, Stimpson, 2007
     '''
     qual = vtk.vtkMeshQuality()
-    return qual.TriangleAspectRatio (vtkCell)
+    return qual.TriangleAspectRatio(vtkCell)
+
 
 def computeTriangleQualityRadiusRatio(vtkCell):
     ''' 
@@ -470,7 +498,8 @@ def computeTriangleQualityRadiusRatio(vtkCell):
     reference: Verdict reference manual, Stimpson, 2007
     '''
     qual = vtk.vtkMeshQuality()
-    return qual.TriangleRadiusRatio (vtkCell)
+    return qual.TriangleRadiusRatio(vtkCell)
+
 
 def computeTriangleQualityAspectFrobenius(vtkCell):
     ''' 
@@ -483,6 +512,7 @@ def computeTriangleQualityAspectFrobenius(vtkCell):
     qual = vtk.vtkMeshQuality()
     return qual.TriangleAspectFrobenius(vtkCell)
 
+
 def computeTriangleQualityMinAngle(vtkCell):
     '''
     Returns [ min, average, max, variance, number of cells ] of Minmum included Angleof the polydata's triangles.
@@ -491,58 +521,70 @@ def computeTriangleQualityMinAngle(vtkCell):
     reference: Verdict reference manual, Stimpson, 2007
     '''
     qual = vtk.vtkMeshQuality()
-    return qual.TriangleMinAngle (vtkCell)
+    return qual.TriangleMinAngle(vtkCell)
+
 
 def computeTriangleQualityFrey(vtkCell):
     '''
     Quality measure proposed by Frey
     '''
     fact = 6/math.sqrt(3)
-    p0,p1,p2 = vtkCell.GetPoints().GetPoint(0),vtkCell.GetPoints().GetPoint(1),vtkCell.GetPoints().GetPoint(2)
-    l0 = math.sqrt((p1[0]-p0[0])*(p1[0]-p0[0])+(p1[1]-p0[1])*(p1[1]-p0[1])+(p1[2]-p0[2])*(p1[2]-p0[2]))
-    l1 = math.sqrt((p2[0]-p1[0])*(p2[0]-p1[0])+(p2[1]-p1[1])*(p2[1]-p1[1])+(p2[2]-p1[2])*(p2[2]-p1[2]))
-    l2 = math.sqrt((p0[0]-p2[0])*(p0[0]-p2[0])+(p0[1]-p2[1])*(p0[1]-p2[1])+(p0[2]-p2[2])*(p0[2]-p2[2]))
-    area = vtkCell.TriangleArea(p0,p1,p2)
-    lmax = max(l0,l1,l2)
+    p0, p1, p2 = vtkCell.GetPoints().GetPoint(
+        0), vtkCell.GetPoints().GetPoint(1), vtkCell.GetPoints().GetPoint(2)
+    l0 = math.sqrt((p1[0]-p0[0])*(p1[0]-p0[0])+(p1[1]-p0[1])
+                   * (p1[1]-p0[1])+(p1[2]-p0[2])*(p1[2]-p0[2]))
+    l1 = math.sqrt((p2[0]-p1[0])*(p2[0]-p1[0])+(p2[1]-p1[1])
+                   * (p2[1]-p1[1])+(p2[2]-p1[2])*(p2[2]-p1[2]))
+    l2 = math.sqrt((p0[0]-p2[0])*(p0[0]-p2[0])+(p0[1]-p2[1])
+                   * (p0[1]-p2[1])+(p0[2]-p2[2])*(p0[2]-p2[2]))
+    area = vtkCell.TriangleArea(p0, p1, p2)
+    lmax = max(l0, l1, l2)
     q = 0.0
     try:
         r = 2*area/(l0+l1+l2)
         q = fact*r / lmax
     except:
         pass
-    return q;
+    return q
+
 
 def computeCenter(vtkCell):
-    nb=vtkCell.GetNumberOfPoints()
-    center1=0
-    center2=0
-    center3=0
+    nb = vtkCell.GetNumberOfPoints()
+    center1 = 0
+    center2 = 0
+    center3 = 0
     for i in range(nb):
-        center1=center1+vtkCell.GetPoints().GetPoint(i)[0]
-        center2=center2+vtkCell.GetPoints().GetPoint(i)[1]
-        center3=center3+vtkCell.GetPoints().GetPoint(i)[2]
-    center=[center1/nb,center2/nb,center3/nb]
+        center1 = center1+vtkCell.GetPoints().GetPoint(i)[0]
+        center2 = center2+vtkCell.GetPoints().GetPoint(i)[1]
+        center3 = center3+vtkCell.GetPoints().GetPoint(i)[2]
+    center = [center1/nb, center2/nb, center3/nb]
     return center
-    
+
+
 def computeTriangleQualitySemenova(vtkCell):
-    p0,p1,p2 = vtkCell.GetPoints().GetPoint(0),vtkCell.GetPoints().GetPoint(1),vtkCell.GetPoints().GetPoint(2)
-    l0 = math.sqrt((p1[0]-p0[0])*(p1[0]-p0[0])+(p1[1]-p0[1])*(p1[1]-p0[1])+(p1[2]-p0[2])*(p1[2]-p0[2]))
-    l1 = math.sqrt((p2[0]-p1[0])*(p2[0]-p1[0])+(p2[1]-p1[1])*(p2[1]-p1[1])+(p2[2]-p1[2])*(p2[2]-p1[2]))
-    l2 = math.sqrt((p0[0]-p2[0])*(p0[0]-p2[0])+(p0[1]-p2[1])*(p0[1]-p2[1])+(p0[2]-p2[2])*(p0[2]-p2[2]))
-    area = vtkCell.TriangleArea(p0,p1,p2)
+    p0, p1, p2 = vtkCell.GetPoints().GetPoint(
+        0), vtkCell.GetPoints().GetPoint(1), vtkCell.GetPoints().GetPoint(2)
+    l0 = math.sqrt((p1[0]-p0[0])*(p1[0]-p0[0])+(p1[1]-p0[1])
+                   * (p1[1]-p0[1])+(p1[2]-p0[2])*(p1[2]-p0[2]))
+    l1 = math.sqrt((p2[0]-p1[0])*(p2[0]-p1[0])+(p2[1]-p1[1])
+                   * (p2[1]-p1[1])+(p2[2]-p1[2])*(p2[2]-p1[2]))
+    l2 = math.sqrt((p0[0]-p2[0])*(p0[0]-p2[0])+(p0[1]-p2[1])
+                   * (p0[1]-p2[1])+(p0[2]-p2[2])*(p0[2]-p2[2]))
+    area = vtkCell.TriangleArea(p0, p1, p2)
     q = 0.0
     try:
         q = 4*math.sqrt(3)*area / (l0*l0 + l1*l1 + l2*l2)
     except:
         pass
-    return q;
+    return q
+
 
 def computeQualities(polydata):
     '''
     Compute several qualities for poly and save in poly.GetCellData().GetArray(i)
     '''
     import vtk
-    
+
     size = polydata.GetNumberOfCells()
     cellArray0 = vtk.vtkDoubleArray()
     cellArray0.SetName("QualityEdgeRatio")
@@ -550,16 +592,16 @@ def computeQualities(polydata):
     for i in range(size):
         cell = polydata.GetCell(i)
         q = computeTriangleQualityEdgeRatio(cell)
-        cellArray0.InsertValue(i,q)
+        cellArray0.InsertValue(i, q)
     polydata.GetCellData().AddArray(cellArray0)
-    
+
     cellArray1 = vtk.vtkDoubleArray()
     cellArray1.SetName("QualityAspectRatio")
     cellArray1.SetNumberOfValues(size)
     for i in range(size):
         cell = polydata.GetCell(i)
         q = computeTriangleQualityAspectRatio(cell)
-        cellArray1.InsertValue(i,q)
+        cellArray1.InsertValue(i, q)
     polydata.GetCellData().AddArray(cellArray1)
 
     cellArray2 = vtk.vtkDoubleArray()
@@ -568,7 +610,7 @@ def computeQualities(polydata):
     for i in range(size):
         cell = polydata.GetCell(i)
         q = computeTriangleQualityRadiusRatio(cell)
-        cellArray2.InsertValue(i,q)
+        cellArray2.InsertValue(i, q)
     polydata.GetCellData().AddArray(cellArray2)
 
     cellArray3 = vtk.vtkDoubleArray()
@@ -577,7 +619,7 @@ def computeQualities(polydata):
     for i in range(size):
         cell = polydata.GetCell(i)
         q = computeTriangleQualityAspectFrobenius(cell)
-        cellArray3.InsertValue(i,q)
+        cellArray3.InsertValue(i, q)
     polydata.GetCellData().AddArray(cellArray3)
 
     cellArray4 = vtk.vtkDoubleArray()
@@ -586,7 +628,7 @@ def computeQualities(polydata):
     for i in range(size):
         cell = polydata.GetCell(i)
         q = computeTriangleQualityMinAngle(cell)
-        cellArray4.InsertValue(i,q)
+        cellArray4.InsertValue(i, q)
     polydata.GetCellData().AddArray(cellArray4)
 
     size = polydata.GetNumberOfCells()
@@ -596,8 +638,8 @@ def computeQualities(polydata):
     for i in range(size):
         cell = polydata.GetCell(i)
         q = computeTriangleQualityFrey(cell)
-        cellArray5.InsertValue(i,q)
-    polydata.GetCellData().AddArray(cellArray5) 
+        cellArray5.InsertValue(i, q)
+    polydata.GetCellData().AddArray(cellArray5)
 
     size = polydata.GetNumberOfCells()
     cellArray6 = vtk.vtkDoubleArray()
@@ -606,9 +648,10 @@ def computeQualities(polydata):
     for i in range(size):
         cell = polydata.GetCell(i)
         q = computeTriangleArea(cell)
-        cellArray6.InsertValue(i,q)
+        cellArray6.InsertValue(i, q)
     polydata.GetCellData().AddArray(cellArray6)
-    
+
+
 def computePolyQualityEdgeRatio(polydata):
     ''' 
     Returns [ min, average, max, variance, number of cells ] of edge ratio of the polydata's triangles.
@@ -625,10 +668,11 @@ def computePolyQualityEdgeRatio(polydata):
     qual.SetTriangleQualityMeasureToAspectRatio()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
-    
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+
+
 def computePolyQualityAspectRatio(polydata):
     ''' 
     Returns [ min, average, max, variance, number of cells ] of aspect ratio of the polydata's triangles.
@@ -645,9 +689,10 @@ def computePolyQualityAspectRatio(polydata):
     qual.SetTriangleQualityMeasureToAspectRatio()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(1), qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
-    0,
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+            0,
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+
 
 def computePolyQualityRadiusRatio(polydata):
     ''' 
@@ -665,9 +710,10 @@ def computePolyQualityRadiusRatio(polydata):
     qual.SetTriangleQualityMeasureToRadiusRatio()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+
 
 def computePolyQualityAspectFrobenius(polydata):
     ''' 
@@ -684,9 +730,10 @@ def computePolyQualityAspectFrobenius(polydata):
     qual.SetTriangleQualityMeasureToAspectFrobenius()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+
 
 def computePolyQualityMinAngle(polydata):
     '''
@@ -702,9 +749,10 @@ def computePolyQualityMinAngle(polydata):
     qual.SetTriangleQualityMeasureToMinAngle()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(4)]
+
 
 def computePolyQualityFrey(polydata):
     '''
@@ -712,7 +760,7 @@ def computePolyQualityFrey(polydata):
     '''
     size = int(polydata.GetNumberOfCells())
     if size == 0:
-        return [0,0,0,0,0]
+        return [0, 0, 0, 0, 0]
     fact = 6/math.sqrt(3)
     average = 0
     maximum = 0
@@ -728,25 +776,26 @@ def computePolyQualityFrey(polydata):
         if (q < minimum):
             minimum = q
         average += q
-        qualHistogram[int(q*100)] += 1;
-    average = average / size      
-    
-    file = open('polyQualityFrey.txt','w')
-    file.write("max %f\n"%(maximum))
-    file.write("min %f\n"%(minimum))
-    file.write("average %f\n"%(average))
+        qualHistogram[int(q*100)] += 1
+    average = average / size
+
+    file = open('polyQualityFrey.txt', 'w')
+    file.write("max %f\n" % (maximum))
+    file.write("min %f\n" % (minimum))
+    file.write("average %f\n" % (average))
     file.write("histogram")
-    for i,j in enumerate(qualHistogram):
+    for i, j in enumerate(qualHistogram):
         file.write(" %d" % (j))
     file.write("\n")
     file.close
-    
-    return [minimum,average,maximum,0,size]
+
+    return [minimum, average, maximum, 0, size]
+
 
 def computePolyArea(polydata):
     size = int(polydata.GetNumberOfCells())
     if size == 0:
-        return [0,0,0,0,0]
+        return [0, 0, 0, 0, 0]
     average = 0
     maximum = 0
     minimum = 1000
@@ -758,26 +807,31 @@ def computePolyArea(polydata):
         if (q < minimum):
             minimum = q
         average += q
-    average = average / size 
-    
-    return [minimum,average,maximum,0,size]
-    
+    average = average / size
+
+    return [minimum, average, maximum, 0, size]
+
+
 def computePolyEdgeLengths(polydata):
     size = int(polydata.GetNumberOfCells())
     if size == 0:
-        return [0,0,0,0,0]
+        return [0, 0, 0, 0, 0]
     average = 0
     maximum = 0
     minimum = 1000
 
     for i in range(size):
         cell = polydata.GetCell(i)
-        p0,p1,p2 = cell.GetPoints().GetPoint(0),cell.GetPoints().GetPoint(1),cell.GetPoints().GetPoint(2)
-        l0 = math.sqrt((p1[0]-p0[0])*(p1[0]-p0[0])+(p1[1]-p0[1])*(p1[1]-p0[1])+(p1[2]-p0[2])*(p1[2]-p0[2]))
-        l1 = math.sqrt((p2[0]-p1[0])*(p2[0]-p1[0])+(p2[1]-p1[1])*(p2[1]-p1[1])+(p2[2]-p1[2])*(p2[2]-p1[2]))
-        l2 = math.sqrt((p0[0]-p2[0])*(p0[0]-p2[0])+(p0[1]-p2[1])*(p0[1]-p2[1])+(p0[2]-p2[2])*(p0[2]-p2[2]))
-        lmax = max(l0,l1,l2)
-        lmin = min(l0,l1,l2)
+        p0, p1, p2 = cell.GetPoints().GetPoint(
+            0), cell.GetPoints().GetPoint(1), cell.GetPoints().GetPoint(2)
+        l0 = math.sqrt((p1[0]-p0[0])*(p1[0]-p0[0])+(p1[1]-p0[1])
+                       * (p1[1]-p0[1])+(p1[2]-p0[2])*(p1[2]-p0[2]))
+        l1 = math.sqrt((p2[0]-p1[0])*(p2[0]-p1[0])+(p2[1]-p1[1])
+                       * (p2[1]-p1[1])+(p2[2]-p1[2])*(p2[2]-p1[2]))
+        l2 = math.sqrt((p0[0]-p2[0])*(p0[0]-p2[0])+(p0[1]-p2[1])
+                       * (p0[1]-p2[1])+(p0[2]-p2[2])*(p0[2]-p2[2]))
+        lmax = max(l0, l1, l2)
+        lmin = min(l0, l1, l2)
         if (lmax > maximum):
             maximum = lmax
         if (lmin < minimum):
@@ -785,9 +839,10 @@ def computePolyEdgeLengths(polydata):
         average += (l0+l1+l2)/3.0
 
     average = average / size
-    
-    return [minimum,average,maximum,0,size]
-          
+
+    return [minimum, average, maximum, 0, size]
+
+
 def computeUgridQualityEdgeRatio(ugrid):
     '''
     reference: Verdict reference manual, Stimpson, 2007
@@ -799,10 +854,13 @@ def computeUgridQualityEdgeRatio(ugrid):
     qual.SetTetQualityMeasureToAspectRatio()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Triangle Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
-        
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
+
+
 def computeUgridQualityAspectRatio(ugrid):
     '''
     reference: Verdict reference manual, Stimpson, 2007
@@ -814,10 +872,13 @@ def computeUgridQualityAspectRatio(ugrid):
     qual.SetTetQualityMeasureToAspectRatio()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
-    
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
+
+
 def computeUgridQualityRadiusRatio(ugrid):
     '''
     reference: Verdict reference manual, Stimpson, 2007
@@ -829,10 +890,13 @@ def computeUgridQualityRadiusRatio(ugrid):
     qual.SetTetQualityMeasureToRadiusRatio()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
-    
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
+
+
 def computeUgridQualityFrobeniusNorm(ugrid):
     '''
     reference: Verdict reference manual, Stimpson, 2007
@@ -844,10 +908,13 @@ def computeUgridQualityFrobeniusNorm(ugrid):
     qual.SetTetQualityMeasureToFrobeniusNorm()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
-        
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
+
+
 def computeUgridQualityMinAngle(ugrid):
     '''
     reference: Verdict reference manual, Stimpson, 2007
@@ -859,14 +926,18 @@ def computeUgridQualityMinAngle(ugrid):
     qual.SetTetQualityMeasureToMinAngle()
     qual.Update()
     return [qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(0), qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(1),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(2),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(3),
-    qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
-    
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(2),
+            qual.GetOutput().GetFieldData().GetArray(
+                "Mesh Tetrahedron Quality").GetValue(3),
+            qual.GetOutput().GetFieldData().GetArray("Mesh Tetrahedron Quality").GetValue(4)]
+
+
 def computeUgridQualityTetGen(ugrid):
     '''
     In TetGen, quality of a tetra is measured as Q = R / Lmin where R = circumradius and Lmin = smallest edge
     '''
+
 
 def alignPolyToReferencePoly(poly, polyRef):
     '''
@@ -874,111 +945,124 @@ def alignPolyToReferencePoly(poly, polyRef):
     -- Find Closest Point non disponible en Python
     '''
     from math import sqrt
-    
+
     # cell locator
     cellLocator = vtk.vtkCellLocator()
     cellLocator.SetDataSet(polyRef)
     cellLocator.BuildLocator()
 
     #
-    clospoint = [0,0,0]
-     
-    poi = poly.GetPoints(); #vtkPoints
-    polys = poly.GetPolys(); #vtkCellArray
+    clospoint = [0, 0, 0]
+
+    poi = poly.GetPoints()  # vtkPoints
+    polys = poly.GetPolys()  # vtkCellArray
     npoints = poly.GetNumberOfPoints()
-    for i in range(0,npoints):
+    for i in range(0, npoints):
         # find closest point
-        cellLocator.FindClosestPoint(poi.GetPoint(i), clospoint, cellId, subId, dist)
+        cellLocator.FindClosestPoint(
+            poi.GetPoint(i), clospoint, cellId, subId, dist)
         # Modify the Surface: Replace the poi with new coordinates.
-        poi.SetPoint(i,clospoint);         
-        
+        poi.SetPoint(i, clospoint)
+
+
 def sortContourPoints(contour):
-    n = contour.GetNumberOfCells()       
+    n = contour.GetNumberOfCells()
     pointa = contour.GetPoint(contour.GetCell(0).GetPointId(0))
     pointToSearch = contour.GetPoint(contour.GetCell(0).GetPointId(1))
     points = vtk.vtkPoints()
     points.InsertNextPoint(pointa)
-    c = range(1,n+1)
+    c = range(1, n+1)
     id = 2
     while id < n+1:
-        for cid in c:  
+        for cid in c:
             cell = contour.GetCell(cid)
             pointa = contour.GetPoint(cell.GetPointId(0))
             pointb = contour.GetPoint(cell.GetPointId(1))
-            if ( (abs(pointa[0]-pointToSearch[0])<1.e-5) and (abs(pointa[1]-pointToSearch[1])<1.e-5) and (abs(pointa[2]-pointToSearch[2])<1.e-5)):
+            if ((abs(pointa[0]-pointToSearch[0]) < 1.e-5) and (abs(pointa[1]-pointToSearch[1]) < 1.e-5) and (abs(pointa[2]-pointToSearch[2]) < 1.e-5)):
                 points.InsertNextPoint(pointa)
                 pointToSearch = pointb
                 c.remove(cid)
                 break
-            elif ( (abs(pointb[0]-pointToSearch[0])<1.e-5) and (abs(pointb[1]-pointToSearch[1])<1.e-5) and (abs(pointb[2]-pointToSearch[2])<1.e-5)):
+            elif ((abs(pointb[0]-pointToSearch[0]) < 1.e-5) and (abs(pointb[1]-pointToSearch[1]) < 1.e-5) and (abs(pointb[2]-pointToSearch[2]) < 1.e-5)):
                 points.InsertNextPoint(pointb)
                 pointToSearch = pointa
                 c.remove(cid)
                 break
         id = id+1
     return points
-    
+
+
 def decimateContourPoints(inpoints, res):
     if inpoints.GetNumberOfPoints() < 10:
         return inpoints
-        
+
     outpoints = vtk.vtkPoints()
     outpoints.InsertNextPoint(inpoints.GetPoint(0))
     id = 1
     while id < inpoints.GetNumberOfPoints():
         outpoints.InsertNextPoint(inpoints.GetPoint(id))
         id += res
-        
+
     return outpoints
 
-def scalePolydata(poly, scaleX,scaleY,scaleZ):
-    tr = vtk.vtkTransform();
-    tr.Scale(scaleX,scaleY,scaleZ)
+
+def scalePolydata(poly, scaleX, scaleY, scaleZ):
+    tr = vtk.vtkTransform()
+    tr.Scale(scaleX, scaleY, scaleZ)
     f = vtk.vtkTransformPolyDataFilter()
-    f.SetInput(poly);
-    f.SetTransform(tr);
+    f.SetInput(poly)
+    f.SetTransform(tr)
     f.Update()
-    return f.GetOutput();
-    
-def appendPolydatas(poly1,poly2):
+    return f.GetOutput()
+
+
+def appendPolydatas(poly1, poly2):
     appendF = vtk.vtkAppendPolyData()
-    appendF.AddInput(poly1)  
-    appendF.AddInput(poly2)  
+    appendF.AddInput(poly1)
+    appendF.AddInput(poly2)
     appendF.Update()
     return appendF.GetOutput()
- 
+
+
 class createTringulatedCylinder:
     """ creation d'un cylindre triangulé 
     (hauteur des triangles égale au nombre de triangles sur le périmètre - setResolution(nb))
     """
+
     def __init__(self):
         self.radius = 5.
         self.resolution = 8
         self.height = 10.
-        self.center = (0.,0.,0.) 
-        self.orientation = (0,-1,0)
+        self.center = (0., 0., 0.)
+        self.orientation = (0, -1, 0)
         self.capping = False
 
-    def setRadius(self, radius = 5.):
+    def setRadius(self, radius=5.):
         self.radius = radius
-    def setResolution(self, resolution = 8):
+
+    def setResolution(self, resolution=8):
         self.resolution = resolution
-    def setHeight(self, height = 10.):
+
+    def setHeight(self, height=10.):
         self.height = height
-    def setCenter(self, center = (0.,0.,0.) ):
+
+    def setCenter(self, center=(0., 0., 0.)):
         self.center = center
-    def setOrient(self, orientation = (0,-1,0)):
+
+    def setOrient(self, orientation=(0, -1, 0)):
         self.orientation = orientation
+
     def setCapping(self, capping=False):
         self.capping = capping
 
     def execute(self):
-        #vtkCylinderSource() = cylindre axé selon -Ey avec des facettes rectangularies dont la hauteur est celle du cylindre
-        #pour avoir un cylindre avec des triangles dont la hauteur est égale a la base, on crée en fait une série de cylindres dont le centre est décalé...
+        # vtkCylinderSource() = cylindre ax selon -Ey avec des facettes rectangularies dont la hauteur est celle du cylindre
+        # pour avoir un cylindre avec des triangles dont la hauteur est gale a la base, on cre en fait une srie de cylindres dont le centre est dcal...
         localHeight = 2.*math.pi*self.radius/self.resolution
         nbCyl = int(math.ceil(self.height/localHeight))
         height0 = self.height-nbCyl*localHeight
-        defaultOrientation = (0,-1,0)#orientation par defaut du cylindre vtkCylinderSource()
+        # orientation par defaut du cylindre vtkCylinderSource()
+        defaultOrientation = (0, -1, 0)
         cylindre = vtk.vtkCylinderSource()
         cylindre.SetRadius(self.radius)
         cylindre.SetResolution(self.resolution)
@@ -986,15 +1070,19 @@ class createTringulatedCylinder:
         cylindre.SetCenter(self.center)
         cylindre.SetCapping(0)
         cylindre.Update()
-        if self.orientation != defaultOrientation:# on reoriente le cylindre si necessaire
+        if self.orientation != defaultOrientation:  # on reoriente le cylindre si necessaire
             a = self.orientation[0]
             b = self.orientation[1]
             c = self.orientation[2]
             norm = math.sqrt(a*a+b*b+c*c)
-            self.orientation = (self.orientation[0]/norm,self.orientation[1]/norm,self.orientation[2]/norm)
+            self.orientation = (
+                self.orientation[0]/norm, self.orientation[1]/norm, self.orientation[2]/norm)
             alpha = math.atan2(self.orientation[0], self.orientation[1])
-            beta = math.atan2(self.orientation[2], math.sqrt(self.orientation[0]*self.orientation[0]+self.orientation[1]*self.orientation[1]))   
-            poly1 = translate(cylindre.GetOutput(),-1.*self.center[0],-1.*self.center[1],-1.*self.center[2]) # Vinciane: Correction pre et post translate !
+            beta = math.atan2(self.orientation[2], math.sqrt(
+                self.orientation[0]*self.orientation[0]+self.orientation[1]*self.orientation[1]))
+            # Vinciane: Correction pre et post translate !
+            poly1 = translate(cylindre.GetOutput(
+            ), -1.*self.center[0], -1.*self.center[1], -1.*self.center[2])
             transform = vtk.vtkTransform()
             transform.RotateX(math.degrees(beta))
             transform.RotateZ(math.degrees(180.-alpha))
@@ -1003,24 +1091,27 @@ class createTringulatedCylinder:
             transformFilter.SetTransform(transform)
             transformFilter.Update()
             poly2 = transformFilter.GetOutput()
-            output = translate(poly2,self.center[0],self.center[1],self.center[2])
+            output = translate(
+                poly2, self.center[0], self.center[1], self.center[2])
         else:
             output = cylindre.GetOutput()
-        #par defaut vtkCylinderSource() est maillé quadrangles, donc on triangularise
+        # par defaut vtkCylinderSource() est maill quadrangles, donc on triangularise
         triangleFilter = vtk.vtkTriangleFilter()
         triangleFilter.SetInput(output)
         triangleFilter.Update()
         cylindreComplet = triangleFilter.GetOutput()
-        for cyl in range(1,nbCyl):
+        for cyl in range(1, nbCyl):
             cylindre = vtk.vtkCylinderSource()
-            cylindre.SetCenter(self.center[0],self.center[1]-cyl*localHeight,self.center[2])
+            cylindre.SetCenter(
+                self.center[0], self.center[1]-cyl*localHeight, self.center[2])
             cylindre.SetHeight(localHeight)
             cylindre.SetRadius(self.radius)
             cylindre.SetResolution(self.resolution)
             cylindre.SetCapping(self.capping)
             cylindre.Update()
             if self.orientation != defaultOrientation:
-                poly1 = translate(cylindre.GetOutput(),-1.*self.center[0],-1.*self.center[1],-1.*self.center[2])
+                poly1 = translate(cylindre.GetOutput(
+                ), -1.*self.center[0], -1.*self.center[1], -1.*self.center[2])
                 transform = vtk.vtkTransform()
                 transform.RotateX(math.degrees(beta))
                 transform.RotateZ(math.degrees(180.-alpha))
@@ -1029,27 +1120,31 @@ class createTringulatedCylinder:
                 transformFilter.SetTransform(transform)
                 transformFilter.Update()
                 poly2 = transformFilter.GetOutput()
-                output = translate(poly2,self.center[0],self.center[1],self.center[2])
+                output = translate(
+                    poly2, self.center[0], self.center[1], self.center[2])
             else:
                 output = cylindre.GetOutput()
             triangleFilter = vtk.vtkTriangleFilter()
             triangleFilter.SetInput(output)
             triangleFilter.Update()
-            cylindreComplet = appendPolydatas(cylindreComplet,triangleFilter.GetOutput())
+            cylindreComplet = appendPolydatas(
+                cylindreComplet, triangleFilter.GetOutput())
         return cylindreComplet
 
-def getBooleanOperationOnPolys(poly1,poly2,operation='union'):
-    if operation=='union':
-        opVTK=vtk.VTK_UNION
-    elif operation=='intersection':
-        opVTK=vtk.VTK_INTERSECTION
-    elif operation=='difference':
-        opVTK=vtk.VTK_DIFFERENCE
+
+def getBooleanOperationOnPolys(poly1, poly2, operation='union'):
+    if operation == 'union':
+        opVTK = vtk.VTK_UNION
+    elif operation == 'intersection':
+        opVTK = vtk.VTK_INTERSECTION
+    elif operation == 'difference':
+        opVTK = vtk.VTK_DIFFERENCE
     else:
-        raise Exception("getBooleanOperationOnPolys: unknown boolean operation type (known types are: 'union', 'intersection', and 'difference')")
+        raise Exception(
+            "getBooleanOperationOnPolys: unknown boolean operation type (known types are: 'union', 'intersection', and 'difference')")
     boolFilter = vtk.vtkBooleanOperationPolyDataFilter()
-    boolFilter.SetOperation( opVTK )
-    boolFilter.SetInputConnection( 0, poly1.GetProducerPort() )
-    boolFilter.SetInputConnection( 1, poly2.GetProducerPort() )
+    boolFilter.SetOperation(opVTK)
+    boolFilter.SetInputConnection(0, poly1.GetProducerPort())
+    boolFilter.SetInputConnection(1, poly2.GetProducerPort())
     boolFilter.Update()
     return boolFilter.GetOutput()

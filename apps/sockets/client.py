@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
 #
@@ -15,32 +15,32 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-#Le client
-#On importe socket..
+# Le client
+# On importe socket..
 from socket import *
 
-#Variables
+# Variables
 host = "garfield.ltas.ulg.ac.be"
 port = 2074
 buf = 1024
-addr = (host,port)
+addr = (host, port)
 
-#On fait le socket
-UDPSock = socket(AF_INET,SOCK_DGRAM)
+# On fait le socket
+UDPSock = socket(AF_INET, SOCK_DGRAM)
 def_msg = "Message?"
-print "\n",def_msg
+print "\n", def_msg
 
-#Envois du message
+# Envois du message
 while (1):
     data = raw_input('>> ')
     if not data:
         break
     else:
-        if(UDPSock.sendto(data,addr)):
-            print "Envois de: '",data,"' ... <ok>"
+        if(UDPSock.sendto(data, addr)):
+            print "Envois de: '", data, "' ... <ok>"
 
-#On ferme tout
-UDPSock.close() 
+# On ferme tout
+UDPSock.close()
 
 
 print "fini!"
