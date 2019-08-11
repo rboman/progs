@@ -32,11 +32,12 @@ void genTool()
 
     std::cout << "loading parameters...\n";
     ToolParameters        par;
+    /*
     par.load(PROJECT_SOURCE_DIR "/matrix.txt");
     std::cout << "parameters loaded.\n";
     par.save("matrix_2.txt");
     std::cout << "parameters saved.\n";
-
+    */
     Tool        matrix;
     ToolBuilder builder(matrix);
 

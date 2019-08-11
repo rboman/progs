@@ -25,20 +25,6 @@ ToolParameters::ToolParameters()
 {
     setToDefault();
 }
-/*
-ToolParameters::ToolParameters(const ToolParameters &obj) : Parameters(obj)
-{
-}
-
-void ToolParameters::operator=(const ToolParameters &obj)
-{
-    Parameters::operator=(obj);
-}
-
-ToolParameters::~ToolParameters()
-{
-}
-*/
 
 /**
  * @brief Sets the parameters to the default values
@@ -46,18 +32,18 @@ ToolParameters::~ToolParameters()
 
 void ToolParameters::setToDefault()
 {
-    /*
+
     radius = 100.0;
     initialAngle = 0.050;
-    double asperityLength;
-    double asperityAngle;
-    double asperityAngle;
-    double smoothnessAngle;
-    double asperityInterval;
-    int numberOfAsperities;
-    centre;
-    */
-   
+    asperityLength = 10.0;
+    asperityAngle = 40.0;
+    smoothnessAngle = 1.0;
+    asperityInterval = 5.0;
+    numberOfAsperities = 10;
+    centre.x = 10.0;
+    centre.y = 110.0;
+
+/*   
     addParam(DoubleParam(P_R, "Radius", 100.0));
     addParam(DoubleParam(P_A1, "Initial Angle", 0.050));
     addParam(PointParam(P_CENTRE, "Centre", 10.0, 110.0));
@@ -66,4 +52,5 @@ void ToolParameters::setToDefault()
     addParam(DoubleParam(P_ASP_CR, "Smoothness Angle", 1.0));
     addParam(DoubleParam(P_ABS_INT, "Asperity Interval", 5.0));
     addParam(IntegerParam(P_ASP_NBR, "Number Of Asperities", 10));
+*/
 }

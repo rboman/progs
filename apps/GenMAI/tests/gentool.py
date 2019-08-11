@@ -17,10 +17,22 @@
 
 from genmai import *
 
-par = ToolParameters() 
-inpfile = os.path.join(os.path.dirname(__file__),'../matrix.txt')
-par.load(inpfile)
+#par = ToolParameters() 
+#inpfile = os.path.join(os.path.dirname(__file__),'../matrix.txt')
+#par.load(inpfile)
 #par.save('matrix_2.par')
+
+par = ToolParameters() 
+par.radius = 209.
+par.initialAngle = 0.5
+par.asperityLength = 0.05
+par.asperityAngle = 21.8014
+par.smoothnessAngle = 0.01
+par.asperityInterval = 0.1
+par.numberOfAsperities = 250 
+par.centre.x = -1.0
+par.centre.y = 209.01
+
 
 matrix = Tool()
 builder = ToolBuilder(matrix)
