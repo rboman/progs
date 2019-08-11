@@ -17,17 +17,33 @@
 
 from genmai import *
 
-par = MeshParameters()
+par2 = MeshParameters()
 
-inpfile = os.path.join(os.path.dirname(__file__),'../mesh.txt')
-par.load(inpfile)
+#inpfile = os.path.join(os.path.dirname(__file__),'../mesh.txt')
+#par.load(inpfile)
 #par.save('mesh_2.par')
 #par.output()
+
+par = MeshParameters()
+par.origin.x = -10.;
+par.origin.y = -0.25875;
+par.dimension.x = 10.;
+par.dimension.y = 0.25875;
+par.numberOfElementOnX = 200;
+par.numberOfElementOnY = 2;
+par.reductionCoefficient = 5.0;
+par.layers.push_back(REDUCTION);
+par.layers.push_back(REDUCTION);
+par.layers.push_back(REDUCTION);
+par.layers.push_back(REDUCTION);
+par.layers.push_back(REDUCTION);
+par.layers.push_back(REDUCTION);
+par.layers.push_back(CONSTANT);
 
 mesh = Mesh()
 mesher = MeshBuilder(mesh)
 
-mesher.setParameters(par)
+mesher.setParameters(par2)
 mesher.printParameters()
 
 mesher.genere()

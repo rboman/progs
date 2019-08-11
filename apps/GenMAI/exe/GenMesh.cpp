@@ -29,8 +29,8 @@
 void genMesh()
 {
     MeshParameters par; 
-    par.load(PROJECT_SOURCE_DIR "/mesh.txt");
-    par.save("mesh_2.txt");
+    //par.load(PROJECT_SOURCE_DIR "/mesh.txt");
+    //par.save("mesh_2.txt");
 
     Mesh mesh;
     MeshBuilder mesher(mesh);

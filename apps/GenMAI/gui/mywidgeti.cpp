@@ -32,13 +32,13 @@ MyWidgetI::~MyWidgetI()
 void MyWidgetI::update()
 {
 
-    updateTextLineEdit(OrigXLineEdit,   tpar.getOrigin().x);
-    updateTextLineEdit(OrigYLineEdit,   tpar.getOrigin().y);
-    updateTextLineEdit(DimXLineEdit,    tpar.getDimension().x);
-    updateTextLineEdit(DimYLineEdit,    tpar.getDimension().y);
-    updateTextLineEdit(NoXLineEdit,     tpar.getNumberOfElementOnX());
-    updateTextLineEdit(NbMLineEdit,     tpar.getNumberOfElementOnY());
-    updateTextLineEdit(CoefLineEdit,    tpar.getReductionCoefficient());
+    updateTextLineEdit(OrigXLineEdit,   tpar.origin.x);
+    updateTextLineEdit(OrigYLineEdit,   tpar.origin.y);
+    updateTextLineEdit(DimXLineEdit,    tpar.dimension.x);
+    updateTextLineEdit(DimYLineEdit,    tpar.dimension.y);
+    updateTextLineEdit(NoXLineEdit,     tpar.numberOfElementOnX);
+    updateTextLineEdit(NbMLineEdit,     tpar.numberOfElementOnY);
+    updateTextLineEdit(CoefLineEdit,    tpar.reductionCoefficient);
 
     updateTextLineEdit(CentreXLineEdit, mpar.centre.x);
     updateTextLineEdit(CentreYLineEdit, mpar.centre.y);
@@ -84,31 +84,31 @@ void MyWidgetI::updateTextLineEdit(QLineEdit *ledit, double val)
 
 void MyWidgetI::origx_slot()
 {
-    tpar.setOriginX(floatLineEdit(OrigXLineEdit));
+    tpar.origin.x = floatLineEdit(OrigXLineEdit);
 }
 void MyWidgetI::origy_slot()
 {
-    tpar.setOriginY(floatLineEdit(OrigYLineEdit));
+    tpar.origin.y = floatLineEdit(OrigYLineEdit);
 }
 void MyWidgetI::dimx_slot()
 {
-    tpar.setDimensionX(floatLineEdit(DimXLineEdit));
+    tpar.dimension.x = floatLineEdit(DimXLineEdit);
 }
 void MyWidgetI::dimy_slot()
 {
-    tpar.setDimensionY(floatLineEdit(DimYLineEdit));
+    tpar.dimension.y = floatLineEdit(DimYLineEdit);
 }
 void MyWidgetI::nox_slot()
 {
-    tpar.setNumberOfElementOnX(integerLineEdit(NoXLineEdit));
+    tpar.numberOfElementOnX = integerLineEdit(NoXLineEdit);
 }
 void MyWidgetI::nbm_slot()
 {
-    tpar.setNumberOfElementOnY(integerLineEdit(NbMLineEdit));
+    tpar.numberOfElementOnY = integerLineEdit(NbMLineEdit);
 }
 void MyWidgetI::coef_slot()
 {
-    tpar.setReductionCoefficient(floatLineEdit(CoefLineEdit));
+    tpar.reductionCoefficient = floatLineEdit(CoefLineEdit);
 }
 
 void MyWidgetI::addtype_slot()

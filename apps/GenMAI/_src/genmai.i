@@ -24,7 +24,7 @@
 
 
 // params --
-//#include "Parameters.h"
+#include "Parameters.h"
 #include "MeshParameters.h"
 #include "ToolParameters.h"
 
@@ -67,10 +67,17 @@
 %include "Arc.h"
 %include "Line.h"
 %include "Element.h"
+%include "LayerType.h"
 
 // -- gestion des "std::string"
 
 %include "std_string.i"
+
+%include "std_vector.i"
+// Instantiate some std templates
+namespace std {
+   %template(std_vector_LayerType) std::vector<LayerType>;
+}
 
 // params
 
