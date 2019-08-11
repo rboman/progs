@@ -25,12 +25,8 @@ void genTool()
 {
     std::cout << "genTool...\n";
 
-    ToolParameters par;
     Tool matrix;
     ToolBuilder builder(matrix);
-
-    builder.setParameters(par);
-    builder.printParameters();
     builder.genere();
 
     matrix.print();

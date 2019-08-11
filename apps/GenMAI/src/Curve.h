@@ -33,11 +33,8 @@ class GENMAI_API Curve
     size_t numberOfPoints() const;
     int getPointNumber(int i) const;
     void setPointNumber(int i, int j);
-
+    
     virtual void print() const = 0;
-    virtual char const *name() const = 0;
-    virtual char const *carteBacon() const = 0;
-    virtual int typeDon() const = 0;
 };
 
 #include "Curve.inl"

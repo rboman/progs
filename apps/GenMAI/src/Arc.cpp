@@ -26,20 +26,3 @@ void Arc::print() const
 {
     std::cout << "Arc " << getPointNumber(0) << ' ' << getPointNumber(1) << ' ' << getPointNumber(2);
 }
-
-char const *
-Arc::name() const
-{
-    return "Arc";
-}
-
-char const *
-Arc::carteBacon() const
-{
-    return ".arc";
-}
-
-int Arc::typeDon() const
-{
-    return 2;
-}

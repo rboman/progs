@@ -17,6 +17,19 @@
 
 MeshBuilder::MeshBuilder(Mesh &_target) : Builder(), target(_target)
 {
+    // default parameters
+    origin.x = -2.0;
+    origin.y = -0.5175 / 2.0;
+    dimension.x = 2.0;
+    dimension.y = 0.5175 / 2.0;
+    numberOfElementOnX = 40;
+    numberOfElementOnY = 2;
+    reductionCoefficient = 5.0;
+
+    layers.push_back(REDUCTION);
+    layers.push_back(REDUCTION);
+    layers.push_back(REDUCTION);
+    layers.push_back(CONSTANT);
 }
 
 /**
@@ -26,19 +39,19 @@ MeshBuilder::MeshBuilder(Mesh &_target) : Builder(), target(_target)
 double
 MeshBuilder::computeBoundaryHeight()
 {
-    double dx2 = par.dimension.x / par.numberOfElementOnX;
+    double dx2 = dimension.x / numberOfElementOnX;
 
     double hcl = dx2;
     int i;
-    for (i = 1; i < par.layers.size(); i++)
+    for (i = 1; i < layers.size(); i++)
     {
-        if (par.layers[i - 1] == REDUCTION)
+        if (layers[i - 1] == REDUCTION)
             dx2 /= 2.0;
         hcl += dx2;
     }
 
     // verification
-    if (hcl > par.dimension.y)
+    if (hcl > dimension.y)
     {
         printf("\nerreur: hauteur CL > hauteur totale\n");
         exit(1);
@@ -56,11 +69,11 @@ MeshBuilder::computeReductionFactor()
 {
     double alp = 0.0;
 
-    if (par.numberOfElementOnY > 1)
+    if (numberOfElementOnY > 1)
     {
         int i;
-        for (i = 0; i < par.numberOfElementOnY; i++)
-            alp += 1.0 + (par.reductionCoefficient - 1.0) / (par.numberOfElementOnY - 1) * i;
+        for (i = 0; i < numberOfElementOnY; i++)
+            alp += 1.0 + (reductionCoefficient - 1.0) / (numberOfElementOnY - 1) * i;
     }
     else
     {
@@ -76,10 +89,10 @@ MeshBuilder::computeReductionFactor()
 void MeshBuilder::Initialize()
 {
     // initialise la largeur de maille courante a (largeur totale)/(nbre de mailles)
-    dx = par.dimension.x / par.numberOfElementOnX;
+    dx = dimension.x / numberOfElementOnX;
 
     // initialise l'ordonnee courante a l'ordonnee de la base
-    currentHeight = par.origin.y;
+    currentHeight = origin.y;
 }
 
 /**
@@ -89,30 +102,30 @@ void MeshBuilder::Initialize()
 void MeshBuilder::meshFirstLine()
 {
     int i;
-    for (i = 0; i < par.numberOfElementOnX + 1; i++)
-        target.addNode(par.origin.x + (double)i * dx, currentHeight);
+    for (i = 0; i < numberOfElementOnX + 1; i++)
+        target.addNode(origin.x + (double)i * dx, currentHeight);
 
-    setContactNodes(0, par.numberOfElementOnX);
+    setContactNodes(0, numberOfElementOnX);
 }
 
 /**
- * @brief Maille la partie "gradient" ("par.nbm" couches)
+ * @brief Maille la partie "gradient" ("nbm" couches)
  */
 
 void MeshBuilder::meshGradient()
 {
     int lev;
-    for (lev = 0; lev < par.numberOfElementOnY; lev++)
+    for (lev = 0; lev < numberOfElementOnY; lev++)
         meshGradientLayer(lev);
 }
 
 double
 MeshBuilder::getGradientDelta(int lev)
 {
-    double xp = (par.dimension.y - computeBoundaryHeight()) / computeReductionFactor();
+    double xp = (dimension.y - computeBoundaryHeight()) / computeReductionFactor();
 
-    if (par.numberOfElementOnY > 1)
-        return xp * (1.0 + (par.reductionCoefficient - 1.0) / ((double)(par.numberOfElementOnY - 1)) * (double)(par.numberOfElementOnY - 1 - lev));
+    if (numberOfElementOnY > 1)
+        return xp * (1.0 + (reductionCoefficient - 1.0) / ((double)(numberOfElementOnY - 1)) * (double)(numberOfElementOnY - 1 - lev));
     else
         return xp;
 }
@@ -128,15 +141,15 @@ void MeshBuilder::meshGradientLayer(int lev)
 }
 
 /**
- * @brief Maille la partie "boundary" ("par.type.size()" couches)
+ * @brief Maille la partie "boundary" ("type.size()" couches)
  */
 
 void MeshBuilder::meshBoundary()
 {
     int lev;
-    for (lev = 0; lev < par.layers.size(); lev++)
+    for (lev = 0; lev < layers.size(); lev++)
     {
-        switch (par.layers[lev])
+        switch (layers[lev])
         {
         case REDUCTION:
             meshReductionLayer();
@@ -170,7 +183,7 @@ void MeshBuilder::addReductionNodes()
     // Ajout des pts du niv. suivant
     increaseHeight((target.getNodeX(first + 1) - target.getNodeX(first)) / 2.0);
 
-    double x = par.origin.x;
+    double x = origin.x;
     target.addNode(x, currentHeight);
 
     dx /= 2.0;
@@ -272,20 +285,3 @@ void MeshBuilder::genere()
     target.setLastContactNode(last);
 }
 
-/**
- * @brief Set the parameters of the builder (copy the given object)
- */
-
-void MeshBuilder::setParameters(const MeshParameters &p)
-{
-    par = p;
-}
-
-/**
- * @brief Prints the parameters to stdout
- */
-
-void MeshBuilder::printParameters() const
-{
-    //par.print();
-}

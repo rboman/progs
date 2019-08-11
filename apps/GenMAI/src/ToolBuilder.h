@@ -19,7 +19,6 @@
 #include <vector>
 #include "Point.h"
 #include "Tool.h"
-#include "ToolParameters.h"
 #include "Builder.h"
 class Curve;
 
@@ -32,17 +31,23 @@ class GENMAI_API ToolBuilder : public Builder
 {
     static double pi;
     Tool &target;
-    ToolParameters par;
 
-  public:
+public:
+    double radius;
+    double initialAngle;
+    double asperityLength;
+    double asperityAngle;
+    double smoothnessAngle;
+    double asperityInterval;
+    int numberOfAsperities;
+    Point centre;
+
+public:
     ToolBuilder(Tool &_target);
-
-    void setParameters(const ToolParameters &p);
-    virtual void printParameters() const;
     virtual void genere();
 
-  private:
-    void genereAsperity(); //, double base, double angle, double rayr);
+private:
+    void genereAsperity();
     void genereInterval();
     void genereSmoothMatrix(size_t np0, size_t *np1, size_t i);
 

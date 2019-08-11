@@ -23,13 +23,8 @@
 
 void genMesh()
 {
-    MeshParameters par; 
-
     Mesh mesh;
     MeshBuilder mesher(mesh);
-
-    mesher.setParameters(par);
-    mesher.printParameters();
     mesher.genere();
 
     mesh.print();

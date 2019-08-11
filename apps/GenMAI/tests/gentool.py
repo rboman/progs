@@ -17,44 +17,22 @@
 
 from genmai import *
 
-#par = ToolParameters() 
-#inpfile = os.path.join(os.path.dirname(__file__),'../matrix.txt')
-#par.load(inpfile)
-#par.save('matrix_2.par')
-
-par = ToolParameters() 
-par.radius = 209.
-par.initialAngle = 0.5
-par.asperityLength = 0.05
-par.asperityAngle = 21.8014
-par.smoothnessAngle = 0.01
-par.asperityInterval = 0.1
-par.numberOfAsperities = 250 
-par.centre.x = -1.0
-par.centre.y = 209.01
-
-
 matrix = Tool()
 builder = ToolBuilder(matrix)
 
-builder.setParameters(par)
-builder.printParameters()
+builder.radius = 209.
+builder.initialAngle = 0.5
+builder.asperityLength = 0.05
+builder.asperityAngle = 21.8014
+builder.smoothnessAngle = 0.01
+builder.asperityInterval = 0.1
+builder.numberOfAsperities = 250 
+builder.centre.x = -1.0
+builder.centre.y = 209.01
+
 builder.genere()
 
 matrix.output()
-
-if 0:
-    writer1 = OofelieToolExporter(matrix)
-    writer1.save()
-    
-    writer2 = BaconToolExporter(matrix)
-    writer2.save()
-    
-    writer2b = BaconDatToolExporter(matrix)
-    writer2b.save()
-    
-    writer3 = MatlabToolExporter(matrix)
-    writer3.save()
 
 
 
@@ -67,11 +45,11 @@ if not '--nogui' in sys.argv:
     ugrid.SetPoints(points)
 
     print "converting points to vtk"
-    for i in range(matrix.getFirstPoint(), matrix.numberOfPoints()):
+    for i in xrange(matrix.getFirstPoint(), matrix.numberOfPoints()):
         points.InsertPoint(i-matrix.getFirstPoint(), matrix.getPointX(i), matrix.getPointY(i), 0.0)
         
     print "converting curves to vtk"
-    for i in range(matrix.getFirstCurve(), matrix.numberOfCurves()-1):  # ! shift!!
+    for i in xrange(matrix.getFirstCurve(), matrix.numberOfCurves()-1):  # ! shift!!
         nbp = matrix.getCurve(i).numberOfPoints()
         if nbp==2:
             cell = vtk.vtkLine() 

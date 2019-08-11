@@ -24,12 +24,22 @@ double ToolBuilder::pi = 4.0 * atan(1.0);
 Point const &
 ToolBuilder::getRollAxis() const
 {
-    static Point rollAxis(0, -1);
+    static const Point rollAxis(0, -1);
     return rollAxis;
 }
 
 ToolBuilder::ToolBuilder(Tool &_target) : Builder(), target(_target)
 {
+    // default pars
+    radius = 100.0;
+    initialAngle = 0.050;
+    asperityLength = 10.0;
+    asperityAngle = 40.0;
+    smoothnessAngle = 1.0;
+    asperityInterval = 5.0;
+    numberOfAsperities = 10;
+    centre.x = 10.0;
+    centre.y = 110.0;
 }
 
 /**
@@ -45,16 +55,13 @@ void ToolBuilder::genere()
         target.clear();
 
     // generation 1er point */
-    addPoint(Point(par.centre,
-                   getRollAxis(),
-                   d2r(par.initialAngle),
-                   par.radius));
+    addPoint(Point(centre, getRollAxis(), d2r(initialAngle), radius));
 
     // generation des aspérites
-    for (size_t i = 0; i < par.numberOfAsperities; i++)
+    for (size_t i = 0; i < numberOfAsperities; i++)
     {
         genereAsperity();
-        if (par.asperityInterval > 0.0)
+        if (asperityInterval > 0.0)
             genereInterval();
     }
 
@@ -115,19 +122,14 @@ void ToolBuilder::genereAsperity()
     size_t pr = target.numberOfPoints() - 1;
 
     // point 1
-    PolarPoint pp1(par.centre, getRollAxis(), p1);
+    PolarPoint pp1(centre, getRollAxis(), p1);
 
     // point 2
-    Point p2(par.centre,
-             getRollAxis(),
-             pp1.a - par.asperityLength / par.radius,
-             par.radius);
+    Point p2(centre, getRollAxis(), pp1.a - asperityLength / radius, radius);
 
     // point 3
     Point tmp(p2 - p1);
-    Point p3(p1, tmp,
-             d2r(par.asperityAngle),
-             tmp.length() / 2.0 / cos(d2r(par.asperityAngle)));
+    Point p3(p1, tmp, d2r(asperityAngle), tmp.length() / 2.0 / cos(d2r(asperityAngle)));
 
     // ajout des points nouvellement crees
     addPoint(p3); // pr+2
@@ -143,11 +145,8 @@ void ToolBuilder::genereInterval()
     const Point &p1 = target.getPoint(target.numberOfPoints() - 1);
     size_t pr = target.numberOfPoints() - 1;
 
-    PolarPoint pp1(par.centre, getRollAxis(), p1);
-    Point p2(par.centre,
-             getRollAxis(),
-             pp1.a - par.asperityInterval / par.radius,
-             par.radius);
+    PolarPoint pp1(centre, getRollAxis(), p1);
+    Point p2(centre, getRollAxis(), pp1.a - asperityInterval / radius, radius);
 
     addPoint(p2);
     addCurve(new Line(pr + 1, pr + 2));
@@ -173,10 +172,10 @@ void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
     double angle1 = acos((dx1 * dx2) / (dx1.length() * dx2.length()));
     double angle2 = acos((dx2 * dx3) / (dx3.length() * dx2.length()));
 
-    Point p4(p1, p3, par.smoothnessAngle / tan((pi - angle1 - angle2) / 2.0) / dx1.length());
-    Point p5(p2, p3, par.smoothnessAngle / tan((pi - angle1 - angle2) / 2.0) / dx3.length());
-    Point p6(p4, (p3 - p1), signpv * (pi / 2.0), par.smoothnessAngle);
-    Point p7(p6, (p4 - p6), signpv * (angle1 + angle2) / 2.0, par.smoothnessAngle);
+    Point p4(p1, p3, smoothnessAngle / tan((pi - angle1 - angle2) / 2.0) / dx1.length());
+    Point p5(p2, p3, smoothnessAngle / tan((pi - angle1 - angle2) / 2.0) / dx3.length());
+    Point p6(p4, (p3 - p1), signpv * (pi / 2.0), smoothnessAngle);
+    Point p7(p6, (p4 - p6), signpv * (angle1 + angle2) / 2.0, smoothnessAngle);
 
     // ajout des points nouvellement crees
     addPoint(p4); // pr+2
@@ -188,14 +187,4 @@ void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
     addCurve(new Arc(pr + 2, pr + 3, pr + 4));
 
     *np1 = pr + 4;
-}
-
-void ToolBuilder::setParameters(const ToolParameters &p)
-{
-    par = p;
-}
-
-void ToolBuilder::printParameters() const
-{
-    //par.print();
 }

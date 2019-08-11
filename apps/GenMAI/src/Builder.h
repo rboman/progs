@@ -27,7 +27,6 @@ class GENMAI_API Builder
     Builder();
 
     virtual void genere() = 0;
-    virtual void printParameters() const = 0;
 };
 
 #include "Builder.inl"

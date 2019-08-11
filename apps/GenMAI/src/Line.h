@@ -26,11 +26,7 @@ class GENMAI_API Line : public Curve
 {
   public:
     Line(int p1, int p2);
-
-    void print() const;
-    char const *name() const;
-    char const *carteBacon() const;
-    int typeDon() const;
+    virtual void print() const override;
 };
 
 #endif

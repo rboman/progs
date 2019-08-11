@@ -19,7 +19,7 @@
 #include <vector>
 #include "Point.h"
 #include "Element.h"
-#include "MeshParameters.h"
+#include "LayerType.h"
 #include "Builder.h"
 class Mesh;
 
@@ -32,13 +32,17 @@ class Mesh;
 class GENMAI_API MeshBuilder : public Builder
 {
     Mesh &target;
-    MeshParameters par;
+
+public:
+    Point origin;
+    Point dimension;
+    int numberOfElementOnX;
+    int numberOfElementOnY;
+    double reductionCoefficient;
+    std::vector<LayerType> layers;
 
   public:
     MeshBuilder(Mesh &_target);
-
-    void setParameters(const MeshParameters &p);
-    virtual void printParameters() const;
     virtual void genere();
 
   private:

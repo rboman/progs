@@ -22,12 +22,6 @@
 #include "Line.h"
 #include "Element.h"
 
-
-// params --
-#include "MeshParameters.h"
-#include "ToolParameters.h"
-
-
 // builders --
 #include "Mesh.h"
 #include "MeshBuilder.h"
@@ -65,11 +59,6 @@
 namespace std {
    %template(std_vector_LayerType) std::vector<LayerType>;
 }
-
-// params
-
-%include "MeshParameters.h"
-%include "ToolParameters.h"
 
 // builders
 
