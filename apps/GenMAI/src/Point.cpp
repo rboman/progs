@@ -27,15 +27,15 @@ Point::Point(const Point &centre,
              double rayon) : no(0)
 {
     Point pt(centre + rayon * cosin(angle + atan2(axis)));
-    setX(pt.getX());
-    setY(pt.getY());
+    x = pt.x;
+    y = pt.y;
 }
 
 Point::Point(const PolarPoint &ppoi)
 {
     Point pt(ppoi.getC() + ppoi.getR() * cosin(ppoi.getA()));
-    setX(pt.getX());
-    setY(pt.getY());
+    x = pt.x;
+    y = pt.y;
 }
 
 Point::Point(const Point &p1,
@@ -43,20 +43,20 @@ Point::Point(const Point &p1,
              double t) : no(0)
 {
     Point pt(t * p1 + (1.0 - t) * p2);
-    setX(pt.getX());
-    setY(pt.getY());
+    x = pt.x;
+    y = pt.y;
 }
 
 std::ostream &
 operator<<(std::ostream &o, const Point &v)
 {
-    if (v.getNo().isValid())
-        o << v.getNo() << ' ';
-    o << '(' << v.getX() << ',' << v.getY() << ')';
+    if (v.no != 0)
+        o << v.no << ' ';
+    o << '(' << v.x << ',' << v.y << ')';
     return o;
 }
 
 bool Point::operator==(const Point &pt) const
 {
-    return (getX() == pt.getX() && getY() == pt.getY());
+    return (x == pt.x && y == pt.y);
 }

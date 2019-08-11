@@ -19,33 +19,24 @@
 #include <iostream>
 #include <math.h>
 
-#include "PtNumber.h"
 class PolarPoint;
 
 /**
  * @brief 2D Cartesian Point with a number and some basic vector operations 
  *
- * @todo constructeur à partir d'un PolarPoint
+ * @todo constructeur Ã  partir d'un PolarPoint
  */
 
 class GENMAI_API Point
 {
-    PtNumber no;
+public:
+    int no;
     double x;
     double y;
 
-  public:
+public:
     Point(double _x = 0, double _y = 0);
     Point(const PolarPoint &ppoi);
-
-    PtNumber getNo() const;
-    void setNo(PtNumber _no);
-
-    void setX(double _x);
-    double getX() const;
-
-    void setY(double _y);
-    double getY() const;
 
     Point(const Point &centre, const Point &axis, double angle, double ray);
     Point(const Point &p1, const Point &p2, double t);

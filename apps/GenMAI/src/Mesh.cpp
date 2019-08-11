@@ -35,7 +35,7 @@ void Mesh::addNode(double x, double y)
     addNode(pt);
 }
 
-void Mesh::addElement(IntNumber n1, IntNumber n2, IntNumber n3, IntNumber n4)
+void Mesh::addElement(int n1, int n2, int n3, int n4)
 {
     Element m(n1, n2, n3, n4);
     addElement(m);

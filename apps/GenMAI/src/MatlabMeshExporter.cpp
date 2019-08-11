@@ -28,8 +28,8 @@ void MatlabMeshExporter::writeNodes()
 {
     for (auto i = 0; i < mesh.numberOfNodes(); i++)
     {
-        fprintf(fich, "x(%d)=%lf;\n", mesh.getNodeNumber(IntNumber(i)).getInt(), mesh.getNodeX(i));
-        fprintf(fich, "y(%d)=%lf;\n", mesh.getNodeNumber(IntNumber(i)).getInt(), mesh.getNodeY(i));
+        fprintf(fich, "x(%d)=%lf;\n", mesh.getNodeNumber(i), mesh.getNodeX(i));
+        fprintf(fich, "y(%d)=%lf;\n", mesh.getNodeNumber(i), mesh.getNodeY(i));
     }
 }
 
@@ -39,7 +39,7 @@ void MatlabMeshExporter::writeElements()
     {
         for (auto j = 0; j < 4; j++)
             fprintf(fich, "mai(%d,%d)=%d;\n", i + 1, j + 1,
-                    mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, j)).getInt());
+                    mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, j)));
     }
 }
 

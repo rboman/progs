@@ -26,13 +26,26 @@
 
 class GENMAI_API ToolParameters : public Parameters
 {
+public:
+    // these vars should replace the ones in the map
+    /*
+    double radius;
+    double initialAngle;
+    double asperityLength;
+    double asperityAngle;
+    double smoothnessAngle;
+    double asperityInterval;
+    int numberOfAsperities;
+    Point centre;
+    */
+
   public:
     ToolParameters();
-
+/* 
     ToolParameters(const ToolParameters &obj);
     void operator=(const ToolParameters &obj);
     virtual ~ToolParameters();
-
+*/
     void setToDefault();
 
     // Get/Set
@@ -62,6 +75,9 @@ class GENMAI_API ToolParameters : public Parameters
     void setCentre(const Point &arg);
     void setCentreX(double arg);
     void setCentreY(double arg);
+
+private:
+
 };
 
 #include "ToolParameters.inl"

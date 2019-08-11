@@ -27,13 +27,13 @@ MeshParameters::setOrigin(const Point &arg)
 inline void
 MeshParameters::setOriginX(double arg)
 {
-    get(P_ORIG).getPoint().setX(arg);
+    get(P_ORIG).getPoint().x = arg;
 }
 
 inline void
 MeshParameters::setOriginY(double arg)
 {
-    get(P_ORIG).getPoint().setY(arg);
+    get(P_ORIG).getPoint().y = arg;
 }
 
 inline Point const &
@@ -51,13 +51,13 @@ MeshParameters::setDimension(const Point &arg)
 inline void
 MeshParameters::setDimensionX(double arg)
 {
-    get(P_DIM).getPoint().setX(arg);
+    get(P_DIM).getPoint().x = arg;
 }
 
 inline void
 MeshParameters::setDimensionY(double arg)
 {
-    get(P_DIM).getPoint().setY(arg);
+    get(P_DIM).getPoint().y = arg;
 }
 
 inline int

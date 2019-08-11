@@ -12,34 +12,34 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline IntNumber
+inline int
 Mesh::getNodeNumberFromElement(int c, int i) const
 {
     return elements[c].getNodeNumber(i);
 }
 
-inline PtNumber
-Mesh::getNodeNumber(IntNumber i) const
+inline int
+Mesh::getNodeNumber(int i) const
 {
-    return nodes[i.getInt()].getNo();
+    return nodes[i].no;
 }
 
 inline void
-Mesh::setNodeNumber(int i, PtNumber _no)
+Mesh::setNodeNumber(int i, int _no)
 {
-    nodes[i].setNo(_no);
+    nodes[i].no = _no;
 }
 
 inline double
 Mesh::getNodeX(int i) const
 {
-    return nodes[i].getX();
+    return nodes[i].x;
 }
 
 inline double
 Mesh::getNodeY(int i) const
 {
-    return nodes[i].getY();
+    return nodes[i].y;
 }
 
 inline void

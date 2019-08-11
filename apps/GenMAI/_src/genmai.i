@@ -17,7 +17,6 @@
 
 // utils --
 #include "Point.h"
-#include "IntNumber.h"
 #include "PolarPoint.h"
 #include "Arc.h"
 #include "Line.h"
@@ -62,8 +61,6 @@
 // utils 
 
 %include "genmai.h"
-%include "IntNumber.h"
-%include "PtNumber.h"
 %include "Point.h"
 %include "PolarPoint.h"
 %include "Curve.h"

@@ -38,7 +38,7 @@ void OofelieMeshExporter::writeNodes()
     for (auto i = 0; i < mesh.numberOfNodes(); i++)
     {
         fprintf(fich, "nset.define(%d,%lf,%lf,0);\n",
-                mesh.getNodeNumber(IntNumber(i)).getInt(), mesh.getNodeX(i), mesh.getNodeY(i));
+                mesh.getNodeNumber(i), mesh.getNodeX(i), mesh.getNodeY(i));
     }
 }
 
@@ -49,10 +49,10 @@ void OofelieMeshExporter::writeElements()
     {
         fprintf(fich, "eset.define(%d, eltyp, %d,%d,%d,%d);\n",
                 i + 1,
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 0)).getInt(),
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 1)).getInt(),
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 2)).getInt(),
-                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 3)).getInt());
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 0)),
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 1)),
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 2)),
+                mesh.getNodeNumber(mesh.getNodeNumberFromElement(i, 3)));
     }
 }
 
@@ -64,7 +64,7 @@ void OofelieMeshExporter::writeContactElements()
 
     for (auto k = mesh.getFirstContactNode(); k <= mesh.getLastContactNode(); ++k)
     {
-        fprintf(fich, "g1.add_node(%d);\n", mesh.getNodeNumber(IntNumber(k)).getInt());
+        fprintf(fich, "g1.add_node(%d);\n", mesh.getNodeNumber(k));
     }
 }
 

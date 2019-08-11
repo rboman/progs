@@ -21,26 +21,21 @@
 
 from genmai import *
 
-print "Creating a pointNumber"
-pt = PtNumber(54)
-print "Printing the no"
-print pt.getInt()
+pt = Point(1, 2)
+print "Px =", pt.x
+print "Py =", pt.y
+pt.x = 8.0
+print "Px =", pt.x
 
-pt = Point(1,2);
-print "Px =", pt.getX();
-print "Py =", pt.getY();
-pt.setX(8);
-print "Px =", pt.getX();
-
-print "Pno =", pt.getNo().getInt();
-pt.setNo(PtNumber(99));
-print "Pno =", pt.getNo().getInt();
+print "Pno =", pt.no
+pt.no = 99
+print "Pno =", pt.no
 
 print "-----"
-arc=Arc(1,2,3);
-arc.output();
-line=Line(5,8);
-line.output();
+arc = Arc(1, 2, 3)
+arc.output()
+line = Line(5, 8)
+line.output()
 
 print arc.carteBacon()
 print line.carteBacon()

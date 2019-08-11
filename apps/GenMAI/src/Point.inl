@@ -12,52 +12,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline PtNumber
-Point::getNo() const
-{
-    return no;
-}
-
-inline void
-Point::setNo(PtNumber no)
-{
-    this->no = no;
-}
-
-inline void
-Point::setX(double x)
-{
-    this->x = x;
-}
-
-inline double
-Point::getX() const
-{
-    return x;
-}
-
-inline void
-Point::setY(double y)
-{
-    this->y = y;
-}
-
-inline double
-Point::getY() const
-{
-    return y;
-}
-
 inline double
 atan2(const Point &pt)
 {
-    return atan2(pt.getY(), pt.getX());
+    return atan2(pt.y, pt.x);
 }
 
 inline Point
 Point::operator-(const Point &pt) const
 {
-    return Point(getX() - pt.getX(), getY() - pt.getY());
+    return Point(x - pt.x, y - pt.y);
 }
 
 inline Point
@@ -70,36 +34,36 @@ inline Point
 Point::rotate(double angle) const
 {
     const Point cs = cosin(angle);
-    return Point(getX() * cs.getX() - getY() * cs.getY(),
-                 getX() * cs.getY() + getY() * cs.getX());
+    return Point(x * cs.x - y * cs.y,
+                 x * cs.y + y * cs.x);
 }
 
 inline double
 Point::length() const
 {
-    return sqrt(getX() * getX() + getY() * getY());
+    return sqrt(x * x + y * y);
 }
 
 inline Point
 operator*(double alpha, const Point &pt)
 {
-    return Point(alpha * pt.getX(), alpha * pt.getY());
+    return Point(alpha * pt.x, alpha * pt.y);
 }
 
 inline Point
 Point::operator+(const Point &pt) const
 {
-    return Point(getX() + pt.getX(), getY() + pt.getY());
+    return Point(x + pt.x, y + pt.y);
 }
 
 inline double
     Point::operator*(const Point &pt) const
 {
-    return (getX() * pt.getX() + getY() * pt.getY());
+    return (x * pt.x + y * pt.y);
 }
 
 inline double
 Point::operator^(const Point &pt) const
 {
-    return (getX() * pt.getY() - getY() * pt.getX());
+    return (x * pt.y - y * pt.x);
 }

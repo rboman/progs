@@ -56,5 +56,5 @@ void IntegerParam::load(FILE *file)
 void IntegerParam::save(FILE *file) const
 {
     Param::save(file);
-    saveInteger(file, getInt(), true);
+    saveInteger(file, 0, true);
 }

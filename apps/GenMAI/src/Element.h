@@ -17,20 +17,16 @@
 
 #include "genmai.h"
 #include "Point.h"
-#include "IntNumber.h"
 
 class GENMAI_API Element
 {
     int no;
-    IntNumber noe[4]; ///< indices de noeuds dans une liste de Point
-    
-  public:
-    IntNumber getNodeNumber(int i) const;
+    int noe[4]; ///< indices de noeuds dans une liste de Point
 
-    Element(IntNumber n1 = IntNumber::Null(),
-            IntNumber n2 = IntNumber::Null(),
-            IntNumber n3 = IntNumber::Null(),
-            IntNumber n4 = IntNumber::Null());
+public:
+    int getNodeNumber(int i) const;
+
+    Element(int n1=0, int n2=0, int n3=0, int n4=0);
     friend std::ostream &operator<<(std::ostream &o, const Element &v);
 };
 

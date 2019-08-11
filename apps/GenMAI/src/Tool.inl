@@ -15,13 +15,13 @@
 inline double
 Tool::getPointX(int i) const
 {
-    return point[i].getX();
+    return point[i].x;
 }
 
 inline double
 Tool::getPointY(int i) const
 {
-    return point[i].getY();
+    return point[i].y;
 }
 
 inline Point const &

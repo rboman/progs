@@ -57,13 +57,13 @@ void PointParam::print() const
 void PointParam::load(FILE *file)
 {
     Param::load(file);
-    getPoint().setX(loadDouble(file, true));
-    getPoint().setY(loadDouble(file, true));
+    getPoint().x = loadDouble(file, true);
+    getPoint().y = loadDouble(file, true);
 }
 
 void PointParam::save(FILE *file) const
 {
     Param::save(file);
-    saveDouble(file, getPoint().getX(), true);
-    saveDouble(file, getPoint().getY(), true);
+    saveDouble(file, getPoint().x, true);
+    saveDouble(file, getPoint().y, true);
 }

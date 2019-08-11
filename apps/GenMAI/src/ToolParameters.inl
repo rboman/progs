@@ -99,13 +99,13 @@ ToolParameters::setCentre(const Point &arg)
 inline void
 ToolParameters::setCentreX(double arg)
 {
-    get(P_CENTRE).getPoint().setX(arg);
+    get(P_CENTRE).getPoint().x = arg;
 }
 
 inline void
 ToolParameters::setCentreY(double arg)
 {
-    get(P_CENTRE).getPoint().setY(arg);
+    get(P_CENTRE).getPoint().y = arg;
 }
 
 inline int

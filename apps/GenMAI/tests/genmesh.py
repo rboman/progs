@@ -71,7 +71,7 @@ if not '--nogui' in sys.argv:
         quad = vtk.vtkQuad()
         ids = quad.GetPointIds()               
         for j in range(4):    
-            ids.SetId( j, mesh.getNodeNumberFromElement(i, j).getInt() )
+            ids.SetId( j, mesh.getNodeNumberFromElement(i, j) )
         ugrid.InsertNextCell(quad.GetCellType(), ids)     
 
     # save the grid

@@ -32,16 +32,16 @@ MyWidgetI::~MyWidgetI()
 void MyWidgetI::update()
 {
 
-    updateTextLineEdit(OrigXLineEdit,   tpar.getOrigin().getX());
-    updateTextLineEdit(OrigYLineEdit,   tpar.getOrigin().getY());
-    updateTextLineEdit(DimXLineEdit,    tpar.getDimension().getX());
-    updateTextLineEdit(DimYLineEdit,    tpar.getDimension().getY());
+    updateTextLineEdit(OrigXLineEdit,   tpar.getOrigin().x);
+    updateTextLineEdit(OrigYLineEdit,   tpar.getOrigin().y);
+    updateTextLineEdit(DimXLineEdit,    tpar.getDimension().x);
+    updateTextLineEdit(DimYLineEdit,    tpar.getDimension().y);
     updateTextLineEdit(NoXLineEdit,     tpar.getNumberOfElementOnX());
     updateTextLineEdit(NbMLineEdit,     tpar.getNumberOfElementOnY());
     updateTextLineEdit(CoefLineEdit,    tpar.getReductionCoefficient());
 
-    updateTextLineEdit(CentreXLineEdit, mpar.getCentre().getX());
-    updateTextLineEdit(CentreYLineEdit, mpar.getCentre().getY());
+    updateTextLineEdit(CentreXLineEdit, mpar.getCentre().x);
+    updateTextLineEdit(CentreYLineEdit, mpar.getCentre().y);
     updateTextLineEdit(RayonLineEdit,   mpar.getRadius());
     updateTextLineEdit(ALineEdit,       mpar.getInitialAngle());
     updateTextLineEdit(AspALineEdit,    mpar.getAsperityAngle());

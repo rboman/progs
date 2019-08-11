@@ -26,7 +26,7 @@ MeshBuilder::MeshBuilder(Mesh &_target) : Builder(), target(_target)
 double
 MeshBuilder::computeBoundaryHeight()
 {
-    double dx2 = par.getDimension().getX() / par.getNumberOfElementOnX();
+    double dx2 = par.getDimension().x / par.getNumberOfElementOnX();
 
     double hcl = dx2;
     int i;
@@ -38,7 +38,7 @@ MeshBuilder::computeBoundaryHeight()
     }
 
     // verification
-    if (hcl > par.getDimension().getY())
+    if (hcl > par.getDimension().y)
     {
         printf("\nerreur: hauteur CL > hauteur totale\n");
         exit(1);
@@ -76,10 +76,10 @@ MeshBuilder::computeReductionFactor()
 void MeshBuilder::Initialize()
 {
     // initialise la largeur de maille courante a (largeur totale)/(nbre de mailles)
-    dx = par.getDimension().getX() / par.getNumberOfElementOnX();
+    dx = par.getDimension().x / par.getNumberOfElementOnX();
 
     // initialise l'ordonnee courante a l'ordonnee de la base
-    currentHeight = par.getOrigin().getY();
+    currentHeight = par.getOrigin().y;
 }
 
 /**
@@ -90,7 +90,7 @@ void MeshBuilder::meshFirstLine()
 {
     int i;
     for (i = 0; i < par.getNumberOfElementOnX() + 1; i++)
-        target.addNode(par.getOrigin().getX() + (double)i * dx, currentHeight);
+        target.addNode(par.getOrigin().x + (double)i * dx, currentHeight);
 
     setContactNodes(0, par.getNumberOfElementOnX());
 }
@@ -109,7 +109,7 @@ void MeshBuilder::meshGradient()
 double
 MeshBuilder::getGradientDelta(int lev)
 {
-    double xp = (par.getDimension().getY() - computeBoundaryHeight()) / computeReductionFactor();
+    double xp = (par.getDimension().y - computeBoundaryHeight()) / computeReductionFactor();
 
     if (par.getNumberOfElementOnY() > 1)
         return xp * (1.0 + (par.getReductionCoefficient() - 1.0) / ((double)(par.getNumberOfElementOnY() - 1)) * (double)(par.getNumberOfElementOnY() - 1 - lev));
@@ -170,7 +170,7 @@ void MeshBuilder::addReductionNodes()
     // Ajout des pts du niv. suivant
     increaseHeight((target.getNodeX(first + 1) - target.getNodeX(first)) / 2.0);
 
-    double x = par.getOrigin().getX();
+    double x = par.getOrigin().x;
     target.addNode(x, currentHeight);
 
     dx /= 2.0;
@@ -189,18 +189,18 @@ void MeshBuilder::addReductionElements()
     int i;
     for (i = 0; i < last - first; i += 2)
     {
-        IntNumber n[11];
-        n[0] = IntNumber(first + i);
-        n[1] = IntNumber(first + i + 1);
-        n[2] = IntNumber(first + i + 2);
-        n[3] = IntNumber(last + i + 1);
-        n[4] = IntNumber(last + i + 2);
-        n[5] = IntNumber(last + nb + nb / 2 + 2 * i + 1);
-        n[6] = IntNumber(last + nb + nb / 2 + 2 * i + 2);
-        n[7] = IntNumber(last + nb + nb / 2 + 2 * i + 3);
-        n[8] = IntNumber(last + nb + nb / 2 + 2 * i + 4);
-        n[9] = IntNumber(last + nb + nb / 2 + 2 * i + 5);
-        n[10] = IntNumber(last + nb + i / 2 + 1);
+        int n[11];
+        n[0] = first + i;
+        n[1] = first + i + 1;
+        n[2] = first + i + 2;
+        n[3] = last + i + 1;
+        n[4] = last + i + 2;
+        n[5] = last + nb + nb / 2 + 2 * i + 1;
+        n[6] = last + nb + nb / 2 + 2 * i + 2;
+        n[7] = last + nb + nb / 2 + 2 * i + 3;
+        n[8] = last + nb + nb / 2 + 2 * i + 4;
+        n[9] = last + nb + nb / 2 + 2 * i + 5;
+        n[10] = last + nb + i / 2 + 1;
         target.addElement(n[0], n[3], n[6], n[5]);
         target.addElement(n[0], n[1], n[10], n[3]);
         target.addElement(n[10], n[7], n[6], n[3]);
@@ -236,10 +236,10 @@ void MeshBuilder::addConstantElements()
     int i;
     for (i = 0; i < last - first; i++)
     {
-        target.addElement(IntNumber(first + i),
-                          IntNumber(first + i + 1),
-                          IntNumber(last + i + 2),
-                          IntNumber(last + i + 1));
+        target.addElement(first + i,
+                          first + i + 1,
+                          last + i + 2,
+                          last + i + 1);
     }
 }
 

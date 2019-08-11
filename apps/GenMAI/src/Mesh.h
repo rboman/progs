@@ -43,7 +43,7 @@ class GENMAI_API Mesh : public TargetObject
     int getLastContactNode() const;
 
     void addElement(Element &m);
-    void addElement(IntNumber n1, IntNumber n2, IntNumber n3, IntNumber n4);
+    void addElement(int n1, int n2, int n3, int n4);
     void addNode(Point &pt);
     void addNode(double x, double y);
 
@@ -55,11 +55,11 @@ class GENMAI_API Mesh : public TargetObject
     virtual bool isEmpty() const;
     virtual void clear();
 
-    PtNumber getNodeNumber(IntNumber i) const;
-    void setNodeNumber(int i, PtNumber _no);
+    int getNodeNumber(int i) const;
+    void setNodeNumber(int i, int _no);
     double getNodeX(int i) const;
     double getNodeY(int i) const;
-    IntNumber getNodeNumberFromElement(int c, int i) const;
+    int getNodeNumberFromElement(int c, int i) const;
 };
 
 #include "Mesh.inl"

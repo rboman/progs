@@ -37,7 +37,7 @@ void NodeRenumberer::execute()
 void NodeRenumberer::executeNormalStyle()
 {
     for (auto i = 0; i < mesh.numberOfNodes(); ++i)
-        mesh.setNodeNumber(i, PtNumber(i + 1));
+        mesh.setNodeNumber(i, i + 1);
 }
 
 void NodeRenumberer::executeBaconStyle()
@@ -69,7 +69,7 @@ void NodeRenumberer::executeBaconStyle()
             no = maxno;
             std::cout << no << std::endl;
         }
-        mesh.setNodeNumber(i, PtNumber(no));
+        mesh.setNodeNumber(i, no);
     }
 }
 
