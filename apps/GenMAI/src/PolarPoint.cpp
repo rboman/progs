@@ -27,15 +27,15 @@ PolarPoint::PolarPoint(const Point &centre,
 {
     Point dx = (poi - centre).rotate(-atan2(axis));
 
-    setC(centre);
-    setR(dx.length());
-    setA(atan2(dx));
+    c = centre;
+    r = dx.length();
+    a = atan2(dx);
 }
 
 std::ostream &
 operator<<(std::ostream &o, const PolarPoint &v)
 {
-    o << v.getC() << ' ';
-    o << '(' << v.getA() << ',' << v.getR() << ')';
+    o << v.c << ' ';
+    o << '(' << v.a << ',' << v.r << ')';
     return o;
 }

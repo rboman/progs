@@ -120,7 +120,7 @@ void ToolBuilder::genereAsperity()
     // point 2
     Point p2(par.centre,
              getRollAxis(),
-             pp1.getA() - par.asperityLength / par.radius,
+             pp1.a - par.asperityLength / par.radius,
              par.radius);
 
     // point 3
@@ -146,7 +146,7 @@ void ToolBuilder::genereInterval()
     PolarPoint pp1(par.centre, getRollAxis(), p1);
     Point p2(par.centre,
              getRollAxis(),
-             pp1.getA() - par.asperityInterval / par.radius,
+             pp1.a - par.asperityInterval / par.radius,
              par.radius);
 
     addPoint(p2);

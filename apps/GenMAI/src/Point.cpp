@@ -33,7 +33,7 @@ Point::Point(const Point &centre,
 
 Point::Point(const PolarPoint &ppoi)
 {
-    Point pt(ppoi.getC() + ppoi.getR() * cosin(ppoi.getA()));
+    Point pt(ppoi.c + ppoi.r * cosin(ppoi.a));
     x = pt.x;
     y = pt.y;
 }

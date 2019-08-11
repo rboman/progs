@@ -16,10 +16,10 @@
 #define TOOL_H
 
 #include "genmai.h"
-#include <vector>
 #include "Point.h"
 #include "Curve.h"
 #include "TargetObject.h"
+#include <vector>
 
 /**
  * @brief Defines a Tool (list of Point and list of Curve). 

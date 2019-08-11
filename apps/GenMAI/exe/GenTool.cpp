@@ -15,30 +15,18 @@
 #include "genmai.h"
 #include "Tool.h"
 #include "ToolBuilder.h"
-
-#include "OofelieToolExporter.h"
-#include "BaconToolExporter.h"
-#include "BaconDatToolExporter.h"
-#include "MatlabToolExporter.h"
 #include "genmai_config.h"
 
 /**
- * @brief Automatic Tool generation: loads the parameters and uses all exporters
+ * @brief Builds the default tool
  */
 
 void genTool()
 {
     std::cout << "genTool...\n";
 
-    std::cout << "loading parameters...\n";
-    ToolParameters        par;
-    /*
-    par.load(PROJECT_SOURCE_DIR "/matrix.txt");
-    std::cout << "parameters loaded.\n";
-    par.save("matrix_2.txt");
-    std::cout << "parameters saved.\n";
-    */
-    Tool        matrix;
+    ToolParameters par;
+    Tool matrix;
     ToolBuilder builder(matrix);
 
     builder.setParameters(par);
@@ -46,15 +34,4 @@ void genTool()
     builder.genere();
 
     matrix.print();
-
-    OofelieToolExporter writer1(matrix);
-    writer1.save();
-    BaconToolExporter writer2(matrix);
-    writer2.save();
-    BaconDatToolExporter writer2b(matrix);
-    writer2b.save();
-    MatlabToolExporter writer3(matrix);
-    writer3.save();
 }
-
-

@@ -23,8 +23,6 @@ class PolarPoint;
 
 /**
  * @brief 2D Cartesian Point with a number and some basic vector operations 
- *
- * @todo constructeur à partir d'un PolarPoint
  */
 
 class GENMAI_API Point
@@ -35,8 +33,8 @@ public:
     double y;
 
 public:
-    Point(double _x = 0, double _y = 0);
-    Point(const PolarPoint &ppoi);
+    explicit Point(double _x = 0.0, double _y = 0.0);
+    explicit Point(const PolarPoint &ppoi);
 
     Point(const Point &centre, const Point &axis, double angle, double ray);
     Point(const Point &p1, const Point &p2, double t);

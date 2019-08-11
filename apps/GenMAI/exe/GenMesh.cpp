@@ -15,22 +15,15 @@
 #include "genmai.h"
 #include "Mesh.h"
 #include "MeshBuilder.h"
-
-#include "OofelieMeshExporter.h"
-#include "BaconMeshExporter.h"
-#include "MatlabMeshExporter.h"
-#include "NodeRenumberer.h"
 #include "genmai_config.h"
 
 /**
- * @brief Automatic Mesh generation: loads the parameters and uses all exporters
+ * @brief Builds the default mesh
  */
 
 void genMesh()
 {
     MeshParameters par; 
-    //par.load(PROJECT_SOURCE_DIR "/mesh.txt");
-    //par.save("mesh_2.txt");
 
     Mesh mesh;
     MeshBuilder mesher(mesh);
@@ -40,20 +33,6 @@ void genMesh()
     mesher.genere();
 
     mesh.print();
-
-    NodeRenumberer rnb(mesh); 
-
-    rnb.setStyle(NORMALSTYLE);rnb.execute();
-    OofelieMeshExporter writer1(mesh);
-    writer1.save();
-
-    rnb.setStyle(BACONSTYLE);rnb.execute();
-    BaconMeshExporter writer2(mesh);
-    writer2.save();
-
-    rnb.setStyle(NORMALSTYLE);rnb.execute();
-    MatlabMeshExporter writer3(mesh);
-    writer3.save();
 }
 
 

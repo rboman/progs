@@ -34,18 +34,6 @@
 #include "Tool.h"
 #include "ToolBuilder.h"
 
-// export --
-#include "NodeRenumberer.h"
-#include "OofelieMeshExporter.h"
-#include "BaconMeshExporter.h"
-#include "MatlabMeshExporter.h"
-
-#include "ToolExporter.h"
-#include "OofelieToolExporter.h"
-#include "BaconDatToolExporter.h"
-#include "BaconToolExporter.h"
-#include "MatlabToolExporter.h"
-
 %}
 
 %ignore operator<<;
@@ -92,18 +80,3 @@ namespace std {
 %include "Builder.h"
 %include "MeshBuilder.h"
 %include "ToolBuilder.h"
-
-// export
-
-%include "NodeRenumberer.h"
-%include "Exporter.h"               // for "save"
-%include "MeshExporter.h"           // for "save"
-%include "OofelieMeshExporter.h"
-%include "BaconMeshExporter.h"
-%include "MatlabMeshExporter.h"
-
-%include "ToolExporter.h"
-%include "OofelieToolExporter.h"
-%include "BaconDatToolExporter.h"
-%include "BaconToolExporter.h"
-%include "MatlabToolExporter.h"
