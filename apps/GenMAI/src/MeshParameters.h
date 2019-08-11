@@ -19,7 +19,7 @@
 //#include "Parameters.h"
 #include <vector>
 #include "Point.h"
-#include "Layers.h"
+#include "LayerType.h"
 
 /**
  * @brief Defines the Parameters for the MeshBuilder object, accessors and I/O routines
@@ -35,7 +35,7 @@ public:
     double reductionCoefficient;
     std::vector<LayerType> layers;
 
-  public:
+public:
     MeshParameters();
 
     void setToDefault();

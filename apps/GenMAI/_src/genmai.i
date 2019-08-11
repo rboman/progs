@@ -24,7 +24,6 @@
 
 
 // params --
-#include "Parameters.h"
 #include "MeshParameters.h"
 #include "ToolParameters.h"
 
@@ -81,9 +80,7 @@ namespace std {
 
 // params
 
-%include "Parameters.h"
 %include "MeshParameters.h"
-
 %include "ToolParameters.h"
 
 // builders
