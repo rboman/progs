@@ -13,32 +13,43 @@
 //   limitations under the License.
 
 #include "genmai.h"
+#include "Tool.h"
+#include "ToolBuilder.h"
+#include "Mesh.h"
+#include "MeshBuilder.h"
 #include <stdexcept>
 #include <iostream>
 
-extern void genMesh();
-extern void genTool();
 
 /**
  * @brief console application
  */
 
-int main(int argc, char **argv) 
-{   
+int main(int argc, char **argv)
+{
     try
     {
-        genMesh();
-        genTool();
+        std::cout << "genMesh...\n";
+        Mesh mesh;
+        MeshBuilder mesher(mesh);
+        mesher.genere();
+        mesh.print();
+
+        std::cout << "genTool...\n";
+        Tool matrix;
+        ToolBuilder builder(matrix);
+        builder.genere();
+        matrix.print();
     }
-    catch(std::exception &e) 
+    catch (std::exception &e)
     {
         std::cerr << "\n** ERROR:" << e.what() << '\n';
         return 1;
     }
-    catch(...) 
+    catch (...)
     {
         std::cerr << "\n** ERROR: Unknown C++ Runtime Error\n";
         return 1;
-    } 
+    }
     return 0;
 }

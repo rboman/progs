@@ -19,14 +19,14 @@
 #include <vector>
 #include "Point.h"
 #include "Element.h"
-#include "TargetObject.h"
+
 
 /**
  * @brief Defines a Mesh (list of Point and list of Element). 
  *        A list of contact nodes is also included.
  */
 
-class GENMAI_API Mesh : public TargetObject
+class GENMAI_API Mesh 
 {
     int firstContactNode;
     int lastContactNode;

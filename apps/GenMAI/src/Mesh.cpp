@@ -14,7 +14,7 @@
 
 #include "Mesh.h"
 
-Mesh::Mesh() : TargetObject(), nodes(0), elements(0)
+Mesh::Mesh() : nodes(0), elements(0)
 {
     clear();
 }

@@ -39,30 +39,32 @@
 
 %rename(output) print; // Rename all `print' functions to `output'
 
+%include "std_string.i"
+
 // utils 
 
 %include "genmai.h"
 %include "Point.h"
 %include "PolarPoint.h"
 %include "Curve.h"
-%include "Arc.h"
-%include "Line.h"
-%include "Element.h"
 %include "LayerType.h"
 
-// -- gestion des "std::string"
-
-%include "std_string.i"
 
 %include "std_vector.i"
 // Instantiate some std templates
 namespace std {
    %template(std_vector_LayerType) std::vector<LayerType>;
+   %template(std_vector_Point) std::vector<Point *>;
+   %template(std_vector_Curve) std::vector<Curve *>;
 }
+
+%include "Arc.h"
+%include "Line.h"
+%include "Element.h"
+
 
 // builders
 
-%include "TargetObject.h"
 %include "Mesh.h"
 %include "Tool.h"
 

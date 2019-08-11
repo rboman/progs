@@ -11,15 +11,3 @@
 //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
-
-inline void
-ToolBuilder::addPoint(const Point &arg)
-{
-    target.addPoint(arg);
-}
-
-inline void
-ToolBuilder::addCurve(Curve *arg)
-{
-    target.addCurve(arg);
-}

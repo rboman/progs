@@ -51,9 +51,6 @@ private:
     void genereInterval();
     void genereSmoothMatrix(size_t np0, size_t *np1, size_t i);
 
-    void addPoint(const Point &arg);
-    void addCurve(Curve *arg);
-
     Point const &getRollAxis() const;
 
     static double d2r(double angle);

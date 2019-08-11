@@ -22,21 +22,22 @@ from genmai import *
 
 mesh = Mesh()
 mesher = MeshBuilder(mesh)
-mesher.origin.x = -10.
-mesher.origin.y = -0.25875
-mesher.dimension.x = 10.
-mesher.dimension.y = 0.25875
-mesher.numberOfElementOnX = 200
-mesher.numberOfElementOnY = 2
-mesher.reductionCoefficient = 5.0
-mesher.layers.clear()
-mesher.layers.push_back(REDUCTION)
-mesher.layers.push_back(REDUCTION)
-mesher.layers.push_back(REDUCTION)
-mesher.layers.push_back(REDUCTION)
-mesher.layers.push_back(REDUCTION)
-mesher.layers.push_back(REDUCTION)
-mesher.layers.push_back(CONSTANT)
+if 0:
+    mesher.origin.x = -10.
+    mesher.origin.y = -0.25875
+    mesher.dimension.x = 10.
+    mesher.dimension.y = 0.25875
+    mesher.numberOfElementOnX = 200
+    mesher.numberOfElementOnY = 2
+    mesher.reductionCoefficient = 5.0
+    mesher.layers.clear()
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(CONSTANT)
 
 mesher.genere()
 

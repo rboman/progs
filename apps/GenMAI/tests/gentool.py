@@ -20,15 +20,16 @@ from genmai import *
 matrix = Tool()
 builder = ToolBuilder(matrix)
 
-builder.radius = 209.
-builder.initialAngle = 0.5
-builder.asperityLength = 0.05
-builder.asperityAngle = 21.8014
-builder.smoothnessAngle = 0.01
-builder.asperityInterval = 0.1
-builder.numberOfAsperities = 250 
-builder.centre.x = -1.0
-builder.centre.y = 209.01
+if 0:
+    builder.radius = 209.
+    builder.initialAngle = 0.5
+    builder.asperityLength = 0.05
+    builder.asperityAngle = 21.8014
+    builder.smoothnessAngle = 0.01
+    builder.asperityInterval = 0.1
+    builder.numberOfAsperities = 250 
+    builder.centre.x = -1.0
+    builder.centre.y = 209.01
 
 builder.genere()
 
@@ -45,21 +46,21 @@ if not '--nogui' in sys.argv:
     ugrid.SetPoints(points)
 
     print "converting points to vtk"
-    for i in xrange(matrix.getFirstPoint(), matrix.numberOfPoints()):
-        points.InsertPoint(i-matrix.getFirstPoint(), matrix.getPointX(i), matrix.getPointY(i), 0.0)
+    for i in xrange(matrix.firstp, matrix.points.size()):
+        points.InsertPoint(i-matrix.firstp, matrix.points[i].x, matrix.points[i].y, 0.0)
         
     print "converting curves to vtk"
-    for i in xrange(matrix.getFirstCurve(), matrix.numberOfCurves()-1):  # ! shift!!
-        nbp = matrix.getCurve(i).numberOfPoints()
+    for i in xrange(matrix.firstc, matrix.curves.size()-1):  # ! shift!!
+        nbp = matrix.curves[i].numberOfPoints()
         if nbp==2:
             cell = vtk.vtkLine() 
-            cell.GetPointIds().SetId( 0, matrix.getCurve(i).getPointNumber(0) -matrix.getFirstPoint()-1)
-            cell.GetPointIds().SetId( 1, matrix.getCurve(i).getPointNumber(1) -matrix.getFirstPoint()-1)
+            cell.GetPointIds().SetId( 0, matrix.curves[i].getPointNumber(0) -matrix.firstp-1)
+            cell.GetPointIds().SetId( 1, matrix.curves[i].getPointNumber(1) -matrix.firstp-1)
         elif nbp==3:
             cell = vtk.vtkQuadraticEdge() 
-            cell.GetPointIds().SetId( 0, matrix.getCurve(i).getPointNumber(0) -matrix.getFirstPoint()-1)
-            cell.GetPointIds().SetId( 1, matrix.getCurve(i).getPointNumber(2) -matrix.getFirstPoint()-1)
-            cell.GetPointIds().SetId( 2, matrix.getCurve(i).getPointNumber(1) -matrix.getFirstPoint()-1)    
+            cell.GetPointIds().SetId( 0, matrix.curves[i].getPointNumber(0) -matrix.firstp-1)
+            cell.GetPointIds().SetId( 1, matrix.curves[i].getPointNumber(2) -matrix.firstp-1)
+            cell.GetPointIds().SetId( 2, matrix.curves[i].getPointNumber(1) -matrix.firstp-1)    
         else:
             raise Exception ("curve with %d points" % nbp)
 
