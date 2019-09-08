@@ -16,11 +16,11 @@
 #define MESHER_H
 
 #include "genmai.h"
+#include "gmObject.h"
 #include <vector>
 #include "Point.h"
 #include "Element.h"
 #include "LayerType.h"
-#include "Builder.h"
 class Mesh;
 
 /**
@@ -29,7 +29,7 @@ class Mesh;
  *        Parameters are defined in a MeshParameters object.
  */
 
-class GENMAI_API MeshBuilder : public Builder
+class GENMAI_API MeshBuilder : public Object
 {
     Mesh &target;
 

@@ -41,7 +41,7 @@ if 0:
 
 mesher.genere()
 
-mesh.output()
+print mesh
 
 # vtk output
 

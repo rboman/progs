@@ -14,50 +14,49 @@
 
 #include "Mesh.h"
 
-Mesh::Mesh() : nodes(0), elements(0)
+Mesh::Mesh() : Object(), nodes(0), elements(0)
 {
     clear();
 }
 
-void Mesh::addNode(Point &pt)
+void Mesh::addNode(Point *pt)
 {
     nodes.push_back(pt);
 }
 
-void Mesh::addElement(Element &m)
+void Mesh::addElement(Element *m)
 {
     elements.push_back(m);
 }
 
 void Mesh::addNode(double x, double y)
 {
-    Point pt(x, y);
+    Point *pt = new Point(x, y);
     addNode(pt);
 }
 
 void Mesh::addElement(int n1, int n2, int n3, int n4)
 {
-    Element m(n1, n2, n3, n4);
+    Element *m = new Element(n1, n2, n3, n4);
     addElement(m);
 }
 
-void Mesh::print() const
+void Mesh::write(std::ostream &out) const
 {
-    std::cout << "MAILLAGE:" << std::endl;
-    std::cout << "---------" << std::endl;
-    std::cout << " noeuds     : " << numberOfNodes() << std::endl;
-    std::cout << " mailles    : " << numberOfElements() << std::endl;
-    std::cout << " noeuds sup : " << lastContactNode - firstContactNode << std::endl;
-    std::cout << std::endl;
+    out << "MAILLAGE:" << std::endl;
+    out << "---------" << std::endl;
+    out << " noeuds     : " << numberOfNodes() << std::endl;
+    out << " mailles    : " << numberOfElements() << std::endl;
+    out << " noeuds sup : " << lastContactNode - firstContactNode << std::endl;
+    out << std::endl;
 }
 
 void Mesh::list() const
 {
-    int i;
-    for (i = 0; i < numberOfNodes(); ++i)
+    for (int i = 0; i < numberOfNodes(); ++i)
         std::cout << nodes[i] << std::endl;
 
-    for (i = 0; i < numberOfElements(); ++i)
+    for (int i = 0; i < numberOfElements(); ++i)
         std::cout << elements[i] << std::endl;
 }
 

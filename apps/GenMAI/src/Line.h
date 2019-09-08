@@ -26,7 +26,7 @@ class GENMAI_API Line : public Curve
 {
   public:
     Line(int p1, int p2);
-    virtual void print() const override;
+    virtual void write(std::ostream &out) const override;
 };
 
 #endif

@@ -12,22 +12,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline
-Element::Element(int n1, int n2, int n3, int n4)
-{
-    noe[0] = n1;
-    noe[1] = n2;
-    noe[2] = n3;
-    noe[3] = n4;
-}
-
-inline std::ostream & 
-operator<<(std::ostream &o, const Element &v)
-{ 
-    o << '(' << v.noe[0] << ',' << v.noe[1] << ',' << v.noe[2] << ',' << v.noe[3] << ')' ; 
-    return o; 
-}
-
 inline int 
 Element::getNodeNumber(int i) const
 {

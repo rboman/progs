@@ -15,31 +15,31 @@
 inline int
 Mesh::getNodeNumberFromElement(int c, int i) const
 {
-    return elements[c].getNodeNumber(i);
+    return elements[c]->getNodeNumber(i);
 }
 
 inline int
 Mesh::getNodeNumber(int i) const
 {
-    return nodes[i].no;
+    return nodes[i]->no;
 }
 
 inline void
 Mesh::setNodeNumber(int i, int _no)
 {
-    nodes[i].no = _no;
+    nodes[i]->no = _no;
 }
 
 inline double
 Mesh::getNodeX(int i) const
 {
-    return nodes[i].x;
+    return nodes[i]->x;
 }
 
 inline double
 Mesh::getNodeY(int i) const
 {
-    return nodes[i].y;
+    return nodes[i]->y;
 }
 
 inline void

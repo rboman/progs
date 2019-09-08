@@ -33,13 +33,13 @@ int main(int argc, char **argv)
         Mesh mesh;
         MeshBuilder mesher(mesh);
         mesher.genere();
-        mesh.print();
+        std::cout << mesh;
 
         std::cout << "genTool...\n";
         Tool matrix;
         ToolBuilder builder(matrix);
         builder.genere();
-        matrix.print();
+        std::cout << matrix;
     }
     catch (std::exception &e)
     {

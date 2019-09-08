@@ -30,6 +30,6 @@ Curve::numberOfPoints() const
     return pt.size();
 }
 
-inline Curve::Curve(int nbpt) : pt(nbpt)
+inline Curve::Curve(int nbpt) : Object(), pt(nbpt)
 {
 }

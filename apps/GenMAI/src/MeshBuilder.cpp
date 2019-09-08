@@ -15,7 +15,7 @@
 #include "MeshBuilder.h"
 #include "Mesh.h"
 
-MeshBuilder::MeshBuilder(Mesh &_target) : Builder(), target(_target)
+MeshBuilder::MeshBuilder(Mesh &_target) : Object(), target(_target)
 {
     // default parameters
     origin.x = -2.0;

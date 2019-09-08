@@ -16,18 +16,20 @@
 #define ELEMENT_H
 
 #include "genmai.h"
+#include "gmObject.h"
 #include "Point.h"
 
-class GENMAI_API Element
+class GENMAI_API Element : public Object
 {
     int no;
     int noe[4]; ///< indices de noeuds dans une liste de Point
 
 public:
+    Element(int n1=0, int n2=0, int n3=0, int n4=0);
+
     int getNodeNumber(int i) const;
 
-    Element(int n1=0, int n2=0, int n3=0, int n4=0);
-    friend std::ostream &operator<<(std::ostream &o, const Element &v);
+    virtual void write(std::ostream &out) const override;
 };
 
 #include "Element.inl"

@@ -33,7 +33,7 @@ if 0:
 
 builder.genere()
 
-matrix.output()
+print matrix
 
 
 

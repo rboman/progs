@@ -28,7 +28,7 @@ ToolBuilder::getRollAxis() const
     return rollAxis;
 }
 
-ToolBuilder::ToolBuilder(Tool &_target) : Builder(), target(_target)
+ToolBuilder::ToolBuilder(Tool &_target) : Object(), target(_target)
 {
     // default pars
     radius = 100.0;

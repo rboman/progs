@@ -16,10 +16,10 @@
 #define TOOLBUILDER_H
 
 #include "genmai.h"
+#include "gmObject.h"
 #include <vector>
 #include "Point.h"
 #include "Tool.h"
-#include "Builder.h"
 class Curve;
 
 /**
@@ -27,7 +27,7 @@ class Curve;
  *        The asperities can be smoothed.
  */
 
-class GENMAI_API ToolBuilder : public Builder
+class GENMAI_API ToolBuilder : public Object
 {
     static double pi;
     Tool &target;
@@ -56,7 +56,5 @@ private:
     static double d2r(double angle);
     static double r2d(double angle);
 };
-
-#include "ToolBuilder.inl"
 
 #endif

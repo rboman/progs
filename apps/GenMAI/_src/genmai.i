@@ -28,6 +28,9 @@
 #include "Tool.h"
 #include "ToolBuilder.h"
 
+#include <string>
+#include <sstream>
+
 %}
 
 %ignore operator<<;
@@ -37,13 +40,59 @@
 %ignore Point::atan2;
 %ignore Point::cosin;
 
-%rename(output) print; // Rename all `print' functions to `output'
-
 %include "std_string.i"
+
+
+// --------- EXCEPTIONS ---------------
+
+%include "exception.i"
+
+// from: http://swig.10945.n7.nabble.com/Trapping-Swig-DirectorException-td6013.html
+// le code suivant permet de voir la call stack dans les appels C++ => python
+
+// %{ 
+//    static void handle_exception(void) { 
+//      try { 
+//        throw; 
+//      } catch (std::exception &e) { 
+//         std::stringstream txt; 
+//         txt << e.what(); // << ' ' << typeid(e).name();
+//         PyErr_SetString(PyExc_RuntimeError, e.what()); 
+//      } 
+//      catch(...) 
+//      {
+//         PyErr_SetString(PyExc_RuntimeError, "Unknown C++ Runtime Error");
+//      } 
+//    } 
+// %} 
+
+// %exception { 
+//    try { 
+//      $action 
+//    } catch (...) { 
+//      // Note that if a director method failed, the Python error indicator 
+//      // already contains full details of the exception, and it will be 
+//      // reraised when we go to SWIG_fail; so no need to convert the C++ 
+//      // exception back to a Python one 
+//      if (!PyErr_Occurred()) { 
+//        handle_exception(); 
+//      } 
+//      SWIG_fail; 
+//    } 
+// } 
+
+%include "genmai.h"
+%include "gmObject.h"
+
+%extend Object {
+    std::string __str__() {
+        std::stringstream str; str << *self;
+        return str.str();
+    }
+}
 
 // utils 
 
-%include "genmai.h"
 %include "Point.h"
 %include "PolarPoint.h"
 %include "Curve.h"
@@ -68,6 +117,5 @@ namespace std {
 %include "Mesh.h"
 %include "Tool.h"
 
-%include "Builder.h"
 %include "MeshBuilder.h"
 %include "ToolBuilder.h"

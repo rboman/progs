@@ -33,9 +33,7 @@ print "Pno =", pt.no
 
 print "-----"
 arc = Arc(1, 2, 3)
-arc.output()
+print arc
 line = Line(5, 8)
-line.output()
+print line
 
-print arc.carteBacon()
-print line.carteBacon()

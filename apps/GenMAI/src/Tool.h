@@ -16,6 +16,7 @@
 #define TOOL_H
 
 #include "genmai.h"
+#include "gmObject.h"
 #include "Point.h"
 #include "Curve.h"
 #include <vector>
@@ -24,7 +25,7 @@
  * @brief Defines a Tool (list of Point and list of Curve). 
  */
 
-class GENMAI_API Tool
+class GENMAI_API Tool : public Object
 {
 public:
     int firstp;
@@ -36,7 +37,7 @@ public:
 public:
     Tool();
 
-    virtual void print() const;
+    virtual void write(std::ostream &out) const override;
     virtual void list() const;
     virtual bool isEmpty() const;
     virtual void clear();

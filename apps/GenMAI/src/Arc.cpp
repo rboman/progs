@@ -13,7 +13,6 @@
 //   limitations under the License.
 
 #include "Arc.h"
-#include <iostream>
 
 Arc::Arc(int p1, int p2, int p3) : Curve(3)
 {
@@ -22,7 +21,7 @@ Arc::Arc(int p1, int p2, int p3) : Curve(3)
     setPointNumber(2, p3);
 }
 
-void Arc::print() const
+void Arc::write(std::ostream &out) const
 {
-    std::cout << "Arc " << getPointNumber(0) << ' ' << getPointNumber(1) << ' ' << getPointNumber(2);
+    out << "Arc " << getPointNumber(0) << ' ' << getPointNumber(1) << ' ' << getPointNumber(2);
 }

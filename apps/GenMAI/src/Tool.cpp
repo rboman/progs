@@ -15,18 +15,18 @@
 #include "Tool.h"
 #include "Curve.h"
 
-Tool::Tool() : points(0), curves(0)
+Tool::Tool() : Object(), points(0), curves(0)
 {
     clear();
 }
 
-void Tool::print() const
+void Tool::write(std::ostream &out) const
 {
-    std::cout << "MATRICE:" << std::endl;
-    std::cout << "--------" << std::endl;
-    std::cout << " points     : " << points.size() << std::endl;
-    std::cout << " courbes    : " << curves.size() << std::endl;
-    std::cout << std::endl;
+    out << "MATRICE:" << std::endl;
+    out << "--------" << std::endl;
+    out << " points     : " << points.size() << std::endl;
+    out << " courbes    : " << curves.size() << std::endl;
+    out << std::endl;
 }
 
 void Tool::list() const
@@ -35,10 +35,7 @@ void Tool::list() const
         std::cout << points[i] << std::endl;
 
     for (auto i = 0; i < curves.size(); ++i)
-    {
-        curves[i]->print();
-        std::cout << std::endl;
-    }
+        std::cout << curves[i] << std::endl;
 }
 
 bool Tool::isEmpty() const

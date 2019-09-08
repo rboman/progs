@@ -21,7 +21,7 @@ Line::Line(int p1, int p2) : Curve(2)
     setPointNumber(1, p2);
 }
 
-void Line::print() const
+void Line::write(std::ostream &out) const
 {
-    std::cout << "Line " << getPointNumber(0) << ' ' << getPointNumber(1);
+    out << "Line " << getPointNumber(0) << ' ' << getPointNumber(1);
 }

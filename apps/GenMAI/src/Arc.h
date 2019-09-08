@@ -26,7 +26,7 @@ class GENMAI_API Arc : public Curve
 {
   public:
     Arc(int p1, int p2, int p3);
-    virtual void print() const override;
+    virtual void write(std::ostream &out) const override;
 };
 
 #endif

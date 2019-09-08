@@ -16,6 +16,7 @@
 #define MESH_H
 
 #include "genmai.h"
+#include "gmObject.h"
 #include <vector>
 #include "Point.h"
 #include "Element.h"
@@ -26,13 +27,13 @@
  *        A list of contact nodes is also included.
  */
 
-class GENMAI_API Mesh 
+class GENMAI_API Mesh : public Object
 {
     int firstContactNode;
     int lastContactNode;
 
-    std::vector<Point> nodes;
-    std::vector<Element> elements;
+    std::vector<Point *> nodes;
+    std::vector<Element *> elements;
 
   public:
     Mesh();
@@ -42,16 +43,18 @@ class GENMAI_API Mesh
     void setLastContactNode(int _last);
     int getLastContactNode() const;
 
-    void addElement(Element &m);
+    void addElement(Element *m);
     void addElement(int n1, int n2, int n3, int n4);
-    void addNode(Point &pt);
+    void addNode(Point *pt);
     void addNode(double x, double y);
 
     size_t numberOfNodes() const;
     size_t numberOfElements() const;
 
-    virtual void print() const;
+    virtual void write(std::ostream &out) const override;
+
     virtual void list() const;
+
     virtual bool isEmpty() const;
     virtual void clear();
 
