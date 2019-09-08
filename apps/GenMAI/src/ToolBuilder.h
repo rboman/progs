@@ -52,6 +52,8 @@ private:
 
     static double d2r(double angle);
     static double r2d(double angle);
+
+    virtual void write(std::ostream &out) const override;
 };
 
 #endif

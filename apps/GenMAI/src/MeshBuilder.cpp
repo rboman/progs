@@ -33,6 +33,21 @@ MeshBuilder::MeshBuilder(Mesh &_target) : Object(), target(_target)
     layers.push_back(CONSTANT);
 }
 
+void MeshBuilder::write(std::ostream &out) const
+{
+    out << "MeshBuilder:\n";
+    out << "\torigin               : " << origin << '\n';
+    out << "\tdimension            : " << dimension << '\n';
+    out << "\tnumberOfElementOnX   : " << numberOfElementOnX << '\n';
+    out << "\tnumberOfElementOnY   : " << numberOfElementOnY << '\n';
+    out << "\treductionCoefficient : " << reductionCoefficient << '\n';
+    out << "\tlayers               : ";
+    for(auto l : layers)
+        out << l << ' ';
+    out << '\n';
+}
+
+
 /**
  * @brief Calcul la hauteur de la zone "boundary"
  */

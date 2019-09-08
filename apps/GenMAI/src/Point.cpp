@@ -47,7 +47,7 @@ Point::Point(const Point &p1,
     y = pt.y;
 }
 
-std::ostream &
+GENMAI_API std::ostream &
 operator<<(std::ostream &o, const Point &v)
 {
     if (v.no != 0)

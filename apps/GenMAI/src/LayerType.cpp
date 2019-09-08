@@ -12,34 +12,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef TOOL_H
-#define TOOL_H
+#include "LayerType.h"
 
-#include "genmai.h"
-#include "gmObject.h"
-#include <vector>
-
-/**
- * @brief Defines a Tool (list of Point and list of Curve). 
- */
-
-class GENMAI_API Tool : public Object
+GENMAI_API std::ostream &
+operator<<(std::ostream &o, const LayerType &v)
 {
-public:
-    int firstp;
-    int firstc;
-
-    std::vector<Point *> points;
-    std::vector<Curve *> curves;
-
-public:
-    Tool();
-
-    virtual void write(std::ostream &out) const override;
-    virtual void list() const;
-    
-    bool isEmpty() const;
-    void clear();
-};
-
-#endif
+    switch(v)
+    {
+        case CONSTANT: o << "CONSTANT"; break;
+        case REDUCTION: o << "REDUCTION"; break;
+        default: o << "INVALID"; break;
+    }
+    return o;
+}

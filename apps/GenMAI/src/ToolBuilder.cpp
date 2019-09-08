@@ -40,6 +40,19 @@ ToolBuilder::ToolBuilder(Tool &_target) : Object(), target(_target)
     centre.y = 110.0;
 }
 
+void ToolBuilder::write(std::ostream &out) const
+{
+    out << "ToolBuilder:\n";
+    out << "\tradius             : " << radius << '\n';
+    out << "\tinitialAngle       : " << initialAngle << '\n';
+    out << "\tasperityLength     : " << asperityLength << '\n';
+    out << "\tasperityAngle      : " << asperityAngle << '\n';
+    out << "\tsmoothnessAngle    : " << smoothnessAngle << '\n';
+    out << "\tasperityInterval   : " << asperityInterval << '\n';
+    out << "\tnumberOfAsperities : " << numberOfAsperities << '\n';
+    out << "\tcentre     : " << centre << '\n';
+}
+
 /**
  * @brief génération de la matrice a l'aide des parametres courants
  */

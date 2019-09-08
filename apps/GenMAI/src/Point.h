@@ -36,7 +36,7 @@ public:
     Point(const Point &centre, const Point &axis, double angle, double ray);
     Point(const Point &p1, const Point &p2, double t);
 
-    friend std::ostream &operator<<(std::ostream &o, const Point &v);
+    friend GENMAI_API std::ostream &operator<<(std::ostream &o, const Point &v);
     friend double atan2(const Point &pt);
     Point operator-(const Point &pt) const;
     Point rotate(double angle) const;

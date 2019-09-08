@@ -40,8 +40,8 @@ public:
     virtual void write(std::ostream &out) const override;
     virtual void list() const;
 
-    virtual bool isEmpty() const;
-    virtual void clear();
+    bool isEmpty() const;
+    void clear();
 };
 
 #endif

@@ -67,6 +67,8 @@ public:
     void setContactNodes(int first, int last);
     void increaseHeight(double dh);
     void initialize();
+
+    virtual void write(std::ostream &out) const override;
 };
 
 #include "MeshBuilder.inl"

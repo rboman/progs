@@ -16,6 +16,7 @@
 #define LAYERTYPE_H
 
 #include "genmai.h"
+#include <iostream>
 
 /**
  * @brief Id for the Layer objects
@@ -26,5 +27,7 @@ enum LayerType
     CONSTANT = 0,
     REDUCTION
 };
+
+GENMAI_API std::ostream &operator<<(std::ostream &o, const LayerType &v);
 
 #endif

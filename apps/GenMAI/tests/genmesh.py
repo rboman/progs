@@ -39,6 +39,8 @@ if 0:
     mesher.layers.push_back(REDUCTION)
     mesher.layers.push_back(CONSTANT)
 
+print mesher
+
 mesher.genere()
 
 print mesh

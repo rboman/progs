@@ -31,6 +31,8 @@ if 0:
     builder.centre.x = -1.0
     builder.centre.y = 209.01
 
+print builder
+
 builder.genere()
 
 print matrix
