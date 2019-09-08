@@ -22,15 +22,17 @@
 class Point;
 
 /**
- * @brief Mother class of Curve objects
+ * @brief a curve
  */
 
 class GENMAI_API Curve : public Object
 {
 public:
-    std::vector<int> pts;
+    std::vector<size_t> pts;
 
-    explicit Curve(int nbpt);
+    Curve(std::vector<size_t> const &_pts);
+    virtual void write(std::ostream &out) const override;
+    std::string name() const;
 };
 
 #endif

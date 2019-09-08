@@ -18,9 +18,8 @@
 // utils --
 #include "Point.h"
 #include "PolarPoint.h"
-#include "Arc.h"
-#include "Line.h"
 #include "Element.h"
+#include "Curve.h"
 
 // builders --
 #include "Mesh.h"
@@ -92,6 +91,11 @@
 }
 
 %include "std_vector.i"
+// Instantiate some std templates
+namespace std {
+   %template(std_vector_int) std::vector<int>;
+   %template(std_vector_size_t) std::vector<size_t>;
+}
 
 
 // utils 
@@ -100,14 +104,11 @@
 %include "PolarPoint.h"
 %include "Curve.h"
 %include "LayerType.h"
-%include "Arc.h"
-%include "Line.h"
 %include "Element.h"
 
 // Instantiate some std templates
 namespace std {
    %template(std_vector_LayerType) std::vector<LayerType>;
-   %template(std_vector_int) std::vector<int>;
    %template(std_vector_Point) std::vector<Point *>;
    %template(std_vector_Element) std::vector<Element *>;
    %template(std_vector_Curve) std::vector<Curve *>;

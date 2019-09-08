@@ -32,8 +32,8 @@ pt.no = 99
 print "Pno =", pt.no
 
 print "-----"
-arc = Arc(1, 2, 3)
+arc = Curve( (1, 2, 3) )
 print arc
-line = Line(5, 8)
+line = Curve( (5, 8) )
 print line
 

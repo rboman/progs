@@ -13,7 +13,29 @@
 //   limitations under the License.
 
 #include "Curve.h"
+#include <string>
 
-Curve::Curve(int nbpt) : Object(), pts(nbpt)
+Curve::Curve(std::vector<size_t> const &_pts) : Object(), pts(_pts)
 {
+}
+
+std::string 
+Curve::name() const
+{
+    switch (pts.size())
+    {
+    case 2:
+        return "Line";
+    case 3:
+        return "Arc";
+    default:
+        return "Curve";
+    }
+}
+
+void Curve::write(std::ostream &out) const
+{
+    out << name();
+    for(auto no : pts)
+        out << ' ' << no;
 }

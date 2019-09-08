@@ -34,11 +34,9 @@
 // namespace gauss
 // {
 
-class Arc;
 class Curve;
 class Element;
 class Object;
-class Line;
 class Mesh;
 class MeshBuilder;
 class Point;

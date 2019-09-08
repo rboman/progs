@@ -15,9 +15,8 @@
 #include "ToolBuilder.h"
 #include "Point.h"
 #include "PolarPoint.h"
-#include "Arc.h"
-#include "Line.h"
 #include "Tool.h"
+#include "Curve.h"
 
 
 Point const &
@@ -94,7 +93,7 @@ void ToolBuilder::genere()
     target.points.push_back(new Point(*target.points[nbpt2 - 1]));
 
     // Création de la derniere ligne
-    target.curves.push_back(new Line(target.points.size() - 1, target.points.size()));
+    target.curves.push_back(new Curve( {target.points.size() - 1, target.points.size()} ));
 
     target.firstp = nbpt2;
     target.firstc = nbcou2;
@@ -133,8 +132,8 @@ void ToolBuilder::genereAsperity()
     target.points.push_back(new Point(p2)); // pr+3
 
     // ajoute les courbes
-    target.curves.push_back(new Line(pr + 1, pr + 2));
-    target.curves.push_back(new Line(pr + 2, pr + 3));
+    target.curves.push_back(new Curve( {pr + 1, pr + 2} ));
+    target.curves.push_back(new Curve( {pr + 2, pr + 3} ));
 }
 
 void ToolBuilder::genereInterval()
@@ -146,7 +145,7 @@ void ToolBuilder::genereInterval()
     Point p2(centre, getRollAxis(), pp1.a - asperityInterval / radius, radius);
 
     target.points.push_back(new Point(p2));
-    target.curves.push_back(new Line(pr + 1, pr + 2));
+    target.curves.push_back(new Curve( {pr + 1, pr + 2} ));
 }
 
 void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
@@ -180,8 +179,8 @@ void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
     target.points.push_back(new Point(p5)); // pr+4
 
     // ajoute les courbes
-    target.curves.push_back(new Line(np0, pr + 2));
-    target.curves.push_back(new Arc(pr + 2, pr + 3, pr + 4));
+    target.curves.push_back(new Curve( {np0, pr + 2} ));
+    target.curves.push_back(new Curve( {pr + 2, pr + 3, pr + 4} ));
 
     *np1 = pr + 4;
 }
