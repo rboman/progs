@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 Arc::Arc(int p1, int p2, int p3) : Curve(3)
 {
-    setPointNumber(0, p1);
-    setPointNumber(1, p2);
-    setPointNumber(2, p3);
+    pts[0] = p1;
+    pts[1] = p2;
+    pts[2] = p3;
 }
 
 void Arc::write(std::ostream &out) const
 {
-    out << "Arc " << getPointNumber(0) << ' ' << getPointNumber(1) << ' ' << getPointNumber(2);
+    out << "Arc " << pts[0] << ' ' << pts[1] << ' ' << pts[2];
 }

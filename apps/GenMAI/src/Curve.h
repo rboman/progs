@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #include "gmObject.h"
 #include <cstddef> // size_t for travis
 #include <vector>
+class Point;
 
 /**
  * @brief Mother class of Curve objects
@@ -26,16 +27,10 @@
 
 class GENMAI_API Curve : public Object
 {
-    std::vector<int> pt;
+public:
+    std::vector<int> pts;
 
-  public:
-    Curve(int nbpt);
-
-    size_t numberOfPoints() const;
-    int getPointNumber(int i) const;
-    void setPointNumber(int i, int j);
+    explicit Curve(int nbpt);
 };
-
-#include "Curve.inl"
 
 #endif

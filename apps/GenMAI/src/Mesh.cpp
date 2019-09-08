@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -13,50 +13,28 @@
 //   limitations under the License.
 
 #include "Mesh.h"
+#include "Point.h"
+#include "Element.h"
 
 Mesh::Mesh() : Object(), nodes(0), elements(0)
 {
     clear();
 }
 
-void Mesh::addNode(Point *pt)
-{
-    nodes.push_back(pt);
-}
-
-void Mesh::addElement(Element *m)
-{
-    elements.push_back(m);
-}
-
-void Mesh::addNode(double x, double y)
-{
-    Point *pt = new Point(x, y);
-    addNode(pt);
-}
-
-void Mesh::addElement(int n1, int n2, int n3, int n4)
-{
-    Element *m = new Element(n1, n2, n3, n4);
-    addElement(m);
-}
-
 void Mesh::write(std::ostream &out) const
 {
-    out << "MAILLAGE:" << std::endl;
-    out << "---------" << std::endl;
-    out << " noeuds     : " << numberOfNodes() << std::endl;
-    out << " mailles    : " << numberOfElements() << std::endl;
-    out << " noeuds sup : " << lastContactNode - firstContactNode << std::endl;
-    out << std::endl;
+    out << "Mesh:\n";
+    out << "\tnoeuds     : " << nodes.size() << '\n';
+    out << "\tmailles    : " << elements.size() << '\n';
+    out << "\tnoeuds sup : " << lastContactNode - firstContactNode << '\n';
 }
 
 void Mesh::list() const
 {
-    for (int i = 0; i < numberOfNodes(); ++i)
+    for (int i = 0; i < nodes.size(); ++i)
         std::cout << nodes[i] << std::endl;
 
-    for (int i = 0; i < numberOfElements(); ++i)
+    for (int i = 0; i < elements.size(); ++i)
         std::cout << elements[i] << std::endl;
 }
 
@@ -72,6 +50,6 @@ void Mesh::clear()
 {
     nodes.resize(0);
     elements.resize(0);
-    setFirstContactNode(0);
-    setLastContactNode(0);
+    this->firstContactNode = 0;
+    this->lastContactNode = 0;
 }

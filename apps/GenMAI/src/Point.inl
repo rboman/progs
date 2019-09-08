@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ Point::operator+(const Point &pt) const
 }
 
 inline double
-    Point::operator*(const Point &pt) const
+Point::operator*(const Point &pt) const
 {
     return (x * pt.x + y * pt.y);
 }

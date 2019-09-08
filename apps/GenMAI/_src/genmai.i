@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -50,36 +50,36 @@
 // from: http://swig.10945.n7.nabble.com/Trapping-Swig-DirectorException-td6013.html
 // le code suivant permet de voir la call stack dans les appels C++ => python
 
-// %{ 
-//    static void handle_exception(void) { 
-//      try { 
-//        throw; 
-//      } catch (std::exception &e) { 
-//         std::stringstream txt; 
-//         txt << e.what(); // << ' ' << typeid(e).name();
-//         PyErr_SetString(PyExc_RuntimeError, e.what()); 
-//      } 
-//      catch(...) 
-//      {
-//         PyErr_SetString(PyExc_RuntimeError, "Unknown C++ Runtime Error");
-//      } 
-//    } 
-// %} 
+%{ 
+   static void handle_exception(void) { 
+     try { 
+       throw; 
+     } catch (std::exception &e) { 
+        std::stringstream txt; 
+        txt << e.what(); // << ' ' << typeid(e).name();
+        PyErr_SetString(PyExc_RuntimeError, e.what()); 
+     } 
+     catch(...) 
+     {
+        PyErr_SetString(PyExc_RuntimeError, "Unknown C++ Runtime Error");
+     } 
+   } 
+%} 
 
-// %exception { 
-//    try { 
-//      $action 
-//    } catch (...) { 
-//      // Note that if a director method failed, the Python error indicator 
-//      // already contains full details of the exception, and it will be 
-//      // reraised when we go to SWIG_fail; so no need to convert the C++ 
-//      // exception back to a Python one 
-//      if (!PyErr_Occurred()) { 
-//        handle_exception(); 
-//      } 
-//      SWIG_fail; 
-//    } 
-// } 
+%exception { 
+   try { 
+     $action 
+   } catch (...) { 
+     // Note that if a director method failed, the Python error indicator 
+     // already contains full details of the exception, and it will be 
+     // reraised when we go to SWIG_fail; so no need to convert the C++ 
+     // exception back to a Python one 
+     if (!PyErr_Occurred()) { 
+       handle_exception(); 
+     } 
+     SWIG_fail; 
+   } 
+} 
 
 %include "genmai.h"
 %include "gmObject.h"
@@ -91,25 +91,28 @@
     }
 }
 
+%include "std_vector.i"
+
+
 // utils 
 
 %include "Point.h"
 %include "PolarPoint.h"
 %include "Curve.h"
 %include "LayerType.h"
-
-
-%include "std_vector.i"
-// Instantiate some std templates
-namespace std {
-   %template(std_vector_LayerType) std::vector<LayerType>;
-   %template(std_vector_Point) std::vector<Point *>;
-   %template(std_vector_Curve) std::vector<Curve *>;
-}
-
 %include "Arc.h"
 %include "Line.h"
 %include "Element.h"
+
+// Instantiate some std templates
+namespace std {
+   %template(std_vector_LayerType) std::vector<LayerType>;
+   %template(std_vector_int) std::vector<int>;
+   %template(std_vector_Point) std::vector<Point *>;
+   %template(std_vector_Element) std::vector<Element *>;
+   %template(std_vector_Curve) std::vector<Curve *>;
+}
+
 
 
 // builders

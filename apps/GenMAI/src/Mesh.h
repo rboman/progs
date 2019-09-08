@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@
 #include "genmai.h"
 #include "gmObject.h"
 #include <vector>
-#include "Point.h"
-#include "Element.h"
 
 
 /**
@@ -29,42 +27,21 @@
 
 class GENMAI_API Mesh : public Object
 {
+public:
     int firstContactNode;
     int lastContactNode;
 
     std::vector<Point *> nodes;
     std::vector<Element *> elements;
 
-  public:
+public:
     Mesh();
 
-    void setFirstContactNode(int _first);
-    int getFirstContactNode() const;
-    void setLastContactNode(int _last);
-    int getLastContactNode() const;
-
-    void addElement(Element *m);
-    void addElement(int n1, int n2, int n3, int n4);
-    void addNode(Point *pt);
-    void addNode(double x, double y);
-
-    size_t numberOfNodes() const;
-    size_t numberOfElements() const;
-
     virtual void write(std::ostream &out) const override;
-
     virtual void list() const;
 
     virtual bool isEmpty() const;
     virtual void clear();
-
-    int getNodeNumber(int i) const;
-    void setNodeNumber(int i, int _no);
-    double getNodeX(int i) const;
-    double getNodeY(int i) const;
-    int getNodeNumberFromElement(int c, int i) const;
 };
-
-#include "Mesh.inl"
 
 #endif

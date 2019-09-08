@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,21 +17,15 @@
 
 #include "genmai.h"
 #include "gmObject.h"
-#include "Point.h"
+#include <vector>
 
 class GENMAI_API Element : public Object
 {
-    int no;
-    int noe[4]; ///< indices de noeuds dans une liste de Point
-
 public:
-    Element(int n1=0, int n2=0, int n3=0, int n4=0);
+    std::vector<int> nodes;     ///< list of nodes indexes
 
-    int getNodeNumber(int i) const;
-
+    Element(int n1, int n2, int n3, int n4);
     virtual void write(std::ostream &out) const override;
 };
-
-#include "Element.inl"
 
 #endif

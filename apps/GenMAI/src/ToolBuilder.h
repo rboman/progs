@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,10 +17,8 @@
 
 #include "genmai.h"
 #include "gmObject.h"
-#include <vector>
 #include "Point.h"
-#include "Tool.h"
-class Curve;
+#include <vector>
 
 /**
  * @brief Fills a Tool with the description of a skin pass roll with asperities.
@@ -29,7 +27,6 @@ class Curve;
 
 class GENMAI_API ToolBuilder : public Object
 {
-    static double pi;
     Tool &target;
 
 public:

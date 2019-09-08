@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -25,22 +25,26 @@
 #define GENMAI_API
 #endif
 
-// #ifdef _MSC_VER
-// #if !defined(_CRT_SECURE_NO_WARNINGS)
-// #define _CRT_SECURE_NO_WARNINGS 1
-// #endif
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #pragma warning( disable : 4251)  // DLL/templates non exportes
 #pragma warning( disable : 4267)  // size_t => int
 
-// #pragma warning( disable : 4275)  // non - DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
-
-// #endif //_MSC_VER
-
-// #include <stdexcept>
-// #include <sstream>
 // namespace gauss
 // {
+
+class Arc;
+class Curve;
+class Element;
+class Object;
+class Line;
+class Mesh;
+class MeshBuilder;
+class Point;
+class PolarPoint;
+class Tool;
+class ToolBuilder;
 
 // }
 

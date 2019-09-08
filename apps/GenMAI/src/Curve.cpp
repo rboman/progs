@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,24 +12,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-inline int
-Curve::getPointNumber(int i) const
-{
-    return pt[i];
-}
+#include "Curve.h"
 
-inline void
-Curve::setPointNumber(int i, int j)
-{
-    pt[i] = j;
-}
-
-inline size_t
-Curve::numberOfPoints() const
-{
-    return pt.size();
-}
-
-inline Curve::Curve(int nbpt) : Object(), pt(nbpt)
+Curve::Curve(int nbpt) : Object(), pts(nbpt)
 {
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 #
-#   Copyright 2003-2017 Romain Boman
+#   Copyright 2003-2019 Romain Boman
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -54,18 +54,20 @@ if not '--nogui' in sys.argv:
     ugrid.SetPoints(points)
 
     print "converting nodes to vtk"
-    for i in xrange(mesh.numberOfNodes()):
-        points.InsertPoint(i, mesh.getNodeX(i), mesh.getNodeY(i), 0.0)
+    for i in xrange(mesh.nodes.size()):
+        points.InsertPoint(i, mesh.nodes[i].x, mesh.nodes[i].y, 0.0)
         
     print "converting elems to vtk"
-    for i in xrange(mesh.numberOfElements()): 
+    for i in xrange(mesh.elements.size()): 
         quad = vtk.vtkQuad()
-        ids = quad.GetPointIds()               
-        for j in range(4):    
-            ids.SetId( j, mesh.getNodeNumberFromElement(i, j) )
+        ids = quad.GetPointIds() 
+        el = mesh.elements[i]
+        for j in range(4):
+            ids.SetId( j, el.nodes[j] )
         ugrid.InsertNextCell(quad.GetCellType(), ids)     
 
     # save the grid
+    print "saving the grid to disk"
     writer = vtk.vtkXMLUnstructuredGridWriter()
     #compressor = vtk.vtkZLibDataCompressor()
     #writer.SetCompressor(compressor)
@@ -78,9 +80,7 @@ if not '--nogui' in sys.argv:
 
     # display (DEBUG)
 
-
-
-
+    print "display..."
     mapper = vtk.vtkDataSetMapper() 
     mapper.SetInputData(ugrid)
     actor = vtk.vtkActor()

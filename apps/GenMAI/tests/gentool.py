@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 #
-#   Copyright 2003-2017 Romain Boman
+#   Copyright 2003-2019 Romain Boman
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -51,16 +51,16 @@ if not '--nogui' in sys.argv:
         
     print "converting curves to vtk"
     for i in xrange(matrix.firstc, matrix.curves.size()-1):  # ! shift!!
-        nbp = matrix.curves[i].numberOfPoints()
+        nbp = len(matrix.curves[i].pts)
         if nbp==2:
             cell = vtk.vtkLine() 
-            cell.GetPointIds().SetId( 0, matrix.curves[i].getPointNumber(0) -matrix.firstp-1)
-            cell.GetPointIds().SetId( 1, matrix.curves[i].getPointNumber(1) -matrix.firstp-1)
+            cell.GetPointIds().SetId( 0, matrix.curves[i].pts[0] - matrix.firstp-1)
+            cell.GetPointIds().SetId( 1, matrix.curves[i].pts[1] - matrix.firstp-1)
         elif nbp==3:
             cell = vtk.vtkQuadraticEdge() 
-            cell.GetPointIds().SetId( 0, matrix.curves[i].getPointNumber(0) -matrix.firstp-1)
-            cell.GetPointIds().SetId( 1, matrix.curves[i].getPointNumber(2) -matrix.firstp-1)
-            cell.GetPointIds().SetId( 2, matrix.curves[i].getPointNumber(1) -matrix.firstp-1)    
+            cell.GetPointIds().SetId( 0, matrix.curves[i].pts[0] - matrix.firstp-1)
+            cell.GetPointIds().SetId( 1, matrix.curves[i].pts[2] - matrix.firstp-1)
+            cell.GetPointIds().SetId( 2, matrix.curves[i].pts[1] - matrix.firstp-1)    
         else:
             raise Exception ("curve with %d points" % nbp)
 

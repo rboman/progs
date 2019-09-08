@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -17,9 +17,8 @@
 #include "PolarPoint.h"
 #include "Arc.h"
 #include "Line.h"
-#include <math.h>
+#include "Tool.h"
 
-double ToolBuilder::pi = 4.0 * atan(1.0);
 
 Point const &
 ToolBuilder::getRollAxis() const
@@ -92,7 +91,6 @@ void ToolBuilder::genere()
     }
 
     // Creation du dernier point
-
     target.points.push_back(new Point(*target.points[nbpt2 - 1]));
 
     // Création de la derniere ligne
@@ -105,21 +103,20 @@ void ToolBuilder::genere()
 double
 ToolBuilder::d2r(double angle)
 {
-    return (angle / 180.0 * pi);
+    return (angle / 180.0 * M_PI);
 }
 
 double
 ToolBuilder::r2d(double angle)
 {
-    return (angle * 180.0 / pi);
+    return (angle * 180.0 / M_PI);
 }
 
 void ToolBuilder::genereAsperity()
 {
-    const Point &p1 = *target.points[target.points.size() - 1];
-
-    // index courant
+    // index courant - récupère le dernier point
     size_t pr = target.points.size() - 1;
+    const Point &p1 = *target.points[pr];
 
     // point 1
     PolarPoint pp1(centre, getRollAxis(), p1);
@@ -142,8 +139,8 @@ void ToolBuilder::genereAsperity()
 
 void ToolBuilder::genereInterval()
 {
-    const Point &p1 = *target.points[target.points.size() - 1];
     size_t pr = target.points.size() - 1;
+    const Point &p1 = *target.points[pr];
 
     PolarPoint pp1(centre, getRollAxis(), p1);
     Point p2(centre, getRollAxis(), pp1.a - asperityInterval / radius, radius);
@@ -172,9 +169,9 @@ void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
     double angle1 = acos((dx1 * dx2) / (dx1.length() * dx2.length()));
     double angle2 = acos((dx2 * dx3) / (dx3.length() * dx2.length()));
 
-    Point p4(p1, p3, smoothnessAngle / tan((pi - angle1 - angle2) / 2.0) / dx1.length());
-    Point p5(p2, p3, smoothnessAngle / tan((pi - angle1 - angle2) / 2.0) / dx3.length());
-    Point p6(p4, (p3 - p1), signpv * (pi / 2.0), smoothnessAngle);
+    Point p4(p1, p3, smoothnessAngle / tan((M_PI - angle1 - angle2) / 2.0) / dx1.length());
+    Point p5(p2, p3, smoothnessAngle / tan((M_PI - angle1 - angle2) / 2.0) / dx3.length());
+    Point p6(p4, (p3 - p1), signpv * (M_PI / 2.0), smoothnessAngle);
     Point p7(p6, (p4 - p6), signpv * (angle1 + angle2) / 2.0, smoothnessAngle);
 
     // ajout des points nouvellement crees
