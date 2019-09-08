@@ -44,7 +44,7 @@ public:
 
 public:
     ToolBuilder(Tool &_target);
-    virtual void genere();
+    void genere();
 
 private:
     void genereAsperity();

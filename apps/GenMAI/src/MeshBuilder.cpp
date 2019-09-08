@@ -86,7 +86,7 @@ MeshBuilder::computeReductionFactor()
  * @brief Initialisation des variables globales
  */
 
-void MeshBuilder::Initialize()
+void MeshBuilder::initialize()
 {
     // initialise la largeur de maille courante a (largeur totale)/(nbre de mailles)
     dx = dimension.x / numberOfElementOnX;
@@ -101,8 +101,7 @@ void MeshBuilder::Initialize()
 
 void MeshBuilder::meshFirstLine()
 {
-    int i;
-    for (i = 0; i < numberOfElementOnX + 1; i++)
+    for (int i = 0; i < numberOfElementOnX + 1; i++)
         target.addNode(origin.x + (double)i * dx, currentHeight);
 
     setContactNodes(0, numberOfElementOnX);
@@ -274,7 +273,7 @@ void MeshBuilder::genere()
     if (!target.isEmpty())
         target.clear();
 
-    Initialize();
+    initialize();
 
     meshFirstLine();
     meshGradient();

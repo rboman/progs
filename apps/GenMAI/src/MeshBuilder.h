@@ -43,7 +43,7 @@ public:
 
   public:
     MeshBuilder(Mesh &_target);
-    virtual void genere();
+    void genere();
 
   private:
     double currentHeight; ///< ordonnee courante
@@ -66,7 +66,7 @@ public:
     void addConstantElements();
     void setContactNodes(int first, int last);
     void increaseHeight(double dh);
-    void Initialize();
+    void initialize();
 };
 
 #include "MeshBuilder.inl"
