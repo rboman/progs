@@ -12,9 +12,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "MeshBuilder.h"
-#include "Mesh.h"
+#include "gmMeshBuilder.h"
+#include "gmMesh.h"
 #include <stdexcept>
+
+using namespace genmai;
 
 MeshBuilder::MeshBuilder(Mesh &_target) : Object(), target(_target)
 {

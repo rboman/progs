@@ -15,7 +15,7 @@
 inline double
 atan2(const Point &pt)
 {
-    return atan2(pt.y, pt.x);
+    return ::atan2(pt.y, pt.x);
 }
 
 inline Point

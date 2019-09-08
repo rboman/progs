@@ -12,20 +12,38 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef ELEMENT_H
-#define ELEMENT_H
+#ifndef GMTOOL_H
+#define GMTOOL_H
 
 #include "genmai.h"
 #include "gmObject.h"
 #include <vector>
 
-class GENMAI_API Element : public Object
+namespace genmai {
+
+/**
+ * @brief Defines a Tool (list of Point and list of Curve). 
+ */
+
+class GENMAI_API Tool : public Object
 {
 public:
-    std::vector<int> nodes;     ///< list of nodes indexes
+    int firstp;
+    int firstc;
 
-    Element(int n1, int n2, int n3, int n4);
+    std::vector<Point *> points;
+    std::vector<Curve *> curves;
+
+public:
+    Tool();
+
     virtual void write(std::ostream &out) const override;
+    virtual void list() const;
+
+    bool isEmpty() const;
+    void clear();
 };
 
-#endif
+}
+
+#endif //GMTOOL_H

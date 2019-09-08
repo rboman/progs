@@ -12,11 +12,13 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef POINT_H
-#define POINT_H
+#ifndef GMPOINT_H
+#define GMPOINT_H
 
 #include "genmai.h"
 #include <iostream>
+
+namespace genmai {
 
 /**
  * @brief 2D Cartesian Point with a number and some basic vector operations 
@@ -35,20 +37,23 @@ public:
 
     Point(const Point &centre, const Point &axis, double angle, double ray);
     Point(const Point &p1, const Point &p2, double t);
-
-    friend GENMAI_API std::ostream &operator<<(std::ostream &o, const Point &v);
-    friend double atan2(const Point &pt);
+    
     Point operator-(const Point &pt) const;
     Point rotate(double angle) const;
     double length() const;
-    friend Point cosin(double angle);
-    friend Point operator*(double alpha, const Point &pt);
     Point operator+(const Point &pt) const;
     double operator*(const Point &pt) const;
     double operator^(const Point &pt) const;
     bool operator==(const Point &pt) const;
+
+    friend GENMAI_API std::ostream &operator<<(std::ostream &o, const Point &v);
+    friend double atan2(const Point &pt);
+    friend Point cosin(double angle);
+    friend Point operator*(double alpha, const Point &pt);
 };
 
-#include "Point.inl"
+#include "gmPoint.inl"
 
-#endif
+}
+
+#endif //GMPOINT_H

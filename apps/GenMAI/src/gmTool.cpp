@@ -12,9 +12,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Tool.h"
-#include "Point.h"
-#include "Curve.h"
+#include "gmTool.h"
+#include "gmPoint.h"
+#include "gmCurve.h"
+
+using namespace genmai;
 
 Tool::Tool() : Object(), points(0), curves(0)
 {

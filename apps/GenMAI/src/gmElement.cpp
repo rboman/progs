@@ -12,16 +12,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "LayerType.h"
+#include "gmElement.h"
 
-GENMAI_API std::ostream &
-operator<<(std::ostream &o, const LayerType &v)
+using namespace genmai;
+
+Element::Element(int n1, int n2, int n3, int n4) : Object(), nodes(4)
 {
-    switch(v)
-    {
-        case CONSTANT: o << "CONSTANT"; break;
-        case REDUCTION: o << "REDUCTION"; break;
-        default: o << "INVALID"; break;
-    }
-    return o;
+    nodes[0] = n1;
+    nodes[1] = n2;
+    nodes[2] = n3;
+    nodes[3] = n4;
+}
+
+void Element::write(std::ostream &out) const
+{
+    out << '('
+        << this->nodes[0] << ','
+        << this->nodes[1] << ','
+        << this->nodes[2] << ','
+        << this->nodes[3]
+        << ')';
 }

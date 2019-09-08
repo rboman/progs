@@ -12,14 +12,14 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "ToolBuilder.h"
-#include "Point.h"
-#include "PolarPoint.h"
-#include "Tool.h"
-#include "Curve.h"
+#include "gmToolBuilder.h"
+#include "gmPolarPoint.h"
+#include "gmTool.h"
+#include "gmCurve.h"
 
+using namespace genmai;
 
-Point const &
+genmai::Point const &
 ToolBuilder::getRollAxis() const
 {
     static const Point rollAxis(0, -1);

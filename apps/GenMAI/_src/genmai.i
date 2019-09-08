@@ -16,16 +16,16 @@
 %{
 
 // utils --
-#include "Point.h"
-#include "PolarPoint.h"
-#include "Element.h"
-#include "Curve.h"
+#include "gmPoint.h"
+#include "gmPolarPoint.h"
+#include "gmElement.h"
+#include "gmCurve.h"
 
 // builders --
-#include "Mesh.h"
-#include "MeshBuilder.h"
-#include "Tool.h"
-#include "ToolBuilder.h"
+#include "gmMesh.h"
+#include "gmMeshBuilder.h"
+#include "gmTool.h"
+#include "gmToolBuilder.h"
 
 #include <string>
 #include <sstream>
@@ -35,9 +35,9 @@
 %ignore operator<<;
 %ignore *::operator=;
 %ignore operator*;
-%ignore Point::operator*(double, const Point &);
-%ignore Point::atan2;
-%ignore Point::cosin;
+%ignore genmai::Point::operator*(double, const Point &);
+%ignore genmai::atan2;
+%ignore genmai::cosin;
 
 %include "std_string.i"
 
@@ -83,11 +83,13 @@
 %include "genmai.h"
 %include "gmObject.h"
 
+namespace genmai {
 %extend Object {
     std::string __str__() {
         std::stringstream str; str << *self;
         return str.str();
     }
+}
 }
 
 %include "std_vector.i"
@@ -100,26 +102,24 @@ namespace std {
 
 // utils 
 
-%include "Point.h"
-%include "PolarPoint.h"
-%include "Curve.h"
-%include "LayerType.h"
-%include "Element.h"
+%include "gmPoint.h"
+%include "gmPolarPoint.h"
+%include "gmCurve.h"
+%include "gmLayerType.h"
+%include "gmElement.h"
 
 // Instantiate some std templates
 namespace std {
-   %template(std_vector_LayerType) std::vector<LayerType>;
-   %template(std_vector_Point) std::vector<Point *>;
-   %template(std_vector_Element) std::vector<Element *>;
-   %template(std_vector_Curve) std::vector<Curve *>;
+   %template(std_vector_LayerType) std::vector<genmai::LayerType>;
+   %template(std_vector_Point) std::vector<genmai::Point *>;
+   %template(std_vector_Element) std::vector<genmai::Element *>;
+   %template(std_vector_Curve) std::vector<genmai::Curve *>;
 }
-
-
 
 // builders
 
-%include "Mesh.h"
-%include "Tool.h"
+%include "gmMesh.h"
+%include "gmTool.h"
 
-%include "MeshBuilder.h"
-%include "ToolBuilder.h"
+%include "gmMeshBuilder.h"
+%include "gmToolBuilder.h"

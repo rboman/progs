@@ -12,16 +12,17 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef MESHER_H
-#define MESHER_H
+#ifndef GMMESHBUILDER_H
+#define GMMESHBUILDER_H
 
 #include "genmai.h"
 #include "gmObject.h"
+#include "gmPoint.h"
+#include "gmElement.h"
+#include "gmLayerType.h"
 #include <vector>
-#include "Point.h"
-#include "Element.h"
-#include "LayerType.h"
-class Mesh;
+
+namespace genmai {
 
 /**
  * @brief Fills a Mesh with the description of a horizontal sheet of metal.
@@ -71,6 +72,8 @@ public:
     virtual void write(std::ostream &out) const override;
 };
 
-#include "MeshBuilder.inl"
+#include "gmMeshBuilder.inl"
 
-#endif
+}
+
+#endif //GMMESHBUILDER_H

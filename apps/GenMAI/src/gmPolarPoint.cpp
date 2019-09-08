@@ -12,27 +12,31 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef CURVE_H
-#define CURVE_H
+#include "gmPolarPoint.h"
 
-#include "genmai.h"
-#include "gmObject.h"
-#include <cstddef> // size_t for travis
-#include <vector>
-class Point;
+using namespace genmai;
 
-/**
- * @brief a curve
- */
-
-class GENMAI_API Curve : public Object
+PolarPoint::PolarPoint(Point const &c,
+                       double a,
+                       double r) : c(c), a(a), r(r)
 {
-public:
-    std::vector<size_t> pts;
+}
 
-    Curve(std::vector<size_t> const &_pts);
-    virtual void write(std::ostream &out) const override;
-    std::string name() const;
-};
+PolarPoint::PolarPoint(const Point &centre,
+                       const Point &axis,
+                       const Point &poi)
+{
+    Point dx = (poi - centre).rotate(-atan2(axis));
 
-#endif
+    c = centre;
+    r = dx.length();
+    a = atan2(dx);
+}
+
+std::ostream &
+operator<<(std::ostream &o, const PolarPoint &v)
+{
+    o << v.c << ' ';
+    o << '(' << v.a << ',' << v.r << ')';
+    return o;
+}

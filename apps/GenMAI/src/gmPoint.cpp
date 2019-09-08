@@ -12,9 +12,10 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Point.h"
-#include "PolarPoint.h"
-#include <math.h>
+#include "gmPoint.h"
+#include "gmPolarPoint.h"
+
+using namespace genmai;
 
 Point::Point(double x,
              double y) : no(0), x(x), y(y)
@@ -47,6 +48,15 @@ Point::Point(const Point &p1,
     y = pt.y;
 }
 
+bool Point::operator==(const Point &pt) const
+{
+    return (x == pt.x && y == pt.y);
+}
+
+// friends
+
+namespace genmai {
+
 GENMAI_API std::ostream &
 operator<<(std::ostream &o, const Point &v)
 {
@@ -56,7 +66,4 @@ operator<<(std::ostream &o, const Point &v)
     return o;
 }
 
-bool Point::operator==(const Point &pt) const
-{
-    return (x == pt.x && y == pt.y);
 }

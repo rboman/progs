@@ -14,11 +14,15 @@
 
 #include "gmObject.h"
 
+using namespace genmai;
+
+namespace genmai {
 std::ostream &
 operator<<(std::ostream &out, Object const &obj)
 {
     obj.write(out);
     return out;
+}
 }
 
 void Object::write(std::ostream &out) const

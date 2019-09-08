@@ -31,8 +31,8 @@
 #pragma warning( disable : 4251)  // DLL/templates non exportes
 #pragma warning( disable : 4267)  // size_t => int
 
-// namespace gauss
-// {
+namespace genmai
+{
 
 class Curve;
 class Element;
@@ -44,6 +44,6 @@ class PolarPoint;
 class Tool;
 class ToolBuilder;
 
-// }
+}
 
 #endif //GENMAI_H

@@ -12,29 +12,26 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "PolarPoint.h"
+#ifndef GMLAYERTYPE_H
+#define GMLAYERTYPE_H
 
-PolarPoint::PolarPoint(Point const &c,
-                       double a,
-                       double r) : c(c), a(a), r(r)
+#include "genmai.h"
+#include <iostream>
+
+namespace genmai {
+
+/**
+ * @brief Id for the Layer objects
+ */
+
+enum LayerType
 {
+    CONSTANT = 0,
+    REDUCTION
+};
+
+GENMAI_API std::ostream &operator<<(std::ostream &o, const LayerType &v);
+
 }
 
-PolarPoint::PolarPoint(const Point &centre,
-                       const Point &axis,
-                       const Point &poi)
-{
-    Point dx = (poi - centre).rotate(-atan2(axis));
-
-    c = centre;
-    r = dx.length();
-    a = atan2(dx);
-}
-
-std::ostream &
-operator<<(std::ostream &o, const PolarPoint &v)
-{
-    o << v.c << ' ';
-    o << '(' << v.a << ',' << v.r << ')';
-    return o;
-}
+#endif //GMLAYERTYPE_H

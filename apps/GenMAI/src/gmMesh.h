@@ -12,48 +12,39 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef TOOLBUILDER_H
-#define TOOLBUILDER_H
+#ifndef GMMESH_H
+#define GMMESH_H
 
 #include "genmai.h"
 #include "gmObject.h"
-#include "Point.h"
 #include <vector>
 
+namespace genmai {
+
 /**
- * @brief Fills a Tool with the description of a skin pass roll with asperities.
- *        The asperities can be smoothed.
+ * @brief Defines a Mesh (list of Point and list of Element). 
+ *        A list of contact nodes is also included.
  */
 
-class GENMAI_API ToolBuilder : public Object
+class GENMAI_API Mesh : public Object
 {
-    Tool &target;
+public:
+    int firstContactNode;
+    int lastContactNode;
+
+    std::vector<Point *> nodes;
+    std::vector<Element *> elements;
 
 public:
-    double radius;
-    double initialAngle;
-    double asperityLength;
-    double asperityAngle;
-    double smoothnessAngle;
-    double asperityInterval;
-    int numberOfAsperities;
-    Point centre;
-
-public:
-    ToolBuilder(Tool &_target);
-    void genere();
-
-private:
-    void genereAsperity();
-    void genereInterval();
-    void genereSmoothMatrix(size_t np0, size_t *np1, size_t i);
-
-    Point const &getRollAxis() const;
-
-    static double d2r(double angle);
-    static double r2d(double angle);
+    Mesh();
 
     virtual void write(std::ostream &out) const override;
+    virtual void list() const;
+
+    bool isEmpty() const;
+    void clear();
 };
 
-#endif
+}
+
+#endif //GMMESH_H

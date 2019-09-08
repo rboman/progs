@@ -12,30 +12,23 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Curve.h"
-#include <string>
+#include "gmLayerType.h"
 
-Curve::Curve(std::vector<size_t> const &_pts) : Object(), pts(_pts)
-{
-}
+using namespace genmai;
 
-std::string 
-Curve::name() const
+
+namespace genmai {
+
+GENMAI_API std::ostream &
+operator<<(std::ostream &o, const LayerType &v)
 {
-    switch (pts.size())
+    switch(v)
     {
-    case 2:
-        return "Line";
-    case 3:
-        return "Arc";
-    default:
-        return "Curve";
+        case CONSTANT: o << "CONSTANT"; break;
+        case REDUCTION: o << "REDUCTION"; break;
+        default: o << "INVALID"; break;
     }
+    return o;
 }
 
-void Curve::write(std::ostream &out) const
-{
-    out << name();
-    for(auto no : pts)
-        out << ' ' << no;
 }

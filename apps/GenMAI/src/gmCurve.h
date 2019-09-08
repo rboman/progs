@@ -12,36 +12,31 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef MESH_H
-#define MESH_H
+#ifndef GMCURVE_H
+#define GMCURVE_H
 
 #include "genmai.h"
 #include "gmObject.h"
+#include <cstddef> // size_t for travis
 #include <vector>
+class Point;
 
+namespace genmai {
 
 /**
- * @brief Defines a Mesh (list of Point and list of Element). 
- *        A list of contact nodes is also included.
+ * @brief a curve (a line if 2 points - an arc if 3 points)
  */
 
-class GENMAI_API Mesh : public Object
+class GENMAI_API Curve : public Object
 {
 public:
-    int firstContactNode;
-    int lastContactNode;
+    std::vector<size_t> pts;
 
-    std::vector<Point *> nodes;
-    std::vector<Element *> elements;
-
-public:
-    Mesh();
-
+    Curve(std::vector<size_t> const &_pts);
     virtual void write(std::ostream &out) const override;
-    virtual void list() const;
-
-    bool isEmpty() const;
-    void clear();
+    std::string name() const;
 };
 
-#endif
+}
+
+#endif //GMCURVE_H

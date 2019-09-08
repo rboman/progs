@@ -13,13 +13,14 @@
 //   limitations under the License.
 
 #include "genmai.h"
-#include "Tool.h"
-#include "ToolBuilder.h"
-#include "Mesh.h"
-#include "MeshBuilder.h"
+#include "gmTool.h"
+#include "gmToolBuilder.h"
+#include "gmMesh.h"
+#include "gmMeshBuilder.h"
 #include <stdexcept>
 #include <iostream>
 
+using namespace genmai;
 
 /**
  * @brief console application

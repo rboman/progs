@@ -12,9 +12,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "Mesh.h"
-#include "Point.h"
-#include "Element.h"
+#include "gmMesh.h"
+#include "gmPoint.h"
+#include "gmElement.h"
+
+using namespace genmai;
 
 Mesh::Mesh() : Object(), nodes(0), elements(0)
 {

@@ -12,29 +12,32 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef POLARPOINT_H
-#define POLARPOINT_H
+#include "gmCurve.h"
+#include <string>
 
-#include "genmai.h"
-#include "Point.h"
-#include <iostream>
+using namespace genmai;
 
-/**
- * @brief 2D Polar Point defined by a centre, an angle and a radius. 
- */
-
-class GENMAI_API PolarPoint
+Curve::Curve(std::vector<size_t> const &_pts) : Object(), pts(_pts)
 {
-public:
-    Point c;
-    double a;
-    double r;
+}
 
-public:
-    PolarPoint(Point const &c, double a, double r);
-    PolarPoint(Point const &centre, const Point &axis, const Point &poi);
+std::string 
+Curve::name() const
+{
+    switch (pts.size())
+    {
+    case 2:
+        return "Line";
+    case 3:
+        return "Arc";
+    default:
+        return "Curve";
+    }
+}
 
-    friend std::ostream &operator<<(std::ostream &o, const PolarPoint &v);
-};
-
-#endif
+void Curve::write(std::ostream &out) const
+{
+    out << name();
+    for(auto no : pts)
+        out << ' ' << no;
+}
