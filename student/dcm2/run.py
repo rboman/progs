@@ -20,7 +20,10 @@ if __name__ == "__main__":
                                      'bin', 'Release'))  # win/release
     else:
         sys.path.append(os.path.join(thisdir, 'build', 'bin'))  # linux
-
+    
+    print sys.path
+    raw_input()
+    
     # parse args
     import argparse
     parser = argparse.ArgumentParser()
