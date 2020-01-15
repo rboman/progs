@@ -28,6 +28,12 @@ def handout(infile):
            ' --scale 0.92 --no-landscape ' \
            ' --trim \'-0.2cm -0.2cm -0.2cm -0.2cm\' --delta \'10 10\' ' \
            ' --suffix 1x2 "%s"' % infile
+    """
+    cmd = r'pdfnup --a4paper --keepinfo --nup 2x2 ' \
+           ' --scale 0.92 ' \
+           ' --trim \'-0.2cm -0.2cm -0.2cm -0.2cm\' --delta \'10 10\' ' \
+           ' --suffix 2x2 "%s"' % infile
+    """
     print(cmd)
     os.system(cmd)
 
