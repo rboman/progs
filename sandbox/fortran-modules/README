@@ -1,0 +1,4 @@
+This project details an example of use of CMAKE to build fortran projects dealing whith modules and submodules (dependent modules).
+CMAKE doesn't support "simple" compilation of modules source files and inclusion of .mod binary files. It requires to compile the sources of mod 
+files, generate subsequent .mod binaries. Then, these binaries are included in a shared library, which is convenient to link with the 
+executable.
