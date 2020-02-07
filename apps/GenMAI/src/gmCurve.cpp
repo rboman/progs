@@ -12,21 +12,32 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmCurve.h"
+#include <string>
 
-/**
- * @brief Stupid main : start the Qt app
- */
+using namespace genmai;
 
-int main( int argc, char ** argv ) 
+Curve::Curve(std::vector<size_t> const &_pts) : Object(), pts(_pts)
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+}
 
-    return a.exec();
+std::string 
+Curve::name() const
+{
+    switch (pts.size())
+    {
+    case 2:
+        return "Line";
+    case 3:
+        return "Arc";
+    default:
+        return "Curve";
+    }
+}
+
+void Curve::write(std::ostream &out) const
+{
+    out << name();
+    for(auto no : pts)
+        out << ' ' << no;
 }

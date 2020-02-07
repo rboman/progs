@@ -12,21 +12,31 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmPolarPoint.h"
 
-/**
- * @brief Stupid main : start the Qt app
- */
+using namespace genmai;
 
-int main( int argc, char ** argv ) 
+PolarPoint::PolarPoint(Point const &c,
+                       double a,
+                       double r) : c(c), a(a), r(r)
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+}
 
-    return a.exec();
+PolarPoint::PolarPoint(const Point &centre,
+                       const Point &axis,
+                       const Point &poi)
+{
+    Point dx = (poi - centre).rotate(-atan2(axis));
+
+    c = centre;
+    r = dx.length();
+    a = atan2(dx);
+}
+
+std::ostream &
+operator<<(std::ostream &o, const PolarPoint &v)
+{
+    o << v.c << ' ';
+    o << '(' << v.a << ',' << v.r << ')';
+    return o;
 }

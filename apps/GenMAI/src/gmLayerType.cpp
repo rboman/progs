@@ -12,21 +12,23 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmLayerType.h"
 
-/**
- * @brief Stupid main : start the Qt app
- */
+using namespace genmai;
 
-int main( int argc, char ** argv ) 
+
+namespace genmai {
+
+GENMAI_API std::ostream &
+operator<<(std::ostream &o, const LayerType &v)
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+    switch(v)
+    {
+        case CONSTANT: o << "CONSTANT"; break;
+        case REDUCTION: o << "REDUCTION"; break;
+        default: o << "INVALID"; break;
+    }
+    return o;
+}
 
-    return a.exec();
 }

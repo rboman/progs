@@ -1,4 +1,14 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+IF(POLICY CMP0078)
+cmake_policy(SET CMP0078 OLD) # cmake 3.13 ``UseSWIG`` generates standard target names.
+#                             NEW=> target_name devient dcmi au lieu de _dcmi (le "_" devient un prefix)
+#                             ...=> MACRO_DebugPostfix(dcmi) au lieu de MACRO_DebugPostfix(_dcmi)
+ENDIF()
+IF(POLICY CMP0086)
+cmake_policy(SET CMP0086 NEW) # cmake 3.14 ``UseSWIG`` honors ``SWIG_MODULE_NAME`` via ``-module`` flag.
+#                             OLD/NEW => pas d'incidence
+ENDIF()
+
 PROJECT(DCM)
 
 # send all binaries to ./bin

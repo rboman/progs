@@ -12,21 +12,31 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef GMCURVE_H
+#define GMCURVE_H
+
 #include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmObject.h"
+#include <cstddef> // size_t for travis
+#include <vector>
+class Point;
+
+namespace genmai {
 
 /**
- * @brief Stupid main : start the Qt app
+ * @brief a curve (a line if 2 points - an arc if 3 points)
  */
 
-int main( int argc, char ** argv ) 
+class GENMAI_API Curve : public Object
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+public:
+    std::vector<size_t> pts;
 
-    return a.exec();
+    Curve(std::vector<size_t> const &_pts);
+    virtual void write(std::ostream &out) const override;
+    std::string name() const;
+};
+
 }
+
+#endif //GMCURVE_H

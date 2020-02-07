@@ -12,21 +12,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef GMELEMENT_H
+#define GMELEMENT_H
+
 #include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmObject.h"
+#include <vector>
 
-/**
- * @brief Stupid main : start the Qt app
- */
+namespace genmai {
 
-int main( int argc, char ** argv ) 
+class GENMAI_API Element : public Object
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+public:
+    std::vector<int> nodes;     ///< list of nodes indexes
 
-    return a.exec();
+    Element(int n1, int n2, int n3, int n4);
+    virtual void write(std::ostream &out) const override;
+};
+
 }
+
+#endif //GMELEMENT_H

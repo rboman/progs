@@ -12,21 +12,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmElement.h"
 
-/**
- * @brief Stupid main : start the Qt app
- */
+using namespace genmai;
 
-int main( int argc, char ** argv ) 
+Element::Element(int n1, int n2, int n3, int n4) : Object(), nodes(4)
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+    nodes[0] = n1;
+    nodes[1] = n2;
+    nodes[2] = n3;
+    nodes[3] = n4;
+}
 
-    return a.exec();
+void Element::write(std::ostream &out) const
+{
+    out << '('
+        << this->nodes[0] << ','
+        << this->nodes[1] << ','
+        << this->nodes[2] << ','
+        << this->nodes[3]
+        << ')';
 }

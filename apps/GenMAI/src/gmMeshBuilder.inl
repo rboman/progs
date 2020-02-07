@@ -12,21 +12,15 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
-
-/**
- * @brief Stupid main : start the Qt app
- */
-
-int main( int argc, char ** argv ) 
+inline void
+MeshBuilder::setContactNodes(int first, int last)
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+    this->first = first;
+    this->last = last;
+}
 
-    return a.exec();
+inline void
+MeshBuilder::increaseHeight(double dh)
+{
+    currentHeight += dh;
 }

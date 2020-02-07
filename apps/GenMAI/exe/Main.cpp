@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -13,32 +13,44 @@
 //   limitations under the License.
 
 #include "genmai.h"
+#include "gmTool.h"
+#include "gmToolBuilder.h"
+#include "gmMesh.h"
+#include "gmMeshBuilder.h"
 #include <stdexcept>
 #include <iostream>
 
-extern void genMesh();
-extern void genTool();
+using namespace genmai;
 
 /**
  * @brief console application
  */
 
-int main(int argc, char **argv) 
-{   
+int main(int argc, char **argv)
+{
     try
     {
-        genMesh();
-        genTool();
+        std::cout << "genMesh...\n";
+        Mesh mesh;
+        MeshBuilder mesher(mesh);
+        mesher.genere();
+        std::cout << mesh;
+
+        std::cout << "genTool...\n";
+        Tool matrix;
+        ToolBuilder builder(matrix);
+        builder.genere();
+        std::cout << matrix;
     }
-    catch(std::exception &e) 
+    catch (std::exception &e)
     {
         std::cerr << "\n** ERROR:" << e.what() << '\n';
         return 1;
     }
-    catch(...) 
+    catch (...)
     {
         std::cerr << "\n** ERROR: Unknown C++ Runtime Error\n";
         return 1;
-    } 
+    }
     return 0;
 }

@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -32,23 +32,23 @@ MyWidgetI::~MyWidgetI()
 void MyWidgetI::update()
 {
 
-    updateTextLineEdit(OrigXLineEdit,   tpar.getOrigin().getX());
-    updateTextLineEdit(OrigYLineEdit,   tpar.getOrigin().getY());
-    updateTextLineEdit(DimXLineEdit,    tpar.getDimension().getX());
-    updateTextLineEdit(DimYLineEdit,    tpar.getDimension().getY());
-    updateTextLineEdit(NoXLineEdit,     tpar.getNumberOfElementOnX());
-    updateTextLineEdit(NbMLineEdit,     tpar.getNumberOfElementOnY());
-    updateTextLineEdit(CoefLineEdit,    tpar.getReductionCoefficient());
+    updateTextLineEdit(OrigXLineEdit,   tpar.origin.x);
+    updateTextLineEdit(OrigYLineEdit,   tpar.origin.y);
+    updateTextLineEdit(DimXLineEdit,    tpar.dimension.x);
+    updateTextLineEdit(DimYLineEdit,    tpar.dimension.y);
+    updateTextLineEdit(NoXLineEdit,     tpar.numberOfElementOnX);
+    updateTextLineEdit(NbMLineEdit,     tpar.numberOfElementOnY);
+    updateTextLineEdit(CoefLineEdit,    tpar.reductionCoefficient);
 
-    updateTextLineEdit(CentreXLineEdit, mpar.getCentre().getX());
-    updateTextLineEdit(CentreYLineEdit, mpar.getCentre().getY());
-    updateTextLineEdit(RayonLineEdit,   mpar.getRadius());
-    updateTextLineEdit(ALineEdit,       mpar.getInitialAngle());
-    updateTextLineEdit(AspALineEdit,    mpar.getAsperityAngle());
-    updateTextLineEdit(AspBaseLineEdit, mpar.getAsperityLength());
-    updateTextLineEdit(AspRLineEdit,    mpar.getSmoothnessAngle());
-    updateTextLineEdit(AspIntLineEdit,  mpar.getAsperityInterval());
-    updateTextLineEdit(AspNLineEdit,    mpar.getNumberOfAsperities());
+    updateTextLineEdit(CentreXLineEdit, mpar.centre.x);
+    updateTextLineEdit(CentreYLineEdit, mpar.centre.y);
+    updateTextLineEdit(RayonLineEdit,   mpar.radius);
+    updateTextLineEdit(ALineEdit,       mpar.initialAngle);
+    updateTextLineEdit(AspALineEdit,    mpar.asperityAngle);
+    updateTextLineEdit(AspBaseLineEdit, mpar.asperityLength);
+    updateTextLineEdit(AspRLineEdit,    mpar.smoothnessAngle);
+    updateTextLineEdit(AspIntLineEdit,  mpar.asperityInterval);
+    updateTextLineEdit(AspNLineEdit,    mpar.numberOfAsperities);
 
 }
 
@@ -84,31 +84,31 @@ void MyWidgetI::updateTextLineEdit(QLineEdit *ledit, double val)
 
 void MyWidgetI::origx_slot()
 {
-    tpar.setOriginX(floatLineEdit(OrigXLineEdit));
+    tpar.origin.x = floatLineEdit(OrigXLineEdit);
 }
 void MyWidgetI::origy_slot()
 {
-    tpar.setOriginY(floatLineEdit(OrigYLineEdit));
+    tpar.origin.y = floatLineEdit(OrigYLineEdit);
 }
 void MyWidgetI::dimx_slot()
 {
-    tpar.setDimensionX(floatLineEdit(DimXLineEdit));
+    tpar.dimension.x = floatLineEdit(DimXLineEdit);
 }
 void MyWidgetI::dimy_slot()
 {
-    tpar.setDimensionY(floatLineEdit(DimYLineEdit));
+    tpar.dimension.y = floatLineEdit(DimYLineEdit);
 }
 void MyWidgetI::nox_slot()
 {
-    tpar.setNumberOfElementOnX(integerLineEdit(NoXLineEdit));
+    tpar.numberOfElementOnX = integerLineEdit(NoXLineEdit);
 }
 void MyWidgetI::nbm_slot()
 {
-    tpar.setNumberOfElementOnY(integerLineEdit(NbMLineEdit));
+    tpar.numberOfElementOnY = integerLineEdit(NbMLineEdit);
 }
 void MyWidgetI::coef_slot()
 {
-    tpar.setReductionCoefficient(floatLineEdit(CoefLineEdit));
+    tpar.reductionCoefficient = floatLineEdit(CoefLineEdit);
 }
 
 void MyWidgetI::addtype_slot()
@@ -124,39 +124,39 @@ void MyWidgetI::deltype_slot()
 
 void MyWidgetI::centrex_slot()
 {
-    mpar.setCentreX(floatLineEdit(CentreXLineEdit));
+    mpar.centre.x = floatLineEdit(CentreXLineEdit);
 }
 void MyWidgetI::centrey_slot()
 {
-    mpar.setCentreY(floatLineEdit(CentreYLineEdit));
+    mpar.centre.y = floatLineEdit(CentreYLineEdit);
 }
 void MyWidgetI::rayon_slot()
 {
-    mpar.setRadius(floatLineEdit(RayonLineEdit));
+    mpar.radius = floatLineEdit(RayonLineEdit);
 }
 void MyWidgetI::a_slot()
 {
-    mpar.setInitialAngle(floatLineEdit(ALineEdit));
+    mpar.initialAngle = floatLineEdit(ALineEdit);
 }
 void MyWidgetI::aspa_slot()
 {
-    mpar.setAsperityAngle(floatLineEdit(AspALineEdit));
+    mpar.asperityAngle = floatLineEdit(AspALineEdit);
 }
 void MyWidgetI::aspbase_slot()
 {
-    mpar.setAsperityLength(floatLineEdit(AspBaseLineEdit));
+    mpar.asperityLength = floatLineEdit(AspBaseLineEdit);
 }
 void MyWidgetI::aspr_slot()
 {
-    mpar.setSmoothnessAngle(floatLineEdit(AspRLineEdit));
+    mpar.smoothnessAngle = floatLineEdit(AspRLineEdit);
 }
 void MyWidgetI::aspint_slot()
 {
-    mpar.setAsperityInterval(floatLineEdit(AspIntLineEdit));
+    mpar.asperityInterval = floatLineEdit(AspIntLineEdit);
 }
 void MyWidgetI::aspn_slot()
 {
-    mpar.setNumberOfAsperities(integerLineEdit(AspNLineEdit));
+    mpar.numberOfAsperities = integerLineEdit(AspNLineEdit);
 }
 
 // mesh - load/save

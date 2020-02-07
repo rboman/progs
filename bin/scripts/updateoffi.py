@@ -152,7 +152,7 @@ def main(repos, opts):
             ncores = multiprocessing.cpu_count()
             print("[using cmake --build] with %d core(s)" % ncores)
             cmd = ['cmake', '--build', '.', '--config', 'Release']
-            if pu.isUnix():
+            if os.path.isfile('Makefile'):
                 cmd.extend([ '--', '-j%d' % ncores])
             subprocess.call(cmd)
 

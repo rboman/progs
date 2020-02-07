@@ -12,21 +12,38 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef GMTOOL_H
+#define GMTOOL_H
+
 #include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmObject.h"
+#include <vector>
+
+namespace genmai {
 
 /**
- * @brief Stupid main : start the Qt app
+ * @brief Defines a Tool (list of Point and list of Curve). 
  */
 
-int main( int argc, char ** argv ) 
+class GENMAI_API Tool : public Object
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+public:
+    int firstp;
+    int firstc;
 
-    return a.exec();
+    std::vector<Point *> points;
+    std::vector<Curve *> curves;
+
+public:
+    Tool();
+
+    virtual void write(std::ostream &out) const override;
+    virtual void list() const;
+
+    bool isEmpty() const;
+    void clear();
+};
+
 }
+
+#endif //GMTOOL_H

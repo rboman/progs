@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 #
-#   Copyright 2003-2017 Romain Boman
+#   Copyright 2003-2019 Romain Boman
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,40 +17,33 @@
 
 from genmai import *
 
-par = MeshParameters()
 
-inpfile = os.path.join(os.path.dirname(__file__),'../mesh.txt')
-par.load(inpfile)
-#par.save('mesh_2.par')
-#par.output()
+
 
 mesh = Mesh()
 mesher = MeshBuilder(mesh)
+if 0:
+    mesher.origin.x = -10.
+    mesher.origin.y = -0.25875
+    mesher.dimension.x = 10.
+    mesher.dimension.y = 0.25875
+    mesher.numberOfElementOnX = 200
+    mesher.numberOfElementOnY = 2
+    mesher.reductionCoefficient = 5.0
+    mesher.layers.clear()
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(REDUCTION)
+    mesher.layers.push_back(CONSTANT)
 
-mesher.setParameters(par)
-mesher.printParameters()
+print mesher
 
 mesher.genere()
 
-mesh.output()
-
-if 0:
-    rnb = NodeRenumberer(mesh) 
-    
-    rnb.setStyle(NORMALSTYLE)
-    rnb.execute()
-    writer1 = OofelieMeshExporter(mesh)
-    writer1.save()
-    
-    rnb.setStyle(BACONSTYLE)
-    rnb.execute()
-    writer2 = BaconMeshExporter(mesh)
-    writer2.save()
-    
-    rnb.setStyle(NORMALSTYLE)
-    rnb.execute()
-    writer3 = MatlabMeshExporter(mesh)
-    writer3.save()
+print mesh
 
 # vtk output
 
@@ -63,18 +56,20 @@ if not '--nogui' in sys.argv:
     ugrid.SetPoints(points)
 
     print "converting nodes to vtk"
-    for i in range(mesh.numberOfNodes()):
-        points.InsertPoint(i, mesh.getNodeX(i), mesh.getNodeY(i), 0.0)
+    for i in xrange(mesh.nodes.size()):
+        points.InsertPoint(i, mesh.nodes[i].x, mesh.nodes[i].y, 0.0)
         
     print "converting elems to vtk"
-    for i in range(mesh.numberOfElements()): 
+    for i in xrange(mesh.elements.size()): 
         quad = vtk.vtkQuad()
-        ids = quad.GetPointIds()               
-        for j in range(4):    
-            ids.SetId( j, mesh.getNodeNumberFromElement(i, j).getInt() )
+        ids = quad.GetPointIds() 
+        el = mesh.elements[i]
+        for j in range(4):
+            ids.SetId( j, el.nodes[j] )
         ugrid.InsertNextCell(quad.GetCellType(), ids)     
 
     # save the grid
+    print "saving the grid to disk"
     writer = vtk.vtkXMLUnstructuredGridWriter()
     #compressor = vtk.vtkZLibDataCompressor()
     #writer.SetCompressor(compressor)
@@ -87,9 +82,7 @@ if not '--nogui' in sys.argv:
 
     # display (DEBUG)
 
-
-
-
+    print "display..."
     mapper = vtk.vtkDataSetMapper() 
     mapper.SetInputData(ugrid)
     actor = vtk.vtkActor()

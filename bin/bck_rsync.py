@@ -8,7 +8,7 @@ import os, subprocess, shutil
 pars = {}
 pars['destdir'] = '/hdd2/boman/Dropbox/Backups/Repositories'
 pars['srcdir'] = '/hdd2/boman/Backups/rsync'
-pars['folders'] = ['GIT', 'SVN', 'SVN2', 'web']
+pars['folders'] = ['SVN', 'SVN2', 'web']
 
 def tar_folder(fname):
     bname = os.path.basename(fname)

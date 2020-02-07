@@ -12,21 +12,33 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef GMPOLARPOINT_H
+#define GMPOLARPOINT_H
+
 #include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmPoint.h"
+#include <iostream>
+
+namespace genmai {
 
 /**
- * @brief Stupid main : start the Qt app
+ * @brief 2D Polar Point defined by a centre, an angle and a radius. 
  */
 
-int main( int argc, char ** argv ) 
+class GENMAI_API PolarPoint
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+public:
+    Point c;
+    double a;
+    double r;
 
-    return a.exec();
+public:
+    PolarPoint(Point const &c, double a, double r);
+    PolarPoint(Point const &centre, const Point &axis, const Point &poi);
+
+    friend std::ostream &operator<<(std::ostream &o, const PolarPoint &v);
+};
+
 }
+
+#endif //GMPOLARPOINT_H

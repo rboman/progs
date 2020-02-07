@@ -43,32 +43,48 @@ function f_blueberry()
 # github perso
 f_github rboman rboman.github.io
 f_github rboman progs
-f_github rboman fsi
-f_github rboman femcode
+f_github rboman dgwaves
+f_github rboman dg
+f_github rboman gmshio
 f_github rboman math0471
 f_github rboman math0471.wiki
-f_github rboman plot-applet
-f_github rboman gmshio
+f_github rboman travis-cpp
+f_github rboman femcode
+f_github rboman fsi
+
 
 # github a&m
+f_github ulgltas CUPyDO
+f_github ulgltas CUPyDO.wiki 
 f_github ulgltas waves
 f_github ulgltas waves.wiki
+f_github ulgltas VLM 
 f_github ulgltas linuxbin
-f_github ulgltas plotter2d
-f_github ulgltas SPH
-f_github ulgltas CUPyDO   # cfr "others"
-f_github ulgltas PFEM     # cfr "others"
-f_github ulgltas PFEM.wiki
+f_github ulgltas modali
+f_github ulgltas NativeSolid
+f_github ulgltas SU2
+f_github ulgltas Trilinos
 f_github ulgltas ceci
-f_github ulgltas fe2
+f_github ulgltas plotter2d
+f_github ulgltas Trusses
+
+# github math0471
+f_github math0471 dg_shallow
+f_github math0471 dg_maxwell
+f_github math0471 dg_acoustics
+f_github math0471 sph
+f_github math0471 fe2
+f_github math0471 fdtd_brain
+f_github math0471 fdtd_oven
 
 # others
 #f_github mlucio89 CUPyDO
 #f_github mlucio89 PFEM
-f_github mlucio89 Trusses
+#f_github mlucio89 Trusses
 
 # gitlab uliege
 f_gituliege R.Boman lamtools
+f_gituliege R.Boman lamtools.wiki
 f_gituliege R.Boman lam3_postpro
 f_gituliege R.Boman lam3_xmesher
 f_gituliege R.Boman lam3_user
@@ -80,7 +96,18 @@ f_gituliege R.Boman mogador
 f_gituliege R.Boman CT
 f_gituliege R.Boman math0024
 f_gituliege R.Boman math0471_latex
+f_gituliege R.Boman code
+f_gituliege R.Boman monprojet
+f_gituliege R.Boman svnproj_trunk
 
+f_gituliege am-dept LieGroup
+f_gituliege am-dept PFEM
+f_gituliege am-dept PFEM.wiki
+
+f_gituliege am-dept/MN2L oo_meta
+f_gituliege am-dept/MN2L oo_nda
+f_gituliege am-dept/MN2L MetaLubSetup
+f_gituliege am-dept/MN2L MetaLub
 f_gituliege am-dept/MN2L keygen
 f_gituliege am-dept/MN2L MetaforSetup
 f_gituliege am-dept/MN2L mumps-4.10.0

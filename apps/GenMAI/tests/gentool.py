@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: latin-1 -*-
 #
-#   Copyright 2003-2017 Romain Boman
+#   Copyright 2003-2019 Romain Boman
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -17,32 +17,25 @@
 
 from genmai import *
 
-par = ToolParameters() 
-inpfile = os.path.join(os.path.dirname(__file__),'../matrix.txt')
-par.load(inpfile)
-#par.save('matrix_2.par')
-
 matrix = Tool()
 builder = ToolBuilder(matrix)
 
-builder.setParameters(par)
-builder.printParameters()
+if 0:
+    builder.radius = 209.
+    builder.initialAngle = 0.5
+    builder.asperityLength = 0.05
+    builder.asperityAngle = 21.8014
+    builder.smoothnessAngle = 0.01
+    builder.asperityInterval = 0.1
+    builder.numberOfAsperities = 250 
+    builder.centre.x = -1.0
+    builder.centre.y = 209.01
+
+print builder
+
 builder.genere()
 
-matrix.output()
-
-if 0:
-    writer1 = OofelieToolExporter(matrix)
-    writer1.save()
-    
-    writer2 = BaconToolExporter(matrix)
-    writer2.save()
-    
-    writer2b = BaconDatToolExporter(matrix)
-    writer2b.save()
-    
-    writer3 = MatlabToolExporter(matrix)
-    writer3.save()
+print matrix
 
 
 
@@ -55,21 +48,21 @@ if not '--nogui' in sys.argv:
     ugrid.SetPoints(points)
 
     print "converting points to vtk"
-    for i in range(matrix.getFirstPoint(), matrix.numberOfPoints()):
-        points.InsertPoint(i-matrix.getFirstPoint(), matrix.getPointX(i), matrix.getPointY(i), 0.0)
+    for i in xrange(matrix.firstp, matrix.points.size()):
+        points.InsertPoint(i-matrix.firstp, matrix.points[i].x, matrix.points[i].y, 0.0)
         
     print "converting curves to vtk"
-    for i in range(matrix.getFirstCurve(), matrix.numberOfCurves()-1):  # ! shift!!
-        nbp = matrix.getCurve(i).numberOfPoints()
+    for i in xrange(matrix.firstc, matrix.curves.size()-1):  # ! shift!!
+        nbp = len(matrix.curves[i].pts)
         if nbp==2:
             cell = vtk.vtkLine() 
-            cell.GetPointIds().SetId( 0, matrix.getCurve(i).getPointNumber(0) -matrix.getFirstPoint()-1)
-            cell.GetPointIds().SetId( 1, matrix.getCurve(i).getPointNumber(1) -matrix.getFirstPoint()-1)
+            cell.GetPointIds().SetId( 0, matrix.curves[i].pts[0] - matrix.firstp-1)
+            cell.GetPointIds().SetId( 1, matrix.curves[i].pts[1] - matrix.firstp-1)
         elif nbp==3:
             cell = vtk.vtkQuadraticEdge() 
-            cell.GetPointIds().SetId( 0, matrix.getCurve(i).getPointNumber(0) -matrix.getFirstPoint()-1)
-            cell.GetPointIds().SetId( 1, matrix.getCurve(i).getPointNumber(2) -matrix.getFirstPoint()-1)
-            cell.GetPointIds().SetId( 2, matrix.getCurve(i).getPointNumber(1) -matrix.getFirstPoint()-1)    
+            cell.GetPointIds().SetId( 0, matrix.curves[i].pts[0] - matrix.firstp-1)
+            cell.GetPointIds().SetId( 1, matrix.curves[i].pts[2] - matrix.firstp-1)
+            cell.GetPointIds().SetId( 2, matrix.curves[i].pts[1] - matrix.firstp-1)    
         else:
             raise Exception ("curve with %d points" % nbp)
 

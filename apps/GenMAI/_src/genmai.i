@@ -1,4 +1,4 @@
-//   Copyright 2003-2017 Romain Boman
+//   Copyright 2003-2019 Romain Boman
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,93 +16,110 @@
 %{
 
 // utils --
-#include "Point.h"
-#include "IntNumber.h"
-#include "PolarPoint.h"
-#include "Arc.h"
-#include "Line.h"
-#include "Element.h"
-
-
-// params --
-//#include "Parameters.h"
-#include "MeshParameters.h"
-#include "ToolParameters.h"
-
+#include "gmPoint.h"
+#include "gmPolarPoint.h"
+#include "gmElement.h"
+#include "gmCurve.h"
 
 // builders --
-#include "Mesh.h"
-#include "MeshBuilder.h"
-#include "Tool.h"
-#include "ToolBuilder.h"
+#include "gmMesh.h"
+#include "gmMeshBuilder.h"
+#include "gmTool.h"
+#include "gmToolBuilder.h"
 
-// export --
-#include "NodeRenumberer.h"
-#include "OofelieMeshExporter.h"
-#include "BaconMeshExporter.h"
-#include "MatlabMeshExporter.h"
-
-#include "ToolExporter.h"
-#include "OofelieToolExporter.h"
-#include "BaconDatToolExporter.h"
-#include "BaconToolExporter.h"
-#include "MatlabToolExporter.h"
+#include <string>
+#include <sstream>
 
 %}
 
 %ignore operator<<;
 %ignore *::operator=;
 %ignore operator*;
-%ignore Point::operator*(double, const Point &);
-%ignore Point::atan2;
-%ignore Point::cosin;
-
-%rename(output) print; // Rename all `print' functions to `output'
-
-// utils 
-
-%include "genmai.h"
-%include "IntNumber.h"
-%include "PtNumber.h"
-%include "Point.h"
-%include "PolarPoint.h"
-%include "Curve.h"
-%include "Arc.h"
-%include "Line.h"
-%include "Element.h"
-
-// -- gestion des "std::string"
+%ignore genmai::Point::operator*(double, const Point &);
+%ignore genmai::atan2;
+%ignore genmai::cosin;
 
 %include "std_string.i"
 
-// params
 
-%include "Parameters.h"
-%include "MeshParameters.h"
+// --------- EXCEPTIONS ---------------
 
-%include "ToolParameters.h"
+%include "exception.i"
+
+// from: http://swig.10945.n7.nabble.com/Trapping-Swig-DirectorException-td6013.html
+// le code suivant permet de voir la call stack dans les appels C++ => python
+
+%{ 
+   static void handle_exception(void) { 
+     try { 
+       throw; 
+     } catch (std::exception &e) { 
+        std::stringstream txt; 
+        txt << e.what(); // << ' ' << typeid(e).name();
+        PyErr_SetString(PyExc_RuntimeError, e.what()); 
+     } 
+     catch(...) 
+     {
+        PyErr_SetString(PyExc_RuntimeError, "Unknown C++ Runtime Error");
+     } 
+   } 
+%} 
+
+%exception { 
+   try { 
+     $action 
+   } catch (...) { 
+     // Note that if a director method failed, the Python error indicator 
+     // already contains full details of the exception, and it will be 
+     // reraised when we go to SWIG_fail; so no need to convert the C++ 
+     // exception back to a Python one 
+     if (!PyErr_Occurred()) { 
+       handle_exception(); 
+     } 
+     SWIG_fail; 
+   } 
+} 
+
+%include "genmai.h"
+%include "gmObject.h"
+
+namespace genmai {
+%extend Object {
+    std::string __str__() {
+        std::stringstream str; str << *self;
+        return str.str();
+    }
+}
+}
+
+%include "std_vector.i"
+// Instantiate some std templates
+namespace std {
+   %template(std_vector_int) std::vector<int>;
+   %template(std_vector_size_t) std::vector<size_t>;
+}
+
+
+// utils 
+
+%include "gmPoint.h"
+%include "gmPolarPoint.h"
+%include "gmCurve.h"
+%include "gmLayerType.h"
+%include "gmElement.h"
+
+// Instantiate some std templates
+namespace std {
+   %template(std_vector_LayerType) std::vector<genmai::LayerType>;
+   %template(std_vector_Point) std::vector<genmai::Point *>;
+   %template(std_vector_Element) std::vector<genmai::Element *>;
+   %template(std_vector_Curve) std::vector<genmai::Curve *>;
+}
 
 // builders
 
-%include "TargetObject.h"
-%include "Mesh.h"
-%include "Tool.h"
+%include "gmMesh.h"
+%include "gmTool.h"
 
-%include "Builder.h"
-%include "MeshBuilder.h"
-%include "ToolBuilder.h"
-
-// export
-
-%include "NodeRenumberer.h"
-%include "Exporter.h"               // for "save"
-%include "MeshExporter.h"           // for "save"
-%include "OofelieMeshExporter.h"
-%include "BaconMeshExporter.h"
-%include "MatlabMeshExporter.h"
-
-%include "ToolExporter.h"
-%include "OofelieToolExporter.h"
-%include "BaconDatToolExporter.h"
-%include "BaconToolExporter.h"
-%include "MatlabToolExporter.h"
+%include "gmMeshBuilder.h"
+%include "gmToolBuilder.h"

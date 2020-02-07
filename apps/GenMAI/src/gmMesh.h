@@ -12,21 +12,39 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef GMMESH_H
+#define GMMESH_H
+
 #include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include "gmObject.h"
+#include <vector>
+
+namespace genmai {
 
 /**
- * @brief Stupid main : start the Qt app
+ * @brief Defines a Mesh (list of Point and list of Element). 
+ *        A list of contact nodes is also included.
  */
 
-int main( int argc, char ** argv ) 
+class GENMAI_API Mesh : public Object
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+public:
+    int firstContactNode;
+    int lastContactNode;
 
-    return a.exec();
+    std::vector<Point *> nodes;
+    std::vector<Element *> elements;
+
+public:
+    Mesh();
+
+    virtual void write(std::ostream &out) const override;
+    virtual void list() const;
+
+    bool isEmpty() const;
+    void clear();
+};
+
 }
+
+#endif //GMMESH_H

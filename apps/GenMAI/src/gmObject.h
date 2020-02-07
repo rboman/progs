@@ -12,21 +12,35 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+#ifndef GMOBJECT_H
+#define GMOBJECT_H
+
 #include "genmai.h"
-#include <qapplication.h>
-#include "mywidgeti.h"
+#include <iostream>
+
+namespace genmai {
 
 /**
- * @brief Stupid main : start the Qt app
+ * @brief Base class of all virtual objects
+ *
+ *        The only purpose of this class is that it avoids many copy/paste for
+ *        the print function (__str__() fct) in SWIG/python
  */
 
-int main( int argc, char ** argv ) 
+class GENMAI_API Object
 {
-    QApplication a( argc, argv );
-    MyWidgetI * mw = new MyWidgetI();
-    mw->setCaption( "GenMAI - by RoBo" );
-    mw->show();
-    a.connect( &a, SIGNAL(lastWindowClosed()), &a, SLOT(quit()) );
+public:
+    Object() = default;
+    virtual ~Object() {}
+    Object(const Object &) = delete;
+    Object &operator=(const Object &) = delete;
 
-    return a.exec();
+#ifndef SWIG
+    friend GENMAI_API std::ostream &operator<<(std::ostream &out, Object const &obj);
+    virtual void write(std::ostream &out) const;
+#endif
+};
+
 }
+
+#endif //GMOBJECT_H

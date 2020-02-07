@@ -9,6 +9,7 @@ rsync -avz \
 	--exclude=.cache/ \
 	--exclude=Cache/ \
 	--exclude=.dropbox/ \
+	--exclude=CachedData/ \
 	  /home/boman/ \
 	  /media/boman/Home_Data/home_boman/
 
