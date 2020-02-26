@@ -57,6 +57,7 @@ def guessSystem():
         print('\twin_csd =', win_csd)
         print('\twin_ptype =', win_ptype)
         guesses.append(system.lower())
+        guesses.append('garfield')
 
     guesses = list(set(guesses))  # remove duplicates
     return guesses
