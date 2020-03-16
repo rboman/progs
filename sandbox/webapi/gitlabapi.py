@@ -1,15 +1,23 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import urllib2
 import json
+import requests
 
 
-# https://exchangeratesapi.io/
+# get all the public projects of gitlab.uliege.be
+url = 'https://gitlab.uliege.be/api/v4/projects'
 
-url = 'https://api.exchangeratesapi.io/latest?symbols=ILS,JPY'
-#url = 'https://api.exchangeratesapi.io/history?symbols=ILS,JPY&start_at=2020-01-01&end_at=2020-01-05'
-obj_json = urllib2.urlopen(url)
-data = json.load(obj_json)
-#print data
-print(json.dumps(data, sort_keys=True, indent=4))
+r = requests.get(url)
+print 'r.status_code =', r.status_code
+print 'r.headers =', r.headers
+print 'r.encoding =', r.encoding
+#print 'r.text =', r.text
+print 'r.json() =', r.json()
+projects = r.json()
+print(json.dumps(projects, sort_keys=True, indent=4))
+
+for p in projects:
+    print "%s (id=%d)" % (p["name_with_namespace"], p["id"])
+
+    
