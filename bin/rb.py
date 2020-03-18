@@ -19,7 +19,7 @@
 from __future__ import print_function
 from past.builtins import execfile
 
-def execpyfile(fname, searchdir):
+def exec_pyfile(fname, searchdir, args):
 
     if os.path.isfile(os.path.abspath(fname)):
         testname = os.path.abspath(fname)
@@ -41,6 +41,10 @@ def execpyfile(fname, searchdir):
     print("hostname:", platform.node())
     print('-' * 79)
 
+    # setup arguments
+    sys.argv = [fname]
+    sys.argv.extend(args)    
+    
     env = globals()
     env['__file__'] = testname
 
@@ -59,13 +63,19 @@ if __name__ == "__main__":
     scriptdir = os.path.join(thisdir, 'scripts')
 
     # reads args
-    import pytools.utils as pu
-    args = pu.parseargs()
-    print(args)
+    # import pytools.utils as pu
+    # args = pu.parseargs()
+    # print(args)
 
-    for testname in args.file:
-        (root, ext) = os.path.splitext(testname)
-        if ext.lower() == '.py':
-            execpyfile(testname, scriptdir)
-        else:
-            print("I don't know what to do with '%s'" % testname)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('script', help='python script')
+    args, otherargs = parser.parse_known_args()
+    print("args={}".format(args))
+    print("otherargs={}".format(otherargs))
+
+    (root, ext) = os.path.splitext(args.script)
+    if ext.lower() == '.py':
+        exec_pyfile(args.script, scriptdir, otherargs)
+    else:
+        print("I don't know what to do with '%s'" % args.script)

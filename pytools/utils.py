@@ -21,25 +21,26 @@ Miscellaneous utilities used by all the programs of 'progs'
 from __future__ import print_function
 
 
-def parseargs():
-    """
-    parses command line arguments
-    """
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-v",
-        "--verb",
-        help="increase output verbosity",
-        action="count",
-        default=0)
-    parser.add_argument(
-        "--nogui", help="disable any graphical output", action="store_true")
-    parser.add_argument("-k", help="nb of threads", type=int, default=1)
-    #parser.add_argument("-p", help="misc parameters")
-    parser.add_argument('file', nargs='*', help='python file')
-    args = parser.parse_args()
-    return args
+# def parseargs():
+#     """
+#     parses command line arguments
+#     """
+#     import argparse
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument(
+#         "-v",
+#         "--verb",
+#         help="increase output verbosity",
+#         action="count",
+#         default=0)
+#     parser.add_argument(
+#         "--nogui", help="disable any graphical output", action="store_true")
+#     parser.add_argument("-k", help="nb of threads", type=int, default=1)
+#     parser.add_argument('script', nargs=1, help='python script')
+#     args, other = parser.parse_known_args()
+#     print("args={}".format(args))
+#     print("other={}".format(other))
+#     return args
 
 
 def chDir(dirname):

@@ -66,9 +66,7 @@ def get_projects():
             projects = json.load(f)   
     return projects
 
-
-
-def main():
+def list_projects():
     projects = get_projects()
 
     # list all projects
@@ -77,9 +75,12 @@ def main():
         print ("\t- %s" % (p["ssh_url_to_repo"]) )
         print ("\t- %s" % (p["namespace"]["full_path"]) )
 
+def clone_projects():
+    projects = get_projects()
+
     rootdir = os.getcwd()
 
-    # list some projects
+    # clone some projects
     for i,p in enumerate(projects):
         name = p["name"]                        # e.g. "oo_meta"
         ssh_url_to_repo = p["ssh_url_to_repo"]  # git@...
@@ -116,7 +117,21 @@ def main():
             repo = vrs.GITRepo(name, ssh_url_to_repo)
             repo.update()
 
+def main():
+    list_projects()
 
 if __name__=="__main__":
-    main()
+
+    import sys
+    print (sys.argv)
+
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--update", help="update cache", action="store_true")    
+    parser.add_argument('command', help='command')
+    args = parser.parse_args()
+
+    print (args)
+
+    #main()
 
