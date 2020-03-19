@@ -48,11 +48,11 @@ def get_all_projects_from_GitLab():
     projects = r.json()
     return projects
 
-def get_projects():
+def get_projects(force_update=False):
     """get projects from file or GitLab
     """
     dbfile = 'projects.json'
-    if not os.path.isfile(dbfile):
+    if not os.path.isfile(dbfile) or force_update:
         print('retrieving projects from GitLab...')
         projects = get_all_projects_from_GitLab()
         # save projects to file
@@ -66,8 +66,8 @@ def get_projects():
             projects = json.load(f)   
     return projects
 
-def list_projects():
-    projects = get_projects()
+def list_projects(force_update=False):
+    projects = get_projects(force_update)
 
     # list all projects
     for i,p in enumerate(projects):
@@ -75,8 +75,8 @@ def list_projects():
         print ("\t- %s" % (p["ssh_url_to_repo"]) )
         print ("\t- %s" % (p["namespace"]["full_path"]) )
 
-def clone_projects():
-    projects = get_projects()
+def clone_projects(force_update=False):
+    projects = get_projects(force_update)
 
     rootdir = os.getcwd()
 
@@ -117,21 +117,28 @@ def clone_projects():
             repo = vrs.GITRepo(name, ssh_url_to_repo)
             repo.update()
 
-def main():
-    list_projects()
+def export_projects():
+    projects = get_projects()
+
+
 
 if __name__=="__main__":
 
     import sys
-    print (sys.argv)
+    print "sys.argv={}".format(sys.argv)
 
     import argparse
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='GitLab management script.')
     parser.add_argument("--update", help="update cache", action="store_true")    
-    parser.add_argument('command', help='command')
+    parser.add_argument('command', help='command', choices=[ 'clone', 'export', 'list' ])
     args = parser.parse_args()
-
     print (args)
 
-    #main()
-
+    if args.command=='clone':
+        list_projects(force_update=args.update)
+    elif args.command=='export':
+        export_projects()
+    elif args.command=='list':
+        list_projects(force_update=args.update)
+    else:
+        raise Exception("Unknown arg: {}".format(args.command))
