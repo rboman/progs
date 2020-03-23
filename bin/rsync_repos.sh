@@ -4,19 +4,19 @@
 # list: crontab -l
 # 30 0 * * * ~/dev/progs/bin/rsync_repos.sh
 
-echo "======= rsyncing blueberry/Metafor repo => localhost..."
-rsync -e ssh -avz \
-      --delete --delete-excluded \
-       boman@blueberry:/home/metafor/SVN/ \
-       /hdd2/boman/Backups/rsync/SVN/
-echo "======= done."
-echo
-echo "======= rsyncing blueberry/Metalub repo => localhost..."
-rsync -e ssh -avz \
-      --delete --delete-excluded \
-      boman@blueberry:/home/metafor/SVN2/ \
-      /hdd2/boman/Backups/rsync/SVN2/
-echo "======= done."
+# echo "======= rsyncing blueberry/Metafor repo => localhost..."
+# rsync -e ssh -avz \
+#       --delete --delete-excluded \
+#        boman@blueberry:/home/metafor/SVN/ \
+#        /hdd2/boman/Backups/rsync/SVN/
+# echo "======= done."
+# echo
+# echo "======= rsyncing blueberry/Metalub repo => localhost..."
+# rsync -e ssh -avz \
+#       --delete --delete-excluded \
+#       boman@blueberry:/home/metafor/SVN2/ \
+#       /hdd2/boman/Backups/rsync/SVN2/
+# echo "======= done."
 # echo
 # echo "======= rsyncing blueberry/GIT repo => localhost..."
 # rsync -e ssh -avz \
