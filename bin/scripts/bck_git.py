@@ -18,6 +18,10 @@
 #       rb.py bck_gitlab.py list --update --include R.Boman:am-dept
 #       rb.py bck_gitlab.py export --include R.Boman:am-dept
 #       rb.py bck_gitlab.py download --include R.Boman:am-dept
+#
+# .command used on garfield (april2020)
+#       rb.py bck_git.py clone --include R.Boman:am-dept:github --exclude mengo:mlucio
+#
 
 import os
 import pytools.utils as pu
