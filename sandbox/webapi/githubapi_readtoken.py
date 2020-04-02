@@ -21,7 +21,8 @@ def get_all_projects():
     token = get_api_token()
 
     r = requests.get(url, headers={ "Authorization": 'token {}'.format(token)}, 
-    params={'type':'all', 'page':1, 'per_page':100}) # 100 max
+    #params={'type':'all', 'page':1, 'per_page':100}) # 100 max
+    params={'page':1, 'per_page':100}) # 100 max
     #params={'affiliation' : 'owner,collaborator,organization_member', 'visibility':'all', 'type':'all', 'page':1, 'per_page':100})
 
     print 'r.status_code =', r.status_code
