@@ -15,17 +15,20 @@ def get_api_token():
 def get_all_projects():
     """get all the projects visible by me on github.com
     """
-    url = 'https://api.github.com/users/rboman/repos'
+    url = 'https://api.github.com/user/repos'   # acces to all my repos
+    #url = 'https://api.github.com/users/rboman/repos'  # access to the repose of "rboman" seen as another user
     #url = 'https://api.github.com/orgs/ulgltas/repos'
     token = get_api_token()
 
-    r = requests.get(url, headers={ "Authorization": 'token {}'.format(token) }) #, params={'per_page' : 1000, 'page':1 })
+    r = requests.get(url, headers={ "Authorization": 'token {}'.format(token)}, 
+    params={'type':'all', 'page':1, 'per_page':100}) # 100 max
+    #params={'affiliation' : 'owner,collaborator,organization_member', 'visibility':'all', 'type':'all', 'page':1, 'per_page':100})
 
     print 'r.status_code =', r.status_code
-    # print 'r.headers =', r.headers
+    print 'r.headers =', r.headers
     # print 'r.encoding =', r.encoding
     # print 'r.url =', r.url
-    # print 'r.text =', r.text
+    #print 'r.text =', r.text
     # print 'r.json() =', r.json()
     projects = r.json()
     return projects
@@ -40,8 +43,8 @@ with open('projects.json','w') as f:
 # print one project
 #print 'r.json() ='
 #print(json.dumps(projects[0], sort_keys=True, indent=4))
-
+print 'len(projects)=', len(projects)
 # list projects
 for i,p in enumerate(projects):
-    print "%03d %s (id=%d)" % (i, p["name"], p["id"])
+    print "%03d %s (id=%d) [%s]" % (i, p["name"], p["id"], p["owner"]["login"])
 
