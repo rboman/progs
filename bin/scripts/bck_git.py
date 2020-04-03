@@ -3,6 +3,9 @@
 #
 # This script is used to backup my gitlab/github repos.
 #
+# TODO: clone wikis
+#       smaller requests: per_page=10
+#
 # usage examples:
 #  
 # .list of projects with name containing "Boman", excluding those which contains "moga" or "lam3"
@@ -103,15 +106,39 @@ class GitHubAPI(API):
         url = 'https://api.github.com/user/repos'
         token = self.get_api_token()
 
-        r = requests.get(url, headers={ "Authorization": 'token {}'.format(token)}, 
-                              params={'type' : 'all', 'page' : 1, 'per_page' : 100}) # 100 max
-        print ('r.status_code =', r.status_code)
-        # print ('r.headers =', r.headers)
-        # print ('r.encoding =', r.encoding)
-        # print ('r.url =', r.url)
-        # print ('r.text =', r.text)
-        # print ('r.json() =', r.json())
-        projects = r.json()
+        projects = []
+
+        page = 1
+        per_page = 25  # gets X projects per page
+        max_pages = 10  # an upper limit
+        total_pages = '?'
+        while page<max_pages:
+            print ('retrieving page {}/{}'.format(page, total_pages))
+            r = requests.get(url, headers={ "Authorization": 'token {}'.format(token)}, 
+                                params={'type' : 'all', 'page' : page, 'per_page' : per_page}) # per_page=100 max
+            r.raise_for_status()
+            # print ('r.headers =', r.headers)
+            # print ('r.encoding =', r.encoding)
+            # print ('r.url =', r.url)
+            # print ('r.text =', r.text)
+            # print ('r.json() =', r.json())
+            #print(json.dumps(dict(r.headers), sort_keys=True, indent=4))  # pretty prints the response header
+
+            print ('  info: API calls remaining: {}/{}'.format(r.headers['X-RateLimit-Remaining'], r.headers['X-RateLimit-Limit']))
+
+            projects.extend(r.json())
+
+            try:
+                m = re.search(r'&page=(\d+)>; rel=\"last\"', r.headers['Link'])
+                total_pages = int(m.groups()[0])
+            except:
+                break
+            print ('total pages=', total_pages, '   page=', page, '   test=', page>=total_pages)
+
+            if page>=total_pages:
+                break
+            else:
+                page += 1
         return projects
 
     def get_key(self, p, keystr):
@@ -154,22 +181,43 @@ class GitLabAPI(API):
     def request_projects(self):
         """get all the projects visible by me on gitlab.uliege.be
         """
+        # https://docs.gitlab.com/ee/api/projects.html
         url = 'https://gitlab.uliege.be/api/v4/projects'
         token = self.get_api_token()
 
-        # token as a parameter
-        #r = requests.get(url, params={'private_token' : token}) # <= ne renvoie pas les PRIVES!!!
-        r = requests.get(url, params={'private_token' : token, 'per_page' : 100000, 'page':1 })
-        # token as a header
-        #r = requests.get(url, headers={ "Private-Token": token }, params={'per_page' : 100000, 'page':1 })
+        projects = []
 
-        print ('r.status_code =', r.status_code)
-        # print ('r.headers =', r.headers)
-        # print ('r.encoding =', r.encoding)
-        # print ('r.url =', r.url)
-        # print ('r.text =', r.text)
-        # print ('r.json() =', r.json())
-        projects = r.json()
+        page = 1
+        per_page = 20    # gets X projects per page
+        max_pages = 100  # an upper limit
+        total_pages = '?'
+        while page<max_pages:
+            print ('retrieving page {}/{}'.format(page, total_pages))
+            # token as a parameter
+            #r = requests.get(url, params={'private_token' : token}) # <= ne renvoie pas les PRIVES!!!
+            r = requests.get(url, params={'private_token' : token, 
+                                        'per_page' : per_page, 
+                                        'page' : page, 
+                                        'membership': True  # remove this to list all visible projects!
+                                        })
+            # token as a header
+            #r = requests.get(url, headers={ "Private-Token": token }, params={'per_page' : 100000, 'page':1 })
+            # print ('r.status_code =', r.status_code)       
+            # print ('r.headers =', r.headers)
+            # print ('r.encoding =', r.encoding)
+            # print ('r.url =', r.url)
+            # print ('r.text =', r.text)
+            # print ('r.json() =', r.json())            
+            r.raise_for_status()
+
+            projects.extend(r.json())  # adds projects to the list
+
+            total_pages = int(r.headers['X-Total-Pages'])
+            #print ('total pages=', total_pages, '   page=', page, '   test=', page>=total_pages)
+            if page>=total_pages:
+                break
+            else:
+                page += 1
         return projects
 
     def export_one(self, p):
@@ -203,7 +251,7 @@ class GitLabAPI(API):
         print("trying to download project archive {}".format(p["id"]))
 
         url = p["_links"]["self"]+"/export"
-        print("url={}".format(url))
+        # print("url={}".format(url))
         token = self.get_api_token()
 
         # get status
