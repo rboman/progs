@@ -135,10 +135,10 @@ class GitHubAPI(API):
             return p[keystr]
 
     def export_one(self, p):
-        print ("'export_one' not implemented for GitHub")
+        print ("Note: 'export_one' not implemented for GitHub")
 
     def download_one(self, p):
-        print ("'download_one' not implemented for GitHub")
+        print ("Note: 'download_one' not implemented for GitHub")
 
 
 class GitLabAPI(API):
@@ -176,10 +176,10 @@ class GitLabAPI(API):
         """asks GitLab to export project "p"
         """
 
-        print("exporting project {}".format(p["id"]))
+        print("exporting project id={}".format(p["id"]))
 
         url = p["_links"]["self"]+"/export"
-        print("url={}".format(url))
+        #print("url={}".format(url))
         token = self.get_api_token()
 
         # token as a parameter
@@ -187,14 +187,14 @@ class GitLabAPI(API):
         # token as a header
         #r = requests.post(url, headers={ "Private-Token": token })
 
-        print ('r.status_code =', r.status_code)
-        print ('r.headers =', r.headers)
-        print ('r.encoding =', r.encoding)
-        print ('r.url =', r.url)
-        print ('r.text =', r.text)
-        print ('r.json() =', r.json())
-        print(json.dumps(r.json(), sort_keys=True, indent=4))
-
+        # print ('r.status_code =', r.status_code)
+        # print ('r.headers =', r.headers)
+        # print ('r.encoding =', r.encoding)
+        # print ('r.url =', r.url)
+        # print ('r.text =', r.text)
+        # print ('r.json() =', r.json())
+        # print(json.dumps(r.json(), sort_keys=True, indent=4))
+        print(r.json()['message'])
 
     def download_one(self, p):
         """downloads one project "p" which have been exported with self.export_one(p).
@@ -210,14 +210,20 @@ class GitLabAPI(API):
         while True:
             print("requesting status...")
             r = requests.get(url, params={'private_token' : token})
-            #print ('r.status_code =', r.status_code)
+            # print ('r.status_code =', r.status_code)
+            # print ('r.text =', r.text)
+            # print(json.dumps(r.json(), sort_keys=True, indent=4))
             resp = r.json()
+            if r.status_code != 200:
+                print('\t'+resp['message'])
+                return   # request failed! => quit
+
             # status = 
-            # none
-            # queued
-            # started
-            # finished
-            # regeneration_in_progress
+            #       none
+            #       queued
+            #       started
+            #       finished
+            #       regeneration_in_progress
             if resp['export_status']=='none':
                 print('\t export has not been scheduled yet; please, use "export"!')
                 return
@@ -242,9 +248,9 @@ class GitLabAPI(API):
             m = re.search('filename="(.+)"', r.headers['Content-Disposition'])
             local_filename = m.groups()[0]
             if os.path.isfile(local_filename): # file exists?
-                print('file already exits: "{}"'.format(local_filename))
+                print('\t file already exits: "{}"'.format(local_filename))
             else:
-                print('downloading "{}"...'.format(local_filename))
+                print('\t downloading "{}"...'.format(local_filename))
                 with open(local_filename, 'wb') as f:
                     for chunk in r.iter_content(chunk_size=8192): 
                         if chunk: # filter out keep-alive new chunks
@@ -332,10 +338,13 @@ class RepoManager(object):
     def clone(self):
         """Clones or updates a series of projects in the current folder.
         """
+
+        errs = []
         rootdir = os.getcwd()
 
         for s,p in self.iterate():
-            print ('processing {}'.format(p["name"]))
+            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
+            print ('...processing {}'.format(path_with_namespace))
             
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
             if not os.path.isdir( full_path ):
@@ -344,21 +353,30 @@ class RepoManager(object):
             os.chdir( full_path )
             repo = vrs.GITRepo(s.get_key(p, "name"), 
                                s.get_key(p, "ssh_url_to_repo"))
-            repo.update()
+            try:
+                repo.update()
+            except:
+                errs.append(s.get_key(p, "ssh_url_to_repo"))
             os.chdir( rootdir )
+        if errs:
+            print ("\nERROR: the following repositories were NOT updated:\n")
+            for e in errs:
+                print ('\t- {}'.format(e))
 
     def export(self):
         """Asks GitLab to export a list of projects
         """
         for s,p in self.iterate():
-            print ('processing {}'.format(p["name"]))
+            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
+            print ('...processing {}'.format(path_with_namespace))
             s.export_one(p)
 
     def download(self):
         """Asks GitLab to download a list of projects
         """
         for s,p in self.iterate():
-            print ('processing {}'.format(p["name"]))
+            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
+            print ('...processing {}'.format(path_with_namespace))
             s.download_one(p)
 
 
@@ -366,7 +384,7 @@ class RepoManager(object):
 if __name__=="__main__":
 
     import sys
-    print ("sys.argv={}".format(sys.argv))
+    #print ("sys.argv={}".format(sys.argv))
 
     import argparse
     parser = argparse.ArgumentParser(description='GitLab management script.')
@@ -375,7 +393,7 @@ if __name__=="__main__":
     parser.add_argument("--exclude", help="exclude pattern", default='')
     parser.add_argument('command', help='command', choices=[ 'clone', 'export', 'list', 'download' ])
     args = parser.parse_args()
-    print (args)
+    #print (args)
 
     mgr = RepoManager()
     mgr.add(GitLabAPI(args.update))

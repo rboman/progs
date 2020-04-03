@@ -57,8 +57,8 @@ if __name__ == "__main__":
     parser.add_argument('--banner', help='display info banner', action="store_true")
     parser.add_argument( "-v", "--verb", help="increase output verbosity", action="store_true")
     args, otherargs = parser.parse_known_args()
-    print("args={}".format(args))
-    print("otherargs={}".format(otherargs))  # given to the script
+    #print("args={}".format(args))
+    #print("otherargs={}".format(otherargs))  # given to the script
 
     # How to call --help from the script if add_help=True?
     #    rb.py script.py --help     => display help from rb.py!
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # adds ".." to the pythonpath
     thisdir = os.path.split(__file__)[0]
     parentdir = os.path.abspath(os.path.join(thisdir, '..'))
-    print("adding '%s' to PYTHONPATH" % parentdir)
+    #print("adding '%s' to PYTHONPATH" % parentdir)
     sys.path.append(parentdir)
 
     scriptdir = os.path.join(thisdir, 'scripts') # could be extended to a list
