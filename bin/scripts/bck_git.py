@@ -466,7 +466,7 @@ class RepoManager(object):
             # windows : format = 'bztar', 'gztar', 'tar', 'zip'
             repo_name = s.get_key(p, "name")
             arc_name = os.path.join(thedate, path_with_namespace.replace('/','_'))
-            if not os.path.isfile(arc_name):
+            if not os.path.isfile(arc_name+'.tbz2'):
                 print ("creating {}.tbz2".format(arc_name))
                 try:
                     shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
@@ -481,7 +481,7 @@ class RepoManager(object):
             if not os.path.isdir( full_path+'.wiki' ):
                 continue
             arc_name = os.path.join(thedate, wikipath.replace('/','_'))
-            if not os.path.isfile(arc_name):
+            if not os.path.isfile(arc_name+'.tbz2'):
                 print ("creating {}.tbz2".format(arc_name))
                 try:
                     shutil.make_archive(arc_name, 'bztar', root_dir=wikipath, base_dir=wiki_name, verbose=True) 
