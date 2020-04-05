@@ -494,7 +494,7 @@ class RepoManager(object):
                 try:
                     shutil.make_archive(arc_name, arctype, root_dir=full_path, base_dir=wiki_name)
                 except:
-                    errs.append(wikipath)
+                    errs.append(arc_name+arcext)
             else:
                 print ("{} already exists".format(arc_name+arcext))
 
