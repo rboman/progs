@@ -3,8 +3,7 @@
 #
 # This script is used to backup my gitlab/github repos.
 #
-# TODO: .make tbz2 archives of cloned repos
-#       .GUI
+# TODO: .GUI
 #
 # usage examples:
 #  
@@ -13,6 +12,9 @@
 #
 # .clone all the projects
 #       rb.py bck_gitlab.py clone
+#
+# .make tbz2 archives of projects
+#       rb.py bck_gitlab.py archive
 #
 # .retrieve all the projects from GitLab even if the local cache is present in the current folder
 #       rb.py bck_gitlab.py list --update
@@ -430,6 +432,33 @@ class RepoManager(object):
             for e in errs:
                 print ('\t- {}'.format(e))
 
+    def archive(self):
+        """Archives a series of projects in the current folder.
+        """
+
+        for s,p in self.iterate():
+            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
+            print ('...processing {}'.format(path_with_namespace))
+            
+            full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
+            if not os.path.isdir( full_path ):
+                print ('folder not present - clone repo first!')
+                continue
+
+            # format = 'bztar', 'gztar', 'tar', 'zip'
+            repo_name = s.get_key(p, "name")
+            arc_name = path_with_namespace.replace('/','_')
+            print ("creating {}.tbz2".format(arc_name))
+            shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
+
+            wikipath = full_path+'.wiki'
+            wiki_name = repo_name+'.wiki'
+            if not os.path.isdir( full_path+'.wiki' ):
+                continue
+            arc_name = wikipath.replace('/','_')
+            print ("creating {}.tbz2".format(arc_name))
+            shutil.make_archive(arc_name, 'bztar', root_dir=wikipath, base_dir=wiki_name, verbose=True)                            
+
     def export(self):
         """Asks GitLab to export a list of projects
         """
@@ -447,18 +476,14 @@ class RepoManager(object):
             s.download_one(p)
 
 
-
 if __name__=="__main__":
-
-    import sys
-    #print ("sys.argv={}".format(sys.argv))
 
     import argparse
     parser = argparse.ArgumentParser(description='GitLab management script.')
     parser.add_argument("--update", help="update cache", action="store_true")
-    parser.add_argument("--include", help="include pattern", default='') #default='R.Boman:am-dept/MN2L')
+    parser.add_argument("--include", help="include pattern", default='')
     parser.add_argument("--exclude", help="exclude pattern", default='')
-    parser.add_argument('command', help='command', choices=[ 'clone', 'export', 'list', 'download' ])
+    parser.add_argument('command', help='command', choices=[ 'list', 'clone', 'archive', 'export', 'download' ])
     args = parser.parse_args()
     #print (args)
 
@@ -466,10 +491,8 @@ if __name__=="__main__":
     mgr.add(GitLabAPI(args.update))
     mgr.add(GitHubAPI(args.update))
 
-
     mgr.include(args.include)
     mgr.exclude(args.exclude)
-
 
     if args.command=='clone':
         mgr.clone()
@@ -478,7 +501,9 @@ if __name__=="__main__":
     elif args.command=='download':
         mgr.download()
     elif args.command=='list':
-        mgr.list()
+        mgr.list()    
+    elif args.command=='archive':
+        mgr.archive()
     else:
         raise Exception("Unknown arg: {}".format(args.command))
 
