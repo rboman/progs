@@ -6,14 +6,14 @@
 # TODO: .GUI
 #
 # usage examples:
-#  
+#
 # .list of projects with name containing "Boman", excluding those which contains "moga" or "lam3"
 #       rb.py bck_gitlab.py list --include Boman --exclude moga:lam3
 #
 # .clone all the projects
 #       rb.py bck_gitlab.py clone
 #
-# .make tbz2 archives of projects
+# .make tar.bz2 archives of projects
 #       rb.py bck_gitlab.py archive
 #
 # .retrieve all the projects from GitLab even if the local cache is present in the current folder
@@ -64,7 +64,7 @@ class API(object):
 
     def get_projects(self, force_update=False):
         """Get all projects from local DB file or the server.
-        force_update: update the local DB file even if it is present on disk 
+        force_update: update the local DB file even if it is present on disk
         """
 
         if not os.path.isfile(self.dbfile) or force_update:
@@ -78,7 +78,7 @@ class API(object):
             # load projects from file
             print('loading projects from file {}...'.format(self.dbfile))
             with open(self.dbfile) as f:
-                projects = json.load(f)   
+                projects = json.load(f)
         return projects
 
     def get_key(self, p, keystr, notfound='notfound'):
@@ -119,7 +119,7 @@ class GitHubAPI(API):
         total_pages = '?'
         while page<max_pages:
             print ('retrieving page {}/{}'.format(page, total_pages))
-            r = requests.get(url, headers={ "Authorization": 'token {}'.format(token)}, 
+            r = requests.get(url, headers={ "Authorization": 'token {}'.format(token)},
                                 params={'type' : 'all', 'page' : page, 'per_page' : per_page}) # per_page=100 max
             r.raise_for_status()
             # print ('r.headers =', r.headers)
@@ -147,7 +147,7 @@ class GitHubAPI(API):
         return projects
 
     def get_key(self, p, keystr):
-        """Return a *GitLab* key from project "p". 
+        """Return a *GitLab* key from project "p".
         => translation from GitLab keys used everywhere into GitHub ones
         """
         if keystr=="path_with_namespace":
@@ -203,19 +203,19 @@ class GitLabAPI(API):
             print ('retrieving page {}/{}'.format(page, total_pages))
             # token as a parameter
             #r = requests.get(url, params={'private_token' : token}) # <= ne renvoie pas les PRIVES!!!
-            r = requests.get(url, params={'private_token' : token, 
-                                        'per_page' : per_page, 
-                                        'page' : page, 
+            r = requests.get(url, params={'private_token' : token,
+                                        'per_page' : per_page,
+                                        'page' : page,
                                         'membership': True  # remove this to list all visible projects!
                                         })
             # token as a header
             #r = requests.get(url, headers={ "Private-Token": token }, params={'per_page' : 100000, 'page':1 })
-            # print ('r.status_code =', r.status_code)       
+            # print ('r.status_code =', r.status_code)
             # print ('r.headers =', r.headers)
             # print ('r.encoding =', r.encoding)
             # print ('r.url =', r.url)
             # print ('r.text =', r.text)
-            # print ('r.json() =', r.json())            
+            # print ('r.json() =', r.json())
             r.raise_for_status()
 
             projects.extend(r.json())  # adds projects to the list
@@ -277,7 +277,7 @@ class GitLabAPI(API):
                 print('\t'+resp['message'])
                 return   # request failed! => quit
 
-            # status = 
+            # status =
             #       none
             #       queued
             #       started
@@ -313,7 +313,7 @@ class GitLabAPI(API):
             else:
                 print('\t downloading "{}"...'.format(local_filename))
                 with open(local_filename, 'wb') as f:
-                    for chunk in r.iter_content(chunk_size=8192): 
+                    for chunk in r.iter_content(chunk_size=8192):
                         if chunk: # filter out keep-alive new chunks
                             f.write(chunk)
 
@@ -344,7 +344,7 @@ class RepoManager(object):
             self.exclude_list = string.split(':')
 
     def iterate(self):
-        """Generator used to filter the projects. 
+        """Generator used to filter the projects.
         Returns the next project respecting include/exclude rules
 
         idea: extend filter beyond p['path_with_namespace']
@@ -363,8 +363,8 @@ class RepoManager(object):
                 process = False
                 #print (self.include_list); sys.exit()
                 for regex in self.include_list:
-                    # print('...[include] "{}" search "{}" = {}'.format(regex, 
-                    #                             target, 
+                    # print('...[include] "{}" search "{}" = {}'.format(regex,
+                    #                             target,
                     #                             (not not re.search(regex, target))))
                     if( re.search(regex, target) ):
                         process = True
@@ -373,8 +373,8 @@ class RepoManager(object):
                     continue
 
                 for regex in self.exclude_list:
-                    # print('...[exclude] "{}" search "{}" = {}'.format(regex, 
-                    #                             target, 
+                    # print('...[exclude] "{}" search "{}" = {}'.format(regex,
+                    #                             target,
                     #                             (not not re.search(regex, target))))
                     if( re.search(regex, target) ):
                         process = False
@@ -392,8 +392,8 @@ class RepoManager(object):
         """
         for i,(s,p) in enumerate(self.iterate()):
             print ("%04d %s/%s (id=%d) [owner=%s]" % (i+1, s.name,
-                        s.get_key(p, "path_with_namespace"), 
-                        s.get_key(p, "id"), 
+                        s.get_key(p, "path_with_namespace"),
+                        s.get_key(p, "id"),
                         s.get_key(p, "owner,username")) )
 
     def clone(self):
@@ -406,28 +406,28 @@ class RepoManager(object):
         for s,p in self.iterate():
             path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
             print ('...processing {}'.format(path_with_namespace))
-            
+
             # creates a series of folders from the namespace of the project
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
             if not os.path.isdir( full_path ):
                 print( 'creating', full_path )
-                os.makedirs( full_path ) 
+                os.makedirs( full_path )
 
             # go to namespace folder and clone/update the repo
             os.chdir( full_path )
-            repo = vrs.GITRepo(s.get_key(p, "name"), 
+            repo = vrs.GITRepo(s.get_key(p, "name"),
                                s.get_key(p, "ssh_url_to_repo"))
             try:
                 repo.update()
                 # may fail for various reason.
-                # On windows, some paths can be too long or 
+                # On windows, some paths can be too long or
                 # some files may contain invalid characters such as ':'
             except:
                 errs.append(s.get_key(p, "ssh_url_to_repo"))
 
             # clone the wiki if it is "enabled"
             if s.get_key(p, "wiki_enabled"):
-                wiki_name = s.get_key(p, "name")+'.wiki' 
+                wiki_name = s.get_key(p, "name")+'.wiki'
                 wiki_url = s.get_key(p, "ssh_url_to_repo").replace(".git",".wiki.git")
                 repo = vrs.GITRepo(wiki_name, wiki_url)
                 try:
@@ -461,41 +461,42 @@ class RepoManager(object):
         for s,p in self.iterate():
             path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
             print ('...processing {}'.format(path_with_namespace))
-            
+
             # check whether repo has been cloned
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
-            if not os.path.isdir( full_path ):
+            if not os.path.isdir(path_with_namespace):
                 print ('folder not present - clone repo first!')
                 continue
 
-            # create a tbz2 archive of the cloned repo
+            # create a tar.bz2 archive of the cloned repo
+            arctype = 'bztar'
+            arcext = '.tar.bz2'
             repo_name = s.get_key(p, "name")
             arc_name = os.path.join(thedate, path_with_namespace.replace('/','_'))
-            if not os.path.isfile(arc_name+'.tbz2'):
-                print ("creating {}.tbz2".format(arc_name))
+            if not os.path.isfile(arc_name+arcext):
+                print ("creating {}".format(arc_name+arcext))
                 try:
                     # windows : available formats = 'bztar', 'gztar', 'tar', 'zip'
-                    shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
+                    shutil.make_archive(arc_name, arctype, root_dir=full_path, base_dir=repo_name)
                 except:
                     errs.append(path_with_namespace)
             else:
-                print ("{}.tbz2 already exists".format(arc_name))
+                print ("{} already exists".format(arc_name+arcext))
 
             # check whether a wiki has been cloned
-            wikipath = full_path+'.wiki'
             wiki_name = repo_name+'.wiki'
-            if not os.path.isdir( full_path+'.wiki' ):
+            if not os.path.isdir(path_with_namespace+'.wiki' ):
                 continue
             # archive the wiki if present
-            arc_name = os.path.join(thedate, wikipath.replace('/','_'))
-            if not os.path.isfile(arc_name+'.tbz2'):
-                print ("creating {}.tbz2".format(arc_name))
+            arc_name = os.path.join(thedate, path_with_namespace.replace('/','_')+'.wiki')
+            if not os.path.isfile(arc_name+arcext):
+                print ("creating {}".format(arc_name+arcext))
                 try:
-                    shutil.make_archive(arc_name, 'bztar', root_dir=wikipath, base_dir=wiki_name, verbose=True) 
+                    shutil.make_archive(arc_name, arctype, root_dir=full_path, base_dir=wiki_name)
                 except:
                     errs.append(wikipath)
             else:
-                print ("{}.tbz2 already exists".format(arc_name))
+                print ("{} already exists".format(arc_name+arcext))
 
         # display the errors
         if errs:
@@ -550,7 +551,7 @@ if __name__=="__main__":
     elif args.command=='download':
         mgr.download()
     elif args.command=='list':
-        mgr.list()    
+        mgr.list()
     elif args.command=='archive':
         mgr.archive()
     else:
@@ -561,209 +562,209 @@ if __name__=="__main__":
 
 # {
 #     "_links": {
-#         "events": "https://gitlab.uliege.be/api/v4/projects/35/events", 
-#         "issues": "https://gitlab.uliege.be/api/v4/projects/35/issues", 
-#         "labels": "https://gitlab.uliege.be/api/v4/projects/35/labels", 
-#         "members": "https://gitlab.uliege.be/api/v4/projects/35/members", 
-#         "merge_requests": "https://gitlab.uliege.be/api/v4/projects/35/merge_requests", 
-#         "repo_branches": "https://gitlab.uliege.be/api/v4/projects/35/repository/branches", 
+#         "events": "https://gitlab.uliege.be/api/v4/projects/35/events",
+#         "issues": "https://gitlab.uliege.be/api/v4/projects/35/issues",
+#         "labels": "https://gitlab.uliege.be/api/v4/projects/35/labels",
+#         "members": "https://gitlab.uliege.be/api/v4/projects/35/members",
+#         "merge_requests": "https://gitlab.uliege.be/api/v4/projects/35/merge_requests",
+#         "repo_branches": "https://gitlab.uliege.be/api/v4/projects/35/repository/branches",
 #         "self": "https://gitlab.uliege.be/api/v4/projects/35"
-#     }, 
-#     "approvals_before_merge": 0, 
-#     "archived": false, 
-#     "auto_cancel_pending_pipelines": "enabled", 
-#     "auto_devops_deploy_strategy": "continuous", 
-#     "auto_devops_enabled": false, 
-#     "avatar_url": "https://gitlab.uliege.be/uploads/-/system/project/avatar/35/ceci_logo.png", 
-#     "build_coverage_regex": null, 
-#     "build_timeout": 3600, 
-#     "builds_access_level": "enabled", 
-#     "ci_config_path": null, 
-#     "ci_default_git_depth": null, 
-#     "container_registry_enabled": true, 
-#     "created_at": "2018-09-21T10:27:34.637Z", 
-#     "creator_id": 41, 
-#     "default_branch": "master", 
-#     "description": "CECI tutorials\r\n", 
-#     "empty_repo": false, 
-#     "external_authorization_classification_label": null, 
-#     "forks_count": 0, 
-#     "http_url_to_repo": "https://gitlab.uliege.be/R.Boman/ceci.git", 
-#     "id": 35, 
-#     "import_status": "none", 
-#     "issues_access_level": "enabled", 
-#     "issues_enabled": true, 
-#     "jobs_enabled": true, 
-#     "last_activity_at": "2020-03-18T12:33:16.046Z", 
-#     "lfs_enabled": true, 
-#     "merge_method": "merge", 
-#     "merge_requests_access_level": "enabled", 
-#     "merge_requests_enabled": true, 
-#     "mirror": false, 
-#     "name": "ceci", 
-#     "name_with_namespace": "Boman Romain / ceci", 
+#     },
+#     "approvals_before_merge": 0,
+#     "archived": false,
+#     "auto_cancel_pending_pipelines": "enabled",
+#     "auto_devops_deploy_strategy": "continuous",
+#     "auto_devops_enabled": false,
+#     "avatar_url": "https://gitlab.uliege.be/uploads/-/system/project/avatar/35/ceci_logo.png",
+#     "build_coverage_regex": null,
+#     "build_timeout": 3600,
+#     "builds_access_level": "enabled",
+#     "ci_config_path": null,
+#     "ci_default_git_depth": null,
+#     "container_registry_enabled": true,
+#     "created_at": "2018-09-21T10:27:34.637Z",
+#     "creator_id": 41,
+#     "default_branch": "master",
+#     "description": "CECI tutorials\r\n",
+#     "empty_repo": false,
+#     "external_authorization_classification_label": null,
+#     "forks_count": 0,
+#     "http_url_to_repo": "https://gitlab.uliege.be/R.Boman/ceci.git",
+#     "id": 35,
+#     "import_status": "none",
+#     "issues_access_level": "enabled",
+#     "issues_enabled": true,
+#     "jobs_enabled": true,
+#     "last_activity_at": "2020-03-18T12:33:16.046Z",
+#     "lfs_enabled": true,
+#     "merge_method": "merge",
+#     "merge_requests_access_level": "enabled",
+#     "merge_requests_enabled": true,
+#     "mirror": false,
+#     "name": "ceci",
+#     "name_with_namespace": "Boman Romain / ceci",
 #     "namespace": {
-#         "avatar_url": "/uploads/-/system/user/avatar/41/avatar.png", 
-#         "full_path": "R.Boman", 
-#         "id": 58, 
-#         "kind": "user", 
-#         "name": "Boman Romain", 
-#         "parent_id": null, 
-#         "path": "R.Boman", 
+#         "avatar_url": "/uploads/-/system/user/avatar/41/avatar.png",
+#         "full_path": "R.Boman",
+#         "id": 58,
+#         "kind": "user",
+#         "name": "Boman Romain",
+#         "parent_id": null,
+#         "path": "R.Boman",
 #         "web_url": "https://gitlab.uliege.be/R.Boman"
-#     }, 
-#     "only_allow_merge_if_all_discussions_are_resolved": false, 
-#     "only_allow_merge_if_pipeline_succeeds": false, 
-#     "open_issues_count": 0, 
+#     },
+#     "only_allow_merge_if_all_discussions_are_resolved": false,
+#     "only_allow_merge_if_pipeline_succeeds": false,
+#     "open_issues_count": 0,
 #     "owner": {
-#         "avatar_url": "https://gitlab.uliege.be/uploads/-/system/user/avatar/41/avatar.png", 
-#         "id": 41, 
-#         "name": "Boman Romain", 
-#         "state": "active", 
-#         "username": "R.Boman", 
+#         "avatar_url": "https://gitlab.uliege.be/uploads/-/system/user/avatar/41/avatar.png",
+#         "id": 41,
+#         "name": "Boman Romain",
+#         "state": "active",
+#         "username": "R.Boman",
 #         "web_url": "https://gitlab.uliege.be/R.Boman"
-#     }, 
-#     "packages_enabled": null, 
-#     "path": "ceci", 
-#     "path_with_namespace": "R.Boman/ceci", 
+#     },
+#     "packages_enabled": null,
+#     "path": "ceci",
+#     "path_with_namespace": "R.Boman/ceci",
 #     "permissions": {
-#         "group_access": null, 
+#         "group_access": null,
 #         "project_access": {
-#             "access_level": 40, 
+#             "access_level": 40,
 #             "notification_level": 3
 #         }
-#     }, 
-#     "printing_merge_request_link_enabled": true, 
-#     "public_jobs": true, 
-#     "readme_url": "https://gitlab.uliege.be/R.Boman/ceci/blob/master/README.md", 
-#     "repository_access_level": "enabled", 
-#     "request_access_enabled": false, 
-#     "resolve_outdated_diff_discussions": false, 
-#     "shared_runners_enabled": true, 
-#     "shared_with_groups": [], 
-#     "snippets_access_level": "enabled", 
-#     "snippets_enabled": true, 
-#     "ssh_url_to_repo": "git@gitlab.uliege.be:R.Boman/ceci.git", 
-#     "star_count": 1, 
+#     },
+#     "printing_merge_request_link_enabled": true,
+#     "public_jobs": true,
+#     "readme_url": "https://gitlab.uliege.be/R.Boman/ceci/blob/master/README.md",
+#     "repository_access_level": "enabled",
+#     "request_access_enabled": false,
+#     "resolve_outdated_diff_discussions": false,
+#     "shared_runners_enabled": true,
+#     "shared_with_groups": [],
+#     "snippets_access_level": "enabled",
+#     "snippets_enabled": true,
+#     "ssh_url_to_repo": "git@gitlab.uliege.be:R.Boman/ceci.git",
+#     "star_count": 1,
 #     "tag_list": [
-#         "CECI", 
-#         "gitlab-ci", 
-#         "mpi", 
-#         "openmp", 
+#         "CECI",
+#         "gitlab-ci",
+#         "mpi",
+#         "openmp",
 #         "parallel"
-#     ], 
-#     "visibility": "public", 
-#     "web_url": "https://gitlab.uliege.be/R.Boman/ceci", 
-#     "wiki_access_level": "enabled", 
+#     ],
+#     "visibility": "public",
+#     "web_url": "https://gitlab.uliege.be/R.Boman/ceci",
+#     "wiki_access_level": "enabled",
 #     "wiki_enabled": true
-# }, 
+# },
 
 
 # ---------------------------------------------------------------------------------------------------
 # GitHub example
 
 # {
-#     "archive_url": "https://api.github.com/repos/rboman/progs/{archive_format}{/ref}", 
-#     "archived": false, 
-#     "assignees_url": "https://api.github.com/repos/rboman/progs/assignees{/user}", 
-#     "blobs_url": "https://api.github.com/repos/rboman/progs/git/blobs{/sha}", 
-#     "branches_url": "https://api.github.com/repos/rboman/progs/branches{/branch}", 
-#     "clone_url": "https://github.com/rboman/progs.git", 
-#     "collaborators_url": "https://api.github.com/repos/rboman/progs/collaborators{/collaborator}", 
-#     "comments_url": "https://api.github.com/repos/rboman/progs/comments{/number}", 
-#     "commits_url": "https://api.github.com/repos/rboman/progs/commits{/sha}", 
-#     "compare_url": "https://api.github.com/repos/rboman/progs/compare/{base}...{head}", 
-#     "contents_url": "https://api.github.com/repos/rboman/progs/contents/{+path}", 
-#     "contributors_url": "https://api.github.com/repos/rboman/progs/contributors", 
-#     "created_at": "2015-03-27T14:04:01Z", 
-#     "default_branch": "master", 
-#     "deployments_url": "https://api.github.com/repos/rboman/progs/deployments", 
-#     "description": "my programming playground", 
-#     "disabled": false, 
-#     "downloads_url": "https://api.github.com/repos/rboman/progs/downloads", 
-#     "events_url": "https://api.github.com/repos/rboman/progs/events", 
-#     "fork": false, 
-#     "forks": 2, 
-#     "forks_count": 2, 
-#     "forks_url": "https://api.github.com/repos/rboman/progs/forks", 
-#     "full_name": "rboman/progs", 
-#     "git_commits_url": "https://api.github.com/repos/rboman/progs/git/commits{/sha}", 
-#     "git_refs_url": "https://api.github.com/repos/rboman/progs/git/refs{/sha}", 
-#     "git_tags_url": "https://api.github.com/repos/rboman/progs/git/tags{/sha}", 
-#     "git_url": "git://github.com/rboman/progs.git", 
-#     "has_downloads": true, 
-#     "has_issues": true, 
-#     "has_pages": true, 
-#     "has_projects": true, 
-#     "has_wiki": true, 
-#     "homepage": "", 
-#     "hooks_url": "https://api.github.com/repos/rboman/progs/hooks", 
-#     "html_url": "https://github.com/rboman/progs", 
-#     "id": 32989349, 
-#     "issue_comment_url": "https://api.github.com/repos/rboman/progs/issues/comments{/number}", 
-#     "issue_events_url": "https://api.github.com/repos/rboman/progs/issues/events{/number}", 
-#     "issues_url": "https://api.github.com/repos/rboman/progs/issues{/number}", 
-#     "keys_url": "https://api.github.com/repos/rboman/progs/keys{/key_id}", 
-#     "labels_url": "https://api.github.com/repos/rboman/progs/labels{/name}", 
-#     "language": "MATLAB", 
-#     "languages_url": "https://api.github.com/repos/rboman/progs/languages", 
+#     "archive_url": "https://api.github.com/repos/rboman/progs/{archive_format}{/ref}",
+#     "archived": false,
+#     "assignees_url": "https://api.github.com/repos/rboman/progs/assignees{/user}",
+#     "blobs_url": "https://api.github.com/repos/rboman/progs/git/blobs{/sha}",
+#     "branches_url": "https://api.github.com/repos/rboman/progs/branches{/branch}",
+#     "clone_url": "https://github.com/rboman/progs.git",
+#     "collaborators_url": "https://api.github.com/repos/rboman/progs/collaborators{/collaborator}",
+#     "comments_url": "https://api.github.com/repos/rboman/progs/comments{/number}",
+#     "commits_url": "https://api.github.com/repos/rboman/progs/commits{/sha}",
+#     "compare_url": "https://api.github.com/repos/rboman/progs/compare/{base}...{head}",
+#     "contents_url": "https://api.github.com/repos/rboman/progs/contents/{+path}",
+#     "contributors_url": "https://api.github.com/repos/rboman/progs/contributors",
+#     "created_at": "2015-03-27T14:04:01Z",
+#     "default_branch": "master",
+#     "deployments_url": "https://api.github.com/repos/rboman/progs/deployments",
+#     "description": "my programming playground",
+#     "disabled": false,
+#     "downloads_url": "https://api.github.com/repos/rboman/progs/downloads",
+#     "events_url": "https://api.github.com/repos/rboman/progs/events",
+#     "fork": false,
+#     "forks": 2,
+#     "forks_count": 2,
+#     "forks_url": "https://api.github.com/repos/rboman/progs/forks",
+#     "full_name": "rboman/progs",
+#     "git_commits_url": "https://api.github.com/repos/rboman/progs/git/commits{/sha}",
+#     "git_refs_url": "https://api.github.com/repos/rboman/progs/git/refs{/sha}",
+#     "git_tags_url": "https://api.github.com/repos/rboman/progs/git/tags{/sha}",
+#     "git_url": "git://github.com/rboman/progs.git",
+#     "has_downloads": true,
+#     "has_issues": true,
+#     "has_pages": true,
+#     "has_projects": true,
+#     "has_wiki": true,
+#     "homepage": "",
+#     "hooks_url": "https://api.github.com/repos/rboman/progs/hooks",
+#     "html_url": "https://github.com/rboman/progs",
+#     "id": 32989349,
+#     "issue_comment_url": "https://api.github.com/repos/rboman/progs/issues/comments{/number}",
+#     "issue_events_url": "https://api.github.com/repos/rboman/progs/issues/events{/number}",
+#     "issues_url": "https://api.github.com/repos/rboman/progs/issues{/number}",
+#     "keys_url": "https://api.github.com/repos/rboman/progs/keys{/key_id}",
+#     "labels_url": "https://api.github.com/repos/rboman/progs/labels{/name}",
+#     "language": "MATLAB",
+#     "languages_url": "https://api.github.com/repos/rboman/progs/languages",
 #     "license": {
-#         "key": "apache-2.0", 
-#         "name": "Apache License 2.0", 
-#         "node_id": "MDc6TGljZW5zZTI=", 
-#         "spdx_id": "Apache-2.0", 
+#         "key": "apache-2.0",
+#         "name": "Apache License 2.0",
+#         "node_id": "MDc6TGljZW5zZTI=",
+#         "spdx_id": "Apache-2.0",
 #         "url": "https://api.github.com/licenses/apache-2.0"
-#     }, 
-#     "merges_url": "https://api.github.com/repos/rboman/progs/merges", 
-#     "milestones_url": "https://api.github.com/repos/rboman/progs/milestones{/number}", 
-#     "mirror_url": null, 
-#     "name": "progs", 
-#     "node_id": "MDEwOlJlcG9zaXRvcnkzMjk4OTM0OQ==", 
-#     "notifications_url": "https://api.github.com/repos/rboman/progs/notifications{?since,all,participating}", 
-#     "open_issues": 5, 
-#     "open_issues_count": 5, 
+#     },
+#     "merges_url": "https://api.github.com/repos/rboman/progs/merges",
+#     "milestones_url": "https://api.github.com/repos/rboman/progs/milestones{/number}",
+#     "mirror_url": null,
+#     "name": "progs",
+#     "node_id": "MDEwOlJlcG9zaXRvcnkzMjk4OTM0OQ==",
+#     "notifications_url": "https://api.github.com/repos/rboman/progs/notifications{?since,all,participating}",
+#     "open_issues": 5,
+#     "open_issues_count": 5,
 #     "owner": {
-#         "avatar_url": "https://avatars2.githubusercontent.com/u/2713831?v=4", 
-#         "events_url": "https://api.github.com/users/rboman/events{/privacy}", 
-#         "followers_url": "https://api.github.com/users/rboman/followers", 
-#         "following_url": "https://api.github.com/users/rboman/following{/other_user}", 
-#         "gists_url": "https://api.github.com/users/rboman/gists{/gist_id}", 
-#         "gravatar_id": "", 
-#         "html_url": "https://github.com/rboman", 
-#         "id": 2713831, 
-#         "login": "rboman", 
-#         "node_id": "MDQ6VXNlcjI3MTM4MzE=", 
-#         "organizations_url": "https://api.github.com/users/rboman/orgs", 
-#         "received_events_url": "https://api.github.com/users/rboman/received_events", 
-#         "repos_url": "https://api.github.com/users/rboman/repos", 
-#         "site_admin": false, 
-#         "starred_url": "https://api.github.com/users/rboman/starred{/owner}{/repo}", 
-#         "subscriptions_url": "https://api.github.com/users/rboman/subscriptions", 
-#         "type": "User", 
+#         "avatar_url": "https://avatars2.githubusercontent.com/u/2713831?v=4",
+#         "events_url": "https://api.github.com/users/rboman/events{/privacy}",
+#         "followers_url": "https://api.github.com/users/rboman/followers",
+#         "following_url": "https://api.github.com/users/rboman/following{/other_user}",
+#         "gists_url": "https://api.github.com/users/rboman/gists{/gist_id}",
+#         "gravatar_id": "",
+#         "html_url": "https://github.com/rboman",
+#         "id": 2713831,
+#         "login": "rboman",
+#         "node_id": "MDQ6VXNlcjI3MTM4MzE=",
+#         "organizations_url": "https://api.github.com/users/rboman/orgs",
+#         "received_events_url": "https://api.github.com/users/rboman/received_events",
+#         "repos_url": "https://api.github.com/users/rboman/repos",
+#         "site_admin": false,
+#         "starred_url": "https://api.github.com/users/rboman/starred{/owner}{/repo}",
+#         "subscriptions_url": "https://api.github.com/users/rboman/subscriptions",
+#         "type": "User",
 #         "url": "https://api.github.com/users/rboman"
-#     }, 
+#     },
 #     "permissions": {
-#         "admin": true, 
-#         "pull": true, 
+#         "admin": true,
+#         "pull": true,
 #         "push": true
-#     }, 
-#     "private": false, 
-#     "pulls_url": "https://api.github.com/repos/rboman/progs/pulls{/number}", 
-#     "pushed_at": "2020-04-02T12:46:08Z", 
-#     "releases_url": "https://api.github.com/repos/rboman/progs/releases{/id}", 
-#     "size": 8833, 
-#     "ssh_url": "git@github.com:rboman/progs.git", 
-#     "stargazers_count": 0, 
-#     "stargazers_url": "https://api.github.com/repos/rboman/progs/stargazers", 
-#     "statuses_url": "https://api.github.com/repos/rboman/progs/statuses/{sha}", 
-#     "subscribers_url": "https://api.github.com/repos/rboman/progs/subscribers", 
-#     "subscription_url": "https://api.github.com/repos/rboman/progs/subscription", 
-#     "svn_url": "https://github.com/rboman/progs", 
-#     "tags_url": "https://api.github.com/repos/rboman/progs/tags", 
-#     "teams_url": "https://api.github.com/repos/rboman/progs/teams", 
-#     "trees_url": "https://api.github.com/repos/rboman/progs/git/trees{/sha}", 
-#     "updated_at": "2020-04-02T12:46:11Z", 
-#     "url": "https://api.github.com/repos/rboman/progs", 
-#     "watchers": 0, 
+#     },
+#     "private": false,
+#     "pulls_url": "https://api.github.com/repos/rboman/progs/pulls{/number}",
+#     "pushed_at": "2020-04-02T12:46:08Z",
+#     "releases_url": "https://api.github.com/repos/rboman/progs/releases{/id}",
+#     "size": 8833,
+#     "ssh_url": "git@github.com:rboman/progs.git",
+#     "stargazers_count": 0,
+#     "stargazers_url": "https://api.github.com/repos/rboman/progs/stargazers",
+#     "statuses_url": "https://api.github.com/repos/rboman/progs/statuses/{sha}",
+#     "subscribers_url": "https://api.github.com/repos/rboman/progs/subscribers",
+#     "subscription_url": "https://api.github.com/repos/rboman/progs/subscription",
+#     "svn_url": "https://github.com/rboman/progs",
+#     "tags_url": "https://api.github.com/repos/rboman/progs/tags",
+#     "teams_url": "https://api.github.com/repos/rboman/progs/teams",
+#     "trees_url": "https://api.github.com/repos/rboman/progs/git/trees{/sha}",
+#     "updated_at": "2020-04-02T12:46:11Z",
+#     "url": "https://api.github.com/repos/rboman/progs",
+#     "watchers": 0,
 #     "watchers_count": 0
-# }, 
+# },
