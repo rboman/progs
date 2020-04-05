@@ -436,6 +436,8 @@ class RepoManager(object):
         """Archives a series of projects in the current folder.
         """
 
+        errs = []
+
         for s,p in self.iterate():
             path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
             print ('...processing {}'.format(path_with_namespace))
@@ -449,16 +451,26 @@ class RepoManager(object):
             repo_name = s.get_key(p, "name")
             arc_name = path_with_namespace.replace('/','_')
             print ("creating {}.tbz2".format(arc_name))
-            shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
-
+            try:
+                shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
+            except:
+                errs.append(path_with_namespace)
             wikipath = full_path+'.wiki'
             wiki_name = repo_name+'.wiki'
             if not os.path.isdir( full_path+'.wiki' ):
                 continue
             arc_name = wikipath.replace('/','_')
             print ("creating {}.tbz2".format(arc_name))
-            shutil.make_archive(arc_name, 'bztar', root_dir=wikipath, base_dir=wiki_name, verbose=True)                            
+            try:
+                shutil.make_archive(arc_name, 'bztar', root_dir=wikipath, base_dir=wiki_name, verbose=True) 
+            except:
+                errs.append(wikipath)
 
+        if errs:
+            print ("\nERROR: the following repositories were NOT archived:\n")
+            for e in errs:
+                print ('\t- {}'.format(e))
+                
     def export(self):
         """Asks GitLab to export a list of projects
         """
