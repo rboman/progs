@@ -388,7 +388,7 @@ class RepoManager(object):
                     yield (s, p)
 
     def list(self):
-        """Prints the list of projects.
+        """Prints the list of projects, taking the 'include' and 'exclude' lists into account.
         """
         for i,(s,p) in enumerate(self.iterate()):
             print ("%04d %s/%s (id=%d) [owner=%s]" % (i+1, s.name,
@@ -400,26 +400,32 @@ class RepoManager(object):
         """Clones or updates a series of projects in the current folder.
         """
 
-        errs = []
-        rootdir = os.getcwd()
+        errs = []   # will contain errors
+        rootdir = os.getcwd() # stores the root folder
 
         for s,p in self.iterate():
             path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
             print ('...processing {}'.format(path_with_namespace))
             
+            # creates a series of folders from the namespace of the project
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
             if not os.path.isdir( full_path ):
                 print( 'creating', full_path )
                 os.makedirs( full_path ) 
+
+            # go to namespace folder and clone/update the repo
             os.chdir( full_path )
             repo = vrs.GITRepo(s.get_key(p, "name"), 
                                s.get_key(p, "ssh_url_to_repo"))
             try:
                 repo.update()
+                # may fail for various reason.
+                # On windows, some paths can be too long or 
+                # some files may contain invalid characters such as ':'
             except:
                 errs.append(s.get_key(p, "ssh_url_to_repo"))
 
-            # clone wiki
+            # clone the wiki if it is "enabled"
             if s.get_key(p, "wiki_enabled"):
                 wiki_name = s.get_key(p, "name")+'.wiki' 
                 wiki_url = s.get_key(p, "ssh_url_to_repo").replace(".git",".wiki.git")
@@ -427,59 +433,60 @@ class RepoManager(object):
                 try:
                     repo.update()
                     if len(os.listdir(wiki_name) )<2:  # .git folder
-                        print("wiki is empty, removing folder", wiki_name)
+                        print("the wiki is empty, removing folder", wiki_name)
                         shutil.rmtree(wiki_name, ignore_errors=True)
                 except:
                     errs.append(wiki_url)
 
-            os.chdir( rootdir )                               
+            os.chdir( rootdir )
 
+        # display the errors
         if errs:
             print ("\nERROR: the following repositories were NOT updated:\n")
             for e in errs:
                 print ('\t- {}'.format(e))
 
+
     def archive(self):
         """Archives a series of projects in a folder.
         """
-
+        # make a folder from the date
         today = datetime.date.today()
         thedate = today.strftime('%Y-%m-%d')
-
-        # make a folder from the date
         if not os.path.isdir(thedate):
             os.mkdir(thedate)
-        
-        #print date
 
-        errs = []
+        errs = []  # will contain errors
 
         for s,p in self.iterate():
             path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
             print ('...processing {}'.format(path_with_namespace))
             
+            # check whether repo has been cloned
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
             if not os.path.isdir( full_path ):
                 print ('folder not present - clone repo first!')
                 continue
 
-            # windows : format = 'bztar', 'gztar', 'tar', 'zip'
+            # create a tbz2 archive of the cloned repo
             repo_name = s.get_key(p, "name")
             arc_name = os.path.join(thedate, path_with_namespace.replace('/','_'))
             if not os.path.isfile(arc_name+'.tbz2'):
                 print ("creating {}.tbz2".format(arc_name))
                 try:
+                    # windows : available formats = 'bztar', 'gztar', 'tar', 'zip'
                     shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
                 except:
                     errs.append(path_with_namespace)
             else:
                 print ("{}.tbz2 already exists".format(arc_name))
 
-            # archive wiki if present
+            # check whether a wiki has been cloned
             wikipath = full_path+'.wiki'
             wiki_name = repo_name+'.wiki'
             if not os.path.isdir( full_path+'.wiki' ):
                 continue
+            # archive the wiki if present
             arc_name = os.path.join(thedate, wikipath.replace('/','_'))
             if not os.path.isfile(arc_name+'.tbz2'):
                 print ("creating {}.tbz2".format(arc_name))
@@ -490,13 +497,15 @@ class RepoManager(object):
             else:
                 print ("{}.tbz2 already exists".format(arc_name))
 
+        # display the errors
         if errs:
             print ("\nERROR: the following repositories were NOT archived:\n")
             for e in errs:
                 print ('\t- {}'.format(e))
 
     def export(self):
-        """Asks GitLab to export a list of projects
+        """Asks the server to "export" a list of projects
+        This command will send one e-mail per project!
         """
         for s,p in self.iterate():
             path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
@@ -504,7 +513,8 @@ class RepoManager(object):
             s.export_one(p)
 
     def download(self):
-        """Asks GitLab to download a list of projects
+        """Asks the server to download a list of projects.
+        Wait a little bit before calling "download" after "export".
         """
         for s,p in self.iterate():
             path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
@@ -514,6 +524,7 @@ class RepoManager(object):
 
 if __name__=="__main__":
 
+    # parse cmd-line arguments
     import argparse
     parser = argparse.ArgumentParser(description='GitLab management script.')
     parser.add_argument("--update", help="update cache", action="store_true")
@@ -523,7 +534,9 @@ if __name__=="__main__":
     args = parser.parse_args()
     #print (args)
 
+    # creates a RepoManager
     mgr = RepoManager()
+    # adds my 2 servers
     mgr.add(GitLabAPI(args.update))
     mgr.add(GitHubAPI(args.update))
 
