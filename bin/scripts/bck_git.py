@@ -36,6 +36,8 @@ import requests
 import re
 import time
 import shutil
+import datetime
+
 
 class API(object):
     """Base class for GitLab and Github API.
@@ -254,6 +256,9 @@ class GitLabAPI(API):
         """downloads one project "p" which have been exported with self.export_one(p).
         """
 
+        today = datetime.date.today()
+        thedate = today.strftime('%Y-%m-%d')
+
         print("trying to download project archive {}".format(p["id"]))
 
         url = p["_links"]["self"]+"/export"
@@ -301,6 +306,8 @@ class GitLabAPI(API):
             # retreive the filename in the header (as 'curl --remote-header-name')
             m = re.search('filename="(.+)"', r.headers['Content-Disposition'])
             local_filename = m.groups()[0]
+            # build a new filename within a folder named after the current date
+            local_filename = os.path.join(thedate, 'GitLab_export_'+p["path_with_namespace"].replace('/','_')+'.tar.gz')
             if os.path.isfile(local_filename): # file exists?
                 print('\t file already exits: "{}"'.format(local_filename))
             else:
@@ -433,8 +440,17 @@ class RepoManager(object):
                 print ('\t- {}'.format(e))
 
     def archive(self):
-        """Archives a series of projects in the current folder.
+        """Archives a series of projects in a folder.
         """
+
+        today = datetime.date.today()
+        thedate = today.strftime('%Y-%m-%d')
+
+        # make a folder from the date
+        if not os.path.isdir(thedate):
+            os.mkdir(thedate)
+        
+        #print date
 
         errs = []
 
@@ -447,30 +463,38 @@ class RepoManager(object):
                 print ('folder not present - clone repo first!')
                 continue
 
-            # format = 'bztar', 'gztar', 'tar', 'zip'
+            # windows : format = 'bztar', 'gztar', 'tar', 'zip'
             repo_name = s.get_key(p, "name")
-            arc_name = path_with_namespace.replace('/','_')
-            print ("creating {}.tbz2".format(arc_name))
-            try:
-                shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
-            except:
-                errs.append(path_with_namespace)
+            arc_name = os.path.join(thedate, path_with_namespace.replace('/','_'))
+            if not os.path.isfile(arc_name):
+                print ("creating {}.tbz2".format(arc_name))
+                try:
+                    shutil.make_archive(arc_name, 'bztar', root_dir=full_path, base_dir=repo_name, verbose=True)
+                except:
+                    errs.append(path_with_namespace)
+            else:
+                print ("{}.tbz2 already exists".format(arc_name))
+
+            # archive wiki if present
             wikipath = full_path+'.wiki'
             wiki_name = repo_name+'.wiki'
             if not os.path.isdir( full_path+'.wiki' ):
                 continue
-            arc_name = wikipath.replace('/','_')
-            print ("creating {}.tbz2".format(arc_name))
-            try:
-                shutil.make_archive(arc_name, 'bztar', root_dir=wikipath, base_dir=wiki_name, verbose=True) 
-            except:
-                errs.append(wikipath)
+            arc_name = os.path.join(thedate, wikipath.replace('/','_'))
+            if not os.path.isfile(arc_name):
+                print ("creating {}.tbz2".format(arc_name))
+                try:
+                    shutil.make_archive(arc_name, 'bztar', root_dir=wikipath, base_dir=wiki_name, verbose=True) 
+                except:
+                    errs.append(wikipath)
+            else:
+                print ("{}.tbz2 already exists".format(arc_name))
 
         if errs:
             print ("\nERROR: the following repositories were NOT archived:\n")
             for e in errs:
                 print ('\t- {}'.format(e))
-                
+
     def export(self):
         """Asks GitLab to export a list of projects
         """
