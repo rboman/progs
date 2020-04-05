@@ -3,8 +3,8 @@
 #
 # This script is used to backup my gitlab/github repos.
 #
-# TODO: clone wikis
-#       smaller requests: per_page=10
+# TODO: .make tbz2 archives of cloned repos
+#       .GUI
 #
 # usage examples:
 #  
@@ -23,7 +23,7 @@
 #       rb.py bck_gitlab.py download --include R.Boman:am-dept
 #
 # .command used on garfield (april2020)
-#       rb.py bck_git.py clone --include R.Boman:am-dept:github --exclude mengo:mlucio
+#       rb.py bck_git.py clone --update --include R.Boman:am-dept:github --exclude mengo:mlucio:Trilinos
 #
 
 import os
@@ -33,6 +33,7 @@ import json
 import requests
 import re
 import time
+import shutil
 
 class API(object):
     """Base class for GitLab and Github API.
@@ -158,6 +159,9 @@ class GitHubAPI(API):
         elif keystr=="ssh_url_to_repo":
             # ssh_url_to_repo => ssh_url
             return super(GitHubAPI, self).get_key(p,"ssh_url")
+        elif keystr=="wiki_enabled":
+            # wiki_enabled => has_wiki
+            return super(GitHubAPI, self).get_key(p,"has_wiki")
         else:
             return p[keystr]
 
@@ -405,7 +409,22 @@ class RepoManager(object):
                 repo.update()
             except:
                 errs.append(s.get_key(p, "ssh_url_to_repo"))
-            os.chdir( rootdir )
+
+            # clone wiki
+            if s.get_key(p, "wiki_enabled"):
+                wiki_name = s.get_key(p, "name")+'.wiki' 
+                wiki_url = s.get_key(p, "ssh_url_to_repo").replace(".git",".wiki.git")
+                repo = vrs.GITRepo(wiki_name, wiki_url)
+                try:
+                    repo.update()
+                    if len(os.listdir(wiki_name) )<2:  # .git folder
+                        print("wiki is empty, removing folder", wiki_name)
+                        shutil.rmtree(wiki_name, ignore_errors=True)
+                except:
+                    errs.append(wiki_url)
+
+            os.chdir( rootdir )                               
+
         if errs:
             print ("\nERROR: the following repositories were NOT updated:\n")
             for e in errs:
