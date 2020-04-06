@@ -77,7 +77,8 @@ commands:
 :Ex<Tab>        : completion
 :e <Ctrl>d      : montre toutes les cmds qui débutent par e
 
-
+search replace:
+:%s/text1/text2/g  : remplace text1 par text2
 
 
 
