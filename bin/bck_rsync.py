@@ -31,6 +31,9 @@ def tar_folder(fname):
     #print cmd
     print " ".join(cmd)
     subprocess.check_call(cmd)
+
+    # TODO: utiliser shutil.make_archive ????
+
     return arcname
 
 def main(pars):
