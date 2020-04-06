@@ -24,8 +24,15 @@
 #       rb.py bck_gitlab.py export --include R.Boman:am-dept
 #       rb.py bck_gitlab.py download --include R.Boman:am-dept
 #
-# .command used on garfield (april2020)
-#       rb.py bck_git.py clone --update --include R.Boman:am-dept:github --exclude mengo:mlucio:Trilinos
+# .commands used on garfield (april2020)
+#     rb.py bck_git.py list --update
+#     rb.py bck_git.py clone
+#     rb.py bck_git.py archive
+#     rb.py bck_git.py export
+#     rb.py bck_git.py download
+#     cp -R 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/
+#        or, if folder already exists:
+#     rsync -av 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/2020-04-06/
 #
 
 import os
