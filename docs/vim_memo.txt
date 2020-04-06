@@ -1,0 +1,88 @@
+# Memo Vim
+
+
+Video ThePrimeagen:
+    https://www.youtube.com/watch?v=n9k9scbTuvQ
+
+## configuration
+
+cfg dans ~/.vim/
+editer .vimrc
+:source %        : source the current file (.vimrc)
+mkdir ~/.vimrc/undodir -p   : make undodir (-p = recursive)
+
+plugins:
+https://github.com/junegunn/vim-plug
+mettre 'plug.vim' dans autoload
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+definir des plugins dans une section 'call plug#begin' / 'call plug#end'
+:w
+:source %
+:PlugInstall
+
+
+## commands
+
+cmds:
+:q :x ZZ        : quitter
+:w              : sauver
+:! ls           : lance ls puis revient dans vim
+
+explorer (netrw):
+:Ex :Explore    : ouvre l'explorateur (plugin `netrw` de base)
+:Sexplore       : idem dans un Hsplit
+:Vexplore       : idem dans un Vsplit
+    "i" dans l'explorer change le mode
+
+undo:
+u           : undo
+
+mouvements:
+h,j,k,l    : depl
+gg         : ligne 0
+G          : derniere ligne
+^ ou 0     : debut de ligne
+$          : fin de ligne
+
+visual
+v           : visual mode
+V           : visual line
+<Ctrl>-v    : visual block
+
+aide:
+:help split     : aide sur le thème `split`
+:help ^W        : aide sur CTRL-W
+
+splits:
+:vs   (ou :wincmd v): split vertical (2 fenetres cote à cote)
+:vertical resize 30 : taille en caracteres
+<Ctrl>w-w           : move cursor to other window
+<Ctrl>w-<Ctrl>-w    : idem
+<Ctrl>w-r           : swap windows
+:q                  : quitte le split courant
+<Ctrl>w-J           : split vertical => split horiz
+<Ctrl>w-H           : split horiz => split vertical
+
+
+commenter des lignes:
+<Ctrl>-v : visual block
+aller a la derniere ligne a commenter
+I        : insert (pas i)
+"<Esc>   : ajoute des guillemets  (//<Esc> pour du C++)
+
+
+commands:
+:<Arrow up>     : history
+:Ex<Tab>        : completion
+:e <Ctrl>d      : montre toutes les cmds qui débutent par e
+
+
+
+
+
+
+
+
+
+
