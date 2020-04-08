@@ -89,7 +89,7 @@ def main():
 
     # loop over all files and try to guess encoding...
     encs = {}
-    for f in all_files(os.getcwd(), patterns='*.py;*.h;*.cpp;*.inl;*.i;*.hpp;*.txt'):
+    for f in all_files(os.getcwd(), patterns='*.py;*.pyw;*.h;*.cpp;*.inl;*.i;*.hpp;*.txt'):
         #print('{}..'.format(f), end=' ')
         # utilise "file" - marche très bien
         enc = getencoding_file(f)
