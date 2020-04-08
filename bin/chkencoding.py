@@ -12,11 +12,12 @@ def all_files(root,
               patterns='*',
               skips='*.svn*;*.git*',
               single_level=False,
-              yield_folders=True):
+              yield_folders=False):
     #self.checkPath(root)
     patterns = patterns.split(';')
     skips = skips.split(';')
     for path, subdirs, files in os.walk(root):
+        print('processing folder', path)
         if yield_folders:
             files.extend(subdirs)
         files.sort()
@@ -36,7 +37,8 @@ def all_files(root,
 
 
 def getencoding_file(f):  # uses "file" linux command
-    cmd = 'file -bi "%s"' % f
+    #cmd = 'file -bi "%s"' % f
+    cmd = r'C:\msys64\usr\bin\file -bi "%s"' % f   # windows
     #print cmd
     try:
         output = subprocess.check_output(
@@ -84,29 +86,61 @@ def main():
     print("sys.getfilesystemencoding():", sys.getfilesystemencoding(
     ))  # mbcs sous windows 10 / UTF-8 sous linux
 
-    if 1:
-        # loop over all files and try to guess encoding...
-        encs = {}
-        for f in all_files(os.getcwd(), patterns='*.py;*.h;*.cpp;*.inl;*.i;*.hpp'):
-            enc = getencoding_file(f)
-            #enc = getencoding_chardet(f) # marche moins bien
-            if enc not in encs:
-                encs[enc] = []
-            encs[enc].append(f)
 
-        # display results
-        for enc in encs:
-            if enc in ['binary', 'us-ascii', None, 'ascii']:
-                continue
-            print(enc, 'encoding:')
-            for f in encs[enc]:
-                print('\t', f, end=' ')
-                # display non-ASCII chars
+    # loop over all files and try to guess encoding...
+    encs = {}
+    for f in all_files(os.getcwd(), patterns='*.py;*.h;*.cpp;*.inl;*.i;*.hpp;*.txt'):
+        #print('{}..'.format(f), end=' ')
+        # utilise "file" - marche très bien
+        enc = getencoding_file(f)
+        # marche (beaucoup) moins bien, detecte du latin-1 pour des fichiers convertis en utf-8
+        #enc = getencoding_chardet(f) 
+        #print('{}.'.format(enc))
+
+        if enc not in encs:
+            encs[enc] = []
+        encs[enc].append(f)
+
+    # display results
+    for enc in encs:
+        if enc in ['binary', 'us-ascii', None, 'ascii']:
+            continue
+        print(enc, 'encoding:')
+        for f in encs[enc]:
+            print('\t', f, end=' ')
+            # display non-ASCII chars
+            try:
                 noascii = getnonascii(f, enc)
-                print(' non ASCII=(', end=' ')
-                for c in noascii:
+            except:
+                noascii = [ '?' ]
+            print(' non ASCII=(', end=' ')
+            for c in noascii:
+                try:
                     print(c, end=' ')
-                print(')')
+                except:
+                    print('?', end=' ')
+
+
+            print(')')
+
+    # convert files
+    #   rem: ISO-8859-1 == latin-1
+    if 1:    
+        for enc in encs:
+            for f in encs[enc]:
+                # convert to utf-8
+                if enc in ['binary', 'us-ascii', None, 'ascii', 'utf-8']:
+                    continue
+                # convertit les fichiers récalcitrants 
+                #if enc=='unknown-8bit': enc='ISO-8859-1'
+                try:
+                    with open(f, "rb") as source:
+                        content = unicode(source.read(), enc).encode('utf-8')
+                        #content = unicode(source.read(), enc, errors='ignore').encode('utf-8', errors='ignore')
+                        with open(f, "wb") as target:
+                            target.write(content) 
+                except:
+                    print('Problem while reading/writing', f)
 
 
 if __name__ == "__main__":
