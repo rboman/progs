@@ -14,6 +14,24 @@ def get_api_token():
     return token
 
 
+def space_usage():
+    apiurl = 'https://api.dropboxapi.com/2/users/get_space_usage'
+    token = get_api_token()
+    print 'requesting space usage'
+    r = requests.post(apiurl, headers={ 
+        "Authorization": 'Bearer %s' % token
+     })
+    #r.raise_for_status()
+    print 'r.status_code =', r.status_code
+    # print 'r.headers =', r.headers
+    # print 'r.encoding =', r.encoding
+    # print 'r.url =', r.url
+    # print 'r.text =', r.text
+    # if r.status_code==200:
+    #     print(json.dumps(r.json(), sort_keys=True, indent=4))
+    resp = r.json()
+    print ' %f Gb / %f Gb' % (resp['used']/float(1024*1024*1024), resp['allocation']['allocated']/float(1024*1024*1024) )
+
 def download(url, filename=None):
     # https://www.dropbox.com/developers/documentation/http/documentation#files-save_url
 
@@ -54,6 +72,9 @@ def download(url, filename=None):
 
 if __name__=="__main__":
 
+    # download a file directly to dropbox from a given URL:
     url='https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-10.3.0-amd64-standard.iso'
-
     download(url)
+
+    # get space usage
+    space_usage()
