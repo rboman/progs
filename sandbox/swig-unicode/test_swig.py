@@ -21,14 +21,14 @@ if sys.version_info.major==2:
 else:
     sys.path.append(os.path.join('build-py3','bin','Release'))
 
-import _unic 
+import unic 
 
 print('{} {}'.format("type('chaine')",type('chaine')))  # unicode on py2 (because of unicode_literals)
 print('{} {}'.format("type(native('chaine'))",type(native('chaine'))))  # unicode on py2
 print('{} {}'.format("type(native_str('chaine'))",type(native_str('chaine')))) # str on py2
 
 # fct expects "str" in both case, which means unicode in py3 and bytes in py2!
-_unic.fct(native_str('chaine')) # works on both py2 and py3!!
+unic.fct(native_str('chaine')) # works on both py2 and py3!!
 
 str2 = str('chaine2')
 
@@ -37,4 +37,4 @@ print('{} {}'.format("type(native(str2))",type(native(str2))))  # unicode on py2
 print('{} {}'.format("type(native_str(str2))",type(native_str(str2)))) # str on py2
 
 # fct expects "str" in both case, which means unicode in py3 and bytes in py2!
-_unic.fct(native_str(str2)) # works on both py2 and py3!!
+unic.fct(native_str(str2)) # works on both py2 and py3!!

@@ -7,6 +7,7 @@ OPTION(USE_PY3        "Use Python 3"     OFF)
 
 # send all binaries to ./bin
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH "")
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin CACHE PATH  "")
 
 # on Linux, set optimisation by default
 IF(NOT CMAKE_BUILD_TYPE)
