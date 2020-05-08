@@ -1,0 +1,2 @@
+
+print '"import nofuture" succeeded'

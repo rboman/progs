@@ -2,7 +2,7 @@ https://fr.wikipedia.org/wiki/Unicode
 accents: à é ü û ì 
 greek: σ φ ξ
 other: ℻ ⅏ ℕ ℏ ⇦ ↺ €
-circles: ⓇⓄⓂⒶⒾⓃ
+circles: Ⓡ Ⓞ Ⓜ Ⓐ Ⓘ Ⓝ
 zodiac:♈♉♊♋♌♍♎♏♐♑♒♓
 emojis: ⛄ ⛔ ⛳ ⛵ ⛽
 fonts: Ｒｏｍａｉｎ

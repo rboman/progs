@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 
+# "Future statements are NOT import statements. Future statements change how Python interprets the code." 
+# The fun is import __future__ is NOT a future statement, it is a import statement.
 from __future__ import print_function
 # from __future__ import unicode_literals  
-#   => with this statement all strings in the text of this script are unicode in py2!
-#   => a='Romain'    is read as     a= u'Romain'
+#       => with this statement all strings in the text of this script are unicode in py2!
+#       => a='Romain'    is read as     a= u'Romain'
+# from __future__ import division
+#       => "true division" by default (__truediv__)
+#       => floor division => //
+# from __future__ import absolute_import
+#       => implicit relative import in python 2 is forbidden
 import os, sys
 
 print( "sys.getdefaultencoding():", sys.getdefaultencoding())  
-# python2 : ascii sous windows 10
+# python2 : ascii sous windows 10/linux
 # python3 : utf-8
 print( "sys.stdout.encoding:", sys.stdout.encoding)  
 # python2: cp850 sous windows 10 / UTF-8 sous linux
@@ -89,3 +96,10 @@ with open(u'nénuphär.txt'.encode(sys.getfilesystemencoding()), 'rb') as f:
             sys.stdout.write(l.decode('utf-8').encode(sys.stdout.encoding,'ignore')) # bytes as argument
         else:
             sys.stdout.write(l.decode('utf-8'))  # unicode as argument
+
+# from __future__ statements are limited to the current file.
+try:
+    import nofuture # python 2 OK
+except:
+    print('"import nofuture" failed!') # python 3
+
