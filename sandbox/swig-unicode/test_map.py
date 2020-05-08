@@ -15,6 +15,9 @@ from __future__ import print_function
 # from future.utils import native
 # ----------------------------------------------------------------
 
+# test dict with swig objects as keys in python 2 and python 3
+# (requires fcts __hash__, __cmp__ and __eq__ to be defined in the object).
+
 import os, sys
 
 if sys.version_info.major==2:
@@ -25,7 +28,6 @@ else:
 import unic 
 
 a = unic.ObjA()
-b = unic.ObjB()
 
 alist = unic.ListA()
 alist.push(a)
@@ -33,7 +35,6 @@ alist.push(a)
 m = {}
 
 m[a] = 1.0
-m[b] = 2.0
 
 print (m)
 
