@@ -120,7 +120,7 @@ void MyWidgetI::deltype_slot()
     qWarning( "MyWidget::deltype_slot(): Not implemented yet!" );
 }
 
-// -- paramï¿½tres matrice
+// -- paramètres matrice
 
 void MyWidgetI::centrex_slot()
 {

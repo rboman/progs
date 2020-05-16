@@ -27,17 +27,17 @@ int main()
     {
         clrscr();
         titre();
-        std::cout << "\n\nProbl�me courant :";
+        std::cout << "\n\nProblème courant :";
         if (bem.probleme == CIRCLE)
             std::cout << " CERCLE de rayon a";
         else if (bem.probleme == SQUARE)
-            std::cout << " CARRE de c�t� a";
+            std::cout << " CARRE de côté a";
         else
             std::cout << "QUELCONQUE";
         std::cout << "\n\n\t [1]  Lancer le calcul complet.";
         std::cout << "\n\t [2]  Lancer le calcul rapide.";
-        std::cout << "\n\t [3]  Param�tres.";
-        std::cout << "\n\t [4]  Charger fichier donn�es.";
+        std::cout << "\n\t [3]  Paramètres.";
+        std::cout << "\n\t [4]  Charger fichier données.";
         std::cout << "\n\t [5]  Visualisation graphique.";
         std::cout << "\n\t [6]  Evaluation de la solution analytique.";
         std::cout << "\n\t [7]  Sauvegarde vers MATLAB";

@@ -33,7 +33,7 @@ Cylinder::Cylinder() : Mesh()
     ext[1] = 0.0;       // coor y de la direction d extrusion
     ext[2] = 1.0;       // coor z de la direction d extrusion
 
-    nbe = 24;           // nombre d elements sur l arc d un m�ridien
+    nbe = 24;           // nombre d elements sur l arc d un méridien
     nbc = 3;            // nombre d elements sur l epaisseur
     nbz = 15;           // nombre d elements sur la hauteur
 

@@ -2,24 +2,24 @@
 #include <iostream>
 #include <fstream>
 
-double Q0 = 0.1, // d�bit initial
-    H0 = 50,     // hauteur manom�trique initiale
-    Hs = 70,     // hauteur manom�trique � d�bit nul
-    D = 0.25,    // diam�tre de la conduite
+double Q0 = 0.1, // débit initial
+    H0 = 50,     // hauteur manométrique initiale
+    Hs = 70,     // hauteur manométrique à débit nul
+    D = 0.25,    // diamètre de la conduite
     L = 400,     // longueur de la conduite
     a1 = 0,      // cte pompe
-    a = 1200,    // c�l�rit� de l'onde
+    a = 1200,    // célérité de l'onde
     f = 0.02,    // coefficient de frottement
-    tau = 2.5;   // param�tre d'ouverture de vanne
+    tau = 2.5;   // paramètre d'ouverture de vanne
 
-int divs = 15,  // nbre de tron�ons de la conduite
+int divs = 15,  // nbre de tronçons de la conduite
     tmax = 170; // nbre de pas de temps
 
 double a2 = (H0 - Hs - a1 * Q0) / (pow(Q0, 2)), // cte pompe
     Section = M_PI * pow(D, 2) / 4,
        g = 9.81,
        B = a / (g * Section),                            // voir rappel
-    R = f * (L / divs) / (2 * g * D * pow(Section, 2)),  //  th�orique
+    R = f * (L / divs) / (2 * g * D * pow(Section, 2)),  //  théorique
     C1 = f * pow(Q0, 2) / (2 * g * D * pow(Section, 2)), // pertes de charge
     Cv = pow(Q0 * tau, 2) / (2 * (H0 - C1 * L));         // cte vanne
 
@@ -30,8 +30,8 @@ std::ofstream sortie("OPENB.M", std::ios::out); // ouverture fichier MatLab
 
 void main()
 {
-    Q = new double *[divs + 1]; // d�claration des tableaux
-    H = new double *[divs + 1]; // de d�bit et de charge
+    Q = new double *[divs + 1]; // déclaration des tableaux
+    H = new double *[divs + 1]; // de débit et de charge
     for (int i = 0; i <= divs; i++)
     {
         Q[i] = new double[tmax];
@@ -44,11 +44,11 @@ void main()
     }
     for (int k = 1; k < tmax; k++)
     {
-        // condition limite � la pompe
+        // condition limite à la pompe
 
         CM = H[1][k - 1] - B * Q[1][k - 1] + R * Q[1][k - 1] * abs(Q[1][k - 1]);
 
-        // choix du bon d�bit (fct. du signe de a2)
+        // choix du bon débit (fct. du signe de a2)
 
         rho = sqrt(pow(B - a1, 2) + 4 * a2 * (CM - Hs));
         if (a2 > 0)
@@ -58,7 +58,7 @@ void main()
 
         H[0][k] = Hs + Q[0][k] * (a1 + a2 * Q[0][k]);
 
-        // calcul des points interm�diaires
+        // calcul des points intermédiaires
 
         for (int i = 1; i < divs; i++)
         {
@@ -68,7 +68,7 @@ void main()
             H[i][k] = (CP + CM) / 2;
         }
 
-        // condition limite � la vanne
+        // condition limite à la vanne
 
         CP = H[divs - 1][k - 1] + B * Q[divs - 1][k - 1] - R * Q[divs - 1][k - 1] * abs(Q[divs - 1][k - 1]);
         Q[divs][k] = -B * Cv + sqrt(pow(B * Cv, 2) + 2 * Cv * CP);

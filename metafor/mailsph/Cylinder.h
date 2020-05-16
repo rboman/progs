@@ -20,7 +20,7 @@ public:
     double norm[3];     // normale au plan de l arc
     double ext[3];      // direction extrusion
 
-    int nbe;            // nombre d elements sur l arc d un m�ridien
+    int nbe;            // nombre d elements sur l arc d un méridien
     int nbc;            // nombre d elements sur l epaisseur
     int nbz;            // nombre d elements sur la hauteur
 

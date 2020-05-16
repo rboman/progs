@@ -131,7 +131,7 @@ C        ------------------------------------
          IF(METH.EQ.0) GAM=ZERO
          ICONJ=1
 C
-C        Mise � jour de la direction de recherche
+C        Mise à jour de la direction de recherche
 C        ----------------------------------------
          DO 6 I=1,N
    6        Z(I)=-G(I)+GAM*Z(I)

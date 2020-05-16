@@ -29,10 +29,10 @@ Plane::Plane()
     c1 = 0.30;
     T = 1.0;
     F0 = 150000.0;
-    np = 80;     // pr�cision du trac� en x ds MATLAB
+    np = 80;     // précision du tracé en x ds MATLAB
     np2 = 40;    //                    en t
-    Nperiod = 2; // nbre de p�riodes en t (pour MATLAB)
-    Nmodes = 6;  // nbre de modes � calculer avec prec.
+    Nperiod = 2; // nbre de périodes en t (pour MATLAB)
+    Nmodes = 6;  // nbre de modes à calculer avec prec.
     PREC = 1E-4;
     PREC2 = 1E-2;
 
@@ -82,7 +82,7 @@ void Plane::calcule()
     std::cout << "--------\n";
 
     //-------------------------------------------------------------------------
-    //                   Cr�ation d'une base de polynome
+    //                   Création d'une base de polynome
     //-------------------------------------------------------------------------
 
     Polynome p(0);
@@ -105,7 +105,7 @@ void Plane::calcule()
 
     for (int i = 1; i < Nmodes + 1; i++) // pour (n-1) poly...
     {
-        ValPro2[i] = 0.0; // ...et initialisation � 0.
+        ValPro2[i] = 0.0; // ...et initialisation à 0.
         ModPro2[i] = new double[Nmodes];
         ModPro2[i]--;
         for (int j = 1; j <= nopoly; j++)
@@ -114,7 +114,7 @@ void Plane::calcule()
 
     //-------------------------------------------------------------------------
     //    Ajoute un polynome et compare les val. et vect. propres avec
-    //             ceux et celles de l'it�ration pr�c�dente.
+    //             ceux et celles de l'itération précédente.
     //-------------------------------------------------------------------------
 
     int rate = 1;
@@ -191,7 +191,7 @@ void Plane::calcule()
 
         //---Destruction des tabl. auxil.--------
         if (rate == 1) // Vire les VP & VP dans le
-        {              // cas o� la pr�cision n'est pas atteinte
+        {              // cas où la précision n'est pas atteinte
             ValPro++;
             delete ValPro;
             for (int j = 1; j <= nopoly; j++)
@@ -211,7 +211,7 @@ void Plane::calcule()
         delete COPY_K;
     }
     std::cout << '\n'
-              << nopoly << " poly. n�cessaires.\n";
+              << nopoly << " poly. nécessaires.\n";
     //getch();
 
     //---"Nettoie" les modes propres------------
@@ -221,7 +221,7 @@ void Plane::calcule()
                 ModPro[j][k] = 0.0;
 
     //-------------------------------------------------------------------------
-    //                       affichage des r�sultats
+    //                       affichage des résultats
     //-------------------------------------------------------------------------
     std::cout << "\nValeurs Propres:\n";
     for (int j = 1; j <= nopoly; j++)
@@ -244,9 +244,9 @@ void Plane::calcule()
 
     //-------------------------------------------------------------------------
     //               Calcul des modes propres Yi(x) -> MP[i]
-    //          Cr�ation d'un prog *.m pour afficher les r�sultats
+    //          Création d'un prog *.m pour afficher les résultats
     //-------------------------------------------------------------------------
-    Polynome *MP = new Polynome[nopoly]; // Cr�e un tableau de poly.
+    Polynome *MP = new Polynome[nopoly]; // Crée un tableau de poly.
     for (int i = 0; i < nopoly; i++)
     {
         MP[i][0] = 0.0;
@@ -260,7 +260,7 @@ void Plane::calcule()
     for (int i = 0; i < nopoly; i++)
     {
         MODES[i] = new double[np + 1];
-        for (int j = 0; j < np + 1; j++) // Initialisation � 0.
+        for (int j = 0; j < np + 1; j++) // Initialisation à 0.
         {
             XX[j] = 0.0;
             MODES[i][j] = 0.0;
@@ -276,8 +276,8 @@ void Plane::calcule()
     }
 
     //-------------------------------------------------------------------------
-    //                      Calcul des masses r�duites
-    //              pour une �ventuelle normalisation des modes
+    //                      Calcul des masses réduites
+    //              pour une éventuelle normalisation des modes
     //-------------------------------------------------------------------------
     double *mu = new double[nopoly];
     for (int i = 0; i < nopoly; i++)
@@ -289,8 +289,8 @@ void Plane::calcule()
     toMatlab2(MP);
 
     //-------------------------------------------------------------------------
-    //                    Calcul du moment fl�chissant et
-    //             de l'effort tranchant � l'emplanture de l'aile
+    //                    Calcul du moment fléchissant et
+    //             de l'effort tranchant à l'emplanture de l'aile
     //-------------------------------------------------------------------------
 
     Moment = new double[Nperiod * np2 + 1];
@@ -318,7 +318,7 @@ void Plane::calcule()
         Tranchant[compt] = DM(0.0);
     }
 
-    // Calcul de M & T apr�s l'appl. de F
+    // Calcul de M & T après l'appl. de F
     double *alpha = new double[6];
     double *alphap = new double[6];
 
@@ -443,7 +443,7 @@ void Plane::toMatlab2(Polynome *MP)
     fich << "T=" << T << ";\n";
     fich << "F0=" << F0 << ";\n";
     fich << "NMOD=" << Nmodes - 1 << ";\n";
-    fich << "\ngrafic=grafic'; x=x';\n"; // Commandes de trac�.
+    fich << "\ngrafic=grafic'; x=x';\n"; // Commandes de tracé.
     fich << "figure;\n";
     fich << "v=[-" << enverg << "," << enverg << ",-0.04,0.04]; axis(v);\n";
     fich << "plot(x,grafic,'k');\n";

@@ -22,7 +22,7 @@ C     Vecteur b
          II(3) = II(2) + N
 C     Contraintes (C)
          II(4) = II(3) + N*m
-C     Termes ind�pendants des contraintes (Cmin)
+C     Termes indépendants des contraintes (Cmin)
          II(5) = II(4) + m
 C     Vecteur X
          II(6) = II(5) + N

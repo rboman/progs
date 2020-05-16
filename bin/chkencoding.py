@@ -10,14 +10,14 @@ import subprocess
 
 def all_files(root,
               patterns='*',
-              skips='*.svn*;*.git*',
+              skips='*.svn*;*.git*;*build*',
               single_level=False,
               yield_folders=False):
     #self.checkPath(root)
     patterns = patterns.split(';')
     skips = skips.split(';')
     for path, subdirs, files in os.walk(root):
-        print('processing folder', path)
+        # print('processing folder', path)
         if yield_folders:
             files.extend(subdirs)
         files.sort()
@@ -90,12 +90,12 @@ def main():
     # loop over all files and try to guess encoding...
     encs = {}
     for f in all_files(os.getcwd(), patterns='*.py;*.pyw;*.h;*.cpp;*.inl;*.i;*.hpp;*.txt;*.swg'):
-        #print('{}..'.format(f), end=' ')
+        print('{}..'.format(f), end=' ')
         # utilise "file" - marche très bien
         enc = getencoding_file(f)
         # marche (beaucoup) moins bien, detecte du latin-1 pour des fichiers convertis en utf-8
         #enc = getencoding_chardet(f) 
-        #print('{}.'.format(enc))
+        print('{}.'.format(enc))
 
         if enc not in encs:
             encs[enc] = []

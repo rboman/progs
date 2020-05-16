@@ -30,21 +30,21 @@ C     -- Declarations ---------------------------------------
 C     -- Chargement de la matrice A et du vecteur b ---------
       CALL loadmat(A,IA,JA,b,xref,ierr)
 
-C     -- Initialisation du vecteur x � 0.0d0 ----------------
+C     -- Initialisation du vecteur x à 0.0d0 ----------------
       CALL vectinit(N,x)
 
-C     -- Param�tres du GMRES --------------------------------
+C     -- Paramètres du GMRES --------------------------------
       epsilon = 1.0D-8
       it_max  = 300
 
-C     -- Param�tres du pr�conditionneur ---------------------
+C     -- Paramètres du préconditionneur ---------------------
       droptol = 0.05
       lfil    = 20
       permtol = 1
       mbloc   = N 
       alph    = 0.5     
 
-C     -- Demande s'il faut pr�conditionner ------------------
+C     -- Demande s'il faut préconditionner ------------------
 
       WRITE(*,*)
       FLAG  = 0
@@ -53,7 +53,7 @@ C     -- Demande s'il faut pr�conditionner ------------------
       write(*,*)' (7=ROILU0, 8=ROILUT, 9=ROILUTP, 10=SSOR)'
       read(*,*)FLAG
 
-C     -- Cr�ation du pr�conditionneur -----------------------
+C     -- Création du préconditionneur -----------------------
 
       ierr=0
       IF (FLAG.EQ.1) THEN
@@ -131,7 +131,7 @@ C     -- Cr�ation du pr�conditionneur -----------------------
 
 
       IF(ierr.NE.0) THEN
-         write(*,*)'erreur de pr�conditionnement !!!!!',ierr
+         write(*,*)'erreur de préconditionnement !!!!!',ierr
          read(*,*)
       ENDIF
       WRITE(*,*)'Entrez m :'
@@ -141,7 +141,7 @@ C     -- Appel de la sous-routine GMRES ---------------------
       CALL gmres(N, x, b, A, IA, JA, ALU, JLU, JU,epsilon, 
      #           it_max, mm, V, H, w, co, si, g, y, FLAG)
      
-C     -- Permutation de la solution (si pivotage employ�) --
+C     -- Permutation de la solution (si pivotage employé) --
 
       IF(FLAG.EQ.2) THEN
          DO 101 i=1,N
@@ -152,7 +152,7 @@ C     -- Permutation de la solution (si pivotage employ�) --
 102      CONTINUE
       ENDIF
 
-C     -- Sauvegarde du r�sultat vers MATLAB ----------------
+C     -- Sauvegarde du résultat vers MATLAB ----------------
 
       OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='unknown')
       DO 100 i = 1, N

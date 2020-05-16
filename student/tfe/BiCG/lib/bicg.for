@@ -39,7 +39,7 @@ C
       WRITE(*,210)j, residu
       WRITE(1,*)'residu2(',j,')=',residu,';'
 C
-C     Pr�conditionnement
+C     Préconditionnement
 C     ------------------
       IF(IFLAG.NE.0) THEN
          CALL LUSOL (n, r , z , alu, jlu, ju)
@@ -59,7 +59,7 @@ C     ----------------------------------
          GOTO 999
       ENDIF
 C
-C     Calcul des directions de recherche bi-conjugu�es
+C     Calcul des directions de recherche bi-conjuguées
 C     ------------------------------------------------
       IF (j.EQ.1) THEN
          CALL VectAssign(N,p,z)
@@ -85,7 +85,7 @@ C
       ENDIF
       alpha=rho/alpha
 C
-C     Mise � jour de la solution et des r�sidus
+C     Mise à jour de la solution et des résidus
 C     -----------------------------------------
       DO i=1,N
          x(i)  = x(i)  + alpha * p(i)

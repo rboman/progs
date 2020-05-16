@@ -139,7 +139,7 @@ DCM_API std::ostream &
 dcm::operator<<(std::ostream &outp, BasePoly &bp)
 {
     for (BasePoly::indice i = 0; i < bp.taille; i++)
-        outp << i << ":(�" << bp[i].donne_degre() << ") = " << bp[i] << '\n';
+        outp << i << ":(°" << bp[i].donne_degre() << ") = " << bp[i] << '\n';
     return outp;
 }
 

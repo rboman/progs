@@ -35,7 +35,7 @@ int max_it=0, sav=0, time1=0, time2=0;
 
 int main(void)
 {
-   /* DÇclaration des fonctions */
+   /* D√©claration des fonctions */
    float mandelbrot(void);
    float julia(void);
    void modif_param(void);
@@ -44,7 +44,7 @@ int main(void)
    void load_param(void);
    void save_param(void);
 
-   /* DÇclaration des variables */
+   /* D√©claration des variables */
    float i;
    int exit=0, choix=0;
    float no=0;
@@ -57,14 +57,14 @@ int main(void)
    titre();
    puts("\n\t1:------> Mandelbrot");
    puts("\t2:------> Julia");
-   puts("\n\t3:------> Modifier paramätres");
-   puts("\t4:------> Charger paramätres");
-   puts("\t5:------> Sauver paramätres");
+   puts("\n\t3:------> Modifier param√®tres");
+   puts("\t4:------> Charger param√®tres");
+   puts("\t5:------> Sauver param√®tres");
    puts("\n\t6:------> Infos");
    puts("\t7:------> Fin");
    printf("\n  Choix \?");
    printf("\n\n\n\nNbre op: %f", no);
-   printf("\nItÇration max: %d", max_it);
+   printf("\nIt√©ration max: %d", max_it);
    printf("\nTemps calcul :%d",time2-time1);
       choix=getch();
       switch(choix)
@@ -122,7 +122,7 @@ void init_graph(void)
    return;
 }
 
-/* RedÇfinition des paramätres */
+/* Red√©finition des param√®tres */
 void param(char *descript,int par)
 {  char entree[20];
    extern float prm[];
@@ -320,7 +320,7 @@ void var_par(int opt)
    return;
 }
 
-/* Modification des paramätres */
+/* Modification des param√®tres */
 void modif_param(void)
 {
    void titre(void);
@@ -334,7 +334,7 @@ void modif_param(void)
    char *texte[10]={"\n\nCoin sup. gauche [x1=%f] :","Coin sup. gauche [y1=%f] :",
 		   "Coin inf. droit  [x2=%f] :", "Coin inf. droit  [y2=%f] :",
 		   "\nQuadrillage [x=%f] :", "Quadrillage [y=%f] :",
-		   "\nQualitÇ [inc=%f] :", "PrÇcision [coul=%f] :",
+		   "\nQualit√© [inc=%f] :", "Pr√©cision [coul=%f] :",
 		   "\nCte Julia [xc=%f] :", "Cte Julia [yc=%f] :" };
 
    /* Menu */
@@ -342,9 +342,9 @@ void modif_param(void)
    {
    clrscr();
    titre();
-   puts("\n\n\n\t1:------> Liste compläte");
+   puts("\n\n\n\t1:------> Liste compl√®te");
    puts("\n\t2:------> Couleurs");
-   puts("\t3:------> Axes orthonormÇs");
+   puts("\t3:------> Axes orthonorm√©s");
    if(sav==1)
    puts("\t4:------> Sauvegarde de l'image : On");
    else
@@ -362,7 +362,7 @@ void modif_param(void)
 	    param(texte[i],i);
 	    var_par(1);
 
-	    /* Teste la validitÇ des paramätres */
+	    /* Teste la validit√© des param√®tres */
 	    if(x1>x2)
 	    {
 	       swap=x1; x1=x2; x2=swap;
@@ -404,18 +404,18 @@ void infos(void)
    clrscr();
    titre();
    puts("\nMandelbrot: A chaque pt du plan complexe, le programme attribue une");
-   puts("            couleur relative Ö la vitesse de convergence de la     ");
+   puts("            couleur relative √† la vitesse de convergence de la     ");
    puts("            suite    Zo = 0 , Zn+1 = Zn + C");
-   puts("             (C Çtant le nbre complexe considÇrÇ)");
-   puts("\nJulia: Idem mais ici, Zo = nbre complexe considÇrÇ.");
+   puts("             (C √©tant le nbre complexe consid√©r√©)");
+   puts("\nJulia: Idem mais ici, Zo = nbre complexe consid√©r√©.");
    puts("                      C  = Cte ");
    puts("\nProchaine version:");
    puts("    .Sauvegarde des images sur disque.");
-   puts("    .AmÇlioration de la sauvegarde des paramätres.");
+   puts("    .Am√©lioration de la sauvegarde des param√®tres.");
    puts("    .Autres algorithmes (Sierpinski, Koch, Minkowski,...)");
-   puts("    .DÇtermination directe des param. sur une image graphique.");
+   puts("    .D√©termination directe des param. sur une image graphique.");
    puts("");
-   puts("\n\n\nProgramme Çcrit en C++");
+   puts("\n\n\nProgramme √©crit en C++");
    getch();
    return;
 }
@@ -435,13 +435,13 @@ void load_param(void)
       f=fopen(nom,"r+b");
       fread(&prm,sizeof(float),10,f);
       var_par(1);
-      puts("\n\nChargement effectuÇ, appuyez sur une touche...");
+      puts("\n\nChargement effectu√©, appuyez sur une touche...");
       getch();
       fclose(f);
    }
    else
    {
-      puts("\n\nChargement annulÇ, appuyez sur une touche...");
+      puts("\n\nChargement annul√©, appuyez sur une touche...");
       getch();
    }
    return;
@@ -462,13 +462,13 @@ void save_param(void)
    {
       f=fopen(nom,"w+b");
       fwrite(&prm,sizeof(float),10,f);
-      puts("\n\nSauvegarde effectuÇe, appuyez sur une touche...");
+      puts("\n\nSauvegarde effectu√©e, appuyez sur une touche...");
       getch();
       fclose(f);
    }
    else
    {
-      puts("\n\nSauvegarde annulÇe, appuyez sur une touche...");
+      puts("\n\nSauvegarde annul√©e, appuyez sur une touche...");
       getch();
    }
    return;
@@ -495,8 +495,8 @@ void couleurs(void)
    puts("\t4:------> Cyan");
    puts("\t5:------> Bleu");
    puts("\t6:------> Mauve");
-   puts("\t7:------> GrisÉtre");
-   puts("\t8:------> AlÇatoire");
+   puts("\t7:------> Gris√¢tre");
+   puts("\t8:------> Al√©atoire");
    printf("\n\n  Choix:");
    couleur=getch();
    return;

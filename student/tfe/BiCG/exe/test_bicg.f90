@@ -57,7 +57,7 @@ PROGRAM TEST_BICG
     iflag   = 2
     ierr    = 0
 
-    ! -- Param�tres du pr�conditionneur ---------------------
+    ! -- Paramètres du préconditionneur ---------------------
     droptol = 0.0
     lfil    = 40
     permtol = 0.1
@@ -78,7 +78,7 @@ PROGRAM TEST_BICG
     CALL BICG(N, x, b, A, IA, JA, ALU, JLU, JU, epsilon,      &
               it_max, z, z2, r, r2, p, p2, q, q2, IFLAG, ierr)
 
-    ! -- Permutation de la solution (si pivotage employ�) --
+    ! -- Permutation de la solution (si pivotage employé) --
 
     IF(IFLAG.EQ.2) THEN
         DO i=1,N
@@ -89,7 +89,7 @@ PROGRAM TEST_BICG
     ENDDO
     ENDIF
 
-    ! -- Sauvegarde du r�sultat vers MATLAB ----------------
+    ! -- Sauvegarde du résultat vers MATLAB ----------------
 
     OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='UNKNOWN')
     DO i = 1, N

@@ -1,7 +1,7 @@
 /***********************************************************************
 *                      Starfield 1  (C++ & Asm)                        *
 *                                                                      *
-* . Déplacement latéral des étoiles                                    *
+* . DÃ©placement latÃ©ral des Ã©toiles                                    *
 *                                                             12.08.96 *
 ************************************************************************/
 
@@ -44,7 +44,7 @@ void main()
     {
         for (nb_et = 0; nb_et < 500; nb_et++)
         {
-            /* Eteint l'‚toile */
+            /* Eteint l'â€štoile */
             putpixel(et[nb_et].x, et[nb_et].y, 0);
 
             /* Calcule la vitesse */
@@ -58,7 +58,7 @@ void main()
                 et[nb_et].plan = random(256);
             }
 
-            /* Dessine l'‚toile */
+            /* Dessine l'â€štoile */
             putpixel(et[nb_et].x, et[nb_et].y, (et[nb_et].plan >> 4) + 16);
 
             /* Boucle d'attente */

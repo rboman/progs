@@ -131,7 +131,7 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      #       '                   ou 1) A et b ? :')
  110  FORMAT(' Nbre de variables   :')
  111  FORMAT(' Nbre de contraintes :')
- 112  FORMAT(' Nouveau fichier de donn�es :')
+ 112  FORMAT(' Nouveau fichier de données :')
  150  FORMAT(' Fichier inexistant !')
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C

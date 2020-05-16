@@ -5,14 +5,14 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C Updates : 27.10.96 : GMRES restarted (full matrix)
 C ~~~~~~~   16.11.96 : GMRES restarted (sparse matrix)
 C                        - compres. de H et A.
-C                        - essai de r�orthogonalisation.
-C                        - optimisation de la m�moire (temp)
+C                        - essai de réorthogonalisation.
+C                        - optimisation de la mémoire (temp)
 C                          et du temps C.P.U.
 C                        - adaptation en REAL*8.
 C           17.11.96 : - A au format CSR
-C                      - pr�cond. SSOR.
-C           08.12.96 : - pr�cond. ILU(0)
-C           12.12.96 : - pr�cond. ILUT, ILUTP, ILU0, MILU0,
+C                      - précond. SSOR.
+C           08.12.96 : - précond. ILU(0)
+C           12.12.96 : - précond. ILUT, ILUTP, ILU0, MILU0,
 C                                 ILUD, ILUDP (de Saad)
 C                      - nettoyage (pas transf. vers Matlab)
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -20,31 +20,31 @@ C
       SUBROUTINE gmres(N, x, b, A, IA, JA, ALU, JLU, JU,epsilon, 
      #                 it_max, m, V, H, w, co, si, g, y, FLAG)
 C
-C Input  : N           : Dim. du syst�me.
+C Input  : N           : Dim. du système.
 C ~~~~~    x (N)       : Vecteur initial x0.
 C          b (N)       : Second membre.
 C          A,IA,JA     : Matrice du syst. au format CSR.
-C             .A  (NELEM) = �l�ments non nuls.
+C             .A  (NELEM) = éléments non nuls.
 C             .JA (NELEM) = colonnes corresp.
 C             .IA (N+1)   = pointeur vers les sauts de ligne.
-C          ALU, JLU,JU : pr�conditionneur (MSR).
-C             .ALU(PRESIZE) = �l�ments du pr�condit.
-C             .JLU(2*N+1)   = pointeur vers les �l�m. diag.
-C             .JU (N)       = pointeur vers d�but de U.
-C          epsilon     : Pr�cision relative du r�sultat.
-C          it_max      : Nbre d'it�rations max. � effectuer.
-C          m           : param�tre 'restart'   (m<N) .
+C          ALU, JLU,JU : préconditionneur (MSR).
+C             .ALU(PRESIZE) = éléments du précondit.
+C             .JLU(2*N+1)   = pointeur vers les élém. diag.
+C             .JU (N)       = pointeur vers début de U.
+C          epsilon     : Précision relative du résultat.
+C          it_max      : Nbre d'itérations max. à effectuer.
+C          m           : paramètre 'restart'   (m<N) .
 C          autres...   : Variables auxiliaires:
 C             - V (N,m)   : contient les vecteurs de la base de Krylov.
 C             - H ((m*(m+3))/2) : Mat. d'Hessenberg (format vect.).
 C             - w, y (N)  : Vecteurs temporaires (r, w, x, Ax).
 C             - co,si (m) : Coeff. de la matrice de rotation.
 C             - g (m+1)   : Second membre de Hy=g.
-C          FLAG        : =1 -> pr�cond. actif.
+C          FLAG        : =1 -> précond. actif.
 C
-C Output : x           : Solution du syst�me Ax=b.
+C Output : x           : Solution du système Ax=b.
 C ~~~~~~
-C Variables : no_it       : compteur d'it�ration.
+C Variables : no_it       : compteur d'itération.
 C ~~~~~~~~~   i,j,k,kk    : compteurs de boucle
 C             temp        : var. temporaire.
 C             normV,normW : normes de AVi et w.
@@ -52,11 +52,11 @@ C             sizeH       : contient (m*(m+3))/2.
 C             residu      : ...
 C             
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C Compilation : n�cessite MATFUN.OBJ,SPARFUN2.OBJ
+C Compilation : nécessite MATFUN.OBJ,SPARFUN2.OBJ
 C ~~~~~~~~~~~             PREFUN.OBJ
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-C     -- D�clarations --------------------------------------
+C     -- Déclarations --------------------------------------
       implicit real*8(a-h,o-z)
 
       INTEGER N, i, j, k, no_it, m, IA, JA, JLU,
@@ -77,7 +77,7 @@ C     -- Initialisations -----------------------------------
 
       tol   = epsilon*VectNorm(N, b)
 
-C     -- D�but de la boucle de 'restart'--------------------
+C     -- Début de la boucle de 'restart'--------------------
 
 1     no_it = 0
       j     = 0 
@@ -107,7 +107,7 @@ C                --------------------------------------
        WRITE(*,210)no_it, g(j)
        no_it = no_it+1
        WRITE(1,*)'residu(',no_it,')=',g(j),';'
-C Pr�conditionnement
+C Préconditionnement
        
        IF (FLAG.NE.0) THEN
          CALL LUSOL(N, V(1,j), y, ALU, JLU, JU)
@@ -151,7 +151,7 @@ C Calcul du nouveau v. (orthog. aux autres).
          NormW = VectNorm(N, w)
          H(j+1,j)=NormW
 
-C R�orthogonalisation ?
+C Réorthogonalisation ?
 
       IF (DABS(NormV-NormW).LT.1D-1) THEN
 C         write(*,*)DABS(NormV-NormW)
@@ -184,10 +184,10 @@ C Teste le Happy breakdown et norme le vecteur v.
          ENDIF
 
 C      ------------------------------------------------------   
-C      Solver du syst�me de Hessenberg (par rotations planes)
+C      Solver du système de Hessenberg (par rotations planes)
 C      ------------------------------------------------------
 
-C Rotation de la derni�re colonne
+C Rotation de la dernière colonne
 
          
          DO 90 i=1, j-1
@@ -224,8 +224,8 @@ C Test du residu
 C     -- SORTIE ou restart ---------------------------------
 
 C          ---------------------------------------------
-C          Calcul de la solution  (substitution arri�re)
-C             du syst�me H w = g avec H de dim. j*j.
+C          Calcul de la solution  (substitution arrière)
+C             du système H w = g avec H de dim. j*j.
 C          ---------------------------------------------
 
 99    DO 300 i = j, 1, -1
@@ -237,7 +237,7 @@ C          ---------------------------------------------
 300   CONTINUE
 
 C                   --------------------------
-C                   Mise � jour de la solution
+C                   Mise à jour de la solution
 C                   --------------------------
       DO 320 i=1, N
          temp=0.0D0
@@ -247,7 +247,7 @@ C                   --------------------------
          y(i)=temp
 320   CONTINUE
 
-C Pr�conditionnement
+C Préconditionnement
 
       IF (FLAG.NE.0) THEN
           CALL LUSOL(N, y, y, ALU, JLU, JU)

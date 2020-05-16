@@ -62,7 +62,7 @@ class MailWindow(QWidget):
         prmlayout.addWidget(self.subjw, 3, 1)
         vbox.addLayout(prmlayout)
         
-        #self.textw = QTextEdit("<h1><font color=red>L</font>es <em>accents</em> marchent</h1><p>����</p>")
+        #self.textw = QTextEdit("<h1><font color=red>L</font>es <em>accents</em> marchent</h1><p>éèüì</p>")
         self.textw = QTextEdit("Salut Vinciane!")
         vbox.addWidget(self.textw)
  

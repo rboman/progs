@@ -22,13 +22,13 @@ C
 C     -- Chargement de la matrice A et du vecteur b ---------
       CALL loadmat(A,IA,JA,b,xref,ierr)
 
-C     -- Param�tres du SYMMLQ -------------------------------
+C     -- Paramètres du SYMMLQ -------------------------------
       epsilon = 1.0D-8
       it_max  = 800
       iflag   = 2
       ierr    = 0
 
-C     -- Param�tres du pr�conditionneur ---------------------
+C     -- Paramètres du préconditionneur ---------------------
       droptol = 0.0
       lfil    = 40
       permtol = 0.1
@@ -49,7 +49,7 @@ C
      #         epsilon,it_max,r,r2,p,p2,q,q2,v,u,
      #         IFLAG,ierr)
 C
-C     -- Permutation de la solution (si pivotage employ�) --
+C     -- Permutation de la solution (si pivotage employé) --
 
       IF(IFLAG.EQ.2) THEN
          DO 101 i=1,N
@@ -60,7 +60,7 @@ C     -- Permutation de la solution (si pivotage employ�) --
 102      CONTINUE
       ENDIF
 
-C     -- Sauvegarde du r�sultat vers MATLAB ----------------
+C     -- Sauvegarde du résultat vers MATLAB ----------------
 
       OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='UNKNOWN')
       DO 100 i = 1, N

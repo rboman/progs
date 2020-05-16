@@ -3,8 +3,8 @@ C                 SSOR preconditioner
 C
 C Rem : A ne peut pas avoir d'elem. diag. nul !
 C       Diverge si cond(A) >>
-C       Sinon, donne de bons r�sultats
-C       Colonnes triees sinon crash !
+C       Sinon, donne de bons résultats
+C       Colonnes triées sinon crash !
 C
 C++++++++++++++++++++++++++++++++++++++++++++++++++++
 
