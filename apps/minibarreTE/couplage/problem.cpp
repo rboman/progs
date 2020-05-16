@@ -142,8 +142,8 @@ void Problem::solve()
     Fn[(m - 1) / 2] = light.eval(0.0);
     Fnplus1[(m - 1) / 2] = light.eval(dt);
 
-    // Création de la matrice Aprime et du vecteur bprime selon le schéma de nmark.
-    // On résoudra Aprime*Znplus1 = bprime
+    // CrÃ©ation de la matrice Aprime et du vecteur bprime selon le schÃ©ma de nmark.
+    // On rÃ©soudra Aprime*Znplus1 = bprime
 
     // Aprime
     gmm::row_matrix<gmm::wsvector<double>> Aprime(2 * m, 2 * m);
@@ -165,7 +165,7 @@ void Problem::solve()
     // second membre
     std::vector<double> bprime(2 * m);
 
-    //Calcul de la matrice de préconditionnement et définition du critère d'erreur
+    //Calcul de la matrice de prÃ©conditionnement et dÃ©finition du critÃ¨re d'erreur
     std::cout << "preconditionner...\n";
     gmm::ilutp_precond<gmm::row_matrix<gmm::wsvector<double>>> P(Aprime, m, 0.);
 
@@ -201,7 +201,7 @@ void Problem::solve()
         bprime[m] = 0.0;
         bprime[2 * m - 1] = 0.0;
 
-        // Résolution de l'équation
+        // RÃ©solution de l'Ã©quation
         gmm::iteration iter(1.e-6); //iter.set_noisy(1);
         gmm::gmres(Aprime, Znplus1, bprime, P, 100, iter);
 

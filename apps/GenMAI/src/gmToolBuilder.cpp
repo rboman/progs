@@ -54,7 +54,7 @@ void ToolBuilder::write(std::ostream &out) const
 }
 
 /**
- * @brief génération de la matrice a l'aide des parametres courants
+ * @brief gÃ©nÃ©ration de la matrice a l'aide des parametres courants
  */
 
 void ToolBuilder::genere()
@@ -68,7 +68,7 @@ void ToolBuilder::genere()
     // generation 1er point */
     target.points.push_back(new Point(centre, getRollAxis(), d2r(initialAngle), radius));
 
-    // generation des aspérites
+    // generation des aspÃ©rites
     for (size_t i = 0; i < numberOfAsperities; i++)
     {
         genereAsperity();
@@ -76,10 +76,10 @@ void ToolBuilder::genere()
             genereInterval();
     }
 
-    // a partir d'ici, on va reconsidérer tous les
-    // noeuds 3 par 3 pour créer des congés de
+    // a partir d'ici, on va reconsidÃ©rer tous les
+    // noeuds 3 par 3 pour crÃ©er des congÃ©s de
     // raccordement. Les points 1->nbpt2 et les courbes
-    // 1->nbcou2 ne seront pas sauvées
+    // 1->nbcou2 ne seront pas sauvÃ©es
 
     // Generation des conges
     // ---------------------
@@ -105,7 +105,7 @@ void ToolBuilder::genere()
     // Creation du dernier point
     target.points.push_back(new Point(*target.points[nbpt2 - 1]));
 
-    // Création de la derniere ligne
+    // CrÃ©ation de la derniere ligne
     target.curves.push_back(new Curve( {target.points.size() - 1, target.points.size()} ));
 
     target.firstp = nbpt2;
@@ -126,7 +126,7 @@ ToolBuilder::r2d(double angle)
 
 void ToolBuilder::genereAsperity()
 {
-    // index courant - récupère le dernier point
+    // index courant - rÃ©cupÃ¨re le dernier point
     size_t pr = target.points.size() - 1;
     const Point &p1 = *target.points[pr];
 

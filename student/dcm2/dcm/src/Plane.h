@@ -43,10 +43,10 @@ public:
     double c1;
     double T;
     double F0;
-    int np;      // précision du tracé en x ds MATLAB
+    int np;      // prÃ©cision du tracÃ© en x ds MATLAB
     int np2;     //                    en t
-    int Nperiod; // nbre de périodes en t (pour MATLAB)
-    int Nmodes;  // nbre de modes à calculer avec prec.
+    int Nperiod; // nbre de pÃ©riodes en t (pour MATLAB)
+    int Nmodes;  // nbre de modes Ã  calculer avec prec.
     double PREC;
     double PREC2;
 

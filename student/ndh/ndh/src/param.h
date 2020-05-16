@@ -17,7 +17,7 @@
 
 #include "ndh.h"
 
-// routines de modification de paramètres
+// routines de modification de paramÃ¨tres
 
 namespace ndh
 {

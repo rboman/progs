@@ -22,5 +22,5 @@ void
 Singleton<T>::destroy()
 {
     if(instance) delete instance;
-    //if(instance) free(instance); // "placement new" (!!! les destructeurs de sont pas appelés!!!!)
+    //if(instance) free(instance); // "placement new" (!!! les destructeurs de sont pas appelÃ©s!!!!)
 }

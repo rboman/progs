@@ -41,48 +41,48 @@ enum Prb
 
 class NDH_API BemSolver
 {
-    int N;       // Nombre d'éléments frontières sur le contour.
-    int istep;   // Nombre de pas d'intégration sur un élément.
-    int density; // Densité de visualisation de la solution
+    int N;       // Nombre d'Ã©lÃ©ments frontiÃ¨res sur le contour.
+    int istep;   // Nombre de pas d'intÃ©gration sur un Ã©lÃ©ment.
+    int density; // DensitÃ© de visualisation de la solution
                  // (nombre de mailles sur un rayon).
-    int d_old;   // Ancienne valeur de la densité (utile pour
-                 // détruire correctement le tableau des T).
-    int range;   // Nbre de ray. sur lesquels la sol. est calculée.
-    int ideg;    // Type d'intégration de Newton-Cotes
-                 // (1=trapéze, 2=Simpson,...).
+    int d_old;   // Ancienne valeur de la densitÃ© (utile pour
+                 // dÃ©truire correctement le tableau des T).
+    int range;   // Nbre de ray. sur lesquels la sol. est calculÃ©e.
+    int ideg;    // Type d'intÃ©gration de Newton-Cotes
+                 // (1=trapÃ©ze, 2=Simpson,...).
 public:
-    Meth type;    // Méthode de calcul (1=full, 2=symétrique).
-    Prb probleme; // Type de problème (1=cercle, 2=carré, 3=qcq.).
+    Meth type;    // MÃ©thode de calcul (1=full, 2=symÃ©trique).
+    Prb probleme; // Type de problÃ¨me (1=cercle, 2=carrÃ©, 3=qcq.).
 
 private:
     int maillag;    // 1=Dessine le maillage.
     int whitebg;    // 1=Fond blanc pour l'impression.
     bool cartesien; // 1=maillage rectangulaire (density x density)
-                    // (uniquement pour le carré).
-    int calcul;     // 1=calculs effectués.
+                    // (uniquement pour le carrÃ©).
+    int calcul;     // 1=calculs effectuÃ©s.
 
-    clock_t time1, time2; // temps de début et de fin de calcul.
+    clock_t time1, time2; // temps de dÃ©but et de fin de calcul.
 
     double xo, yo;       // (x,y) de l'origine des axes absolus.
     double zoom;         // Zoom de visualisation.
     double *alpha;       // Vecteur temporaire [N].
-    double *xf, *yf;     // (x,y) des extrémités des éléments [N+1].
+    double *xf, *yf;     // (x,y) des extrÃ©mitÃ©s des Ã©lÃ©ments [N+1].
     double *xel, *yel;   // (x,y) des connecteurs [N].
-    double *xint, *yint; // (x,y) des points d'intégration [istep+1].
-    double *fct, *fct2;  // Valeurs des fonctions é intégrer [istep+1].
+    double *xint, *yint; // (x,y) des points d'intÃ©gration [istep+1].
+    double *fct, *fct2;  // Valeurs des fonctions Ã© intÃ©grer [istep+1].
     double *G1, *H1;     // Vect. auxilaires pour le calcul des T [N].
-    double *u;           // Tempétatures sur les éléments [N].
-    double *q;           // Flux de chaleur sur les éléments [N].
+    double *u;           // TempÃ©tatures sur les Ã©lÃ©ments [N].
+    double *q;           // Flux de chaleur sur les Ã©lÃ©ments [N].
     double **G, **H;     // Matrices G et H [N,N].
-    double **T;          // Tableau des T calculées [density,range].
-    double beta;         // Paramétre du probléme.
-    double k;            // Conductivité thermique.
+    double **T;          // Tableau des T calculÃ©es [density,range].
+    double beta;         // ParamÃ©tre du problÃ©me.
+    double k;            // ConductivitÃ© thermique.
     double R;            // Rayon du cercle.
-    double a;            // Longueur du cété du carré.
+    double a;            // Longueur du cÃ©tÃ© du carrÃ©.
     double pi;           // 3.141592.
-    double Tmin, Tmax;   // Valeurs min et max des T calculées.
+    double Tmin, Tmax;   // Valeurs min et max des T calculÃ©es.
 
-    // Coefficients de l'intégration de Newton-Cotes:
+    // Coefficients de l'intÃ©gration de Newton-Cotes:
     double icoeff[6][7] = {{1, 1, 0, 0, 0, 0, 0},
                            {1, 4, 1, 0, 0, 0, 0},
                            {1, 3, 3, 1, 0, 0, 0},
@@ -108,7 +108,7 @@ public:
 
     void find_minmax();
 
-    // pas appelé
+    // pas appelÃ©
     void generate(); //void tester()
 
 private:

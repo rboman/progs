@@ -15,7 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# teste metafor avec un PATH différent
+# teste metafor avec un PATH diffÃ©rent
 
 import os
 

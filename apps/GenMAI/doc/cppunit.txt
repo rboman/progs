@@ -5,13 +5,13 @@ Gestion de cppunit
 Avant tout compiler les libs cppunit.
 Pour ce faire, compiler l'exemple CppUnitTestApp en Release et en Debug.
 
-Pour créer une application console:
+Pour crÃ©er une application console:
 - se referer au repertoire cppunit (fichier Main.cpp)
 - options: multithread dll, rtti
 - linker avec cppunit.lib
 
-Pour créer une application MFC:
-- créer une application MFC avec le MFC app wizard.
+Pour crÃ©er une application MFC:
+- crÃ©er une application MFC avec le MFC app wizard.
 - choisir n importe quoi (par exemple Dialog) et un minimum d'options
 - regarder le fichier mfc/mfc.cpp et ajouter ce qui est entre "-+-+-+"
 - linker en release avec cppunit.lib et testrunner.lib et en debug avec les versions debug

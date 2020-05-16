@@ -513,7 +513,7 @@ class MainWindow:
     def showHelp(self):
         message = """
 - ne pas manipuler des fichiers avec des espaces dans le nom
-- lorsqu'on double-clique sur un dialog, le clic est transmis à la fenêtre en dessous!"""
+- lorsqu'on double-clique sur un dialog, le clic est transmis Ã  la fenÃªtre en dessous!"""
         Pmw.MessageDialog(self.master, title="Help", buttons=('Close',),
                           message_text=message, message_justify='left',
                           icon_bitmap='info', iconpos='w')
@@ -1214,7 +1214,7 @@ class ImagingFrame(Frame):
         fname = tkFileDialog.Open(filetypes=[('GE Signa file', '*.001'),
                                              ('All files', '*.*')],
                                   initialdir=self.lastloaddir).show()
-        # possibilité d'utiliser tkFileDialog.askdirectory(parent=root,initialdir="/",title='Choisissez un repertoire')
+        # possibilitÃ© d'utiliser tkFileDialog.askdirectory(parent=root,initialdir="/",title='Choisissez un repertoire')
         if fname:
             self.lastloaddir = os.path.split(fname)[0]
             dirname = os.path.split(fname)[0]

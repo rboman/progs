@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# crée les fichiers nécessaires au calcul sphere-elipse du TFE Yala
+# crÃ©e les fichiers nÃ©cessaires au calcul sphere-elipse du TFE Yala
 # RoBo - juin 2006
 
 import vtk

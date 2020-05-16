@@ -25,14 +25,14 @@ typedef double TYPE;
 
 /**
  * @brief Calcul des valeurs et vecteurs propres d'une matrice 
- *        par la méthode de Jacobi
+ *        par la mÃ©thode de Jacobi
  * 
- *      a Matrice de départ dont on cherche les Valeurs Propres
- *        (! la diagonale sera modifiée après passage)
+ *      a Matrice de dÃ©part dont on cherche les Valeurs Propres
+ *        (! la diagonale sera modifiÃ©e aprÃ¨s passage)
  *      n Taille de la matrice a
- *      d valeurs propres (non ordonnées)
- *      v modes propres normés correspondants
- *   nrot nombre de rotations dans la méthode
+ *      d valeurs propres (non ordonnÃ©es)
+ *      v modes propres normÃ©s correspondants
+ *   nrot nombre de rotations dans la mÃ©thode
  */
 
 void jacobi(TYPE **a, int n, TYPE d[], TYPE **v, int &nrot)

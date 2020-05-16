@@ -18,30 +18,30 @@ using namespace ndh;
 // VARIABLES GLOBALES! ------------------------
 BemSolver::BemSolver()
 {
-    N = 40;            // Nombre d'ÈlÈments frontiÈres sur le contour.
-    istep = 20;        // Nombre de pas d'intÈgration sur un ÈlÈment.
-    density = 15;      // DensitÈ de visualisation de la solution
+    N = 40;            // Nombre d'√©l√©ments fronti√©res sur le contour.
+    istep = 20;        // Nombre de pas d'int√©gration sur un √©l√©ment.
+    density = 15;      // Densit√© de visualisation de la solution
                        // (nombre de mailles sur un rayon).
-    ideg = 1;          // Type d'intÈgration de Newton-Cotes
-                       // (1=trapÈze, 2=Simpson,...).
-    type = FULL;       // MÈthode de calcul (1=full, 2=symÈtrique).
+    ideg = 1;          // Type d'int√©gration de Newton-Cotes
+                       // (1=trap√©ze, 2=Simpson,...).
+    type = FULL;       // M√©thode de calcul (1=full, 2=sym√©trique).
     maillag = 1;       // 1=Dessine le maillage.
-    probleme = CIRCLE; // Type de problÈme (1=cercle, 2=carrÈ, 3=qcq.).
+    probleme = CIRCLE; // Type de probl√©me (1=cercle, 2=carr√©, 3=qcq.).
     whitebg = 1;       // 1=Fond blanc pour l'impression.
     cartesien = false; // 1=maillage rectangulaire (density x density)
-                       // (uniquement pour le carrÈ).
-    calcul = 0;        // 1=calculs effectuÈs.
+                       // (uniquement pour le carr√©).
+    calcul = 0;        // 1=calculs effectu√©s.
 
-    // int prÈcÈdemment pas init...
-    d_old = 0; // Ancienne valeur de la densitÈ (utile pour
-               // dÈtruire correctement le tableau des T).
-    range = 0; // Nbre de ray. sur lesquels la sol. est calculÈe.
+    // int pr√©c√©demment pas init...
+    d_old = 0; // Ancienne valeur de la densit√© (utile pour
+               // d√©truire correctement le tableau des T).
+    range = 0; // Nbre de ray. sur lesquels la sol. est calcul√©e.
     d_old = density;
     range = N;
 
     // clock_t
     time1 = 0;
-    time2 = 0; // temps de dÈbut et de fin de calcul.
+    time2 = 0; // temps de d√©but et de fin de calcul.
 
     // doubles
     xo = 220;
@@ -50,32 +50,32 @@ BemSolver::BemSolver()
 
     alpha = nullptr; // Vecteur temporaire [N].
     xf = nullptr;
-    yf = nullptr; // (x,y) des extrÈmitÈs des ÈlÈments [N+1].
+    yf = nullptr; // (x,y) des extr√©mit√©s des √©l√©ments [N+1].
     xel = nullptr;
     yel = nullptr; // (x,y) des connecteurs [N].
     xint = nullptr;
-    yint = nullptr; // (x,y) des points d'intÈgration [istep+1].
+    yint = nullptr; // (x,y) des points d'int√©gration [istep+1].
     fct = nullptr;
-    fct2 = nullptr; // Valeurs des fonctions È intÈgrer [istep+1].
+    fct2 = nullptr; // Valeurs des fonctions √© int√©grer [istep+1].
     G1 = nullptr;
     H1 = nullptr; // Vect. auxilaires pour le calcul des T [N].
-    u = nullptr;  // TempÈtatures sur les ÈlÈments [N].
-    q = nullptr;  // Flux de chaleur sur les ÈlÈments [N].
+    u = nullptr;  // Temp√©tatures sur les √©l√©ments [N].
+    q = nullptr;  // Flux de chaleur sur les √©l√©ments [N].
     G = nullptr;
     H = nullptr; // Matrices G et H [N,N].
-    T = nullptr; // Tableau des T calculÈes [density,range].
+    T = nullptr; // Tableau des T calcul√©es [density,range].
 
-    beta = 80;          // ParamÈtre du problÈme.
-    k = 400;            // ConductivitÈ thermique.
+    beta = 80;          // Param√©tre du probl√©me.
+    k = 400;            // Conductivit√© thermique.
     R = 1.2;            // Rayon du cercle.
-    a = 1.2;            // Longueur du cÈtÈ du carrÈ.
+    a = 1.2;            // Longueur du c√©t√© du carr√©.
     pi = 4 * atan(1.0); // 3.141592.
 
     // doubles precedemment pas init...
     Tmin = 0.0;
-    Tmax = 0.0; // Valeurs min et max des T calculÈes.
+    Tmax = 0.0; // Valeurs min et max des T calcul√©es.
 
-    // Coefficients de l'intÈgration de Newton-Cotes:
+    // Coefficients de l'int√©gration de Newton-Cotes:
 
     create_vectors();
     define_geometry();
@@ -92,10 +92,10 @@ NDH_API void ndh::clrscr()
 }
 
 //--------------------------------------------------------------------
-// Routine de dÈfinition de la gÈomÈtrie :
+// Routine de d√©finition de la g√©om√©trie :
 //  Remplit les vecteurs xf,yf et xel,yel.
-//  . si probleme=CIRCLE -> crÈation d'un cercle.
-//  . si probleme=SQUARE -> crÈation d'un carrÈ.
+//  . si probleme=CIRCLE -> cr√©ation d'un cercle.
+//  . si probleme=SQUARE -> cr√©ation d'un carr√©.
 //--------------------------------------------------------------------
 
 void BemSolver::define_geometry()
@@ -109,7 +109,7 @@ void BemSolver::define_geometry()
             yf[i] = R * sin(alpha[i]);
         }
     }
-    else if (probleme == SQUARE) // carrÈ
+    else if (probleme == SQUARE) // carr√©
     {
         int j = N / 4;
         N = 4 * j;
@@ -134,8 +134,8 @@ void BemSolver::define_geometry()
 }
 
 //--------------------------------------------------------------------
-// Routine d'Èvaluation d'un ÈlÈm. des matrices G et H.
-//   .reÈoit -les indices i et j de l'ÈlÈm. ‡ calculer.
+// Routine d'√©valuation d'un √©l√©m. des matrices G et H.
+//   .re√©oit -les indices i et j de l'√©l√©m. √† calculer.
 //           -les coord. x,y de l'origine des axes.
 //--------------------------------------------------------------------
 
@@ -143,7 +143,7 @@ void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
 {
     if (j == i)
     {
-        // terme diagonal -> on applique les formules spÈciales.
+        // terme diagonal -> on applique les formules sp√©ciales.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         double dx = xf[i + 1] - xf[i];
         double dy = yf[i + 1] - yf[i];
@@ -153,20 +153,20 @@ void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
     }
     else
     {
-        // cas gÈnÈral d'un terme non diagonal.
+        // cas g√©n√©ral d'un terme non diagonal.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        // calcul de la normale (normÈe) ‡ l'ÈlÈment:
+        // calcul de la normale (norm√©e) √† l'√©l√©ment:
         double nx = yf[j + 1] - yf[j];
         double ny = xf[j] - xf[j + 1];
         double temp = sqrt(nx * nx + ny * ny);
         nx = nx / temp;
         ny = ny / temp;
 
-        // calcul des coord. des points d'intÈgration (xint,yint):
+        // calcul des coord. des points d'int√©gration (xint,yint):
         fillvector(xint, xf[j], (xf[j + 1] - xf[j]) / istep, istep + 1);
         fillvector(yint, yf[j], (yf[j + 1] - yf[j]) / istep, istep + 1);
 
-        // Èvaluation des deux fonctions ‡ intÈgrer sur l'ÈlÈment
+        // √©valuation des deux fonctions √† int√©grer sur l'√©l√©ment
         // et stockage des valeurs dans fct et fct2:
         for (int t = 0; t < istep + 1; t++)
         {
@@ -175,16 +175,16 @@ void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
             fct2[t] = (-nx * (xint[t] - x) - ny * (yint[t] - y)) / (2 * pi * temp * temp);
         }
 
-        // initialisation des ÈlÈments È calculer:
+        // initialisation des √©l√©ments √© calculer:
         *g = 0.0;
         *h = 0.0;
 
-        // calcul de la longueur d'un pas d'intÈgration:
+        // calcul de la longueur d'un pas d'int√©gration:
         double dx = xint[1] - xint[0];
         double dy = yint[1] - yint[0];
         double dL = sqrt(dx * dx + dy * dy);
 
-        // intÈgration de Newton-Cotes:
+        // int√©gration de Newton-Cotes:
         for (int t = 0; t < istep - ideg + 1; t += ideg)
             for (int tt = 0; tt <= ideg; tt++)
             {
@@ -197,7 +197,7 @@ void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
 }
 
 //--------------------------------------------------------------------
-// Routine d'Èvaluation des tempÈratures sur chaque ÈlÈment.
+// Routine d'√©valuation des temp√©ratures sur chaque √©l√©ment.
 //--------------------------------------------------------------------
 
 void BemSolver::eval_u()
@@ -219,11 +219,11 @@ void BemSolver::exec_sym()
 }
 
 //--------------------------------------------------------------------
-// Routine de calcul des tempÈtatures (remplissage du tableau T).
-// (Cette routine rÈsoud le problÈme posÈ)
-//   .reÈoit le 'type' de calculs È effectuer:
-//         - type=FULL : calculs sans tenir compte de la symÈtrie.
-//         - type=SYMMETRIC : calculs optimisÈs compte tenu de la symÈtrie.
+// Routine de calcul des temp√©tatures (remplissage du tableau T).
+// (Cette routine r√©soud le probl√©me pos√©)
+//   .re√©oit le 'type' de calculs √© effectuer:
+//         - type=FULL : calculs sans tenir compte de la sym√©trie.
+//         - type=SYMMETRIC : calculs optimis√©s compte tenu de la sym√©trie.
 //--------------------------------------------------------------------
 
 void BemSolver::full_calcul()
@@ -235,24 +235,24 @@ void BemSolver::full_calcul()
     //titre();
     if ((probleme == OTHER) && (type == SYMMETRIC))
     {
-        // Cas du problÈme qcq. avec calculs optimisÈs.
+        // Cas du probl√©me qcq. avec calculs optimis√©s.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        std::cout << "\nPas de solution rapide pour un problÈme QCQ !\n<ESPACE>";
+        std::cout << "\nPas de solution rapide pour un probl√©me QCQ !\n<ESPACE>";
         //getch();
     }
     else
     {
-        time1 = clock(); // on commence È compter le temps CPU.
-        calcul = 1;      // le calcul va Ètre effectuÈ.
-        destroy_aux();   // libÈration de la mÈmoire.
+        time1 = clock(); // on commence √© compter le temps CPU.
+        calcul = 1;      // le calcul va √©tre effectu√©.
+        destroy_aux();   // lib√©ration de la m√©moire.
 
-        std::cout << "\n\nCrÈation des matrices H et G...";
+        std::cout << "\n\nCr√©ation des matrices H et G...";
         create_GH();
 
         std::cout << "Ok\nCalcul des matrices H et G...";
         if (type == FULL)
         {
-            // Cas du problÈme non optimisÈ:
+            // Cas du probl√©me non optimis√©:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             for (i = 0; i < N; i++)
                 for (j = 0; j < N; j++)
@@ -260,7 +260,7 @@ void BemSolver::full_calcul()
         }
         else
         {
-            // Cas du problÈme optimisÈ:
+            // Cas du probl√©me optimis√©:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~
             if (probleme == CIRCLE) // *** CERCLE ***
             {                       // Une seule ligne de H utile:            ******
@@ -296,11 +296,11 @@ void BemSolver::full_calcul()
                 }
             }
         }
-        // Evaluation des T sur la frontiÈre et rÈsolution du
-        // systÈme par Gauss:
-        std::cout << "Ok\nRÈsolution de G q = H u...";
+        // Evaluation des T sur la fronti√©re et r√©solution du
+        // syst√©me par Gauss:
+        std::cout << "Ok\nR√©solution de G q = H u...";
         eval_u();
-        if ((type == SYMMETRIC) && (probleme == CIRCLE)) // cas du cercle optimisÈ
+        if ((type == SYMMETRIC) && (probleme == CIRCLE)) // cas du cercle optimis√©
         {
             temp = 0.0;
             for (j = 0; j < N; j++)
@@ -308,15 +308,15 @@ void BemSolver::full_calcul()
             for (j = 0; j < N; j++)
                 alpha[j] = temp;
         }
-        else // cas gÈnÈral
+        else // cas g√©n√©ral
             mmv(N, H, u, alpha);
         gauss(N, G, q, alpha);
 
-        // LibÈration de la mÈmoire occupÈe par les matrices G et H:
+        // Lib√©ration de la m√©moire occup√©e par les matrices G et H:
         std::cout << "Ok\nDestruction des matrices H et G...";
         destroy_GH();
 
-        std::cout << "Ok\nCalcul des T intÈrieures...";
+        std::cout << "Ok\nCalcul des T int√©rieures...";
         if ((probleme == CIRCLE) && (type == SYMMETRIC))
             range = 1;
         else if ((probleme == SQUARE) && (type == SYMMETRIC))
@@ -330,7 +330,7 @@ void BemSolver::full_calcul()
             cartesien = false;
         create_aux();
 
-        // Calcul des points xb,yb o˘ va Ètre ÈvaluÈe la T.
+        // Calcul des points xb,yb o√π va √©tre √©valu√©e la T.
         for (i1 = 0; i1 < density; i1++)
             for (j1 = 0; j1 < range; j1++)
             {
@@ -351,16 +351,16 @@ void BemSolver::full_calcul()
                 }
                 for (j = 0; j < N; j++)
                     eval_GH(&(G1[j]), &(H1[j]), j - 1, j, xb, yb);
-                // Calcul de la solution du problÈme de Poisson
+                // Calcul de la solution du probl√©me de Poisson
                 temp = 0.0;
                 for (j = 0; j < N; j++)
                     temp = temp + G1[j] * q[j] - H1[j] * u[j];
-                // Calcul de la solution du problÈme posÈ
+                // Calcul de la solution du probl√©me pos√©
                 r = sqrt(xb * xb + yb * yb);
                 T[i1][j1] = temp + beta / (2 * k) * r * r;
             }
 
-        time2 = clock(); // les calculs sont terminÈs !
+        time2 = clock(); // les calculs sont termin√©s !
 
         // Affichage de la solution
         std::cout << "Ok\nSolution :";
@@ -384,7 +384,7 @@ std::vector<double> BemSolver::getSolution()
 }
 
 //--------------------------------------------------------------------
-// Routine de calcul des tempÈtatures exactes (dans le tableau T).
+// Routine de calcul des temp√©tatures exactes (dans le tableau T).
 //--------------------------------------------------------------------
 
 void BemSolver::eval_Texact()
@@ -398,7 +398,7 @@ void BemSolver::eval_Texact()
         std::cout << "\n\nPas de solution exacte disponible !";
     else
     {
-        time1 = clock(); // dÈbut des calculs.
+        time1 = clock(); // d√©but des calculs.
         calcul = 1;
         for (i1 = 0; i1 < density; i1++)
             for (j1 = 0; j1 < range; j1++)
@@ -431,13 +431,13 @@ void BemSolver::eval_Texact()
             }
         time2 = clock();
         find_minmax();
-        //std::cout << "\nCalcul effectuÈ\n<ESPACE> pour voir la solution...";
+        //std::cout << "\nCalcul effectu√©\n<ESPACE> pour voir la solution...";
         //getch();
-        //visu(); // Visualisation graphique des rÈsultats.
+        //visu(); // Visualisation graphique des r√©sultats.
     }
 }
 //--------------------------------------------------------------------
-// Routine de gÈnÈration d'une gÈomÈtrie donnÈe et sauvegarde
+// Routine de g√©n√©ration d'une g√©om√©trie donn√©e et sauvegarde
 // dans un fichier *.DAT
 //--------------------------------------------------------------------
 
@@ -458,7 +458,7 @@ void BemSolver::generate()
     probleme = OTHER;
     create_vectors();
 
-    // GÈnÈration:
+    // G√©n√©ration:
     fillvector(alpha, 0.0, (2 * pi) / N, N + 1);
     for (i = 0; i < N + 1; i++)
     {
@@ -491,7 +491,7 @@ void BemSolver::generate()
 
 //--------------------------------------------------------------------
 // Routines de gestion des tableaux dynamiques.
-// (crÈation, destruction,...)
+// (cr√©ation, destruction,...)
 //--------------------------------------------------------------------
 
 void BemSolver::create_aux()
@@ -557,7 +557,7 @@ void BemSolver::destroy_vectors()
 // ------------
 
 //--------------------------------------------------------------------
-// Routine de modification des paramÈtres
+// Routine de modification des param√©tres
 //--------------------------------------------------------------------
 
 void BemSolver::input_data()
@@ -567,35 +567,35 @@ void BemSolver::input_data()
     clrscr();
     titre();
     int prob;
-    param2("ProblËme (1=cercle,2=carrÈ,3=autre)", &prob);
+    param2("Probl√®me (1=cercle,2=carr√©,3=autre)", &prob);
     probleme = static_cast<Prb>(prob); // tester!
     param("Beta", &beta);
     param("k", &k);
     if (probleme == CIRCLE)
         param("Rayon", &R);
     else
-        param("CotÈ", &a);
-    param2("Nbre d'ÈlÈments aux frontiËres", &N);
-    if (probleme == SQUARE) // Le nbre d'ÈlÈm. doit Ètre un multiple de 4.
+        param("Cot√©", &a);
+    param2("Nbre d'√©l√©ments aux fronti√®res", &N);
+    if (probleme == SQUARE) // Le nbre d'√©l√©m. doit √©tre un multiple de 4.
     {
         N = 4 * (N / 4);
-    } // si le problÈme est le carrÈ.
+    } // si le probl√©me est le carr√©.
     if (N < 2)
         N = 20;
-    param2("Nbre de pas d'intÈgration par ÈlÈment", &istep);
+    param2("Nbre de pas d'int√©gration par √©l√©ment", &istep);
     if (istep < 2)
         istep = 5;
     if (probleme == CIRCLE)
         zoom = 200.0 / R;
     else
         zoom = 200.0 / a;
-    param2("Type d'intÈgration (1=trapËze,2=Simpson,...,6=Weddle)", &ideg);
+    param2("Type d'int√©gration (1=trap√®ze,2=Simpson,...,6=Weddle)", &ideg);
     if ((ideg < 1) || (ideg > 6))
         ideg = 1;
-    istep = (istep / ideg) * ideg; // le nbre d'intervalles d'intÈgr.
+    istep = (istep / ideg) * ideg; // le nbre d'intervalles d'int√©gr.
     if (istep == 0)
-        istep = ideg; // doit Ètre un mult. de 'ideg'.
-    param2("DensitÈ de visualisation", &density);
+        istep = ideg; // doit √©tre un mult. de 'ideg'.
+    param2("Densit√© de visualisation", &density);
     param2("Maillage (1=on 2=off)", &maillag);
     param2("White Bg (1=on 2=off)", &whitebg);
 
@@ -606,8 +606,8 @@ void BemSolver::input_data()
 }
 
 //--------------------------------------------------------------------
-// RÈcupÈration d'un fichier de donnÈe (chargement)
-// (attention : pas de vÈrification de l'existence du fichier!)
+// R√©cup√©ration d'un fichier de donn√©e (chargement)
+// (attention : pas de v√©rification de l'existence du fichier!)
 //--------------------------------------------------------------------
 
 void BemSolver::load_data(std::string const &filename)
@@ -617,10 +617,10 @@ void BemSolver::load_data(std::string const &filename)
 
     std::ifstream fich(filename.c_str(), std::ios::in);
 
-    fich >> N; // Lecture du nombre d'ÈlÈments.
+    fich >> N; // Lecture du nombre d'√©l√©ments.
     fich >> zoom;
     destroy_vectors(); // Dimensionnement des tableaux
-    create_vectors();  // en consÈquence.
+    create_vectors();  // en cons√©quence.
     for (int i = 0; i <= N; i++)
     {
         fich >> xf[i];
@@ -636,7 +636,7 @@ void BemSolver::load_data(std::string const &filename)
 }
 
 //--------------------------------------------------------------------
-// Sauvegarde des rÈsultats dans un fichier MATLAB (*.M)
+// Sauvegarde des r√©sultats dans un fichier MATLAB (*.M)
 //--------------------------------------------------------------------
 
 void BemSolver::save_Mfile(std::string const &filename)

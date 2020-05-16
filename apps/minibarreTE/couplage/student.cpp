@@ -23,8 +23,8 @@ void student(Bar const &bar)
     double T0 = bar.T0;
     double L = bar.L;
 
-    // parametres numériques
-    int m = 101;          // nombre de noeuds (doit être impair!)
+    // parametres numÃ©riques
+    int m = 101;          // nombre de noeuds (doit Ãªtre impair!)
     int k = 0;            // numero du pas de temps
     int nstep = 500;      // nombre de pas de temps
     double deltat = 1e-6; // pas de temps
@@ -33,9 +33,9 @@ void student(Bar const &bar)
 
     // matrices utiles
     std::cout << "init matrices/vectors...\n";
-    gmm::row_matrix<gmm::wsvector<double>> A2(2 * m, 2 * m); // Suivant le schéma de Newmark
-    gmm::row_matrix<gmm::wsvector<double>> A1(2 * m, 2 * m); // Suivant le schéma de Newmark
-    gmm::row_matrix<gmm::wsvector<double>> A0(2 * m, 2 * m); // Suivant le schéma de Newmark
+    gmm::row_matrix<gmm::wsvector<double>> A2(2 * m, 2 * m); // Suivant le schÃ©ma de Newmark
+    gmm::row_matrix<gmm::wsvector<double>> A1(2 * m, 2 * m); // Suivant le schÃ©ma de Newmark
+    gmm::row_matrix<gmm::wsvector<double>> A0(2 * m, 2 * m); // Suivant le schÃ©ma de Newmark
     gmm::row_matrix<gmm::wsvector<double>> Aprime(2 * m, 2 * m);
     std::vector<double> Fnplus1(2 * m), Fn(2 * m), Fnmoins1(2 * m);
     std::vector<double> Znplus1(2 * m), Zn(2 * m), Znmoins1(2 * m);
@@ -138,8 +138,8 @@ void student(Bar const &bar)
         }
     }
 
-    // Création de la matrice Aprime et du vecteur bprime selon le schéma de Newmark.
-    // On résoudra Aprime*Znplus1 = bprime
+    // CrÃ©ation de la matrice Aprime et du vecteur bprime selon le schÃ©ma de Newmark.
+    // On rÃ©soudra Aprime*Znplus1 = bprime
     // Conditions aux limites
     Aprime(0, 0) = 1;
     Aprime(m - 1, m - 1) = 1;
@@ -174,7 +174,7 @@ void student(Bar const &bar)
     }
     myfile << "\n";
 
-    //Calcul de la matrice de préconditionnement et définition du critère d'erreur
+    //Calcul de la matrice de prÃ©conditionnement et dÃ©finition du critÃ¨re d'erreur
     std::cout << "computation of the preconditionner...\n";
     gmm::ilutp_precond<gmm::row_matrix<gmm::wsvector<double>>> P(Aprime, m, 0.);
 
@@ -191,7 +191,7 @@ void student(Bar const &bar)
         //std::cout << "k = " << k << ": t = " << k*deltat << "\n";
 
         ////////////////////////////
-        //Résolution de l'équation//
+        //RÃ©solution de l'Ã©quation//
         ////////////////////////////
         //Calcul de bprime
         for (int i = 1; i < m - 1; i++)
@@ -212,7 +212,7 @@ void student(Bar const &bar)
             bprime[i + m] += (2 * A2(i + m, i + 1 + m) - (1 - 2 * gamma) * deltat * A1(i + m, i + 1 + m) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i + 1 + m)) * Zn[i + 1 + m] + (-A2(i + m, i + 1 + m) - (gamma - 1) * deltat * A1(i + m, i + 1 + m) - (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i + 1 + m)) * Znmoins1[i + 1 + m];
             bprime[i + m] += deltat * deltat * (beta * Fnplus1[i + m] + (0.5 + gamma - 2 * beta) * Fn[i + m] + (0.5 - gamma + beta) * Fnmoins1[i + m]);
         }
-        // Résolution de l'équation
+        // RÃ©solution de l'Ã©quation
         gmm::iteration iter(1.e-6);
         //iter.set_noisy(1);
         gmm::gmres(Aprime, Znplus1, bprime, P, 100, iter);

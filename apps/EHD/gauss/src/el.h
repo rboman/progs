@@ -23,7 +23,7 @@
  *        en un point
  *
  *      - une fonction calculant le determinant du jacobien, le jacobien
- *        et la dimension du problème etant donnes 
+ *        et la dimension du problÃ¨me etant donnes 
  *
  * RoBo aout 2000
  */

@@ -72,14 +72,14 @@ for element in b.flat:
 print "A.T = ", A.T
 a= np.arange(12)
 print "a=", a
-a.reshape(3,4) # a n'est PAS modifié => renvoie un objet
+a.reshape(3,4) # a n'est PAS modifiÃ© => renvoie un objet
 print "a=", a
-a.resize(3,4) # a est modifié
+a.resize(3,4) # a est modifiÃ©
 print "a=", a
 
 # views/copies
 d = a           # d n'est qu'une ref vers a (1 seul objet numpy)
-d = a.view()    # d est un nouvel objet numpy qui pointe vers les mêmes données
+d = a.view()    # d est un nouvel objet numpy qui pointe vers les mÃªmes donnÃ©es
                 # les slices fonctionnent comme ca
 d = a.copy()    # d est indep de "a"
 

@@ -1,12 +1,12 @@
 
-Creation d'un système de "jetons" pour Metafor
+Creation d'un systÃ¨me de "jetons" pour Metafor
 ==============================================
 
 
 
 Le systeme possede les contraintes suivantes:
 - doit pouvoir fonctionner sous "python pur", en nogui et en gui.
-- l'ancien système de .lic doit pouvoir toujours fonctionner.
+- l'ancien systÃ¨me de .lic doit pouvoir toujours fonctionner.
 
 Recherche du .lic:
   1. soit dans le repertoire utilisateur
@@ -27,11 +27,11 @@ cas reseau:
 
 Le serveur doit posseder son propre .lic qui le relie a une adresse MAC, a une date limite, etc. 
 
-Le keygen pourrait etre utilisé comme serveur. 
+Le keygen pourrait etre utilisÃ© comme serveur. 
 Avantages:
   - un seul projet Qt.
-  - les licences peut eventuellement réencoder les clefs pour que l'utilisateur puisse ajouter des limitations.
+  - les licences peut eventuellement rÃ©encoder les clefs pour que l'utilisateur puisse ajouter des limitations.
 
-Difficulté: communiquer avec le serveur sous python pur car, à ce moment, aucune mainloop Qt n'est disponible.
- => faire un thread specialisé?
+DifficultÃ©: communiquer avec le serveur sous python pur car, Ã  ce moment, aucune mainloop Qt n'est disponible.
+ => faire un thread specialisÃ©?
  => ne pas utiliser la mainloop Qt. possible?

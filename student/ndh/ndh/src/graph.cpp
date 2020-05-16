@@ -30,7 +30,7 @@ void ndh::titre()
 }
 
 //--------------------------------------------------------------------
-// Affichage des éléments
+// Affichage des Ã©lÃ©ments
 //--------------------------------------------------------------------
 
 void ndh::ligne(double x1, double y1, double x2, double y2)
@@ -76,14 +76,14 @@ void ndh::visu()
         setrgbpalette(pal.colors[0], 63, 63, 63);
         setrgbpalette(pal.colors[15], 0, 0, 0);
     }
-    else // palette écran (fond = noir).
+    else // palette Ã©cran (fond = noir).
     {
         for (i = 0; i < 16; i++)
             setrgbpalette(pal.colors[i], i * 4, 0, 0);
         setrgbpalette(pal.colors[15], 63, 63, 63);
     }
     if (calcul == 1) // pas d'affichage des T si
-    {                // pas de calculs effectués
+    {                // pas de calculs effectuÃ©s
         find_minmax();
         dT = Tmax - Tmin;
         if (cartesien == true)
@@ -161,7 +161,7 @@ void ndh::visu()
     // Trace la bordure:
     rectangle(0, 0, 639, 479);
 
-    // dessine les éléments frontiéres:
+    // dessine les Ã©lÃ©ments frontiÃ©res:
     for (i = 0; i < N; i++)
     {
         ligne(xf[i], yf[i], xf[i + 1], yf[i + 1]);

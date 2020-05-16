@@ -28,7 +28,7 @@ DCM_API std::ostream &operator<<(std::ostream &outp, Polynome const &po);
 /**
  * @brief Polynome
  * 
- * @todo Deletion des 'new double a' à mettre au point
+ * @todo Deletion des 'new double a' Ã  mettre au point
  */
 
 class DCM_API Polynome

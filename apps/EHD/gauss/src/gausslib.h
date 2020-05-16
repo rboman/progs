@@ -44,7 +44,7 @@
  *
  * ToDo List :
  * ~ ~ ~ ~ ~ ~
- *  - Routine de libération de la mémoire.
+ *  - Routine de libÃ©ration de la mÃ©moire.
  *  - Verification de l'appel de l'initialisation.
  *  - Etendre a plus de 10 pts de Gauss tout en optimisant la
  *    memoire utilisee.

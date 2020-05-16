@@ -27,7 +27,7 @@
 # Windows-1252 has several characters, punctuation, arithmetic and business symbols assigned to these code points.
 
 import os, os.path,sys
-foldername = u'‡È_dir'   # plante sous linux sans le 'u'
+foldername = u'√†√©_dir'   # plante sous linux sans le 'u'
 
 print "sys.stdout.encoding:", sys.stdout.encoding  # cp850 sous windows 10 / UTF-8 sous linux
 print "sys.getfilesystemencoding():", sys.getfilesystemencoding()  # mbcs sous windows 10 / UTF-8 sous linux

@@ -17,7 +17,7 @@
 using namespace ndh;
 
 //--------------------------------------------------------------------
-// Crée un vecteur é la MATLAB
+// CrÃ©e un vecteur Ã  la MATLAB
 // ( x=a:b:c  -> fillvector(x,a,b,(c-a)/b+1); )
 //--------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ void ndh::fillvector(double *vect, double v1, double step, int nel)
 }
 
 //--------------------------------------------------------------------
-// Routine de multiplication d'une matrice carrée par un vecteur
+// Routine de multiplication d'une matrice carrÃ©e par un vecteur
 // ( c=A*b avec A(dim,dim), b(dim), c(dim) )
 //--------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ void ndh::gauss(int dim, double **A, double *x, double *b)
 }
 
 //--------------------------------------------------------------------
-// Affichage d'un vecteur à l'écran.
+// Affichage d'un vecteur Ã  l'Ã©cran.
 //--------------------------------------------------------------------
 
 void ndh::vectaff(int dim, double *v)
@@ -81,7 +81,7 @@ void ndh::vectaff(int dim, double *v)
 
 //--------------------------------------------------------------------
 // Copie un bloc dans la matrice A, de taille 'sizebloc'
-// de la position i1,j1 à la position i2,j2.
+// de la position i1,j1 Ã  la position i2,j2.
 //--------------------------------------------------------------------
 
 void ndh::copy_block(double **A, int i2, int j2, int i1, int j1, int sizebloc)

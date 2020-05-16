@@ -1,5 +1,5 @@
 // compiler avec "g++ -o etage.exe -Igmm etage.cpp"
-// exécuter avec "./etage.exe"
+// exÃ©cuter avec "./etage.exe"
 #include <iostream>
 #include <gmm/gmm.h>
 #include <math.h>
@@ -7,8 +7,8 @@
 
 int main()
 {
-    int m = 101; //définit le nombre de noeuds (impair!)
-    int k = 0;   //définit le pas de temps
+    int m = 101; //dÃ©finit le nombre de noeuds (impair!)
+    int k = 0;   //dÃ©finit le pas de temps
     double kappa = 170;
     double rho = 2300;
     double cv = 711;
@@ -25,8 +25,8 @@ int main()
     gmm::row_matrix<gmm::wsvector<double>> A(m, m);
     gmm::row_matrix<gmm::wsvector<double>> B(m, m);
     gmm::row_matrix<gmm::wsvector<double>> C(m, m);
-    //schéma de Newmark s'écrit pour la température: Aprime*Tnplus1=N*Tn+Nmoins1*Tnmoins1+fct(Fnplus1, Fn, Fnmoins1)
-    //schéma de Newmark s'écrit pour le déplacement: Aprimepouru*Unplus1=Npouru*Un+Nmoins1pouru*Unmoins1+fct(Tnplus1, Tn, Tnmoins1)
+    //schÃ©ma de Newmark s'Ã©crit pour la tempÃ©rature: Aprime*Tnplus1=N*Tn+Nmoins1*Tnmoins1+fct(Fnplus1, Fn, Fnmoins1)
+    //schÃ©ma de Newmark s'Ã©crit pour le dÃ©placement: Aprimepouru*Unplus1=Npouru*Un+Nmoins1pouru*Unmoins1+fct(Tnplus1, Tn, Tnmoins1)
     gmm::row_matrix<gmm::wsvector<double>> Aprime(m, m);
     gmm::row_matrix<gmm::wsvector<double>> Aprimepouru(m, m);
     gmm::row_matrix<gmm::wsvector<double>> N(m, m);
@@ -109,8 +109,8 @@ int main()
         }
     }
 
-    //Création des matrices Aprime, Aprimepouru et des vecteurs bprime et bprimepouru selon le schéma de Newmark.
-    //On résoudra ensuite : Aprime*Tnplus1=bprime d'une part et Aprimepouru*Unplus1=bprimepouru d'autre part.
+    //CrÃ©ation des matrices Aprime, Aprimepouru et des vecteurs bprime et bprimepouru selon le schÃ©ma de Newmark.
+    //On rÃ©soudra ensuite : Aprime*Tnplus1=bprime d'une part et Aprimepouru*Unplus1=bprimepouru d'autre part.
     //Conditions aux limites
     Aprime(0, 0) = 1;
     Aprime(m - 1, m - 1) = 1;
@@ -126,10 +126,10 @@ int main()
         {
             Aprime(i, j) = gamma * deltat * rho * cv * A(i, j) + beta * deltat * deltat * kappa * C(i, j);                           //ne change plus
             Aprimepouru(i, j) = rho * A(i, j) + beta * deltat * deltat * E * C(i, j);                                                //ne change plus
-            N(i, j) = -(1 - 2 * gamma) * deltat * rho * cv * A(i, j) - (0.5 + gamma - 2 * beta) * deltat * deltat * kappa * C(i, j); //intermédiaire pour calcul de bprime
-            Nmoins1(i, j) = -(gamma - 1) * deltat * rho * cv * A(i, j) - (0.5 - gamma + beta) * deltat * deltat * kappa * C(i, j);   //intermédiaire pour calcul de bprime
-            Npouru(i, j) = 2 * rho * A(i, j) - (0.5 + gamma - 2 * beta) * deltat * deltat * E * C(i, j);                             //intermédiaire pour calcul de bprimepouru
-            Nmoins1pouru(i, j) = (-rho * A(i, j) - (0.5 - gamma + beta) * deltat * deltat * E * C(i, j));                            //intermédiaire pour calcul de bprimepouru
+            N(i, j) = -(1 - 2 * gamma) * deltat * rho * cv * A(i, j) - (0.5 + gamma - 2 * beta) * deltat * deltat * kappa * C(i, j); //intermÃ©diaire pour calcul de bprime
+            Nmoins1(i, j) = -(gamma - 1) * deltat * rho * cv * A(i, j) - (0.5 - gamma + beta) * deltat * deltat * kappa * C(i, j);   //intermÃ©diaire pour calcul de bprime
+            Npouru(i, j) = 2 * rho * A(i, j) - (0.5 + gamma - 2 * beta) * deltat * deltat * E * C(i, j);                             //intermÃ©diaire pour calcul de bprimepouru
+            Nmoins1pouru(i, j) = (-rho * A(i, j) - (0.5 - gamma + beta) * deltat * deltat * E * C(i, j));                            //intermÃ©diaire pour calcul de bprimepouru
         }
     }
 
@@ -146,7 +146,7 @@ int main()
     }
     myfile << "\n";
 
-    //Calcul des deux matrices de préconditionnement et définition du critère d'erreur
+    //Calcul des deux matrices de prÃ©conditionnement et dÃ©finition du critÃ¨re d'erreur
     gmm::ilutp_precond<gmm::row_matrix<gmm::wsvector<double>>> P(Aprime, m, 0.);
     gmm::iteration iter(1.e-6);
     gmm::ilutp_precond<gmm::row_matrix<gmm::wsvector<double>>> Ppouru(Aprimepouru, m, 0.);
@@ -160,7 +160,7 @@ int main()
     {
 
         //////////////////////////////////////////////
-        //Résolution de l'équation de la température//
+        //RÃ©solution de l'Ã©quation de la tempÃ©rature//
         //////////////////////////////////////////////
         //Calcul de bprime
         for (int i = 1; i < m - 1; i++)
@@ -169,7 +169,7 @@ int main()
             bprime[i] = bprime[i] + N(i, i - 1) * Tn[i - 1] + Nmoins1(i, i - 1) * Tnmoins1[i - 1];
             bprime[i] = bprime[i] + N(i, i + 1) * Tn[i + 1] + Nmoins1(i, i + 1) * Tnmoins1[i + 1];
         }
-        //Résolution de l'équation
+        //RÃ©solution de l'Ã©quation
         gmm::gmres(Aprime, Tnplus1, bprime, P, 100, iter);
         //Ecriture de la solution dans un fichier
         for (int i = 0; i < m; i++)
@@ -178,7 +178,7 @@ int main()
         }
         myfile << "\n";
         /////////////////////////////////////////////
-        //Résolution de l'équation des déplacements//
+        //RÃ©solution de l'Ã©quation des dÃ©placements//
         /////////////////////////////////////////////
         //Calcul de bprimepouru
         for (int i = 1; i < m - 1; i++)
@@ -187,7 +187,7 @@ int main()
             bprimepouru[i] = bprimepouru[i] + Npouru(i, i - 1) * Un[i - 1] + Nmoins1pouru(i, i - 1) * Unmoins1[i - 1] + deltat * deltat * (beta * alpha * E * B(i, i - 1) * Tnplus1[i - 1] + (0.5 + gamma - 2 * beta) * alpha * E * B(i, i - 1) * Tn[i - 1] + (0.5 - gamma + beta) * alpha * E * B(i, i - 1) * Tnmoins1[i - 1]);
             bprimepouru[i] = bprimepouru[i] + Npouru(i, i + 1) * Un[i + 1] + Nmoins1pouru(i, i + 1) * Unmoins1[i + 1] + deltat * deltat * (beta * alpha * E * B(i, i + 1) * Tnplus1[i + 1] + (0.5 + gamma - 2 * beta) * alpha * E * B(i, i + 1) * Tn[i + 1] + (0.5 - gamma + beta) * alpha * E * B(i, i + 1) * Tnmoins1[i + 1]);
         }
-        //Résolution de l'équation
+        //RÃ©solution de l'Ã©quation
         gmm::gmres(Aprimepouru, Unplus1, bprimepouru, Ppouru, 100, iterpouru);
         //Ecriture de la solution dans un fichier
         for (int i = 0; i < m; i++)

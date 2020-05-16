@@ -111,7 +111,7 @@ void MeshBuilder::initialize()
 }
 
 /**
- * @brief début du maillage (generation des noeuds de la base)
+ * @brief dÃ©but du maillage (generation des noeuds de la base)
  */
 
 void MeshBuilder::meshFirstLine()
@@ -275,7 +275,7 @@ void MeshBuilder::meshConstantLayer()
 }
 
 /**
- * @brief génération du maillage a l'aide des parametres courants
+ * @brief gÃ©nÃ©ration du maillage a l'aide des parametres courants
  */
 
 void MeshBuilder::genere()

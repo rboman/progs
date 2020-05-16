@@ -7,7 +7,7 @@ import re
 lst = os.listdir(".")
 # print lst
 
-pattern = re.compile(r'Mobistar-Détails-(\d{11})-(\d{4})(\d{2})(\d{2}).pdf')
+pattern = re.compile(r'Mobistar-DÃ©tails-(\d{11})-(\d{4})(\d{2})(\d{2}).pdf')
 
 n = 0
 for file in lst:

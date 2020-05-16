@@ -4,7 +4,7 @@
 
 
 class ConsoleList;
-// on instancie Singleton<ConsoleList> (devrait etre fait dans un fichier séparé)
+// on instancie Singleton<ConsoleList> (devrait etre fait dans un fichier sÃ©parÃ©)
 template class Singleton<ConsoleList>;
 #include "Singleton.inl"
 // -- ConsoleList -----------------------------------------------------------------
