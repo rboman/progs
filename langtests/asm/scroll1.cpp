@@ -1,10 +1,10 @@
 /***********************************************************************
 *                      Scrolling 2  (C++ & Asm)                        *
 *                                                                      *
-* . MÇmorisation des caractäres du DOS                                 *
+* . M√©morisation des caract√®res du DOS                                 *
 * . Nouvelles routines d'affichage avec effets (rainbow, underline)    *
 * . Affichage de la palette du mode 13h + choix au clavier             *
-* . Ecoulement de l'Çcran pour le retour au dos                        *
+* . Ecoulement de l'√©cran pour le retour au dos                        *
 *                                                             12.08.96 *
 ************************************************************************/
 
@@ -13,7 +13,7 @@
 
 #define uc unsigned char /* Macros                              */
 #define MAXLIGNES 10
-#define L_arrow 75 /* DÇfinition des touches de contrìle */
+#define L_arrow 75 /* D√©finition des touches de contr√¥le */
 #define U_arrow 72
 #define R_arrow 77
 #define D_arrow 80
@@ -24,20 +24,20 @@
 ----------------------------------------------------------------------------*/
 
 char *texte[MAXLIGNES] =
-    {" Premier scroll !!! ... ce programme est Ècrit en C++ et se passe des drivers BGI ...  ",
-     " Les caractËres du DOS sont simplement mÈmorisÈs et affichÈs avec un pas de deux pixels.",
+    {" Premier scroll !!! ... ce programme est √©crit en C++ et se passe des drivers BGI ...  ",
+     " Les caract√®res du DOS sont simplement m√©moris√©s et affich√©s avec un pas de deux pixels.",
      " Pour l'instant, je n'ai pas pu me passer des fonctions printf() et getch() : je les reprogrammerai",
-     " dans un avenir proche pour diminuer la taille du code. Une autre amÈlioration serait d'Ècrire toutes",
+     " dans un avenir proche pour diminuer la taille du code. Une autre am√©lioration serait d'√©crire toutes",
      " les routines graphiques en assembleur ainsi que la boucle principale.",
-     " Prochaine Ètape : le scrolling sinusoidal et tridimensionnel ... ",
+     " Prochaine √©tape : le scrolling sinusoidal et tridimensionnel ... ",
      " ---------------------------------------",
      " ",
      " ",
      " "};
 
-uc lettre[107][8];        /* Data caractËres             */
+uc lettre[107][8];        /* Data caract√®res             */
 uc color_text, color_bak; /* Couleurs d'affichage du texte et  */
-                          /*  arriËre-plan                     */
+                          /*  arri√®re-plan                     */
 
 /*----------------------------------------------------------------------------
                ROUTINES GRAPHIQUES
@@ -134,7 +134,7 @@ void show_palette()
 ----------------------------------------------------------------------------*/
 
 void get_char() /* Remplit le tableau lettres */
-{               /* avec 106 caractäres ASCII  */
+{               /* avec 106 caract√®res ASCII  */
     uc col;
     uc x, y, i;
     for (i = ' '; i <= 138; i++)
@@ -153,14 +153,14 @@ void get_char() /* Remplit le tableau lettres */
     printf(" ");
 }
 
-/* -- Affiche un caractäre --
+/* -- Affiche un caract√®re --
 
 aff_char(coord x, coord y, code ASCII, c. av-plan, c. ar-plan, fact, effet)
 
    avec fact. (unsigned char) : facteur d'agrandissement.
     effet (unsigned char) :
-     .bit 1 = 'rainbow texte', Ö partir de c. av-plan.
-     .bit 2 = 'rainbow fond', Ö partir de c. ar-plan.
+     .bit 1 = 'rainbow texte', √† partir de c. av-plan.
+     .bit 2 = 'rainbow fond', √† partir de c. ar-plan.
      .bit 3 = 'underline'
 */
 
@@ -208,7 +208,7 @@ void aff_txt_ln(int x, int y, char *txt, uc col1, uc col2, uc factor, uc effect)
     }
 }
 
-/* Affiche une tranche de caractäre (->scrolling) */
+/* Affiche une tranche de caract√®re (->scrolling) */
 
 void aff_tranche(int x, int y, uc num, int i, uc col1, uc col2, uc factor)
 {
@@ -222,7 +222,7 @@ void aff_tranche(int x, int y, uc num, int i, uc col1, uc col2, uc factor)
 }
 
 /* Routine de scrolling :
-    dÇplace chaque point de 'factor' unitÇs vers la gauche.  */
+    d√©place chaque point de 'factor' unit√©s vers la gauche.  */
 
 void scroll(int y, uc factor)
 {
@@ -235,7 +235,7 @@ void scroll(int y, uc factor)
                EFFETS DE FERMETURE
 ----------------------------------------------------------------------------*/
 
-void good_bye(uc effect) /* effect = 1 : Çcoulement             */
+void good_bye(uc effect) /* effect = 1 : √©coulement             */
 {                        /*        = 2 : cisaillement           */
     uc c;
     register int i, j, t;
@@ -288,7 +288,7 @@ void main()
     uc it[2] = {5, 7}, jt[2] = {3, 15};
     debut = texte[0];
 
-    /* Initialisation de l'Çcran */
+    /* Initialisation de l'√©cran */
     init13h();
     get_char();
     show_palette();

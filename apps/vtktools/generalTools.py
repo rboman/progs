@@ -611,8 +611,8 @@ def createBoxWidget(image, iren):
 def vtk2tetgen(polydata, filename='out.poly', arrayName=False, regionSeeds=[], regionVolMax=[], holeSeeds=[], regionLabels=[]):
     #
     #    ex. nbreg = 2
-    #        regionSeeds = [ [point1x,point1y,point1z] [point2x,point2y, point2z]] points situùs dans chacune des rùgions
-    #        regionVolmax = [20,30] volume max ù imposer ù la rùgion
+    #        regionSeeds = [ [point1x,point1y,point1z] [point2x,point2y, point2z]] points situ√©s dans chacune des r√©gions
+    #        regionVolmax = [20,30] volume max √† imposer √† la r√©gion
     #
     file = open(filename, 'w')
     print 'regionseeds', regionSeeds
@@ -1098,7 +1098,7 @@ def ugridToCpp(ugrid):
         return str(int(addr_str[5:], 16))
 
 
-# doesnt work on Linux64 , why ??  (j'ai corrigù, ca marche - voir vtkImageDataToCpp - RoBo)
+# doesnt work on Linux64 , why ??  (j'ai corrig√©, ca marche - voir vtkImageDataToCpp - RoBo)
 def polydataToCpp(poly):
     if not poly.IsA('vtkPolyData'):
         print 'ERROR - Not a vtkPolyData', poly
@@ -1147,7 +1147,7 @@ def polydataFromCpp(polySwigPtr):
 
 
 def openworkspaceAndSaveViews(dirname, polyname, eraseExistingViews):
-    # parcourir dir, ouvrir tous les polyname trouvÈs et faire des printscreens
+    # parcourir dir, ouvrir tous les polyname trouv√©s et faire des printscreens
     import renderingToolsQt
     for root, dirs, files in os.walk(dirname):
         for name in files:
