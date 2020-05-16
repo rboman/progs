@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 # display the modification time of the modules loaded in memory
 #
 #   Copyright 2017 Romain Boman

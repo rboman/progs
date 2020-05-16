@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 # test mpi4py
 
 # exc:   mpiexec.openmpi -n 6 ./test02.py

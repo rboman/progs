@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 # from "SuperShape2D" (Daniel Shiffman)
 # Video: https://youtu.be/ksRoh-10lak

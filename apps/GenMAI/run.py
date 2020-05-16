@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 # basic run script - adds bin to pythonpath, then run the script given in arg
 
 if __name__=="__main__": 

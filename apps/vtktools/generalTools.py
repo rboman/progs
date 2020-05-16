@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: utf-8; -*-
 # $Id: generalTools.py 1574 2012-03-06 13:05:34Z mengoni $
 # Vinciane d'Otreppe
 

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: utf-8; -*-
 # $Id: imagingTools.py 1388 2011-01-04 10:57:27Z papeleux $
 # Vinciane d'Otreppe
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 #
 # img from https://commons.wikimedia.org/wiki/File:Pinguim_Crystal_2000.png
 

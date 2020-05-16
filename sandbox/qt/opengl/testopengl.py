@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 # from https://stackoverflow.com/questions/38645674/issues-with-pyqt5s-opengl-module-and-versioning-calls-for-incorrect-qopenglfu
 # requiert python/OpenGL

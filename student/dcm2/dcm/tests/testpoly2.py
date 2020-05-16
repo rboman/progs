@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
 #
@@ -37,4 +37,4 @@ print "degree=", len(p+d)
 print "p(1)=", p(1)
 
 print "2*p=", 2*p
-# print "p*2=", p*2  # pas implment en c++
+# print "p*2=", p*2  # pas implï¿½mentï¿½ en c++

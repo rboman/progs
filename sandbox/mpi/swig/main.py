@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 # appelle une fct C/MPI à partir de python
 
 # exec: mpiexec.openmpi -n 20 main.py

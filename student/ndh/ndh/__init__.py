@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 # ndh MODULE initialization file
 
 from ndhi import *

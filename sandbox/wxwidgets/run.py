@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 #----------------------------------------------------------------------------
 # Name:         run.py
 # Purpose:      Simple framework for running individual demos

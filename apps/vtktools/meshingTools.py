@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1; -*-
+# -*- coding: utf-8; -*-
 # $Id: meshingTools.py 1778 2013-07-19 10:06:35Z laurent $
 # Vinciane d'Otreppe
 
@@ -516,8 +516,8 @@ def computeTriangleQualityAspectFrobenius(vtkCell):
 def computeTriangleQualityMinAngle(vtkCell):
     '''
     Returns [ min, average, max, variance, number of cells ] of Minmum included Angleof the polydata's triangles.
-    Acceptable range = [30°,60°]
-    for equilateral unit triangle = 60°
+    Acceptable range = [30ï¿½,60ï¿½]
+    for equilateral unit triangle = 60ï¿½
     reference: Verdict reference manual, Stimpson, 2007
     '''
     qual = vtk.vtkMeshQuality()
@@ -738,8 +738,8 @@ def computePolyQualityAspectFrobenius(polydata):
 def computePolyQualityMinAngle(polydata):
     '''
     Returns [ min, average, max, variance, number of cells ] of Minmum included Angleof the polydata's triangles.
-    Acceptable range = [30°,60°]
-    for equilateral unit triangle = 60°
+    Acceptable range = [30ï¿½,60ï¿½]
+    for equilateral unit triangle = 60ï¿½
     reference: Verdict reference manual, Stimpson, 2007
     '''
     qual = vtk.vtkMeshQuality()
@@ -1025,8 +1025,8 @@ def appendPolydatas(poly1, poly2):
 
 
 class createTringulatedCylinder:
-    """ creation d'un cylindre triangulé 
-    (hauteur des triangles égale au nombre de triangles sur le périmètre - setResolution(nb))
+    """ creation d'un cylindre triangulï¿½ 
+    (hauteur des triangles ï¿½gale au nombre de triangles sur le pï¿½rimï¿½tre - setResolution(nb))
     """
 
     def __init__(self):
@@ -1056,8 +1056,8 @@ class createTringulatedCylinder:
         self.capping = capping
 
     def execute(self):
-        # vtkCylinderSource() = cylindre ax selon -Ey avec des facettes rectangularies dont la hauteur est celle du cylindre
-        # pour avoir un cylindre avec des triangles dont la hauteur est gale a la base, on cre en fait une srie de cylindres dont le centre est dcal...
+        # vtkCylinderSource() = cylindre axï¿½ selon -Ey avec des facettes rectangularies dont la hauteur est celle du cylindre
+        # pour avoir un cylindre avec des triangles dont la hauteur est ï¿½gale a la base, on crï¿½e en fait une sï¿½rie de cylindres dont le centre est dï¿½calï¿½...
         localHeight = 2.*math.pi*self.radius/self.resolution
         nbCyl = int(math.ceil(self.height/localHeight))
         height0 = self.height-nbCyl*localHeight
@@ -1095,7 +1095,7 @@ class createTringulatedCylinder:
                 poly2, self.center[0], self.center[1], self.center[2])
         else:
             output = cylindre.GetOutput()
-        # par defaut vtkCylinderSource() est maill quadrangles, donc on triangularise
+        # par defaut vtkCylinderSource() est maillï¿½ quadrangles, donc on triangularise
         triangleFilter = vtk.vtkTriangleFilter()
         triangleFilter.SetInput(output)
         triangleFilter.Update()

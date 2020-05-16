@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 # mettre TCL_LIBRARY=D:\Python24\tcl\tcl8.4
 

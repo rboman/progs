@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 # gauss MODULE initialization file
 
 from gaussi import *

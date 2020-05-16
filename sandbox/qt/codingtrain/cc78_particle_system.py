@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 
 # from "Simple Particle System" (Daniel Shiffman)
 # Edited Video: https://www.youtube.com/watch?v=UcdigVaIYAk
