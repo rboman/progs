@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copie les repertoires rsync de garfield sur ma dropbox.
-# Ce script peut etre lancé de n'importe où.
+# Ce script peut être lancé de n'importe où.
 
 import os, subprocess, shutil
 

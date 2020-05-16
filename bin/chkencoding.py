@@ -69,7 +69,7 @@ def getnonascii(fichier, enc):
     #print type(bytes)
     #print bytes
     utxt = bytes.decode(
-        enc)  # le resultat de decode est tjs de l'unicode (utf8)
+        enc)  # le résultat de decode est tjs de l'unicode (utf8)
     #print utxt
     for uc in utxt:
         try:
@@ -93,7 +93,7 @@ def main():
         print('{}..'.format(f), end=' ')
         # utilise "file" - marche très bien
         enc = getencoding_file(f)
-        # marche (beaucoup) moins bien, detecte du latin-1 pour des fichiers convertis en utf-8
+        # marche (beaucoup) moins bien, détecte du latin-1 pour des fichiers convertis en utf-8
         #enc = getencoding_chardet(f) 
         print('{}.'.format(enc))
 
