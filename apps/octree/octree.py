@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Copyright 2012-2017 Romain Boman
@@ -20,7 +20,7 @@ import random
 import vtk
 
 
-class Pt:
+class Pt(object):
     """ A simple point class
     """
 
@@ -39,6 +39,9 @@ class Pt:
         return Pt(self.x-pt.x, self.y-pt.y, self.z-pt.z)
 
     def __div__(self, scalar):
+        return Pt(self.x//scalar, self.y//scalar, self.z//scalar)
+
+    def __truediv__(self, scalar):
         return Pt(self.x/scalar, self.y/scalar, self.z/scalar)
 
     def __mul__(self, obj):
@@ -88,13 +91,13 @@ class Pt:
         return (self.x <= obj.x and self.y <= obj.y and self.z <= obj.z)
 
 
-class Octree:
+class Octree(object):
     def __init__(self, plist, maxlvl=5):
-        print "building octree..."
+        print("building octree...")
         self.plist = plist
         self.maxlvl = maxlvl
         self.build()
-        print "...done."
+        print("...done.")
 
     def build(self):
         self.node = Onode(self.bbox(), self.plist, 0, self.maxlvl)
@@ -111,7 +114,7 @@ class Octree:
         return "bbox=%s" % self.bbox()
 
 
-class Onode:
+class Onode(object):
     def __init__(self, box, plist, lvl, maxlvl):
         #print lvl*"   " + "==> node lvl(%d) for %d nodes" % (lvl, len(plist))
         self.box = box
@@ -136,8 +139,8 @@ class Onode:
     def display(self):
         nnod = len(self.nodes)
         npt = 0
-        print self.lvl*"  " + \
-            "node at lvl %d with %d pts" % (self.lvl, len(self.plist))
+        print(self.lvl*"  " + \
+            "node at lvl %d with %d pts" % (self.lvl, len(self.plist)))
         if len(self.nodes):
             for n in self.nodes:
                 nnod2, npt2 = n.display()
@@ -179,7 +182,7 @@ class Onode:
                     pts.append(p)
 
 
-class Sphere:
+class Sphere(object):
     def __init__(self, c, R):
         self.c = c
         self.R = float(R)
@@ -190,7 +193,7 @@ class Sphere:
         return abs(pt-self.c) < self.R
 
 
-class Box:
+class Box(object):
     def __init__(self, bmin, bmax):
         self.bmin = bmin
         self.bmax = bmax
@@ -245,7 +248,7 @@ class Box:
         return [p1, p2, p3, p4, p5, p6, p7, p8]
 
 
-class Window:
+class Window(object):
     def __init__(self):
         self.actors = []
 
@@ -350,7 +353,7 @@ class Window:
         iren.Start()
 
 
-class StupidTest:
+class StupidTest(object):
     def __init__(self, npts=100, maxlvl=2):
         self.npts = npts
         self.maxlvl = maxlvl
@@ -372,23 +375,23 @@ class StupidTest:
                             * 100, random.random()*100))
 
         otree = Octree(plist, self.maxlvl)
-        print otree.node.display()
+        print(otree.node.display())
 
         # gets all pts
         pts = []
         otree.node.fill(pts)
-        print "nb of stored points=%d" % len(pts)
+        print("nb of stored points=%d" % len(pts))
 
         # gets all boxes
         boxes = []
         otree.node.fillbox(boxes)
-        print "nb of stored boxes=%d" % len(boxes)
+        print("nb of stored boxes=%d" % len(boxes))
 
         # get some pts
         sph = Sphere(Pt(6, 10, 10), 5)
         ptsR = []
         otree.node.withinradius(sph, ptsR)
-        print "nb of pts within radius =%d" % len(ptsR)  # multiple copies?
+        print("nb of pts within radius =%d" % len(ptsR))  # multiple copies?
 
         # -- visu
         win = Window()
