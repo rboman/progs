@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # from "Starfield" (Daniel Shiffman)
@@ -121,7 +121,7 @@ class StarField(QWidget):
     def buildStars(self):
         """build nstars objects"""
         if self.nstars > len(self.stars):
-            for i in xrange(len(self.stars), self.nstars):
+            for i in range(len(self.stars), self.nstars):
                 s = Star(self)
                 self.stars.append(s)
         else:
@@ -145,7 +145,7 @@ class StarField(QWidget):
             QWidget.timerEvent(self, event)
 
     def showEvent(self, event):
-        self.myTimerId = self.startTimer(1000 / 60)  # in ms
+        self.myTimerId = self.startTimer(1000 // 60)  # in ms
 
     def hideEvent(self, event):
         self.killTimer(self.myTimerId)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # from "Simple Particle System" (Daniel Shiffman)
@@ -66,12 +66,12 @@ class Window(QWidget):
         painter = QPainter(self)
 
         # create 5 new particles
-        for i in xrange(5):
+        for i in range(5):
             p = Particle()
             self.particles.append(p)
 
         # display particles
-        for i in xrange(len(self.particles) - 1, 0, -1):
+        for i in range(len(self.particles) - 1, 0, -1):
             self.particles[i].update()
             self.particles[i].show(painter)
             if self.particles[i].finished():
