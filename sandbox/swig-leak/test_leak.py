@@ -1,12 +1,16 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import os, sys
+import os, sys, platform
 
-if sys.version_info.major==2:
-    sys.path.append(os.path.join('build-py2','bin','Release'))
-else:
-    sys.path.append(os.path.join('build-py3','bin','Release'))
+
+pth = os.path.join('build-py%d'%sys.version_info.major,'bin')
+if 'Windows' in platform.uname():
+    pth = os.path.join(pth,'Release') 
+sys.path.append(pth)
+print(sys.path)
+del pth
 
 import leak 
 

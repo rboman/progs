@@ -40,7 +40,7 @@ IF (CMAKE_VERSION VERSION_LESS 3.12.0)
     #   - ok on linux with python2 and 3 installed
     #   - ok on windows with a single python in the PATH
     #     otherwise finds python3 even if python2 is required and python3 in the PATH
-    IF(METAFOR_USE_PY3)
+    IF(USE_PY3)
         FIND_PACKAGE(PythonInterp 3 EXACT REQUIRED)
         FIND_PACKAGE(PythonLibs 3 EXACT REQUIRED)
     ELSE()
