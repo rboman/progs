@@ -32,22 +32,22 @@ c=B('c')
 #         print('ObjA2.__del__()')
 
 
-b=lambda x: x   # leak with py3!
+d=lambda x: x   # leak with py3!
 
 # b="string"          # ok
 # b=1.0               # ok
 # b=1                 # ok
 # b=[]                # ok
 #a = leak.ObjA(c)      # leak with py3! even b is not deleted!
-a = leak.ObjA(b)     # leak with py3! b,c not deleted
+a = leak.ObjA(d)     # leak with py3! b,c not deleted
 #a = ObjA2(c)
 # del a
 #print (gc.garbage)
 #gc.set_debug(gc.DEBUG_LEAK)
 #gc.collect()
 
-import sys
-print('sys.getrefcount(b) =', sys.getrefcount(b))
-lst = gc.get_referrers(b)
+# import sys
+# print('sys.getrefcount(b) =', sys.getrefcount(b))
+# lst = gc.get_referrers(b)
 
-print('XXX:', lst)
+# print('XXX:', lst)
