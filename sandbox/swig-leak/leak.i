@@ -8,7 +8,6 @@
 %}
 
 %feature("director") Base;
-//%pythonappend Base::Base "self.__disown__()"
 
 %include "leak.h"
 

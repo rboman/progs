@@ -57,8 +57,7 @@ d=lambda x: x   # leak with py3!
 
 # directors
 a = ObjA3(d)
-a.call() # faire ce call change tout en python3 !!!
-
+a.call() # faire ce call change tout en python3 et 2?? !!!
 
 #del a            # appel explicite à "del a" => OK
 # probleme: en python3, "del a" n'est pas appelé lors de l'arrêt de l'interpréteur
@@ -90,7 +89,7 @@ a.call() # faire ce call change tout en python3 !!!
 
 #print (gc.garbage)
 #gc.set_debug(gc.DEBUG_LEAK)
-#gc.collect()
+# gc.collect()
 
 # import sys
 # print('sys.getrefcount(b) =', sys.getrefcount(b))
