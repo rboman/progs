@@ -1,6 +1,6 @@
 # Minimal GUI for ffmpeg
 
-A basic multi-plaform GUI written with PyQt for creating movies from a series of still pictures.
+A basic multi-platform GUI written with PyQt for creating movies from a series of still pictures.
 This program uses `ffmpeg`.
 
 ## Dependencies

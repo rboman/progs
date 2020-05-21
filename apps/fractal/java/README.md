@@ -3,7 +3,7 @@
 This is one of my very old java programs displaying the Mandelbrot set.
 
 Two versions:
-  * applet (only works in old browsers or throught appletviewer
+  * applet (only works in old browsers or through appletviewer
   * desktop application (a translation of the applet using AWT)
 
 ![screenshot](Mandel.png)

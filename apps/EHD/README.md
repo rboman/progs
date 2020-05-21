@@ -2,7 +2,7 @@
 
 1D Elasto-Hydro-Dynamic simulation. This old code was part of my PhD research, written in 1998-99.
 It solves the Reynolds' equation using cubic finite elements.
-Inspired from [Violaine Cahouet's PhD thesis](http://www.theses.fr/1997ISAL0054) "Contribution à  l'étude de la lubrification plasto-hydrodynamique" (INSA Lyon, 1997). 
+Inspired from [Violaine Cahouet's PhD thesis](http://www.theses.fr/1997ISAL0054) "Contribution Ã  l'Ã©tude de la lubrification plasto-hydrodynamique" (INSA Lyon, 1997). 
 
 Also included:
   * a basic skyline solver packaged in a library,
@@ -10,7 +10,7 @@ Also included:
 
 ## Compilation
 
-This code should compile on Linux, Windows and macOS. 
+This code could be built on Linux, Windows and macOS. 
 
 ### Dependencies
   * a C++ compiler: Visual Studio, mingw, g++, clang.
