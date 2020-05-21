@@ -29,12 +29,20 @@ class B:
 b=B('b')
 c=B('c')
 
-# class ObjA2:
-#     def __init__(self,fct):
-#         self.fct = fct
-#     def __del__(self):
-#         print('ObjA2.__del__()')
+class ObjA2:
+    def __init__(self,fct):
+        self.fct = fct
+    def __del__(self):
+        print('ObjA2.__del__()')
 
+class ObjA3(leak.Base):
+    def __init__(self,f):
+        leak.Base.__init__(self)
+        self.f = f
+    # def __del__(self):
+    #     print('ObjA3.__del__()')
+    def fct(self):
+        print('overloaded fct:', fct)
 
 d=lambda x: x   # leak with py3!
 
@@ -44,8 +52,12 @@ d=lambda x: x   # leak with py3!
 # b=[]                # ok
 #a = leak.ObjA(c)     # leak with py3! even b is not deleted!
 #a = leak.ObjA(d)      # leak with py3! no global object of this module are deleted!
-a = leak.ObjA(lambda x: x)     # marche pas mieux
-#a = ObjA2(c)
+#a = leak.ObjA(lambda x: x)     # marche pas mieux
+#a = ObjA2(d)
+
+# directors
+a = ObjA3(d)
+a.call() # faire ce call change tout en python3 !!!
 
 
 #del a            # appel explicite à "del a" => OK

@@ -1,13 +1,14 @@
 // test leaks with c++ class holding a PyObject*
 
-//%feature("autodoc","1");
-
-%module leak
+%module(directors="1") leak
 %{
 
 #include "leak.h"
 
 %}
+
+%feature("director") Base;
+//%pythonappend Base::Base "self.__disown__()"
 
 %include "leak.h"
 

@@ -12,4 +12,13 @@ public:
     ~ObjA();
 };
 
+class Base
+{
+public:
+    Base();
+    virtual ~Base();
+    virtual void fct();
+    void call();
+};
+
 #endif //LEAK_H
