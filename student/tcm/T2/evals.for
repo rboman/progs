@@ -16,7 +16,7 @@ C
       S(3,2)   = 0.0D0
       S(1,N) = S(3,2)
 C
-C     Décomposition LU de S
+C     DÃ©composition LU de S
 C     ---------------------
       s1(2)   = S(2,2)
 C

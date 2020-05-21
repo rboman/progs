@@ -1,11 +1,11 @@
 C==================================================================
 C Sous routine EVALS : 
 C    . Evaluation de la matrice S=C/dt+theta*K
-C    . Si IDIAG = 0, Décomposition LU de cette matrice --> s1 = L
+C    . Si IDIAG = 0, DÃ©composition LU de cette matrice --> s1 = L
 C                                                          s2 = U
-C    . Si IDIAG = 1, S(2,1) contient C/dt diagonalisé. 
+C    . Si IDIAG = 1, S(2,1) contient C/dt diagonalisÃ©. 
 C
-C Modifié le 07.04.97
+C ModifiÃ© le 07.04.97
 C==================================================================
 C
       SUBROUTINE EVALS(a1,a2,A,theta,S,NN,s1,s2,h,N,dt,IDIAG)
@@ -28,7 +28,7 @@ C
          S(2,N+1) = t2/2.0
          S(1,N+1) = S(3,1)
 C
-C        Décomposition LU de S
+C        DÃ©composition LU de S
 C        ---------------------
          s1(1)   = S(2,1)
 C

@@ -1,8 +1,8 @@
 /***********************************************************************
 *                      Starfield 4  (C++ & Asm)                        *
 *                                                                      *
-* . Déplacement latéral des étoiles                                    *
-* . Grosses étoiles en avant plan                                      *
+* . DÃ©placement latÃ©ral des Ã©toiles                                    *
+* . Grosses Ã©toiles en avant plan                                      *
 *                                                             12.08.96 *
 ************************************************************************/
 
@@ -53,7 +53,7 @@ void main()
     {
         for (nb_et = 0; nb_et < 500; nb_et++)
         {
-            /* Eteint l'‚toile */
+            /* Eteint l'Ã©toile */
             if (et[nb_et].plan > 200)
                 bigstar(et[nb_et].x, et[nb_et].y, 0);
             else
@@ -70,7 +70,7 @@ void main()
                 et[nb_et].plan = random(255);
             }
 
-            /* Dessine l'‚toile */
+            /* Dessine l'Ã©toile */
             if (et[nb_et].plan > 200)
                 bigstar(et[nb_et].x, et[nb_et].y, (et[nb_et].plan >> 4) + 16);
             else

@@ -2,16 +2,16 @@
 C=========================================================================
 C                            TREE pour FORTRAN
 C                            ^^^^^^^^^^^^^^^^^
-C  .Description : Ecrit sur la sortie standard un arbre reprÈsentant
+C  .Description : Ecrit sur la sortie standard un arbre repr√©sentant
 C                 la structure des appels (CALL) aux sous-routines.
 C
-C  .Utilisation : ExÈcuter       'ls *.for > listpro.txt'
+C  .Utilisation : Ex√©cuter       'ls *.for > listpro.txt'
 C                 Lancer ensuite 'tree > arbre.txt'
 C
 C  .Derniere modif. : 31.10.97
 C
-C  .Vars : SUBMAX     : nbre max de sous routines ‡ considÈrer.
-C          SUBR       : longue chaine de caractËres contenant le 
+C  .Vars : SUBMAX     : nbre max de sous routines √† consid√©rer.
+C          SUBR       : longue chaine de caract√®res contenant le 
 C                       nom des routines du programme.
 C          nosub      : nombre de sous routines.
 C          ncurrent   : numero de la routine courante.
@@ -19,17 +19,17 @@ C
 C          SUBR()     : noms des sous routines.
 C          LENSUBR()  : taille des noms des sous routines.
 C          APPELS()   : contient, pour chaque sous routine, les numeros
-C                       des sous routines appelÈes par celle-ci.
+C                       des sous routines appel√©es par celle-ci.
 C          nocall()   : nombre d'appels pour chaque sous routine.
 C          remember() : contient l'enchainement des appels dans l'arbre.
 C          NPOS()     : contient la position des sous routines courantes.
-C          dejaf()    : 0 -> la routine a deja ÈtÈ affichÈe prÈcÈdemment.
-C                       1 -> la routine n'a pas ÈtÈ affichÈe prÈc.
+C          dejaf()    : 0 -> la routine a deja √©t√© affich√©e pr√©c√©demment.
+C                       1 -> la routine n'a pas √©t√© affich√©e pr√©c.
 C
 C=========================================================================
 C 
 C-------------------------------------------------------------------------
-C                              DÈclarations
+C                              D√©clarations
 C-------------------------------------------------------------------------
 C
       INTEGER SUBMAX
@@ -163,7 +163,7 @@ C                 - Extraction du nom de la routine -
                      WRITE(*,*)'..CALL ',NOM_PROC(1:k),' line ',ligne
                   ENDIF
 
-C                 - Recherche du n∞ de la sous routine -
+C                 - Recherche du n¬∞ de la sous routine -
 
                   APPELS(i,nocall(i))=0
                   DO l=1,nosub
@@ -181,7 +181,7 @@ C                 - Recherche du n∞ de la sous routine -
 C
                ENDIF
 C                       - Fin de recherche du CALL -
-C                     - On passe au caractËre suivant -
+C                     - On passe au caract√®re suivant -
             ENDDO
          ELSE
             GOTO 20
@@ -200,7 +200,7 @@ C        - On passe au fichier suivant -
 C
       ENDDO
 C
-C     - Tous les fichiers ont ÈtÈ traitÈs -
+C     - Tous les fichiers ont √©t√© trait√©s -
 C     
 c      WRITE(*,*)'...ok...'
 C
@@ -336,7 +336,7 @@ C              - on marque la routine -
                      LENSUBR(ncu)=LENSUBR(ncu)+3
                   ENDIF
                ENDIF
-C              - on passe a la routine appelÈe -
+C              - on passe a la routine appel√©e -
 
                remember(niv)=ncurrent
                ncurrent=APPELS(ncurrent,1)
@@ -346,11 +346,11 @@ C              - on passe a la routine appelÈe -
       GOTO 200          
 C
 C-----------------------------------------------------------------------
-C     Routines qui n'ont rien ‡ foutre l‡ !
+C     Routines qui n'ont rien √† foutre l√† !
 C-----------------------------------------------------------------------
 C
  999  WRITE(*,*)
-      WRITE(*,*)'Ces routines n ont rien ‡ foutre l‡ :'
+      WRITE(*,*)'Ces routines n ont rien √† foutre l√† :'
       DO i=1,nosub
          IF(dejaf(i).EQ.0)THEN
             long=LENSUBR(i)

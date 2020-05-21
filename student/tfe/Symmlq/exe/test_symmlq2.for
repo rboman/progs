@@ -3,12 +3,12 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C   SOLVER : SYMMLQ
 C
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C Compilation : nécessite SYMMLQ.OBJ, MATFUN.OBJ, LOADMAT.OBJ
-C ~~~~~~~~~~~             SPARFUN2.OBJ + précondit.
+C Compilation : nÃ©cessite SYMMLQ.OBJ, MATFUN.OBJ, LOADMAT.OBJ
+C ~~~~~~~~~~~             SPARFUN2.OBJ + prÃ©condit.
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-C     -- Déclarations ---------------------------------------
+C     -- DÃ©clarations ---------------------------------------
 C
       IMPLICIT REAL*8(A-H,O-Z)
 C
@@ -24,7 +24,7 @@ C
 C     -- Chargement de la matrice A et du vecteur b ---------
       CALL loadmat(A,IA,JA,b,xref,ierr)
 
-C     -- Paramètres du SYMMLQ -------------------------------
+C     -- ParamÃ¨tres du SYMMLQ -------------------------------
       epsilon = 1.0D-8
       it_max  = 500
       iflag   = 1
@@ -46,7 +46,7 @@ C
      #                   B, R1, R2, V, W, X, Y,
      #                   IFLAG, it_max, epsilon, ierr)
 
-C     -- Sauvegarde du résultat vers MATLAB ----------------
+C     -- Sauvegarde du rÃ©sultat vers MATLAB ----------------
 
       OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='UNKNOWN')
       DO 100 i = 1, N

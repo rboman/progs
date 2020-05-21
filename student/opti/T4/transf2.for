@@ -1,17 +1,17 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C     TRANSF2.FOR : Calcul des x en fct. des lamda
 C
-C Dernière modification : 08.02.97           
+C DerniÃ¨re modification : 08.02.97           
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       SUBROUTINE TRANSF2(A,b,c,x,x2,N,m)
 C
-C     Déclaration des variables
+C     DÃ©claration des variables
 C     -------------------------
       IMPLICIT REAL*8(a-h,o-z)
       REAL*8 A(*),b(*),C(N,m),x(*),x2(*)
 
-c     Récupération des x à partir des lamda
+c     RÃ©cupÃ©ration des x Ã  partir des lamda
 c     -------------------------------------
       ii=1
       DO i=1,N

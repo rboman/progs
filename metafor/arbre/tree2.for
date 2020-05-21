@@ -117,7 +117,7 @@ c                     WRITE(*,*)ICHAR(INFILE(jj:jj))
                   NOM_PROC(1:k)=TEMP(1:K)                  
 c                  k=k-1
 c                  WRITE(*,*)'..CALL ',NOM_PROC(1:k),' line ',ligne
-C                 -recherche du n° de la sous routine-
+C                 -recherche du nÂ° de la sous routine-
                   APPELS(i,nocall(i))=0
 c                  WRITE(*,*)'search...'
                   DO l=1,nosub
@@ -277,7 +277,7 @@ C              - on passe a la suivante -
                ncurrent=APPELS(remember(niv-1),NPOS(niv)) 
             ENDIF
          ELSE
-C              - on passe a la routine appelée -
+C              - on passe a la routine appelÃ©e -
                dejaf(ncurrent)=1
                remember(niv)=ncurrent
                ncurrent=APPELS(ncurrent,1)

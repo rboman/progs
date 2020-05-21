@@ -2,9 +2,9 @@
 *                      Starfield 5  (C++ & Asm)                        *
 *                                                                      *
 * . Utilise le calcul en virgule flotante                              *
-* . Diminution non linéaire de la vitesse des étoiles                  *
+* . Diminution non linÃ©aire de la vitesse des Ã©toiles                  *
 * . Projection centrale                                                *
-* . Grosses étoiles en avant plan                                      *
+* . Grosses Ã©toiles en avant plan                                      *
 *                                                             13.08.96 *
 ************************************************************************/
 
@@ -48,7 +48,7 @@ void main()
     asm mov ax, 0x13; /* Initialisation mode 13h */
     asm int 0x10;
 
-    for (nb_et = 0; nb_et < 100; nb_et++) /* Init. al‚atoire des ‚toiles */
+    for (nb_et = 0; nb_et < 100; nb_et++) /* Init. alÃ©atoire des Ã©toiles */
     {
         et[nb_et].x = random(319) - 160;
         et[nb_et].y = random(199) - 100;
@@ -61,7 +61,7 @@ void main()
     {
         for (nb_et = 0; nb_et < 100; nb_et++)
         {
-            /* Eteint l'‚toile */
+            /* Eteint l'Ã©toile */
             if (et[nb_et].plan < 30)
                 bigstar(et[nb_et].xe, et[nb_et].ye, 0);
             else
@@ -83,7 +83,7 @@ void main()
             et[nb_et].xe = et[nb_et].x / p + 160.0;
             et[nb_et].ye = et[nb_et].y / p + 100.0;
 
-            /* Dessine l'‚toile */
+            /* Dessine l'Ã©toile */
             if (et[nb_et].plan < 30)
                 bigstar(et[nb_et].xe, et[nb_et].ye, 31 - (int)(et[nb_et].plan / 16));
             else

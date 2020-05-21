@@ -2,7 +2,7 @@ C==================================================================
 C Sous routine EVALG : 
 C    . Evaluation du second membre (C/dt-(1-theta)*K)*un + forces
 C
-C Modifié le 06.04.97
+C ModifiÃ© le 06.04.97
 C==================================================================
 C
       SUBROUTINE EVALG(a1,a2,u,A,Tf,theta,NN,g,h,N,dt,IT,ITMAX,

@@ -42,7 +42,7 @@ C
          W(I) = ZERO
    50 CONTINUE
 C
-C     Calcul de V1 (1° vecteur de Lanczos)
+C     Calcul de V1 (1Â° vecteur de Lanczos)
 C
       CALL VectAssign (N,Y,B)
       CALL VectAssign (N,R1,B)
@@ -58,7 +58,7 @@ C
          V(I)  = S*Y(I)
   100 CONTINUE
 C
-C     Calcul de Y (2° vecteur de Lanczos)
+C     Calcul de Y (2Â° vecteur de Lanczos)
 C
       CALL SMMV(N,A,IA,JA,V,Y)
       ALFA   = ProdScal(N,V,Y)

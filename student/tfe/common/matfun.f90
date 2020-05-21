@@ -1,5 +1,5 @@
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-! Sous-routines & fonctions matricielles élémentaires
+! Sous-routines & fonctions matricielles Ã©lÃ©mentaires
 ! 17.11.96
 !++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -71,7 +71,7 @@ SUBROUTINE VectSub(N, v1, v2, v3)
     RETURN
 END SUBROUTINE VectSub
 
-! Calcule v2 = alpha * v1    (alpha réel)
+! Calcule v2 = alpha * v1    (alpha rÃ©el)
 
 SUBROUTINE VectMul(N, v1, alpha, v2)
     implicit none
@@ -113,7 +113,7 @@ SUBROUTINE VectAff(N,v1)
 END SUBROUTINE VectAff
 
 ! Affiche le vecteur v1 et v2 
-! et leur différence et attend un <ENTER>
+! et leur diffÃ©rence et attend un <ENTER>
 
 SUBROUTINE VectAff2(N, v1, v2)
     implicit none
@@ -129,7 +129,7 @@ SUBROUTINE VectAff2(N, v1, v2)
 END SUBROUTINE VectAff2
 
 
-! Initialise la matrice A(N,M) à 0.0d0   (full matrix)
+! Initialise la matrice A(N,M) Ã  0.0d0   (full matrix)
 
 SUBROUTINE MatInit(N, M, A)
     implicit none
@@ -144,7 +144,7 @@ SUBROUTINE MatInit(N, M, A)
     RETURN 
 END SUBROUTINE MatInit
 
-! Initialise le vecteur v à 0.0d0
+! Initialise le vecteur v Ã  0.0d0
 
 SUBROUTINE VectInit(N, v)
     implicit none

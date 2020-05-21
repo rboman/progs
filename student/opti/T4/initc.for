@@ -1,7 +1,7 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C           Routine d'initialisation des contraintes
 C
-C dernière modification : 26.02.97
+C derniÃ¨re modification : 26.02.97
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       SUBROUTINE INITC(C,d,N,m)
@@ -10,7 +10,7 @@ C
       DIMENSION C(N,m),d(m)
       REAL*8 l
 C
-C     Initialisation à ZERO
+C     Initialisation Ã  ZERO
 C     ---------------------
       DO i=1,N
          DO j=1,m
@@ -18,7 +18,7 @@ C     ---------------------
          ENDDO
       ENDDO
 C
-C     Données de la structure (défini aussi alleurs)
+C     DonnÃ©es de la structure (dÃ©fini aussi alleurs)
 C     -----------------------
       P     = 1.0D5
       E     = 1.0D7
@@ -43,7 +43,7 @@ C
          C(i,i)=C(i,i)
       ENDDO
 C
-C     Contraintes sur les déplacements
+C     Contraintes sur les dÃ©placements
 C     --------------------------------
       C(1,7)=2.0       *PLSE*1.0D4
       C(2,7)=2.0*RAC2  *PLSE*1.0D4
@@ -58,7 +58,7 @@ C
          d(i)=UMAX*1.0D4
       ENDDO
 C
-C     Contraintes de non négativité des aires
+C     Contraintes de non nÃ©gativitÃ© des aires
 C     ---------------------------------------
       DO i=1,6
          C(i,9+i) = -1.0D6

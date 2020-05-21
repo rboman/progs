@@ -1,9 +1,9 @@
 C==================================================================
 C Sous routine ANA : 
-C    . Evaluation de la solution analytique du problème
+C    . Evaluation de la solution analytique du problÃ¨me
 C    . Sauvegarde dans uan.m
 C
-C Modifié le 11.04.97
+C ModifiÃ© le 11.04.97
 C==================================================================
 C
       SUBROUTINE ANA(hh,cond,rhoc,N,L,Tf,NT,dt,dx,
@@ -20,14 +20,14 @@ C     --------------
       pi  = 4.0D0*DATAN(1.0D0)
 C
 C                         .On calcule la solution uniquement
-C                          pour les pas sauvegardés
+C                          pour les pas sauvegardÃ©s
       dt  = DBLE(ISAV)*dt
       NT  = NT/ISAV
-C                         .Nombre de termes (2° formule)
+C                         .Nombre de termes (2Â° formule)
       NC  = 100
-C                         .Nombre de bm à calculer
+C                         .Nombre de bm Ã  calculer
       NZ  = 150
-C                         .Tolérence de bissection
+C                         .TolÃ©rence de bissection
       tol = 1.0D-09
 C
 C     Ouverture du fichier
@@ -59,7 +59,7 @@ C         WRITE(*,*)i
 C         WRITE(2,*)'bm(',i,')=',bm(i),';'
       ENDDO
 C
-C     Calcul de la solution analytique (montée)
+C     Calcul de la solution analytique (montÃ©e)
 C     -----------------------------------------
 C     WRITE(*,*)'Calcul des pas de temps : h=h'
       DO k=1,NT+1

@@ -1,7 +1,7 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C       CHKDUAL : Teste si le Hessien est diagonal
 C
-C dernière modification : 09.02.97
+C derniÃ¨re modification : 09.02.97
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
 C Ouput : IERR=1 si Hessien non diag.

@@ -1,8 +1,8 @@
 /***********************************************************************
 *                      Starfield 3  (C++ & Asm)                        *
 *                                                                      *
-* . Utilise le calcul en virgule fixe (2 décimales)                    *
-* . Diminution non linéaire de la vitesse des étoiles                  *
+* . Utilise le calcul en virgule fixe (2 dÃ©cimales)                    *
+* . Diminution non linÃ©aire de la vitesse des Ã©toiles                  *
 * . Projection centrale                                                *
 *                                                             13.08.96 *
 ************************************************************************/
@@ -28,12 +28,12 @@ float fixe2float(fixe fnbre1) /* Conversion fixe -> float */
     return (res);
 }
 
-void aff(fixe nbre) /* Affichage … l'‚cran */
+void aff(fixe nbre) /* Affichage Ã  l'Ã©cran */
 {
     printf("%f\n", fixe2float(nbre));
 }
 
-void adjust(fixe *fnbre) /* Ajustement aprŠs op. */
+void adjust(fixe *fnbre) /* Ajustement aprÃ¨s op. */
 {
     if (fnbre->pdec > facdec)
     {
@@ -121,7 +121,7 @@ void main()
 {
     fixe xfuite, yfuite, p;
 
-    /* D‚finition de quelques constantes */
+    /* DÃ©finition de quelques constantes */
     fixe c1, c2, c3, c4;
     c1 = int2fix(500, 0);
     xfuite = int2fix(160, 0);
@@ -133,7 +133,7 @@ void main()
     asm mov ax, 0x13; /* Initialisation mode 13h */
     asm int 0x10;
 
-    for (nb_et = 0; nb_et < 100; nb_et++) /* Init. al‚atoire des ‚toiles */
+    for (nb_et = 0; nb_et < 100; nb_et++) /* Init. alÃ©atoire des Ã©toiles */
     {
         et[nb_et].x = int2fix(random(319) - 160, 0);
         et[nb_et].y = int2fix(random(199) - 100, 0);
@@ -146,7 +146,7 @@ void main()
     {
         for (nb_et = 0; nb_et < 100; nb_et++)
         {
-            /* Eteint l'‚toile */
+            /* Eteint l'Ã©toile */
             putpixel(et[nb_et].xe.pent, et[nb_et].ye.pent, 0);
 
             /* Calcule la vitesse */
@@ -165,7 +165,7 @@ void main()
             et[nb_et].xe = add(div(et[nb_et].x, p), xfuite);
             et[nb_et].ye = add(div(et[nb_et].y, p), yfuite);
 
-            /* Dessine l'‚toile */
+            /* Dessine l'Ã©toile */
             putpixel(et[nb_et].xe.pent, et[nb_et].ye.pent, 31 - (int)(et[nb_et].plan.pent / 16));
         }
 

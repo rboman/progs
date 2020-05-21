@@ -1,23 +1,23 @@
       PROGRAM TCM
 C==================================================================
-C       Modélisation des transferts de chaleur & matière
+C       ModÃ©lisation des transferts de chaleur & matiÃ¨re
 C       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C                         (1°partie)
+C                         (1Â°partie)
 C
-C Modifié le 06.04.97
+C ModifiÃ© le 06.04.97
 C==================================================================
-C Tableaux : . u      : champ des températures aux noeuds
-C            . S      : matrice à inverser (implicite)
-C            . s1, s2 : contiennent la décomposition LU de S
-C            . g      : second membre du système EF
+C Tableaux : . u      : champ des tempÃ©ratures aux noeuds
+C            . S      : matrice Ã  inverser (implicite)
+C            . s1, s2 : contiennent la dÃ©composition LU de S
+C            . g      : second membre du systÃ¨me EF
 C
-C Scalaires : . L,A       : caractéristiques géométriques du milieu
-C             . cond,rhoc : caractéristiques thermiques du milieu
+C Scalaires : . L,A       : caractÃ©ristiques gÃ©omÃ©triques du milieu
+C             . cond,rhoc : caractÃ©ristiques thermiques du milieu
 C             . h,Tf      : coefficient de convection et
-C                           température du fluide en x=0.
-C             . N         : nombre d'éléments finis
-C             . ITMAX     : Nbre de pas de temps à effectuer
-C                           avec h=h (échauffement)
+C                           tempÃ©rature du fluide en x=0.
+C             . N         : nombre d'Ã©lÃ©ments finis
+C             . ITMAX     : Nbre de pas de temps Ã  effectuer
+C                           avec h=h (Ã©chauffement)
 C             . MUL       : Nbre de pas de temps total = ITMAX*MUL
 C             . dx,dt     : Pas spatial et temporel
 C             . IDIAG     : =1 -> diagonalisation de C
@@ -46,7 +46,7 @@ C     --------------
          IDIAG=0
       ENDIF
 C
-C     - matériau
+C     - matÃ©riau
 C
       A     = 1.0D0
       L     = 0.1D0
@@ -62,7 +62,7 @@ C
       h     = 1.0D3
       Tf    = 100.0D0
 C
-C     - intégrateur
+C     - intÃ©grateur
 C
       N     = 30
       TFIN  = 10.0D0
@@ -102,7 +102,7 @@ C
          WRITE(*,*)'dt max oscil : infini'
       ENDIF
 C
-C     Affichage des données à l'écran
+C     Affichage des donnÃ©es Ã  l'Ã©cran
 C     -------------------------------
       WRITE(*,120)dx,h,cond,dt,Tf,rhoc,cond/rhoc
       WRITE(*,*)'<SPACE>'
@@ -124,7 +124,7 @@ C     --------------------------------
       CALL ANA(h,cond,rhoc,N,L,Tf,ITMAX2,dt2,dx,ISAV,MUL,TFIN)
       WRITE(*,130)
 C
-C     Initialisation des températures
+C     Initialisation des tempÃ©ratures
 C     -------------------------------
       DO i=1,N+1
          u(i)=0.0D0

@@ -80,7 +80,7 @@ void MyWidgetI::updateTextLineEdit(QLineEdit *ledit, double val)
     s.setNum( val ); ledit->setText(s);
 }
 
-// -- param�tres maillage
+// -- paramètres maillage
 
 void MyWidgetI::origx_slot()
 {
@@ -120,7 +120,7 @@ void MyWidgetI::deltype_slot()
     qWarning( "MyWidget::deltype_slot(): Not implemented yet!" );
 }
 
-// -- param�tres matrice
+// -- paramètres matrice
 
 void MyWidgetI::centrex_slot()
 {

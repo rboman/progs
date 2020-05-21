@@ -10,7 +10,7 @@
       open(UNIT = 1, FILE = 'system2.bin', STATUS = 'unknown')
       write(*,*)'Chargement du systeme : SYSTEM2.BIN'
 
-C     Dimensions du système :
+C     Dimensions du systÃ¨me :
 
       read(1,*) NN
       read(1,*) NNELEM

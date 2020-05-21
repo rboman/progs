@@ -1,6 +1,6 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C   SOLVER : BiCG Stabilized                         11.02.97
-C            (d'après Templates)
+C            (d'aprÃ¨s Templates)
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       SUBROUTINE BICGSTAB(N, x, b, A, IA, JA, ALU, JLU, JU, 
@@ -60,7 +60,7 @@ C     -----------------------------------
          ENDDO
       ENDIF
 C
-C     Préconditionnement
+C     PrÃ©conditionnement
 C     ------------------
       IF(IFLAG.NE.0) THEN
          CALL lusol(n, p, p2, alu, jlu, ju)
@@ -83,10 +83,10 @@ C     -----------
 C
 C     Teste la norme de s
 C     -------------------
-C     (à faire)
+C     (Ã  faire)
 
 C
-C     Préconditionnement
+C     PrÃ©conditionnement
 C     ------------------
       IF(IFLAG.NE.0) THEN
          CALL lusol(n, s, s2, alu, jlu, ju)
@@ -99,7 +99,7 @@ C
       womega=ProdScal(N,t,t)
       womega=ProdScal(N,t,s)/womega
 C
-C     Mise à jour de la solution et des résidus
+C     Mise Ã  jour de la solution et des rÃ©sidus
 C     -----------------------------------------
       DO i=1,N
          x(i)  = x(i)  + alpha  * p2(i) + womega * s2(i)

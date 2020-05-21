@@ -44,7 +44,7 @@ void main()
     {
         for (nb_et = 0; nb_et < 500; nb_et++)
         {
-            /* Eteint l'‚toile */
+            /* Eteint l'étoile */
             putpixel(et[nb_et].x, et[nb_et].y, 0);
 
             /* Calcule la vitesse */
@@ -58,7 +58,7 @@ void main()
                 et[nb_et].plan = random(256);
             }
 
-            /* Dessine l'‚toile */
+            /* Dessine l'étoile */
             putpixel(et[nb_et].x, et[nb_et].y, (et[nb_et].plan >> 4) + 16);
 
             /* Boucle d'attente */

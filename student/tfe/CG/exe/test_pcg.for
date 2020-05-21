@@ -3,7 +3,7 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C   SOLVER : PCG
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
-C     -- Déclarations ---------------------------------------
+C     -- DÃ©clarations ---------------------------------------
       IMPLICIT REAL*8(A-H,O-Z)
 
       INTEGER N, IA, JA, NELEM, ierr,it_max,iwk,iflag
@@ -19,18 +19,18 @@ C     -- Déclarations ---------------------------------------
 C     -- Chargement de la matrice A et du vecteur b ---------
       CALL loadmat(A,IA,JA,b,xref,ierr)
 
-C     -- Initialisation du vecteur x à 0.0d0 ----------------
+C     -- Initialisation du vecteur x Ã  0.0d0 ----------------
       CALL vectinit(N,x)
 
-C     -- Paramètres du GMRES --------------------------------
+C     -- ParamÃ¨tres du GMRES --------------------------------
       epsilon = 1.0D-8
       it_max  = 1000
 
-C     -- Création du préconditionneur -----------------------
+C     -- CrÃ©ation du prÃ©conditionneur -----------------------
       WRITE(*,*)' 1 : IC0'
-      WRITE(*,*)' 2 : IC0  + M réduc. = RIC0'
+      WRITE(*,*)' 2 : IC0  + M rÃ©duc. = RIC0'
       WRITE(*,*)' 3 : MIC0'
-      WRITE(*,*)' 4 : MIC0 + M réduc. = RMIC0'
+      WRITE(*,*)' 4 : MIC0 + M rÃ©duc. = RMIC0'
       WRITE(*,*)'precond ? (0 = non)'
       READ(*,*)iflag
       ierr= 0
@@ -57,7 +57,7 @@ C     -- Appel de la sous-routine CG ---------------------
       CALL pcg(N, x, b, A, IA, JA, ALU,JU,JLU, epsilon,
      #         it_max,r, w, p, z, iflag)
      
-C     -- Sauvegarde du résultat vers MATLAB ----------------
+C     -- Sauvegarde du rÃ©sultat vers MATLAB ----------------
 
       OPEN (UNIT = 1, FILE = 's_gmres.m', STATUS='unknown')
       DO 100 i = 1, N

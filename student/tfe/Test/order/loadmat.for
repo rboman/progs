@@ -1,6 +1,6 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C        Chargement du système à partir d'un fichier 
-C              (SYSTEM2.BIN) créé par matlab   
+C        Chargement du systÃ¨me Ã  partir d'un fichier 
+C              (SYSTEM2.BIN) crÃ©Ã© par matlab   
 C------------------------------------------------------------
 C  return : ierr=0 si chargement ok.                 12.12.96
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -14,7 +14,7 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       open(UNIT = 1, FILE = 'system2.bin', STATUS = 'unknown')
       write(*,*)'Chargement du systeme : SYSTEM2.BIN'
 
-C     Dimensions du système :
+C     Dimensions du systÃ¨me :
 
       read(1,*) NN
       read(1,*) NNELEM

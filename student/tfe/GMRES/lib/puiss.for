@@ -2,7 +2,7 @@ C+++++++++++++++++++++++++++++++++++++++++++++++++++++
 C Extraction de la plus grande vp
 C+++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
-C ierr=1 si pas de convergence apres itmax ités
+C ierr=1 si pas de convergence apres itmax itÃ©s
 C
 C+++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
