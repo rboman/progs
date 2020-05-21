@@ -31,7 +31,7 @@ C ----Donnees-------------
       R(2)  = 0.
       Beta  = 0.005
 
-      write(*,*)'PrÇcision?'
+      write(*,*)'Pr√©cision?'
       read(*,*)prec
 
 C ----Initialisation------------------------------
@@ -52,13 +52,13 @@ C ----Ricks Crisfield-----------------------------
       boucle=0
       u=uu(1)
       v=uu(2)
-C     ----Calcul de la dÇrivÇe de P par rapport Ö v----
+C     ----Calcul de la d√©riv√©e de P par rapport √† v----
       den=Vv/Lv**4*(v*v+u*u-2*h*v+2*u*(a+b)+2*(a+b+u)**2)
       den=den+8*Vh/Lh**4*(2*(u+a)**2+u*(u+2*a))
       dudv=Vv/Lv**4*2*(a+b+u)*(v-h)/den
       dpdv=E*Vv/Lv**4*(v-h)*(2*v-2*h+2*(u+a+b)*dudv)
       dpdv=dpdv+(v*v+u*u-2*h*v+2*u*(a+b))*E*Vv/Lv**4
-C     ----RÇduit ETA apräs un changement de signe----
+C     ----R√©duit ETA apr√®s un changement de signe----
       si=signe(dpdv)
       if (si-sit.NE.0) then
          ETA=ETA/2
@@ -106,7 +106,7 @@ C           ----Calcul de a1, a2, a3----
             rac2=(-a2-dsqrt(a2**2-4*a1*a3))/2/a1
             test2=uu(2)+Du1(2)+rac2*Du2(2)  
             test1=uu(2)+Du1(2)+rac1*Du2(2)
-C           ----Critäre du choix de la racine----
+C           ----Crit√®re du choix de la racine----
             if(dpdv.gt.0) then
                if ((test2-test1).GT.0) then
                   uu(1)=uu(1)+Du1(1)+rac2*Du2(1)

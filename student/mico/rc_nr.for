@@ -33,7 +33,7 @@ C ----Donnees-------------
       pas    = 0.01
       TgSwap = 900.
 
-C ----ParamŠtres----------   
+C ----ParamÃ¨tres----------   
       
       write(*,*)'TOL?'
       read(*,*)TOL
@@ -60,7 +60,7 @@ C  --------------------Newton Raphson----
          lambdat=lambda
          uut(1)=uu(1)
          uut(2)=uu(2)
-C        ----Calcul de l'incr‚ment de Force----
+C        ----Calcul de l'incrÃ©ment de Force----
          if (t.GT.1) then
             if ((Force(t-1)-Force(t)).LT.0) then
                lambda=lambda+pas
@@ -190,7 +190,7 @@ C           ----Calcul de a1, a2, a3----
          x(t)=uu(2)
          y(t)=uu(1)
       endif
-C     ----Teste la tangente … la courbe:
+C     ----Teste la tangente Ã  la courbe:
 C                     TG > 900 --> N.R.
 C                     TG < 900---> R.C.
       if (abs((Force(t-1)-Force(t))/(uut(2)-uu(2))).LT.TgSwap) then

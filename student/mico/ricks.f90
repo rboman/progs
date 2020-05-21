@@ -39,7 +39,7 @@ subroutine ricks(x, y, Force)
       imax  = 0
       Beta  = 1d-3 !0.005
       rmax  = 0.
-! ----Paramätres----------   
+! ----Param√®tres----------   
       
     !   write(*,*)'TOL?'
     !   read(*,*)TOL
@@ -160,7 +160,7 @@ subroutine ricks(x, y, Force)
               ((lambda-lambdat)**2)*(Beta**2)*ps(R,R)-ETA**2)
             rac1=(-a2+dsqrt(a2**2-4*a1*a3))/2/a1
             rac2=(-a2-dsqrt(a2**2-4*a1*a3))/2/a1
-!           ----Critäre de choix de la racine----
+!           ----Crit√®re de choix de la racine----
             test1=uu(2)+Du1(2)+rac1*Du2(2)
             test2=uu(2)+Du1(2)+rac2*Du2(2)  
             if ((test2-test1).GT.0.0) then
@@ -176,7 +176,7 @@ subroutine ricks(x, y, Force)
             boucle=1
          endif
          if (boucle.EQ.0) goto 40
-!        ----Mise ‡ jour des tableaux de rÈsultats----
+!        ----Mise √† jour des tableaux de r√©sultats----
          t=t+1
          Force(t)=lambda*R(1)
          x(t)=uu(2)
@@ -189,7 +189,7 @@ subroutine ricks(x, y, Force)
          if (ETA.GT.rmax) then
             rmax=ETA
          endif
-!        ----Garde le nombre d'itÈration max----
+!        ----Garde le nombre d'it√©ration max----
          if (imax.LT.i) then
             imax=i
          endif

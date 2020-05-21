@@ -1,5 +1,5 @@
 C ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C                       Fluides gÇophysiques  v14         (11.04.96)
+C                       Fluides g√©ophysiques  v14         (11.04.96)
 C                       -------------------------
 C   . Red Black
 C   . Calcul des vitesses
@@ -50,8 +50,8 @@ C ------------------------------------------------------------------
       write(*,*)'pasx =',pasx,' ; pasy =',pasy
       write(*,*)'T    =',T,'dH   =',f*L*U/g
       write(*,*)'dt (max) =',dt,'sec.' 
-      write(*,*)'Le canal fait ',2*Lx*L,'mätres de long'
-      write(*,*)'           et ',2*Ly*L,'mätres de large'
+      write(*,*)'Le canal fait ',2*Lx*L,'m√®tres de long'
+      write(*,*)'           et ',2*Ly*L,'m√®tres de large'
       write(*,*)'tol (1D-6)?'
       read(*,*)tol
       write(*,*)'w (1.825)?'
@@ -416,8 +416,8 @@ C ------------------------------------------------------------------
 C                     Commentaires finaux
 C ------------------------------------------------------------------
 
-      write(*,*)'Calcul effectuÈ sur ',Nmax*T*dt,'sec.'
-      write(*,*)'Nb itÈrations (moy) ',kmoy/Nmax
-      write(*,*)'RÈsultats dans RES.M'
+      write(*,*)'Calcul effectu√© sur ',Nmax*T*dt,'sec.'
+      write(*,*)'Nb it√©rations (moy) ',kmoy/Nmax
+      write(*,*)'R√©sultats dans RES.M'
       
       end

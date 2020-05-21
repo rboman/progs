@@ -1,5 +1,5 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C     Projet MICO - Partie theorique (ver. FORTRAN 21.03.95)
+C     Projet MICO - Partie th√©orique (ver. FORTRAN 21.03.95)
 C
 C            Calcule u(v) et P(u) par Newton Raphson
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -57,7 +57,7 @@ C ----Trace u fct. de v---
          P(i)=(E*Vv/Lv**4)*(v*v+u*u-2*h*v+2*u*(a+b))*(v-h)
 10    continue
 
-C ----RÇponse linÇaire----
+C ----R√©ponse lin√©aire----
 
       do 40 vz=0,15
         ul(vz+1)=2*h*vz*(a+b)*Vv/Lv**4/(Vh/a**2+2*Vv*(a+b)**2/Lv**4)

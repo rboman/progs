@@ -89,7 +89,7 @@ def main():
 
     # loop over all files and try to guess encoding...
     encs = {}
-    for f in all_files(os.getcwd(), patterns='*.py;*.pyw;*.h;*.cpp;*.inl;*.i;*.hpp;*.txt;*.swg'):
+    for f in all_files(os.getcwd(), patterns='*.py;*.pyw;*.h;*.cpp;*.inl;*.i;*.hpp;*.txt;*.swg;*.for;*.f;*.f90'):
         print('{}..'.format(f), end=' ')
         # utilise "file" - marche très bien
         enc = getencoding_file(f)
@@ -133,6 +133,7 @@ def main():
                     continue
                 # convertit les fichiers récalcitrants 
                 #if enc=='unknown-8bit': enc='ISO-8859-1'
+                #if enc=='unknown-8bit': enc='CP437'
                 try:
                     with open(f, "rb") as source:
                         content = unicode(source.read(), enc).encode('utf-8')

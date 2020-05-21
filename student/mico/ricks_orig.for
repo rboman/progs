@@ -35,7 +35,7 @@ C ----Donnees-------------
       imax  = 0
       Beta  = 0.005
       rmax  = 0.
-C ----Paramätres----------   
+C ----Param√®tres----------   
       
       write(*,*)'TOL?'
       read(*,*)TOL
@@ -52,7 +52,7 @@ C ----Initialisation------------------------------
       Force(1)=0.
       lambda=0.01
 
-C ----1¯ pas de temps: N-R normal avec P=200------
+C ----1¬∞ pas de temps: N-R normal avec P=200------
          t=t+1
          boucle=0
          ii=0
@@ -155,7 +155,7 @@ C           ----Calcul de a1, a2, a3----
      *         ((lambda-lambdat)**2)*(Beta**2)*ps(R,R)-ETA**2)
             rac1=(-a2+dsqrt(a2**2-4*a1*a3))/2/a1
             rac2=(-a2-dsqrt(a2**2-4*a1*a3))/2/a1
-C           ----Critäre de choix de la racine----
+C           ----Crit√®re de choix de la racine----
             test1=uu(2)+Du1(2)+rac1*Du2(2)
             test2=uu(2)+Du1(2)+rac2*Du2(2)  
             if ((test2-test1).GT.0.0) then
@@ -171,7 +171,7 @@ C           ----Critäre de choix de la racine----
             boucle=1
          endif
          if (boucle.EQ.0) goto 40
-C        ----Mise Ö jour des tableaux de rÇsultats----
+C        ----Mise √† jour des tableaux de r√©sultats----
          t=t+1
          Force(t)=lambda*R(1)
          x(t)=uu(2)
@@ -184,7 +184,7 @@ C        ----Calcul du nouvel ETA----
          if (ETA.GT.rmax) then
             rmax=ETA
          endif
-C        ----Garde le nombre d'itÇration max----
+C        ----Garde le nombre d'it√©ration max----
          if (imax.LT.i) then
             imax=i
          endif

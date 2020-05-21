@@ -1,12 +1,12 @@
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-C             GENDAT : Genère un fichier de données
+C             GENDAT : GÃ©nÃ¨re un fichier de donnÃ©es
 C
-C dernière modification : 08.02.97
+C derniÃ¨re modification : 08.02.97
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
       SUBROUTINE GENDAT(N, S, II, F, MEMORY, m)
 C
-C     Déclaration des variables
+C     DÃ©claration des variables
 C     -------------------------
       IMPLICIT REAL*8 (A-H,O-Z)
 C
@@ -35,11 +35,11 @@ C     ----------------------------
       CALL ALLOC(N,II,MEMORY,IERR,m)
       IF(IERR.NE.0) GOTO 10
 C
-C     Entrée des données au clavier (f(x))
+C     EntrÃ©e des donnÃ©es au clavier (f(x))
 C     ------------------------------------
       IF(idon.EQ.0) THEN
          k=0
-C        -- deuxième degré --
+C        -- deuxiÃ¨me degrÃ© --
          DO i=1,N
             DO j=1,i
                k=k+1
@@ -53,13 +53,13 @@ C        -- deuxième degré --
                ENDIF
             ENDDO
          ENDDO
-C        -- premier degré --
+C        -- premier degrÃ© --
          DO i=1,N
             WRITE(*,105)i
             READ(*,*) itemp
             S(II(2)+i-1)=-itemp
          ENDDO
-C        -- terme indépendant --
+C        -- terme indÃ©pendant --
          WRITE(*,108)
          READ(*,*) F
       ELSE
@@ -77,19 +77,19 @@ C        -- Vecteur b --
             WRITE(*,101)i
             READ(*,*) S(II(2)+i-1)
          ENDDO
-C        -- terme indépendant --
+C        -- terme indÃ©pendant --
          WRITE(*,*)'F( 0, 0) ='
          READ(*,*) F
       ENDIF
 C
-C     Entrée des données au clavier (X0)
+C     EntrÃ©e des donnÃ©es au clavier (X0)
 C     ----------------------------------
       DO i=1,N
          WRITE(*,102)i
          READ(5,*) S(II(5)+i-1)
       ENDDO
 C
-C     Entrée des données au clavier (contraintes)
+C     EntrÃ©e des donnÃ©es au clavier (contraintes)
 C     -------------------------------------------
       DO i=1,m
          DO j=1,n
@@ -131,7 +131,7 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      #       '                   ou 1) A et b ? :')
  110  FORMAT(' Nbre de variables   :')
  111  FORMAT(' Nbre de contraintes :')
- 112  FORMAT(' Nouveau fichier de donn‚es :')
+ 112  FORMAT(' Nouveau fichier de donnÃ©es :')
  150  FORMAT(' Fichier inexistant !')
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C
