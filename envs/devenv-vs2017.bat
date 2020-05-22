@@ -16,7 +16,10 @@ set PATH=%PATH%;%MYLOCAL%\swig
 set INCLUDE=%MYLOCAL%\include;%MYLOCAL%\MUMPS\include;%MYLOCAL%\eigen
 set LIB=%MYLOCAL%\MUMPS\lib
 
-set PATH=%PATH%;C:\Program Files\Git\bin
+::set PATH=%PATH%;C:\Program Files\Git\bin
+:: f2py
+set PATH=%PATH%;F:\Python37\Scripts
+
 
 :: ok (MKL + VS en ligne de commande)
 call "C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\mkl\bin\mklvars.bat" intel64 vs2017
