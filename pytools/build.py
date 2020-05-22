@@ -17,6 +17,7 @@
 """
 Management of CMake/CTest runs for building and testing programs
 """
+from __future__ import print_function
 
 import os
 import subprocess
@@ -58,6 +59,6 @@ def run(progname):
     os.chdir('build')
     if 'Windows' in platform.uname():
         os.chdir('Release')
-    print 'running', progname
+    print('running', progname)
     subprocess.check_output([progname])
     os.chdir('..')

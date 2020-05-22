@@ -43,6 +43,7 @@ from __future__ import print_function
 #     return args
 
 
+from builtins import object
 def chDir(dirname):
     import os
     os.chdir(dirname)
