@@ -1,10 +1,11 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Execute "pyuic". 
 # Ask for the location of it if not found.
 # Store result in QSettings
 
+from __future__ import print_function
 import sys
 import subprocess
 import os
@@ -15,13 +16,13 @@ from PyQt5.QtWidgets import *
 
 def tryEXE(exe):
     try:
-        print "dry run of '%s'..." % exe,
+        print("dry run of '%s'..." % exe, end=' ')
         with open(os.devnull, 'w') as FNULL:
             subprocess.call([exe], stdout=FNULL, stderr=subprocess.STDOUT)
-        print "OK!"
+        print("OK!")
         return exe
     except OSError:
-        print "failure!"
+        print("failure!")
         return ""
 
 def askUser():
@@ -31,9 +32,9 @@ def askUser():
         None, 'Select pyuic5', '', filter='Executable (pyuic5%s)' % ext)
     exe = fname[0]
     if not exe:
-        print 'cancelled by user'
+        print('cancelled by user')
         sys.exit(1)
-    print "user selected '%s'" % exe
+    print("user selected '%s'" % exe)
     return exe
 
 if __name__ == "__main__":
@@ -47,7 +48,7 @@ if __name__ == "__main__":
         #settings.remove("pyuic5") # clear stored value
 
         exe = settings.value("pyuic5", "")
-        print "using value stored in settings: '%s'" % exe
+        print("using value stored in settings: '%s'" % exe)
 
         if exe and tryEXE(exe):
             pass
@@ -60,6 +61,6 @@ if __name__ == "__main__":
 
     # run cmd
     cmd = [exe, 'widget.ui', '-o', 'ui_widget.py']
-    print "=> running", ' '.join(cmd)
+    print("=> running", ' '.join(cmd))
     iop = subprocess.call(cmd)
-    print 'iop =', iop
+    print('iop =', iop)

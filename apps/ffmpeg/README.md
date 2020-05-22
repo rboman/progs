@@ -4,7 +4,7 @@ A basic multi-platform GUI written with PyQt for creating movies from a series o
 This program uses `ffmpeg`.
 
 ## Dependencies
-  * [Python 2.7](https://www.python.org/)
+  * [Python 3](https://www.python.org/)
   * [PyQt](https://www.riverbankcomputing.com/software/pyqt/intro), [Qt](https://www.qt.io/)
   * [ffmpeg](https://www.ffmpeg.org/)
 
@@ -20,6 +20,6 @@ This program uses `ffmpeg`.
 ![ffmpeg](screenshot.png)
 
 ## Notes/TODO
-  * check compatibility with PySide/python3
+  * check compatibility with PySide
   * make a smarter preview without loading all the images into memory
   * resize preview window

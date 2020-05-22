@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Copyright 2019 Romain Boman
@@ -15,6 +15,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
+from builtins import map
 import sys
 import os
 import subprocess
@@ -69,11 +71,11 @@ class Window(QWidget, Ui_Form):
         self.setWindowIcon(QIcon(iconfile))
 
     def on_play_Button_pressed(self):
-        print "running ffplay..."
+        print("running ffplay...")
         self.runPRG("ffplay")
 
     def on_probe_Button_pressed(self):
-        print "running ffprobe..."
+        print("running ffprobe...")
         self.runPRG("ffprobe")
 
     def runPRG(self, pname):
@@ -88,43 +90,43 @@ class Window(QWidget, Ui_Form):
             QMessageBox.critical(self, 'Error', 'The video has not been generated yet!\n%s does not exist' % outfile)
             return
         cmd.append(outfile)
-        print '\t', cmd
+        print('\t', cmd)
         try:
             retcode = subprocess.call(cmd)
-            print "\tretcode =", retcode  
-        except Exception, e:
-            print e
+            print("\tretcode =", retcode)  
+        except Exception as e:
+            print(e)
 
     def on_check_Button_pressed(self):
 
-        print "folders:"
+        print("folders:")
         for p, f in [('ffmpeg', self.ffmpegfolder_lineEdit.text()), 
                      ('workspace', self.workspace_lineEdit.text()),
                      ('output', self.outdir_lineEdit.text())]:
-            print "\t.", p,
+            print("\t.", p, end=' ')
             if not f:
-                print "empty"
+                print("empty")
             if os.path.isdir(f):
-                print "exists!"
+                print("exists!")
             else:
-                print "doesn't exist!"
+                print("doesn't exist!")
 
-        print "programs:"
+        print("programs:")
         for p in ['ffmpeg', 'ffplay', 'ffprobe']:
-            print "\t.", p,
+            print("\t.", p, end=' ')
             exe = self.getExe(p)
             where = 'from PATH' if exe==p else 'from ffmpeg folder' 
             if exe:
-                print "found: %s (%s)" % (exe, where)
+                print("found: %s (%s)" % (exe, where))
             else:
-                print "NOT FOUND!"
+                print("NOT FOUND!")
 
         if os.path.isdir(self.workspace_lineEdit.text()):
-            print "images:"
+            print("images:")
             # convert sscanf format to regex:
             regex = re.sub(
                 r'(\%(\d)d)', r'(\d{\2})', self.filenames_lineEdit.text())
-            print "\t. pattern converted to regex:", regex
+            print("\t. pattern converted to regex:", regex)
             pattern = re.compile(regex)
 
             nofiles = 0
@@ -142,8 +144,8 @@ class Window(QWidget, Ui_Form):
                     lowno = min(no, lowno)
                     self.pixnames.append( os.path.join(
                         self.workspace_lineEdit.text(), f) )
-            print "\t. %d files found ranging from %d to %d" % (
-                nofiles, lowno, highno)
+            print("\t. %d files found ranging from %d to %d" % (
+                nofiles, lowno, highno))
 
             if len(self.pixnames):
                 progress = QProgressDialog("image", "Cancel", 0, len(self.pixnames), self)
@@ -261,12 +263,12 @@ class Window(QWidget, Ui_Form):
                                      "The output file already exists. Do you want to overwrite it?", 
                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if reply == QMessageBox.No:
-                print "output file exists - operation cancelled."
+                print("output file exists - operation cancelled.")
                 return           
 
         cmd.append(outfile)
-        print "running ffmpeg..."
-        print '\t', cmd
+        print("running ffmpeg...")
+        print('\t', cmd)
 
         # sous linux, cmd doit etre une liste a moins que shell=True (pas safe)
         # dans ce cas, python se charge d'ajouter des guillemets là ou il faut.
@@ -274,7 +276,7 @@ class Window(QWidget, Ui_Form):
         # => on utilise une liste
         retcode = subprocess.call(cmd)
 
-        print "\tretcode =", retcode
+        print("\tretcode =", retcode)
 
     def on_ffmpegfolder_Button_pressed(self):
         dir = QFileDialog.getExistingDirectory(
@@ -318,7 +320,7 @@ class Window(QWidget, Ui_Form):
     def write(self, stuff):
         "stdio redirection"
         if '\n' in stuff:
-            map(self.writeLine, stuff.split("\n"))
+            list(map(self.writeLine, stuff.split("\n")))
         else:
             self.buf += stuff
         qApp.processEvents()

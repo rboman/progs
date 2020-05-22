@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'widget.ui'
 #
-# Created by: PyQt5 UI code generator 5.10.1
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -159,4 +161,3 @@ class Ui_Form(object):
         self.play_Button.setText(_translate("Form", "Play"))
         self.probe_Button.setToolTip(_translate("Form", "<html><head/><body><p>use ffprobe (if available) to display info about the generated video</p></body></html>"))
         self.probe_Button.setText(_translate("Form", "Probe"))
-
