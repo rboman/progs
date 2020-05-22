@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
@@ -15,6 +15,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -37,13 +41,13 @@ class Mandelbrot(QWidget):
 
     def paintEvent(self, event):
 
-        print "paintEvent: please wait..."
+        print("paintEvent: please wait...")
         painter = QPainter(self)
 
         # setup palette
         colours = []
         for n in range(self.nb_coul):
-            colours.append(QColor(255*n/self.nb_coul, 0, 0))
+            colours.append(QColor(old_div(255*n,self.nb_coul), 0, 0))
         colours.append(QColor(0, 0, 0))
 
         (a1, a2) = (self.x2-self.x1, self.y2-self.y1)
@@ -51,7 +55,7 @@ class Mandelbrot(QWidget):
 
         for xe in range(sl):
             for ye in range(sh):
-                (xc, yc) = ((a1*xe)/sl+self.x1, (a2*ye)/sh+self.y1)
+                (xc, yc) = (old_div((a1*xe),sl)+self.x1, old_div((a2*ye),sh)+self.y1)
 
                 n = 0
                 (xn, yn) = (0.0, 0.0)
@@ -65,7 +69,7 @@ class Mandelbrot(QWidget):
 
                 painter.drawPoint(xe, ye)
 
-        print "done."
+        print("done.")
 
 
 if __name__ == "__main__":

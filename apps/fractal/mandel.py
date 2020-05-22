@@ -1,13 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
-class Transf:
+class Transf(object):
     """
     store a "logical coords <=> device coords" transformation
     """
@@ -22,8 +27,8 @@ class Transf:
 
     def win2ax(self, xe, ye):  # (xe,ye) + wx,wy,ox,oy,zoom => (x,y)
         """ widget to logical coords"""
-        x = self.ox + float(xe-self.wx/2)/self.zoom
-        y = self.oy - float(ye-self.wy/2)/self.zoom
+        x = self.ox + float(xe-old_div(self.wx,2))/self.zoom
+        y = self.oy - float(ye-old_div(self.wy,2))/self.zoom
         return x, y
 
     def __str__(self):
@@ -54,8 +59,8 @@ class RenderThread(QThread):
         self.abort = False
 
     def run(self):
-        print "starting thread on %dx%d" % (self.transf.wx, self.transf.wy)
-        print self.transf
+        print("starting thread on %dx%d" % (self.transf.wx, self.transf.wy))
+        print(self.transf)
         self.mutex.lock()
         painter = QPainter(self.pixmap)
         painter.fillRect(self.pixmap.rect(), Qt.black)
@@ -65,7 +70,7 @@ class RenderThread(QThread):
         colours = []
         for n in range(self.nbc):
             col = QColor()
-            col.setHsv(255*n/self.nbc, 255, 255)
+            col.setHsv(old_div(255*n,self.nbc), 255, 255)
             colours.append(col)
 
         for xe in range(0, self.transf.wx, self.inc):
@@ -94,11 +99,11 @@ class RenderThread(QThread):
                 painter.drawPoint(xe, ye)
                 self.mutex.unlock()
                 if self.abort:
-                    print "thread has been killed!"
+                    print("thread has been killed!")
                     return
             self.newStuff.emit()
 
-        print "thread is over!"
+        print("thread is over!")
 
 
 class MandelWidget(QWidget):
@@ -138,8 +143,8 @@ class MandelWidget(QWidget):
 
         import copy
         self.transf0 = copy.copy(self.transf)
-        print "transf\n", self.transf
-        print "transf0\n", self.transf0
+        print("transf\n", self.transf)
+        print("transf0\n", self.transf0)
 
     def contextMenuEvent(self, event):
         menu = QMenu(self)
@@ -151,7 +156,7 @@ class MandelWidget(QWidget):
         menu.exec_(event.globalPos())
 
     def resetView(self):
-        print "reset view!"
+        print("reset view!")
         self.killThread()
 
         import copy
@@ -164,7 +169,7 @@ class MandelWidget(QWidget):
         self.thread.start()
 
     def toggleShowCoords(self, val):
-        print "show coords =", val
+        print("show coords =", val)
         self.update()
 
     def resizeEvent(self, event):
@@ -200,11 +205,11 @@ class MandelWidget(QWidget):
 
             painter.setPen(Qt.NoPen)
             painter.setBrush(QColor(0, 0, 0, 127))
-            painter.drawRect((self.width() - textWidth) / 2 - 5, 0, textWidth + 10,
+            painter.drawRect(old_div((self.width() - textWidth), 2) - 5, 0, textWidth + 10,
                              metrics.lineSpacing() + 5)
 
             painter.setPen(Qt.white)
-            painter.drawText((self.width() - textWidth) / 2,
+            painter.drawText(old_div((self.width() - textWidth), 2),
                              metrics.leading() + metrics.ascent(), text)
 
         # zoom
@@ -230,7 +235,7 @@ class MandelWidget(QWidget):
         w = x2 - x1
         h = y2 - y1
         ww = int(ar * h)
-        hh = int(w / ar)
+        hh = int(old_div(w, ar))
         if abs(ww) > abs(w):
             x2 = x1 + ww
         elif abs(hh) > abs(h):
@@ -261,8 +266,8 @@ class MandelWidget(QWidget):
                     rect.topLeft().x(), rect.topLeft().y())
                 x2, y2 = self.transf.win2ax(
                     rect.bottomRight().x(), rect.bottomRight().y())
-                ox = (x1+x2)/2
-                oy = (y1+y2)/2
+                ox = old_div((x1+x2),2)
+                oy = old_div((y1+y2),2)
                 zoom1 = abs(float(self.width())/(x2-x1))
                 zoom2 = abs(float(self.height())/(y2-y1))
 
