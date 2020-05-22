@@ -1,5 +1,5 @@
 
-dist: trusty
+dist: bionic
 sudo: false
 language: cpp
 sudo: required
@@ -17,22 +17,22 @@ sudo: required
 before_install:
   - export PROG_BASE_DIR=$(pwd)
   # C++14
-  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update #-qq
+  #- sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  #- sudo apt-get update #-qq
 
 install: 
   # C++14
-  - sudo apt-get install g++-6
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
+  #- sudo apt-get install g++-6
+  #- sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
   # fortran
   - sudo apt install gfortran
   # swig
   - sudo apt-get install swig3.0
   - sudo ln -s /usr/bin/swig3.0 /usr/bin/swig
   # numpy
-  - sudo apt-get install python-numpy  
+  - sudo apt-get install python3-numpy  
   # gmm
   - sudo apt-get install libgmm++-dev
 
 script:
-  - cd ${PROG_BASE_DIR}  && python ./build_all.py --travis
+  - cd ${PROG_BASE_DIR}  && python3 ./build_all.py --travis
