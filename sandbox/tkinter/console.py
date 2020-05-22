@@ -1,17 +1,20 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from Tkinter import *
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from tkinter import *
 
-import thread # should use the threading module instead!
-import Queue
+import _thread # should use the threading module instead!
+import queue
 
 import os
 
 class ThreadSafeConsole(Text):
     def __init__(self, master, **options):
         Text.__init__(self, master, **options)
-        self.queue = Queue.Queue()
+        self.queue = queue.Queue()
         self.update_me()
     def write(self, line):
         self.queue.put(line)
@@ -27,7 +30,7 @@ class ThreadSafeConsole(Text):
                     self.insert(END, str(line))
                 self.see(END)
                 self.update_idletasks()
-        except Queue.Empty:
+        except queue.Empty:
             pass
         self.after(100, self.update_me)
 
@@ -48,9 +51,9 @@ def funcThread(widget):
 root = Tk()
 widget = ThreadSafeConsole(root)
 widget.pack(side=TOP, expand=YES, fill=BOTH)
-thread.start_new(funcThread, (widget,))
-thread.start_new(funcThread, (widget,))
-thread.start_new(funcThread, (widget,))
-thread.start_new(funcThread, (widget,))
-thread.start_new(funcThread, (widget,))
+_thread.start_new(funcThread, (widget,))
+_thread.start_new(funcThread, (widget,))
+_thread.start_new(funcThread, (widget,))
+_thread.start_new(funcThread, (widget,))
+_thread.start_new(funcThread, (widget,))
 root.mainloop()

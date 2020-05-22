@@ -21,6 +21,9 @@
 
 # 1. create some data (points)
 # ----------------------------
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 pts = []
 pts.append((0.0, 0.0, 0.0))
 pts.append((1.0, 0.0, 0.0))
@@ -37,7 +40,7 @@ for no, p in enumerate(pts):
 
 vdata = []
 for no, p in enumerate(pts):
-    vdata.append(((p[0] - 0.5) / 2, (p[1] - 0.5) / 2, (p[2] - 0.5) / 2))
+    vdata.append((old_div((p[0] - 0.5), 2), old_div((p[1] - 0.5), 2), old_div((p[2] - 0.5), 2)))
 
 
 # 2. build a vtkPolyData

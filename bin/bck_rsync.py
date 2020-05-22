@@ -3,6 +3,7 @@
 # Copie les repertoires rsync de garfield sur ma dropbox.
 # Ce script peut être lancé de n'importe où.
 
+from __future__ import print_function
 import os, subprocess, shutil
 
 pars = {}
@@ -14,7 +15,7 @@ def tar_folder(fname):
     bname = os.path.basename(fname)
     arcname = '%s.tar.bz2' % bname
     if os.path.isfile(arcname):
-        print 'rm %s' % arcname
+        print('rm %s' % arcname)
         os.remove(arcname)
 
     parallel = False
@@ -26,10 +27,10 @@ def tar_folder(fname):
         # parallel (requires 'pbzip2') - ?pxz does not always work ... and is very slow...
         cmd = ['tar', '-I', 'pbzip2', '-cf', arcname, fname] 
     else:
-        print '\tinfo: use "apt-get install pbzip2" for parallel compression'
+        print('\tinfo: use "apt-get install pbzip2" for parallel compression')
         cmd = ['tar', '-cjf', arcname, fname]
     #print cmd
-    print " ".join(cmd)
+    print(" ".join(cmd))
     subprocess.check_call(cmd)
 
     # TODO: utiliser shutil.make_archive ????
@@ -47,7 +48,7 @@ def main(pars):
         raise Exception('srcdir does not exist (%s)!' % srcdir)
 
     # change dir to srcdir
-    print 'changing dir to %s' % srcdir
+    print('changing dir to %s' % srcdir)
     os.chdir(srcdir)
 
     for folder in pars['folders']:
@@ -57,7 +58,7 @@ def main(pars):
         arcname = tar_folder(folder)
         # copy archive to destination
         target = os.path.join(destdir, arcname)
-        print 'cp %s %s' % (arcname, target)
+        print('cp %s %s' % (arcname, target))
         shutil.copy2(arcname, target)
 
 

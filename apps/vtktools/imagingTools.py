@@ -5,6 +5,10 @@
 
 # vtk filters to visualize images
 
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 import vtk
 import sys
 import generalTools
@@ -161,9 +165,9 @@ def createSignedEuclideanDistanceMapEdge(segmentedImage):
         segmentedImage, coding='double'))
     euclide2 = createEuclide(generalTools.castImage(negative, coding='double'))
     segmentedMask = multiplyByConstant(thresholdByUpper(
-        segmentedImage, 0.1, 1.0, 0), segmentedImage.GetSpacing()[0]/2)
+        segmentedImage, 0.1, 1.0, 0), old_div(segmentedImage.GetSpacing()[0],2))
     negativeMask = multiplyByConstant(thresholdByUpper(
-        negative, 0.1, 1.0, 0), segmentedImage.GetSpacing()[0]/2)
+        negative, 0.1, 1.0, 0), old_div(segmentedImage.GetSpacing()[0],2))
     image1 = subtractImages(sqrtImage(euclide1), segmentedMask)
     image2 = subtractImages(sqrtImage(euclide2), negativeMask)
     imageSub = subtractImages(image1, image2)
@@ -467,7 +471,7 @@ def linearInterpolation(image):
     outSpacing = [image.GetSpacing()[0], image.GetSpacing()[
         1], image.GetSpacing()[0]]
     outDimensions = [image.GetDimensions()[0], image.GetDimensions()[1], int(
-        floor(((image.GetDimensions()[2]-1)*image.GetSpacing()[2]) / outSpacing[2]))+1]
+        floor(old_div(((image.GetDimensions()[2]-1)*image.GetSpacing()[2]), outSpacing[2])))+1]
     interpolatedImage = vtk.vtkImageData()
     interpolatedImage.SetDimensions(outDimensions)
     interpolatedImage.SetOrigin(image.GetOrigin())
@@ -489,7 +493,7 @@ def linearInterpolation(image):
         interpolatedSliceHeight = interpolatedImage.GetOrigin(
         )[2] + k * interpolatedImage.GetSpacing()[2]
         imageSliceDownIndice = int(
-            floor((interpolatedSliceHeight - image.GetOrigin()[2])/image.GetSpacing()[2]))
+            floor(old_div((interpolatedSliceHeight - image.GetOrigin()[2]),image.GetSpacing()[2])))
         imageSliceUpIndice = imageSliceDownIndice+1
         imageSliceDownHeightDiff = interpolatedSliceHeight - \
             (image.GetOrigin()[2] +
@@ -499,8 +503,8 @@ def linearInterpolation(image):
         imageDistanceBetweenSlices = imageSliceDownHeightDiff + imageSliceUpHeightDiff
         for j in range(ly):
             for i in range(lx):
-                d = (image.GetScalarComponentAsDouble(i, j, imageSliceDownIndice, 0)*imageSliceUpHeightDiff +
-                     image.GetScalarComponentAsDouble(i, j, imageSliceUpIndice, 0)*imageSliceDownHeightDiff)/imageDistanceBetweenSlices
+                d = old_div((image.GetScalarComponentAsDouble(i, j, imageSliceDownIndice, 0)*imageSliceUpHeightDiff +
+                     image.GetScalarComponentAsDouble(i, j, imageSliceUpIndice, 0)*imageSliceDownHeightDiff),imageDistanceBetweenSlices)
                 interpolatedImage.SetScalarComponentFromDouble(i, j, k, 0, d)
 
     return interpolatedImage
@@ -513,10 +517,10 @@ def createTestImage():
     image.SetSpacing([1, 1, 1])
     image.SetScalarTypeToDouble()
 
-    range1 = [image.GetDimensions()[0]/3, image.GetDimensions()[0]*2/3, image.GetDimensions()[1]/3,
-              image.GetDimensions()[1]*2/3, image.GetDimensions()[2]/3, image.GetDimensions()[2]*2/3]
-    range2 = [image.GetDimensions()[0]*4/10, image.GetDimensions()[0]*6/10, image.GetDimensions()[1]
-              * 4/10, image.GetDimensions()[1]*6/10, image.GetDimensions()[2]/3, image.GetDimensions()[2]*6/10]
+    range1 = [old_div(image.GetDimensions()[0],3), old_div(image.GetDimensions()[0]*2,3), old_div(image.GetDimensions()[1],3),
+              old_div(image.GetDimensions()[1]*2,3), old_div(image.GetDimensions()[2],3), old_div(image.GetDimensions()[2]*2,3)]
+    range2 = [old_div(image.GetDimensions()[0]*4,10), old_div(image.GetDimensions()[0]*6,10), old_div(image.GetDimensions()[1]
+              * 4,10), old_div(image.GetDimensions()[1]*6,10), old_div(image.GetDimensions()[2],3), old_div(image.GetDimensions()[2]*6,10)]
 
     for k in range(image.GetDimensions()[2]):
         for j in range(image.GetDimensions()[1]):
@@ -544,7 +548,7 @@ def createEllipsoid(extent=(0, 99, 0, 99, 0, 99), center=(50, 50, 50), radius=(2
     elif coding == 'ushort':
         ellipse.SetOutputScalarTypeToUnsignedShort()
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
     ellipse.SetInValue(values[0])
     ellipse.SetOutValue(values[1])
@@ -656,12 +660,12 @@ def extractContourPointsAndNormalsFromSegmentedImage(image, thres=1, prohibitedn
                     gaussianVolume.EvaluateGradient(point, n)
                     norm = math.sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2])
                     if norm != 0:
-                        n = [n[0]/norm, n[1]/norm, n[2]/norm]
+                        n = [old_div(n[0],norm), old_div(n[1],norm), old_div(n[2],norm)]
                         nbOfPoints += 1
                         file.write("%f %f %f %f %f %f\n" % (
                             point[0], point[1], point[2], n[0], n[1], n[2]))
                     else:
-                        print "normal does not exists"
+                        print("normal does not exists")
     file.close()
     file2 = open(filename, 'r+')
     file2.write("%d" % nbOfPoints)
@@ -701,7 +705,7 @@ def extractContourPointsAndNormalsFromImage1Domain(image, th, filename):
                 n = [0, 0, 0]
                 gaussianVolume.EvaluateGradient(point, n)
                 norm = math.sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2])
-                n = [n[0]/norm, n[1]/norm, n[2]/norm]
+                n = [old_div(n[0],norm), old_div(n[1],norm), old_div(n[2],norm)]
                 nbOfPoints += 1
                 file.write("%f %f %f %f %f %f\n" %
                            (point[0], point[1], point[2], n[0], n[1], n[2]))
@@ -721,7 +725,7 @@ def extractContourPointsAndNormalsFromImage1Domain(image, th, filename):
                     gaussianVolume.EvaluateGradient(pos, n)
                     norm = math.sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2])
                     if norm != 0:
-                        n = [n[0]/norm, n[1]/norm, n[2]/norm]
+                        n = [old_div(n[0],norm), old_div(n[1],norm), old_div(n[2],norm)]
                         if abs(n[0]) == 0.0 and abs(n[1]) == 0.0:
                             nbOfPoints += 1
                             file.write("%f %f %f %f %f %f\n" % (
@@ -772,7 +776,7 @@ def extractContourPointsAndNormalsFromImageMultipleDomains(image, th=[], filenam
                     n = [0, 0, 0]
                     gaussianVolume.EvaluateGradient(point, n)
                     norm = math.sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2])
-                    n = [n[0]/norm, n[1]/norm, n[2]/norm]
+                    n = [old_div(n[0],norm), old_div(n[1],norm), old_div(n[2],norm)]
                     nbOfPoints += 1
                     file.write("%f %f %f %f %f %f\n" %
                                (point[0], point[1], point[2], n[0], n[1], n[2]))
@@ -792,7 +796,7 @@ def extractContourPointsAndNormalsFromImageMultipleDomains(image, th=[], filenam
                         gaussianVolume.EvaluateGradient(pos, n)
                         norm = math.sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2])
                         if norm != 0:
-                            n = [n[0]/norm, n[1]/norm, n[2]/norm]
+                            n = [old_div(n[0],norm), old_div(n[1],norm), old_div(n[2],norm)]
                             if abs(n[0]) == 0.0 and abs(n[1]) == 0.0:
                                 nbOfPoints += 1
                                 file.write("%f %f %f %f %f %f\n" % (

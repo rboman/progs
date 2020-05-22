@@ -5,6 +5,10 @@
 
 # Vtk visualisation functions
 
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 import vtk
 import generalTools
 import meshingTools
@@ -214,7 +218,7 @@ def getDistancesBetweenTwoPolysScalarsLara(poly1, poly2, axis='a', title='Distan
     darray.SetNumberOfValues(nbpt)
     darray.SetName('distance between polys')
     if nbpt != poly2.GetPoints().GetNumberOfPoints():
-        print ' ERROR in renderingTools.displayDistancesBetweenTwoPolys() : poly1 and poly must have same number of nodes '
+        print(' ERROR in renderingTools.displayDistancesBetweenTwoPolys() : poly1 and poly must have same number of nodes ')
 
     for ii in range(0, nbpt):
         pointIni = poly1.GetPoint(ii)
@@ -430,7 +434,7 @@ def create3Planes(image):
     wX.DisplayTextOn()
     wX.SetInput(image)
     wX.SetPlaneOrientationToXAxes()
-    wX.SetSliceIndex((xMax-xMin)/2)
+    wX.SetSliceIndex(old_div((xMax-xMin),2))
     wX.SetKeyPressActivationValue("x")
     wX.SetResliceInterpolateToLinear()
     wX.SetPicker(picker)
@@ -445,7 +449,7 @@ def create3Planes(image):
     wY.DisplayTextOn()
     wY.SetInput(image)
     wY.SetPlaneOrientationToYAxes()
-    wY.SetSliceIndex((yMax-yMin)/2)
+    wY.SetSliceIndex(old_div((yMax-yMin),2))
     wY.SetKeyPressActivationValue("y")
     wY.SetResliceInterpolateToLinear()
     wY.SetPicker(picker)
@@ -461,7 +465,7 @@ def create3Planes(image):
     wZ.DisplayTextOn()
     wZ.SetInput(image)
     wZ.SetPlaneOrientationToZAxes()
-    wZ.SetSliceIndex((zMax-zMin)/2)
+    wZ.SetSliceIndex(old_div((zMax-zMin),2))
     wZ.SetKeyPressActivationValue("z")
     wZ.SetResliceInterpolateToLinear()
     wZ.SetPicker(picker)

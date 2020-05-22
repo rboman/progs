@@ -14,6 +14,7 @@
 #    delete .desktop when .url exists
 
 
+from __future__ import print_function
 import os, re
 import fnmatch
 
@@ -23,7 +24,7 @@ def findlinks(dirs=('.', )):
     fmap = []
     urlregex = re.compile("URL=(.+)")
 
-    print "finding bookmarks..."
+    print("finding bookmarks...")
     for dir in dirs:
         if not os.path.isdir(dir):
             raise Exception("%s does not exist!" % dir)
@@ -65,24 +66,24 @@ if __name__ == '__main__':
                     f2.write('[InternetShortcut]\n')
                     f2.write('URL=%s'%url)
                     f2.close()
-                    print 'creating', otherf
+                    print('creating', otherf)
                     if args.delete:
-                        print "removing %s" % f
+                        print("removing %s" % f)
                         os.remove(f) 
                         nremoved+=1                       
                 else:
-                    print 'could create %s' % otherf                  
+                    print('could create %s' % otherf)                  
             else:
                 if args.delete:
-                    print "removing %s (.url exists)" % f
+                    print("removing %s (.url exists)" % f)
                     os.remove(f)
                     nremoved+=1
                 else:
-                    print "skipping %s (.url exists)" % f
+                    print("skipping %s (.url exists)" % f)
                     nskipped+=1
 
-    print "\nSUMMARY:"
-    print ". nb of bookmarks (total):", len(fmap)    
-    print ". nb of desktop files    :", nprocessed
-    print ". nb of desktop+url pairs:", nskipped
-    print ". nb of deleted files    :", nremoved
+    print("\nSUMMARY:")
+    print(". nb of bookmarks (total):", len(fmap))    
+    print(". nb of desktop files    :", nprocessed)
+    print(". nb of desktop+url pairs:", nskipped)
+    print(". nb of deleted files    :", nremoved)

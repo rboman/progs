@@ -15,21 +15,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
+from builtins import input
 winrar = '"c:\\program files\\winrar-360\\rar.exe"'
 
 import os,shutil
 
-print "stating backup-script in", os.getcwd()
+print("stating backup-script in", os.getcwd())
 
 def mkDir(dirname):
     try:
         os.mkdir(dirname)
     except:
-        print dirname, "already exists!"
+        print(dirname, "already exists!")
 
 def chDir(dirname):
     os.chdir(dirname)
-    print "in", os.getcwd()
+    print("in", os.getcwd())
 
 mkDir("backup")
 chDir("backup")
@@ -37,13 +39,13 @@ rootrep = os.getcwd()
 # apache
 if 1:
     lst = os.listdir("C:\\Program Files\\EasyPHP1-8\\apache\\conf")
-    print lst
+    print(lst)
     
     mkDir("apache")
     chDir("apache")
     path = "C:\\Program Files\\EasyPHP1-8\\apache\\conf"
     for f in os.listdir(path):
-        print "\tcopying",os.path.join(path, f)
+        print("\tcopying",os.path.join(path, f))
         shutil.copy(os.path.join(path, f), f)
     chDir(rootrep)
 
@@ -58,7 +60,7 @@ if 1:
     cmd = '"'+winrar+' a -idc "'+dest+'"  "'+src+'""' # -ep=exclude path
     try: os.remove(dest)
     except: pass    
-    print cmd
+    print(cmd)
     os.system(cmd)
     chDir(rootrep)
 
@@ -66,7 +68,7 @@ if 1:
 
 if 1:
     for k in os.environ:
-        print k, '= "%s"' % os.environ[k]
+        print(k, '= "%s"' % os.environ[k])
 
 # favoris
 
@@ -78,7 +80,7 @@ if 1:
     src='Favoris'
     dest=rep+os.sep+src+'.rar'
     cmd = '"'+winrar+' a -idc "'+dest+'"  "'+src+'""' # -ep=exclude path
-    print cmd
+    print(cmd)
     os.system(cmd)
     chDir(rootrep)
 
@@ -100,7 +102,7 @@ if 1:
     path = 'C:\\Program Files\\RhinoSoft.com\\Serv-U'
     files = ('ServUAdmin.ini', 'ServUDaemon.ini')
     for f in files:
-        print "\tcopying",os.path.join(path, f)
+        print("\tcopying",os.path.join(path, f))
         shutil.copy(os.path.join(path, f), f)
     chDir(rootrep)
 
@@ -136,6 +138,6 @@ if 1:
 
 
 # wait a key
-print "\n[ENTER TO QUIT]"
-raw_input()
+print("\n[ENTER TO QUIT]")
+input()
 

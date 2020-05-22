@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Time server program
+from __future__ import print_function
 from socket import *
 import time
 
@@ -10,6 +11,6 @@ s.bind(("", 8888))  # Bind to port 8888
 s.listen(5)  # Start listening
 while 1:
     client, addr = s.accept()  # Wait for a connection
-    print "Got a connection from ", addr
+    print("Got a connection from ", addr)
     client.send(time.ctime(time.time()))  # Send time back
     client.close()

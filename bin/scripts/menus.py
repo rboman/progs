@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from builtins import chr
+from builtins import input
 import pytools.utils as pu
 
 
@@ -78,7 +80,7 @@ def menu():
         c = pu.getch()
 
         # manage keypress
-        if opts_k.has_key(c):
+        if c in opts_k:
             opt_name=opts_k[c]
             msg="[v] option '%s' chosen!" % opt_name
             o=opts[opt_name]
@@ -94,8 +96,8 @@ def menu():
                     i=0
                 o['value'] = o['values'][i]
             elif o['type']=='str':
-                o['value'] = raw_input('new str:')
-        elif actions_k.has_key(c):
+                o['value'] = input('new str:')
+        elif c in actions_k:
             action_name=actions_k[c]
             msg="[v] action '%s' chosen!" % action_name
             return actions[action_name]

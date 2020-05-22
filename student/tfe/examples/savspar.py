@@ -9,6 +9,8 @@
 #          !!!!!!!OK 2019!!!!!!
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+from __future__ import print_function
+from builtins import range
 import matplotlib.pyplot as plt
 import scipy.sparse as sparse
 import scipy.stats as stats
@@ -38,48 +40,48 @@ def sprand(n, density):
     return X
 
 
-print "generating random matrix..."
+print("generating random matrix...")
 if isym:
     A = sprandsym(N, DENSITY)
 else:
     A = sprand(N, DENSITY)
 
 print(repr(A))
-print "calculating cond number..."
+print("calculating cond number...")
 norm_A = sparse.linalg.norm(A)
 norm_invA = sparse.linalg.norm(sparse.linalg.inv(A))
 cond = norm_A*norm_invA
-print "cond(A)=", cond
+print("cond(A)=", cond)
 #print "nnz=", A.nnz
 #print "A.data", A.data
 #print "A.indices", A.indices
 #print "A.indptr", A.indptr
 
-print "generating random rhs..."
+print("generating random rhs...")
 b = np.random.rand(N)
 #print "b=", b
 
-print "solving with scipy..."
+print("solving with scipy...")
 x = sparse.linalg.spsolve(A, b)
-print "x=", x
+print("x=", x)
 res = np.linalg.norm(b-A.dot(x))
-print "=> residual=", res
+print("=> residual=", res)
 
-print "saving matrix to system2.bin..."
+print("saving matrix to system2.bin...")
 f = open('system2.bin', 'wt')
 f.write('%d\n' % N)
 f.write('%d\n' % A.nnz)
-for i in xrange(len(A.data)):
+for i in range(len(A.data)):
     f.write('%18.16f\n' % A.data[i])
     f.write('%d\n' % (A.indices[i]+1))
-for i in xrange(len(A.indptr)):
+for i in range(len(A.indptr)):
     f.write('%d\n' % (A.indptr[i]+1))
 for v in b:
     f.write('%18.16f\n' % v)
 for v in x:
     f.write('%18.16f\n' % v)
 f.close()
-print 'done.'
+print('done.')
 
 
 """

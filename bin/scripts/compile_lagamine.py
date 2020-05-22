@@ -6,6 +6,7 @@
 #
 # works on Win10/linux
 
+from __future__ import print_function
 import os
 import subprocess
 import shutil
@@ -74,7 +75,7 @@ def main():
     iop = subprocess.call(cmd)
     if(iop):
         raise Exception('\n\n\t** ERROR: cmake exited with status %d\n' % iop)
-    print ('iop=', iop)
+    print('iop=', iop)
 
     # build/install
     if pu.isUnix():

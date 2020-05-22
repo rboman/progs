@@ -19,21 +19,21 @@
 # un chouette test
 
 
+from __future__ import print_function
 from genmai import *
 
 pt = Point(1, 2)
-print "Px =", pt.x
-print "Py =", pt.y
+print("Px =", pt.x)
+print("Py =", pt.y)
 pt.x = 8.0
-print "Px =", pt.x
+print("Px =", pt.x)
 
-print "Pno =", pt.no
+print("Pno =", pt.no)
 pt.no = 99
-print "Pno =", pt.no
+print("Pno =", pt.no)
 
-print "-----"
-arc = Curve( (1, 2, 3) )
-print arc
-line = Curve( (5, 8) )
-print line
-
+print("-----")
+arc = Curve((1, 2, 3))
+print(arc)
+line = Curve((5, 8))
+print(line)

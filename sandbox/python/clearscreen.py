@@ -15,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
 import os
 
 def clearscreen():
@@ -23,7 +24,7 @@ def clearscreen():
     elif os.name in ("nt", "dos", "ce"):
         os.system('CLS')
     else:
-       print '\n' * 100 
+       print('\n' * 100) 
 
 
 

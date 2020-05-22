@@ -17,8 +17,12 @@
 
 # test de threads pour la batterie de metafor
 
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 import threading
-import Queue
+import queue
 import time
 
 class WorkerThread(threading.Thread):
@@ -33,13 +37,13 @@ class WorkerThread(threading.Thread):
             if item == 'STOP':
                 break
             time.sleep(1)
-            print "[%d] => %s" % (self.num, item)
+            print("[%d] => %s" % (self.num, item))
             self.queue.task_done()
-        print "[%d] DONE" % self.num
+        print("[%d] DONE" % self.num)
 
 
 def main(numthr=3, count=20):
-    queue = Queue.Queue(numthr)
+    queue = queue.Queue(numthr)
 
     # starts threads
     threads = []
@@ -50,7 +54,7 @@ def main(numthr=3, count=20):
 
     # fills the queue
     for i in range(count):
-        print '[main] putting job #%2d' % i
+        print('[main] putting job #%2d' % i)
         queue.put('job #%2d' % i)
 
     # sends "stop" command
@@ -58,11 +62,11 @@ def main(numthr=3, count=20):
         queue.put('STOP')
 
     # waits for threads
-    print '[main] joining...'
+    print('[main] joining...')
     for t in threads:
         t.join()
 
-    print 'fini!'
+    print('fini!')
 
 
 if __name__ == "__main__":

@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
 import threading
 #import thread
 
@@ -9,12 +12,12 @@ import threading
 
 class RWin (threading.Thread):
     def __init__(self):
-        print 'creating BWin - waiting to start'
+        print('creating BWin - waiting to start')
         threading.Thread.__init__(self)
         
     def run(self, *args):
-        from Tkinter import *
-        print 'starting BWin!'
+        from tkinter import *
+        print('starting BWin!')
         #global root
         self.root = root = Tk() # pete un cable  
         
@@ -32,7 +35,7 @@ class RWin (threading.Thread):
         root.mainloop()
         #while 1:
         #    print 'blabla'
-        print 'BWin thread is dead!'
+        print('BWin thread is dead!')
         
     #def start(self):
     #    thread.start_new_thread(self.run,())
@@ -40,15 +43,15 @@ class RWin (threading.Thread):
 
 class metaThread(threading.Thread):
     def __init__(self, domainTxt):
-        print 'creating metaThread - waiting to start'
+        print('creating metaThread - waiting to start')
         self.domainTxt = domainTxt
         threading.Thread.__init__(self)
         
     def run(self):
-        print 'starting metaThread!'
+        print('starting metaThread!')
         import toolbox.utilities
         toolbox.utilities.meta(self.domainTxt)
-        print 'metaThread is dead!'
+        print('metaThread is dead!')
         
 
 #import toolbox.utilities

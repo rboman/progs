@@ -15,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
 from wrap import *
 from toolbox.conge import Pt
 import math
@@ -31,11 +32,11 @@ class MyReZoner(CurveReZoner):
         CurveReZoner.__init__(self, curve)
 
     def execute(self):
-        print "MyReZoner.execute()"
-        print self.getCurve()
+        print("MyReZoner.execute()")
+        print(self.getCurve())
 
     def __del__(self):
-        print "i'm dead!"
+        print("i'm dead!")
 
 
 l = Line(1, 1, 1)
@@ -43,20 +44,20 @@ l = Line(1, 1, 1)
 
 def main():
 
-    print "beginning of main()"
+    print("beginning of main()")
     global metafor, ale, l
     ale = AleMethod(metafor)
 
     rez = ale.getReZoningStep()
 
-    print "creation rezoner"
+    print("creation rezoner")
     myrez = MyReZoner(l)
-    print "rez.add"
+    print("rez.add")
     rez.add(myrez)
 
-    print dir(myrez)
+    print(dir(myrez))
     myrez.execute()
-    print "end of main()"
+    print("end of main()")
 
 
 main()

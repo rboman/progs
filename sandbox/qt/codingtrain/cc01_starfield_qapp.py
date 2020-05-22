@@ -4,6 +4,10 @@
 # from "Starfield" (Daniel Shiffman)
 # Video: https://youtu.be/17WoOqgXsRM
 
+from __future__ import division
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import sys
 import os
 from PyQt5.QtWidgets import *
@@ -14,7 +18,7 @@ import random
 
 def mapFromTo(x, a, b, c, d):
     """map() function of javascript"""
-    y = (float(x) - float(a)) / (float(b) - float(a)) * \
+    y = old_div((float(x) - float(a)), (float(b) - float(a))) * \
         (float(d) - float(c)) + float(c)
     return y
 
@@ -33,26 +37,26 @@ class Star(object):
             self.respawn()
 
     def respawn(self):
-        width = self.w.width() / Star.factor
-        height = self.w.height() / Star.factor
+        width = old_div(self.w.width(), Star.factor)
+        height = old_div(self.w.height(), Star.factor)
 
         self.x = random.uniform(-width, width)
         self.y = random.uniform(-height, height)
         self.z = random.uniform(0, width)
-        self.px = mapFromTo(self.x / self.z, 0, 1, 0, width)
-        self.py = mapFromTo(self.y / self.z, 0, 1, 0, height)
+        self.px = mapFromTo(old_div(self.x, self.z), 0, 1, 0, width)
+        self.py = mapFromTo(old_div(self.y, self.z), 0, 1, 0, height)
 
     def show(self, painter):
 
         painter.setBrush(Qt.white)
         painter.setPen(Qt.NoPen)
 
-        width = painter.viewport().width() / Star.factor
-        height = painter.viewport().height() / Star.factor
+        width = old_div(painter.viewport().width(), Star.factor)
+        height = old_div(painter.viewport().height(), Star.factor)
 
         # draw a circle
-        sx = mapFromTo(self.x / self.z, 0, 1, 0, width)
-        sy = mapFromTo(self.y / self.z, 0, 1, 0, height)
+        sx = mapFromTo(old_div(self.x, self.z), 0, 1, 0, width)
+        sy = mapFromTo(old_div(self.y, self.z), 0, 1, 0, height)
         r = mapFromTo(self.z, 0, width, 4, 0)
         painter.drawEllipse(QPointF(sx, sy), r, r)
 

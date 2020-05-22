@@ -1,13 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from PyQt4 import QtCore
 
 texte = "hello ca roule hello ca roule hello ca roule hello ca roule?"
 
 blah = QtCore.QString(QtCore.QCryptographicHash.hash((texte),QtCore.QCryptographicHash.Md5).toHex())
 
-print "essai1 =", blah
+print("essai1 =", blah)
 
 
 
@@ -16,7 +17,7 @@ hash.addData("hello ca roule ")
 hash.addData("hello ca roule ")
 hash.addData("hello ca roule ")
 hash.addData("hello ca roule?")
-print "essai2 =", hash.result().toHex()
+print("essai2 =", hash.result().toHex())
 
 import md5
 m = md5.new()
@@ -24,7 +25,7 @@ m.update("hello ca roule ")
 m.update("hello ca roule ")
 m.update("hello ca roule ")
 m.update("hello ca roule?")
-print "essai3 =", m.hexdigest()
+print("essai3 =", m.hexdigest())
 
 
 import hashlib
@@ -33,7 +34,7 @@ m.update("hello ca roule ")
 m.update("hello ca roule ")
 m.update("hello ca roule ")
 m.update("hello ca roule?")
-print "essai4 =", m.hexdigest()
+print("essai4 =", m.hexdigest())
 
 
 import hashlib
@@ -42,6 +43,6 @@ m.update("hello ca roule ")
 m.update("hello ca roule ")
 m.update("hello ca roule ")
 m.update("hello ca roule?")
-print "essai5 =", m.hexdigest()
+print("essai5 =", m.hexdigest())
 
 

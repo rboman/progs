@@ -3,6 +3,7 @@
 # test encoding: à-é-è-ô-ï-€
 
 from __future__ import print_function
+from builtins import str
 import sys, os
 import fnmatch, re
 import subprocess
@@ -136,7 +137,7 @@ def main():
                 #if enc=='unknown-8bit': enc='CP437'
                 try:
                     with open(f, "rb") as source:
-                        content = unicode(source.read(), enc).encode('utf-8')
+                        content = str(source.read(), enc).encode('utf-8')
                         #content = unicode(source.read(), enc, errors='ignore').encode('utf-8', errors='ignore')
                         with open(f, "wb") as target:
                             target.write(content) 

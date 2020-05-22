@@ -6,6 +6,7 @@
 #
 
 
+from __future__ import print_function
 import wx
 
 class MyWin(wx.Frame):
@@ -38,7 +39,7 @@ class RWin (threading.Thread):
           
     def run(self, *args):
         app = MyApp(True)
-        print 'starting Wx!'
+        print('starting Wx!')
         app.MainLoop()
          
 

@@ -17,6 +17,8 @@
 
 # Le client
 # On importe socket..
+from __future__ import print_function
+from builtins import input
 from socket import *
 
 # Variables
@@ -28,20 +30,20 @@ addr = (host, port)
 # On fait le socket
 UDPSock = socket(AF_INET, SOCK_DGRAM)
 def_msg = "Message?"
-print "\n", def_msg
+print("\n", def_msg)
 
 # Envois du message
 while (1):
-    data = raw_input('>> ')
+    data = input('>> ')
     if not data:
         break
     else:
         if(UDPSock.sendto(data, addr)):
-            print "Envois de: '", data, "' ... <ok>"
+            print("Envois de: '", data, "' ... <ok>")
 
 # On ferme tout
 UDPSock.close()
 
 
-print "fini!"
-raw_input()
+print("fini!")
+input()

@@ -4,8 +4,11 @@
 # from: https://cito.github.io/blog/overlay-icon-battle/
 
 from __future__ import with_statement
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
 import os
-import _winreg as reg
+import winreg as reg
 
 # names of all overlay icons that shall be boosted:
 

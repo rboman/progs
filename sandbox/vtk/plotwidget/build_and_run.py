@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import input
 progname='HistogramXYPlot'
 
 import os, os.path, sys, subprocess, platform
@@ -21,5 +23,5 @@ try:
     inputf = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'rainbow.jpg')
     subprocess.check_output([os.path.join('.',progname), inputf], shell=True)
 except Exception as e:
-    print e
-    print "<press ENTER to quit>"; raw_input()
+    print(e)
+    print("<press ENTER to quit>"); input()

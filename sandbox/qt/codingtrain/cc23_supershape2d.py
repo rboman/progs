@@ -6,6 +6,8 @@
 
 # supershapes: http://paulbourke.net/geometry/supershape/
 
+from __future__ import division
+from past.utils import old_div
 import sys, os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -16,7 +18,7 @@ import numpy as np
 
 def mapFromTo(x, a, b, c, d):
     """map() function of javascript"""
-    y = (float(x) - float(a)) / (float(b) - float(a)) * \
+    y = old_div((float(x) - float(a)), (float(b) - float(a))) * \
         (float(d) - float(c)) + float(c)
     return y
 
@@ -48,14 +50,14 @@ class SuperShape(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
 
-        painter.translate(self.width() / 2, self.height() / 2)
+        painter.translate(old_div(self.width(), 2), old_div(self.height(), 2))
 
         painter.setPen(Qt.white)
         #painter.setBrush(Qt.NoBrush)
         painter.setBrush(Qt.darkGray)
 
         total = 200
-        increment = 2 * math.pi / total
+        increment = old_div(2 * math.pi, total)
 
         points = []
         for angle in np.arange(0, 2 * math.pi, increment):
@@ -90,7 +92,7 @@ class SuperShape(QWidget):
         part2 = abs(part2)
         part2 = math.pow(part2, self.n3)
 
-        part3 = math.pow(part1 + part2, 1 / self.n1)
+        part3 = math.pow(part1 + part2, old_div(1, self.n1))
 
         if part3 == 0.0:
             return 0.0

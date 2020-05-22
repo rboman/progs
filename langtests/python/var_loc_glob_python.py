@@ -1,12 +1,13 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 pipo = True
 
 
 def func1():
     if pipo == True:
-        print 'pipo=', pipo
+        print('pipo=', pipo)
 
 
 def func2():
@@ -14,7 +15,7 @@ def func2():
     # python pense d'abord que "pipo" est une var local de la fct.
     if pipo == True:
         pipo = False
-        print 'pipo=', pipo
+        print('pipo=', pipo)
 
 
 func1()

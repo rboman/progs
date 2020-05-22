@@ -18,6 +18,8 @@
 # Le serveur
 
 # Importe socket..
+from __future__ import print_function
+from builtins import input
 from socket import *
 
 # Variables, encore...
@@ -35,13 +37,13 @@ UDPSock.bind(addr)
 while 1:
     data, addr = UDPSock.recvfrom(buf)
     if not data:
-        print "Le client a quitte"
+        print("Le client a quitte")
         break
     else:
-        print "\nRecu: '", data, "'"
+        print("\nRecu: '", data, "'")
 
 # On ferme tout ca
 UDPSock.close()
 
-print "fini!"
-raw_input()
+print("fini!")
+input()

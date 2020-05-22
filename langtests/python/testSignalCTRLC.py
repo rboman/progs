@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 
+from __future__ import print_function
+from builtins import object
 def test():
     import sys
     import signal
 
-    class SigHandler:
+    class SigHandler(object):
         def __init__(self):
             self.signaled = 0
             self.sn = None
@@ -21,11 +23,11 @@ def test():
         signal.SIGINT: 'SIGINT',
         signal.SIGBREAK: 'SIGBREAK'
     }
-    print 'Type Ctrl-C or Ctrl-Break to stop'
+    print('Type Ctrl-C or Ctrl-Break to stop')
     while not sh.signaled:   # put this condition in your program loop
         pass                 # (loop body)
 
-    print 'Interrupted loop with %s (not via exception).' % signames[sh.sn]
+    print('Interrupted loop with %s (not via exception).' % signames[sh.sn])
 
     signal.signal(signal.SIGINT, old_SIGINT_Handler)
     signal.signal(signal.SIGBREAK, old_SIGBREAK_Handler)
@@ -36,7 +38,7 @@ if __name__ == '__main__':
 
 
 def pipo(sn, sf):
-    print 'gogogo'
+    print('gogogo')
 
 
 def test2():

@@ -17,9 +17,10 @@
 
 # example of PyQt (QMainWindow) + vtk (QVTKRenderWindowInteractor)
 
+from __future__ import print_function
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-print "Qt %s loaded!" % QT_VERSION_STR
+print("Qt %s loaded!" % QT_VERSION_STR)
 import vtk
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 

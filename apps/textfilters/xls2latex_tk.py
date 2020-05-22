@@ -4,18 +4,22 @@
 # conversion de tableaux excel en latex
 
 
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
 def loadTab(tabfile):
     file = open(tabfile, 'r')
     allfile = file.read()
     file.close()
-    print "file %s loaded" % tabfile
+    print("file %s loaded" % tabfile)
     return allfile
     
 def saveTex(tabfile, tabstring):
     file = open(tabfile,'w')
     file.write(tabstring.encode('latin-1')) # important sinon les accents merdent
     file.close()
-    print "file %s saved" % tabfile
+    print("file %s saved" % tabfile)
 
 def convertTab(tabstring):
     tabstring = tabstring.replace('%', '\%')
@@ -41,15 +45,15 @@ def convertTab(tabstring):
             nblin=nblin+1
     head = "\\begin{tabular}{|"+ 'l'*nbcol + "|}\n\hline\n"
     foot = "\hline\n\end{tabular}\n"          
-    print 'nb of cols  =', nbcol
-    print 'nb of lines =', nblin
+    print('nb of cols  =', nbcol)
+    print('nb of lines =', nblin)
     return head+core+foot
 
 # -- GUI (requires Tkinter - Pmw)
 
-from Tkinter import *
+from tkinter import *
 import Pmw
-import tkFileDialog
+import tkinter.filedialog
 
 root = Tk()
 Pmw.initialise(root)
@@ -74,15 +78,15 @@ class MainWindow(Frame):
         Button(frame, text='Clear', command=self.clear, anchor="w").pack(side=LEFT, expand=NO, fill=X, padx=5, pady=5)
         Button(frame, text='Quit', command=self.quit, anchor="e").pack(side=RIGHT, expand=NO, fill=X, padx=5, pady=5)
     def load(self):
-        fname = tkFileDialog.Open(filetypes=[('Text files','*.txt'),('All Files','*.*')]).show()
+        fname = tkinter.filedialog.Open(filetypes=[('Text files','*.txt'),('All Files','*.*')]).show()
         if fname:
             self.textin.settext(loadTab(fname))
     def save(self):
-        fname = tkFileDialog.SaveAs(filetypes=[('LateX files','*.tex')]).show()
+        fname = tkinter.filedialog.SaveAs(filetypes=[('LateX files','*.tex')]).show()
         if fname:
-            print "saving %s..." % fname
+            print("saving %s..." % fname)
             text = self.textout.getvalue()
-            print text
+            print(text)
             saveTex(fname, text)  
     def convert(self):
         text=self.textin.getvalue()

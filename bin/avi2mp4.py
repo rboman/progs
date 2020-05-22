@@ -4,6 +4,7 @@
 # TODO: make it work on linux
 # TODO: find ffmpeg more automatically
 
+from __future__ import print_function
 import sys, os, subprocess, glob
 
 #exeffmpeg = r'f:\local\ffmpeg\bin\ffmpeg.exe'
@@ -32,13 +33,13 @@ def getExe(exe):
         exes.append( os.path.join(mylocal,'ffmpeg','bin','ffmpeg') )
 
     for exe in exes:
-        print 'testing %s' % exe,
+        print('testing %s' % exe, end=' ')
         found = checkExe(exe)
         if found:
-            print 'OK!'
+            print('OK!')
             return found
         else:
-            print 'not found'
+            print('not found')
     return ""
 
 
@@ -64,16 +65,16 @@ def convert(f):
     #cmd.extend(['-vf', 'fps=%d'% fps])    
     outfile = name+".mp4"
     cmd.append(outfile)
-    print cmd    
+    print(cmd)    
     retcode = subprocess.call(cmd)
-    print "retcode =", retcode
+    print("retcode =", retcode)
 
 if __name__=="__main__":
     if len(sys.argv)==1:
-        print 'usage:\n\t%s [file1.avi] [file2.avi] ...' % sys.argv[0]
+        print('usage:\n\t%s [file1.avi] [file2.avi] ...' % sys.argv[0])
     else:
         for arg in sys.argv[1:]:
             for f in glob.glob(arg):
-                print 'processing', f
+                print('processing', f)
                 convert(f)
 

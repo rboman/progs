@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 import sys
 import os
 from PyQt5.QtWidgets import *
@@ -80,28 +84,28 @@ class MainWindow(QMainWindow):
         self.lbl2.setPixmap(QPixmap.fromImage(self.img2))
 
     def reset_image(self):
-        print 'reset'
+        print('reset')
         self.img2 = self.img1.copy()
         self.update_image()
 
     def filter1(self):
-        print 'filter1 - add grid'
+        print('filter1 - add grid')
         self.img2 = self.img1.copy()
-        for i in xrange(0, self.img1.width(), 2):
-            for j in xrange(0, self.img1.height(), 2):
+        for i in range(0, self.img1.width(), 2):
+            for j in range(0, self.img1.height(), 2):
                 self.img2.setPixelColor(i, j, QColor(255, 0, 0))
         self.update_image()
 
     def filter2(self):
-        print 'filter2 - mirror Y'
+        print('filter2 - mirror Y')
         self.img2 = self.img1.mirrored()
         self.update_image()
 
     def filter3(self):
-        print 'filter3 - chg colour'
+        print('filter3 - chg colour')
         self.img2 = self.img1.copy()
-        for i in xrange(0, self.img1.width()):
-            for j in xrange(0, self.img1.height()):
+        for i in range(0, self.img1.width()):
+            for j in range(0, self.img1.height()):
                 col = self.img1.pixelColor(i, j)
                 #newcol = col.darker()
                 #newcol = col.lighter()
@@ -112,7 +116,7 @@ class MainWindow(QMainWindow):
         self.update_image()
 
     def filter4(self):
-        print 'filter4 - blur'
+        print('filter4 - blur')
         import numpy as np
 
         # K = np.array([[1., 1., 1.],
@@ -127,22 +131,22 @@ class MainWindow(QMainWindow):
         #               [0., 0., 1.] ])
 
         iK, jK = K.shape
-        ni = (iK-1)/2
-        nj = (jK-1)/2
-        print iK, jK
+        ni = old_div((iK-1),2)
+        nj = old_div((jK-1),2)
+        print(iK, jK)
 
         self.img2 = self.img1.copy()
 
         # for i in xrange(0,self.img1.width()/2):
         #     for j in xrange(self.img1.height()/2,self.img1.height()):
-        for i in xrange(0, self.img1.width()):
-            for j in xrange(0, self.img1.height()):
+        for i in range(0, self.img1.width()):
+            for j in range(0, self.img1.height()):
                 r = 0.0
                 g = 0.0
                 b = 0.0
                 np = 0.0
-                for k in xrange(-ni, ni+1):
-                    for l in xrange(-nj, nj+1):
+                for k in range(-ni, ni+1):
+                    for l in range(-nj, nj+1):
                         if(self.img1.valid(i+k, j+l)):
                             col = self.img1.pixelColor(i+k, j+l)
                             w = K[k+ni, l+nj]

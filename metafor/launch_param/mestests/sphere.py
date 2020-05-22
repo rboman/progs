@@ -12,6 +12,10 @@
 #0. Entète                                # Elle est obligatoire et toujours la même !
 #=====================================================================================
 
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 from wrap import *                        #Importation des modules
 import math
 
@@ -189,7 +193,7 @@ def buildDomain(_parameters={}):
             lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
             lawset1.put(IH_H,       0.0)              #Sans Ecrouissage : Hard = 0.0
             
-            print "Elasto-plastic material with no hardening"
+            print("Elasto-plastic material with no hardening")
         elif(parameters['HardeningModel'] == "ISOTROPIC"):
             material1 = materset.define (1, EvpIsoHHypoMaterial)    #Créer un matériau élasto-plastique numéro 1 à écrouissage isotrope
             material1.put(MASS_DENSITY,    parameters['Density'])   #Masse volumique
@@ -202,14 +206,14 @@ def buildDomain(_parameters={}):
                 lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
                 lawset1.put(IH_H,       parameters['Hard'])
                 
-                print "Elasto-plastic material with a linear isotropic hardening"
+                print("Elasto-plastic material with a linear isotropic hardening")
             elif(parameters['IsotropicHardening'] == "NONLINEAR"): 
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,parameters['Hard']/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
+                lawset1.put(IH_KSI,old_div(parameters['Hard'],(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
                 
-                print "Elasto-plastic material with a non-linear isotropic hardening"
+                print("Elasto-plastic material with a non-linear isotropic hardening")
             else:
                 raise Exception('Unknown Isotropic Hardening =', IsotropicHardening)
         elif(parameters['HardeningModel'] == "KINEMATIC"):
@@ -228,13 +232,13 @@ def buildDomain(_parameters={}):
                 lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
                 lawset2.put(KH_H, parameters['Hard'])
                 
-                print "Elasto-plastic material with a linear kinematic hardening"
+                print("Elasto-plastic material with a linear kinematic hardening")
             elif(parameters['KinematicHardening'] == "NONLINEAR"): 
                 lawset2 = lawset.define(2, ArmstrongFrederickKinematicHardening)     #Ecrouissage cinématique non-linéaire d'Armstrong Frédérick 2                                                          
                 lawset2.put(KH_H, parameters['Hard'])
                 lawset2.put(KH_B, parameters['Eta_Kin'])
                 
-                print "Elasto-plastic material with a non-linear kinematic hardening"
+                print("Elasto-plastic material with a non-linear kinematic hardening")
             else:
                 raise Exception('Unknown Kinematric Hardening =', KinematicHardening)
         elif parameters['HardeningModel'] == "MIXED" :
@@ -260,33 +264,33 @@ def buildDomain(_parameters={}):
                     lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
                     lawset2.put(KH_H, Hard_Kin)
                     
-                    print "Elasto-plastic material with a mixte hardening : linear isotropic hardening and linear kinematic hardening"
+                    print("Elasto-plastic material with a mixte hardening : linear isotropic hardening and linear kinematic hardening")
                 elif(parameters['KinematicHardening'] == "NONLINEAR"): 
                     lawset2 = lawset.define(2, ArmstrongFrederickKinematicHardening)     #Ecrouissage cinématique non-linéaire d'Armstrong Frédérick 2                                                          
                     lawset2.put(KH_H, Hard_Kin)
                     lawset2.put(KH_B, parameters['Eta_Kin'])
                     
-                    print "Elasto-plastic material with a mixte hardening : linear isotropic hardening and non-linear kinematic hardening"
+                    print("Elasto-plastic material with a mixte hardening : linear isotropic hardening and non-linear kinematic hardening")
                 else:
                     raise Exception('Unknown Kinematric Hardening =', KinematicHardening)
             elif(parameters['IsotropicHardening'] == "NONLINEAR"):
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,Hard_Iso/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
+                lawset1.put(IH_KSI,old_div(Hard_Iso,(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
                 if(parameters['KinematicHardening'] == "LINEAR"): 
                 
                     lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
                     lawset2.put(KH_H, Hard_Kin)
                     
-                    print "Elasto-plastic material with a mixte hardening : non-linear isotropic hardening and linear kinematic hardening"
+                    print("Elasto-plastic material with a mixte hardening : non-linear isotropic hardening and linear kinematic hardening")
                 elif(parameters['KinematicHardening'] == "NONLINEAR"): 
                 
                     lawset2 = lawset.define(2, ArmstrongFrederickKinematicHardening)     #Ecrouissage cinématique non-linéaire d'Armstrong Frédérick 2                                                          
                     lawset2.put(KH_H, Hard_Kin)
                     lawset2.put(KH_B, parameters['Eta_Kin'])
                     
-                    print "Elasto-plastic material with a mixte hardening : non-linear isotropic hardening and non-linear kinematic hardening"
+                    print("Elasto-plastic material with a mixte hardening : non-linear isotropic hardening and non-linear kinematic hardening")
                 else:
                     raise Exception('Unknown Kinematric Hardening =', KinematicHardening)
             else:
@@ -310,7 +314,7 @@ def buildDomain(_parameters={}):
             lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
             lawset1.put(IH_H,       0.0)              #Sans Ecrouissage : Hard = 0.0
             
-            print "Elasto-viscoplastic material with no hardening"
+            print("Elasto-viscoplastic material with no hardening")
         elif(parameters['HardeningModel'] == "ISOTROPIC"):
             material1 = materset.define (1, EvpIsoHHypoMaterial)    #Créer un matériau élasto-viscoplastique numéro 1 à écrouissage isotrope
             material1.put(MASS_DENSITY,    parameters['Density'])   #Masse volumique
@@ -323,15 +327,15 @@ def buildDomain(_parameters={}):
                 lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
                 lawset1.put(IH_H,       parameters['Hard'])
                 
-                print "Elasto-viscoplastic material with a linear isotropic hardening"
+                print("Elasto-viscoplastic material with a linear isotropic hardening")
                 
             elif(parameters['IsotropicHardening'] == "NONLINEAR"): 
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,parameters['Hard']/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
+                lawset1.put(IH_KSI,old_div(parameters['Hard'],(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
                 
-                print "Elasto-viscoplastic material with a non-linear isotropic hardening"
+                print("Elasto-viscoplastic material with a non-linear isotropic hardening")
                 
             else:
                 raise Exception('Unknown Isotropic Hardening =', IsotropicHardening)
@@ -352,14 +356,14 @@ def buildDomain(_parameters={}):
                 lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
                 lawset2.put(KH_H, parameters['Hard'])
                 
-                print "Elasto-viscoplastic material with a linear kinematic hardening"
+                print("Elasto-viscoplastic material with a linear kinematic hardening")
                 
             elif(parameters['KinematicHardening'] == "NONLINEAR"): 
                 lawset2 = lawset.define(2, ArmstrongFrederickKinematicHardening)     #Ecrouissage cinématique non-linéaire d'Armstrong Frédérick 2                                                          
                 lawset2.put(KH_H, parameters['Hard'])
                 lawset2.put(KH_B, parameters['Eta_Kin'])
                 
-                print "Elasto-viscoplastic material with a non-linear kinematic hardening"
+                print("Elasto-viscoplastic material with a non-linear kinematic hardening")
                 
             else:
                 raise Exception('Unknown Kinematric Hardening =', KinematicHardening)
@@ -386,14 +390,14 @@ def buildDomain(_parameters={}):
                     lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
                     lawset2.put(KH_H, Hard_Kin)
                     
-                    print "Elasto-viscoplastic material with a mixte hardening : linear isotropic hardening and linear kinematic hardening"
+                    print("Elasto-viscoplastic material with a mixte hardening : linear isotropic hardening and linear kinematic hardening")
                     
                 elif(parameters['KinematicHardening'] == "NONLINEAR"): 
                     lawset2 = lawset.define(2, ArmstrongFrederickKinematicHardening)     #Ecrouissage cinématique non-linéaire d'Armstrong Frédérick 2                                                          
                     lawset2.put(KH_H, Hard_Kin)
                     lawset2.put(KH_B, parameters['Eta_Kin'])
                     
-                    print "Elasto-viscoplastic material with a mixte hardening : linear isotropic hardening and non-linear kinematic hardening"
+                    print("Elasto-viscoplastic material with a mixte hardening : linear isotropic hardening and non-linear kinematic hardening")
                     
                 else:
                     raise Exception('Unknown Kinematric Hardening =', KinematicHardening)
@@ -402,20 +406,20 @@ def buildDomain(_parameters={}):
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,Hard_Iso/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
+                lawset1.put(IH_KSI,old_div(Hard_Iso,(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
                 
                 if(parameters['KinematicHardening'] == "LINEAR"): 
                     lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
                     lawset2.put(KH_H, Hard_Kin)
                     
-                    print "Elasto-viscoplastic material with a mixte hardening : non-linear isotropic hardening and linear kinematic hardening"
+                    print("Elasto-viscoplastic material with a mixte hardening : non-linear isotropic hardening and linear kinematic hardening")
                     
                 elif(parameters['KinematicHardening'] == "NONLINEAR"): 
                     lawset2 = lawset.define(2, ArmstrongFrederickKinematicHardening)     #Ecrouissage cinématique non-linéaire d'Armstrong Frédérick 2                                                          
                     lawset2.put(KH_H, Hard_Kin)
                     lawset2.put(KH_B, parameters['Eta_Kin'])
                     
-                    print "Elasto-viscoplastic material with a mixte hardening : non-linear isotropic hardening and non-linear kinematic hardening"
+                    print("Elasto-viscoplastic material with a mixte hardening : non-linear isotropic hardening and non-linear kinematic hardening")
                     
                 else:
                     raise Exception('Unknown Kinematric Hardening =', KinematicHardening)

@@ -17,13 +17,16 @@ This program will load and run one of the individual demos in this
 directory within its own frame window.  Just specify the module name
 on the command line.
 """
+from __future__ import print_function
 
+from builtins import range
+from builtins import object
 import wx                  # This module uses the new wx namespace
 import sys, os
 
 # stuff for debugging
-print "wx.VERSION_STRING = ", wx.VERSION_STRING
-print "pid:", os.getpid()
+print("wx.VERSION_STRING = ", wx.VERSION_STRING)
+print("pid:", os.getpid())
 ##raw_input("Press a key...")
 
 assertMode = wx.PYAPP_ASSERT_DIALOG
@@ -32,7 +35,7 @@ assertMode = wx.PYAPP_ASSERT_DIALOG
 
 #----------------------------------------------------------------------------
 
-class Log:
+class Log(object):
     def WriteText(self, text):
         if text[-1:] == '\n':
             text = text[:-1]
@@ -149,7 +152,7 @@ def main(argv):
             break
             
     if len(argv) < 2:
-        print "Please specify a demo module name on the command-line"
+        print("Please specify a demo module name on the command-line")
         raise SystemExit
 
     name, ext  = os.path.splitext(argv[1])

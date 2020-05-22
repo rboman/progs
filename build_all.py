@@ -1,8 +1,9 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import os
 import subprocess
+import sys
 
 # list of projects
 progs = [
@@ -46,7 +47,7 @@ def build_one(basedir, p):
     args = getArgs()
     fullpath = os.path.join(basedir, *(p['path'].split('/')))
     if(p['travis'] or not args.travis):
-        print '=> running build.py in', fullpath
+        print('=> running build.py in', fullpath)
         os.chdir(fullpath)
         subprocess.call(['python', 'build.py'])
 
@@ -66,11 +67,14 @@ def rm_builds(basedir):
         for name in subdirs:
             if name == 'build':
                 fullname = os.path.join(path, name)
-                print 'removing', fullname
+                print('removing', fullname)
                 shutil.rmtree(fullname)
 
 
 if __name__ == "__main__":
+    print('using', sys.executable, sys.version)
+    if sys.version_info.major<3:
+        raise Exception('please use python 3')
     basedir = os.path.abspath(os.path.dirname(__file__))
     rm_builds(basedir)
     build_all(basedir)

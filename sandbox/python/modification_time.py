@@ -16,11 +16,12 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
 import sys,os.path
 
-print sys.modules.items()
+print(list(sys.modules.items()))
 
-for txt, m in sys.modules.items():
+for txt, m in list(sys.modules.items()):
     try:
     #print txt, m
     #if 0:
@@ -28,7 +29,7 @@ for txt, m in sys.modules.items():
         if(os.path.isfile(f)):
             #if(f.find("python")==-1):
             mtime = os.path.getmtime(f)
-            print txt, mtime
+            print(txt, mtime)
             mods[txt]=mtime
     except:
         pass

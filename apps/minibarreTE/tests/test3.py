@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import division
+from past.utils import old_div
 from couplage import *
 
 p = Problem()
@@ -14,13 +16,13 @@ p.getBar().T0 = 273
 p.getBar().L = 1.
 
 p.getLight().Q = 1e4
-p.getLight().f = 1. / 3600 / 24
+p.getLight().f = old_div(1. / 3600, 24)
 
 p.getMesh().m = 41
 
 tfin = 100000.
 p.getNewmark().dt = 10.  # ca commence a osciller a 3. pour 100 mailles
-p.getNewmark().nt = int(tfin / p.getNewmark().dt)
+p.getNewmark().nt = int(old_div(tfin, p.getNewmark().dt))
 p.getNewmark().gamma = 1.
 p.getNewmark().beta = 0.6
 

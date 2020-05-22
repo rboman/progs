@@ -16,11 +16,12 @@
 #   limitations under the License.
 
 
+from __future__ import print_function
 def main():
     from dcm import Polynome
     Polynome.demo()
 
-    print "\n\nidem en python...\n"
+    print("\n\nidem en python...\n")
 
     a = Polynome(3)
     a[0] = 4.
@@ -34,17 +35,17 @@ def main():
     c = a + b
     d = a * b
 
-    print "a(X)    = ", a
-    print "a(.5)   = ", a(.5)
-    print "b(X)    = ", b
-    print "b(.5)   = ", b(.5)
-    print "c(X)=a+b= ", c
-    print "c(.5)   = ", c(.5)
-    print "d(X)=a*b= ", d
-    print "d(.5)   = ", d(.5)
-    print "d'(X)   = ", d.derive()
-    print (d.primitive())(1) - (d.primitive())(0)
-    print d.integrale(0, 1)
+    print("a(X)    = ", a)
+    print("a(.5)   = ", a(.5))
+    print("b(X)    = ", b)
+    print("b(.5)   = ", b(.5))
+    print("c(X)=a+b= ", c)
+    print("c(.5)   = ", c(.5))
+    print("d(X)=a*b= ", d)
+    print("d(.5)   = ", d(.5))
+    print("d'(X)   = ", d.derive())
+    print((d.primitive())(1) - (d.primitive())(0))
+    print(d.integrale(0, 1))
 
 
 if __name__ == "__main__":

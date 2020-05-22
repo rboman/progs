@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
-class A:
+from __future__ import print_function
+from builtins import object
+class A(object):
     static = 1
 
     def __init__(self, x):
@@ -16,19 +18,19 @@ class A:
 
 
 a = A(5)
-print "a.double() = ", a.double()
-print "a+8 = ", a + 8
-print "a*8 = ", a * 8
+print("a.double() = ", a.double())
+print("a+8 = ", a + 8)
+print("a*8 = ", a * 8)
 
-print hasattr(A, "double")  # False
-print hasattr(a, "double")  # True
+print(hasattr(A, "double"))  # False
+print(hasattr(a, "double"))  # True
 delattr(a, "double")
-print hasattr(a, "double")  # False
-print dir(a)
-print dir(A)
+print(hasattr(a, "double"))  # False
+print(dir(a))
+print(dir(A))
 
-print "a.static = ", a.static  # 1
+print("a.static = ", a.static)  # 1
 a.static = 2
 A.static = 3
-print "a.static = ", a.static  # 2
-print "A.static = ", A.static  # 3
+print("a.static = ", a.static)  # 2
+print("A.static = ", A.static)  # 3

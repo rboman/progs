@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # test mpi4py
 
+from __future__ import print_function
 import mpi4py.MPI as mpi
 import numpy as np
 
@@ -10,7 +11,7 @@ rank = comm.rank
 siz  = comm.size
 
 if siz!=4:
-    if rank==0: print "must use 4 procs"
+    if rank==0: print("must use 4 procs")
     import sys; sys.exit()
 
 if rank==0: voisins=[2,1]
@@ -28,7 +29,7 @@ for v in voisins:
     comm.Recv([vals[-1], mpi.INT], v, tag=10*rank+v)
     #comm.Recv([vals, mpi.INT], v, tag=10*rank+v)
     
-print "[%d]" % rank, voisins, vals
+print("[%d]" % rank, voisins, vals)
 
 
 

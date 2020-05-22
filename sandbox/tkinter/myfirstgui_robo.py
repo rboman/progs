@@ -1,7 +1,10 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from Tkinter import * 
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from tkinter import * 
 
 #nx.set("20")
 
@@ -63,7 +66,7 @@ lab43.grid(row=3, column=1, columnspan=2)
 btn = Button(frame4, text = "End") 
 btn.grid(row=4, column=1, columnspan=2) 
 def stop(event): 
-    print' click!'
+    print(' click!')
     btn.configure(bg='red')
     lab42.destroy()
     ent42.delete(0,len(ent42.get()))
@@ -72,7 +75,7 @@ btn.bind('<Button-1>', stop)
 frame4.pack()
 
 def affiche(x):
-    print x
+    print(x)
 
 list = ["one", "two", "three"] 
 dict = {} 
@@ -100,7 +103,7 @@ win2.resizable(width=YES, height=NO)
 
 
 def printVal():
-    print num_holder.get()
+    print(num_holder.get())
     
 num_holder = IntVar() 
 rb1 = Radiobutton(win2, text = "Five", variable = num_holder, value=5, command=printVal) 
@@ -109,8 +112,8 @@ rb1.pack()
 rb2.pack()
 
 def printVal2():
-    print txt1_holder.get()
-    print txt2_holder.get()
+    print(txt1_holder.get())
+    print(txt2_holder.get())
     
 txt1_holder = StringVar() 
 txt2_holder = StringVar() 
@@ -120,7 +123,7 @@ rb1.pack()
 rb2.pack()
 
 def printVal3(x):
-    print list.curselection()
+    print(list.curselection())
 
 choices = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"]
 list = Listbox(win2, height=2, selectmode = SINGLE)
@@ -136,7 +139,7 @@ scroll.pack()
 but = Button(win2, text="   ")
 but.pack()
 def printVal4(x):
-    print scale.get()
+    print(scale.get())
     but.configure(text=scale.get())
 
     
@@ -170,8 +173,8 @@ root.withdraw()
 #root.destroy()
 
 #print 'nx=', ent1.get()
-print 'nx=', nx.get()
-print 'ny=', ny.get()
+print('nx=', nx.get())
+print('ny=', ny.get())
 
 
 

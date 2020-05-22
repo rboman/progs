@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import division
+from past.utils import old_div
 from couplage import *
 
 p = Problem()
@@ -20,7 +22,7 @@ p.getMesh().m = 101
 
 tfin = 6e-4 * 20
 p.getNewmark().dt = 1e-6
-p.getNewmark().nt = int(tfin / p.getNewmark().dt)
+p.getNewmark().nt = int(old_div(tfin, p.getNewmark().dt))
 p.getNewmark().gamma = 0.501
 p.getNewmark().beta = 0.255
 

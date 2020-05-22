@@ -21,6 +21,9 @@
 #    - display the resulting curve with gnuplot (if available)
 
 
+from __future__ import print_function
+from builtins import input
+from builtins import range
 def tra2py(file, fctname, rowX, rowY):
     """ usage: tra2py('PLAFOS1', 'ecrou', 1, 3)"""
     import re
@@ -36,7 +39,7 @@ def tra2py(file, fctname, rowX, rowY):
         g('set xlabel \"X\"')
         g('set ylabel \"Y\"')
     except ImportError:
-        print "\n** WARNING: Gnuplot.py not available!\n"
+        print("\n** WARNING: Gnuplot.py not available!\n")
         withgplot = False
 
     myplot = []
@@ -79,15 +82,15 @@ def tra2py(file, fctname, rowX, rowY):
     input.close()
     output.close()
 
-    print "output written to %s" % outname
+    print("output written to %s" % outname)
 
     if withgplot:
         try:
             g.plot(myplot)
         except:
-            raw_input("\n**WARNING: gnuplot.exe should be in the PATH!\n")
+            input("\n**WARNING: gnuplot.exe should be in the PATH!\n")
 
-    raw_input('\n[ENTER]\n')  # otherwise gnuplot exits immediatly
+    input('\n[ENTER]\n')  # otherwise gnuplot exits immediatly
 
 
 if __name__ == "__main__":

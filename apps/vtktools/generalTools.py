@@ -6,6 +6,9 @@
 # vtk functions to load & save XML VTK and RAW images, cast images
 
 
+from __future__ import print_function
+from builtins import str
+from builtins import range
 import vtk
 import sys
 import os
@@ -35,7 +38,7 @@ def castImage(image, coding='uchar'):
     elif coding == "double":
         caster.SetOutputScalarTypeToDouble()
     else:
-        print 'bad cast : %s' % coding
+        print('bad cast : %s' % coding)
     # caster.ClampOverflowOn()
     caster.Update()
     return caster.GetOutput()
@@ -154,11 +157,11 @@ def loadRawImage(name, extent=(0, 255, 0, 255, 0, 59), spacing=(1, 1, 1), coding
     """
     load a Raw Image (.img,.raw) into a vtkImageData
     """
-    print "load raw", name
-    print extent[0], extent[1], extent[2], extent[3], extent[4], extent[5]
-    print spacing[0], spacing[1], spacing[2]
-    print coding
-    print byteorder
+    print("load raw", name)
+    print(extent[0], extent[1], extent[2], extent[3], extent[4], extent[5])
+    print(spacing[0], spacing[1], spacing[2])
+    print(coding)
+    print(byteorder)
     reader = vtk.vtkImageReader()
     reader.SetDataExtent(*extent)
     reader.SetDataSpacing(*spacing)
@@ -171,7 +174,7 @@ def loadRawImage(name, extent=(0, 255, 0, 255, 0, 59), spacing=(1, 1, 1), coding
     else:
         reader.SetFileDimensionality(3)
         reader.SetFileName(name)  # !! pas d'espace dans le nom de fichier !!
-        print "setfiledim ", 3
+        print("setfiledim ", 3)
     if byteorder == 'little':
         reader.SetDataByteOrderToLittleEndian()
     else:
@@ -181,9 +184,9 @@ def loadRawImage(name, extent=(0, 255, 0, 255, 0, 59), spacing=(1, 1, 1), coding
     elif coding == 'ushort':
         reader.SetDataScalarTypeToUnsignedShort()
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
-    print "update:"
+    print("update:")
     reader.Update()
     return reader.GetOutput()
 
@@ -193,25 +196,25 @@ def loadNRRDImage(filename):
     inFile = open(filename, 'r')
     tag = inFile.readline()
     if tag[0:8] != 'NRRD0004':
-        print "bad format!"
+        print("bad format!")
         sys.exit()
     line = inFile.readline().split()
     while line[0] != 'type:':
         line = inFile.readline().split()
     coding = line[1]
-    print "coding", coding
+    print("coding", coding)
     while line[0] != 'dimension:':
         line = inFile.readline().split()
     dimensionality = int(line[1])
-    print "dimensionality", dimensionality
+    print("dimensionality", dimensionality)
     while line[0] != 'space:':
         line = inFile.readline().split()
     space = line[1]
-    print "space", space
+    print("space", space)
     while line[0] != 'sizes:':
         line = inFile.readline().split()
     dimensions = (int(line[1]), int(line[2]), int(line[3]))
-    print "dimensions", dimensions
+    print("dimensions", dimensions)
     while line[0] != 'space':
         line = inFile.readline().split()
     directionX = line[2]
@@ -235,18 +238,18 @@ def loadNRRDImage(filename):
     for i in range(3):
         if spacing[i] < 0:
             spacing[i] = - spacing[i]
-    print "spacing", spacing
+    print("spacing", spacing)
     while line[0] != 'endian:':
         line = inFile.readline().split()
     byteorder = line[1]
-    print "byteorder", byteorder
+    print("byteorder", byteorder)
     while line[0] != 'space':
         line = inFile.readline().split()
     originStr = line[2]
     originSpl = originStr[1:(len(originStr))-1].rsplit(',', 3)
     origin = [float(originSpl[0]), float(originSpl[1]), float(originSpl[2])]
-    print "origin", origin
-    print "ordering", ordering
+    print("origin", origin)
+    print("ordering", ordering)
     if (space == "left-posterior-superior") or (space == "LPS"):
         origin[1] = -origin[1]
 
@@ -385,24 +388,24 @@ def loadDicomImage(directory):
     reader = vtk.vtkDICOMImageReader()
     reader.SetDirectoryName(directory)
     reader.Update()
-    print "Spacing = ", reader.GetPixelSpacing()[0], reader.GetPixelSpacing()[
-        1], reader.GetPixelSpacing()[2]
-    print "NumberOfComponents = ", reader.GetNumberOfComponents()
-    print "TransferSyntaxUID =", reader.GetTransferSyntaxUID()
-    print "RescaleSlope =", reader.GetRescaleSlope()
-    print "RescaleOffset =", reader.GetRescaleOffset()
-    print "PatientName =", reader.GetPatientName()
-    print "StudyUID =", reader.GetStudyUID()
-    print "StudyID =", reader.GetStudyID()
-    print "description = ", reader.GetDescriptiveName()
-    print "width = ", reader.GetWidth()
-    print "height = ", reader.GetHeight()
-    print "patientPosition = ", reader.GetImagePositionPatient()
-    print "patientOrientation = ", reader.GetImageOrientationPatient()
-    print "pixelRepresentation = ", reader.GetPixelRepresentation()
-    print "name = ", reader.GetDescriptiveName()
-    print "ext = ", reader.GetFileExtensions()
-    print "bits allocated = "
+    print("Spacing = ", reader.GetPixelSpacing()[0], reader.GetPixelSpacing()[
+        1], reader.GetPixelSpacing()[2])
+    print("NumberOfComponents = ", reader.GetNumberOfComponents())
+    print("TransferSyntaxUID =", reader.GetTransferSyntaxUID())
+    print("RescaleSlope =", reader.GetRescaleSlope())
+    print("RescaleOffset =", reader.GetRescaleOffset())
+    print("PatientName =", reader.GetPatientName())
+    print("StudyUID =", reader.GetStudyUID())
+    print("StudyID =", reader.GetStudyID())
+    print("description = ", reader.GetDescriptiveName())
+    print("width = ", reader.GetWidth())
+    print("height = ", reader.GetHeight())
+    print("patientPosition = ", reader.GetImagePositionPatient())
+    print("patientOrientation = ", reader.GetImageOrientationPatient())
+    print("pixelRepresentation = ", reader.GetPixelRepresentation())
+    print("name = ", reader.GetDescriptiveName())
+    print("ext = ", reader.GetFileExtensions())
+    print("bits allocated = ")
     reader.GetBitsAllocated()
     return reader.GetOutput()
 
@@ -421,7 +424,7 @@ def loadTifImage(filename):
             logfile = file
             break
 
-    print 'logfile', dir+'/'+logfile
+    print('logfile', dir+'/'+logfile)
 
     inFile = open(dir+'/'+logfile, 'r')
     line = inFile.readline().split()
@@ -456,11 +459,11 @@ def loadTifImage(filename):
     reader.SetFileDimensionality(2)
     reader.SetNumberOfScalarComponents(1)
 
-    print 'spacing: ', spacing, spacing, spacing*step
-    print 'dimensions: ', resultimagewidth, resultimageheight, nboffiles
-    print 'extent: ', 0, resultimagewidth-1, 0, resultimageheight-1, 0, nboffiles-1
-    print 'bounds: ', 0, resultimagewidth * \
-        spacing, 0, resultimageheight*spacing, 0, nboffiles*spacing*step
+    print('spacing: ', spacing, spacing, spacing*step)
+    print('dimensions: ', resultimagewidth, resultimageheight, nboffiles)
+    print('extent: ', 0, resultimagewidth-1, 0, resultimageheight-1, 0, nboffiles-1)
+    print('bounds: ', 0, resultimagewidth * \
+        spacing, 0, resultimageheight*spacing, 0, nboffiles*spacing*step)
 
     reader.SetFilePrefix(fileprefix)
     if len(nameonly.rpartition('_')[2]) == 2:
@@ -615,16 +618,16 @@ def vtk2tetgen(polydata, filename='out.poly', arrayName=False, regionSeeds=[], r
     #        regionVolmax = [20,30] volume max à imposer à la région
     #
     file = open(filename, 'w')
-    print 'regionseeds', regionSeeds
-    print 'regionVolmax', regionVolMax
-    print 'holeseeds', holeSeeds
+    print('regionseeds', regionSeeds)
+    print('regionVolmax', regionVolMax)
+    print('holeseeds', holeSeeds)
 
     nbnod = polydata.GetNumberOfPoints()
     nbelm = polydata.GetNumberOfCells()
     nbreg = len(regionSeeds)
     nbholes = len(holeSeeds)
 
-    print 'writing', nbnod, 'nodes and', nbelm, 'elements'
+    print('writing', nbnod, 'nodes and', nbelm, 'elements')
     file.write("# surface mesh exported by vtk2tetgen: geniso-generalTools\n")
     file.write("\n# points\n")
 
@@ -646,7 +649,7 @@ def vtk2tetgen(polydata, filename='out.poly', arrayName=False, regionSeeds=[], r
     for i in range(0, nbelm):
         cell = polydata.GetCell(i)
         if cell.GetNumberOfPoints() != 3:
-            print "bad elem (%d nodes)" % cell.GetNumberOfPoints()
+            print("bad elem (%d nodes)" % cell.GetNumberOfPoints())
             file.close()
             sys.exit()
         n1 = cell.GetPointId(0)+1
@@ -687,7 +690,7 @@ def vtk2tetgenMarkingBoundaryNodes(polydata, box, marker=1, filename='out.poly')
 
     nbnod = polydata.GetNumberOfPoints()
     nbelm = polydata.GetNumberOfCells()
-    print 'writing', nbnod, 'nodes and', nbelm, 'elements'
+    print('writing', nbnod, 'nodes and', nbelm, 'elements')
     file.write("# surface mesh exported by vtk2tetgen\n")
     file.write("\n# points\n")
     file.write("%d 3 0 1\n" % (nbnod))  # 1 bound marker=99
@@ -703,7 +706,7 @@ def vtk2tetgenMarkingBoundaryNodes(polydata, box, marker=1, filename='out.poly')
     for i in range(0, nbelm):
         cell = polydata.GetCell(i)
         if cell.GetNumberOfPoints() != 3:
-            print "bad elem (%d nodes)" % cell.GetNumberOfPoints()
+            print("bad elem (%d nodes)" % cell.GetNumberOfPoints())
             file.close()
             sys.exit()
         n1 = cell.GetPointId(0)+1
@@ -722,7 +725,7 @@ def vtk2gmsh(polydata, filename='out.geo'):
 
     nbnod = polydata.GetNumberOfPoints()
     nbelm = polydata.GetNumberOfCells()
-    print 'writing', nbnod, 'nodes and', nbelm, 'elements'
+    print('writing', nbnod, 'nodes and', nbelm, 'elements')
 
     file.write("lc=%d;\n" % lc)
 
@@ -737,7 +740,7 @@ def vtk2gmsh(polydata, filename='out.geo'):
         cell = polydata.GetCell(i)
         line = cell.GetPointIds()
         if cell.GetNumberOfPoints() != 3:
-            print "bad elem (%d nodes)" % cell.GetNumberOfPoints()
+            print("bad elem (%d nodes)" % cell.GetNumberOfPoints())
             file.close()
             sys.exit()
         n1 = cell.GetPointId(0)+1
@@ -752,7 +755,7 @@ def vtk2gmsh(polydata, filename='out.geo'):
             if edge[0] > edge[1]:
                 sign = -1
                 edge = (edge[1], edge[0])
-            if edges.has_key(edge):
+            if edge in edges:
                 edno[j] = edges[edge]*sign
             else:
                 edno[j] = nextno*sign
@@ -814,7 +817,7 @@ def loadPolyFile(name="surfmesh.poly"):
     for i in range(0, nbelm):
         line = inFile.readline().split()
         if int(line[0]) != 3:
-            print "bad elem (%d nodes)" % int(line[0])
+            print("bad elem (%d nodes)" % int(line[0]))
             sys.exit()
         n1 = int(line[1])
         n2 = int(line[2])
@@ -826,12 +829,12 @@ def loadPolyFile(name="surfmesh.poly"):
 
     polydata.SetPoints(points)
     polydata.SetPolys(polys)
-    print polydata
+    print(polydata)
     return polydata
 
 
 def loadPwnFile1(filename):  # .pwn file: pt0 pt1 pt2 n0 n1 n2
-    print "loadPwnFile"
+    print("loadPwnFile")
     inFile = open(filename, 'r')
     line = inFile.readline().split()
     nbnod = int(line[0])
@@ -846,13 +849,13 @@ def loadPwnFile1(filename):  # .pwn file: pt0 pt1 pt2 n0 n1 n2
     polydata = vtk.vtkPolyData()
     polydata.SetPoints(points)
     polydata.GetPointData().SetVectors(vectors)
-    print polydata.GetPointData().GetVectors("normals")
+    print(polydata.GetPointData().GetVectors("normals"))
     return polydata
 
 
 # .pwn file pt0 pt1 pt2 ..... ( all points)  ... n0 n1 n2 (all normals)
 def loadPwnFile2(filename):
-    print "loadPwnFile2"
+    print("loadPwnFile2")
     inFile = open(filename, 'r')
     line = inFile.readline().split()
     nbnod = int(line[0])
@@ -872,7 +875,7 @@ def loadPwnFile2(filename):
     polydata = vtk.vtkPolyData()
     polydata.SetPoints(points)
     polydata.GetPointData().SetVectors(vectors)
-    print polydata.GetPointData().GetVectors("normals")
+    print(polydata.GetPointData().GetVectors("normals"))
 
     return polydata
 
@@ -887,7 +890,7 @@ def loadPtsFile(filename):  # .pts file
         points.InsertNextPoint(float(line[0]), float(line[1]), float(line[2]))
     polydata = vtk.vtkPolyData()
     polydata.SetPoints(points)
-    print polydata.GetNumberOfPoints()
+    print(polydata.GetNumberOfPoints())
     return polydata
 
 
@@ -971,7 +974,7 @@ def off2vtk(name="ellipse.off"):
     inFile = open(name, 'r')
     tag = inFile.readline()
     if tag[0:4] != "NOFF":
-        print "bad format!"
+        print("bad format!")
         sys.exit()
     line = inFile.readline().split()
     nbnod = int(line[0])
@@ -989,7 +992,7 @@ def off2vtk(name="ellipse.off"):
     for i in range(0, nbelm):
         line = inFile.readline().split()
         if int(line[0]) != 3:
-            print "bad elem (%d nodes)" % int(line[0])
+            print("bad elem (%d nodes)" % int(line[0]))
             sys.exit()
         n1 = int(line[1])
         n2 = int(line[2])
@@ -1006,11 +1009,11 @@ def off2vtk(name="ellipse.off"):
 
 
 def printVtkImageInfo(image, title=' vtkImageData info '):
-    print '-- ', title, ' --'
-    print 'spacing: ', image.GetSpacing()
-    print 'dimensions: ', image.GetDimensions()
-    print 'origin: ', image.GetOrigin()
-    print 'extent: ', image.GetExtent()
+    print('-- ', title, ' --')
+    print('spacing: ', image.GetSpacing())
+    print('dimensions: ', image.GetDimensions())
+    print('origin: ', image.GetOrigin())
+    print('extent: ', image.GetExtent())
 
 
 def readImageScalarRange(filename, extent=(0, 255, 0, 255, 0, 59), coding='ushort'):
@@ -1025,7 +1028,7 @@ def readImageScalarRange(filename, extent=(0, 255, 0, 255, 0, 59), coding='ushor
     elif coding == 'uchar':
         typeDataIn = typeDataIn+'B'  # unsigned char
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
     # read file
     file = open(filename, 'rb')
@@ -1046,7 +1049,7 @@ def printOneLineOfData(filename, slice=30, line=128, extent=(0, 255, 0, 255, 0, 
     elif coding == 'uchar':
         typeDataIn = typeDataIn+'B'  # unsigned char
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
 
     # read file
@@ -1064,14 +1067,14 @@ def printOneLineOfData(filename, slice=30, line=128, extent=(0, 255, 0, 255, 0, 
     start = sizIn*(lx*ly*slice+lx*line)
     for j in range(extent[0], extent[1]):
         value = struct.unpack(typeDataIn, allfile[start:start+sizIn])[0]
-        print value,
+        print(value, end=' ')
         start = start+sizIn
-    print ''
+    print('')
 
 
 def vtkImageDataToCpp(vtkImageData):
     if not vtkImageData.IsA("vtkImageData"):
-        print 'ERROR - Not a vtkImageData', vtkImageData
+        print('ERROR - Not a vtkImageData', vtkImageData)
     else:
         # obtain the address string
         addr_str = vtkImageData.GetAddressAsString('vtkImageData')
@@ -1083,7 +1086,7 @@ def vtkImageDataToCpp(vtkImageData):
 
 def vtkImplicitFunctionToCpp(vtkImplicitFunction):
     if not vtkImplicitFunction.IsA("vtkImplicitFunction"):
-        print 'ERROR - Not a vtkImageData', vtkImageData
+        print('ERROR - Not a vtkImageData', vtkImageData)
     else:
         addr_str = vtkImplicitFunction.GetAddressAsString(
             'vtkImplicitFunction')
@@ -1092,7 +1095,7 @@ def vtkImplicitFunctionToCpp(vtkImplicitFunction):
 
 def ugridToCpp(ugrid):
     if not ugrid.IsA("vtkUnstructuredGrid"):
-        print 'ERROR - Not a vtkUnstructuredGrid', ugrid
+        print('ERROR - Not a vtkUnstructuredGrid', ugrid)
     else:
         addr_str = ugrid.GetAddressAsString('vtkUnstructuredGrid')
         return str(int(addr_str[5:], 16))
@@ -1101,7 +1104,7 @@ def ugridToCpp(ugrid):
 # doesnt work on Linux64 , why ??  (j'ai corrigé, ca marche - voir vtkImageDataToCpp - RoBo)
 def polydataToCpp(poly):
     if not poly.IsA('vtkPolyData'):
-        print 'ERROR - Not a vtkPolyData', poly
+        print('ERROR - Not a vtkPolyData', poly)
     else:
         addr_str = poly.GetAddressAsString('vtkPolyData')
         return str(int(addr_str[5:], 16))
@@ -1112,7 +1115,7 @@ def vtkImageDataFromCpp(vtkImageDataSwigPtr):
     swigPtr = str(vtkImageDataSwigPtr)
     a = len(swigPtr) - len('vtkImageData')
     if swigPtr[a:] != 'vtkImageData':
-        print 'ERROR - Not a vtkImageData pointer', vtkImageDataSwigPtr
+        print('ERROR - Not a vtkImageData pointer', vtkImageDataSwigPtr)
     else:
         cppPtr = swigPtr[0]+swigPtr[7:9]+swigPtr[5:7] + \
             swigPtr[3:5]+swigPtr[1:3]+swigPtr[9:]
@@ -1125,7 +1128,7 @@ def ugridFromCpp(ugridSwigPtr):
     swigPtr = str(ugridSwigPtr)
     a = len(swigPtr) - len('vtkUnstructuredGrid')
     if swigPtr[a:] != 'vtkUnstructuredGrid':
-        print 'ERROR - Not a vtkUnstructuredGrid pointer', ugridSwigPtr
+        print('ERROR - Not a vtkUnstructuredGrid pointer', ugridSwigPtr)
     else:
         cppPtr = swigPtr[0]+swigPtr[7:9]+swigPtr[5:7] + \
             swigPtr[3:5]+swigPtr[1:3]+swigPtr[9:]
@@ -1138,7 +1141,7 @@ def polydataFromCpp(polySwigPtr):
     swigPtr = str(polySwigPtr)
     a = len(swigPtr) - len('vtkPolyData')
     if swigPtr[a:] != 'vtkPolyData':
-        print 'ERROR - Not a vtkPolyData pointer', polySwigPtr
+        print('ERROR - Not a vtkPolyData pointer', polySwigPtr)
     else:
         cppPtr = swigPtr[0]+swigPtr[7:9]+swigPtr[5:7] + \
             swigPtr[3:5]+swigPtr[1:3]+swigPtr[9:]

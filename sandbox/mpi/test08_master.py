@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # test mpi4py
 
+from __future__ import print_function
 import mpi4py.MPI as mpi
 
 # spawn des ouvrier au meme niveau que world
@@ -10,7 +11,7 @@ import mpi4py.MPI as mpi
 worker = mpi.COMM_SELF.Spawn("test08_slave.py", None, 2, root=0)
 intra = worker.Merge()
 
-print 'maitre: world.rank=%d' % mpi.COMM_WORLD.Get_rank(), 'intra.rank=%d' % intra.Get_rank(),'intra.size=%d' % intra.Get_size()
+print('maitre: world.rank=%d' % mpi.COMM_WORLD.Get_rank(), 'intra.rank=%d' % intra.Get_rank(),'intra.size=%d' % intra.Get_size())
 intra.Disconnect()
 worker.Disconnect()
 

@@ -1,7 +1,10 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import urllib2
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+import urllib.request, urllib.error, urllib.parse
 import json
 
 
@@ -9,7 +12,7 @@ import json
 
 url = 'https://api.exchangeratesapi.io/latest?symbols=ILS,JPY'
 #url = 'https://api.exchangeratesapi.io/history?symbols=ILS,JPY&start_at=2020-01-01&end_at=2020-01-05'
-obj_json = urllib2.urlopen(url)
+obj_json = urllib.request.urlopen(url)
 data = json.load(obj_json)
 #print data
 print(json.dumps(data, sort_keys=True, indent=4))

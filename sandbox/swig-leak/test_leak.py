@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from builtins import object
 import os, sys, platform
 
 
@@ -20,7 +21,7 @@ print (gc.garbage)
 print ('gc.isenabled()=', gc.isenabled())
 
 
-class B:
+class B(object):
     def __init__(self,name):
         self.name = name
         print('%s.__init__()' % self.name)
@@ -29,7 +30,7 @@ class B:
 b=B('b')
 c=B('c')
 
-class ObjA2:
+class ObjA2(object):
     def __init__(self,fct):
         self.fct = fct
     def __del__(self):

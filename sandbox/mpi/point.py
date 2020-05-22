@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-class Point:
+from builtins import object
+class Point(object):
     def __init__(self, num, x, y):
         self.num = num
         self.x = x

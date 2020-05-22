@@ -4,6 +4,10 @@
 # from "Simple Particle System" (Daniel Shiffman)
 # Edited Video: https://www.youtube.com/watch?v=UcdigVaIYAk
 
+from __future__ import division
+from builtins import range
+from past.utils import old_div
+from builtins import object
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -57,7 +61,7 @@ class Window(QWidget):
             QWidget.timerEvent(self, event)
 
     def showEvent(self, event):
-        self.myTimerId = self.startTimer(1000 / 60)  # in ms
+        self.myTimerId = self.startTimer(old_div(1000, 60))  # in ms
 
     def hideEvent(self, event):
         self.killTimer(self.myTimerId)

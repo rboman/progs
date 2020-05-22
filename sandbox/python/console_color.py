@@ -17,6 +17,8 @@
 
 # See http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winprog/winprog/windows_api_reference.asp
 # for information on Windows APIs.
+from __future__ import print_function
+from builtins import input
 STD_INPUT_HANDLE = -10
 STD_OUTPUT_HANDLE= -11
 STD_ERROR_HANDLE = -12
@@ -47,6 +49,6 @@ def set_color(color, handle=std_out_handle):
 
 
 set_color(FOREGROUND_GREEN | FOREGROUND_INTENSITY)
-print 'pif!'
+print('pif!')
 
-raw_input()
+input()

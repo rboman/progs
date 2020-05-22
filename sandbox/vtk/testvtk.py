@@ -17,6 +17,7 @@
 
 # I play with vtk commands...
 
+from __future__ import print_function
 import vtk
 version = vtk.vtkVersion().GetVTKMajorVersion()
 
@@ -124,7 +125,7 @@ light.SetPosition(cam1.GetPosition())
 
 ren.AddLight(light)
 
-print cam1
+print(cam1)
 
 # axes a la paraview
 axes = vtk.vtkAxesActor()
@@ -159,17 +160,17 @@ marker.InteractiveOff()
 
 def myPickFun(object, event):
     global picker
-    print 'plouf! ', picker.GetPickPosition()
+    print('plouf! ', picker.GetPickPosition())
 
 
 picker = vtk.vtkCellPicker()
 picker.AddObserver("EndPickEvent", myPickFun)
 iren.SetPicker(picker)
 
-print "\nuse <p> to pick an actor..."
+print("\nuse <p> to pick an actor...")
 
 iren.Initialize()
 renWin.Render()
 iren.Start()
 
-print cam1
+print(cam1)

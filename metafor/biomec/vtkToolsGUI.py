@@ -19,13 +19,20 @@
 #
 # June 2006
 
+from __future__ import print_function
+from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from past.utils import old_div
+from builtins import object
 import vtk
 from vtk.tk.vtkTkRenderWidget import *
 from vtk.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor
 import vtkTools
-from Tkinter import *
-import tkFileDialog
-import tkMessageBox
+from tkinter import *
+import tkinter.filedialog
+import tkinter.messagebox
 from vtk.tk.vtkTkImageViewerWidget import *
 import Pmw
 import os, os.path
@@ -123,7 +130,7 @@ def CheckAbort(obj, event):
     if obj.GetEventPending() != 0:
         obj.SetAbortRender(1)
 
-class ClipCallBack:
+class ClipCallBack(object):
     def __init__(self,planes, volumeMapper):
         self.planes = planes
         self.volumeMapper = volumeMapper
@@ -131,7 +138,7 @@ class ClipCallBack:
         obj.GetPlanes(self.planes)
         self.volumeMapper.SetClippingPlanes(self.planes)
         
-class InteractionCallBack:
+class InteractionCallBack(object):
     def __init__(self,renWin):
         self.renWin = renWin
     def start(self, obj, event):
@@ -214,7 +221,7 @@ class VtkWindow2D(Frame):
         self.viewer = vtkwidget.GetImageViewer()
         
         self.scale = Scale(self, orient=HORIZONTAL, length = 200,
-                      from_=range[0], to=range[1], tickinterval=(range[1]-range[0])/4, font=('Helvetica',8),
+                      from_=range[0], to=range[1], tickinterval=old_div((range[1]-range[0]),4), font=('Helvetica',8),
                       command = self.selectSlice)
         self.scale.pack()
         title = Label(self, text='2D View')
@@ -236,7 +243,7 @@ class VtkWindow2D(Frame):
 
 # ----------------------------------------------------------------------
 
-class MainWindow:
+class MainWindow(object):
     def __init__(self, master):
         master.protocol("WM_DELETE_WINDOW", self.quitCallback)
         self.master = master
@@ -281,7 +288,7 @@ class MainWindow:
         Label(statusFrame, textvariable=self.status, bd=1, relief=SUNKEN, anchor=W).pack(fill=X, expand=YES, pady=2, padx=2)
         
     def quitCallback(self):
-        if tkMessageBox.askokcancel("Quit","Are you sure?"):
+        if tkinter.messagebox.askokcancel("Quit","Are you sure?"):
             self.saveConfig()
             self.master.destroy()
             
@@ -304,7 +311,7 @@ class MainWindow:
         self.polydataPage.setPolydata(poly)
 
     def askLoadConfig(self):
-        fname = tkFileDialog.Open(filetypes=[('Config file','*.cfg'), ('All Files','*.*')]).show()
+        fname = tkinter.filedialog.Open(filetypes=[('Config file','*.cfg'), ('All Files','*.*')]).show()
         if fname:
             self.imagingPage.loadConfig(fname)
             self.status.set("Config loaded from %s." % fname)
@@ -312,7 +319,7 @@ class MainWindow:
             self.status.set("Canceled.")
             
     def askSaveConfig(self):
-        fname = tkFileDialog.SaveAs(filetypes=[('Config file','*.cfg')]).show()
+        fname = tkinter.filedialog.SaveAs(filetypes=[('Config file','*.cfg')]).show()
         if fname:
             self.imagingPage.saveConfig(fname)
             self.status.set("Config saved to %s." % fname)
@@ -596,7 +603,7 @@ class ImagingFrame(Frame):
         self.status.set("Negative filter applied.") 
         
     def loadVtkImage(self):
-        fname = tkFileDialog.Open(filetypes=[('VTK file','*.vtk'), ('All Files','*.*')],
+        fname = tkinter.filedialog.Open(filetypes=[('VTK file','*.vtk'), ('All Files','*.*')],
                                   initialdir=self.lastloaddir).show()
         if fname:
             self.lastloaddir = os.path.split(fname)[0]
@@ -610,7 +617,7 @@ class ImagingFrame(Frame):
             
     def saveVtkImage(self):
         if self.image:
-            fname = tkFileDialog.SaveAs(filetypes=[('VTK file','*.vtk')],
+            fname = tkinter.filedialog.SaveAs(filetypes=[('VTK file','*.vtk')],
                                         initialdir=self.lastsavedir).show()
             if fname:
                 self.lastsavedir = os.path.split(fname)[0]
@@ -625,7 +632,7 @@ class ImagingFrame(Frame):
             self.status.set("Save canceled.")
             
     def loadXmlImage(self):
-        fname = tkFileDialog.Open(filetypes=[('VTK file','*.vti'), ('All Files','*.*')],
+        fname = tkinter.filedialog.Open(filetypes=[('VTK file','*.vti'), ('All Files','*.*')],
                                   initialdir=self.lastloaddir).show()
         if fname:
             self.lastloaddir = os.path.split(fname)[0]
@@ -639,7 +646,7 @@ class ImagingFrame(Frame):
             
     def saveXmlImage(self):
         if self.image:
-            fname = tkFileDialog.SaveAs(filetypes=[('VTK file','*.vti')],
+            fname = tkinter.filedialog.SaveAs(filetypes=[('VTK file','*.vti')],
                                         initialdir=self.lastsavedir).show()
             if fname:
                 self.lastsavedir = os.path.split(fname)[0]
@@ -654,7 +661,7 @@ class ImagingFrame(Frame):
             self.status.set("Save canceled.")
             
     def loadRawImage(self):
-        fname = tkFileDialog.Open(filetypes=[('Analyze file','*.img'),
+        fname = tkinter.filedialog.Open(filetypes=[('Analyze file','*.img'),
                                   ('Raw file','*.raw'), ('All Files','*.*')],
                                   initialdir=self.lastloaddir).show()
         if fname:
@@ -671,7 +678,7 @@ class ImagingFrame(Frame):
             
     def saveRawImage(self):
         if self.image:
-            fname = tkFileDialog.SaveAs(filetypes=[('All files','*.*')],
+            fname = tkinter.filedialog.SaveAs(filetypes=[('All files','*.*')],
                                         initialdir=self.lastsavedir).show()
             if fname:
                 self.lastsavedir = os.path.split(fname)[0]
@@ -686,7 +693,7 @@ class ImagingFrame(Frame):
             self.status.set("Save canceled.")
             
     def loadGEImage(self):
-        fname = tkFileDialog.Open(filetypes=[('GE Signa file','*.001'),
+        fname = tkinter.filedialog.Open(filetypes=[('GE Signa file','*.001'),
                                   ('All files','*.*')],
                                   initialdir=self.lastloaddir).show()
         # possibilité d'utiliser tkFileDialog.askdirectory(parent=root,initialdir="/",title='Choisissez un repertoire')
@@ -700,7 +707,7 @@ class ImagingFrame(Frame):
             self.status.set("Load canceled.")
             
     def findIsosurf(self):
-        fname = tkFileDialog.Open(filetypes=[('Isosurf Executable','*.exe')]).show()
+        fname = tkinter.filedialog.Open(filetypes=[('Isosurf Executable','*.exe')]).show()
         if fname:
             self.isosurf.set(fname)
             self.status.set("Isosurf set to %s." % fname)
@@ -718,13 +725,13 @@ class ImagingFrame(Frame):
                                range[0], range[1], self.filename.get(), ext[0],ext[1], ext[2], 
                                sp[0], sp[1], sp[2], self.isores.get(), codflag);
             self.status.set("Exec Isosurf.")
-            print "exec:", cmd
+            print("exec:", cmd)
             import os
             os.system(cmd)
             polydata = vtkTools.off2vtk(name="surface.off")
             self.mainW.setPolydata(polydata)
         else:
-            tkMessageBox.Message(icon='warning', type='ok',
+            tkinter.messagebox.Message(icon='warning', type='ok',
                              message='Image must be saved to/loaded from disk!', 
                              title='Warning').show()
             self.status.set("Exec Isosurf cancelled.") 
@@ -808,7 +815,7 @@ class ImagingFrame(Frame):
                 self.coding.set('double')
                 self.codingCombo.selectitem('double')
             else:
-                tkMessageBox.Message(icon='warning', type='ok',
+                tkinter.messagebox.Message(icon='warning', type='ok',
                      message='Unsupported format (%s)!' % self.image.GetScalarTypeAsString(), 
                      title='Warning').show()
             ext = self.image.GetExtent()
@@ -825,7 +832,7 @@ class ImagingFrame(Frame):
             self.scalarrange.set("(%g,%g)" % self.image.GetScalarRange())
             
     def warningNoImage(self):
-        tkMessageBox.Message(icon='warning', type='ok',
+        tkinter.messagebox.Message(icon='warning', type='ok',
                              message='No image in memory!', 
                              title='Warning').show()
             
@@ -862,7 +869,7 @@ class ImagingFrame(Frame):
             file = open(filename,'r')
             if file:
                 for line in file:
-                   exec line
+                   exec(line)
                 file.close()
             self.codingCombo.selectitem(self.coding.get())
             self.isosurfField.configure(text = self.isosurf.get())
@@ -884,7 +891,7 @@ class ImagingFrame(Frame):
         if self.image:
             range = self.image.GetScalarRange()
             self.window.set(range[1]-range[0])
-            self.level.set((range[1]+range[0])/2)            
+            self.level.set(old_div((range[1]+range[0]),2))            
         else:
             self.warningNoImage()
         
@@ -983,7 +990,7 @@ class PolyDataFrame(Frame):
 	Frame(self).pack(fill=BOTH,expand=TRUE) # espace vide
 
     def loadVtkPolydata(self):
-        fname = tkFileDialog.Open(filetypes=[('VTK file','*.vtk'),
+        fname = tkinter.filedialog.Open(filetypes=[('VTK file','*.vtk'),
                                   ('All Files','*.*')],
                                   initialdir=self.lastloaddir).show()
         if fname:
@@ -998,7 +1005,7 @@ class PolyDataFrame(Frame):
             
     def saveVtkPolydata(self):
         if self.polydata:
-            fname = tkFileDialog.SaveAs(filetypes=[('VTK file','*.vtk')],
+            fname = tkinter.filedialog.SaveAs(filetypes=[('VTK file','*.vtk')],
                                   initialdir=self.lastsavedir).show()
             if fname:
                 self.lastsavedir = os.path.split(fname)[0]
@@ -1013,7 +1020,7 @@ class PolyDataFrame(Frame):
             self.status.set("Save canceled.")
 
     def loadXmlPolydata(self):
-        fname = tkFileDialog.Open(filetypes=[('XML file','*.vtp'),
+        fname = tkinter.filedialog.Open(filetypes=[('XML file','*.vtp'),
                                   ('All Files','*.*')],
                                   initialdir=self.lastloaddir).show()
         if fname:
@@ -1028,7 +1035,7 @@ class PolyDataFrame(Frame):
             
     def saveXmlPolydata(self):
         if self.polydata:
-            fname = tkFileDialog.SaveAs(filetypes=[('XML file','*.vtp')],
+            fname = tkinter.filedialog.SaveAs(filetypes=[('XML file','*.vtp')],
                                   initialdir=self.lastsavedir).show()
             if fname:
                 self.lastsavedir = os.path.split(fname)[0]
@@ -1044,7 +1051,7 @@ class PolyDataFrame(Frame):
             
     def exportToGmsh(self):
         if self.polydata:
-            fname = tkFileDialog.SaveAs(filetypes=[('Gmsh input file','*.geo')],
+            fname = tkinter.filedialog.SaveAs(filetypes=[('Gmsh input file','*.geo')],
                                   initialdir=self.lastsavedir).show()
             if fname:
                 self.lastsavedir = os.path.split(fname)[0]
@@ -1076,7 +1083,7 @@ class PolyDataFrame(Frame):
             self.status.set("View canceled.")
           
     def warningNoPolydata(self):
-        tkMessageBox.Message(icon='warning', type='ok',
+        tkinter.messagebox.Message(icon='warning', type='ok',
                              message='No polydata in memory!', 
                              title='Warning').show()
     def setPolydata(self, poly):

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import json
 import requests
 import os.path
@@ -17,12 +18,12 @@ def get_api_token():
 def space_usage():
     apiurl = 'https://api.dropboxapi.com/2/users/get_space_usage'
     token = get_api_token()
-    print 'requesting space usage'
+    print('requesting space usage')
     r = requests.post(apiurl, headers={ 
         "Authorization": 'Bearer %s' % token
      })
     #r.raise_for_status()
-    print 'r.status_code =', r.status_code
+    print('r.status_code =', r.status_code)
     # print 'r.headers =', r.headers
     # print 'r.encoding =', r.encoding
     # print 'r.url =', r.url
@@ -30,7 +31,7 @@ def space_usage():
     # if r.status_code==200:
     #     print(json.dumps(r.json(), sort_keys=True, indent=4))
     resp = r.json()
-    print ' %f Gb / %f Gb' % (resp['used']/float(1024*1024*1024), resp['allocation']['allocated']/float(1024*1024*1024) )
+    print(' %f Gb / %f Gb' % (resp['used']/float(1024*1024*1024), resp['allocation']['allocated']/float(1024*1024*1024) ))
 
 def download(url, filename=None):
     # https://www.dropbox.com/developers/documentation/http/documentation#files-save_url
@@ -45,7 +46,7 @@ def download(url, filename=None):
 
     apiurl = 'https://api.dropboxapi.com/2/files/save_url'
     token = get_api_token()
-    print 'requesting download of', filename
+    print('requesting download of', filename)
     r = requests.post(apiurl, headers={ 
         "Authorization": 'Bearer %s' % token,
         "Content-Type": 'application/json'
@@ -54,11 +55,11 @@ def download(url, filename=None):
          'url': url
     })
     #r.raise_for_status()
-    print 'r.status_code =', r.status_code
+    print('r.status_code =', r.status_code)
     # print 'r.headers =', r.headers
     # print 'r.encoding =', r.encoding
     # print 'r.url =', r.url
-    print 'r.text =', r.text
+    print('r.text =', r.text)
     # if r.status_code==200:
     #     print 'r.json() =', r.json()
 

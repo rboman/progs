@@ -17,6 +17,7 @@
 
 # copy dependencies (.so files) of "exefile" to "targetPath"
 
+from __future__ import print_function
 def cplibs(exefile, targetPath='lddLibs', libPaths=[]):
     """
     copy dependencies (.so files) of "exefile" to "targetPath"
@@ -25,7 +26,7 @@ def cplibs(exefile, targetPath='lddLibs', libPaths=[]):
     """
     import subprocess, os, os.path, re, shutil
     if not os.path.isdir(targetPath):
-        print "creating target folder (%s)" %targetPath
+        print("creating target folder (%s)" %targetPath)
         os.mkdir(targetPath)
     
     libPaths.append(targetPath)
@@ -36,7 +37,7 @@ def cplibs(exefile, targetPath='lddLibs', libPaths=[]):
      
     # add basedir to LD_LIBRARY_PATH  
     basedir=os.path.abspath(os.path.dirname(exefile))
-    print "adding '%s' to LD_LIBRARY_PATH" % basedir
+    print("adding '%s' to LD_LIBRARY_PATH" % basedir)
     try:
         ldpath=os.environ['LD_LIBRARY_PATH']+':'+basedir
     except:
@@ -59,16 +60,16 @@ def cplibs(exefile, targetPath='lddLibs', libPaths=[]):
             for d in libPaths:
                 f=os.path.join(d,lib)
                 if os.path.isfile(f):
-                    print "'%s' already in '%s'" % (lib, d)
+                    print("'%s' already in '%s'" % (lib, d))
                     break
             else:
-                print "copying '%s' to '%s'" % (lib, targetPath)
+                print("copying '%s' to '%s'" % (lib, targetPath))
                 shutil.copy(libf, d)
                 
 if __name__=="__main__":
     import sys
     if len(sys.argv)<3:
-        print "\nusage: %s [exefile] [target_folder]\n" % sys.argv[0]
+        print("\nusage: %s [exefile] [target_folder]\n" % sys.argv[0])
     else:
         cplibs(sys.argv[1], sys.argv[2])
         

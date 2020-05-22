@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import input
 import numpy as np
 import matplotlib.pyplot as plt
 
 import mico 
 
-print dir(mico)
+print(dir(mico))
 
-print 'h=', mico.pars.h
+print('h=', mico.pars.h)
 
 u = np.zeros(101)
 v = np.zeros(101)
@@ -43,5 +45,5 @@ fig.show()
 fig.savefig('uv.png')
 
 
-raw_input('<PRESS RETURN>')
+input('<PRESS RETURN>')
 

@@ -2,20 +2,22 @@
 # -*- coding: utf-8 -*-
 
 
-class A():
+from __future__ import print_function
+from builtins import object
+class A(object):
     a = 1
 
     def __setattr__(self, name, value):
-        print 'trying to set', name, 'to', value
+        print('trying to set', name, 'to', value)
 
     def __getattr__(self, name):
-        print 'trying to get', name
+        print('trying to get', name)
         return 'pouf'
 
 
 a = A()
-print a.__dict__
+print(a.__dict__)
 a.pipo = 3
-print a.blam
+print(a.blam)
 a.a = 12
-print "a.a=", a.a
+print("a.a=", a.a)

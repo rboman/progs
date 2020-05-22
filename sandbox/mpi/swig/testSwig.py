@@ -8,6 +8,7 @@
 
 
 
+from builtins import object
 from sys import version_info
 if version_info >= (2,6,0):
     def swig_import_helper():
@@ -65,7 +66,7 @@ try:
     _object = object
     _newclass = 1
 except AttributeError:
-    class _object : pass
+    class _object(object) : pass
     _newclass = 0
 
 

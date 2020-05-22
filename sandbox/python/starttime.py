@@ -15,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
 import sys
 import datetime
 import time
@@ -39,7 +40,7 @@ for result in results:
         pass  # ignore it
 else:
     # didn't find one
-    print "Process PID", pid, "doesn't seem to exist!"
+    print("Process PID", pid, "doesn't seem to exist!")
     sys.exit(0)
 pidInfo = [result.split()[1] for result in results
            if result.split()[0] == pid][0]
@@ -72,5 +73,5 @@ secondsSinceStart = days * 24 * 3600 + hours * 3600 + minutes * 60 + seconds
 # unix time (in seconds) of start
 startTime = time.time() - secondsSinceStart
 # final result
-print "Process started on",
-print datetime.datetime.fromtimestamp(startTime).strftime("%a %b %d at %I:%M:%S %p")
+print("Process started on", end=' ')
+print(datetime.datetime.fromtimestamp(startTime).strftime("%a %b %d at %I:%M:%S %p"))

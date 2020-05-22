@@ -15,8 +15,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
+import sys
+from builtins import range
 from genmai import *
-
 
 
 
@@ -39,56 +41,55 @@ if 0:
     mesher.layers.push_back(REDUCTION)
     mesher.layers.push_back(CONSTANT)
 
-print mesher
+print(mesher)
 
 mesher.genere()
 
-print mesh
+print(mesh)
 
 # vtk output
 
-import sys
 if not '--nogui' in sys.argv:
 
     import vtk
-    ugrid  = vtk.vtkUnstructuredGrid()
+    ugrid = vtk.vtkUnstructuredGrid()
     points = vtk.vtkPoints()
     ugrid.SetPoints(points)
 
-    print "converting nodes to vtk"
-    for i in xrange(mesh.nodes.size()):
+    print("converting nodes to vtk")
+    for i in range(mesh.nodes.size()):
         points.InsertPoint(i, mesh.nodes[i].x, mesh.nodes[i].y, 0.0)
-        
-    print "converting elems to vtk"
-    for i in xrange(mesh.elements.size()): 
+
+    print("converting elems to vtk")
+    for i in range(mesh.elements.size()):
         quad = vtk.vtkQuad()
-        ids = quad.GetPointIds() 
+        ids = quad.GetPointIds()
         el = mesh.elements[i]
         for j in range(4):
-            ids.SetId( j, el.nodes[j] )
-        ugrid.InsertNextCell(quad.GetCellType(), ids)     
+            ids.SetId(j, el.nodes[j])
+        ugrid.InsertNextCell(quad.GetCellType(), ids)
 
     # save the grid
-    print "saving the grid to disk"
+    print("saving the grid to disk")
     writer = vtk.vtkXMLUnstructuredGridWriter()
     #compressor = vtk.vtkZLibDataCompressor()
-    #writer.SetCompressor(compressor)
+    # writer.SetCompressor(compressor)
     writer.SetCompressor(None)
     writer.SetDataModeToAscii()
-    #writer.SetDataModeToBinary()
+    # writer.SetDataModeToBinary()
     writer.SetInputData(ugrid)
     writer.SetFileName('mesh.vtu')
     writer.Write()
 
     # display (DEBUG)
 
-    print "display..."
-    mapper = vtk.vtkDataSetMapper() 
+    print("display...")
+    mapper = vtk.vtkDataSetMapper()
     mapper.SetInputData(ugrid)
     actor = vtk.vtkActor()
     actor.SetMapper(mapper)
 
-    gridMapper = vtk.vtkDataSetMapper() 
+    gridMapper = vtk.vtkDataSetMapper()
     gridMapper.SetResolveCoincidentTopologyToPolygonOffset()
     gridMapper.ScalarVisibilityOff()
     gridMapper.SetInputData(ugrid)
@@ -100,20 +101,18 @@ if not '--nogui' in sys.argv:
     gridActor.GetProperty().SetSpecular(0.0)
     gridActor.SetMapper(gridMapper)
 
-
     ren = vtk.vtkRenderer()
-    
+
     renWin = vtk.vtkRenderWindow()
-    renWin.SetSize(640, 480)    
+    renWin.SetSize(640, 480)
     renWin.AddRenderer(ren)
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    ren.AddActor(actor) 
-    ren.AddActor(gridActor) 
+    ren.AddActor(actor)
+    ren.AddActor(gridActor)
     ren.ResetCamera()
 
     iren.Initialize()
     renWin.Render()
     iren.Start()
-

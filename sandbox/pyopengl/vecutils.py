@@ -2,6 +2,8 @@
 # from https://robertvandeneynde.be/
 from __future__ import division
 
+from builtins import next
+from builtins import object
 from math import sin, cos, degrees, radians, tan
 
 import numpy
@@ -81,7 +83,7 @@ def readvec(V, names):
 
 def vec_from_kwargs(size, **kwargs):
     V = farray((0,) * size)
-    for x,v in kwargs.items():
+    for x,v in list(kwargs.items()):
         if len(x) == 1:
             V[NAME_TO_INT[x]] = v
         else:
@@ -217,7 +219,7 @@ def LookAtMatrix(*args):
         TranslationMatrix(-e)
     )
 
-class Axis:
+class Axis(object):
     X = 0
     Y = 1
     Z = 2

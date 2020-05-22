@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import input
 progname = 'barres'
 
 import os
@@ -25,6 +27,6 @@ try:
     #if not os.path.isfile(progname): raise Exception("build failed!")
     subprocess.check_output(os.path.join('.', progname), shell=True)
 except Exception as e:
-    print e
-    print "<press ENTER to quit>"
-    raw_input()
+    print(e)
+    print("<press ENTER to quit>")
+    input()

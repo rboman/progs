@@ -17,8 +17,10 @@
 
 # http://garfield.ltas.ulg.ac.be/python/test2.py?r=0.88
 
+from __future__ import print_function
+from builtins import str
 import cgi, math
-print 'Content-type: text/html\n'
+print('Content-type: text/html\n')
 form = cgi.FieldStorage()
 if form:
     r = form.getvalue('r')
@@ -27,7 +29,7 @@ else:
     r = ''
     s = ''
     
-print """
+print("""
 <html>
 <body bgcolour="white">
 <form action="test2.py" method="post">
@@ -37,6 +39,6 @@ Hello world! The sine of
 </form>
 </body>
 </html>
-""" % (r,s)
+""" % (r,s))
 
 cgi.test()

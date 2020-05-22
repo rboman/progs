@@ -24,6 +24,10 @@
 # REQUIRES: pdfinfo, pdfseparate, pdfjoin, gs, pdfjam
 #
 
+from __future__ import print_function
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 import sys, os, subprocess, re, shutil
 
 def getpdfsize(fname):
@@ -56,7 +60,7 @@ def runcmd(cmd):
 def splitpdf(fname, tmpdir):
 
     # separate pdf (1 pdf per page)
-    print '\tseparating pages into 1-page files'
+    print('\tseparating pages into 1-page files')
     pattern = os.path.join(tmpdir, r'Page%04d.pdf')
     cmd = ['pdfseparate', fname, pattern]
     runcmd(cmd)
@@ -72,12 +76,12 @@ def splitpdf(fname, tmpdir):
     files = []
     for n in range(1,np+1):
         infile = pattern % n
-        dx = int(sx/2)
-        dy = int(sy/2)
+        dx = int(old_div(sx,2))
+        dy = int(old_div(sy,2))
         k = 0
-        for i in reversed(range(2)):
+        for i in reversed(list(range(2))):
             for j in range(2):
-                print '\tcropping files (%d/%d)' % ((n-1)*4+k+1,np*4) , "     \r",
+                print('\tcropping files (%d/%d)' % ((n-1)*4+k+1,np*4) , "     \r", end=' ')
                 sys.stdout.flush()
                 oy = i*dy
                 ox = j*dx
@@ -93,7 +97,7 @@ def splitpdf(fname, tmpdir):
         # del pages
         os.unlink(infile)
     
-    print ""
+    print("")
     currentdir = os.getcwd()
 
     os.chdir(tmpdir)    # -- goto tmp folder
@@ -103,7 +107,7 @@ def splitpdf(fname, tmpdir):
     joinedfile = files[-1].replace('.pdf','-joined.pdf')
 
     # printe le resultat avec ghostview (pour virer tout ce qui n'est pas visible)
-    print '\ttrimming file with ghostview'
+    print('\ttrimming file with ghostview')
     outputfile = joinedfile.replace('.pdf','-trim-a6.pdf')
     cmd=['gs', '-dNOPAUSE', '-dBATCH', '-sDEVICE=pdfwrite',
         '-dCompatibilityLevel=1.4', '-dPDFSETTINGS="/ebook"', 
@@ -114,7 +118,7 @@ def splitpdf(fname, tmpdir):
     os.chdir(currentdir) # -- back to initial folder
    
     # convert A6/landscape to A4/landscape
-    print '\tconverting from A6 to A4/landscape'
+    print('\tconverting from A6 to A4/landscape')
     inputfile = os.path.join(tmpdir, outputfile)
     outputfile = fname.replace('.pdf','-1x1.pdf')
     cmd = ['pdfjam', '--outfile', outputfile, '--paper', 
@@ -125,16 +129,16 @@ def splitpdf(fname, tmpdir):
 if __name__=="__main__":
 
     if len(sys.argv)==1:
-        print 'usage: %s [files.pdf]' % sys.argv[0]
+        print('usage: %s [files.pdf]' % sys.argv[0])
         sys.exit(1)
 
     for i in range(1,len(sys.argv)):
         fname = sys.argv[i]
         if os.path.splitext(fname)[1] != '.pdf':
-            print 'skipping non pdf file (%s)'
+            print('skipping non pdf file (%s)')
             continue
         
-        print 'processing', fname
+        print('processing', fname)
         # create tmpdir
         fnamef = os.path.abspath(fname)
 
@@ -150,7 +154,7 @@ if __name__=="__main__":
         try:
             splitpdf(fname, tmpdir)
         finally:
-            print 'removing tmp files.'
+            print('removing tmp files.')
             os.chdir(curdir)
             if os.path.isdir(tmpdir):
                 shutil.rmtree(tmpdir)

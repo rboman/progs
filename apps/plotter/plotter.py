@@ -17,6 +17,12 @@
 
 # Plot2DWidget: tracé de fonctions
 
+from __future__ import print_function
+from __future__ import division
+from builtins import str
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -55,12 +61,12 @@ class Plot2DWidget(QWidget):
     def computegrid(self, xmin, xmax, gridX):
         # find best step
         dx = xmax - xmin  # print "dX=", dx
-        dgX = dx / gridX  # print "dgX=", dgX      # wanted dX
+        dgX = old_div(dx, gridX)  # print "dgX=", dgX      # wanted dX
 
         # step in [0,10]
         expo = math.floor(math.log(dgX, 10))  # print "expo=", expo
         factor = math.pow(10.0, expo)  # print "factor=", factor
-        dgX3 = dgX / factor  # print "dgX3=", dgX3
+        dgX3 = old_div(dgX, factor)  # print "dgX3=", dgX3
 
         # best integer increment
         if dgX3 < 1.5:
@@ -79,7 +85,7 @@ class Plot2DWidget(QWidget):
         # print "expo=", expo
 
         # find first grid pos.
-        xminf = xmin / factor
+        xminf = old_div(xmin, factor)
         xmini = math.floor(xminf)
         # print "xminf=", xminf
         # print "xmini=", xmini
@@ -115,10 +121,10 @@ class Plot2DWidget(QWidget):
         (yminf, bdYf) = self.computegrid(self.ymin, self.ymax, self.gridY)
 
         if 0:  # debug grid
-            print "self.xmin,xmax =", self.xmin, self.xmax
-            print "self.ymin,ymax =", self.ymin, self.ymax
-            print "xminf =", xminf, yminf
-            print "bdXf =", bdXf, bdYf
+            print("self.xmin,xmax =", self.xmin, self.xmax)
+            print("self.ymin,ymax =", self.ymin, self.ymax)
+            print("xminf =", xminf, yminf)
+            print("bdXf =", bdXf, bdYf)
 
         pen = QPen()
         pen.setColor(Qt.black)
@@ -128,7 +134,7 @@ class Plot2DWidget(QWidget):
         # axes x
         x = xminf
         while x < self.xmax:
-            x1 = rect.left() + (x - self.xmin) / (self.xmax - self.xmin) * rect.width()
+            x1 = rect.left() + old_div((x - self.xmin), (self.xmax - self.xmin)) * rect.width()
             y1 = rect.bottom()
             x2 = x1
             y2 = rect.top()
@@ -141,7 +147,7 @@ class Plot2DWidget(QWidget):
         y = yminf
         while y < self.ymax:
             x1 = rect.left()
-            y1 = rect.bottom() - (y - self.ymin) / (self.ymax - self.ymin) * rect.height()
+            y1 = rect.bottom() - old_div((y - self.ymin), (self.ymax - self.ymin)) * rect.height()
             x2 = rect.right()
             y2 = y1
             line = QLine(x1, y1, x2, y2)
@@ -168,17 +174,17 @@ class Plot2DWidget(QWidget):
             painter.drawPolyline(poly)
 
     def ax2win(self, ax, ay):
-        wx = self.rect.left() + (ax - self.xmin) / \
-            (self.xmax - self.xmin) * self.rect.width()
-        wy = self.rect.bottom() - (ay - self.ymin) / \
-            (self.ymax - self.ymin) * self.rect.height()
+        wx = self.rect.left() + old_div((ax - self.xmin), \
+            (self.xmax - self.xmin)) * self.rect.width()
+        wy = self.rect.bottom() - old_div((ay - self.ymin), \
+            (self.ymax - self.ymin)) * self.rect.height()
         return (wx, wy)
 
     def win2ax(self, wx, wy):
-        ax = self.xmin + (wx - self.rect.left()) * \
-            (self.xmax - self.xmin) / self.rect.width()
-        ay = self.ymin - (wy - self.rect.bottom()) * \
-            (self.ymax - self.ymin) / self.rect.height()
+        ax = self.xmin + old_div((wx - self.rect.left()) * \
+            (self.xmax - self.xmin), self.rect.width())
+        ay = self.ymin - old_div((wy - self.rect.bottom()) * \
+            (self.ymax - self.ymin), self.rect.height())
         return (ax, ay)
 
     def mousePressEvent(self, event):
@@ -229,7 +235,7 @@ class Plot2DWidget(QWidget):
             self.update()
 
 
-class Point:
+class Point(object):
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -238,13 +244,13 @@ class Point:
         return "(%f,%f)" % (self.x, self.y)
 
 
-class Curve:
+class Curve(object):
     def __init__(self):
         self.pts = []
 
     def fill(self, f, rng, n):
         x = float(rng[0])
-        dx = (float(rng[1]) - float(rng[0])) / n
+        dx = old_div((float(rng[1]) - float(rng[0])), n)
         for i in range(n):
             self.pts.append(Point(x, f(x)))
             x += dx

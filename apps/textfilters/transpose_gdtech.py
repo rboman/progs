@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import range
 import os.path
 import os
 
@@ -9,7 +11,7 @@ files = os.listdir(base)
 
 for f in files:
     if os.path.splitext(f)[1] == ".ascii":
-        print base+f, '->',
+        print(base+f, '->', end=' ')
         inFile = open(base+f, 'r')
         lines = inFile.readlines()
         if len(lines) == 1:
@@ -19,7 +21,7 @@ for f in files:
             for i in range(len(data)):
                 outFile.write('%s\n' % data[i])
             outFile.close()
-            print 'ok.'
+            print('ok.')
         else:
-            print 'skipped (', len(lines), 'lines).'
+            print('skipped (', len(lines), 'lines).')
         inFile.close()

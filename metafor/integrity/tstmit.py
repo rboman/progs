@@ -1,6 +1,8 @@
 # fichier de test du mailleur transfini 3D
 # 12 lignes
 
+from builtins import input
+from builtins import range
 from wrap import *
 
 
@@ -105,7 +107,7 @@ win.add(cset)
 #win.add(domain.getTopology().getSideSet())
 win.add(domain.getTopology().getVolumeSet())
 win.open()
-raw_input()
+input()
 
 
 

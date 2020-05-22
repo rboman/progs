@@ -4,10 +4,14 @@
 # mettre TCL_LIBRARY=D:\Python24\tcl\tcl8.4
 
 
-from Tkinter import *
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+from tkinter import *
 
 
-class MyWin:
+class MyWin(object):
     def __init__(self, parent):
         self.master = parent
         top = Frame(root)
@@ -44,14 +48,14 @@ class MyWin:
         root.bind("<q>", quit)
 
     def fn_start(self, event=None):
-        print "Starting metafor on", self.r.get()
+        print("Starting metafor on", self.r.get())
         root.destroy()
         from toolbox.utilities import meta
         meta(self.r.get())
     
     def quit(self, event=None):
-        import tkMessageBox
-        if tkMessageBox.askokcancel("Quit","Do you want to quit?"):
+        import tkinter.messagebox
+        if tkinter.messagebox.askokcancel("Quit","Do you want to quit?"):
             root.destroy()
     
     

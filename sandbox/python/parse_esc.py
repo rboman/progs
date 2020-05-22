@@ -1,11 +1,13 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import range
 red='\033[31m'
 reset='\033[0m'
 
 s = "[€€€éä] nice " + red + "colors" + reset + '!\n'
-print s
+print(s)
 
 
 #import tempfile
@@ -36,7 +38,7 @@ f.close()
 # read string from file
 f = open("tmp.txt", 'r')
 for l in f.readlines():
-    print l,
+    print(l, end=' ')
     #print l.encode('utf-8').decode('unicode_escape'),
     #print l.decode('unicode_escape')
 

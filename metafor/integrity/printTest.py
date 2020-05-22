@@ -1,13 +1,15 @@
+from __future__ import print_function
 
 # "print" test
 
+from builtins import range
 from wrap import *
 
 def printTest(objet):
-    for i in range(1,30): print "-", 
-    print "\nPrint test of", objet
-    for i in range(1,30): print "-",
-    print ''
+    for i in range(1,30): print("-", end=' ') 
+    print("\nPrint test of", objet)
+    for i in range(1,30): print("-", end=' ')
+    print('')
     exec('print '+objet)
 
 #import apps.qs.cont2;
@@ -16,31 +18,31 @@ import apps.ale.qsUzi;
 domain = apps.ale.qsUzi.getDomain(0)
 domain.build()
 
-print '\n------------------------------------------\n'
+print('\n------------------------------------------\n')
 
 a=Matr2(1,2,3,4)
-print a
+print(a)
 a=Matr3(1,2,3,4)
-print a
+print(a)
 
 win=VizWin();
-print win;
+print(win);
 
 
 def fct(x,y,z):
-    print 'plouf'
-    print "x=", x
-    print "y=", y
-    print "z=", z
+    print('plouf')
+    print("x=", x)
+    print("y=", y)
+    print("z=", z)
     
     return x*x+y*y+z*z
 pfct = PythonMultiParameterFunction(fct,3)
-print pfct
+print(pfct)
 
 keys = KeyList(Key(TX),Key(TY),Key(TZ),Key(TM))
-print keys
+print(keys)
 
-print '\n------------------------------------------\n'
+print('\n------------------------------------------\n')
 
 #printTest('domain.findObject(ELEMENTSET_ID)')
 

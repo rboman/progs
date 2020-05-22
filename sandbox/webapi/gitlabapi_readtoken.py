@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import json
 import requests
 
@@ -23,7 +24,7 @@ def get_all_projects():
     # token as a header
     #r = requests.get(url, headers={ "Private-Token": token }, params={'per_page' : 1000, 'page':1 })
 
-    print 'r.status_code =', r.status_code
+    print('r.status_code =', r.status_code)
     # print 'r.headers =', r.headers
     # print 'r.encoding =', r.encoding
     # print 'r.url =', r.url
@@ -45,5 +46,5 @@ with open('projects.json','w') as f:
 
 # list projects
 for i,p in enumerate(projects):
-    print "%03d %s (id=%d)" % (i, p["name_with_namespace"], p["id"])
+    print("%03d %s (id=%d)" % (i, p["name_with_namespace"], p["id"]))
 

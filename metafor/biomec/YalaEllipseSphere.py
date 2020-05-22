@@ -17,6 +17,7 @@
 # crée les fichiers nécessaires au calcul sphere-elipse du TFE Yala
 # RoBo - juin 2006
 
+from __future__ import print_function
 import vtk
 from vtkTools import *
 
@@ -42,7 +43,7 @@ cmd = "\"%s\" -t %d,%d -i %s -d %d,%d,%d -s %d,%d,%d -r %d -f %s" % (isosurfExec
       range[0], range[1], inputFile, extent[0],extent[1], extent[2], \
       scale[0], scale[1], scale[2], resolution, codflag);
       
-print "exec:", cmd
+print("exec:", cmd)
 import os
 os.system(cmd)
 
@@ -51,7 +52,7 @@ savePolyData("sphere30_poly.vtk", polydata)
 if 1:
 	poly    = createPolyDataActor(polydata)
 	outline = createOutlineActor(polydata)
-	print "close VTK window to continue..."
+	print("close VTK window to continue...")
 	display3D((poly, outline))
 
 #ellipse
@@ -64,7 +65,7 @@ euclide1 = createEuclide(ellipse)
 negative = createNegative(ellipse)
 euclide2 = createEuclide(negative)
 final = addImages(euclide1, euclide2)
-print 'extent=',final.GetExtent()
-print 'spacing=',final.GetSpacing()
+print('extent=',final.GetExtent())
+print('spacing=',final.GetSpacing())
 
 saveVtkImage("sphere-30-40_emap.vtk", final)

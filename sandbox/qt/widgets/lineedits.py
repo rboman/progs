@@ -3,6 +3,7 @@
 
 # from https://www.tutorialspoint.com/pyqt/
 
+from __future__ import print_function
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -49,10 +50,10 @@ def window():
    sys.exit(app.exec_())
 
 def textchanged(text):
-   print "contents of text box: "+text
+   print("contents of text box: "+text)
 	
 def enterPress():
-   print "edited"
+   print("edited")
 
 if __name__ == '__main__':
    window()

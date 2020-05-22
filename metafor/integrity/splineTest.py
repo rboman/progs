@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import input
 from wrap import *
 
 
@@ -46,5 +48,5 @@ win.add(poiset)
 win.add(curset)
 win.open()
 
-print "press ENTER..."
-raw_input()
+print("press ENTER...")
+input()

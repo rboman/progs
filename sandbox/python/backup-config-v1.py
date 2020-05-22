@@ -15,12 +15,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+from __future__ import print_function
+from builtins import input
 winrar = '"C:\\Program Files (x86)\\WinRAR\\rar.exe"'
 
 
 import os, os.path, sys, shutil
 
-print "starting backup-script in", os.getcwd()
+print("starting backup-script in", os.getcwd())
 
 # --- some funcs ----------------
 
@@ -33,7 +35,7 @@ def mkDir(dirname):
 
 def chDir(dirname):
     os.chdir(dirname)
-    print "in", os.getcwd()
+    print("in", os.getcwd())
 
 def copyfiles(dirtxt, path, files=None):
     cwdir = os.getcwd()
@@ -43,23 +45,23 @@ def copyfiles(dirtxt, path, files=None):
         if os.path.isdir(path):
             if files:
                 for f in files:
-                    print "\tcopying", f
+                    print("\tcopying", f)
                     shutil.copy(os.path.join(path,f), f)
             else: 
                 for f in os.listdir(path):
-                    print f
+                    print(f)
                     if os.path.isfile(os.path.join(path,f)):
-                        print "\tcopying", os.path.join(path, f)
+                        print("\tcopying", os.path.join(path, f))
                         shutil.copy(os.path.join(path, f), f)
         elif os.path.isfile(path):
-            print "\tcopying", path
+            print("\tcopying", path)
             shutil.copy(path, os.path.basename(path))
         else:
             raise '%s doesn\'t exist' % path
         chDir('..')
     except:
         os.chdir(cwdir)
-        print "unable to copy files from '%s' to '%s'" % (path,dirtxt)
+        print("unable to copy files from '%s' to '%s'" % (path,dirtxt))
 
 def rarOneFile(dirtxt, fullfile):
     cwdir = os.getcwd()
@@ -75,7 +77,7 @@ def rarOneFile(dirtxt, fullfile):
             cmd = '"'+winrar+' a -idc "'+dest+'"  "'+file+'""' # -ep=exclude path
             try: os.remove(dest)
             except: pass    
-            print cmd
+            print(cmd)
             os.system(cmd)
         else:
             raise '%s is missing!' % fullfile
@@ -83,7 +85,7 @@ def rarOneFile(dirtxt, fullfile):
         chDir('..')
     except:
         os.chdir(cwdir)
-        print "unable to rar '%s' to '%s'" % (fullfile,dirtxt)
+        print("unable to rar '%s' to '%s'" % (fullfile,dirtxt))
 
 if __name__ == "__main__":
     mkDir("backup")
@@ -102,15 +104,15 @@ if __name__ == "__main__":
     
     if 0:
         for k in os.environ:
-            print k, '= "%s"' % os.environ[k]
+            print(k, '= "%s"' % os.environ[k])
     
     # putty
     
     # sql 
     
            
-    print "[PRESS A KEY]"
-    raw_input() 
+    print("[PRESS A KEY]")
+    input() 
     sys.exit()
 
 

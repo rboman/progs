@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # test mpi4py
 
+from __future__ import print_function
 import mpi4py.MPI as mpi
 import numpy as np
 
@@ -15,7 +16,7 @@ if rank==0:
 else:
     a = comm.bcast(None,0)
 
-print "[%d]" % rank, a
+print("[%d]" % rank, a)
 
 
 

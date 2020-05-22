@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from builtins import input
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -34,4 +35,4 @@ fig.show()
 fig.savefig('uv.png')
 
 
-raw_input('<PRESS RETURN>')
+input('<PRESS RETURN>')

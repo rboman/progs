@@ -21,6 +21,11 @@
 # June 2006
 
 
+from __future__ import print_function
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 import vtk
 import sys
 
@@ -48,7 +53,7 @@ def loadRawImage(name, extent=(0,255,0,255,0,59), spacing=(1,1,1), coding='uchar
     elif coding=='ushort':
         reader.SetDataScalarTypeToUnsignedShort()
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
     reader.Update()
     return reader.GetOutput()
@@ -212,7 +217,7 @@ def readImageScalarRange(filename, extent=(0,255,0,255,0,59), coding='ushort'):
     elif coding=='uchar':
         typeDataIn=typeDataIn+'B' # unsigned char
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
     # read file
     file = open(filename, 'rb')
@@ -233,7 +238,7 @@ def printOneLineOfData(filename, slice=30, line=128, extent=(0,255,0,255,0,59), 
     elif coding=='uchar':
         typeDataIn=typeDataIn+'B' # unsigned char
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
 
     # read file
@@ -251,9 +256,9 @@ def printOneLineOfData(filename, slice=30, line=128, extent=(0,255,0,255,0,59), 
     start=sizIn*(lx*ly*slice+lx*line)
     for j in range(extent[0],extent[1]):
         value = struct.unpack(typeDataIn, allfile[start:start+sizIn])[0]
-        print value,
+        print(value, end=' ')
         start=start+sizIn
-    print ''
+    print('')
 
 def loadGenesisImage(directory, range=(1,60)):
     reader = vtk.vtkGESignaReader()
@@ -296,7 +301,7 @@ def off2vtk(name="ellipse.off"):
     inFile = open(name, 'r')
     tag = inFile.readline()
     if tag[0:4]!="NOFF":
-        print "bad format!"
+        print("bad format!")
         sys.exit()
     line = inFile.readline().split()
     nbnod = int(line[0])
@@ -314,7 +319,7 @@ def off2vtk(name="ellipse.off"):
     for i in range(0,nbelm):
         line=inFile.readline().split()
         if int(line[0])!=3:
-            print "bad elem (%d nodes)" % int(line[0])
+            print("bad elem (%d nodes)" % int(line[0]))
             sys.exit()
         n1=int(line[1])
         n2=int(line[2])
@@ -363,7 +368,7 @@ def savePolyDataXML(name, image, asciiorbin='binary'):
     save a VTK PolyData (.vtp) from a vtkPolyData using XML format
     """
     writer = vtk.vtkXMLPolyDataWriter()
-    print 'asciiorbin=', asciiorbin.get()
+    print('asciiorbin=', asciiorbin.get())
     if asciiorbin=='binary':
         writer.SetDataModeToBinary() # marche pas...
     else:
@@ -406,7 +411,7 @@ def createEllipsoid(extent=(0,99,0,99,0,99), center=(50, 50, 50), radius=(20, 35
     elif coding=='ushort':
         ellipse.SetOutputScalarTypeToUnsignedShort();
     else:
-        print 'bad coding : %s' % coding
+        print('bad coding : %s' % coding)
         sys.exit(1)
     ellipse.SetInValue(values[0]);
     ellipse.SetOutValue(values[1]);
@@ -429,7 +434,7 @@ def create3Planes(image, window, level):
     planeWidgetX.DisplayTextOn()
     planeWidgetX.SetInput(image)
     planeWidgetX.SetPlaneOrientationToXAxes()
-    planeWidgetX.SetSliceIndex((xMax-xMin)/2)
+    planeWidgetX.SetSliceIndex(old_div((xMax-xMin),2))
     planeWidgetX.SetKeyPressActivationValue("x")
     planeWidgetX.SetPicker(picker)
     prop1 = planeWidgetX.GetPlaneProperty()
@@ -439,7 +444,7 @@ def create3Planes(image, window, level):
     planeWidgetY.DisplayTextOn()
     planeWidgetY.SetInput(image)
     planeWidgetY.SetPlaneOrientationToYAxes()
-    planeWidgetY.SetSliceIndex((yMax-yMin)/2)
+    planeWidgetY.SetSliceIndex(old_div((yMax-yMin),2))
     planeWidgetY.SetKeyPressActivationValue("y")
     planeWidgetY.SetPicker(picker)
     prop2 = planeWidgetY.GetPlaneProperty()
@@ -450,7 +455,7 @@ def create3Planes(image, window, level):
     planeWidgetZ.DisplayTextOn()
     planeWidgetZ.SetInput(image)
     planeWidgetZ.SetPlaneOrientationToZAxes()
-    planeWidgetZ.SetSliceIndex((zMax-zMin)/2)
+    planeWidgetZ.SetSliceIndex(old_div((zMax-zMin),2))
     planeWidgetZ.SetKeyPressActivationValue("z")
     planeWidgetZ.SetPicker(picker)
     prop3 = planeWidgetZ.GetPlaneProperty()
@@ -551,7 +556,7 @@ def vtk2gmsh(polydata, filename='out.geo'):
 
     nbnod = polydata.GetNumberOfPoints()
     nbelm = polydata.GetNumberOfCells()
-    print 'reading',nbnod,'nodes and',nbelm,'elements'
+    print('reading',nbnod,'nodes and',nbelm,'elements')
 
     file.write("lc=%d;\n" % lc)
 
@@ -565,7 +570,7 @@ def vtk2gmsh(polydata, filename='out.geo'):
         cell=polydata.GetCell(i)
         line=cell.GetPointIds()
         if cell.GetNumberOfPoints()!=3:
-            print "bad elem (%d nodes)" % cell.GetNumberOfPoints()
+            print("bad elem (%d nodes)" % cell.GetNumberOfPoints())
             file.close()
             sys.exit()
         n1=cell.GetPointId(0)+1
@@ -580,7 +585,7 @@ def vtk2gmsh(polydata, filename='out.geo'):
             if edge[0]>edge[1]:
                 sign=-1
                 edge=(edge[1],edge[0])
-            if edges.has_key(edge):
+            if edge in edges:
                 edno[j]=edges[edge]*sign
             else:
                 edno[j]=nextno*sign

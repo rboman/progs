@@ -35,6 +35,8 @@
 #     rsync -av 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/2020-04-06/
 #
 
+from __future__ import print_function
+from builtins import object
 import os
 import pytools.utils as pu
 import pytools.versioning as vrs
@@ -96,7 +98,7 @@ class API(object):
         keys = keystr.split(',')
         r = p
         for k in keys:
-            if not r.has_key(k):
+            if k not in r:
                 return notfound
             r = r[k]
         return r
@@ -145,7 +147,7 @@ class GitHubAPI(API):
                 total_pages = int(m.groups()[0])
             except:
                 break
-            print ('total pages=', total_pages, '   page=', page, '   test=', page>=total_pages)
+            print('total pages=', total_pages, '   page=', page, '   test=', page>=total_pages)
 
             if page>=total_pages:
                 break

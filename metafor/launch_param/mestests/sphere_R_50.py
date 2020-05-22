@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
 from wrap import *
 import math
 
@@ -7,7 +8,7 @@ _metafor = None
 def getMetafor(_parameters={}):
 	global _metafor
 	if _metafor == None :
-		from sphere import getMetafor
+		from .sphere import getMetafor
 		parameters = {'R1':50}
 		_metafor = getMetafor(parameters)
 	return _metafor

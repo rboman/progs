@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from builtins import range
 from wxPython.wx import *
 import os
 ID_ABOUT=101
@@ -32,7 +33,7 @@ class MainWindow(wxFrame):
         self.sizer2 = wxBoxSizer(wxHORIZONTAL)
         self.buttons=[]
         for i in range(0,6):
-            self.buttons.append(wxButton(self, ID_BUTTON1+i, "Button &"+`i`))
+            self.buttons.append(wxButton(self, ID_BUTTON1+i, "Button &"+repr(i)))
             self.sizer2.Add(self.buttons[i],1,wxEXPAND)
 
         # Use some sizers to see layout options

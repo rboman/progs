@@ -28,6 +28,8 @@
 #
 # see http://www.debian-administration.org/articles/56
 
+from __future__ import print_function
+from builtins import object
 import os
 import sys
 import os.path
@@ -36,7 +38,7 @@ import smtplib
 import time
 
 
-class SysChecker:
+class SysChecker(object):
     def __init__(self, watchers):
         self.watchers = watchers.split(';')
         self.report = ""
@@ -92,7 +94,7 @@ class SysChecker:
 
 
 if __name__ == "__main__":
-    print "running cronjob..."
+    print("running cronjob...")
     checker = SysChecker("r.boman@ulg.ac.be;l.papeleux@ulg.ac.be")
     #checker = SysChecker("r.boman@ulg.ac.be")
     checker.execute()

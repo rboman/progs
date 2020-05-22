@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import json
 import requests
 
@@ -9,7 +10,7 @@ def get_api_token():
     """
     with open('E:\Dropbox\Bin\github_api_token.txt') as f:
         token = f.readline().rstrip()
-    print "token='{}'".format(token)
+    print("token='{}'".format(token))
     return token
 
 def get_all_projects():
@@ -25,8 +26,8 @@ def get_all_projects():
     params={'page':1, 'per_page':100}) # 100 max
     #params={'affiliation' : 'owner,collaborator,organization_member', 'visibility':'all', 'type':'all', 'page':1, 'per_page':100})
 
-    print 'r.status_code =', r.status_code
-    print 'r.headers =', r.headers
+    print('r.status_code =', r.status_code)
+    print('r.headers =', r.headers)
     # print 'r.encoding =', r.encoding
     # print 'r.url =', r.url
     #print 'r.text =', r.text
@@ -44,8 +45,8 @@ with open('projects.json','w') as f:
 # print one project
 #print 'r.json() ='
 #print(json.dumps(projects[0], sort_keys=True, indent=4))
-print 'len(projects)=', len(projects)
+print('len(projects)=', len(projects))
 # list projects
 for i,p in enumerate(projects):
-    print "%03d %s (id=%d) [%s]" % (i, p["name"], p["id"], p["owner"]["login"])
+    print("%03d %s (id=%d) [%s]" % (i, p["name"], p["id"], p["owner"]["login"]))
 

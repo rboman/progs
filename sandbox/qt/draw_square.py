@@ -17,12 +17,13 @@
 
 """ Test of Qt drawing functions
 """
+from __future__ import print_function
 
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-print "Qt %s loaded!" % QT_VERSION_STR
+print("Qt %s loaded!" % QT_VERSION_STR)
 
 
 class MyWidget(QWidget):
@@ -52,14 +53,14 @@ class MyWidget(QWidget):
 
         rect = painter.viewport()
         wind = painter.window()
-        print "rest=", rect.x(), rect.y(), rect.height(), rect.width()
-        print "wind=", wind.x(), wind.y(), wind.height(), wind.width()
+        print("rest=", rect.x(), rect.y(), rect.height(), rect.width())
+        print("wind=", wind.x(), wind.y(), wind.height(), wind.width())
 
         painter.drawRect(0, 0, 200, 202)
 
 
 if __name__ == "__main__":
-    print __doc__
+    print(__doc__)
     app = QApplication(sys.argv)
     win = MyWidget()
     win.show()

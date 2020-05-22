@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import object
 import vtk
 
 def main():
@@ -54,7 +56,7 @@ def cutmesh(filename, ymin, ymax, step):
     with open(outname,'w') as outfile:
         for c in curve:
             outfile.write('%f %f\n' % c)
-    print 'curve written in %s' % outname    
+    print('curve written in %s' % outname)    
 
 
     # 3. display mesh + cut at y=ymin
