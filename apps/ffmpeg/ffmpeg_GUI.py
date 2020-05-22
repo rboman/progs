@@ -44,10 +44,9 @@ class Window(QWidget, Ui_Form):
         self.quality_Slider.valueChanged.connect(
             lambda i: QToolTip.showText(QCursor.pos(), "%d" % i))
 
-
         # stdio redirection
         self.stdout, sys.stdout = sys.stdout, self
-        self.stderr, sys.stderr = sys.stderr, self
+        # self.stderr, sys.stderr = sys.stderr, self
         self.buf = ''
 
         # images
@@ -67,7 +66,8 @@ class Window(QWidget, Ui_Form):
         self.output_fps_lineEdit.setText(settings.value("output_fps", "25"))
         self.quality_Slider.setValue(int(settings.value("quality", 19)))
 
-        iconfile = os.path.join(os.path.dirname(__file__), '..', '..', 'ico', 'boomy-forward.png')
+        iconfile = os.path.join(os.path.dirname(
+            __file__), '..', '..', 'ico', 'boomy-forward.png')
         self.setWindowIcon(QIcon(iconfile))
 
     def on_play_Button_pressed(self):
@@ -81,26 +81,29 @@ class Window(QWidget, Ui_Form):
     def runPRG(self, pname):
         exeffplay = self.getExe(pname)
         if not exeffplay:
-            QMessageBox.critical(self, 'Error', '%s does not exist/work!\nCheck ffmpeg path.' % pname)
+            QMessageBox.critical(
+                self, 'Error', '%s does not exist/work!\nCheck ffmpeg path.' % pname)
             return
         cmd = []
         cmd.append(exeffplay)
-        outfile = os.path.join(self.outdir_lineEdit.text(), self.outname_lineEdit.text())
+        outfile = os.path.join(self.outdir_lineEdit.text(),
+                               self.outname_lineEdit.text())
         if not os.path.isfile(outfile):
-            QMessageBox.critical(self, 'Error', 'The video has not been generated yet!\n%s does not exist' % outfile)
+            QMessageBox.critical(
+                self, 'Error', 'The video has not been generated yet!\n%s does not exist' % outfile)
             return
         cmd.append(outfile)
         print('\t', cmd)
         try:
             retcode = subprocess.call(cmd)
-            print("\tretcode =", retcode)  
+            print("\tretcode =", retcode)
         except Exception as e:
             print(e)
 
     def on_check_Button_pressed(self):
 
         print("folders:")
-        for p, f in [('ffmpeg', self.ffmpegfolder_lineEdit.text()), 
+        for p, f in [('ffmpeg', self.ffmpegfolder_lineEdit.text()),
                      ('workspace', self.workspace_lineEdit.text()),
                      ('output', self.outdir_lineEdit.text())]:
             print("\t.", p, end=' ')
@@ -115,7 +118,7 @@ class Window(QWidget, Ui_Form):
         for p in ['ffmpeg', 'ffplay', 'ffprobe']:
             print("\t.", p, end=' ')
             exe = self.getExe(p)
-            where = 'from PATH' if exe==p else 'from ffmpeg folder' 
+            where = 'from PATH' if exe == p else 'from ffmpeg folder'
             if exe:
                 print("found: %s (%s)" % (exe, where))
             else:
@@ -123,9 +126,9 @@ class Window(QWidget, Ui_Form):
 
         if os.path.isdir(self.workspace_lineEdit.text()):
             print("images:")
-            # convert sscanf format to regex:
+            # convert sscanf format to regex: anim%4d.png => anim(\d{4}).png
             regex = re.sub(
-                r'(\%(\d)d)', r'(\d{\2})', self.filenames_lineEdit.text())
+                '(\\%(\\d)d)', '(\\\d{\\2})', self.filenames_lineEdit.text())
             print("\t. pattern converted to regex:", regex)
             pattern = re.compile(regex)
 
@@ -142,19 +145,20 @@ class Window(QWidget, Ui_Form):
                     no = int(g[0])
                     highno = max(no, highno)
                     lowno = min(no, lowno)
-                    self.pixnames.append( os.path.join(
-                        self.workspace_lineEdit.text(), f) )
+                    self.pixnames.append(os.path.join(
+                        self.workspace_lineEdit.text(), f))
             print("\t. %d files found ranging from %d to %d" % (
                 nofiles, lowno, highno))
 
             if len(self.pixnames):
-                progress = QProgressDialog("image", "Cancel", 0, len(self.pixnames), self)
+                progress = QProgressDialog(
+                    "image", "Cancel", 0, len(self.pixnames), self)
                 progress.setWindowModality(Qt.WindowModal)
                 progress.setWindowTitle("Building preview...")
                 progress.setValue(0)
                 progress.forceShow()
 
-                for i,f in enumerate(self.pixnames):
+                for i, f in enumerate(self.pixnames):
                     progress.setValue(i+1)
                     progress.setLabelText(f)
                     if progress.wasCanceled():
@@ -170,9 +174,9 @@ class Window(QWidget, Ui_Form):
                     self.pix.append(img_scaled)
 
             if len(self.pix):
-                self.img_Label.setPixmap( self.pix[0] )
+                self.img_Label.setPixmap(self.pix[0])
             else:
-                self.img_Label.setText( "No preview" )
+                self.img_Label.setText("No preview")
 
             self.img_Slider.setMinimum(lowno)
             self.img_Slider.setMaximum(highno)
@@ -183,7 +187,7 @@ class Window(QWidget, Ui_Form):
         #print "slider =",no
 
         if len(self.pix) > no:
-            self.img_Label.setPixmap( self.pix[no] )
+            self.img_Label.setPixmap(self.pix[no])
 
     def checkExe(self, exe):
         try:
@@ -199,18 +203,20 @@ class Window(QWidget, Ui_Form):
 
         # try the provided folder name
         if self.ffmpegfolder_lineEdit.text():
-            exeinfolder = os.path.join(self.ffmpegfolder_lineEdit.text(), exename)
+            exeinfolder = os.path.join(
+                self.ffmpegfolder_lineEdit.text(), exename)
             exe = self.checkExe(exeinfolder)
-            if exe: 
+            if exe:
                 return exe
         # try ffmpeg in the PATH
-        return self.checkExe( exename )
+        return self.checkExe(exename)
 
     def on_convert_Button_pressed(self):
 
         exeffmpeg = self.getExe("ffmpeg")
         if not exeffmpeg:
-            QMessageBox.critical(self, 'Error', 'ffmpeg does not exist/work!\nCheck ffmpeg path.')
+            QMessageBox.critical(
+                self, 'Error', 'ffmpeg does not exist/work!\nCheck ffmpeg path.')
 
         cmd = []
         cmd.append(exeffmpeg)
@@ -221,7 +227,8 @@ class Window(QWidget, Ui_Form):
         # check workspace folder
         wrkdir = self.workspace_lineEdit.text()
         if not os.path.isdir(wrkdir):
-            QMessageBox.critical(self, 'Error', 'The workspace folder does not exist!')
+            QMessageBox.critical(
+                self, 'Error', 'The workspace folder does not exist!')
             return
 
         inpfiles = os.path.join(
@@ -244,7 +251,8 @@ class Window(QWidget, Ui_Form):
         # check output folder
         outdir = self.outdir_lineEdit.text()
         if not os.path.isdir(outdir):
-            QMessageBox.critical(self, 'Error', 'The output folder does not exist!')
+            QMessageBox.critical(
+                self, 'Error', 'The output folder does not exist!')
             return
 
         # check / correct output filename
@@ -257,14 +265,15 @@ class Window(QWidget, Ui_Form):
         self.outname_lineEdit.setText(outname)
 
         # check whether output file will be overwritten
-        outfile = os.path.join(self.outdir_lineEdit.text(), self.outname_lineEdit.text())
+        outfile = os.path.join(self.outdir_lineEdit.text(),
+                               self.outname_lineEdit.text())
         if os.path.isfile(outfile):
             reply = QMessageBox.question(self, 'Message',
-                                     "The output file already exists. Do you want to overwrite it?", 
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                                         "The output file already exists. Do you want to overwrite it?",
+                                         QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if reply == QMessageBox.No:
                 print("output file exists - operation cancelled.")
-                return           
+                return
 
         cmd.append(outfile)
         print("running ffmpeg...")
@@ -324,6 +333,9 @@ class Window(QWidget, Ui_Form):
         else:
             self.buf += stuff
         qApp.processEvents()
+
+    def flush(self): # required by py3 stdout redirection
+        pass
 
     def writeLine(self, stuff):
         "stdio redirection"
