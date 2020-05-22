@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # runs a test as if it was installed
 
+from __future__ import print_function
 if __name__ == "__main__":
     import sys
     import os
@@ -40,7 +41,7 @@ if __name__ == "__main__":
         resdir = testname[len(common):].replace(os.sep, "_")
         resdir,ext = os.path.splitext(resdir)
         wdir = os.path.join('workspace', resdir)
-        print 'workspace=', wdir
+        print('workspace=', wdir)
         if not os.path.isdir(wdir):
             os.makedirs(wdir)
         os.chdir(wdir)
