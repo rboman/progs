@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # from https://wiki.python.org/moin/PyQt/Exporting%20a%20file%20to%20other%20applications

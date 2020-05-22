@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8; -*-
 # $Id: meshingTools.py 1778 2013-07-19 10:06:35Z laurent $
 # Vinciane d'Otreppe

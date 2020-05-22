@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # see https://developer.github.com/v3/repos/#list-repositories-for-the-authenticated-user

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 #
 # Affiche un fichier VRML 2 + capture
 # RoBo - mai 2006

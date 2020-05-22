@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 #
 # conversion du format OOGL .off (sortie d'Isosurf) en .geo (entree Gmsh)
 # 

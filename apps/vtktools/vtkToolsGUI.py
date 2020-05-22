@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8; -*-
 # $Id: vtkToolsGUI.py 1709 2013-03-11 14:49:09Z papeleux $
 # 28/janv./2009 14:48

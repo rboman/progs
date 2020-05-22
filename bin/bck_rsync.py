@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Copie les repertoires rsync de garfield sur ma dropbox.
 # Ce script peut être lancé de n'importe où.

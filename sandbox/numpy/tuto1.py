@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # from https://docs.scipy.org/doc/numpy-dev/user/quickstart.html

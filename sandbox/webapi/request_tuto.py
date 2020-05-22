@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # https://github.com/joeyajames/Python/blob/master/Web%20Data%20Mining/Python%20Requests.ipynb
