@@ -14,7 +14,7 @@ This code could be built on Linux, Windows and macOS.
 
 ### Dependencies
   * a C++ compiler: Visual Studio, mingw, g++, clang.
-  * for the Python interface: [SWIG](http://www.swig.org/), [Python 2.7](https://www.python.org/)
+  * for the Python interface: [SWIG](http://www.swig.org/), [Python 3](https://www.python.org/)
   * build/test system: [CMake/CTest](https://cmake.org/)
 
 ### CMake
