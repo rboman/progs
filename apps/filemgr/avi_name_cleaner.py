@@ -1,6 +1,8 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import input
 import os
 import os.path
 import sys
@@ -23,9 +25,9 @@ def clean(rename=False):
                     newfile = base + ext
                     if file != newfile:
                         if rename:
-                            print "renaming",
+                            print("renaming", end=' ')
                             os.rename(fullfile, os.path.join(root, newfile))
-                        print "'%s' => '%s'" % (file, newfile)
+                        print("'%s' => '%s'" % (file, newfile))
 
 
 if __name__ == "__main__":
@@ -34,5 +36,5 @@ if __name__ == "__main__":
         if arg == "rename":
             rename = True
     clean(rename)
-    print "\n[ENTER]"
-    raw_input()
+    print("\n[ENTER]")
+    input()

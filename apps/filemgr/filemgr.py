@@ -1,6 +1,9 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import str
+from builtins import object
 import sys, glob, os, time
 import json
 import pprint
@@ -39,7 +42,7 @@ class DB(object):
         self.db = []
 
     def fill(self, basedir):
-        print "building db..."
+        print("building db...")
         basedir = os.path.abspath(basedir)
         if os.path.isdir(basedir):
             for path, subdirs, files in os.walk(basedir):
@@ -47,7 +50,7 @@ class DB(object):
                 for file in files:
                     #print "adding", os.path.join(path, file)
                     self.db.append(File(path, file)  )
-        print "...done."
+        print("...done.")
 
     def find(self, ext):
         files = []
@@ -70,7 +73,7 @@ class MyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 def MyHook(d): 
-    print "MyHook:", d
+    print("MyHook:", d)
     return File(d['dir'], d['name'])
 
 

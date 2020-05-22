@@ -1,6 +1,7 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 dirs = ('ITK320BIN', 'VTKBIN', 'CSwig320BIN')
 exts = ('*.obj', '*.ilk', '*.ncb', '*.suo')
 
@@ -13,5 +14,5 @@ for dir in dirs:
         for name in files:
             for ext in exts:
                 if fnmatch.fnmatch(name, ext):
-                    print os.path.join(path, name)
+                    print(os.path.join(path, name))
                     os.remove(os.path.join(path, name))

@@ -1,7 +1,10 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 
+from __future__ import print_function
+from builtins import map
+from builtins import str
 import find_newest_files
 
 from PyQt5.QtCore import *
@@ -73,8 +76,8 @@ class Window(QWidget):
         self.console.clear()
         try:
             find_newest_files.newest((self.folderEdit.text(),))
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
             QMessageBox.information(self, 'Error', str(e))
 
     def chDir(self):
@@ -86,7 +89,7 @@ class Window(QWidget):
     def write(self, stuff):
         #print >> self.stdout, "[write]: %s" % repr(stuff)
         if '\n' in stuff:
-            map(self.writeLine, stuff.split("\n"))
+            list(map(self.writeLine, stuff.split("\n")))
         else:
             self.buf += stuff
         qApp.processEvents()
@@ -111,7 +114,7 @@ def main():
     win.setWindowIcon(QIcon(iconfile))
     win.show()
     app.lastWindowClosed.connect(app.quit)
-    print "ready."
+    print("ready.")
     sys.exit(app.exec_())
 
 

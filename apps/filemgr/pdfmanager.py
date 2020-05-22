@@ -1,6 +1,8 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+from builtins import map
 import sys
 import os
 import os.path
@@ -16,10 +18,10 @@ def readPdfInfo(file):
     f = open(file, 'rb')
     try:
         input = pyPdf.PdfFileReader(f)
-        print '"%s" has %d pages' % (file, input.getNumPages())
-        print '\ttitle =', input.getDocumentInfo().title
+        print('"%s" has %d pages' % (file, input.getNumPages()))
+        print('\ttitle =', input.getDocumentInfo().title)
     except:
-        print 'Error reading "%s"' % file
+        print('Error reading "%s"' % file)
         pass
     f.close()
 
@@ -42,7 +44,7 @@ def defTitle():
     for file in os.listdir('.'):
         name, ext = os.path.splitext(file)
         if ext.lower() == '.pdf':
-            print '=' * 80 + '\nprocess "%s" [No]?' % file
+            print('=' * 80 + '\nprocess "%s" [No]?' % file)
             ok = msvcrt.getch()
             if ok != 'y':
                 continue
@@ -51,48 +53,48 @@ def defTitle():
             # readPdfInfo(file)
             setClipBoardText("")
             os.startfile(file)
-            print "Opening Acrobat - Copy title - [Press a key when done]",
+            print("Opening Acrobat - Copy title - [Press a key when done]", end=' ')
             msvcrt.getch()
             newfile = getClipBoardText()
             if newfile == '':
-                print "\n** WARNING! clipboard is empty!"
+                print("\n** WARNING! clipboard is empty!")
                 continue
             newfile = newfile.replace('\r\n', ' ')
             newfile = newfile.replace(':', '-')
             newfile = newfile.replace('/', '-')
             #newfile = newfile.title()
             newfile = newfile + '.pdf'
-            print
-            print ' * OLD NAME = "%s"' % file
-            print ' * NEW NAME = "%s"' % newfile
+            print()
+            print(' * OLD NAME = "%s"' % file)
+            print(' * NEW NAME = "%s"' % newfile)
             if os.path.isfile(newfile):
-                print "** WARNING! new filename exists! Delete file?"
+                print("** WARNING! new filename exists! Delete file?")
                 ok = msvcrt.getch()
                 if ok == 'y':
                     try:
-                        print 'removing "%s"' % file
+                        print('removing "%s"' % file)
                         os.remove(file)
                     except:
-                        print "remove FAILED!"
+                        print("remove FAILED!")
             else:
-                print "rename [No]?",
-                print
+                print("rename [No]?", end=' ')
+                print()
                 ok = msvcrt.getch()
                 if ok == 'y':
                     try:
-                        print 'renaming "%s"' % file
-                        print '      to "%s"' % newfile
+                        print('renaming "%s"' % file)
+                        print('      to "%s"' % newfile)
                         os.rename(file, newfile)
                     except:
-                        print "rename FAILED!"
+                        print("rename FAILED!")
 
 
 def help():
-    print "\n%s [title|caps]" % os.path.basename(sys.argv[0])
-    print "\noptions:"
-    print "\ttitle: define title using acrobat/clipboard"
-    print "\tclean: clean filenames"
-    print '\n'
+    print("\n%s [title|caps]" % os.path.basename(sys.argv[0]))
+    print("\noptions:")
+    print("\ttitle: define title using acrobat/clipboard")
+    print("\tclean: clean filenames")
+    print('\n')
 
 
 def multiple_replace(text, adict):
@@ -125,15 +127,15 @@ def cleanNames():
             newfile = multiple_replace(newfile, reps)
             newfile += '.pdf'
             if file != newfile:
-                print 'renaming "%s"' % file
-                print '      to "%s" ?' % newfile
+                print('renaming "%s"' % file)
+                print('      to "%s" ?' % newfile)
                 ok = msvcrt.getch()
                 if ok == 'y':
                     try:
                         os.rename(file, newfile)
-                        print "rename OK!"
+                        print("rename OK!")
                     except:
-                        print "rename FAILED!"
+                        print("rename FAILED!")
 
 
 if __name__ == "__main__":
