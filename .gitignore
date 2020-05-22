@@ -5,6 +5,7 @@
 *.pyc
 *~
 *.bak
+__pycache__/
 
 # java
 *.class

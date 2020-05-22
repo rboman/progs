@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
@@ -15,8 +15,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+
 def main():
-    
+
     #import numpy as np
     #import matplotlib.pyplot as plt
     import sky
@@ -24,4 +25,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

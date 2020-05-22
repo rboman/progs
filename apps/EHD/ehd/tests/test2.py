@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
@@ -19,6 +19,7 @@
 def main():
     import ehd
     ehd.ehd_main2()
+
 
 if __name__ == "__main__":
     main()

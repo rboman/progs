@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
@@ -19,7 +19,8 @@
 def main():
 
     import sys
-    if '--nogui' in sys.argv: return
+    if '--nogui' in sys.argv:
+        return
 
     import numpy as np
     import matplotlib.pyplot as plt
@@ -29,15 +30,15 @@ def main():
     code.execute()
 
     # retrieve results
-    h = np.array(code.h) 
-    phis = np.array(code.PhiS) 
-    phip = np.array(code.PhiP) 
-    dphis = np.array(code.dPhiS) 
-    dphip = np.array(code.dPhiP) 
-    
+    h = np.array(code.h)
+    phis = np.array(code.PhiS)
+    phip = np.array(code.PhiP)
+    dphis = np.array(code.dPhiS)
+    dphip = np.array(code.dPhiP)
+
     # display results
     plt.plot(h, phis, label='phis')
-    plt.plot(h, phip, label='phip')    
+    plt.plot(h, phip, label='phip')
     plt.plot(h, dphis, label='dphis')
     plt.plot(h, dphip, label='dphip')
     plt.grid(True)
@@ -46,6 +47,7 @@ def main():
     plt.xlabel('h')
     plt.title('Patir & Cheng flow factors')
     plt.show()
+
 
 if __name__ == "__main__":
     main()

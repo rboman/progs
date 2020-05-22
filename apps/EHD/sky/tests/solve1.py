@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Copyright 2017 Romain Boman
@@ -15,18 +15,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import print_function
 import numpy as np
 #import matplotlib.pyplot as plt
 from sky import *
 
+
 def main():
-    
+
     TdiMat.test()
 
     A = TdiMat("A")
     print('\n', A)
 
+
 if __name__ == "__main__":
     main()
-

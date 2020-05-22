@@ -1,9 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # runs a test as if it was installed
 
-from __future__ import print_function
-from past.builtins import execfile
 if __name__ == "__main__":
     import sys
     import os
@@ -40,16 +38,16 @@ if __name__ == "__main__":
         # create workspace
         common = os.path.commonprefix((testname, thisdir + os.sep))
         resdir = testname[len(common):].replace(os.sep, "_")
-        resdir,ext = os.path.splitext(resdir)
+        resdir, ext = os.path.splitext(resdir)
         wdir = os.path.join('workspace', resdir)
         print('workspace=', wdir)
         if not os.path.isdir(wdir):
             os.makedirs(wdir)
         os.chdir(wdir)
-        if ext=='.py':
+        if ext == '.py':
             # python script
             __file__ = testname
-            execfile(testname)
+            exec(open(testname).read())
         else:
             # executable
             os.system(testname)
