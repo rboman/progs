@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 PROJECT(minibarreTE)
 
 # send all binaries to ./bin
@@ -17,9 +17,17 @@ IF(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  # parallel build with MSVC
 ENDIF()
 
-# -- Search for Python
-FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
-FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
+# -- Search for Python (requires cmake>=3.12)
+# use Python3_ROOT_DIR if wrong python found (e.g. anaconda)
+FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+SET(Python3_EXECUTABLE ${Python3_EXECUTABLE})
+SET(Python3_LIBRARIES ${Python3_LIBRARIES})
+SET(Python3_INCLUDE_DIRS ${Python3_INCLUDE_DIRS}) 
+SET(PYTHONLIBS_VERSION_STRING ${Python3_VERSION})
+MESSAGE(STATUS "Python3_EXECUTABLE=${Python3_EXECUTABLE}")
+MESSAGE(STATUS "Python3_LIBRARIES=${Python3_LIBRARIES}")
+MESSAGE(STATUS "Python3_INCLUDE_DIRS=${Python3_INCLUDE_DIRS}")
+MESSAGE(STATUS "Python3_VERSION=${Python3_VERSION}")
 
 # -- Search for SWIG
 FIND_PACKAGE(SWIG REQUIRED)
@@ -28,6 +36,7 @@ IF(CMAKE_GENERATOR MATCHES "Visual Studio") # not MSVC because of nmake & jom
 ELSE()
     SET(CMAKE_SWIG_OUTDIR "${EXECUTABLE_OUTPUT_PATH}")
 ENDIF()
+SET(CMAKE_SWIG_FLAGS -py3 -O)
 
 # -- GMM --
 FIND_PATH(GMM_INCLUDE_DIRS "gmm/gmm.h")

@@ -8,38 +8,40 @@
 #   F2PY_SRC_DIR
 #
 
-# -- Search for Python
-FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
-FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
-MESSAGE(STATUS "PYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}")
-MESSAGE(STATUS "PYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARY}")
-MESSAGE(STATUS "PYTHON_INCLUDE_DIR:FILEPATH=${PYTHON_INCLUDE_DIR}")
-MESSAGE(STATUS "PYTHON_FRAMEWORK_INCLUDES=${PYTHON_FRAMEWORK_INCLUDES}")
-MESSAGE(STATUS "PYTHONLIBS_VERSION_STRING=${PYTHONLIBS_VERSION_STRING}")
-MESSAGE(STATUS "Python_FRAMEWORKS=${Python_FRAMEWORKS}")
+# -- Search for Python (requires cmake>=3.12)
+# use Python3_ROOT_DIR if wrong python found (e.g. anaconda)
+FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+SET(Python3_EXECUTABLE ${Python3_EXECUTABLE})
+SET(Python3_LIBRARIES ${Python3_LIBRARIES})
+SET(Python3_INCLUDE_DIRS ${Python3_INCLUDE_DIRS}) 
+SET(PYTHONLIBS_VERSION_STRING ${Python3_VERSION})
+MESSAGE(STATUS "Python3_EXECUTABLE=${Python3_EXECUTABLE}")
+MESSAGE(STATUS "Python3_LIBRARIES=${Python3_LIBRARIES}")
+MESSAGE(STATUS "Python3_INCLUDE_DIRS=${Python3_INCLUDE_DIRS}")
+MESSAGE(STATUS "Python3_VERSION=${Python3_VERSION}")
 
 # search for f2py   => F2PY_EXECUTABLE
-FIND_PROGRAM(F2PY_EXECUTABLE NAMES f2py f2py${PYTHON_VERSION_MAJOR})
+FIND_PROGRAM(F2PY_EXECUTABLE NAMES f2py f2py3)
 MESSAGE("F2PY_EXECUTABLE=${F2PY_EXECUTABLE}")
 
 # Find out the include path of numpy => NUMPY_PATH
 EXECUTE_PROCESS(
-COMMAND "${PYTHON_EXECUTABLE}" -c
-        "from __future__ import print_function\ntry: import numpy; print(numpy.get_include(), end='')\nexcept:pass\n"
+COMMAND "${Python3_EXECUTABLE}" -c
+        "try: import numpy; print(numpy.get_include(), end='')\nexcept:pass\n"
         OUTPUT_VARIABLE NUMPY_PATH)
 MESSAGE("NUMPY_PATH=${NUMPY_PATH}")
 
 # And the version of numpy => NUMPY_VERSION
 EXECUTE_PROCESS(
-COMMAND "${PYTHON_EXECUTABLE}" -c
-        "from __future__ import print_function\ntry: import numpy; print(numpy.__version__, end='')\nexcept:pass\n"
+COMMAND "${Python3_EXECUTABLE}" -c
+        "try: import numpy; print(numpy.__version__, end='')\nexcept:pass\n"
 OUTPUT_VARIABLE NUMPY_VERSION)
 MESSAGE("NUMPY_VERSION=${NUMPY_VERSION}")
 
 # Find out the include path of numpy/f2py/src => F2PY_PATH
 EXECUTE_PROCESS(
-COMMAND "${PYTHON_EXECUTABLE}" -c
-        "from __future__ import print_function; import os; import numpy.f2py; print(os.path.dirname(numpy.f2py.__file__).replace(os.sep,'/'), end='')"
+COMMAND "${Python3_EXECUTABLE}" -c
+        "import os; import numpy.f2py; print(os.path.dirname(numpy.f2py.__file__).replace(os.sep,'/'), end='')"
         OUTPUT_VARIABLE F2PY_PATH)
 MESSAGE("F2PY_PATH=${F2PY_PATH}")
 
