@@ -3,6 +3,7 @@
 # runs a test as if it was installed
 
 from __future__ import print_function
+from past.builtins import execfile
 if __name__ == "__main__":
     import sys
     import os
