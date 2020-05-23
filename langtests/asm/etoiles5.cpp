@@ -41,7 +41,7 @@ void bigstar(int x, int y, unsigned char col)
     putpixel(x + 1, y + 1, col);
 }
 
-void main()
+int main()
 {
     float x, y, p;
 
@@ -98,4 +98,6 @@ void main()
 
     asm mov ax, 3; /* Retour au mode texte */
     asm int 0x10;
+
+    return 0;
 }

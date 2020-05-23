@@ -57,7 +57,7 @@ void init()
       traj = 0;
 }
 
-void main()
+int main()
 {
       void simulation();
       void ch_par();
@@ -90,6 +90,7 @@ void main()
       puts("\n   Send 40$ to :              BOMAN Romain");
       puts("\n                    9, rue Bellevue 4800 Lambermont");
       puts("\n                                BELGIUM");
+    return 0;
 }
 
 float param(float par)

@@ -7,7 +7,7 @@
 
 static int statv = 0;
 
-void main()
+int main()
 {
     int *sharedmem = NULL;
 
@@ -67,4 +67,5 @@ void main()
 
     printf("statv=%d\n", statv);
     printf("sharedmem=%d\n", *sharedmem);
+    return 0;
 }

@@ -28,7 +28,7 @@ double CM, CP, rho;
 
 std::ofstream sortie("OPENB.M", std::ios::out); // ouverture fichier MatLab
 
-void main()
+int main()
 {
     Q = new double *[divs + 1]; // déclaration des tableaux
     H = new double *[divs + 1]; // de débit et de charge
@@ -100,4 +100,5 @@ void main()
     sortie << "  zlabel('H [m]'),view(10,40)\n";
 
     sortie.close();
+    return 0;
 }

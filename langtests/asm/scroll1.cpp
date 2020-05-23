@@ -279,7 +279,7 @@ void good_bye(uc effect) /* effect = 1 : écoulement             */
                 BOUCLE PRINCIPALE
 ----------------------------------------------------------------------------*/
 
-void main()
+int main()
 {
     /* variables */
     char *debut;
@@ -357,4 +357,5 @@ void main()
     }
     good_bye(cur + 1);
     close13h();
+    return 0;
 }

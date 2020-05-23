@@ -117,7 +117,7 @@ void putpixel(int x, int y, unsigned char col)
     asm mov es : [di], al;
 }
 
-void main()
+int main()
 {
     fixe xfuite, yfuite, p;
 
@@ -173,4 +173,6 @@ void main()
 
     asm mov ax, 3; /* Retour au mode texte */
     asm int 0x10;
+
+    return 0;
 }
