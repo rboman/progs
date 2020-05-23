@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 # Time server program
-from __future__ import print_function
 from socket import *
 import time
 

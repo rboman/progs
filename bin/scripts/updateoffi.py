@@ -15,8 +15,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import print_function
-from builtins import input
 import os, shutil, platform, subprocess, multiprocessing
 import pytools.utils as pu
 import pytools.versioning as vrs

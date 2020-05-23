@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from builtins import object
 class Point(object):
     def __init__(self, num, x, y):
         self.num = num

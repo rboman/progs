@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 # from http://zetcode.com/gui/pyqt5/
 
-from __future__ import print_function
-from builtins import range
+
 import sys
 import os
 from PyQt5.QtWidgets import *

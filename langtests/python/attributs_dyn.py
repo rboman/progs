@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import print_function
-from builtins import object
 class A(object):
     static = 1
 

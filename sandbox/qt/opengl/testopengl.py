@@ -4,9 +4,7 @@
 # from https://stackoverflow.com/questions/38645674/issues-with-pyqt5s-opengl-module-and-versioning-calls-for-incorrect-qopenglfu
 # requiert python/OpenGL
 
-from __future__ import print_function
-from __future__ import division
-from builtins import range
+
 from past.utils import old_div
 import sys
 import math

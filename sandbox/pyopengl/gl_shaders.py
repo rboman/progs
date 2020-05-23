@@ -1,6 +1,5 @@
 #!coding: utf-8
 # from https://robertvandeneynde.be/
-from __future__ import print_function, division
 
 from OpenGL.GL import *
 from OpenGL.GL import shaders

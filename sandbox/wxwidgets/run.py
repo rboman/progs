@@ -17,10 +17,7 @@ This program will load and run one of the individual demos in this
 directory within its own frame window.  Just specify the module name
 on the command line.
 """
-from __future__ import print_function
 
-from builtins import range
-from builtins import object
 import wx                  # This module uses the new wx namespace
 import sys, os
 

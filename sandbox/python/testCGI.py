@@ -17,8 +17,7 @@
 
 # http://garfield.ltas.ulg.ac.be/python/test2.py?r=0.88
 
-from __future__ import print_function
-from builtins import str
+
 import cgi, math
 print('Content-type: text/html\n')
 form = cgi.FieldStorage()

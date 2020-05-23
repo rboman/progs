@@ -4,7 +4,6 @@
 # RoBo - mai 2006
 #
 
-from __future__ import print_function
 import vtk
 import sys
 

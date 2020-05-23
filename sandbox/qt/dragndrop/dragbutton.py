@@ -3,7 +3,6 @@
 # from http://zetcode.com/gui/pyqt5/
 
 
-from __future__ import print_function
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *

@@ -1,10 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
-from __future__ import print_function
-from builtins import input
-from builtins import range
 def func():
     for i in range(10):
         yield i

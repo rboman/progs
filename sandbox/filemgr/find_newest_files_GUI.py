@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 #
 
-from __future__ import print_function
-from builtins import map
-from builtins import str
 import find_newest_files
 
 from PyQt5.QtCore import *

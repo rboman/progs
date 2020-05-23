@@ -17,7 +17,6 @@
 
 """ Test of Qt drawing functions
 """
-from __future__ import print_function
 
 import sys
 from PyQt5.QtCore import *

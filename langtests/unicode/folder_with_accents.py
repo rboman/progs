@@ -26,7 +26,6 @@
 # ISO-8859-1 assigns several control codes in this range. 
 # Windows-1252 has several characters, punctuation, arithmetic and business symbols assigned to these code points.
 
-from __future__ import print_function
 import os, os.path,sys
 foldername = u'àé_dir'   # plante sous linux sans le 'u'
 

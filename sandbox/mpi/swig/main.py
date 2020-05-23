@@ -4,7 +4,6 @@
 
 # exec: mpiexec.openmpi -n 20 main.py
 
-from __future__ import print_function
 import mpi4py.MPI as mpi
 from _testSwig import testSwig
 

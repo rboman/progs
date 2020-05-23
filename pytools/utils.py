@@ -18,7 +18,6 @@
 Miscellaneous utilities used by all the programs of 'progs' 
 """
 
-from __future__ import print_function
 
 
 # def parseargs():
@@ -43,7 +42,6 @@ from __future__ import print_function
 #     return args
 
 
-from builtins import object
 def chDir(dirname):
     import os
     os.chdir(dirname)

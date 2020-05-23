@@ -16,7 +16,6 @@
 #   limitations under the License.
 
 
-from __future__ import print_function
 def main():
     from dcm import Polynome
     Polynome.demo()

@@ -6,7 +6,6 @@
 
 
 
-from __future__ import print_function
 import requests
 
 payload = {'page': 2, 'count': 25 }

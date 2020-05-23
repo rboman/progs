@@ -10,12 +10,9 @@
 #  F:\src\VTK-7.1.0\Wrapping\Python\vtk\tk\vtkLoadPythonTkWidgets.py
 #  change "vtkCommonCorePython" => "vtk.vtkCommonCorePython"
 
-from __future__ import division
 from future import standard_library
 standard_library.install_aliases()
-from builtins import str
 from past.utils import old_div
-from builtins import object
 import os.path
 import os
 import meshingTools

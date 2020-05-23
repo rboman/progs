@@ -4,10 +4,9 @@
 # from "Simple Particle System" (Daniel Shiffman)
 # Edited Video: https://www.youtube.com/watch?v=UcdigVaIYAk
 
-from __future__ import division
-from builtins import range
+
 from past.utils import old_div
-from builtins import object
+
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *

@@ -4,8 +4,6 @@
 # 
 #
 
-from __future__ import print_function
-from builtins import range
 import sys
 #print 'args=', sys.argv
 

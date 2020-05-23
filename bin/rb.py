@@ -16,7 +16,6 @@
 #   limitations under the License.
 
 
-from __future__ import print_function
 from past.builtins import execfile
 
 def exec_pyfile(fname, searchdir, args, banner=False):

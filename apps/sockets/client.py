@@ -16,9 +16,6 @@
 #   limitations under the License.
 
 # Le client
-# On importe socket..
-from __future__ import print_function
-from builtins import input
 from socket import *
 
 # Variables

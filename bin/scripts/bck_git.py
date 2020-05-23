@@ -35,8 +35,6 @@
 #     rsync -av 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/2020-04-06/
 #
 
-from __future__ import print_function
-from builtins import object
 import os
 import pytools.utils as pu
 import pytools.versioning as vrs

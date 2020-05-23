@@ -3,7 +3,6 @@
 
 # very basic 2D plot using vtkXYPlotActor
 
-from __future__ import division
 from past.utils import old_div
 import vtk
 import math

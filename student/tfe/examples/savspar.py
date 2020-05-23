@@ -9,8 +9,6 @@
 #          !!!!!!!OK 2019!!!!!!
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from __future__ import print_function
-from builtins import range
 import matplotlib.pyplot as plt
 import scipy.sparse as sparse
 import scipy.stats as stats

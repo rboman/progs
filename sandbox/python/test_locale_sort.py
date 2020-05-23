@@ -19,7 +19,6 @@
 # teste l'influence de la langue sur le tri de liste ("sort")
 #
 
-from __future__ import print_function
 import locale
 print(locale.getlocale())
 a = ["boundaries", "bQs"]

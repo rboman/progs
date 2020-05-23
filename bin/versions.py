@@ -15,7 +15,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import print_function
 import platform
 system, node, release, version, machine, processor = platform.uname()
 

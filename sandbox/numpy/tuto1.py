@@ -3,7 +3,6 @@
 
 # from https://docs.scipy.org/doc/numpy-dev/user/quickstart.html
 
-from __future__ import print_function
 import numpy as np
 a = np.arange(15).reshape(3, 5)
 

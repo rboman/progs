@@ -3,7 +3,6 @@
 # Copie les repertoires rsync de garfield sur ma dropbox.
 # Ce script peut être lancé de n'importe où.
 
-from __future__ import print_function
 import os, subprocess, shutil
 
 pars = {}

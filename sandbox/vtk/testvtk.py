@@ -17,7 +17,6 @@
 
 # I play with vtk commands...
 
-from __future__ import print_function
 import vtk
 version = vtk.vtkVersion().GetVTKMajorVersion()
 

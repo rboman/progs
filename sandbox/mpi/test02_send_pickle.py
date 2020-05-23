@@ -5,7 +5,6 @@
 # exc:   mpiexec.openmpi -n 6 ./test02.py
 
 
-from __future__ import print_function
 import mpi4py.MPI as mpi
 from numpy import array
 from point import Point 

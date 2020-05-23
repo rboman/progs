@@ -17,7 +17,6 @@
 
 # copy dependencies (.so files) of "exefile" to "targetPath"
 
-from __future__ import print_function
 def cplibs(exefile, targetPath='lddLibs', libPaths=[]):
     """
     copy dependencies (.so files) of "exefile" to "targetPath"

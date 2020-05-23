@@ -19,13 +19,9 @@
 #
 # June 2006
 
-from __future__ import print_function
-from __future__ import division
 from future import standard_library
 standard_library.install_aliases()
-from builtins import str
 from past.utils import old_div
-from builtins import object
 import vtk
 from vtk.tk.vtkTkRenderWidget import *
 from vtk.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor

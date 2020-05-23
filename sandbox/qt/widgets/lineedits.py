@@ -3,7 +3,6 @@
 
 # from https://www.tutorialspoint.com/pyqt/
 
-from __future__ import print_function
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *

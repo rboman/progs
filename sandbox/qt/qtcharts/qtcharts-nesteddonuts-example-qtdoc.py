@@ -1,7 +1,5 @@
-from __future__ import division
 # from: https://doc.qt.io/qt-5/qtcharts-nesteddonuts-example.html
-from builtins import str
-from builtins import range
+
 from past.utils import old_div
 import functools
 import random

@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from builtins import range
 from wxPython.wx import *
 import os
 ID_ABOUT=101

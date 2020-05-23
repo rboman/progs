@@ -16,10 +16,6 @@
 #   limitations under the License.
 
 # Le serveur
-
-# Importe socket..
-from __future__ import print_function
-from builtins import input
 from socket import *
 
 # Variables, encore...

@@ -1,8 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from builtins import range
+
 red='\033[31m'
 reset='\033[0m'
 

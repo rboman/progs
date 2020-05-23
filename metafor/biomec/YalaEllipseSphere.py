@@ -17,7 +17,6 @@
 # crée les fichiers nécessaires au calcul sphere-elipse du TFE Yala
 # RoBo - juin 2006
 
-from __future__ import print_function
 import vtk
 from vtkTools import *
 

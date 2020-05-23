@@ -1,8 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import division
-from builtins import range
 from past.utils import old_div
 import copy
 import math

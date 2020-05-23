@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 dirs = ('ITK320BIN', 'VTKBIN', 'CSwig320BIN')
 exts = ('*.obj', '*.ilk', '*.ncb', '*.suo')
 

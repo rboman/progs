@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # from http://zetcode.com/gui/pyqt5/
 
-from builtins import str
+
 from PyQt5.QtWidgets import *
 import sys
 

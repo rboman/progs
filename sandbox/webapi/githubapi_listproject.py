@@ -3,7 +3,6 @@
 
 # see https://developer.github.com/v3/repos/#list-repositories-for-the-authenticated-user
 
-from __future__ import print_function
 import json
 import requests
 

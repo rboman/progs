@@ -24,9 +24,6 @@
 # REQUIRES: pdfinfo, pdfseparate, pdfjoin, gs, pdfjam
 #
 
-from __future__ import print_function
-from __future__ import division
-from builtins import range
 from past.utils import old_div
 import sys, os, subprocess, re, shutil
 

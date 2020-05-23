@@ -6,7 +6,6 @@
 #
 # works on Win10/linux
 
-from __future__ import print_function
 import os
 import subprocess
 import shutil

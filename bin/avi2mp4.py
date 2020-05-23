@@ -4,7 +4,6 @@
 # TODO: make it work on linux
 # TODO: find ffmpeg more automatically
 
-from __future__ import print_function
 import sys, os, subprocess, glob
 
 #exeffmpeg = r'f:\local\ffmpeg\bin\ffmpeg.exe'

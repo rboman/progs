@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # test encoding: à-é-è-ô-ï-€
 
-from __future__ import print_function
 import sys, os
 
 

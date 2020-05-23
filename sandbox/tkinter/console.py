@@ -3,7 +3,7 @@
 
 from future import standard_library
 standard_library.install_aliases()
-from builtins import str
+
 from tkinter import *
 
 import _thread # should use the threading module instead!

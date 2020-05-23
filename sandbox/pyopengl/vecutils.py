@@ -1,9 +1,6 @@
 #!coding: utf-8
 # from https://robertvandeneynde.be/
-from __future__ import division
 
-from builtins import next
-from builtins import object
 from math import sin, cos, degrees, radians, tan
 
 import numpy

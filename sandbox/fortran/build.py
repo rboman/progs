@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 def addroot():
     import sys, os.path
     print("__file__=", __file__)

@@ -4,17 +4,6 @@
 # from "Starfield" (Daniel Shiffman)
 # Video: https://youtu.be/17WoOqgXsRM
 
-# python 2/3 compatibility ----------------
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-# from future import standard_library
-# standard_library.install_aliases()
-from builtins import range
-from builtins import *
-from builtins import object
-# python 2/3 compatibility ----------------
-
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *

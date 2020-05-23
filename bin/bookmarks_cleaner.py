@@ -14,7 +14,6 @@
 #    delete .desktop when .url exists
 
 
-from __future__ import print_function
 import os, re
 import fnmatch
 

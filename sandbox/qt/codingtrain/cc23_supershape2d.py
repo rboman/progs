@@ -6,7 +6,6 @@
 
 # supershapes: http://paulbourke.net/geometry/supershape/
 
-from __future__ import division
 from past.utils import old_div
 import sys, os
 from PyQt5.QtWidgets import *

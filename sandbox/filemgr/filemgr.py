@@ -1,9 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from builtins import str
-from builtins import object
 import sys, glob, os, time
 import json
 import pprint

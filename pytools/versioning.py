@@ -18,8 +18,6 @@
 Management of SVN and git commands
 """
 
-from __future__ import print_function
-from builtins import object
 import pytools.utils as pu
 import os
 import os.path

@@ -5,7 +5,6 @@
 # exc:   mpiexec.openmpi -n 6 ./test01_send.py
 
 
-from __future__ import print_function
 import mpi4py.MPI as mpi
 
 comm = mpi.COMM_WORLD

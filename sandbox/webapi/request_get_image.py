@@ -7,7 +7,6 @@
 # testing site:
 # http://httpbin.org/
 
-from __future__ import print_function
 import requests
 
 #r = requests.get('https://xkcd.com/353/')  # lent!

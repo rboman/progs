@@ -1,8 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from builtins import range
 import os.path
 import os
 

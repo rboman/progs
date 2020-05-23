@@ -2,8 +2,6 @@
 # -*- coding: utf8 -*-
 # test encoding: à-é-è-ô-ï-€
 
-from __future__ import print_function
-from builtins import str
 import sys, os
 import fnmatch, re
 import subprocess

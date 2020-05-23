@@ -6,9 +6,6 @@
 # vtk functions to load & save XML VTK and RAW images, cast images
 
 
-from __future__ import print_function
-from builtins import str
-from builtins import range
 import vtk
 import sys
 import os

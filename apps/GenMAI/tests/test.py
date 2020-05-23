@@ -19,7 +19,6 @@
 # un chouette test
 
 
-from __future__ import print_function
 from genmai import *
 
 pt = Point(1, 2)

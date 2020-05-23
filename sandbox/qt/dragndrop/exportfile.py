@@ -3,7 +3,6 @@
 
 # from https://wiki.python.org/moin/PyQt/Exporting%20a%20file%20to%20other%20applications
 
-from builtins import str
 import sys, os
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *

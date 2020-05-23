@@ -24,7 +24,6 @@
 #
 # ref: http://www-etud.iro.umontreal.ca/~buisteri/info/pdfen.html
 
-from __future__ import print_function
 import os
 import glob
 

@@ -4,10 +4,9 @@
 # mettre TCL_LIBRARY=D:\Python24\tcl\tcl8.4
 
 
-from __future__ import print_function
 from future import standard_library
 standard_library.install_aliases()
-from builtins import object
+
 from tkinter import *
 
 

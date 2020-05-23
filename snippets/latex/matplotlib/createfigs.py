@@ -3,8 +3,6 @@
 # figure matplotlib "propres"
 
 
-from __future__ import division
-from builtins import input
 from past.utils import old_div
 import numpy as np
 import matplotlib.pyplot as plt

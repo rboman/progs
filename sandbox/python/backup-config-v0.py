@@ -15,8 +15,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from __future__ import print_function
-from builtins import input
 winrar = '"c:\\program files\\winrar-360\\rar.exe"'
 
 import os,shutil

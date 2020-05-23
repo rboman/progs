@@ -1,8 +1,6 @@
-from __future__ import print_function
 
 # "print" test
 
-from builtins import range
 from wrap import *
 
 def printTest(objet):

@@ -21,9 +21,6 @@
 #    - display the resulting curve with gnuplot (if available)
 
 
-from __future__ import print_function
-from builtins import input
-from builtins import range
 def tra2py(file, fctname, rowX, rowY):
     """ usage: tra2py('PLAFOS1', 'ecrou', 1, 3)"""
     import re

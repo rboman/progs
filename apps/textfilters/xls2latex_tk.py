@@ -4,10 +4,9 @@
 # conversion de tableaux excel en latex
 
 
-from __future__ import print_function
 from future import standard_library
 standard_library.install_aliases()
-from builtins import range
+
 def loadTab(tabfile):
     file = open(tabfile, 'r')
     allfile = file.read()

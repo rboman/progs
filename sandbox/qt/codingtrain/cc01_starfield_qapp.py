@@ -4,9 +4,6 @@
 # from "Starfield" (Daniel Shiffman)
 # Video: https://youtu.be/17WoOqgXsRM
 
-from __future__ import division
-from builtins import range
-from builtins import object
 from past.utils import old_div
 import sys
 import os

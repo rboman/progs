@@ -21,8 +21,7 @@
 
 # 1. create some data (points)
 # ----------------------------
-from __future__ import division
-from builtins import range
+
 from past.utils import old_div
 pts = []
 pts.append((0.0, 0.0, 0.0))
