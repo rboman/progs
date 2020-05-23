@@ -10,9 +10,7 @@ Various progs of mine:
   * `docs`: misc text / markdown tests,
   * `langtests`: test of compiler and language features,
   * `metafor`: programs related to [Metafor](http://metafor.ltas.ulg.ac.be/),
-  * `oldies`: old progs that should be sorted / ported to recent compilers,
   * `sandbox`: tutorials I wrote during the learning of a new language/library,
   * `skel`: skeleton of progs including CMake files,
   * `snippets`: useful code fragments,
-  * `student`: my old student projects,
-  * `untested`: untested pieces of code.
+  * `student`: my old student projects.
