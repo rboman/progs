@@ -47,7 +47,8 @@ def test():
     """runs CTest in the 'build' folder
     """
     os.chdir('build')
-    iop = subprocess.call(['ctest', '--verbose', '-C', 'Release'])
+    # iop = subprocess.call(['ctest', '--verbose', '-C', 'Release'])
+    iop = subprocess.call(['ctest', '--output-on-failure', '-C', 'Release'])
     if iop != 0:
         raise Exception("ctest FAILED!")
     os.chdir('..')

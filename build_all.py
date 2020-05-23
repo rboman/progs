@@ -28,7 +28,7 @@ progs = [
     {'path': 'student/dcm1', 'travis': False},
     {'path': 'student/dcm2', 'travis': True},
     {'path': 'student/lejeune', 'travis': True},
-    {'path': 'student/mico', 'travis': True},
+    {'path': 'student/mico', 'travis': False},
     {'path': 'student/ndh', 'travis': True},
 ]
 
@@ -49,7 +49,9 @@ def build_all(basedir):
         args = getArgs()
         fullpath = os.path.join(basedir, *(p['path'].split('/')))
         if(p['travis'] or not args.travis):
+            print('\n'+('-'*80))
             print('=> running build.py in', fullpath)
+            print('-'*80)
             os.chdir(fullpath)
             iop = subprocess.call([sys.executable, 'build.py'])
             if iop != 0:

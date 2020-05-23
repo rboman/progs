@@ -11,7 +11,6 @@
 #  change "vtkCommonCorePython" => "vtk.vtkCommonCorePython"
 
 from __future__ import division
-from past.builtins import execfile
 from future import standard_library
 standard_library.install_aliases()
 from builtins import str
@@ -39,7 +38,7 @@ if __name__ == "__main__" and not createExe:
     rcfile = os.environ.get('PYTHONSTARTUP')
     if os.path.isfile(rcfile):
         sys.path.append(os.path.dirname(rcfile))
-        execfile(rcfile)
+        exec(open(rcfile).read())
 
 
 if 0:

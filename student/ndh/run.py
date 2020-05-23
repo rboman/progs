@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 # runs a test as if it was installed
 
-from __future__ import print_function
-from past.builtins import execfile
 if __name__=="__main__":    
     import sys, os
     # adds "." to the pythonpath
@@ -42,4 +40,4 @@ if __name__=="__main__":
         os.chdir(wdir)
 
         __file__ = testname
-        execfile(testname)
+        exec(open(testname).read())

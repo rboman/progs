@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 # basic run script - adds bin to pythonpath, then run the script given in arg
 
-from __future__ import print_function
-from past.builtins import execfile
 if __name__=="__main__": 
     import sys, os.path
     thisdir = os.path.split(__file__)[0]
@@ -19,4 +17,4 @@ if __name__=="__main__":
         print('missing argument.\nusage: %s file.py' % os.path.basename(sys.argv[0]))
         sys.exit()
     __file__ = os.path.abspath(sys.argv[1])
-    execfile(sys.argv[1])
+    exec(open(sys.argv[1]).read())

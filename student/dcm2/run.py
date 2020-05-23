@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 # runs a test as if it was installed
 
-from __future__ import print_function
-from past.builtins import execfile
-from builtins import input
 if __name__ == "__main__":
     import sys
     import os
@@ -23,9 +20,6 @@ if __name__ == "__main__":
                                      'bin', 'Release'))  # win/release
     else:
         sys.path.append(os.path.join(thisdir, 'build', 'bin'))  # linux
-    
-    print(sys.path)
-    input()
     
     # parse args
     import argparse
@@ -50,4 +44,4 @@ if __name__ == "__main__":
         os.chdir(wdir)
 
         __file__ = testname
-        execfile(testname)
+        exec(open(testname).read())
