@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8; -*-
-# $Id: imagingTools.py 1388 2011-01-04 10:57:27Z papeleux $
-# Vinciane d'Otreppe
 
 # vtk filters to visualize images
 

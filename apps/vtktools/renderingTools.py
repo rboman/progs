@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8; -*-
-# $Id: renderingTools.py 1709 2013-03-11 14:49:09Z papeleux $
-# Vinciane d'Otreppe
 
 # Vtk visualisation functions
 

@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8; -*-
-# $Id: vtkToolsGUI.py 1709 2013-03-11 14:49:09Z papeleux $
-# 28/janv./2009 14:48
 #
 # vtkToolsGUI - VTK/Tk/Python interface by RoBo - modified by vidot
 # - modified by MM to create a distributable exe independent of Metafor
