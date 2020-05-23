@@ -4,9 +4,7 @@
 
 # http://www.voidspace.org.uk/python/articles/urllib2_francais.shtml
 
-from future import standard_library
-standard_library.install_aliases()
-import urllib.request, urllib.parse, urllib.error
+
 import urllib.request, urllib.error, urllib.parse
 
 the_url = 'http://www.someserver.com/cgi-bin/register.cgi'

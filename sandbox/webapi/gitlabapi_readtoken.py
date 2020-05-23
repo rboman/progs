@@ -9,7 +9,7 @@ def get_api_token():
     """
     with open('E:\Dropbox\Bin\gitlab_api_token.txt') as f:
         token = f.readline().rstrip()
-    # print "token='{}'".format(token)
+    # print("token='{}'".format(token))
     return token
 
 def get_all_projects():
@@ -21,14 +21,14 @@ def get_all_projects():
     # token as a parameter
     r = requests.get(url, params={'private_token' : token, 'per_page' : 1000, 'page':1 })
     # token as a header
-    #r = requests.get(url, headers={ "Private-Token": token }, params={'per_page' : 1000, 'page':1 })
+    # r = requests.get(url, headers={ "Private-Token": token }, params={'per_page' : 1000, 'page':1 })
 
     print('r.status_code =', r.status_code)
-    # print 'r.headers =', r.headers
-    # print 'r.encoding =', r.encoding
-    # print 'r.url =', r.url
-    # print 'r.text =', r.text
-    # print 'r.json() =', r.json()
+    # print('r.headers =', r.headers)
+    # print('r.encoding =', r.encoding)
+    # print('r.url =', r.url)
+    # print('r.text =', r.text)
+    # print('r.json() =', r.json())
     projects = r.json()
     return projects
 
@@ -40,8 +40,8 @@ with open('projects.json','w') as f:
 
 
 # print one project
-#print 'r.json() ='
-#print(json.dumps(projects[0], sort_keys=True, indent=4))
+# print('r.json() =')
+# print(json.dumps(projects[0], sort_keys=True, indent=4))
 
 # list projects
 for i,p in enumerate(projects):
