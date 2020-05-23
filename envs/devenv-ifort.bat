@@ -1,16 +1,4 @@
 @echo off
-:: Ligne de commande qui va bien pour compiler mes brols
-::
-:: Utilisation:
-::    - installer les libs (dans c:\local p. expl.)
-::    - definir la variable d'env MYLOCAL  (=c:\local p. expl. )
-::    - double cliquer sur myenv.bat
-::    - cd build
-::    - cmake -G "Visual Studio 14 2015 Win64" ..     (or: cmake -A x64 ..)
-::    - cmake --build . --config Release
-::    - ctest -C Release
-:: Incredibuild (http://www.incredibuild.com/webhelp/#BuildConsole.html)
-::    - BuildConsole Waves.sln /rebuild /cfg="Release|x64"
 
 set PATH=%PATH%;%MYLOCAL%\swigwin-3.0.12
 set INCLUDE=%MYLOCAL%\include;%MYLOCAL%\MUMPS\include;%MYLOCAL%\eigen-3.3.2
