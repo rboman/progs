@@ -41,22 +41,27 @@ def getArgs():
     args = parser.parse_args()
     return args
 
-def build_one(basedir, p):
-    """build project 'p'
-    """
-    args = getArgs()
-    fullpath = os.path.join(basedir, *(p['path'].split('/')))
-    if(p['travis'] or not args.travis):
-        print('=> running build.py in', fullpath)
-        os.chdir(fullpath)
-        subprocess.call(['python', 'build.py'])
-
-
 def build_all(basedir):
     """build everything in 'basedir'
     """
+    failed = []
     for p in progs:
-        build_one(basedir, p)
+        args = getArgs()
+        fullpath = os.path.join(basedir, *(p['path'].split('/')))
+        if(p['travis'] or not args.travis):
+            print('=> running build.py in', fullpath)
+            os.chdir(fullpath)
+            iop = subprocess.call([sys.executable, 'build.py'])
+            if iop != 0:
+                print(f"{fullpath} FAILED!")
+                failed.append(fullpath)
+
+    if len(failed)!=0:
+        print('\nLIST OF FAILED BUILDS:')
+        for f in failed:
+            print(f'\t- {f}')
+        print()
+        raise Exception(f'{len(failed)} builds failed!')
 
 
 def rm_builds(basedir):

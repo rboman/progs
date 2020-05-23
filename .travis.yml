@@ -1,29 +1,20 @@
-
 dist: bionic
 sudo: false
 language: cpp
 sudo: required
 
-#addons:
+# addons:
 #  apt:
 #    packages:
-      #- cmake    # inutile
-      #- doxygen
-      #- graphviz
-      #- python-pip
-
-
+#       - cmake    # inutile
+#       - doxygen
+#       - graphviz
+#       - python-pip
 
 before_install:
   - export PROG_BASE_DIR=$(pwd)
-  # C++14
-  #- sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-  #- sudo apt-get update #-qq
 
 install: 
-  # C++14
-  #- sudo apt-get install g++-6
-  #- sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
   # fortran
   - sudo apt install gfortran
   # swig
