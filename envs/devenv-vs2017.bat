@@ -1,4 +1,4 @@
-echo off
+@echo off
 :: Visual Studio environment using RB libs
 
 set INCLUDE=%MYLOCAL%\include;%MYLOCAL%\MUMPS\include;%MYLOCAL%\eigen
