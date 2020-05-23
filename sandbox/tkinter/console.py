@@ -1,25 +1,26 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from future import standard_library
-standard_library.install_aliases()
 
 from tkinter import *
 
-import _thread # should use the threading module instead!
+import _thread  # should use the threading module instead!
 import queue
-
 import os
+
 
 class ThreadSafeConsole(Text):
     def __init__(self, master, **options):
         Text.__init__(self, master, **options)
         self.queue = queue.Queue()
         self.update_me()
+
     def write(self, line):
         self.queue.put(line)
+
     def clear(self):
         self.queue.put(None)
+
     def update_me(self):
         try:
             while 1:
@@ -34,18 +35,22 @@ class ThreadSafeConsole(Text):
             pass
         self.after(100, self.update_me)
 
-# this function pipes input to an widget
-def pipeToWidget(input, widget):
+
+def pipeToWidget(inp, widget):
+    """this function pipes input to an widget
+    """
     widget.clear()
     while 1:
-        line = input.readline()
+        line = inp.readline()
         if not line:
             break
         widget.write(line)
 
+
 def funcThread(widget):
-    input = os.popen('dir', 'r')
-    pipeToWidget(input, widget)
+    inp = os.popen('dir', 'r')
+    pipeToWidget(inp, widget)
+
 
 # uber-main
 root = Tk()
