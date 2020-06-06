@@ -1,8 +1,10 @@
 // build & run
 // cmake --build . --config Release && Release\play_with_pge.exe
 
+#include "config.h"
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+
 
 class Example : public olc::PixelGameEngine
 {
@@ -42,9 +44,15 @@ public:
         colours.push_back(std::make_pair("BLANK", olc::BLANK));
     }
 
+    std::unique_ptr<olc::Sprite> sprite;
+
 public:
     bool OnUserCreate() override
     {
+        std::string srcDir = CMAKE_SOURCE_DIR;
+
+        sprite = std::make_unique<olc::Sprite>(srcDir + "/zip_blue.png");
+
         // Called once at the start, so create things here
         return true;
     }
@@ -109,6 +117,14 @@ public:
         std::string str = "Double";
         uint32_t scale = 2;
         DrawString((width - int(str.size()) * 8 * scale) / 2, height - 20, str, olc::WHITE, scale);
+
+        // sprite
+        SetPixelMode(olc::Pixel::ALPHA);
+        DrawSprite(200, 20, sprite.get());
+        DrawSprite(200+sprite->width, 20, sprite.get());
+        SetPixelMode(olc::Pixel::NORMAL);
+
+
 
         return true;
     }

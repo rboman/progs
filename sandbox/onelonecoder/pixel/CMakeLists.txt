@@ -18,3 +18,8 @@ TARGET_INCLUDE_DIRECTORIES(olcExampleProgram PUBLIC ${OLC_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(play_with_pge play_with_pge.cpp)
 TARGET_INCLUDE_DIRECTORIES(play_with_pge PUBLIC ${OLC_INCLUDE_DIRS})
+ADD_EXECUTABLE(distorsion distorsion.cpp)
+TARGET_INCLUDE_DIRECTORIES(distorsion PUBLIC ${OLC_INCLUDE_DIRS})
+
+configure_file(config.h.in config.h)
+include_directories(${PROJECT_BINARY_DIR})
