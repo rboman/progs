@@ -120,9 +120,9 @@ private:
             fct_gauss();
 
         // chg zoom
-        if (GetKey(olc::Key::LEFT).bHeld)
+        if (GetKey(olc::Key::LEFT).bHeld || GetMouseWheel() > 0)
             zoom += 100.f * fElapsedTime;
-        if (GetKey(olc::Key::RIGHT).bHeld)
+        if (GetKey(olc::Key::RIGHT).bHeld || GetMouseWheel() < 0)
             zoom -= 100.f * fElapsedTime;
         if (zoom < 1.f)
             zoom = 1.f;
