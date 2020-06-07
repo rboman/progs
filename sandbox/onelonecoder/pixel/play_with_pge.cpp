@@ -1,3 +1,6 @@
+// Playing with the "Pixel Game Engine" from Javidx9
+// https://community.onelonecoder.com/
+//
 // build & run
 // cmake --build . --config Release && Release\play_with_pge.exe
 
@@ -5,13 +8,12 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
-
 class Example : public olc::PixelGameEngine
 {
     float radius = 30.0f;
     olc::vf2d centre = {100, 200};
-
     std::vector<std::pair<std::string, olc::Pixel>> colours;
+    std::unique_ptr<olc::Sprite> sprite;
 
 public:
     Example()
@@ -44,16 +46,11 @@ public:
         colours.push_back(std::make_pair("BLANK", olc::BLANK));
     }
 
-    std::unique_ptr<olc::Sprite> sprite;
-
 public:
     bool OnUserCreate() override
     {
-        std::string srcDir = CMAKE_SOURCE_DIR;
-
-        sprite = std::make_unique<olc::Sprite>(srcDir + "/zip_blue.png");
-
         // Called once at the start, so create things here
+        sprite = std::make_unique<olc::Sprite>(std::string(CMAKE_SOURCE_DIR) + "/zip_blue.png");
         return true;
     }
 
@@ -85,18 +82,17 @@ public:
 
         int width = ScreenWidth();
         int height = ScreenHeight();
-        // Draw line
+        // Draw a line
         DrawLine(10, 10, width, height, olc::YELLOW);
-
+        // Draw a filled rectangle
         FillRect(20, 10, 20 + 30, 10 + 30, olc::GREEN);
-
+        // Draw a transparent circle
         SetPixelMode(olc::Pixel::ALPHA);
         FillCircle(centre, int32_t(radius), olc::Pixel(0, 255, 255, 150));
         SetPixelMode(olc::Pixel::NORMAL);
         DrawCircle(centre, int32_t(radius), olc::WHITE);
 
-        // draw colour palette
-
+        // Draw the colour palette
         int ox = 10;
         int oy = 100;
         int w = 14;
@@ -114,17 +110,16 @@ public:
             DrawString(x1 + 2 * w, y1 + (h - 8) / 2, colours[i].first, olc::WHITE);         // 1char = 8x8
         }
 
-        std::string str = "Double";
+        // Draw some text
+        std::string str = "<SPACE TO QUIT>";
         uint32_t scale = 2;
         DrawString((width - int(str.size()) * 8 * scale) / 2, height - 20, str, olc::WHITE, scale);
 
-        // sprite
+        // draw a sprite (twice)
         SetPixelMode(olc::Pixel::ALPHA);
         DrawSprite(200, 20, sprite.get());
-        DrawSprite(200+sprite->width, 20, sprite.get());
+        DrawSprite(200 + sprite->width, 20, sprite.get());
         SetPixelMode(olc::Pixel::NORMAL);
-
-
 
         return true;
     }
@@ -135,6 +130,5 @@ int main()
     Example demo;
     if (demo.Construct(500, 500, 2, 2))
         demo.Start();
-
     return 0;
 }
