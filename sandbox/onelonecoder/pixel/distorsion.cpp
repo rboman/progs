@@ -156,16 +156,49 @@ private:
         int32_t ox = centre.x;
         int32_t oy = centre.y;
 
-        int32_t x1 = -ox;
-        int32_t x2 = ScreenWidth() - ox;
-        int32_t y1 = -oy;
-        int32_t y2 = ScreenHeight() - oy;
+        int32_t x1 = 0;
+        int32_t x2 = ScreenWidth();
+        int32_t y1 = 0;
+        int32_t y2 = ScreenHeight();
 
+        // 1 process
+        //distort(ox, oy, x1, y1, x2, y2);
+
+        // with several threads
+        constexpr int nMaxThreads = 6;
+		int nSectionWidth = (x2 - x1) / nMaxThreads;
+
+		std::thread t[nMaxThreads];
+
+		for (size_t i = 0; i < nMaxThreads; i++)
+			t[i] = std::thread(&Distorsion::distort, this,
+                ox, oy, x1+i*nSectionWidth, y1, x1+(i+1)*nSectionWidth, y2);
+
+		for (size_t i = 0; i < nMaxThreads; i++)
+			t[i].join();
+
+
+
+        // draw axes
+        DrawLine(0, oy, ScreenWidth(), oy, olc::WHITE);
+        DrawLine(ox, 0, ox, ScreenHeight(), olc::WHITE);
+        DrawLine(ox + int32_t(zoom), oy - 3, ox + int32_t(zoom), oy + 3, olc::WHITE);
+        DrawLine(ox - 3, oy + int32_t(zoom), ox + 3, oy + int32_t(zoom), olc::WHITE);
+
+        // print parameters
+        drawParams();
+
+        return true;
+    }
+
+
+    void distort(int32_t ox, int32_t oy, int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+    {
         for (int32_t i = x1; i < x2; ++i)
             for (int32_t j = y1; j < y2; ++j)
             {
-                float a = float(i) / zoom;
-                float b = float(j) / zoom;
+                float a = float(i-ox) / zoom;
+                float b = float(j-ox) / zoom;
                 float nx = fn_dfdx(a, b);
                 float ny = fn_dfdy(a, b);
                 float z = fn_f(a, b) * zoom;
@@ -186,20 +219,9 @@ private:
 
                 float xd = (alp + z) * tan(i1 - r1);
                 float yd = (alp + z) * tan(i2 - r2);
-                olc::Pixel C = source->GetPixel(i + ox - int32_t(xd), j + oy - int32_t(yd));
-                Draw(i + ox, j + oy, C);
+                olc::Pixel C = source->GetPixel(i - int32_t(xd), j - int32_t(yd));
+                Draw(i, j, C);
             }
-
-        // draw axes
-        DrawLine(0, oy, ScreenWidth(), oy, olc::WHITE);
-        DrawLine(ox, 0, ox, ScreenHeight(), olc::WHITE);
-        DrawLine(ox + int32_t(zoom), oy - 3, ox + int32_t(zoom), oy + 3, olc::WHITE);
-        DrawLine(ox - 3, oy + int32_t(zoom), ox + 3, oy + int32_t(zoom), olc::WHITE);
-
-        // print parameters
-        drawParams();
-
-        return true;
     }
 
     void drawParams()
