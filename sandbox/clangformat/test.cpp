@@ -1,8 +1,8 @@
 // IndentWidth
 
 void f() {
-  someFunction();
-  if (true, false) {
-    f();
-  }
+    someFunction();
+    if (true, false) {
+        f();
+    }
 }
