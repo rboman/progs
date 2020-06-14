@@ -20,7 +20,6 @@
 
 #include "gausslib.h"
 
-
 /*
  *   QUAD BI-LINEAIRE 2D/3D
  */
@@ -101,7 +100,6 @@ gauss_common_init()
 
 /* -------------------------------------------------------------------------- */
 
-
 GAUSS_API int
 gauss_common_pp(double *xg, double *wg, int ng)
 {
@@ -180,4 +178,3 @@ ERR1:
     iop = 990;
     goto FIN;
 }
-

@@ -24,8 +24,6 @@
 
 #include "gausslib.h"
 
-
-
 GAUSS_API int
 gauss_generic(int ng, int ndim, double **xx, int type,
               int (*fct)(double *, double *, void *, int, double *), void *par,
@@ -147,7 +145,6 @@ ERR4:
     goto FIN;
 }
 
-
 GAUSS_API void
 gauss_generic_getx(int no, double ***psi, double **xx, int ndim, int nnode,
                    double *x)
@@ -162,8 +159,6 @@ gauss_generic_getx(int no, double ***psi, double **xx, int ndim, int nnode,
             x[j] += psi[0][i][no] * xx[i][j];
     }
 }
-
-
 
 GAUSS_API int
 gauss_generic_get_psi(int ng, double ****psi, double *xg, int type, int dimp,
@@ -254,8 +249,6 @@ ERR2:
     goto FIN;
 }
 
-
-
 /*
  *   Retourne la matrice jacobienne "jaco" au pt de Gauss "no"
  */
@@ -283,7 +276,6 @@ gauss_generic_jaco(double **xx, double jaco[][3], int no, double *xg,
         }
     }
 }
-
 
 /*
  *   Renvoie un ptr vers les points et un ptr vers les poids de Gauss
@@ -392,5 +384,3 @@ ERR2:
     iop = 990;
     goto FIN;
 }
-
-

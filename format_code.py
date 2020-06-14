@@ -3,16 +3,19 @@
 #
 # This script runs "clang-format" recursively on all C/C++ files
 
-import sys, os
-import fnmatch, re
+import sys
+import os
+import fnmatch
+import re
 import subprocess
+
 
 def all_files(root,
               patterns='*',
               skips='*.git*;*build*',
               single_level=False,
               yield_folders=False):
-    #self.checkPath(root)
+    # self.checkPath(root)
     patterns = patterns.split(';')
     skips = skips.split(';')
     for path, subdirs, files in os.walk(root):
@@ -35,18 +38,19 @@ def all_files(root,
             break
 
 
-
 def main():
 
     # loop over all files and try to guess encoding...
     encs = {}
-    for f in all_files(os.getcwd(), patterns='*.cpp;*.c;*.h;*.hpp', skips='*.git*;*build*;*externals*'):
+    for f in all_files(os.getcwd(), patterns='*.cpp;*.c;*.h;*.hpp',
+                       skips='*.git*;*build*;*externals*'):
         print(f)
-        cmd = [ 'clang-format', "-style=file", "-i", f]
+        cmd = ['clang-format', "-style=file", "-i", f]
         retcode = subprocess.call(cmd)
-        if retcode!=0:
+        if retcode != 0:
             print(f'ERROR: retcode = {retcode}')
             break
+
 
 if __name__ == "__main__":
     main()

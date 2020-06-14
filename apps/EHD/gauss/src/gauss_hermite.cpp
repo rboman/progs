@@ -27,7 +27,6 @@
 
 #include "gausslib.h"
 
-
 GAUSS_API int
 gauss_hermite_get_psi(int ng, double ****psi, double *xg)
 {
@@ -102,4 +101,3 @@ ERR2:
     iop = 990;
     goto FIN;
 }
-

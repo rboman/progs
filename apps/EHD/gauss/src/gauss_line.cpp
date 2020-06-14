@@ -21,7 +21,6 @@
 
 #include "gausslib.h"
 
-
 /*
  *  Integration d'une fonction sur un quad bi-lineaire
  */
@@ -108,7 +107,6 @@ ERR3:
     goto FIN;
 }
 
-
 GAUSS_API void
 gauss_line_getx(int no, double ***psi, double **xx, int ndim, double *x)
 {
@@ -122,8 +120,6 @@ gauss_line_getx(int no, double ***psi, double **xx, int ndim, double *x)
             x[j] += psi[0][i][no] * xx[i][j];
     }
 }
-
-
 
 GAUSS_API void
 gauss_line_getf(int no, double ***psi, double *ff, double *x)
@@ -145,7 +141,6 @@ gauss_line_getf2(int no, double ***psi, double *ff, double *x, double upw)
     for (i = 0; i < EL_LINE_NODE; i++)
         *x += (psi[0][i][no] - upw * psi[1][i][no]) * ff[i];
 }
-
 
 GAUSS_API int
 gauss_line_get_psi(int ng, double ****psi, double *xg)
@@ -221,7 +216,6 @@ ERR2:
     goto FIN;
 }
 
-
 /*
  *   Retourne la matrice jacobienne "jaco" au pt de Gauss "no"
  */
@@ -249,7 +243,6 @@ gauss_line_jaco(double **xx, double jaco[][3], int no, double *xg,
         }
     }
 }
-
 
 /*
  *   Renvoie un ptr vers les points et un ptr vers les poids de Gauss
@@ -319,4 +312,3 @@ ERR2:
     iop = 990;
     goto FIN;
 }
-

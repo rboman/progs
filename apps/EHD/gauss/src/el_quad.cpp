@@ -20,8 +20,6 @@
 
 #include "el.h"
 
-
-
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */
@@ -77,8 +75,6 @@ el_quad_ff(double F[][4], double *c)
     F[2][2] = rp * dsp;
     F[3][2] = rm * dsp;
 }
-
-
 
 /*
  *   DET JACOBIEN

@@ -31,8 +31,8 @@
 #endif
 
 #pragma warning(disable : 4251) // DLL/templates non exportes
-#pragma warning(disable : 4275) // non - DLL-interface classkey 'identifier' 
-                                // used as base for DLL-interface classkey 
+#pragma warning(disable : 4275) // non - DLL-interface classkey 'identifier'
+                                // used as base for DLL-interface classkey
                                 // 'identifier'
 
 #endif //_MSC_VER

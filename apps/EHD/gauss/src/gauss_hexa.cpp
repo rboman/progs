@@ -21,7 +21,6 @@
 
 #include "gausslib.h"
 
-
 /*
  *  Integration d'une fonction sur un hexa tri-lineaire
  */
@@ -115,7 +114,6 @@ ERR3:
     goto FIN;
 }
 
-
 GAUSS_API void
 gauss_hexa_getx(int no, double ***psi, double **xx, int ndim, double *x)
 {
@@ -129,7 +127,6 @@ gauss_hexa_getx(int no, double ***psi, double **xx, int ndim, double *x)
             x[j] += psi[0][i][no] * xx[i][j];
     }
 }
-
 
 GAUSS_API int
 gauss_hexa_get_psi(int ng, double ****psi, double *xg)
@@ -206,8 +203,6 @@ ERR2:
     goto FIN;
 }
 
-
-
 /*
  *   Retourne la matrice jacobienne "jaco" au pt de Gauss "no"
  */
@@ -235,7 +230,6 @@ gauss_hexa_jaco(double **xx, double jaco[][3], int no, double *xg,
         }
     }
 }
-
 
 /*
  *   Renvoie un ptr vers les points et un ptr vers les poids de Gauss
@@ -314,4 +308,3 @@ ERR2:
     iop = 990;
     goto FIN;
 }
-

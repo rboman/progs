@@ -20,7 +20,6 @@
 
 #include "el.h"
 
-
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */
@@ -59,8 +58,6 @@ el_line_ff(double F[][4], double *c)
     F[0][1] = drm;
     F[1][1] = drp;
 }
-
-
 
 /*
  *   DET JACOBIEN

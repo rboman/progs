@@ -59,13 +59,11 @@
 
 #include "gauss.h"
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
 #include "el.h"
-
 
 #define GAUSS_MAX_NG 10
 
@@ -74,7 +72,6 @@
 #define GAUSS_EL_LINE 0
 #define GAUSS_EL_QUAD 1
 #define GAUSS_EL_HEXA 2
-
 
 /*
  *   QUAD BI-LINEAIRE 2D/3D
@@ -116,7 +113,6 @@ extern double *generic_xg[GAUSS_MAX_EL][GAUSS_MAX_NG];
 extern double *generic_pg[GAUSS_MAX_EL][GAUSS_MAX_NG];
 extern double ***generic_psi[GAUSS_MAX_EL][GAUSS_MAX_NG];
 #endif // SWIG
-
 
 /* protos */
 
@@ -184,8 +180,6 @@ GAUSS_API int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp,
 // gauss_hermite.c
 
 GAUSS_API int gauss_hermite_get_psi(int ng, double ****psi, double *xg);
-
-
 
 GAUSS_API void gauss_line_getf2(int no, double ***psi, double *ff, double *x,
                                 double upw);

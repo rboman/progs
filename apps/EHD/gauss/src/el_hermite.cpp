@@ -23,7 +23,6 @@
 
 #include "el.h"
 
-
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */

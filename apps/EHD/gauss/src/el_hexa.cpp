@@ -20,7 +20,6 @@
 
 #include "el.h"
 
-
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */
@@ -105,7 +104,6 @@ el_hexa_ff(double F[][4], double *c)
     F[6][3] = rp * sp * dtp;
     F[7][3] = rm * sp * dtp;
 }
-
 
 /*
  *   DET JACOBIEN
