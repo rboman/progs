@@ -70,15 +70,27 @@ MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST USEMODULES USEFUNCTIONS)
     SET(OUTPUTS ${C_OUTPUTS} ${F_OUTPUTS})
     MESSAGE("OUTPUTS=${OUTPUTS}")
 
-    ADD_CUSTOM_COMMAND(
-        OUTPUT ${OUTPUTS}
-        COMMAND ${F2PY_EXECUTABLE}
-        -m ${F2PYMODULE}
-        --lower   # gcc cree du lowercase quel que soit le nom dans le code
-        ${${FSRCS_LIST}}
-        DEPENDS ${${FSRCS_LIST}}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    )
+    IF(NOT MSVC) # gcc
+        ADD_CUSTOM_COMMAND(
+            OUTPUT ${OUTPUTS}
+            COMMAND ${F2PY_EXECUTABLE}
+            -m ${F2PYMODULE}
+            --lower   # gcc cree du lowercase quel que soit le nom dans le code
+            ${${FSRCS_LIST}}
+            DEPENDS ${${FSRCS_LIST}}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+    ELSE() # MSVC + Intel Fortran => uppercase/no underscore
+        ADD_CUSTOM_COMMAND(
+            OUTPUT ${OUTPUTS}
+            COMMAND ${F2PY_EXECUTABLE}
+            -m ${F2PYMODULE}
+            #--no-lower
+            ${${FSRCS_LIST}}
+            DEPENDS ${${FSRCS_LIST}}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+    ENDIF()
 
     # static library "XXXfor" with the fortran source and fortran wrappers
     ADD_LIBRARY(${F2PYMODULE}for ${${FSRCS_LIST}} ${F_OUTPUTS}) 
@@ -90,6 +102,10 @@ MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST USEMODULES USEFUNCTIONS)
     TARGET_INCLUDE_DIRECTORIES(${F2PYMODULE} PRIVATE ${Python3_INCLUDE_DIRS})
     TARGET_INCLUDE_DIRECTORIES(${F2PYMODULE} PRIVATE ${F2PY_SRC_DIR})
     TARGET_INCLUDE_DIRECTORIES(${F2PYMODULE} PRIVATE ${NUMPY_PATH})
+    IF(MSVC) # MSVC + Intel Fortran => uppercase/no underscore
+        target_compile_definitions(${F2PYMODULE} PUBLIC NO_APPEND_FORTRAN)
+        target_compile_definitions(${F2PYMODULE} PUBLIC UPPERCASE_FORTRAN)
+    ENDIF()
     # ...linked to fortran routines and python 
     TARGET_LINK_LIBRARIES(${F2PYMODULE} ${F2PYMODULE}for ${Python3_LIBRARIES})
 
