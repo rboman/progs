@@ -19,10 +19,11 @@
 #include "gmObject.h"
 #include <vector>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
- * @brief Defines a Mesh (list of Point and list of Element). 
+ * @brief Defines a Mesh (list of Point and list of Element).
  *        A list of contact nodes is also included.
  */
 
@@ -45,6 +46,6 @@ public:
     void clear();
 };
 
-}
+} // namespace genmai
 
-#endif //GMMESH_H
+#endif // GMMESH_H

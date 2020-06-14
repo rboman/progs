@@ -16,8 +16,7 @@ int divs = 5,  // nbre de tronçons de la conduite
     tmax = 90; // nbre de pas de temps
 
 double a2 = (H0 - Hs - a1 * Q0) / (pow(Q0, 2)), // cte pompe
-    Section = M_PI * pow(D, 2) / 4,
-       g = 9.81,
+    Section = M_PI * pow(D, 2) / 4, g = 9.81,
        B = a / (g * Section),                            // voir rappel
     R = f * (L / divs) / (2 * g * D * pow(Section, 2)),  //  théorique
     C1 = f * pow(Q0, 2) / (2 * g * D * pow(Section, 2)), // pertes de charge
@@ -28,7 +27,8 @@ double CM, CP, rho;
 
 std::ofstream sortie("CLOSE.M", std::ios::out); // ouverture fichier MatLab
 
-int main()
+int
+main()
 {
     Q = new double *[divs + 1]; // déclaration des tableaux
     H = new double *[divs + 1]; // de débit et de charge
@@ -62,15 +62,18 @@ int main()
 
         for (int i = 1; i < divs; i++)
         {
-            CP = H[i - 1][k - 1] + B * Q[i - 1][k - 1] + R * Q[i - 1][k - 1] * abs(Q[i - 1][k - 1]);
-            CM = H[i + 1][k - 1] - B * Q[i + 1][k - 1] - R * Q[i + 1][k - 1] * abs(Q[i + 1][k - 1]);
+            CP = H[i - 1][k - 1] + B * Q[i - 1][k - 1] +
+                 R * Q[i - 1][k - 1] * abs(Q[i - 1][k - 1]);
+            CM = H[i + 1][k - 1] - B * Q[i + 1][k - 1] -
+                 R * Q[i + 1][k - 1] * abs(Q[i + 1][k - 1]);
             Q[i][k] = (CP - CM) / (2 * B);
             H[i][k] = (CP + CM) / 2;
         }
 
         // condition limite à la vanne
 
-        CP = H[divs - 1][k - 1] + B * Q[divs - 1][k - 1] - R * Q[divs - 1][k - 1] * abs(Q[divs - 1][k - 1]);
+        CP = H[divs - 1][k - 1] + B * Q[divs - 1][k - 1] -
+             R * Q[divs - 1][k - 1] * abs(Q[divs - 1][k - 1]);
         Q[divs][k] = -B * Cv + sqrt(pow(B * Cv, 2) + 2 * Cv * CP);
         H[divs][k] = CP - B * Q[divs][k];
     }

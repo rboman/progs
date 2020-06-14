@@ -28,7 +28,7 @@
  * Intro:
  * ~~~~~~
  * Cette librairie permet de gerer d'une maniere presque transparente
- * les matrices au format SKYLINE. En vue d'une reecriture en C de METAFOR, 
+ * les matrices au format SKYLINE. En vue d'une reecriture en C de METAFOR,
  * elle vient remplacer avantageusement les anciennes routines suivantes:
  *   skypre.f, lecture.f, promi1.f, promi2.f, ... -> sky_pre_*()
  *   skyass.f                                     -> sky_ass()
@@ -43,9 +43,9 @@
  *      - le test de pivots negatifs est une option.
  *  - Suppression de la "gestion" des pivots nuls dans le solver non-sym
  *    (le solveur n'effectue pas de pivotage->il faut arreter le calcul)
- *  - Suppression de la possiblite de gerer simultanement plusieurs RHS.  
+ *  - Suppression de la possiblite de gerer simultanement plusieurs RHS.
  *    Il est cependant toujours possible de factoriser la matrice une
- *    fois pour toutes et de lancer le solver plusieurs fois. 
+ *    fois pour toutes et de lancer le solver plusieurs fois.
  *  - Le vecteur solution ("x"), n'est pas confondu avec le vecteur RHS ("q")
  *
  * Utilisation:
@@ -72,7 +72,7 @@
  *
  * rem: 1. liberation de memoire avec "sky_reinit".
  *      2. la matrice est ecrasee avec sa decomposition LU !!
- *      
+ *
  */
 
 /**************************************************************************
@@ -101,7 +101,7 @@
 #undef VERBOSE
 #define VERBOSE 0
 
-char const*sky_nulname = "noname";
+char const *sky_nulname = "noname";
 
 /**************************************************************************
                                   Debug
@@ -112,7 +112,8 @@ char const*sky_nulname = "noname";
  *    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_print(FILE *fich, SkyMat *A)
+SKY_API int
+sky_print(FILE *fich, SkyMat *A)
 {
     int iop = 0, i;
 
@@ -127,8 +128,7 @@ SKY_API int sky_print(FILE *fich, SkyMat *A)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
@@ -145,7 +145,8 @@ ERR1:
  *                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_initmat(SkyMat *A)
+SKY_API int
+sky_initmat(SkyMat *A)
 {
     int iop = 0;
 
@@ -165,12 +166,11 @@ SKY_API int sky_initmat(SkyMat *A)
 
     A->init = 1;
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice \"%s\" a deja ete initialisee !", A->name);
@@ -185,7 +185,8 @@ ERR1:
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_reinit(SkyMat *A)
+SKY_API int
+sky_reinit(SkyMat *A)
 {
     int iop = 0;
     int mem;
@@ -233,8 +234,7 @@ SKY_API int sky_reinit(SkyMat *A)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
@@ -249,12 +249,13 @@ ERR1:
  *                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_setname(SkyMat *A, char const *name)
+SKY_API int
+sky_setname(SkyMat *A, char const *name)
 {
     int iop = 0;
     size_t l;
 
-    //if (A->init != 1)
+    // if (A->init != 1)
     //    goto ERR1;
 
     l = strlen(name);
@@ -265,8 +266,7 @@ SKY_API int sky_setname(SkyMat *A, char const *name)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
     /*
 ERR1:
@@ -288,7 +288,8 @@ ERR2:
  *             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_pre_start(SkyMat *A, int nsys)
+SKY_API int
+sky_pre_start(SkyMat *A, int nsys)
 {
     int iop = 0;
     int i;
@@ -317,12 +318,11 @@ SKY_API int sky_pre_start(SkyMat *A, int nsys)
     for (i = 0; i < nsys + 1; i++)
         A->locsit[i] = i;
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
@@ -341,12 +341,13 @@ ERR3:
 /**************************************************************************/
 
 /*
- *             Pre-Assemble un element de la matrice (i,j) 
+ *             Pre-Assemble un element de la matrice (i,j)
  *             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *              (pas de test d'init paour aller plus vite)
  */
 
-SKY_API int sky_pre_ass(SkyMat *A, int i, int j)
+SKY_API int
+sky_pre_ass(SkyMat *A, int i, int j)
 {
     int ii, jj;
 
@@ -367,7 +368,8 @@ SKY_API int sky_pre_ass(SkyMat *A, int i, int j)
  *                     (inutile pour l'utilisateur)
  */
 
-SKY_API int sky_alloc(SkyMat *A, int type)
+SKY_API int
+sky_alloc(SkyMat *A, int type)
 {
     int iop = 0;
     int n, mem;
@@ -416,12 +418,11 @@ SKY_API int sky_alloc(SkyMat *A, int type)
     printf("occupation memoire matrice %s symetrique \"%s\": %d doubles\n",
            (A->sym == SKY_MAT_USYM) ? "non" : "", A->name, mem);
 #endif
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
@@ -444,7 +445,8 @@ ERR3:
  *                     ~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_pre_close(SkyMat *A, int type, int opt)
+SKY_API int
+sky_pre_close(SkyMat *A, int type, int opt)
 {
     int iop = 0;
     int i, n, n1, id, ntot;
@@ -498,8 +500,7 @@ SKY_API int sky_pre_close(SkyMat *A, int type, int opt)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
@@ -512,11 +513,12 @@ ERR1:
  **************************************************************************/
 
 /*
- *              Assemble un element dans la matrice SKYLINE 
+ *              Assemble un element dans la matrice SKYLINE
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_ass(SkyMat *A, int i, int j, double val)
+SKY_API int
+sky_ass(SkyMat *A, int i, int j, double val)
 {
     int id;
     int ii, jj;
@@ -550,11 +552,12 @@ SKY_API int sky_ass(SkyMat *A, int i, int j, double val)
 /**************************************************************************/
 
 /*
- *              Assigne un element dans la matrice SKYLINE 
+ *              Assigne un element dans la matrice SKYLINE
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_set(SkyMat *A, int i, int j, double val)
+SKY_API int
+sky_set(SkyMat *A, int i, int j, double val)
 {
     int id;
     int ii, jj;
@@ -592,7 +595,8 @@ SKY_API int sky_set(SkyMat *A, int i, int j, double val)
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_fill(SkyMat *A, double val)
+SKY_API int
+sky_fill(SkyMat *A, double val)
 {
     int iop = 0;
     int i;
@@ -613,8 +617,7 @@ SKY_API int sky_fill(SkyMat *A, double val)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");
@@ -631,7 +634,8 @@ ERR1:
  *                          ~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_solve_sym(SkyMat *A, double *q, double *x, int type)
+SKY_API int
+sky_solve_sym(SkyMat *A, double *q, double *x, int type)
 {
     int iop = SKY_ERR_OK;
     int nn;
@@ -668,8 +672,8 @@ SKY_API int sky_solve_sym(SkyMat *A, double *q, double *x, int type)
     }
 
     /***************************
-   * BOUCLE DE DECOMP L.D.Lt *
-   ***************************/
+     * BOUCLE DE DECOMP L.D.Lt *
+     ***************************/
 
     if ((type & SKY_DO_LU) == SKY_DO_LU)
     {
@@ -765,8 +769,8 @@ SKY_API int sky_solve_sym(SkyMat *A, double *q, double *x, int type)
     } // endif(SKY_DO_LU)
 
     /**********************
-   * SUBSTITUTION AVANT *
-   **********************/
+     * SUBSTITUTION AVANT *
+     **********************/
 
     if ((type & SKY_DO_SUBST) == SKY_DO_SUBST)
     {
@@ -800,8 +804,8 @@ SKY_API int sky_solve_sym(SkyMat *A, double *q, double *x, int type)
         }
 
         /************************
-     * SUBSTITUTION ARRIERE * (on suppose qu'il n'y a pas de pivots nuls) 
-     ************************/
+         * SUBSTITUTION ARRIERE * (on suppose qu'il n'y a pas de pivots nuls)
+         ************************/
 
         for (n = 0; n < nn; n++)
             x[n] /= sitl[loc[n]];
@@ -852,7 +856,8 @@ ERR2:
  *                      ~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_solve_usym(SkyMat *A, double *q, double *x, int type)
+SKY_API int
+sky_solve_usym(SkyMat *A, double *q, double *x, int type)
 {
     int iop = SKY_ERR_OK;
     int nn;
@@ -889,8 +894,8 @@ SKY_API int sky_solve_usym(SkyMat *A, double *q, double *x, int type)
     }
 
     /*************************
-   * BOUCLE DE DECOMP L.U. *
-   *************************/
+     * BOUCLE DE DECOMP L.U. *
+     *************************/
 
     if ((type & SKY_DO_LU) == SKY_DO_LU)
     {
@@ -943,7 +948,8 @@ SKY_API int sky_solve_usym(SkyMat *A, double *q, double *x, int type)
                         {
 
                             c += sitl[ki + l] * situ[klt + l];
-                            b += sitl[klt + l] / situ[loc[k - l]] * situ[ki + l];
+                            b +=
+                                sitl[klt + l] / situ[loc[k - l]] * situ[ki + l];
 #ifdef FLOPS_COUNT
                             flops += 5;
 #endif
@@ -996,8 +1002,8 @@ SKY_API int sky_solve_usym(SkyMat *A, double *q, double *x, int type)
     } // endif(SKY_DO_LU)
 
     /**********************
-   * SUBSTITUTION AVANT *
-   **********************/
+     * SUBSTITUTION AVANT *
+     **********************/
 
     if ((type & SKY_DO_SUBST) == SKY_DO_SUBST)
     {
@@ -1031,8 +1037,8 @@ SKY_API int sky_solve_usym(SkyMat *A, double *q, double *x, int type)
         }
 
         /************************
-     * SUBSTITUTION ARRIERE *
-     ************************/
+         * SUBSTITUTION ARRIERE *
+         ************************/
 
         for (n = nn - 1; n >= 0; n--)
         {
@@ -1082,9 +1088,9 @@ ERR2:
  *
  */
 
-SKY_API void sky_f_solve_usym(double *sitl, double *situ,
-                      int *locsit, int *nsys, int *nsit,
-                      double *q, double *x, int *kkk, int *iop)
+SKY_API void
+sky_f_solve_usym(double *sitl, double *situ, int *locsit, int *nsys, int *nsit,
+                 double *q, double *x, int *kkk, int *iop)
 {
     int type;
     SkyMat M;
@@ -1098,7 +1104,7 @@ SKY_API void sky_f_solve_usym(double *sitl, double *situ,
     M.nsit = *nsit;
     sky_setname(&M, "M");
 
-    //mlab_sky("res.m","1",&M,SKY_A,MLAB_NEW, MLAB_VERBOSE);
+    // mlab_sky("res.m","1",&M,SKY_A,MLAB_NEW, MLAB_VERBOSE);
 
     type = 0;
 
@@ -1127,7 +1133,8 @@ SKY_API void sky_f_solve_usym(double *sitl, double *situ,
  *                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_solve_usym_opt(SkyMat *A, double *q, double *x, int type)
+SKY_API int
+sky_solve_usym_opt(SkyMat *A, double *q, double *x, int type)
 {
     int iop = SKY_ERR_OK;
     int nn;
@@ -1166,8 +1173,8 @@ SKY_API int sky_solve_usym_opt(SkyMat *A, double *q, double *x, int type)
     }
 
     /*************************
-   * BOUCLE DE DECOMP L.U. *
-   *************************/
+     * BOUCLE DE DECOMP L.U. *
+     *************************/
 
     if ((type & SKY_DO_LU) == SKY_DO_LU)
     {
@@ -1216,7 +1223,8 @@ SKY_API int sky_solve_usym_opt(SkyMat *A, double *q, double *x, int type)
                     id = ir;
                     ir = loc[i + 1];
 
-                    ihh = ((ir - id - 1) <= (i - is)) ? (ir - id - 1) : (i - is);
+                    ihh =
+                        ((ir - id - 1) <= (i - is)) ? (ir - id - 1) : (i - is);
 
                     if (ihh)
                     {
@@ -1270,8 +1278,8 @@ SKY_API int sky_solve_usym_opt(SkyMat *A, double *q, double *x, int type)
         goto ERR1;
 
     /**********************
-   * SUBSTITUTION AVANT *
-   **********************/
+     * SUBSTITUTION AVANT *
+     **********************/
 
     if ((type & SKY_DO_SUBST) == SKY_DO_SUBST)
     {
@@ -1305,8 +1313,8 @@ SKY_API int sky_solve_usym_opt(SkyMat *A, double *q, double *x, int type)
         }
 
         /************************
-     * SUBSTITUTION ARRIERE *
-     ************************/
+         * SUBSTITUTION ARRIERE *
+         ************************/
 
         for (n = nn - 1; n >= 0; n--)
         {
@@ -1357,7 +1365,8 @@ ERR1:
  *                             ~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_solve(SkyMat *A, double *q, double *x, int type)
+SKY_API int
+sky_solve(SkyMat *A, double *q, double *x, int type)
 {
     int iop = 0;
 
@@ -1367,7 +1376,7 @@ SKY_API int sky_solve(SkyMat *A, double *q, double *x, int type)
     }
     else
     {
-        //iop = sky_solve_usym(A, q, x, type);
+        // iop = sky_solve_usym(A, q, x, type);
         iop = sky_solve_usym_opt(A, q, x, type);
     }
     if (iop != 0)
@@ -1375,8 +1384,7 @@ SKY_API int sky_solve(SkyMat *A, double *q, double *x, int type)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 }
 
@@ -1387,10 +1395,11 @@ FIN:
  *             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API void sky_print_err(FILE *fich, int code)
+SKY_API void
+sky_print_err(FILE *fich, int code)
 {
-    char const*err[4] = {"ok", "pivot nul", "pivot negatif", "code inconnu"};
-    char const*e;
+    char const *err[4] = {"ok", "pivot nul", "pivot negatif", "code inconnu"};
+    char const *e;
 
     switch (code)
     {
@@ -1417,7 +1426,8 @@ SKY_API void sky_print_err(FILE *fich, int code)
  *             ~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_mulv_lu(SkyMat *A, double *x, double *b)
+SKY_API int
+sky_mulv_lu(SkyMat *A, double *x, double *b)
 {
     int iop = 0;
     int i, j, k;
@@ -1501,7 +1511,8 @@ SKY_API int sky_mulv_lu(SkyMat *A, double *x, double *b)
  *             ~~~~~~~~~~~~~~~
  */
 
-SKY_API int sky_mulv_a(SkyMat *A, double *x, double *b)
+SKY_API int
+sky_mulv_a(SkyMat *A, double *x, double *b)
 {
     int iop = 0;
     int i, j, k;
@@ -1576,7 +1587,8 @@ SKY_API int sky_mulv_a(SkyMat *A, double *x, double *b)
                        Routines de test de la librairie
  **************************************************************************/
 
-SKY_API int sky_test()
+SKY_API int
+sky_test()
 {
     int iop = 0;
     SkyMat K, Ks;
@@ -1700,7 +1712,7 @@ SKY_API int sky_test()
 
     // solveur
 
-    //iop = sky_solve_usym(&K, q, x, SKY_DO_LU | SKY_DO_SUBST);
+    // iop = sky_solve_usym(&K, q, x, SKY_DO_LU | SKY_DO_SUBST);
     iop = sky_solve(&K, q, x, SKY_DO_LU | SKY_DO_SUBST);
     sky_print_err(stdout, iop);
     iop = sky_solve(&Ks, q, xs, SKY_DO_LU | SKY_DO_SUBST);
@@ -1749,7 +1761,6 @@ SKY_API int sky_test()
 
     // FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 }

@@ -7,7 +7,7 @@ class Arg
 {
     int i;
 
-  public:
+public:
     Arg(int _i = 1) : i(_i) {}
 };
 
@@ -15,67 +15,41 @@ class A
 {
     int data;
 
-  public:
-    A() : data(0)
-    {
-        cout << "building A" << endl;
-    }
+public:
+    A() : data(0) { cout << "building A" << endl; }
     virtual ~A() {}
-    void printA()
-    {
-        cout << "I am A" << endl;
-    }
+    void printA() { cout << "I am A" << endl; }
 };
 
-template <class T>
-class B : public virtual A
+template <class T> class B : public virtual A
 {
     T data2;
 
-  public:
-    B() : A()
-    {
-        cout << "building B" << endl;
-    }
-    void printB()
-    {
-        cout << "I am B" << endl;
-    }
+public:
+    B() : A() { cout << "building B" << endl; }
+    void printB() { cout << "I am B" << endl; }
     virtual void printD() = 0;
 };
 
-template <class T>
-class C : public B<T>
+template <class T> class C : public B<T>
 {
     T data3;
 
-  public:
-    C() : B<T>()
-    {
-        cout << "building C" << endl;
-    }
-    void printC()
-    {
-        cout << "I am C" << endl;
-    }
+public:
+    C() : B<T>() { cout << "building C" << endl; }
+    void printC() { cout << "I am C" << endl; }
 };
-template <class T>
-class D : public C<T>
+template <class T> class D : public C<T>
 {
     T data4;
 
-  public:
-    D() : C<T>()
-    {
-        cout << "building D" << endl;
-    }
-    void printD()
-    {
-        cout << "I am D" << endl;
-    }
+public:
+    D() : C<T>() { cout << "building D" << endl; }
+    void printD() { cout << "I am D" << endl; }
 };
 
-int main()
+int
+main()
 {
     D<Arg> *obj = new D<Arg>();
 
@@ -99,12 +73,8 @@ int main()
         cout << "rtti failure!" << endl;
     }
 
-    cout << "typeid A=" << typeid(objA).name() << endl
-         << flush;
-    cout << "typeid B=" << typeid(objB).name() << endl
-         << flush;
-    cout << "typeid C=" << typeid(objC).name() << endl
-         << flush;
-    cout << "typeid D=" << typeid(objD).name() << endl
-         << flush;
+    cout << "typeid A=" << typeid(objA).name() << endl << flush;
+    cout << "typeid B=" << typeid(objB).name() << endl << flush;
+    cout << "typeid C=" << typeid(objC).name() << endl << flush;
+    cout << "typeid D=" << typeid(objD).name() << endl << flush;
 }

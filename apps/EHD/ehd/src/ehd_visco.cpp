@@ -20,7 +20,8 @@
  * @brief Calcule la viscosite en fct de la pression et sa derivee.
  */
 
-EHD_API void ehd_visco(double eta0, double alpha, double p, double *eta, double *etad)
+EHD_API void
+ehd_visco(double eta0, double alpha, double p, double *eta, double *etad)
 {
     *eta = eta0 * exp(alpha * p);
     *etad = alpha * (*eta);

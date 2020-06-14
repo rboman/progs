@@ -1,7 +1,8 @@
 #include "couplage.h"
 #include <fstream>
 
-void save(gmm::row_matrix<gmm::wsvector<double>> &mat, std::string const &fname)
+void
+save(gmm::row_matrix<gmm::wsvector<double>> &mat, std::string const &fname)
 {
     std::ofstream file(fname.c_str());
     file << std::scientific;
@@ -13,7 +14,8 @@ void save(gmm::row_matrix<gmm::wsvector<double>> &mat, std::string const &fname)
     }
 }
 
-void save(std::vector<double> &vec, std::string const &fname)
+void
+save(std::vector<double> &vec, std::string const &fname)
 {
     std::ofstream file(fname.c_str());
     file << std::scientific;

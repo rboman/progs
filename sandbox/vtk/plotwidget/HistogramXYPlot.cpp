@@ -13,12 +13,15 @@
 #include <vtkRenderer.h>
 #include <vtkXYPlotActor.h>
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     // Handle the arguments
     if (argc < 2)
     {
-        std::cout << "Usage: " << argv[0] << " Filename.jpg, [optional ignore zero:] <y/n>" << std::endl;
+        std::cout << "Usage: " << argv[0]
+                  << " Filename.jpg, [optional ignore zero:] <y/n>"
+                  << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -34,7 +37,8 @@ int main(int argc, char *argv[])
     }
 
     // Read a jpeg image
-    vtkSmartPointer<vtkJPEGReader> reader = vtkSmartPointer<vtkJPEGReader>::New();
+    vtkSmartPointer<vtkJPEGReader> reader =
+        vtkSmartPointer<vtkJPEGReader>::New();
     if (!reader->CanReadFile(argv[1]))
     {
         std::cout << "Error: cannot read " << argv[1] << std::endl;
@@ -46,8 +50,8 @@ int main(int argc, char *argv[])
     int numComponents = reader->GetOutput()->GetNumberOfScalarComponents();
     if (numComponents > 3)
     {
-        std::cout << "Error: cannot process an image with "
-                  << numComponents << " components!" << std::endl;
+        std::cout << "Error: cannot process an image with " << numComponents
+                  << " components!" << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -62,10 +66,7 @@ int main(int argc, char *argv[])
     double xmax = 0.;
     double ymax = 0.;
 
-    double colors[3][3] = {
-        {1, 0, 0},
-        {0, 1, 0},
-        {0, 0, 1}};
+    double colors[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
 
     const char *labels[3] = {"Red", "Green", "Blue"};
 
@@ -83,7 +84,9 @@ int main(int argc, char *argv[])
 
         auto histogram = vtkSmartPointer<vtkImageAccumulate>::New();
         histogram->SetInputConnection(extract->GetOutputPort());
-        histogram->SetComponentExtent(0, static_cast<int>(range[1]) - static_cast<int>(range[0]) - 1, 0, 0, 0, 0);
+        histogram->SetComponentExtent(
+            0, static_cast<int>(range[1]) - static_cast<int>(range[0]) - 1, 0,
+            0, 0, 0);
         histogram->SetComponentOrigin(range[0], 0, 0);
         histogram->SetComponentSpacing(1, 0, 0);
         histogram->SetIgnoreZero(ignoreZero);

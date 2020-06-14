@@ -28,8 +28,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#pragma warning( disable : 4251)  // DLL/templates non exportes
-#pragma warning( disable : 4267)  // size_t => int
+#pragma warning(disable : 4251) // DLL/templates non exportes
+#pragma warning(disable : 4267) // size_t => int
 
 namespace genmai
 {
@@ -44,6 +44,6 @@ class PolarPoint;
 class Tool;
 class ToolBuilder;
 
-}
+} // namespace genmai
 
-#endif //GENMAI_H
+#endif // GENMAI_H

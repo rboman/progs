@@ -37,7 +37,8 @@ class MainWindow : public QMainWindow
     QLabel *lbl2;
 
 public:
-    MainWindow(QWidget *parent = 0) : QMainWindow(parent), img1(nullptr), img2(nullptr)
+    MainWindow(QWidget *parent = 0)
+        : QMainWindow(parent), img1(nullptr), img2(nullptr)
     {
         this->setWindowTitle("Filters");
         this->initUI();
@@ -68,7 +69,7 @@ public:
         QString iconfile = srcDir + "/../../exit.png";
         QAction *exitAct = new QAction(QIcon(iconfile), "Exit", this);
 
-        //exitAct->setShortcut("Ctrl+Q");
+        // exitAct->setShortcut("Ctrl+Q");
         exitAct->setStatusTip("Exit application");
         connect(exitAct, &QAction::triggered, this, &QMainWindow::close);
 
@@ -148,9 +149,9 @@ public slots:
             for (int j = 0; j < this->img1->height(); j += 1)
             {
                 QColor col = this->img1->pixelColor(i, j);
-                //newcol = col.darker()
-                //newcol = col.lighter()
-                //mean = (col.red() + col.green() + col.blue())/3
+                // newcol = col.darker()
+                // newcol = col.lighter()
+                // mean = (col.red() + col.green() + col.blue())/3
                 int mean = col.value();
                 QColor newcol(mean, mean, mean);
                 this->img2->setPixelColor(i, j, newcol);

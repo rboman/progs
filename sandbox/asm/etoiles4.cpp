@@ -1,10 +1,10 @@
 /***********************************************************************
-*                      Starfield 4  (C++ & Asm)                        *
-*                                                                      *
-* . Déplacement latéral des étoiles                                    *
-* . Grosses étoiles en avant plan                                      *
-*                                                             12.08.96 *
-************************************************************************/
+ *                      Starfield 4  (C++ & Asm)                        *
+ *                                                                      *
+ * . Déplacement latéral des étoiles                                    *
+ * . Grosses étoiles en avant plan                                      *
+ *                                                             12.08.96 *
+ ************************************************************************/
 
 #include <stdlib.h>
 #include <conio.h>
@@ -17,7 +17,8 @@ struct etoiles
 etoiles et[500];
 int nb_et;
 
-void putpixel(int x, int y, unsigned char col)
+void
+putpixel(int x, int y, unsigned char col)
 {
     asm mov ax, 0xa000;
     asm mov es, ax;
@@ -29,7 +30,8 @@ void putpixel(int x, int y, unsigned char col)
     asm mov es : [di], al;
 }
 
-void bigstar(int x, int y, unsigned char col)
+void
+bigstar(int x, int y, unsigned char col)
 {
     putpixel(x, y, col);
     putpixel(x + 1, y, col);
@@ -37,7 +39,8 @@ void bigstar(int x, int y, unsigned char col)
     putpixel(x + 1, y + 1, col);
 }
 
-int main()
+int
+main()
 {
     asm mov ax, 0x13;
     asm int 0x10;
@@ -85,6 +88,6 @@ int main()
 
     asm mov ax, 3; /* Retour au mode texte */
     asm int 0x10;
-    
+
     return 0;
 }

@@ -47,7 +47,8 @@ Plane::Plane()
     Tranchant = NULL;
 }
 
-void Plane::calcule()
+void
+Plane::calcule()
 {
     //-------------------------------------------------------------------------
     //            Calcul de la masse et de l'inertie de l'aile
@@ -63,7 +64,8 @@ void Plane::calcule()
     m = densite * (2.0 * ep * (11.0 * h - 2.0 * ep * Unite));
 
     Polynome I(3);
-    I = h * h * h * (31.0 / 6.0) * ep - 11.0 * h * h * pow(ep, 2) + (26.0 / 3.0) * h * pow(ep, 3);
+    I = h * h * h * (31.0 / 6.0) * ep - 11.0 * h * h * pow(ep, 2) +
+        (26.0 / 3.0) * h * pow(ep, 3);
     I[0] = I[0] - 4.0 / 3.0 * pow(ep, 4);
 
     Masses MSX[4];
@@ -86,8 +88,9 @@ void Plane::calcule()
     //-------------------------------------------------------------------------
 
     Polynome p(0);
-    p[0] = 1.0 / sqrt(m.integrale(0.0, enverg) // 1er poly = cte.
-                      + (!m).integrale(-enverg, 0.0) + Mfuselage + 2 * Mmoteurs);
+    p[0] =
+        1.0 / sqrt(m.integrale(0.0, enverg) // 1er poly = cte.
+                   + (!m).integrale(-enverg, 0.0) + Mfuselage + 2 * Mmoteurs);
     std::cout << "Polynome #0:" << p << '\n';
 
     BasePoly Base(MSX, I, m, MYoung, enverg, p);
@@ -123,7 +126,8 @@ void Plane::calcule()
         double **KM = Base.ajoute_suivant();
         nopoly++;
 
-        double **COPY_K = new double *[nopoly]; // Copie la matrice K dans COPY_K
+        double **COPY_K =
+            new double *[nopoly]; // Copie la matrice K dans COPY_K
         for (int i = 0; i < nopoly; i++)
         {
             COPY_K[i] = new double[nopoly];
@@ -210,9 +214,8 @@ void Plane::calcule()
             delete COPY_K[i];
         delete COPY_K;
     }
-    std::cout << '\n'
-              << nopoly << " poly. nécessaires.\n";
-    //getch();
+    std::cout << '\n' << nopoly << " poly. nécessaires.\n";
+    // getch();
 
     //---"Nettoie" les modes propres------------
     for (int j = 1; j <= nopoly; j++)
@@ -226,7 +229,7 @@ void Plane::calcule()
     std::cout << "\nValeurs Propres:\n";
     for (int j = 1; j <= nopoly; j++)
         std::cout << j << ": " << sqrt(ValPro[j]) << '\n';
-    //getch();
+    // getch();
     std::cout << "\nVecteurs Propres:\n";
     for (int j = 1; j <= nopoly; j++)
     {
@@ -282,7 +285,11 @@ void Plane::calcule()
     double *mu = new double[nopoly];
     for (int i = 0; i < nopoly; i++)
     {
-        mu[i] = (m * MP[i] * MP[i]).integrale(0.0, enverg) + ((!m) * MP[i] * MP[i]).integrale(-enverg, 0.0) + MP[i](0) * MP[i](0) * Mfuselage + MP[i](-enverg / 2) * MP[i](-enverg / 2) * Mmoteurs + MP[i](enverg / 2) * MP[i](enverg / 2) * Mmoteurs;
+        mu[i] = (m * MP[i] * MP[i]).integrale(0.0, enverg) +
+                ((!m) * MP[i] * MP[i]).integrale(-enverg, 0.0) +
+                MP[i](0) * MP[i](0) * Mfuselage +
+                MP[i](-enverg / 2) * MP[i](-enverg / 2) * Mmoteurs +
+                MP[i](enverg / 2) * MP[i](enverg / 2) * Mmoteurs;
     }
 
     // Ecriture dans un fichier *.m
@@ -298,17 +305,22 @@ void Plane::calcule()
     double alp0 = -2 * F0 * T / pi * MP[0](0.0);
 
     // M et T pdt l'appl. de la force
-    //double t;
+    // double t;
     Polynome M;
     for (t = 0, compt = 0; compt < np2 + 1; t += T / np2, compt++)
     {
         M = M - M;
         M[0] = 0.0;
-        M = MP[0] * (MP[0](0.0) * F0 * T * T / (pi * pi) * sin(pi * t / T) + (alp0 + MP[0](0.0) * F0 * T / pi) * t);
+        M = MP[0] * (MP[0](0.0) * F0 * T * T / (pi * pi) * sin(pi * t / T) +
+                     (alp0 + MP[0](0.0) * F0 * T / pi) * t);
         for (int i = 3; i < Nmodes; i += 2)
         {
             double om = sqrt(ValPro[i]);
-            M = M + MP[i - 1] * MP[i - 1](0.0) * (F0 / om * (T / pi * sin(om * t) - om * T * T / (pi * pi) * sin(pi * t / T)) / (1 - om * om * T * T / (pi * pi)));
+            M = M + MP[i - 1] * MP[i - 1](0.0) *
+                        (F0 / om *
+                         (T / pi * sin(om * t) -
+                          om * T * T / (pi * pi) * sin(pi * t / T)) /
+                         (1 - om * om * T * T / (pi * pi)));
         }
         M = M.derive().derive();
         M = M * MYoung * I;
@@ -327,8 +339,11 @@ void Plane::calcule()
     for (int i = 3; i < Nmodes; i += 2)
     {
         double om = sqrt(ValPro[i]);
-        alpha[i] = F0 * MP[i - 1](0.0) / om * (T / (pi)*sin(om * T)) / (1 - ((om * om * T * T) / (pi * pi)));
-        alphap[i] = F0 * MP[i - 1](0.0) / om * (T / (pi)*om * cos(om * T) + om * T / (pi)) / (1 - ((om * om * T * T) / (pi * pi)));
+        alpha[i] = F0 * MP[i - 1](0.0) / om * (T / (pi)*sin(om * T)) /
+                   (1 - ((om * om * T * T) / (pi * pi)));
+        alphap[i] = F0 * MP[i - 1](0.0) / om *
+                    (T / (pi)*om * cos(om * T) + om * T / (pi)) /
+                    (1 - ((om * om * T * T) / (pi * pi)));
     }
 
     for (t = T + T / np2; compt < np2 * Nperiod + 1; t += T / np2, compt++)
@@ -339,7 +354,8 @@ void Plane::calcule()
         for (int i = 3; i < Nmodes; i += 2)
         {
             double om = sqrt(ValPro[i]);
-            M = M + MP[i - 1] * (alpha[i] * cos(om * (t - T)) + alphap[i] / om * sin(om * (t - T)));
+            M = M + MP[i - 1] * (alpha[i] * cos(om * (t - T)) +
+                                 alphap[i] / om * sin(om * (t - T)));
         }
         M = M.derive().derive();
         M = M * MYoung * I;
@@ -353,7 +369,8 @@ void Plane::calcule()
     toMatlab3(Moment, Tranchant, compt);
 }
 
-void Plane::dswap(double *a, double *b)
+void
+Plane::dswap(double *a, double *b)
 {
     double tmp;
     tmp = *a;
@@ -370,7 +387,8 @@ std::vector<double> Plane::getValPro() const // size = nopoly[shift]
     return vp;
 }
 
-std::vector<double> Plane::getModPro(int j) const // size = nopoly[shift] * nopoly[shift]
+std::vector<double>
+Plane::getModPro(int j) const // size = nopoly[shift] * nopoly[shift]
 {
     if (j < 0 || j >= Nmodes)
         throw std::runtime_error("getModPro(int j): bad j");
@@ -381,7 +399,8 @@ std::vector<double> Plane::getModPro(int j) const // size = nopoly[shift] * nopo
     return mod;
 }
 
-void Plane::toMatlab1()
+void
+Plane::toMatlab1()
 {
     std::ofstream fich("vpvp.m", std::ios::out);
     fich << "vap=[";
@@ -408,7 +427,8 @@ std::vector<double> Plane::getXX() const // size = np+1! - pas de shift
         xx[i] = XX[i];
     return xx;
 }
-std::vector<double> Plane::getMODES(int j) const // size = nopoly * np+1  - pas de shift
+std::vector<double>
+Plane::getMODES(int j) const // size = nopoly * np+1  - pas de shift
 {
     if (j < 0 || j >= Nmodes)
         throw std::runtime_error("getMODES(int j): bad j");
@@ -419,7 +439,8 @@ std::vector<double> Plane::getMODES(int j) const // size = nopoly * np+1  - pas 
     return mod;
 }
 
-void Plane::toMatlab2(Polynome *MP)
+void
+Plane::toMatlab2(Polynome *MP)
 {
     std::ofstream fich("graphe.m", std::ios::out);
     fich << "x=["; // Vecteur abcisse  : x
@@ -453,7 +474,8 @@ void Plane::toMatlab2(Polynome *MP)
     std::cout << "graphe.m cree.\n";
 }
 
-void Plane::toMatlab3(double *Moment, double *Tranchant, int compt)
+void
+Plane::toMatlab3(double *Moment, double *Tranchant, int compt)
 {
     std::ofstream fich2("mt.m", std::ios::out);
     fich2 << "M=[";
@@ -468,7 +490,8 @@ void Plane::toMatlab3(double *Moment, double *Tranchant, int compt)
     fich2 << "%gtext('M(t)');\n";
     fich2 << "%gtext('T(t)');\n";
     fich2 << "grid;\n";
-    fich2 << "title(' Moment et effort tranchant a l'' emplanture de l'' aile');\n";
+    fich2 << "title(' Moment et effort tranchant a l'' emplanture de l'' "
+             "aile');\n";
     fich2 << "xlabel('temps');\nylabel('M(t) & T(t) en x=0');\n";
     fich2.close();
     std::cout << "mt.m cree.\n";

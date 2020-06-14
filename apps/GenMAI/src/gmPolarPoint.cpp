@@ -16,15 +16,9 @@
 
 using namespace genmai;
 
-PolarPoint::PolarPoint(Point const &c,
-                       double a,
-                       double r) : c(c), a(a), r(r)
-{
-}
+PolarPoint::PolarPoint(Point const &c, double a, double r) : c(c), a(a), r(r) {}
 
-PolarPoint::PolarPoint(const Point &centre,
-                       const Point &axis,
-                       const Point &poi)
+PolarPoint::PolarPoint(const Point &centre, const Point &axis, const Point &poi)
 {
     Point dx = (poi - centre).rotate(-atan2(axis));
 

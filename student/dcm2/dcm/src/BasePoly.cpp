@@ -17,18 +17,15 @@
 #include <cmath>
 using namespace dcm;
 
-BasePoly::BasePoly(Masses *_MsX,
-                   Polynome _I,
-                   Polynome _m,
-                   double _young,
-                   double _envergure,
-                   Polynome &P) : VarArray<Polynome>(max_pol)
+BasePoly::BasePoly(Masses *_MsX, Polynome _I, Polynome _m, double _young,
+                   double _envergure, Polynome &P)
+    : VarArray<Polynome>(max_pol)
 
 {
-    young = _young; //E    N/m2
+    young = _young; // E    N/m2
     MsX = _MsX;
-    I = _I; //I(x) m4
-    m = _m; //m(x) kg/m
+    I = _I; // I(x) m4
+    m = _m; // m(x) kg/m
     l = _envergure;
 
     (*this)[0] = P;
@@ -58,16 +55,19 @@ BasePoly::ajoute_suivant()
 
     for (int i = 0; i < poly.donne_degre(); i++)
     {
-        poly[i] = (m * temp * ((*this)[i])).integrale(0.0, l) + (!m * temp * ((*this)[i])).integrale(-l, 0.0);
+        poly[i] = (m * temp * ((*this)[i])).integrale(0.0, l) +
+                  (!m * temp * ((*this)[i])).integrale(-l, 0.0);
         msx = MsX;
         while (msx->masse)
         {
-            poly[i] = poly[i] + msx->masse * temp(msx->x) * ((*this)[i](msx->x));
+            poly[i] =
+                poly[i] + msx->masse * temp(msx->x) * ((*this)[i](msx->x));
             msx++;
         }
     }
 
-    poly[poly.donne_degre()] = (m * temp * temp).integrale(0.0, l) + (!m * temp * temp).integrale(-l, 0.0);
+    poly[poly.donne_degre()] = (m * temp * temp).integrale(0.0, l) +
+                               (!m * temp * temp).integrale(-l, 0.0);
     msx = MsX;
     while (msx->masse)
     {
@@ -100,7 +100,8 @@ BasePoly::ajoute_suivant()
     for (int i = 0; i <= taille; i++)
     {
         double test;
-        test = (m * poly * ((*this)[i])).integrale(0.0, l) + (!m * poly * ((*this)[i])).integrale(-l, 0.0);
+        test = (m * poly * ((*this)[i])).integrale(0.0, l) +
+               (!m * poly * ((*this)[i])).integrale(-l, 0.0);
         msx = MsX;
         while (msx->masse)
         {
@@ -116,7 +117,8 @@ BasePoly::ajoute_suivant()
     return K;
 }
 
-void BasePoly::buildK()
+void
+BasePoly::buildK()
 {
     double **KK = new double *[taille + 1];
     KK[taille] = new double[taille + 1];
@@ -125,9 +127,13 @@ void BasePoly::buildK()
         KK[j] = new double[taille + 1];
         for (int k = 0; k <= j; ++k)
             KK[j][k] = KK[k][j] = K[j][k];
-        KK[taille][j] = KK[j][taille] = (young * I * ddBase[taille] * ddBase[j]).integrale(0.0, l) + (young * !I * ddBase[taille] * ddBase[j]).integrale(-l, 0.0);
+        KK[taille][j] = KK[j][taille] =
+            (young * I * ddBase[taille] * ddBase[j]).integrale(0.0, l) +
+            (young * !I * ddBase[taille] * ddBase[j]).integrale(-l, 0.0);
     }
-    KK[taille][taille] = (young * I * ddBase[taille] * ddBase[taille]).integrale(0.0, l) + (young * !I * ddBase[taille] * ddBase[taille]).integrale(-l, 0.0);
+    KK[taille][taille] =
+        (young * I * ddBase[taille] * ddBase[taille]).integrale(0.0, l) +
+        (young * !I * ddBase[taille] * ddBase[taille]).integrale(-l, 0.0);
 
     for (int j = 0; j < taille; ++j)
         delete K[j];
@@ -143,7 +149,8 @@ dcm::operator<<(std::ostream &outp, BasePoly &bp)
     return outp;
 }
 
-void BasePoly::affiche_K(int dim)
+void
+BasePoly::affiche_K(int dim)
 {
     std::cout << "Matrice K:" << '\n';
     for (int i = 0; i < dim; i++)

@@ -4,16 +4,23 @@
 #include <iostream>
 #include <stdio.h>
 
-void printUsageAndExit(const char *progName)
+void
+printUsageAndExit(const char *progName)
 {
     std::cout << std::endl;
-    std::cout << "eConv V4 by RoBo - A simplified Search/Replace Tool that" << std::endl;
-    std::cout << "                   uses a text dictionary file (2 columns)" << std::endl;
+    std::cout << "eConv V4 by RoBo - A simplified Search/Replace Tool that"
+              << std::endl;
+    std::cout << "                   uses a text dictionary file (2 columns)"
+              << std::endl;
     std::cout << std::endl;
-    std::cout << "usage   : " << progName << " [-d dicfile.txt] [-s] [fileIn1] [fileIn2] ..." << std::endl;
+    std::cout << "usage   : " << progName
+              << " [-d dicfile.txt] [-s] [fileIn1] [fileIn2] ..." << std::endl;
     std::cout << std::endl;
-    std::cout << "options : [-d dicfile.txt] : name of the dictionary (default=dic.txt)" << std::endl;
-    std::cout << "          [-s]             : sort and save the dictionary" << std::endl;
+    std::cout << "options : [-d dicfile.txt] : name of the dictionary "
+                 "(default=dic.txt)"
+              << std::endl;
+    std::cout << "          [-s]             : sort and save the dictionary"
+              << std::endl;
     std::cout << std::endl;
     exit(1);
 }
@@ -23,7 +30,8 @@ void printUsageAndExit(const char *progName)
  * @since  September 2003
  */
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     const char defaultDicFile[] = "dic.txt";
     const char *dicFile = &defaultDicFile[0];

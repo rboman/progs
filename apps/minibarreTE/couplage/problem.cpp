@@ -9,11 +9,10 @@
 #include "newmark.h"
 #include "resfiles.h"
 
-Problem::Problem()
-{
-}
+Problem::Problem() {}
 
-void Problem::solve()
+void
+Problem::solve()
 {
     // parametres physiques
     double kappa = bar.k;
@@ -142,8 +141,8 @@ void Problem::solve()
     Fn[(m - 1) / 2] = light.eval(0.0);
     Fnplus1[(m - 1) / 2] = light.eval(dt);
 
-    // Création de la matrice Aprime et du vecteur bprime selon le schéma de nmark.
-    // On résoudra Aprime*Znplus1 = bprime
+    // Création de la matrice Aprime et du vecteur bprime selon le schéma de
+    // nmark. On résoudra Aprime*Znplus1 = bprime
 
     // Aprime
     gmm::row_matrix<gmm::wsvector<double>> Aprime(2 * m, 2 * m);
@@ -156,7 +155,8 @@ void Problem::solve()
 
     // Ap1
     gmm::row_matrix<gmm::wsvector<double>> Ap1(2 * m, 2 * m);
-    gmm::add(gmm::scaled(A2, 2.0), gmm::scaled(A1, -(1.0 - 2.0 * gamma) * dt), Ap1);
+    gmm::add(gmm::scaled(A2, 2.0), gmm::scaled(A1, -(1.0 - 2.0 * gamma) * dt),
+             Ap1);
     gmm::add(gmm::scaled(A0, -(0.5 + gamma - 2 * beta) * dt * dt), Ap1);
     // Ap2
     gmm::row_matrix<gmm::wsvector<double>> Ap2(2 * m, 2 * m);
@@ -165,12 +165,13 @@ void Problem::solve()
     // second membre
     std::vector<double> bprime(2 * m);
 
-    //Calcul de la matrice de préconditionnement et définition du critère d'erreur
+    // Calcul de la matrice de préconditionnement et définition du critère
+    // d'erreur
     std::cout << "preconditionner...\n";
     gmm::ilutp_precond<gmm::row_matrix<gmm::wsvector<double>>> P(Aprime, m, 0.);
 
     ///////////////////////////////
-    //Boucle sur les pas de temps//
+    // Boucle sur les pas de temps//
     ///////////////////////////////
     std::cout << "time integration...\n";
     double t = 0.0;
@@ -202,10 +203,11 @@ void Problem::solve()
         bprime[2 * m - 1] = 0.0;
 
         // Résolution de l'équation
-        gmm::iteration iter(1.e-6); //iter.set_noisy(1);
+        gmm::iteration iter(1.e-6); // iter.set_noisy(1);
         gmm::gmres(Aprime, Znplus1, bprime, P, 100, iter);
 
-        //Actualisation des vecteurs F et des 2 vecteurs Z (Zn-1 et Zn) pour le pas de temps suivant.
+        // Actualisation des vecteurs F et des 2 vecteurs Z (Zn-1 et Zn) pour le
+        // pas de temps suivant.
         Fnmoins1[(m - 1) / 2] = Fn[(m - 1) / 2];
         Fn[(m - 1) / 2] = Fnplus1[(m - 1) / 2];
         Fnplus1[(m - 1) / 2] = light.eval(t + dt);
@@ -218,7 +220,8 @@ void Problem::solve()
     }
 }
 
-void Problem::applyBC(gmm::row_matrix<gmm::wsvector<double>> &mat, int line)
+void
+Problem::applyBC(gmm::row_matrix<gmm::wsvector<double>> &mat, int line)
 {
     for (size_t j = 0; j < gmm::mat_ncols(mat); ++j)
         mat(line, j) = 0.0;

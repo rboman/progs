@@ -7,11 +7,13 @@
 class MYDLL_API ObjectC : public Singleton<ObjectC>
 {
     friend class Singleton<ObjectC>;
+
 public:
     void print();
+
 protected:
     ObjectC();
     ~ObjectC();
 };
 
-#endif //OBJECTC_H
+#endif // OBJECTC_H

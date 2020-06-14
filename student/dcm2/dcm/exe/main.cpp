@@ -17,7 +17,8 @@
 #include "Plane.h"
 using namespace dcm;
 
-int main()
+int
+main()
 {
     Polynome::demo();
     std::cout << "\n\n---\n\n";
@@ -25,4 +26,3 @@ int main()
     Plane.calcule();
     return 0;
 }
-

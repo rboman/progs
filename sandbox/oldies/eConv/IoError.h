@@ -15,7 +15,7 @@ class IoError
     std::string file;
     std::string desc;
 
-  public:
+public:
     IoError(const std::string &_file, const std::string &_desc);
     void print() const;
 };

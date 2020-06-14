@@ -28,4 +28,4 @@ NDH_API void visu();
 
 } // namespace ndh
 
-#endif //GRAPH_H
+#endif // GRAPH_H

@@ -18,7 +18,8 @@
 #include "genmai.h"
 #include <iostream>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
  * @brief Id for the Layer objects
@@ -32,6 +33,6 @@ enum LayerType
 
 GENMAI_API std::ostream &operator<<(std::ostream &o, const LayerType &v);
 
-}
+} // namespace genmai
 
-#endif //GMLAYERTYPE_H
+#endif // GMLAYERTYPE_H

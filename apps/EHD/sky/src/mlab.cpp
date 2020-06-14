@@ -43,8 +43,9 @@
  *       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int mlab_vec(char const *filename, char const *id_txt, double *v, int n,
-             int nfile, int opt)
+SKY_API int
+mlab_vec(char const *filename, char const *id_txt, double *v, int n, int nfile,
+         int opt)
 {
     int iop = 0;
     int i;
@@ -66,13 +67,11 @@ SKY_API int mlab_vec(char const *filename, char const *id_txt, double *v, int n,
 
     if (VERBOSE || (opt == MLAB_VERBOSE))
         printf("vecteur \"%s\" sauve dans le fichier matlab \"%s\" (%s)\n",
-               id_txt, filename,
-               (nfile == MLAB_OLD) ? "append" : "new");
+               id_txt, filename, (nfile == MLAB_OLD) ? "append" : "new");
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"  __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: impossible d'ouvrir le fichier \"%s\" !", filename);
@@ -80,15 +79,14 @@ ERR1:
     goto FIN;
 }
 
-/**************************************************************************/
-
 /*
  *       Ecriture d'une matrice dans un fichier MATLAB existant ou non
  *       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int mlab_mat(char const *filename, char const *id_txt, double **v, int m, int n,
-             int nfile, int opt)
+SKY_API int
+mlab_mat(char const *filename, char const *id_txt, double **v, int m, int n,
+         int nfile, int opt)
 {
     int iop = 0;
     int i, j;
@@ -105,29 +103,28 @@ SKY_API int mlab_mat(char const *filename, char const *id_txt, double **v, int m
 
     for (i = 0; i < m; i++)
         for (j = 0; j < n; j++)
-            fprintf(fich, "%s(%d,%d)=%20.15E;\n", id_txt, i + 1, j + 1, v[i][j]);
+            fprintf(fich, "%s(%d,%d)=%20.15E;\n", id_txt, i + 1, j + 1,
+                    v[i][j]);
 
     fclose(fich);
 
     if (VERBOSE || (opt == MLAB_VERBOSE))
         printf("matrice \"%s\" sauve dans le fichier matlab \"%s\" (%s)\n",
-               id_txt, filename,
-               (nfile == MLAB_OLD) ? "append" : "new");
+               id_txt, filename, (nfile == MLAB_OLD) ? "append" : "new");
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"  __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: impossible d'ouvrir le fichier \"%s\" !", filename);
     iop = 990;
     goto FIN;
 }
-/**************************************************************************/
 
-SKY_API int mlab_mat_mxn(char const *filename, char const *id_txt, int m, int n,
-                 double **v, int nfile, int opt)
+SKY_API int
+mlab_mat_mxn(char const *filename, char const *id_txt, int m, int n, double **v,
+             int nfile, int opt)
 {
     int iop = 0;
     int i;
@@ -143,20 +140,18 @@ SKY_API int mlab_mat_mxn(char const *filename, char const *id_txt, int m, int n,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"  __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 }
-
-/**************************************************************************/
 
 /*
  *  Ecriture d'une matrice SKYLINE dans un fichier MATLAB existant ou non
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-SKY_API int mlab_sky(char const *filename, char const *id_txt, SkyMat *A,
-             int type, int nfile, int opt)
+SKY_API int
+mlab_sky(char const *filename, char const *id_txt, SkyMat *A, int type,
+         int nfile, int opt)
 {
     int iop = 0;
     FILE *fich;
@@ -195,13 +190,17 @@ SKY_API int mlab_sky(char const *filename, char const *id_txt, SkyMat *A,
                 if (ic == il)
                 {
                     if (type == SKY_LU)
-                        fprintf(fich, "%s%s%s(%d,%d) = 1.0;\n", name, id_txt, pre1, il, ic);
-                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name, id_txt, pre2, il, ic, A->situ[j]);
+                        fprintf(fich, "%s%s%s(%d,%d) = 1.0;\n", name, id_txt,
+                                pre1, il, ic);
+                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name, id_txt,
+                            pre2, il, ic, A->situ[j]);
                 }
                 else
                 {
-                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name, id_txt, pre1, ic, il, A->sitl[j]);
-                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name, id_txt, pre2, il, ic, A->situ[j]);
+                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name, id_txt,
+                            pre1, ic, il, A->sitl[j]);
+                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name, id_txt,
+                            pre2, il, ic, A->situ[j]);
                 }
             }
             else
@@ -210,24 +209,24 @@ SKY_API int mlab_sky(char const *filename, char const *id_txt, SkyMat *A,
                 {
                     if (type == SKY_LU)
                     {
-                        fprintf(fich, "%s%sD(%d,%d) = %20.15E;\n",
-                                name, id_txt, il, ic, A->sitl[j]);
-                        fprintf(fich, "%s%s%s(%d,%d) = 1.0;\n",
-                                name, id_txt, pre1, il, ic);
+                        fprintf(fich, "%s%sD(%d,%d) = %20.15E;\n", name, id_txt,
+                                il, ic, A->sitl[j]);
+                        fprintf(fich, "%s%s%s(%d,%d) = 1.0;\n", name, id_txt,
+                                pre1, il, ic);
                     }
                     else
                     {
-                        fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
-                                name, id_txt, pre1, il, ic, A->sitl[j]);
+                        fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name,
+                                id_txt, pre1, il, ic, A->sitl[j]);
                     }
                 }
                 else
                 {
-                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
-                            name, id_txt, pre1, ic, il, A->sitl[j]);
+                    fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name, id_txt,
+                            pre1, ic, il, A->sitl[j]);
                     if (type != SKY_LU)
-                        fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
-                                name, id_txt, pre1, il, ic, A->sitl[j]);
+                        fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name,
+                                id_txt, pre1, il, ic, A->sitl[j]);
                 }
             }
         }
@@ -237,13 +236,11 @@ SKY_API int mlab_sky(char const *filename, char const *id_txt, SkyMat *A,
 
     if (VERBOSE || (opt == MLAB_VERBOSE))
         printf("matrice \"%s\" sauvee dans le fichier matlab \"%s\" (%s)\n",
-               name, filename,
-               (nfile == MLAB_OLD) ? "append" : "new");
+               name, filename, (nfile == MLAB_OLD) ? "append" : "new");
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->"  __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nerreur: la matrice n'est pas initialisee !");

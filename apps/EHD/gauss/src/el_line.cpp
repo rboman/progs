@@ -20,21 +20,21 @@
 
 #include "el.h"
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */
 
-GAUSS_API void el_line_ff(double F[][4], double *c)
+GAUSS_API void
+el_line_ff(double F[][4], double *c)
 {
 
     /*
-   * Fonctions de forme 'F[0][0-1]' et derivees 'F[1][0-1]' 
-   * d'un segment lineaire (4 noeuds) aux coords
-   * (ksi) = (c[0])
-   *
-   */
+     * Fonctions de forme 'F[0][0-1]' et derivees 'F[1][0-1]'
+     * d'un segment lineaire (4 noeuds) aux coords
+     * (ksi) = (c[0])
+     *
+     */
 
     static double demi = 0.5, un = 1.0;
 
@@ -60,13 +60,14 @@ GAUSS_API void el_line_ff(double F[][4], double *c)
     F[1][1] = drp;
 }
 
-/* ---------------------------------------------------------------------------------- */
+
 
 /*
- *   DET JACOBIEN 
+ *   DET JACOBIEN
  */
 
-GAUSS_API int el_line_detj(double jaco[3][3], int ndim, double *res)
+GAUSS_API int
+el_line_detj(double jaco[3][3], int ndim, double *res)
 {
     int j;
     double detj;

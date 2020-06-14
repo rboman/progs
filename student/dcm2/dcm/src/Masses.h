@@ -25,7 +25,9 @@ struct Masses
     double masse;
     double x;
 
-    explicit Masses(double _masse = 0.0, double _x = 0.0) : masse(_masse), x(_x) {}
+    explicit Masses(double _masse = 0.0, double _x = 0.0) : masse(_masse), x(_x)
+    {
+    }
 };
 
 } // namespace dcm

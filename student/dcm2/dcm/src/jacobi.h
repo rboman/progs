@@ -19,4 +19,4 @@
 
 void jacobi(double **a, int n, double d[], double **v, int &nrot);
 
-#endif //JACOBI_H
+#endif // JACOBI_H

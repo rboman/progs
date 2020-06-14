@@ -21,7 +21,8 @@
  * @brief Determination de la ligne de ciel
  */
 
-EHD_API int ehd_preass(SkyMat *K, int *loc2, int nbelem, int nsys, int nddl)
+EHD_API int
+ehd_preass(SkyMat *K, int *loc2, int nbelem, int nsys, int nddl)
 {
     int iop = 0;
 

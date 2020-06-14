@@ -8,11 +8,14 @@
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkCamera.h>
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        std::cout << argv[0] << " by RoBo: display 3DS & VRML2 files using vtkImporter classes\n";
+        std::cout << argv[0]
+                  << " by RoBo: display 3DS & VRML2 files using vtkImporter "
+                     "classes\n";
         std::cout << "usage:\n";
         std::cout << "\t" << argv[0] << " file.[3ds|wrl]\n\n";
         return 1;
@@ -61,7 +64,7 @@ int main(int argc, char *argv[])
     camera->Dolly(1.2); // zoom
     ren->ResetCameraClippingRange();
 
-    //iren->Initialize();  // useless
-    //renWin->Render();    // useless
+    // iren->Initialize();  // useless
+    // renWin->Render();    // useless
     iren->Start();
 }

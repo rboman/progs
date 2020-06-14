@@ -11,18 +11,17 @@ PlotWin::PlotWin()
     ymax = 1.0;
 }
 
-PlotWin::~PlotWin()
-{
-    delete plot;
-}
+PlotWin::~PlotWin() { delete plot; }
 
-void PlotWin::init(std::vector<double> &_x, std::vector<double> &_inc)
+void
+PlotWin::init(std::vector<double> &_x, std::vector<double> &_inc)
 {
     x = &_x;
     inc = &_inc;
 }
 
-void PlotWin::update()
+void
+PlotWin::update()
 {
     nstep++;
     if (nstep % freq)

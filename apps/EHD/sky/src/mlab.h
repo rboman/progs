@@ -45,12 +45,13 @@
                                    Prototypes
  **************************************************************************/
 
-SKY_API int mlab_mat(char const *filename, char const *id_txt, double **v, int n, int m,
-             int nfile, int opt);
-SKY_API int mlab_mat_mxn(char const *filename, char const *id_txt, int m, int n, double **v,
-                 int nfile, int opt);
-SKY_API int mlab_vec(char const *filename, char const *id_txt, double *v, int n, int nfile, int opt);
+SKY_API int mlab_mat(char const *filename, char const *id_txt, double **v,
+                     int n, int m, int nfile, int opt);
+SKY_API int mlab_mat_mxn(char const *filename, char const *id_txt, int m, int n,
+                         double **v, int nfile, int opt);
+SKY_API int mlab_vec(char const *filename, char const *id_txt, double *v, int n,
+                     int nfile, int opt);
 SKY_API int mlab_sky(char const *filename, char const *id_txt, SkyMat *A,
-             int type, int nfile, int opt);
-             
+                     int type, int nfile, int opt);
+
 #endif

@@ -26,7 +26,7 @@ class Fract : public QWidget
     int nb_coul;
 
     std::vector<QColor> colours;
-    
+
 public:
     Fract(QWidget *parent = 0);
 

@@ -10,9 +10,9 @@ class MTLICENSE_API LicClient
     int port;
     QTcpSocket tcpSocket;
 
-  public:
+public:
     LicClient();
     void configure(QString const &_hostname, int _port);
 };
 
-#endif //LICCLIENT_H
+#endif // LICCLIENT_H

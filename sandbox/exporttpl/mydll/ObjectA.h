@@ -4,10 +4,10 @@
 
 #include "mydll.h"
 
-template<typename T>
-class ObjectA
+template <typename T> class ObjectA
 {
     T val;
+
 public:
     ObjectA(T v);
     void print();

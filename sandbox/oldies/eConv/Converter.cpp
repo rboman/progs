@@ -3,11 +3,10 @@
 #include <iostream>
 #include <map>
 
-Converter::Converter(const std::string &in) : fileNameIn(in)
-{
-}
+Converter::Converter(const std::string &in) : fileNameIn(in) {}
 
-void Converter::execute(const Dictionary &dic) const
+void
+Converter::execute(const Dictionary &dic) const
 {
     std::string fileNameOut = fileNameIn + ".tmp";
 
@@ -25,7 +24,8 @@ void Converter::execute(const Dictionary &dic) const
             MyMapIt itm = myMap.find(off); // recherche l'offset
             if (itm != myMap.end())
             {
-                std::cerr << "** Conflict between " << itm->second->first.c_str() << " and ";
+                std::cerr << "** Conflict between "
+                          << itm->second->first.c_str() << " and ";
                 std::cerr << it->first.c_str() << std::endl;
                 if (itm->second->first.size() < it->first.size())
                 {
@@ -44,12 +44,13 @@ void Converter::execute(const Dictionary &dic) const
     }
 
     MyMapIt it2;
-/*
-    for(it2=myMap.begin(); it2!=myMap.end(); ++it2)
-    {
-        std::cout << it2->first << " " << it2->second->first.c_str() << std::endl;
-    }
-*/
+    /*
+        for(it2=myMap.begin(); it2!=myMap.end(); ++it2)
+        {
+            std::cout << it2->first << " " << it2->second->first.c_str() <<
+       std::endl;
+        }
+    */
     // ---
 
     int repl = 0, skip = 0;
@@ -84,7 +85,8 @@ void Converter::execute(const Dictionary &dic) const
 
         fprintf(fileOut, "%s", it2->second->second.c_str());
         repl++;
-        //std::cout << it2->second->first.c_str() << " -> " << it2->second->second.c_str() << std::endl;
+        // std::cout << it2->second->first.c_str() << " -> " <<
+        // it2->second->second.c_str() << std::endl;
     }
 
     char c;
@@ -94,12 +96,14 @@ void Converter::execute(const Dictionary &dic) const
     closeFile(&fileOut);
     closeFile(&fileIn);
 
-    std::cout << fileNameIn.c_str() << ": " << repl << " keywords replaced " << skip << " skipped." << std::endl;
+    std::cout << fileNameIn.c_str() << ": " << repl << " keywords replaced "
+              << skip << " skipped." << std::endl;
 
     renameFiles();
 }
 
-void Converter::renameFiles() const
+void
+Converter::renameFiles() const
 {
     std::string fileNameOut = fileNameIn + ".tmp";
     std::string fileNameBak = fileNameIn + ".bak";
@@ -115,8 +119,11 @@ void Converter::renameFiles() const
         printRenameError(fileNameOut, fileNameIn);
 }
 
-void Converter::printRenameError(const std::string &file1, const std::string &file2) const
+void
+Converter::printRenameError(const std::string &file1,
+                            const std::string &file2) const
 {
-    std::cerr << "** Cannot rename file " << file1.c_str() << " in " << file2.c_str();
+    std::cerr << "** Cannot rename file " << file1.c_str() << " in "
+              << file2.c_str();
     std::cerr << std::endl;
 }

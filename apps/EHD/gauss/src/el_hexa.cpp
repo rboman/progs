@@ -20,21 +20,21 @@
 
 #include "el.h"
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */
 
-GAUSS_API void el_hexa_ff(double F[][4], double *c)
+GAUSS_API void
+el_hexa_ff(double F[][4], double *c)
 {
 
     /*
-   * Fonctions de forme 'F[0][0-7]' et derivees 'F[1-3][0-7]' 
-   * d'un hexa tri-lineaire (8 noeuds) aux coords
-   * (ksi,eta,zeta) = (c[0],c[1],c[2])
-   *
-   */
+     * Fonctions de forme 'F[0][0-7]' et derivees 'F[1-3][0-7]'
+     * d'un hexa tri-lineaire (8 noeuds) aux coords
+     * (ksi,eta,zeta) = (c[0],c[1],c[2])
+     *
+     */
 
     static double demi = 0.5, un = 1.0;
 
@@ -106,13 +106,13 @@ GAUSS_API void el_hexa_ff(double F[][4], double *c)
     F[7][3] = rm * sp * dtp;
 }
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
- *   DET JACOBIEN 
+ *   DET JACOBIEN
  */
 
-GAUSS_API int el_hexa_detj(double jaco[3][3], double *res)
+GAUSS_API int
+el_hexa_detj(double jaco[3][3], double *res)
 {
 
     double detj;

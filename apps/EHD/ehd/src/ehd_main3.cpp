@@ -16,7 +16,8 @@
 
 #include "ehd_main3.h"
 
-Main3::Main3(int _nn) : nn(_nn), h(_nn), PhiS(_nn), PhiP(_nn), dPhiS(_nn), dPhiP(_nn)
+Main3::Main3(int _nn)
+    : nn(_nn), h(_nn), PhiS(_nn), PhiP(_nn), dPhiS(_nn), dPhiP(_nn)
 {
 }
 
@@ -24,11 +25,12 @@ Main3::Main3(int _nn) : nn(_nn), h(_nn), PhiS(_nn), PhiP(_nn), dPhiS(_nn), dPhiP
  * @brief Test des flow factors
  */
 
-int Main3::execute()
+int
+Main3::execute()
 {
     int iop = 0;
     int loi = EHD_PATIR;
-    //const int nn = 100;
+    // const int nn = 100;
     double h_max = 10;
     double h_min = 1;
 
@@ -39,15 +41,12 @@ int Main3::execute()
     double Rq = 1.0, Rq1 = 1.0, Rq2 = 0.0;
     double gam_s = 1.0 / 9.0;
 
-
     // Evaluation
 
     for (int i = 0; i < nn; i++)
     {
-        iop = ehd_flow_factors(h[i], gam_s,
-                               Rq, Rq1, Rq2,
-                               &(PhiP[i]), &(PhiS[i]),
-                               &(dPhiP[i]), &(dPhiS[i]), loi);
+        iop = ehd_flow_factors(h[i], gam_s, Rq, Rq1, Rq2, &(PhiP[i]),
+                               &(PhiS[i]), &(dPhiP[i]), &(dPhiS[i]), loi);
     }
 
     // Resultats vers matlab

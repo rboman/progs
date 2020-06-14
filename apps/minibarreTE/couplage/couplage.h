@@ -16,7 +16,8 @@
 #include <string>
 
 #ifndef SWIG
-void COUPLAGE_API save(gmm::row_matrix<gmm::wsvector<double> > &mat, std::string const &fname);
+void COUPLAGE_API save(gmm::row_matrix<gmm::wsvector<double>> &mat,
+                       std::string const &fname);
 void COUPLAGE_API save(std::vector<double> &vec, std::string const &fname);
 #endif
 

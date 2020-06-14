@@ -15,12 +15,12 @@
 #include <QApplication>
 #include "imgfilter.h"
 
-
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
-	QApplication *app = new QApplication(argc, argv);
-	MainWindow *win = new MainWindow();
-	win->show();
-	app->exec();
-	return 0;
+    QApplication *app = new QApplication(argc, argv);
+    MainWindow *win = new MainWindow();
+    win->show();
+    app->exec();
+    return 0;
 }

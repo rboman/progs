@@ -15,7 +15,7 @@
 
 class Dictionary : public IoObject
 {
-  public:
+public:
     typedef std::list<Entry> MyList;
     typedef MyList::const_iterator MyListItC;
     MyList words;

@@ -8,11 +8,11 @@
 
 class Mesh
 {
-  public:
+public:
     std::vector<Node *> nodes;
     std::vector<Element *> elems;
 
-  public:
+public:
     Mesh() {}
     friend std::ostream &operator<<(std::ostream &out, Mesh const &obj);
     void generate(double xmin, double xmax, int nelm);

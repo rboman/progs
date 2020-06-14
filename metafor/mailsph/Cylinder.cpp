@@ -13,36 +13,38 @@ Cylinder::Cylinder() : Mesh()
     centre[1] = 0.0;    // coor y du centre
     centre[2] = -230.0; // coor z du centre
 
-    rint = 90.;         // rayon interne si creuse, demi-diagonale du cube central si pleine
-    rext = 100.;        // rayon externe
-    longext = 460.;     // longueur du cylindre
-    cyl_ouvert = 0;     // 1 si ouvert, 0 si ferme
-    theta0 = 360.;      // ouverture en degre si ouvert
+    rint = 90.;  // rayon interne si creuse, demi-diagonale du cube central si
+                 // pleine
+    rext = 100.; // rayon externe
+    longext = 460.; // longueur du cylindre
+    cyl_ouvert = 0; // 1 si ouvert, 0 si ferme
+    theta0 = 360.;  // ouverture en degre si ouvert
 
-    ///vec1 = { 1, 0, 0};
-    
-    vec1[0] = 1.0;      // position du premier noeud
-    vec1[1] = 0.0;      //
-    vec1[2] = 0.0;      //
+    /// vec1 = { 1, 0, 0};
 
-    norm[0] = 0.0;      // coor x de la normale au plan de l arc
-    norm[1] = 0.0;      // coor y de la normale au plan de l arc
-    norm[2] = 1.0;      // coor z de la normale au plan de l arc
+    vec1[0] = 1.0; // position du premier noeud
+    vec1[1] = 0.0; //
+    vec1[2] = 0.0; //
 
-    ext[0] = 0.0;       // coor x de la direction d extrusion
-    ext[1] = 0.0;       // coor y de la direction d extrusion
-    ext[2] = 1.0;       // coor z de la direction d extrusion
+    norm[0] = 0.0; // coor x de la normale au plan de l arc
+    norm[1] = 0.0; // coor y de la normale au plan de l arc
+    norm[2] = 1.0; // coor z de la normale au plan de l arc
 
-    nbe = 24;           // nombre d elements sur l arc d un méridien
-    nbc = 3;            // nombre d elements sur l epaisseur
-    nbz = 15;           // nombre d elements sur la hauteur
+    ext[0] = 0.0; // coor x de la direction d extrusion
+    ext[1] = 0.0; // coor y de la direction d extrusion
+    ext[2] = 1.0; // coor z de la direction d extrusion
+
+    nbe = 24; // nombre d elements sur l arc d un méridien
+    nbc = 3;  // nombre d elements sur l epaisseur
+    nbz = 15; // nombre d elements sur la hauteur
 
     noe_ini = 0;
     maille_ini = 0;
     nocyl = 1;
 }
 
-void Cylinder::build()
+void
+Cylinder::build()
 {
     // inversion des rayons pour rext > rint
 
@@ -83,7 +85,8 @@ void Cylinder::build()
     vec1[1] = norm[2] * vrot[0] - norm[0] * vrot[2];
     vec1[2] = norm[0] * vrot[1] - norm[1] * vrot[0];
 
-    double vabs = sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
+    double vabs =
+        sqrt(vec1[0] * vec1[0] + vec1[1] * vec1[1] + vec1[2] * vec1[2]);
     if (vabs < 1.E-8)
         throw std::runtime_error("bad parameters!");
 
@@ -99,11 +102,11 @@ void Cylinder::build()
         ext[i] = ext[i] / vabs;
 
     // allocation du tableau tab(nz,couche,ne)
-	int ***tab=nullptr;
+    int ***tab = nullptr;
     array3D_alloc(tab, nbz + 1, nbc + 1, nbe2);
 
     // allocation du tableau cube(nz,lig,col)
-    int ***cube=nullptr;
+    int ***cube = nullptr;
     if (cyl_creux == 0)
         array3D_alloc(cube, nbz + 1, nbe / 4 + 1, nbe / 4 + 1);
 
@@ -122,7 +125,6 @@ void Cylinder::build()
     array1D_alloc(liste, taille);
 
     // fin des allocations
-
 
     // remplissage de tab
 
@@ -167,16 +169,21 @@ void Cylinder::build()
     for (int i = 0; i < 3; i++)
         coord[noe1][i] = vec1[i] * ray;
 
-
     // la couche exterieure du level 0
 
     for (int ne = 1; ne < nbe2; ne++)
     {
         int nint = tab[0][0][ne];
         double theta = theta0 * (ne * 1.) / (nbe * 1.);
-        coord[nint][0] = coord[noe1][0] * cos(theta) + (norm[1] * coord[noe1][2] - norm[2] * coord[noe1][1]) * sin(theta);
-        coord[nint][1] = coord[noe1][1] * cos(theta) + (norm[2] * coord[noe1][0] - norm[0] * coord[noe1][2]) * sin(theta);
-        coord[nint][2] = coord[noe1][2] * cos(theta) + (norm[0] * coord[noe1][1] - norm[1] * coord[noe1][0]) * sin(theta);
+        coord[nint][0] =
+            coord[noe1][0] * cos(theta) +
+            (norm[1] * coord[noe1][2] - norm[2] * coord[noe1][1]) * sin(theta);
+        coord[nint][1] =
+            coord[noe1][1] * cos(theta) +
+            (norm[2] * coord[noe1][0] - norm[0] * coord[noe1][2]) * sin(theta);
+        coord[nint][2] =
+            coord[noe1][2] * cos(theta) +
+            (norm[0] * coord[noe1][1] - norm[1] * coord[noe1][0]) * sin(theta);
     }
 
     // couche interieure du level 0
@@ -216,7 +223,9 @@ void Cylinder::build()
             {
                 int nint = tab[0][nbc][cote * nbe / 4 + c];
                 for (int i = 0; i < 3; i++)
-                    coord[nint][i] = coord[noe1][i] + (c * 1.) / ((nbe / 4) * 1.) * (coord[noe2][i] - coord[noe1][i]);
+                    coord[nint][i] =
+                        coord[noe1][i] + (c * 1.) / ((nbe / 4) * 1.) *
+                                             (coord[noe2][i] - coord[noe1][i]);
             }
         }
     }
@@ -231,9 +240,10 @@ void Cylinder::build()
                 int noe1 = tab[0][0][ne];
                 int noe2 = tab[0][nbc][ne];
                 for (int i = 0; i < 3; i++)
-                    coord[noe][i] = coord[noe1][i] + (couche * 1.) / (nbc * 1.) * (coord[noe2][i] - coord[noe1][i]);
+                    coord[noe][i] =
+                        coord[noe1][i] + (couche * 1.) / (nbc * 1.) *
+                                             (coord[noe2][i] - coord[noe1][i]);
             }
-
 
     // generation du cube central
 
@@ -245,9 +255,10 @@ void Cylinder::build()
                 int noe1 = cube[0][0][c];
                 int noe2 = cube[0][(nbe / 4)][c];
                 for (int i = 0; i < 3; i++)
-                    coord[noe][i] = coord[noe1][i] + (l * 1.) / ((nbe / 4) * 1.) * (coord[noe2][i] - coord[noe1][i]);
+                    coord[noe][i] =
+                        coord[noe1][i] + (l * 1.) / ((nbe / 4) * 1.) *
+                                             (coord[noe2][i] - coord[noe1][i]);
             }
-
 
     // mise a jour des positions avec le centre centre[i]
 
@@ -258,7 +269,6 @@ void Cylinder::build()
             for (int i = 0; i < 3; i++)
                 coord[nint][i] = coord[nint][i] + centre[i];
         }
-
 
     if (cyl_creux == 0)
         for (int l = 1; l < (nbe / 4); l++)
@@ -279,7 +289,8 @@ void Cylinder::build()
                 int noe1 = tab[0][couche][ne];
                 int noe2 = tab[nz][couche][ne];
                 for (int i = 0; i < 3; i++)
-                    coord[noe2][i] = coord[noe1][i] + (nz * 1.) / (nbz * 1.) * longext * ext[i];
+                    coord[noe2][i] = coord[noe1][i] +
+                                     (nz * 1.) / (nbz * 1.) * longext * ext[i];
             }
 
         if (cyl_creux == 0)
@@ -289,12 +300,13 @@ void Cylinder::build()
                     int noe1 = cube[0][l][c];
                     int noe2 = cube[nz][l][c];
                     for (int i = 0; i < 3; i++)
-                        coord[noe2][i] = coord[noe1][i] + (nz * 1.) / (nbz * 1.) * longext * ext[i];
+                        coord[noe2][i] = coord[noe1][i] + (nz * 1.) /
+                                                              (nbz * 1.) *
+                                                              longext * ext[i];
                 }
     }
 
     // fin du remplissage du tableau des coord.
-
 
     // -VTK----------------------------------------------------------------------------------------------
     auto ugrid = vtkSmartPointer<vtkUnstructuredGrid>::New();
@@ -313,7 +325,9 @@ void Cylinder::build()
             {
                 noe = noe + 1;
                 liste[nint] = noe;
-                points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]); // shift index to start from 0
+                points->InsertPoint(
+                    noe - 1, coord[nint][0], coord[nint][1],
+                    coord[nint][2]); // shift index to start from 0
             }
         }
 
@@ -325,7 +339,8 @@ void Cylinder::build()
             {
                 noe = noe + 1;
                 liste[nint] = noe;
-                points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
+                points->InsertPoint(noe - 1, coord[nint][0], coord[nint][1],
+                                    coord[nint][2]);
             }
         }
 
@@ -339,7 +354,8 @@ void Cylinder::build()
                     {
                         noe = noe + 1;
                         liste[nint] = noe;
-                        points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
+                        points->InsertPoint(noe - 1, coord[nint][0],
+                                            coord[nint][1], coord[nint][2]);
                     }
                 }
 
@@ -353,7 +369,8 @@ void Cylinder::build()
                     {
                         noe = noe + 1;
                         liste[nint] = noe;
-                        points->InsertPoint(noe-1, coord[nint][0], coord[nint][1], coord[nint][2]);
+                        points->InsertPoint(noe - 1, coord[nint][0],
+                                            coord[nint][1], coord[nint][2]);
                     }
                 }
 
@@ -378,8 +395,10 @@ void Cylinder::build()
                 int noe7 = tab[nz + 1][couche + 1][ne2];
                 int noe8 = tab[nz + 1][couche + 1][ne];
 
-                insertvtkcell(ugrid, liste[noe1]-1, liste[noe2] - 1, liste[noe3] - 1, liste[noe4] - 1,
-                        liste[noe5] - 1, liste[noe6] - 1, liste[noe7] - 1, liste[noe8] - 1);
+                insertvtkcell(ugrid, liste[noe1] - 1, liste[noe2] - 1,
+                              liste[noe3] - 1, liste[noe4] - 1, liste[noe5] - 1,
+                              liste[noe6] - 1, liste[noe7] - 1,
+                              liste[noe8] - 1);
             }
 
     if (cyl_creux == 0)
@@ -397,8 +416,10 @@ void Cylinder::build()
                     int noe7 = cube[nz + 1][l + 1][c + 1];
                     int noe8 = cube[nz + 1][l + 1][c];
 
-                    insertvtkcell(ugrid, liste[noe1] - 1, liste[noe2] - 1, liste[noe3] - 1, liste[noe4] - 1,
-                            liste[noe5] - 1, liste[noe6] - 1, liste[noe7] - 1, liste[noe8] - 1);
+                    insertvtkcell(ugrid, liste[noe1] - 1, liste[noe2] - 1,
+                                  liste[noe3] - 1, liste[noe4] - 1,
+                                  liste[noe5] - 1, liste[noe6] - 1,
+                                  liste[noe7] - 1, liste[noe8] - 1);
                 }
 
     this->ugrid = ugrid;
@@ -406,7 +427,7 @@ void Cylinder::build()
     // free memory
 
     // allocation du tableau tab(nz,couche,ne)
-	array3D_free(tab, nbz + 1, nbc + 1);
+    array3D_free(tab, nbz + 1, nbc + 1);
 
     // allocation du tableau cube(nz,lig,col)
     if (cyl_creux == 0)

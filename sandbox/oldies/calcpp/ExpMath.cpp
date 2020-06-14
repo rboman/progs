@@ -7,8 +7,11 @@
 
 #ifndef ONOFF_H
 #define ONOFF_H
-typedef enum { off,
-               on } onoff;
+typedef enum
+{
+    off,
+    on
+} onoff;
 #endif
 
 ExpMath::ExpMath(char *a)
@@ -18,10 +21,7 @@ ExpMath::ExpMath(char *a)
     pos = 0;
 }
 
-ExpMath::~ExpMath()
-{
-    delete[] txt;
-}
+ExpMath::~ExpMath() { delete[] txt; }
 
 ExpMath::ExpMath(const ExpMath &a)
 {
@@ -30,13 +30,15 @@ ExpMath::ExpMath(const ExpMath &a)
     pos = 0;
 }
 
-float ExpMath::eval()
+float
+ExpMath::eval()
 {
     pos = 0;
     return (this->expr());
 }
 
-float ExpMath::getnum()
+float
+ExpMath::getnum()
 {
     char buf[30], t;
     float val = ZERO;
@@ -75,7 +77,8 @@ float ExpMath::getnum()
     }
 }
 
-float ExpMath::terme()
+float
+ExpMath::terme()
 {
     float val = ZERO;
     float tmp;
@@ -115,7 +118,8 @@ float ExpMath::terme()
         }
         if (t == '*')
         {
-            val *= facteur(); /*printf("Valeur de la multipli : %d\n",val); getch();*/
+            val *= facteur(); /*printf("Valeur de la multipli : %d\n",val);
+                                 getch();*/
         }
         if (t == ')')
         {
@@ -133,7 +137,8 @@ float ExpMath::terme()
     }
 }
 
-float ExpMath::facteur()
+float
+ExpMath::facteur()
 {
     float val = ZERO;
     char t;
@@ -157,7 +162,8 @@ float ExpMath::facteur()
     }
 }
 
-float ExpMath::expr()
+float
+ExpMath::expr()
 {
     float sum, x;
 

@@ -3,7 +3,8 @@
 
 #include "stat.h"
 
-int main()
+int
+main()
 {
     std::cout << "objet Stat<int> :\n";
     Stat<int> RB(2);

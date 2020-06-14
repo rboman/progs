@@ -15,8 +15,10 @@ public:
     void exportvtu(std::string const &fname);
 
 protected:
-    void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4, int id5, int id6, int id7, int id8);
-    void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3, int id4);
+    void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3,
+                       int id4, int id5, int id6, int id7, int id8);
+    void insertvtkcell(vtkUnstructuredGrid *ugrid, int id1, int id2, int id3,
+                       int id4);
 };
 
 #endif

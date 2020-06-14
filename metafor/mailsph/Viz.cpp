@@ -16,30 +16,29 @@
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 
-void Viz::display()
+void
+Viz::display()
 {
 
     // renderer & co
 
     auto ren = vtkSmartPointer<vtkRenderer>::New();
-    //ren->SetBackground(48./255,10./255,36./255); // unity terminal
+    // ren->SetBackground(48./255,10./255,36./255); // unity terminal
     ren->SetBackground(0.1, 0.2, 0.4);
-
-
 
     for (auto ugrid : grids)
     {
         std::cout << "\n===============\n";
-        std::cout << ugrid->GetNumberOfPoints() << " points and " << ugrid->GetNumberOfCells() << " cells created\n";
+        std::cout << ugrid->GetNumberOfPoints() << " points and "
+                  << ugrid->GetNumberOfCells() << " cells created\n";
         ugrid->GetPoints()->ComputeBounds();
         double bounds[6];
         ugrid->GetPoints()->GetBounds(bounds);
-        std::cout << "bounds=" << bounds[0] << "," << bounds[1] << "," << bounds[2] << "," << bounds[3] << "," << bounds[4] << "," << bounds[5] << "\n";
+        std::cout << "bounds=" << bounds[0] << "," << bounds[1] << ","
+                  << bounds[2] << "," << bounds[3] << "," << bounds[4] << ","
+                  << bounds[5] << "\n";
 
-
-
-
-        //ugrid->GetPoints()->Print(std::cout);
+        // ugrid->GetPoints()->Print(std::cout);
 
         // mesh
         auto meshMapper = vtkSmartPointer<vtkDataSetMapper>::New();

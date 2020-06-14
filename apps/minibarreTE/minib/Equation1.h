@@ -5,7 +5,7 @@
 
 class Equation1
 {
-  public:
+public:
     Equation1() {}
 };
 

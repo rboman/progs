@@ -17,11 +17,9 @@
 
 using namespace genmai;
 
-Curve::Curve(std::vector<size_t> const &_pts) : Object(), pts(_pts)
-{
-}
+Curve::Curve(std::vector<size_t> const &_pts) : Object(), pts(_pts) {}
 
-std::string 
+std::string
 Curve::name() const
 {
     switch (pts.size())
@@ -35,9 +33,10 @@ Curve::name() const
     }
 }
 
-void Curve::write(std::ostream &out) const
+void
+Curve::write(std::ostream &out) const
 {
     out << name();
-    for(auto no : pts)
+    for (auto no : pts)
         out << ' ' << no;
 }

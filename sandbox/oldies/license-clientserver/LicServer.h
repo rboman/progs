@@ -7,8 +7,8 @@ class LicServer : public QTcpServer
 {
     Q_OBJECT;
 
-  public:
+public:
     LicServer(QObject *parent = 0);
 };
 
-#endif //LICSERVER_H
+#endif // LICSERVER_H

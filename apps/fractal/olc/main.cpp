@@ -1,7 +1,6 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
-
 class Example : public olc::PixelGameEngine
 {
     double x1 = -2.0;
@@ -13,10 +12,7 @@ class Example : public olc::PixelGameEngine
     std::vector<olc::Pixel> colours;
 
 public:
-    Example()
-    {
-        sAppName = "Example";
-    }
+    Example() { sAppName = "Example"; }
 
 public:
     bool OnUserCreate() override
@@ -27,7 +23,7 @@ public:
         for (int n = 0; n < nb_coul; ++n)
             colours.push_back(olc::Pixel((255 * n) / nb_coul, 0, 0));
         colours.push_back(olc::Pixel(0, 0, 0));
-        
+
         return true;
     }
 
@@ -63,7 +59,8 @@ public:
     }
 };
 
-int main()
+int
+main()
 {
     Example demo;
     if (demo.Construct(640, 480, 1, 1))

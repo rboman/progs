@@ -20,7 +20,8 @@
 
 #include "ehd.h"
 
-EHD_API int ehd_main2()
+EHD_API int
+ehd_main2()
 {
     int iop = 0;
 
@@ -29,12 +30,12 @@ EHD_API int ehd_main2()
     const int nbnode = nbelem + 1;
 
     int scheme = EHD_STATIO;
-    //int scheme=EHD_EULER;
+    // int scheme=EHD_EULER;
     int loi = EHD_TRIPP;
 
     double Rq1 = 1.0e-1;
     double Rq2 = 1.0e-1;
-    
+
     double gam_s = 1.0;
 
     // variables
@@ -58,7 +59,6 @@ EHD_API int ehd_main2()
     // inc
     double *h = (double *)malloc(nbnode * sizeof(double));
     double *tau = (double *)malloc(nbnode * sizeof(double));
-
 
     // fixations
     int nbfix = 1;          // nbre de fix
@@ -94,13 +94,9 @@ EHD_API int ehd_main2()
         printf("PAS %d : t = %E\n", nt + 1, ttot);
 
         // Resolution h(x) -> p(x)
-        iop = ehd_get_h(nbelem, nbnode, h, eta0, alpha, x,
-                        u, um, v, h_t0, dt, p, dp,
-                        PhiP, PhiS, dPhiP, dPhiS,
-                        Rq1, Rq2, gam_s,
-                        &K, nbfix,
-                        nnfix, ndfix, vfix, EHD_NO_IO, loi, scheme);
-
+        iop = ehd_get_h(nbelem, nbnode, h, eta0, alpha, x, u, um, v, h_t0, dt,
+                        p, dp, PhiP, PhiS, dPhiP, dPhiS, Rq1, Rq2, gam_s, &K,
+                        nbfix, nnfix, ndfix, vfix, EHD_NO_IO, loi, scheme);
 
         // update h_t0
         for (int i = 0; i < nbnode; i++)
@@ -109,10 +105,9 @@ EHD_API int ehd_main2()
         // calcul du cisaillement
         for (int i = 0; i < nbnode; i++)
         {
-            iop = ehd_cisail(eta0, alpha, v[i], p[i], dp[i], h[i],
-                             Rq, Rq1, Rq2, loi, &(tau[i]));
+            iop = ehd_cisail(eta0, alpha, v[i], p[i], dp[i], h[i], Rq, Rq1, Rq2,
+                             loi, &(tau[i]));
         }
-
     }
 
     iop = mlab_vec("pipo.m", "h", h, nbnode, MLAB_OLD, MLAB_VERBOSE);

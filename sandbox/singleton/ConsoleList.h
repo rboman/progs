@@ -10,6 +10,7 @@ class ConsoleList : public Singleton<ConsoleList>
     friend class Singleton<ConsoleList>;
 
     std::list<Console *> consoles;
+
 public:
     ~ConsoleList();
     void setColor(int color);
@@ -18,10 +19,11 @@ public:
     void add(Console *con);
     void remove(Console *con);
     bool empty();
+
 protected:
     ConsoleList();
 };
 
 //#include "Singleton.inl"
 
-#endif //CONSOLELIST_H
+#endif // CONSOLELIST_H

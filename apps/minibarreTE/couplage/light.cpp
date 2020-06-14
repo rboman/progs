@@ -17,7 +17,8 @@ operator<<(std::ostream &out, Light const &obj)
     return out;
 }
 
-void Light::save(std::string const &filename) const
+void
+Light::save(std::string const &filename) const
 {
     std::ofstream file(filename.c_str());
     file << *this;

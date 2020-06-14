@@ -23,7 +23,7 @@
  *        en un point
  *
  *      - une fonction calculant le determinant du jacobien, le jacobien
- *        et la dimension du problème etant donnes 
+ *        et la dimension du problème etant donnes
  *
  * RoBo aout 2000
  */
@@ -33,13 +33,10 @@
 
 #include "gauss.h"
 
-/* ---------------------------------------------------------------------------------- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-/* ---------------------------------------------------------------------------------- */
 
 #define EL_MAX_DIM 3
 #define EL_MAX_NODE 8
@@ -72,7 +69,6 @@
 #define EL_HERMITE_DIM 1
 #define EL_HERMITE_NODE 4
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
  *   PROTOS
@@ -97,6 +93,5 @@ GAUSS_API int el_hexa_detj(double jaco[3][3], double *res);
 
 GAUSS_API void el_hermite_ff(double F[][4], double *c);
 
-/* ---------------------------------------------------------------------------------- */
 
 #endif

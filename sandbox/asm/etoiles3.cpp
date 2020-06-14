@@ -1,11 +1,11 @@
 /***********************************************************************
-*                      Starfield 3  (C++ & Asm)                        *
-*                                                                      *
-* . Utilise le calcul en virgule fixe (2 décimales)                    *
-* . Diminution non linéaire de la vitesse des étoiles                  *
-* . Projection centrale                                                *
-*                                                             13.08.96 *
-************************************************************************/
+ *                      Starfield 3  (C++ & Asm)                        *
+ *                                                                      *
+ * . Utilise le calcul en virgule fixe (2 décimales)                    *
+ * . Diminution non linéaire de la vitesse des étoiles                  *
+ * . Projection centrale                                                *
+ *                                                             13.08.96 *
+ ************************************************************************/
 
 #include <stdlib.h>
 #include <conio.h>
@@ -105,7 +105,8 @@ typedef struct
 etoiles et[100];
 int nb_et;
 
-void putpixel(int x, int y, unsigned char col)
+void
+putpixel(int x, int y, unsigned char col)
 {
     asm mov ax, 0xa000;
     asm mov es, ax;
@@ -117,7 +118,8 @@ void putpixel(int x, int y, unsigned char col)
     asm mov es : [di], al;
 }
 
-int main()
+int
+main()
 {
     fixe xfuite, yfuite, p;
 
@@ -150,7 +152,8 @@ int main()
             putpixel(et[nb_et].xe.pent, et[nb_et].ye.pent, 0);
 
             /* Calcule la vitesse */
-            et[nb_et].plan = sub(et[nb_et].plan, add(div(et[nb_et].plan, c1), c2));
+            et[nb_et].plan =
+                sub(et[nb_et].plan, add(div(et[nb_et].plan, c1), c2));
 
             /* Teste la sortie du champ de vision */
             if (et[nb_et].plan.pent <= 0)
@@ -166,7 +169,8 @@ int main()
             et[nb_et].ye = add(div(et[nb_et].y, p), yfuite);
 
             /* Dessine l'étoile */
-            putpixel(et[nb_et].xe.pent, et[nb_et].ye.pent, 31 - (int)(et[nb_et].plan.pent / 16));
+            putpixel(et[nb_et].xe.pent, et[nb_et].ye.pent,
+                     31 - (int)(et[nb_et].plan.pent / 16));
         }
 
     } while (!kbhit());

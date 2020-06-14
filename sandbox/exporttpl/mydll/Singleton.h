@@ -3,12 +3,12 @@
 
 #include "mydll.h"
 
-template<class T>
-class MYDLL_API Singleton
+template <class T> class MYDLL_API Singleton
 {
 public:
     static T &getInstance();
     static void destroy();
+
 private:
     static T *instance;
 };
@@ -16,9 +16,11 @@ private:
 //#include "Singleton.inl"
 
 #if defined(__MINGW32__)
-#define SINGLETON_CLSATTR(CLS) \
-class CLS; \
-extern template class __declspec(dllexport) Singleton<CLS>; // declares the "type attribute" before implicit instanciation that occurs in CLS.h
+#define SINGLETON_CLSATTR(CLS)                                                 \
+    class CLS;                                                                 \
+    extern template class __declspec(dllexport)                                \
+        Singleton<CLS>; // declares the "type attribute" before implicit
+                        // instanciation that occurs in CLS.h
 #define SINGLETON_EXPORT
 #else
 #define SINGLETON_CLSATTR(CLS)
@@ -29,4 +31,4 @@ extern template class __declspec(dllexport) Singleton<CLS>; // declares the "typ
 #endif
 #endif
 
-#endif //SINGLETON_H
+#endif // SINGLETON_H

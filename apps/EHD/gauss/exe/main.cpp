@@ -21,13 +21,12 @@
 #include "gausslib.h"
 #include <math.h>
 
-/* ---------------------------------------------------------------------------------- */
-
 /*
  *   FONCTIONS "TEST"
  */
 
-int func(double *ksi, double *x, void *par, int i, double *val)
+int
+func(double *ksi, double *x, void *par, int i, double *val)
 {
     double **xx;
 
@@ -38,7 +37,8 @@ int func(double *ksi, double *x, void *par, int i, double *val)
     return 0;
 }
 
-int func2(double *ksi, double *x, void *par, int i, double *val)
+int
+func2(double *ksi, double *x, void *par, int i, double *val)
 {
     //  double **xx;
 
@@ -46,7 +46,8 @@ int func2(double *ksi, double *x, void *par, int i, double *val)
     return 0;
 }
 
-int func3(double *ksi, double *x, void *par, int i, double *val)
+int
+func3(double *ksi, double *x, void *par, int i, double *val)
 {
     //  double **xx;
 
@@ -54,13 +55,14 @@ int func3(double *ksi, double *x, void *par, int i, double *val)
     return 0;
 }
 
-/* ---------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /*
  *    TEST QUAD (3D)
  */
 
-int test_quad()
+int
+test_quad()
 {
     int iop = 0, i;
     double x1[3], x2[3], x3[3], x4[3];
@@ -112,24 +114,27 @@ int test_quad()
 
     for (i = 1; i < GAUSS_MAX_NG + 1; i++)
     {
-        //i=1;
+        // i=1;
         iop = gauss_quad(i, 3, x1, x2, x3, x4, &func2, (void *)xx, &res);
-        printf("integrale sur quad par gauss_quad    (%d pt Gauss) = %E\n", i, res);
+        printf("integrale sur quad par gauss_quad    (%d pt Gauss) = %E\n", i,
+               res);
         iop = gauss_generic(i, 3, xx, GAUSS_EL_QUAD, &func2, (void *)xx, &res);
-        printf("integrale sur quad par gauss_generic (%d pt Gauss) = %E\n", i, res);
+        printf("integrale sur quad par gauss_generic (%d pt Gauss) = %E\n", i,
+               res);
     }
 
     /****/
 
     return 0;
 }
-/* ---------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /*
  *    TEST HEXA
  */
 
-int test_hexa()
+int
+test_hexa()
 {
     int iop = 0, i;
     double x1[3], x2[3], x3[3], x4[3], x5[3], x6[3], x7[3], x8[3];
@@ -179,8 +184,9 @@ int test_hexa()
 
     for (i = 1; i < GAUSS_MAX_NG + 1; i++)
     {
-        //i=1;
-        iop = gauss_hexa(i, 3, x1, x2, x3, x4, x5, x6, x7, x8, &func3, (void *)xx, &res);
+        // i=1;
+        iop = gauss_hexa(i, 3, x1, x2, x3, x4, x5, x6, x7, x8, &func3,
+                         (void *)xx, &res);
         printf("integrale sur hexa (%d pt Gauss) = %E\n", i, res);
     }
 
@@ -189,13 +195,15 @@ int test_hexa()
     return 0;
 }
 
-/* ---------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+
 
 /*
  *    TEST LINE (3D)
  */
 
-int test_line()
+int
+test_line()
 {
     int iop = 0, i;
     double x1[3], x2[3];
@@ -219,7 +227,7 @@ int test_line()
 
     for (i = 1; i < GAUSS_MAX_NG + 1; i++)
     {
-        //i=1;
+        // i=1;
         iop = gauss_line(i, 3, x1, x2, &func2, (void *)xx, &res);
         printf("integrale sur ligne (%d pt Gauss) = %E\n", i, res);
     }
@@ -229,13 +237,14 @@ int test_line()
     return 0;
 }
 
-/* ---------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /*
  *    ROUTINE D'APPEL
  */
 
-int main()
+int
+main()
 {
 
     printf("\n*** TEST INTEGRATION SUR QUAD ***\n");
@@ -247,5 +256,3 @@ int main()
 
     return 0;
 }
-
-/* ---------------------------------------------------------------------------------- */

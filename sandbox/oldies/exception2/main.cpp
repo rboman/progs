@@ -8,13 +8,11 @@ using namespace std;
 
 struct RoBo
 {
-    RoBo(char *txt)
-    {
-        cout << "Error in " << txt << endl;
-    }
+    RoBo(char *txt) { cout << "Error in " << txt << endl; }
 };
 
-int f1()
+int
+f1()
 {
     try
     {
@@ -28,7 +26,8 @@ int f1()
     return 0;
 }
 
-int f2()
+int
+f2()
 {
     try
     {
@@ -42,14 +41,16 @@ int f2()
     return 0;
 }
 
-int f3()
+int
+f3()
 {
     throw RoBo("f3");
 
     return 0;
 }
 
-int main()
+int
+main()
 {
     try
     {

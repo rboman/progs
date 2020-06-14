@@ -24,12 +24,9 @@ Element::Element(int n1, int n2, int n3, int n4) : Object(), nodes(4)
     nodes[3] = n4;
 }
 
-void Element::write(std::ostream &out) const
+void
+Element::write(std::ostream &out) const
 {
-    out << '('
-        << this->nodes[0] << ','
-        << this->nodes[1] << ','
-        << this->nodes[2] << ','
-        << this->nodes[3]
-        << ')';
+    out << '(' << this->nodes[0] << ',' << this->nodes[1] << ','
+        << this->nodes[2] << ',' << this->nodes[3] << ')';
 }

@@ -15,7 +15,8 @@
 #include "BemSolver.h"
 using namespace ndh;
 
-int main()
+int
+main()
 {
     // Initialisation des variables
 
@@ -43,7 +44,8 @@ int main()
         std::cout << "\n\t [7]  Sauvegarde vers MATLAB";
         std::cout << "\n\t [0]  Quitter.";
         std::cout << "\n\n\n\nFLOPS     : non disponible";
-        //std::cout << "\nTemps CPU : " << (double)(time2 - time1) / CLOCKS_PER_SEC << " sec.";
+        // std::cout << "\nTemps CPU : " << (double)(time2 - time1) /
+        // CLOCKS_PER_SEC << " sec.";
         std::cout << "\n\nChoix\?+<ENTER>: ";
 
         int choix;
@@ -61,7 +63,7 @@ int main()
             bem.input_data();
             break;
         case 4:
-            //bem.load_data();
+            // bem.load_data();
             break;
         case 5:
             visu();

@@ -4,14 +4,17 @@ std::ostream &
 operator<<(std::ostream &out, Mesh const &obj)
 {
     out << "mesh:\n";
-    for (std::vector<Node *>::const_iterator it = obj.nodes.begin(); it != obj.nodes.end(); ++it)
+    for (std::vector<Node *>::const_iterator it = obj.nodes.begin();
+         it != obj.nodes.end(); ++it)
         out << **it;
-    for (std::vector<Element *>::const_iterator it = obj.elems.begin(); it != obj.elems.end(); ++it)
+    for (std::vector<Element *>::const_iterator it = obj.elems.begin();
+         it != obj.elems.end(); ++it)
         out << **it;
     return out;
 }
 
-void Mesh::generate(double xmin, double xmax, int nelm)
+void
+Mesh::generate(double xmin, double xmax, int nelm)
 {
     double dx = (xmax - xmin) / nelm;
     for (int i = 0; i < nelm + 1; ++i)

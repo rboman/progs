@@ -23,26 +23,26 @@
 
 #include "el.h"
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */
 
-GAUSS_API void el_hermite_ff(double F[][4], double *c)
+GAUSS_API void
+el_hermite_ff(double F[][4], double *c)
 {
 
     /*
-   * Fonctions de forme 'F[0][0-3]' et derivees 'F[1-2][0-3]' 
-   * d'un element de type Hermite (2 noeuds) aux coords
-   * (ksi) = (c[0])
-   *
-   */
+     * Fonctions de forme 'F[0][0-3]' et derivees 'F[1-2][0-3]'
+     * d'un element de type Hermite (2 noeuds) aux coords
+     * (ksi) = (c[0])
+     *
+     */
 
     double t, t1, t2, t3;
 
     t = c[0];
-    //t = (c[0]+1.0)/2.0; // translation -1,1 a 0,1
+    // t = (c[0]+1.0)/2.0; // translation -1,1 a 0,1
     t1 = 1.0 - t;
     t2 = t * t;
     t3 = 1.0 + t;

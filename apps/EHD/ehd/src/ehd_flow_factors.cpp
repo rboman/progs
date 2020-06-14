@@ -20,10 +20,10 @@
  * @brief Calcule les "flow factors"
  */
 
-EHD_API int ehd_flow_factors(double h, double gam_s,
-                             double Rq, double Rq1, double Rq2,
-                             double *PhiP, double *PhiS,
-                             double *dPhiP, double *dPhiS, int loi)
+EHD_API int
+ehd_flow_factors(double h, double gam_s, double Rq, double Rq1, double Rq2,
+                 double *PhiP, double *PhiS, double *dPhiP, double *dPhiS,
+                 int loi)
 {
     int iop = 0;
 
@@ -58,7 +58,8 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
         {
 
             double Cx = 0.89679e0 - 0.26591e0 * xlg;
-            double Rx = 0.43006e0 - 0.10828e0 * gam_s + 0.23821e0 * gam_s * gam_s;
+            double Rx =
+                0.43006e0 - 0.10828e0 * gam_s + 0.23821e0 * gam_s * gam_s;
             double xex = exp(-Rx * z);
             *PhiP = 1.0 - Cx * xex;
             *dPhiP = Cx * Rx / Rq * xex;
@@ -94,7 +95,8 @@ EHD_API int ehd_flow_factors(double h, double gam_s,
         break;
     }
     default:
-        std::stringstream str; str << __FUNCTION__ << " in " << __FILE__ << ": ";
+        std::stringstream str;
+        str << __FUNCTION__ << " in " << __FILE__ << ": ";
         str << "Modele de rugosite non implemente !";
         throw std::runtime_error(str.str());
     }

@@ -23,22 +23,21 @@
 #undef VERBOSE
 #define VERBOSE 0
 
-EHD_API void ehd_flux(double h, double u, double v,
-                     double eta0, double alpha,
-                     double p, double dp,
-                     double Rq,
-                     double phis, double phip,
-                     double dphis, double dphip,
-                     double *flux, double *fluxd)
+EHD_API void
+ehd_flux(double h, double u, double v, double eta0, double alpha, double p,
+         double dp, double Rq, double phis, double phip, double dphis,
+         double dphip, double *flux, double *fluxd)
 {
     double eta, etad;
     ehd_visco(eta0, alpha, p, &eta, &etad);
 
     *flux = -phip * h * h * h / 12.0 / eta * dp + h * u + v * Rq / 2.0 * phis;
 
-    fluxd[0] = phip * h * h * h / 12.0 / eta / eta * etad * dp;                                                   // d(flux)/d(p)
-    fluxd[1] = -phip * h * h * h / 12.0 / eta;                                                                    // d(flux)/d(dp)
-    fluxd[2] = -(phip * h * h / 4.0 / eta * dp + dphip * h * h * h / 12.0 / eta * dp) + u + v * Rq / 2.0 * dphis; // d(flux)/d(h)
+    fluxd[0] = phip * h * h * h / 12.0 / eta / eta * etad * dp; // d(flux)/d(p)
+    fluxd[1] = -phip * h * h * h / 12.0 / eta;                  // d(flux)/d(dp)
+    fluxd[2] =
+        -(phip * h * h / 4.0 / eta * dp + dphip * h * h * h / 12.0 / eta * dp) +
+        u + v * Rq / 2.0 * dphis; // d(flux)/d(h)
 
     if (VERBOSE)
     {

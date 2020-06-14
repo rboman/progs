@@ -2,7 +2,8 @@
 #include <iostream>
 #include <gmm/gmm.h>
 
-int main()
+int
+main()
 {
     std::vector<double> v(10);
     std::cout << v << '\n';

@@ -30,8 +30,10 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #endif
 
-#pragma warning( disable : 4251)  // DLL/templates non exportes
-#pragma warning( disable : 4275)  // non - DLL-interface classkey 'identifier' used as base for DLL-interface classkey 'identifier'
+#pragma warning(disable : 4251) // DLL/templates non exportes
+#pragma warning(disable : 4275) // non - DLL-interface classkey 'identifier' 
+                                // used as base for DLL-interface classkey 
+                                // 'identifier'
 
 #endif //_MSC_VER
 
@@ -39,7 +41,6 @@
 #include <sstream>
 namespace gauss
 {
-
 }
 
-#endif //GAUSS_H
+#endif // GAUSS_H

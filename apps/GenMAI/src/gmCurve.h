@@ -21,7 +21,8 @@
 #include <vector>
 class Point;
 
-namespace genmai {
+namespace genmai
+{
 
 /**
  * @brief a curve (a line if 2 points - an arc if 3 points)
@@ -37,6 +38,6 @@ public:
     std::string name() const;
 };
 
-}
+} // namespace genmai
 
-#endif //GMCURVE_H
+#endif // GMCURVE_H

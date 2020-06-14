@@ -27,11 +27,11 @@ Barres::Barres(QWidget *parent) : QWidget(parent)
 
     /*
     // initial set
-    zoom = 30;    
+    zoom = 30;
     a1 = 1.5; // AD
     a2 = 5.0; // DC
     a3 = 3.0; // BC
-    xb = 4.5; 
+    xb = 4.5;
     ya = 3.0;
 
     L = 10.5; // DP'
@@ -59,11 +59,12 @@ Barres::Barres(QWidget *parent) : QWidget(parent)
     myTimerId = 0;
 }
 
-void Barres::timerEvent(QTimerEvent *event)
+void
+Barres::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == myTimerId)
     {
-        //std::cout << "Timer!\n";
+        // std::cout << "Timer!\n";
         frame += 1;
         if (frame == nframes)
             frame = 0;
@@ -73,20 +74,23 @@ void Barres::timerEvent(QTimerEvent *event)
         QWidget::timerEvent(event);
 }
 
-void Barres::showEvent(QShowEvent *event)
+void
+Barres::showEvent(QShowEvent *event)
 {
     // create a timer using member fct
     myTimerId = startTimer(25); // in ms
 }
 
-void Barres::hideEvent(QHideEvent *event)
+void
+Barres::hideEvent(QHideEvent *event)
 {
     killTimer(myTimerId);
 }
 
-void Barres::paintEvent(QPaintEvent *event)
+void
+Barres::paintEvent(QPaintEvent *event)
 {
-    //std::cout << "paintEvent: please wait...\n";
+    // std::cout << "paintEvent: please wait...\n";
 
     double theta1[nframes];
 
@@ -103,7 +107,8 @@ void Barres::paintEvent(QPaintEvent *event)
         double k2 = -ya - a1 * sin(theta1[i]);
         double k3 = (k1 * k1 + k2 * k2 + a2 * a2 - a3 * a3) / (2.0 * a2);
 
-        x1[i] = 2.0 * atan((k2 + sqrt(k2 * k2 - (k3 + k1) * (k3 - k1))) / (k3 + k1));
+        x1[i] = 2.0 *
+                atan((k2 + sqrt(k2 * k2 - (k3 + k1) * (k3 - k1))) / (k3 + k1));
         if ((k1 - a2 * cos(x1[i])) / a3 > 0.0)
             x2[i] = asin((k2 - a2 * sin(x1[i])) / a3);
         else
@@ -143,7 +148,7 @@ void Barres::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing, true);
 
     QPen pen1(Qt::black, 2.0);
-    //pen.setColor(palette().dark().color());
+    // pen.setColor(palette().dark().color());
     painter.setPen(pen1);
 
     painter.drawLine(x[0][i], y[0][i], x[1][i], y[1][i]); // 0-1
@@ -152,12 +157,14 @@ void Barres::paintEvent(QPaintEvent *event)
     painter.drawLine(x[3][i], y[3][i], x[2][i], y[2][i]); // 3-2
 
     // film
-    painter.drawLine(x[3][i], y[3][i] - e * zoom, x[3][i] + 10 * zoom, y[3][i] - e * zoom);
+    painter.drawLine(x[3][i], y[3][i] - e * zoom, x[3][i] + 10 * zoom,
+                     y[3][i] - e * zoom);
     // ground near B
-    painter.drawLine(x[3][i] - 0.5 * zoom, y[3][i], x[3][i] + 0.5 * zoom, y[3][i]);
+    painter.drawLine(x[3][i] - 0.5 * zoom, y[3][i], x[3][i] + 0.5 * zoom,
+                     y[3][i]);
     // ground near A
-    painter.drawLine(ox - 0.5 * zoom, oy - ya * zoom,
-                     ox + 0.5 * zoom, oy - ya * zoom);
+    painter.drawLine(ox - 0.5 * zoom, oy - ya * zoom, ox + 0.5 * zoom,
+                     oy - ya * zoom);
 
     // -- draw labels
     pen1.setColor(Qt::black);
@@ -184,12 +191,14 @@ void Barres::paintEvent(QPaintEvent *event)
     painter.setPen(QPen(Qt::darkBlue, 0.5));
     for (int j = 0; j < nframes - 1; j++)
         painter.drawLine(x[npt][j], y[npt][j], x[npt][j + 1], y[npt][j + 1]);
-    painter.drawLine(x[npt][nframes - 1], y[npt][nframes - 1], x[npt][0], y[npt][0]);
+    painter.drawLine(x[npt][nframes - 1], y[npt][nframes - 1], x[npt][0],
+                     y[npt][0]);
 
     // write parameters values
     painter.setPen(QPen(Qt::black));
     QRect rect(10, 10, 200, 300);
-    QString argtxt = QString("a1 = %1\na2 = %2\na3 = %3\nxb = %4\nya = %5\nL = %6\ne = %7\ndp = %8")
+    QString argtxt = QString("a1 = %1\na2 = %2\na3 = %3\nxb = %4\nya = %5\nL = "
+                             "%6\ne = %7\ndp = %8")
                          .arg(a1)
                          .arg(a2)
                          .arg(a3)
@@ -200,12 +209,15 @@ void Barres::paintEvent(QPaintEvent *event)
                          .arg(dp);
     painter.drawText(rect, Qt::AlignLeft | Qt::AlignTop, argtxt);
     // value of "i"
-    painter.drawText(this->rect(), Qt::AlignHCenter | Qt::AlignTop, QString("frame=%1/%2").arg(frame).arg(nframes));
+    painter.drawText(this->rect(), Qt::AlignHCenter | Qt::AlignTop,
+                     QString("frame=%1/%2").arg(frame).arg(nframes));
 
-    //painter.end();   // avoids "qpainter : cannot destroy paint device that is being painted"
+    // painter.end();   // avoids "qpainter : cannot destroy paint device that
+    // is being painted"
 }
 
-void Barres::set_a1_slot(int i)
+void
+Barres::set_a1_slot(int i)
 {
     double a1min = 0.1;
     double a1max = 2.0;
@@ -218,7 +230,8 @@ void Barres::set_a1_slot(int i)
     a1 = a1min + i * (a1max - a1min) / range;
 }
 
-void Barres::set_a2_slot(int i)
+void
+Barres::set_a2_slot(int i)
 {
     double a2min = 2.5;
     double a2max = 4.5;
@@ -231,7 +244,8 @@ void Barres::set_a2_slot(int i)
     a2 = a2min + i * (a2max - a2min) / range;
 }
 
-void Barres::set_a3_slot(int i)
+void
+Barres::set_a3_slot(int i)
 {
     double a3min = 1.0;
     double a3max = 3.0;
@@ -244,7 +258,8 @@ void Barres::set_a3_slot(int i)
     a3 = a3min + i * (a3max - a3min) / range;
 }
 
-void Barres::set_xb_slot(int i)
+void
+Barres::set_xb_slot(int i)
 {
     double xbmin = 2.0;
     double xbmax = 4.0;
@@ -257,7 +272,8 @@ void Barres::set_xb_slot(int i)
     xb = xbmin + i * (xbmax - xbmin) / range;
 }
 
-void Barres::set_ya_slot(int i)
+void
+Barres::set_ya_slot(int i)
 {
     double yamin = 0.5;
     double yamax = 2.5;
@@ -270,7 +286,8 @@ void Barres::set_ya_slot(int i)
     ya = yamin + i * (yamax - yamin) / range;
 }
 
-void Barres::set_L_slot(int i)
+void
+Barres::set_L_slot(int i)
 {
     double Lmin = 4.0;
     double Lmax = 8.0;
@@ -283,7 +300,8 @@ void Barres::set_L_slot(int i)
     L = Lmin + i * (Lmax - Lmin) / range;
 }
 
-void Barres::set_e_slot(int i)
+void
+Barres::set_e_slot(int i)
 {
     double emin = 0.0;
     double emax = 3.0;
@@ -296,7 +314,8 @@ void Barres::set_e_slot(int i)
     e = emin + i * (emax - emin) / range;
 }
 
-void Barres::set_dp_slot(int i)
+void
+Barres::set_dp_slot(int i)
 {
     double dpmin = 0.5;
     double dpmax = 1.5;

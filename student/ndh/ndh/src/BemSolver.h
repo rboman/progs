@@ -83,12 +83,10 @@ private:
     double Tmin, Tmax;   // Valeurs min et max des T calculées.
 
     // Coefficients de l'intégration de Newton-Cotes:
-    double icoeff[6][7] = {{1, 1, 0, 0, 0, 0, 0},
-                           {1, 4, 1, 0, 0, 0, 0},
-                           {1, 3, 3, 1, 0, 0, 0},
-                           {7, 32, 12, 32, 7, 0, 0},
-                           {19, 75, 50, 50, 75, 19, 0},
-                           {41, 216, 27, 272, 27, 216, 41}};
+    double icoeff[6][7] = {
+        {1, 1, 0, 0, 0, 0, 0},       {1, 4, 1, 0, 0, 0, 0},
+        {1, 3, 3, 1, 0, 0, 0},       {7, 32, 12, 32, 7, 0, 0},
+        {19, 75, 50, 50, 75, 19, 0}, {41, 216, 27, 272, 27, 216, 41}};
     double idiv[6] = {2, 6, 8, 90, 288, 840};
 
 public:
@@ -109,7 +107,7 @@ public:
     void find_minmax();
 
     // pas appelé
-    void generate(); //void tester()
+    void generate(); // void tester()
 
 private:
     void full_calcul();
@@ -134,4 +132,4 @@ NDH_API void clrscr();
 
 } // namespace ndh
 
-#endif //BEMSOLVER_H
+#endif // BEMSOLVER_H

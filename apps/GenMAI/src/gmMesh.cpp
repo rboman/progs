@@ -18,12 +18,10 @@
 
 using namespace genmai;
 
-Mesh::Mesh() : Object(), nodes(0), elements(0)
-{
-    clear();
-}
+Mesh::Mesh() : Object(), nodes(0), elements(0) { clear(); }
 
-void Mesh::write(std::ostream &out) const
+void
+Mesh::write(std::ostream &out) const
 {
     out << "Mesh:\n";
     out << "\tnoeuds     : " << nodes.size() << '\n';
@@ -31,7 +29,8 @@ void Mesh::write(std::ostream &out) const
     out << "\tnoeuds sup : " << lastContactNode - firstContactNode << '\n';
 }
 
-void Mesh::list() const
+void
+Mesh::list() const
 {
     for (int i = 0; i < nodes.size(); ++i)
         std::cout << nodes[i] << std::endl;
@@ -40,7 +39,8 @@ void Mesh::list() const
         std::cout << elements[i] << std::endl;
 }
 
-bool Mesh::isEmpty() const
+bool
+Mesh::isEmpty() const
 {
     if (!nodes.size())
         return true;
@@ -48,7 +48,8 @@ bool Mesh::isEmpty() const
         return false;
 }
 
-void Mesh::clear()
+void
+Mesh::clear()
 {
     nodes.resize(0);
     elements.resize(0);

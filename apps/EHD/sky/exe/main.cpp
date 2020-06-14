@@ -17,7 +17,8 @@
 #include "sky.h"
 #include "SkyMat.h"
 
-int main()
+int
+main()
 {
     sky_test();
     return 0;

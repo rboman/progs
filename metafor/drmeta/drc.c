@@ -1,6 +1,6 @@
 /*
  *
- *                                  Docteur METAFOR 
+ *                                  Docteur METAFOR
  *                                  ---------------
  * par Romain BOMAN
  * (r.boman@ulg.ac.be)
@@ -9,15 +9,15 @@
  * Gestion routines c
  *
  * Methode:
- *    routine principale = "count_args" 
- *    options : VERIFY_DATABASE -> verifie des appels, def et protos 
+ *    routine principale = "count_args"
+ *    options : VERIFY_DATABASE -> verifie des appels, def et protos
  *                                sur le fichier donne
  *              FILL_DATABASE   -> recherche les definitions
  *
  *    - la fichier est lu mot apres mot par la routine "find_next_word"
  *      (voir la source pour comprendre ce qu'est un mot.
  *    - "find_next_word" renvoie le mot et le caractere qui l'a fait
- *      stopper la lecture. 
+ *      stopper la lecture.
  *    - En fonction de ce caractere, on agit en consequence. Par expl,
  *      si caractere "(" alors, c'est peut etre une fct et on recherche
  *      le nombre d'args (recursif)
@@ -56,7 +56,8 @@ extern int nop2;
 
 #ifndef STANDALONE
 
-int verify_database(char *name, int lname, int nnargs, char *source)
+int
+verify_database(char *name, int lname, int nnargs, char *source)
 {
     int i;
     s_mytabl *tmp;
@@ -67,7 +68,8 @@ int verify_database(char *name, int lname, int nnargs, char *source)
     {
         if (strcmp(name, intrinsic_txt[i]) == 0)
         {
-            //printf("call to intrinsic func. \"%s\" with %d args.\n",name,nnargs);
+            // printf("call to intrinsic func. \"%s\" with %d
+            // args.\n",name,nnargs);
             return 0;
         }
     }
@@ -86,7 +88,7 @@ int verify_database(char *name, int lname, int nnargs, char *source)
     {
         /*
     printf("CALL %s dans fichier %s : routine inconnue\n",
-	   name,source);
+       name,source);
     */
     }
     else if (tmp->nb_vars == nnargs)
@@ -111,7 +113,8 @@ int verify_database(char *name, int lname, int nnargs, char *source)
  *                    AJOUTE UNE FCT C A LA DATABASE                     *
  *************************************************************************/
 
-int add_func_2_database(char *name, int lname, int nnargs, char *source)
+int
+add_func_2_database(char *name, int lname, int nnargs, char *source)
 {
     int i, t;
 
@@ -121,7 +124,8 @@ int add_func_2_database(char *name, int lname, int nnargs, char *source)
     {
         if (strcmp(name, intrinsic_txt[i]) == 0)
         {
-            //printf("call to intrinsic func. \"%s\" with %d args.\n",name,nnargs);
+            // printf("call to intrinsic func. \"%s\" with %d
+            // args.\n",name,nnargs);
             return 0;
         }
     }
@@ -141,7 +145,7 @@ int add_func_2_database(char *name, int lname, int nnargs, char *source)
         exit(1);
     }
     strncpy(nextsub->nom, name, lname);
-    //printf("name = %s lname = %d\n",name,lname);
+    // printf("name = %s lname = %d\n",name,lname);
     nextsub->nom[lname] = 0;
     nextsub->next = (s_mytabl *)malloc(sizeof(s_mytabl));
     if (nextsub->next == NULL)
@@ -172,7 +176,8 @@ int add_func_2_database(char *name, int lname, int nnargs, char *source)
 
 #ifdef STANDALONE
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
     int n;
     FILE *fileinp;
@@ -207,7 +212,8 @@ int main(int argc, char **argv)
  *       Fonction retournant le nombre d'args de la fct en cours         *
  *************************************************************************/
 
-int count_args(FILE *fileinp, int *nargs, char *source, int option)
+int
+count_args(FILE *fileinp, int *nargs, char *source, int option)
 {
     char stopchar, stopchar2 = '\0';
     char buffer[1000];
@@ -266,7 +272,8 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
             if (test_def)
             {
                 def = true;
-                //printf("\t*** function : %s (%d args) is defined in this file!\n",name,nnargs);
+                // printf("\t*** function : %s (%d args) is defined in this
+                // file!\n",name,nnargs);
                 if (option == FILL_DATABASE)
                     add_func_2_database(name, lname, nnargs, source);
             }
@@ -278,9 +285,9 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
         case '/':
             if (stopchar2 == '/')
             {
-                //printf("skip commentaire c++\n");
+                // printf("skip commentaire c++\n");
                 wait_com1(fileinp);
-                //printf("endskip comm c++\n");
+                // printf("endskip comm c++\n");
                 reset = true;
                 flagdiv = false;
             }
@@ -291,9 +298,9 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
         case '*':
             if (stopchar2 == '/')
             {
-                //printf("skip commentaire c\n");
+                // printf("skip commentaire c\n");
                 wait_com2(fileinp);
-                //printf("endskip comm c\n");
+                // printf("endskip comm c\n");
                 reset = true;
             }
             else
@@ -305,9 +312,9 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
 
         case '\'':
         case '\"':
-            //printf("try to skip txt!\n");
+            // printf("try to skip txt!\n");
             wait_txt(fileinp);
-            //printf("txt skipped!\n");
+            // printf("txt skipped!\n");
             test_def = false;
             lname = 0;
             vide = false;
@@ -317,14 +324,14 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
             if (vide)
                 (*nargs)++;
             (*nargs)++; // () obligatoires!
-            //printf("nargs = %d!\n",*nargs);
+            // printf("nargs = %d!\n",*nargs);
             test_def = false;
             lname = 0;
             vide = false;
             break;
 
         case ')':
-            //printf("return!\n");
+            // printf("return!\n");
             if (!vide)
                 (*nargs)++;
             level--;
@@ -340,7 +347,7 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
                 strcpy(name, buffer);
                 lname = lbuf;
 
-                //printf("call count_args1!\n");
+                // printf("call count_args1!\n");
                 level++;
                 count_args(fileinp, &nnargs, source, option);
 #ifndef STANDALONE
@@ -357,7 +364,7 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
             else if (lname != 0 && flagdiv == false)
             {
                 flagdiv = false;
-                //printf("call count_args2!\n");
+                // printf("call count_args2!\n");
                 level++;
                 count_args(fileinp, &nnargs, source, option);
 #ifndef STANDALONE
@@ -371,11 +378,11 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
             }
             else
             {
-                //printf("call count_args3!\n");
+                // printf("call count_args3!\n");
                 level++;
-                //printf("begin skip open/close parenth.!\n");
+                // printf("begin skip open/close parenth.!\n");
                 count_args(fileinp, &nnargs, source, option);
-                //printf("end skip open/close parenth.!\n");
+                // printf("end skip open/close parenth.!\n");
                 test_def = false;
                 lname = 0;
                 flagdiv = false;
@@ -406,15 +413,16 @@ int count_args(FILE *fileinp, int *nargs, char *source, int option)
  *                Va a la fin d'un commentaire de type C++               *
  *************************************************************************/
 
-int wait_com1(FILE *fileinp)
+int
+wait_com1(FILE *fileinp)
 {
     boolean escaped;
     char buf;
 
-    //printf("skip com c++:");
+    // printf("skip com c++:");
     while ((buf = getc(fileinp)) != EOF)
     {
-        //printf("%c",buf);
+        // printf("%c",buf);
         if (buf == '\n')
         {
             cligne++;
@@ -427,22 +435,23 @@ int wait_com1(FILE *fileinp)
  *                Va a la fin d'un commentaire de type C                 *
  *************************************************************************/
 
-int wait_com2(FILE *fileinp)
+int
+wait_com2(FILE *fileinp)
 {
     boolean escaped;
     char buf, buf2 = '\0';
 
-    //printf("skip com c:");
+    // printf("skip com c:");
     while ((buf = getc(fileinp)) != EOF)
     {
-        //printf("%c",buf);
+        // printf("%c",buf);
         if (buf == '\n')
             cligne++;
         if (buf == '/' && buf2 == '*')
             break;
         buf2 = buf;
     }
-    //printf("\n");
+    // printf("\n");
     return 0;
 }
 
@@ -450,16 +459,17 @@ int wait_com2(FILE *fileinp)
  *                Va a la fin d'une chaine de caractere ("") ou ('')     *
  *************************************************************************/
 
-int wait_txt(FILE *fileinp)
+int
+wait_txt(FILE *fileinp)
 {
     boolean escaped;
     char buf;
 
     escaped = false;
-    //printf("skip chaine:");
+    // printf("skip chaine:");
     while ((buf = getc(fileinp)) != EOF)
     {
-        //printf("%c",buf);
+        // printf("%c",buf);
         if (!escaped)
         {
             if (buf == '\\')
@@ -470,7 +480,7 @@ int wait_txt(FILE *fileinp)
         else
             escaped = false;
     }
-    //printf("\n");
+    // printf("\n");
     return 0;
 }
 
@@ -478,7 +488,8 @@ int wait_txt(FILE *fileinp)
  *                       Cherche le mot suivant                          *
  *************************************************************************/
 
-char find_next_word(FILE *fileinp, char *buffer, int *lbuf, int *offset)
+char
+find_next_word(FILE *fileinp, char *buffer, int *lbuf, int *offset)
 {
     char buf;
     boolean ascii, start, stop, valid;
@@ -502,7 +513,7 @@ char find_next_word(FILE *fileinp, char *buffer, int *lbuf, int *offset)
             start = true;
         }
 
-        //printf("buf = %c (%d)\n",buf,buf);
+        // printf("buf = %c (%d)\n",buf,buf);
 
         if (start == true)
         {
@@ -521,9 +532,8 @@ char find_next_word(FILE *fileinp, char *buffer, int *lbuf, int *offset)
         }
         else
         {
-            if ((buf == '(') || (buf == ',') || (buf == ')') ||
-                (buf == '\'') || (buf == '\"') || (buf == '{') ||
-                (buf == '/') || (buf == '*') ||
+            if ((buf == '(') || (buf == ',') || (buf == ')') || (buf == '\'') ||
+                (buf == '\"') || (buf == '{') || (buf == '/') || (buf == '*') ||
                 (buf == ' ') || (buf == '\n') || (buf == '\t'))
                 break;
         }

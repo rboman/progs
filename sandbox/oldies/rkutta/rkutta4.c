@@ -12,13 +12,14 @@ double *vec_sd(double *, int, double *, double);
 double *f_a_integrer(double, double *, double *);
 void vec_pri(double *, int);
 
-void rkutta(double *(*fct)(double, double *, double *),
-            double, double, double *, int, double);
-void rkutta2(double *(*fct)(double, double *, double *), double *y2, double *y, double x,
-             double *k1, double *k2, double *k3, double *k4, double *tmp,
-             int n, double h);
+void rkutta(double *(*fct)(double, double *, double *), double, double,
+            double *, int, double);
+void rkutta2(double *(*fct)(double, double *, double *), double *y2, double *y,
+             double x, double *k1, double *k2, double *k3, double *k4,
+             double *tmp, int n, double h);
 
-double *vec_add(double *dest, int n, double *x1, double *x2)
+double *
+vec_add(double *dest, int n, double *x1, double *x2)
 {
     int i;
     for (i = 0; i < n; i++)
@@ -26,7 +27,8 @@ double *vec_add(double *dest, int n, double *x1, double *x2)
     return (dest);
 }
 
-double *vec_asg(double *dest, int n, double *x1)
+double *
+vec_asg(double *dest, int n, double *x1)
 {
     int i;
     for (i = 0; i < n; i++)
@@ -34,7 +36,8 @@ double *vec_asg(double *dest, int n, double *x1)
     return (dest);
 }
 
-double *vec_sm(double *dest, int n, double *x1, double alp)
+double *
+vec_sm(double *dest, int n, double *x1, double alp)
 {
     int i;
     for (i = 0; i < n; i++)
@@ -42,7 +45,8 @@ double *vec_sm(double *dest, int n, double *x1, double alp)
     return (dest);
 }
 
-double *vec_sd(double *dest, int n, double *x1, double alp)
+double *
+vec_sd(double *dest, int n, double *x1, double alp)
 {
     int i;
     for (i = 0; i < n; i++)
@@ -50,7 +54,8 @@ double *vec_sd(double *dest, int n, double *x1, double alp)
     return (dest);
 }
 
-void vec_pri(double *x1, int n)
+void
+vec_pri(double *x1, int n)
 {
     int i;
     printf("[ ");
@@ -59,26 +64,33 @@ void vec_pri(double *x1, int n)
     printf(" ]");
 }
 
-void rkutta2(double *(*fct)(double, double *, double *), double *y2, double *y, double x,
-             double *k1, double *k2, double *k3, double *k4, double *tmp,
-             int n, double h)
+void
+rkutta2(double *(*fct)(double, double *, double *), double *y2, double *y,
+        double x, double *k1, double *k2, double *k3, double *k4, double *tmp,
+        int n, double h)
 {
     int i;
     /* printf("\nEval k1 : ");  */
     vec_sm(k1, n, fct(x, y, k1), h);
     /* printf("\nEval k2 : ");  */
-    vec_sm(k2, n, fct(x + h / 2.0, vec_add(tmp, n, vec_sd(tmp, n, k1, 2.0e0), y), k2), h);
+    vec_sm(k2, n,
+           fct(x + h / 2.0, vec_add(tmp, n, vec_sd(tmp, n, k1, 2.0e0), y), k2),
+           h);
     /* printf("\nEval k3 : ");  */
-    vec_sm(k3, n, fct(x + h / 2.0, vec_add(tmp, n, vec_sd(tmp, n, k2, 2.0e0), y), k3), h);
+    vec_sm(k3, n,
+           fct(x + h / 2.0, vec_add(tmp, n, vec_sd(tmp, n, k2, 2.0e0), y), k3),
+           h);
     /* printf("\nEval k4 : ");  */
     vec_sm(k4, n, fct(x + h, vec_add(tmp, n, k3, y), k4), h);
     /* printf("\nEval y : ");  */
     for (i = 0; i < n; i++)
-        y2[i] = y[i] + k1[i] / 6.0e0 + k2[i] / 3.0e0 + k3[i] / 3.0e0 + k4[i] / 6.0e0;
+        y2[i] = y[i] + k1[i] / 6.0e0 + k2[i] / 3.0e0 + k3[i] / 3.0e0 +
+                k4[i] / 6.0e0;
 }
 
-void rkutta(double *(*fct)(double, double *, double *),
-            double xmin, double xmax, double *y0, int n, double prec)
+void
+rkutta(double *(*fct)(double, double *, double *), double xmin, double xmax,
+       double *y0, int n, double prec)
 {
     int ext, inc = 0;
     double x = xmin, h;
@@ -150,18 +162,19 @@ void rkutta(double *(*fct)(double, double *, double *),
 */
 }
 
-double *f_a_integrer(double x, double *y, double *yp)
+double *
+f_a_integrer(double x, double *y, double *yp)
 {
     yp[0] = sin(x);
     /* printf("inside func %20.17lf : %20.17lf\n",x,yp[0]); */
     return (yp);
 }
 
-int main()
+int
+main()
 {
     double *(*f)(double, double *, double *);
-    double xmin = 0.0,
-           xmax = 10.0;
+    double xmin = 0.0, xmax = 10.0;
     double y0[1];
 
     y0[0] = 0.0e0;

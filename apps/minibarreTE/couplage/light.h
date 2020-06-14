@@ -21,13 +21,14 @@
 
 class COUPLAGE_API Light
 {
-  public:
+public:
     double Q;
     double f;
 
-  public:
+public:
     Light();
-    friend COUPLAGE_API std::ostream &operator<<(std::ostream &out, Light const &obj);
+    friend COUPLAGE_API std::ostream &operator<<(std::ostream &out,
+                                                 Light const &obj);
     void save(std::string const &filename) const;
     double eval(double t);
 };

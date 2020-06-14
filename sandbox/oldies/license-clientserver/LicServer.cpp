@@ -1,5 +1,3 @@
 #include "LicServer.h"
 
-LicServer::LicServer(QObject *parent) : QTcpServer(parent)
-{
-}
+LicServer::LicServer(QObject *parent) : QTcpServer(parent) {}

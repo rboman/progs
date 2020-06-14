@@ -16,7 +16,7 @@
 
 /*
  * Essai de merge des routines
- *           
+ *
  *       "gauss_line"
  *       "gauss_quad"
  *       "gauss_hexa"
@@ -24,12 +24,12 @@
 
 #include "gausslib.h"
 
-/* ---------------------------------------------------------------------------------- */
 
-GAUSS_API int gauss_generic(int ng, int ndim,
-                  double **xx, int type,
-                  int (*fct)(double *, double *, void *, int, double *),
-                  void *par, double *res)
+
+GAUSS_API int
+gauss_generic(int ng, int ndim, double **xx, int type,
+              int (*fct)(double *, double *, void *, int, double *), void *par,
+              double *res)
 {
     int iop = 0;
     int i;
@@ -106,7 +106,7 @@ GAUSS_API int gauss_generic(int ng, int ndim,
             break;
         }
 
-        //if(detj<=0.0) goto ERR2;
+        // if(detj<=0.0) goto ERR2;
 
         // coordonnees du point traite
         ksi = &(xg[i * dimp]);
@@ -124,8 +124,7 @@ GAUSS_API int gauss_generic(int ng, int ndim,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nErreur: probleme lors de l'evaluation de la fct a integrer");
@@ -138,7 +137,8 @@ ERR1:
   goto FIN;
   */
 ERR3:
-    printf("\nErreur: dimension incompatible le type de domaine (ndim=%d)", ndim);
+    printf("\nErreur: dimension incompatible le type de domaine (ndim=%d)",
+           ndim);
     iop = 990;
     goto FIN;
 ERR4:
@@ -146,10 +146,11 @@ ERR4:
     iop = 990;
     goto FIN;
 }
-/* ---------------------------------------------------------------------------------- */
 
-GAUSS_API void gauss_generic_getx(int no, double ***psi, double **xx,
-                        int ndim, int nnode, double *x)
+
+GAUSS_API void
+gauss_generic_getx(int no, double ***psi, double **xx, int ndim, int nnode,
+                   double *x)
 {
     int i, j;
 
@@ -162,10 +163,11 @@ GAUSS_API void gauss_generic_getx(int no, double ***psi, double **xx,
     }
 }
 
-/* ---------------------------------------------------------------------------------- */
 
-GAUSS_API int gauss_generic_get_psi(int ng, double ****psi, double *xg,
-                          int type, int dimp, int nnode, int npg)
+
+GAUSS_API int
+gauss_generic_get_psi(int ng, double ****psi, double *xg, int type, int dimp,
+                      int nnode, int npg)
 {
     int iop = 0;
     int i, j, l, m;
@@ -185,18 +187,21 @@ GAUSS_API int gauss_generic_get_psi(int ng, double ****psi, double *xg,
 
         // allocation
 
-        generic_psi[type][ng1] = (double ***)calloc(1 + dimp, sizeof(double **));
+        generic_psi[type][ng1] =
+            (double ***)calloc(1 + dimp, sizeof(double **));
         if (generic_psi[type][ng1] == NULL)
             goto ERR1;
 
         for (i = 0; i < 1 + dimp; i++)
         {
-            generic_psi[type][ng1][i] = (double **)calloc(nnode, sizeof(double *));
+            generic_psi[type][ng1][i] =
+                (double **)calloc(nnode, sizeof(double *));
             if (generic_psi[type][ng1][i] == NULL)
                 goto ERR1;
             for (j = 0; j < nnode; j++)
             {
-                generic_psi[type][ng1][i][j] = (double *)calloc(npg, sizeof(double));
+                generic_psi[type][ng1][i][j] =
+                    (double *)calloc(npg, sizeof(double));
                 if (generic_psi[type][ng1][i][j] == NULL)
                     goto ERR1;
             }
@@ -232,12 +237,11 @@ GAUSS_API int gauss_generic_get_psi(int ng, double ****psi, double *xg,
 
     *psi = generic_psi[type][ng1];
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 
 ERR1:
@@ -250,15 +254,15 @@ ERR2:
     goto FIN;
 }
 
-/* ---------------------------------------------------------------------------------- */
+
 
 /*
- *   Retourne la matrice jacobienne "jaco" au pt de Gauss "no" 
+ *   Retourne la matrice jacobienne "jaco" au pt de Gauss "no"
  */
 
-GAUSS_API void gauss_generic_jaco(double **xx, double jaco[][3], int no,
-                        double *xg, double ***psi, int ndim,
-                        int dimp, int nnode)
+GAUSS_API void
+gauss_generic_jaco(double **xx, double jaco[][3], int no, double *xg,
+                   double ***psi, int ndim, int dimp, int nnode)
 {
     int i, j, k;
     double va;
@@ -280,14 +284,14 @@ GAUSS_API void gauss_generic_jaco(double **xx, double jaco[][3], int no,
     }
 }
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
  *   Renvoie un ptr vers les points et un ptr vers les poids de Gauss
  */
 
-GAUSS_API int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp, int type,
-                           int npg)
+GAUSS_API int
+gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp, int type,
+                       int npg)
 {
     int iop = 0;
     int i, j, k;
@@ -372,12 +376,11 @@ GAUSS_API int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp,
     (*xg) = generic_xg[type][ng1];
     (*pg) = generic_pg[type][ng1];
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 
 ERR1:
@@ -390,4 +393,4 @@ ERR2:
     goto FIN;
 }
 
-/* ---------------------------------------------------------------------------------- */
+

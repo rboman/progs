@@ -10,20 +10,20 @@ using namespace std;
 struct Range_error
 {
     int i;
-    Range_error(int ii)
-    {
-        i = ii;
-    }
+    Range_error(int ii) { i = ii; }
 };
 
-char to_char(int i)
+char
+to_char(int i)
 {
-    if (i < std::numeric_limits<char>::min() || std::numeric_limits<char>::max() < i)
+    if (i < std::numeric_limits<char>::min() ||
+        std::numeric_limits<char>::max() < i)
         throw Range_error(i);
     return i;
 }
 
-int main()
+int
+main()
 {
     try
     {

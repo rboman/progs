@@ -1,6 +1,7 @@
 #include "lib.h"
 
-int main()
+int
+main()
 {
     return f();
 }

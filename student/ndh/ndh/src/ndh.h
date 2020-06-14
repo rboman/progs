@@ -34,4 +34,4 @@ class BemSolver;
 #include "matfun.h"
 #include "param.h"
 
-#endif //NDH_H
+#endif // NDH_H

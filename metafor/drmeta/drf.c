@@ -1,11 +1,11 @@
 /*
  *
- *                                  Docteur METAFOR 
+ *                                  Docteur METAFOR
  *                                  ---------------
  * par Romain BOMAN
  * (r.boman@ulg.ac.be)
  *
- * Historique: 
+ * Historique:
  *
  *    - 16 oct 98 : creation
  *    - 22 sep 00 : version linux
@@ -22,15 +22,15 @@
  *  1.  Scan de tous les fichiers entres en ligne de commande.
  *      Remplissage d'une base de donnees des definitions de routines (c
  *      et fortran confondus) - structure "mytabl".
- *  2.  Scan des tous les fichiers pour verifier les "call" en fortran  
+ *  2.  Scan des tous les fichiers pour verifier les "call" en fortran
  *      et les appels & protos en c.
  *  3.  Idem pour les commons (2 & 3)
- *  4.  Impression de stats. 
+ *  4.  Impression de stats.
  *
  *
- * Rem: Cette routine traite les fichiers fortran et contient le main(). 
- *      La gestion des routines c ajoutee par apres est geree par un 
- *      module independant (fichier drc.c) appele par le main() la 
+ * Rem: Cette routine traite les fichiers fortran et contient le main().
+ *      La gestion des routines c ajoutee par apres est geree par un
+ *      module independant (fichier drc.c) appele par le main() la
  *      ou c'est necessaire.
  *
  *      Le type des args n'est pas determine !!
@@ -92,7 +92,8 @@ s_mytabl *tempt;
  *                                  MAIN                                 *
  *************************************************************************/
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
     int i;
     int nargs;
@@ -182,7 +183,8 @@ int main(int argc, char **argv)
                 {
 
                 case 1:
-                    if (checkparen(argv[n]) == true) /* verifie les parentheses */
+                    if (checkparen(argv[n]) ==
+                        true) /* verifie les parentheses */
                     {
                         fileinp = fopen(argv[n], "r");
                         t = 0;
@@ -224,7 +226,8 @@ int main(int argc, char **argv)
                                         job = 1;
                                 }
                                 break;
-                                case 1: /* cherche le debut du nom de la SUBROUTINE */
+                                case 1: /* cherche le debut du nom de la
+                                           SUBROUTINE */
                                 {
                                     if (ascii == true)
                                     {
@@ -236,7 +239,8 @@ int main(int argc, char **argv)
                                 break;
                                 case 2: /* cherche le nom de la SUBROUTINE */
                                 {
-                                    if ((buf != ' ') && (buf != '(') && (buf != '\n'))
+                                    if ((buf != ' ') && (buf != '(') &&
+                                        (buf != '\n'))
                                     {
                                         temptxt[templen] = buf;
                                         templen++;
@@ -247,7 +251,8 @@ int main(int argc, char **argv)
                                         nextsub->lnom = templen;
                                         nextsub->nb_vars = 0;
                                         nextsub->nb_appels = 0;
-                                        nextsub->nom = (char *)malloc(sizeof(char) * (templen + 1));
+                                        nextsub->nom = (char *)malloc(
+                                            sizeof(char) * (templen + 1));
                                         if (nextsub->nom == NULL)
                                         {
                                             alloc_error();
@@ -255,7 +260,8 @@ int main(int argc, char **argv)
                                         }
                                         strncpy(nextsub->nom, temptxt, templen);
                                         nextsub->nom[templen] = 0;
-                                        nextsub->next = (s_mytabl *)malloc(sizeof(s_mytabl));
+                                        nextsub->next = (s_mytabl *)malloc(
+                                            sizeof(s_mytabl));
                                         if (nextsub->next == NULL)
                                         {
                                             alloc_error();
@@ -263,7 +269,8 @@ int main(int argc, char **argv)
                                         }
 
                                         t = strlen(argv[n]);
-                                        nextsub->src = (char *)malloc(sizeof(char) * (t + 1));
+                                        nextsub->src = (char *)malloc(
+                                            sizeof(char) * (t + 1));
                                         if (nextsub->src == NULL)
                                         {
                                             alloc_error();
@@ -336,7 +343,8 @@ int main(int argc, char **argv)
                     break;
 
                 default:
-                    printf("!!! %s n'est ni un fichier fortran ni C\n", argv[n]);
+                    printf("!!! %s n'est ni un fichier fortran ni C\n",
+                           argv[n]);
                     err_fich++;
 
                 } // endswitch(type fichier)
@@ -396,7 +404,8 @@ int main(int argc, char **argv)
                                     job = 1;
                             }
                             break;
-                            case 1: /* cherche le debut du nom de la SUBROUTINE */
+                            case 1: /* cherche le debut du nom de la SUBROUTINE
+                                     */
                             {
                                 if (ascii == true)
                                 {
@@ -408,7 +417,8 @@ int main(int argc, char **argv)
                             break;
                             case 2: /* cherche le nom de la SUBROUTINE */
                             {
-                                if ((buf != ' ') && (buf != '(') && (buf != '\n'))
+                                if ((buf != ' ') && (buf != '(') &&
+                                    (buf != '\n'))
                                 {
                                     temptxt[templen] = buf;
                                     templen++;
@@ -436,7 +446,8 @@ int main(int argc, char **argv)
                                     if (buf == '(')
                                         job = 4;
                                     if (flag == 0)
-                                        job = 0; /* Routine pas dans liste (A CONT) */
+                                        job = 0; /* Routine pas dans liste (A
+                                                    CONT) */
                                 }
                             }
                             break;
@@ -458,17 +469,20 @@ int main(int argc, char **argv)
                                         /****/
                                         if (vars != nextsub->nb_vars)
                                         {
-                                            printf(" !!  CALL %s dans fichier %s (lign %d)"
-                                                   " : %d args != %d args in %s\n",
-                                                   nextsub->nom,
-                                                   argv[n], nblign, vars, nextsub->nb_vars,
-                                                   nextsub->src);
+                                            printf(
+                                                " !!  CALL %s dans fichier %s "
+                                                "(lign %d)"
+                                                " : %d args != %d args in %s\n",
+                                                nextsub->nom, argv[n], nblign,
+                                                vars, nextsub->nb_vars,
+                                                nextsub->src);
                                             err_call++;
                                         }
                                         else
                                         {
                                             if (nop2 == true)
-                                                printf("Appel de %s dans %s ......ok\n",
+                                                printf("Appel de %s dans %s "
+                                                       "......ok\n",
                                                        nextsub->nom, argv[n]);
                                         }
                                         /****/
@@ -493,7 +507,7 @@ int main(int argc, char **argv)
                     break;
 
                 case 2:
-                    //printf("verifie fichier \"%s\"\n",argv[n]);
+                    // printf("verifie fichier \"%s\"\n",argv[n]);
                     fileinp = fopen(argv[n], "r");
                     t = 0;
                     job = 0;
@@ -532,7 +546,8 @@ int main(int argc, char **argv)
 
                 case 1:
 
-                    if (checkparen(argv[n]) == true) /* verifie les parentheses */
+                    if (checkparen(argv[n]) ==
+                        true) /* verifie les parentheses */
                     {
                         fileinp = fopen(argv[n], "r");
                         t = 0;
@@ -544,11 +559,11 @@ int main(int argc, char **argv)
                             exit(1);
                         }
                         comment = false;
-                        //printf("Analyse routine %s\n",argv[n]);
+                        // printf("Analyse routine %s\n",argv[n]);
 
                         while ((buf = getc(fileinp)) != EOF)
                         {
-                            //printf("%c",buf);
+                            // printf("%c",buf);
                             ascii = false;
                             if ((buf >= 'A') && (buf <= 'z'))
                             {
@@ -601,7 +616,8 @@ int main(int argc, char **argv)
                                 break;
                                 case 2: /* cherche le nom du COMMON */
                                 {
-                                    if ((buf != ' ') && (buf != '/') && (buf != '\n'))
+                                    if ((buf != ' ') && (buf != '/') &&
+                                        (buf != '\n'))
                                     {
                                         temptxt[templen] = buf;
                                         templen++;
@@ -615,7 +631,8 @@ int main(int argc, char **argv)
                                         for (i = 0; i < nbcom; i++)
                                         {
                                             if (templen == tempt->lnom)
-                                                if (strncmp(temptxt, tempt->nom, templen) == 0)
+                                                if (strncmp(temptxt, tempt->nom,
+                                                            templen) == 0)
                                                     t = i;
                                             if (t == -1)
                                                 tempt = tempt->next;
@@ -632,16 +649,20 @@ int main(int argc, char **argv)
                                             nextcom->lnom = templen;
                                             nextcom->nb_vars = 0;
                                             nextcom->nb_appels = 1;
-                                            nextcom->nom = (char *)malloc(sizeof(char) * (templen + 1));
+                                            nextcom->nom = (char *)malloc(
+                                                sizeof(char) * (templen + 1));
                                             if (nextcom->nom == NULL)
                                             {
                                                 alloc_error();
                                                 exit(1);
                                             }
-                                            strncpy(nextcom->nom, temptxt, templen);
+                                            strncpy(nextcom->nom, temptxt,
+                                                    templen);
                                             nextcom->nom[templen] = 0;
-                                            /*printf("Nouveau COMMON (%s) dans %s",nextcom->nom,argv[n]);*/
-                                            nextcom->next = (s_mytabl *)malloc(sizeof(s_mytabl));
+                                            /*printf("Nouveau COMMON (%s) dans
+                                             * %s",nextcom->nom,argv[n]);*/
+                                            nextcom->next = (s_mytabl *)malloc(
+                                                sizeof(s_mytabl));
                                             if (nextcom->next == NULL)
                                             {
                                                 alloc_error();
@@ -649,7 +670,8 @@ int main(int argc, char **argv)
                                             }
 
                                             t = strlen(argv[n]);
-                                            nextcom->src = (char *)malloc(sizeof(char) * (t + 1));
+                                            nextcom->src = (char *)malloc(
+                                                sizeof(char) * (t + 1));
                                             if (nextcom->src == NULL)
                                             {
                                                 alloc_error();
@@ -706,19 +728,30 @@ int main(int argc, char **argv)
                                             {
                                                 nextcom->nb_vars = vars;
                                                 nextcom = nextcom->next;
-                                                /*printf("  ... %d args.\n",vars);*/
+                                                /*printf("  ... %d
+                                                 * args.\n",vars);*/
                                             }
                                             else
                                             {
                                                 if (vars != tempt->nb_vars)
                                                 {
-                                                    printf(" !!  COMMON %s dans fichier %s (lign %d) : %d args != %d args\n", tempt->nom, argv[n], nblign, vars, tempt->nb_vars);
+                                                    printf(
+                                                        " !!  COMMON %s dans "
+                                                        "fichier %s (lign %d) "
+                                                        ": %d args != %d "
+                                                        "args\n",
+                                                        tempt->nom, argv[n],
+                                                        nblign, vars,
+                                                        tempt->nb_vars);
                                                     err_com++;
                                                 }
                                                 else
                                                 {
                                                     if (nop2 == true)
-                                                        printf("COMMON %s dans %s ......ok\n", tempt->nom, argv[n]);
+                                                        printf("COMMON %s dans "
+                                                               "%s ......ok\n",
+                                                               tempt->nom,
+                                                               argv[n]);
                                                 }
                                             }
                                             job = 0;
@@ -735,7 +768,9 @@ int main(int argc, char **argv)
                     }
                     else
                     {
-                        printf("!!! La routine %s provoque une erreur dans la verif. des parentheses\n", argv[n]);
+                        printf("!!! La routine %s provoque une erreur dans la "
+                               "verif. des parentheses\n",
+                               argv[n]);
                     }
                     break;
 
@@ -766,7 +801,8 @@ int main(int argc, char **argv)
  *                               2 si file est C ou H                    *
  *                               0 si quedalle                           *
  *************************************************************************/
-int checkfile(char *file)
+int
+checkfile(char *file)
 {
     int i, l1, l2, l3, l4;
     char *ext1 = ".f";
@@ -794,7 +830,8 @@ int checkfile(char *file)
 /*************************************************************************
  *                         INTRO   Texte d'intro                         *
  *************************************************************************/
-void intro()
+void
+intro()
 {
     puts("\n--------------------------------------\n");
     puts("   Docteur METAFOR 2.1   par R.Boman\n");
@@ -807,7 +844,8 @@ void intro()
 /*************************************************************************
  *                     SYNTAXE   Fournit texte syntaxe                   *
  *************************************************************************/
-void syntaxe()
+void
+syntaxe()
 {
     puts("\nSyntaxe : drmeta [opt] fichier1.f fichier2.c ...\n");
     puts("          [opt] : -s : summary (affichage de la liste des routines)");
@@ -821,7 +859,8 @@ void syntaxe()
 /*************************************************************************
  *                        AIDE   Fournit texte aide                      *
  *************************************************************************/
-void aide()
+void
+aide()
 {
     puts("Ce superbe programme permet de faire le diagnostic d'un");
     puts("programme ecrit en Fortran et C.\n");
@@ -830,15 +869,18 @@ void aide()
     puts("\tVerification du nombre de var. passees par \"CALL\",");
     puts("\tVerification globale des COMMONs.\n");
     puts("Exemple :");
-    puts("\t drmeta -ec *.f : donne les erreurs de COMMON dans les fichiers du rep. courant.");
-    puts("\t drmeta -s *.f *.c *.h : lance la verif. totale + tabl. recapitulatif.\n");
+    puts("\t drmeta -ec *.f : donne les erreurs de COMMON dans les fichiers du "
+         "rep. courant.");
+    puts("\t drmeta -s *.f *.c *.h : lance la verif. totale + tabl. "
+         "recapitulatif.\n");
     puts("Plus d'infos : r.boman@ulg.ac.be\n");
 }
 
 /*************************************************************************
  *                 ALLOC_ERROR   ERREUR D'ALLOC DYNAMIQUE                *
  *************************************************************************/
-void alloc_error()
+void
+alloc_error()
 {
     puts("\nErreur d'alloc. dynamique -> abort !\n");
 }
@@ -846,7 +888,8 @@ void alloc_error()
 /*************************************************************************
  *                     SUMMARY   Tableau resume                          *
  *************************************************************************/
-void summary()
+void
+summary()
 {
     int i;
     if (nop4 == true)
@@ -860,9 +903,13 @@ void summary()
         for (i = 0; i < nbsub; i++)
         {
             if (nextsub->lnom > 7)
-                printf("%s\t %d \t %d \t %d \t %s\n", nextsub->nom, nextsub->lnom, nextsub->nb_appels, nextsub->nb_vars, nextsub->src);
+                printf("%s\t %d \t %d \t %d \t %s\n", nextsub->nom,
+                       nextsub->lnom, nextsub->nb_appels, nextsub->nb_vars,
+                       nextsub->src);
             else
-                printf("%s\t\t %d \t %d \t %d \t %s\n", nextsub->nom, nextsub->lnom, nextsub->nb_appels, nextsub->nb_vars, nextsub->src);
+                printf("%s\t\t %d \t %d \t %d \t %s\n", nextsub->nom,
+                       nextsub->lnom, nextsub->nb_appels, nextsub->nb_vars,
+                       nextsub->src);
             nextsub = nextsub->next;
         }
         printf("\n! le nbre d'appels ds routines c n'est pas pris en compte\n");
@@ -879,9 +926,13 @@ void summary()
         for (i = 0; i < nbcom; i++)
         {
             if (nextcom->lnom > 7)
-                printf("%s\t %d \t %d \t %d \t %s\n", nextcom->nom, nextcom->lnom, nextcom->nb_appels, nextcom->nb_vars, nextcom->src);
+                printf("%s\t %d \t %d \t %d \t %s\n", nextcom->nom,
+                       nextcom->lnom, nextcom->nb_appels, nextcom->nb_vars,
+                       nextcom->src);
             else
-                printf("%s\t\t %d \t %d \t %d \t %s\n", nextcom->nom, nextcom->lnom, nextcom->nb_appels, nextcom->nb_vars, nextcom->src);
+                printf("%s\t\t %d \t %d \t %d \t %s\n", nextcom->nom,
+                       nextcom->lnom, nextcom->nb_appels, nextcom->nb_vars,
+                       nextcom->src);
             nextcom = nextcom->next;
         }
     }
@@ -891,7 +942,8 @@ void summary()
  *                     CHECKPAREN Verifie les parentheses                *
  *                                sans tenir compte des ()               *
  *************************************************************************/
-boolean checkparen(char *fich)
+boolean
+checkparen(char *fich)
 {
     int paren = 0;
     boolean texte = false;

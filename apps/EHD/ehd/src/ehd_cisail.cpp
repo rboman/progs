@@ -21,18 +21,16 @@
  * @brief Calcule le cisaillement (tau) en un point donne
  */
 
-EHD_API int ehd_cisail(double eta0, double alpha,
-                       double v, double p, double dp, double h,
-                       double Rq, double Rq1, double Rq2,
-                       int loi, double *tau)
+EHD_API int
+ehd_cisail(double eta0, double alpha, double v, double p, double dp, double h,
+           double Rq, double Rq1, double Rq2, int loi, double *tau)
 {
     int iop = 0;
 
     // Calcul des "flow factors" : PhiF, PhiFS, PhiFP
 
     double PhiF, PhiFS, PhiFP;
-    ehd_flow_cisail(h, Rq, Rq1, Rq2, loi,
-                          &PhiF, &PhiFS, &PhiFP);
+    ehd_flow_cisail(h, Rq, Rq1, Rq2, loi, &PhiF, &PhiFS, &PhiFP);
 
     // Viscosite
 
@@ -51,7 +49,8 @@ EHD_API int ehd_cisail(double eta0, double alpha,
     }
     else
     {
-        std::stringstream str; str << __FUNCTION__ << " in " << __FILE__ << ": ";
+        std::stringstream str;
+        str << __FUNCTION__ << " in " << __FILE__ << ": ";
         str << "Epaisseur de film nulle -> division par 0 !";
         throw std::runtime_error(str.str());
     }

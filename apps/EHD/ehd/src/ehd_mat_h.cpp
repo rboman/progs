@@ -25,20 +25,17 @@
  * (les matrices indep de h pourrait etre evaluee 1 seule fois)
  */
 
-EHD_API int ehd_mat_h(double *x, double *h, double *u,
-                      double *um, double *v, double eta0, double alpha,
-                      double *p, double *dp,
-                      double *PhiS, double *dPhiS,
-                      double *PhiP, double *dPhiP,
-                      double Su[2][2], double Sp[2][2],
-                      double dSu[2][2], double dSp[2][2],
-                      double C1[2][2], double C2[2][2],
-                      double Sv[2][2], double dSv[2][2])
+EHD_API int
+ehd_mat_h(double *x, double *h, double *u, double *um, double *v, double eta0,
+          double alpha, double *p, double *dp, double *PhiS, double *dPhiS,
+          double *PhiP, double *dPhiP, double Su[2][2], double Sp[2][2],
+          double dSu[2][2], double dSp[2][2], double C1[2][2], double C2[2][2],
+          double Sv[2][2], double dSv[2][2])
 {
 
     int iop = 0;
 
-    double *xx[2];    
+    double *xx[2];
     xx[0] = &(x[0]);
     xx[1] = &(x[1]);
 
@@ -123,10 +120,12 @@ EHD_API int ehd_mat_h(double *x, double *h, double *u,
       +      psih[1][3][n] * dp[1];
     */
 
-        double dpdx_g = psil[1][0][n] * p[0] / detj + psil[1][1][n] * p[1] / detj;
-        //printf("dpdx_g = %E\n",dpdx_g);
+        double dpdx_g =
+            psil[1][0][n] * p[0] / detj + psil[1][1][n] * p[1] / detj;
+        // printf("dpdx_g = %E\n",dpdx_g);
 
-        double dumdx_g = psil[1][0][n] * um[0] / detj + psil[1][1][n] * um[1] / detj;
+        double dumdx_g =
+            psil[1][0][n] * um[0] / detj + psil[1][1][n] * um[1] / detj;
 
         // valeurs temporaires
 
@@ -181,6 +180,6 @@ EHD_API int ehd_mat_h(double *x, double *h, double *u,
             for (int j = 0; j < 2; j++)
                 printf("dSu %d,%d = %E\n", i, j, dSu[i][j]);
     }
-    
+
     return iop;
 }

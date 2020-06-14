@@ -3,12 +3,13 @@
 #include <QtWidgets/QDirModel>
 #include <QtWidgets/QListView>
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
     QDirModel model;
-    //model.setNameFilters(QStringList("*.cpp"));
+    // model.setNameFilters(QStringList("*.cpp"));
     model.setFilter(QDir::Files);
     QListView view;
     view.setModel(&model);

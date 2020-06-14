@@ -20,7 +20,8 @@ using namespace ndh;
 // Routine d'introduction d'un double au clavier
 //--------------------------------------------------------------------
 
-void ndh::param(char const *texte, double *par)
+void
+ndh::param(char const *texte, double *par)
 {
     double prm = *par;
     std::cout << std::string(texte) << " [" << *par << "] = ";
@@ -34,7 +35,8 @@ void ndh::param(char const *texte, double *par)
 // Routine d'introduction d'un integer au clavier
 //--------------------------------------------------------------------
 
-void ndh::param2(char const *texte, int *par)
+void
+ndh::param2(char const *texte, int *par)
 {
     int prm = *par;
     std::cout << std::string(texte) << " [" << *par << "] = ";

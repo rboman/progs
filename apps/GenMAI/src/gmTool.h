@@ -19,10 +19,11 @@
 #include "gmObject.h"
 #include <vector>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
- * @brief Defines a Tool (list of Point and list of Curve). 
+ * @brief Defines a Tool (list of Point and list of Curve).
  */
 
 class GENMAI_API Tool : public Object
@@ -44,6 +45,6 @@ public:
     void clear();
 };
 
-}
+} // namespace genmai
 
-#endif //GMTOOL_H
+#endif // GMTOOL_H

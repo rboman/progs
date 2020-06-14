@@ -16,15 +16,17 @@
 
 using namespace genmai;
 
-namespace genmai {
+namespace genmai
+{
 std::ostream &
 operator<<(std::ostream &out, Object const &obj)
 {
     obj.write(out);
     return out;
 }
-}
+} // namespace genmai
 
-void Object::write(std::ostream &out) const
+void
+Object::write(std::ostream &out) const
 {
 }

@@ -1,6 +1,6 @@
 /*
  * A stupid but useful crypt program
- * Two methods : 
+ * Two methods :
  *    - swap byte : swap each pair of bytes.
  *    - xor       : xor all bytes with a passwd
  *
@@ -17,10 +17,12 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-void usage(char *name)
+void
+usage(char *name)
 {
     printf("\nStupide util de cryptage by RoBo -  May 2003\n\n");
-    //printf("usage: %s [-x|-s] [-v] -i infile [-o outfile] [-p passwd]\n", name);
+    // printf("usage: %s [-x|-s] [-v] -i infile [-o outfile] [-p passwd]\n",
+    // name);
     printf("usage: %s [-x|-s] [-v] infile(s) [-p passwd]\n", name);
     printf("       -s: swap bytes method\n");
     printf("       -x: xor method\n");
@@ -30,17 +32,20 @@ void usage(char *name)
            " " __TIME__ "\n\n");
 }
 
-size_t readbyte(FILE *file, char *byte)
+size_t
+readbyte(FILE *file, char *byte)
 {
     return fread(byte, sizeof(char), 1, file);
 }
 
-size_t writebyte(FILE *file, char byte)
+size_t
+writebyte(FILE *file, char byte)
 {
     return fwrite(&byte, sizeof(char), 1, file);
 }
 
-int passwd(char *key)
+int
+passwd(char *key)
 {
     key[0] = '\0';
     while (key[0] == '\0')
@@ -51,7 +56,8 @@ int passwd(char *key)
     return 0;
 }
 
-int crypt01(FILE *ifile, FILE *ofile, char *key, int v)
+int
+crypt01(FILE *ifile, FILE *ofile, char *key, int v)
 {
     char b1, b2;
     int n1 = 1, n2 = 1;
@@ -79,7 +85,8 @@ int crypt01(FILE *ifile, FILE *ofile, char *key, int v)
     return 0;
 }
 
-int crypt02(FILE *ifile, FILE *ofile, char *key, int v)
+int
+crypt02(FILE *ifile, FILE *ofile, char *key, int v)
 {
     char b1;
     int n1 = 1;
@@ -110,7 +117,8 @@ int crypt02(FILE *ifile, FILE *ofile, char *key, int v)
     return 0;
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     int i;
     FILE *ifile = NULL, *ofile = NULL;
@@ -155,16 +163,14 @@ int main(int argc, char *argv[])
             if (isprint(optopt))
                 fprintf(stderr, "Unknown option `-%c'.\n", optopt);
             else
-                fprintf(stderr,
-                        "Unknown option character `\\x%x'.\n",
-                        optopt);
+                fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
             return 1;
         default:
             exit(1);
         }
     }
 
-    //if(!in)
+    // if(!in)
     if (optind == argc)
     {
         printf("no input file(s)!\n");

@@ -18,7 +18,8 @@
 #include "genmai.h"
 #include <iostream>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
  * @brief Base class of all virtual objects
@@ -36,11 +37,12 @@ public:
     Object &operator=(const Object &) = delete;
 
 #ifndef SWIG
-    friend GENMAI_API std::ostream &operator<<(std::ostream &out, Object const &obj);
+    friend GENMAI_API std::ostream &operator<<(std::ostream &out,
+                                               Object const &obj);
     virtual void write(std::ostream &out) const;
 #endif
 };
 
-}
+} // namespace genmai
 
-#endif //GMOBJECT_H
+#endif // GMOBJECT_H

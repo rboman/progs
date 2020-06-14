@@ -1,8 +1,9 @@
 
 #include "ConsoleList.h"
 
-int main()
+int
+main()
 {
-    ConsoleList::getInstance().restoreColor();  
+    ConsoleList::getInstance().restoreColor();
     return 0;
 }

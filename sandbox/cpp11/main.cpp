@@ -3,7 +3,8 @@
 
 #include "cpp11.h"
 
-int main()
+int
+main()
 {
     range_based_for();
     misc();

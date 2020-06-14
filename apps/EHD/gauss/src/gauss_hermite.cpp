@@ -27,9 +27,9 @@
 
 #include "gausslib.h"
 
-/* ---------------------------------------------------------------------------------- */
 
-GAUSS_API int gauss_hermite_get_psi(int ng, double ****psi, double *xg)
+GAUSS_API int
+gauss_hermite_get_psi(int ng, double ****psi, double *xg)
 {
     int iop = 0;
     int i, j, l, m;
@@ -49,13 +49,15 @@ GAUSS_API int gauss_hermite_get_psi(int ng, double ****psi, double *xg)
 
         // allocation
 
-        hermite_psi[ng1] = (double ***)calloc(1 + EL_HERMITE_DIM, sizeof(double **));
+        hermite_psi[ng1] =
+            (double ***)calloc(1 + EL_HERMITE_DIM, sizeof(double **));
         if (hermite_psi[ng1] == NULL)
             goto ERR1;
 
         for (i = 0; i < 1 + EL_HERMITE_DIM; i++)
         {
-            hermite_psi[ng1][i] = (double **)calloc(EL_HERMITE_NODE, sizeof(double *));
+            hermite_psi[ng1][i] =
+                (double **)calloc(EL_HERMITE_NODE, sizeof(double *));
             if (hermite_psi[ng1][i] == NULL)
                 goto ERR1;
             for (j = 0; j < EL_HERMITE_NODE; j++)
@@ -84,12 +86,11 @@ GAUSS_API int gauss_hermite_get_psi(int ng, double ****psi, double *xg)
 
     *psi = hermite_psi[ng1];
 
-/***/
+    /***/
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 
 ERR1:
@@ -102,4 +103,3 @@ ERR2:
     goto FIN;
 }
 
-/* ---------------------------------------------------------------------------------- */

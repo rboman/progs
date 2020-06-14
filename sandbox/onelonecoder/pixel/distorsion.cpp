@@ -25,13 +25,10 @@ class Distorsion : public olc::PixelGameEngine
     float (*fn_dfdy)(float, float);
 
     std::unique_ptr<olc::Sprite> source;
-    //std::unique_ptr<olc::Sprite> target;
+    // std::unique_ptr<olc::Sprite> target;
 
 public:
-    Distorsion()
-    {
-        sAppName = "Distorsion";
-    }
+    Distorsion() { sAppName = "Distorsion"; }
 
 private:
     void fct_sin()
@@ -59,7 +56,8 @@ private:
         Clear(olc::BLACK);
         int scl = 4; // font scale
         for (int j = 0; j < ScreenHeight() / (9 * scl); ++j)
-            DrawString(j * 9 * scl, j * 9 * scl, "Distorsion", olc::YELLOW, scl);
+            DrawString(j * 9 * scl, j * 9 * scl, "Distorsion", olc::YELLOW,
+                       scl);
         SetDrawTarget(nullptr);
     }
 
@@ -70,9 +68,11 @@ private:
         int spacing = 20;
         int offset = spacing / 2;
         for (int i = 0; i < ScreenHeight() / spacing; ++i)
-            DrawLine(0, i * spacing + offset, ScreenWidth(), i * spacing + offset, olc::YELLOW);
+            DrawLine(0, i * spacing + offset, ScreenWidth(),
+                     i * spacing + offset, olc::YELLOW);
         for (int i = 0; i < ScreenWidth() / spacing; ++i)
-            DrawLine(i * spacing + offset, 0, i * spacing + offset, ScreenHeight(), olc::YELLOW);
+            DrawLine(i * spacing + offset, 0, i * spacing + offset,
+                     ScreenHeight(), olc::YELLOW);
         SetDrawTarget(nullptr);
     }
 
@@ -162,28 +162,29 @@ private:
         int32_t y2 = ScreenHeight();
 
         // 1 process
-        //distort(ox, oy, x1, y1, x2, y2);
+        // distort(ox, oy, x1, y1, x2, y2);
 
         // with several threads
         constexpr int nMaxThreads = 6;
-		int nSectionWidth = (x2 - x1) / nMaxThreads;
+        int nSectionWidth = (x2 - x1) / nMaxThreads;
 
-		std::thread t[nMaxThreads];
+        std::thread t[nMaxThreads];
 
-		for (size_t i = 0; i < nMaxThreads; i++)
-			t[i] = std::thread(&Distorsion::distort, this,
-                ox, oy, x1+i*nSectionWidth, y1, x1+(i+1)*nSectionWidth, y2);
+        for (size_t i = 0; i < nMaxThreads; i++)
+            t[i] = std::thread(&Distorsion::distort, this, ox, oy,
+                               x1 + i * nSectionWidth, y1,
+                               x1 + (i + 1) * nSectionWidth, y2);
 
-		for (size_t i = 0; i < nMaxThreads; i++)
-			t[i].join();
-
-
+        for (size_t i = 0; i < nMaxThreads; i++)
+            t[i].join();
 
         // draw axes
         DrawLine(0, oy, ScreenWidth(), oy, olc::WHITE);
         DrawLine(ox, 0, ox, ScreenHeight(), olc::WHITE);
-        DrawLine(ox + int32_t(zoom), oy - 3, ox + int32_t(zoom), oy + 3, olc::WHITE);
-        DrawLine(ox - 3, oy + int32_t(zoom), ox + 3, oy + int32_t(zoom), olc::WHITE);
+        DrawLine(ox + int32_t(zoom), oy - 3, ox + int32_t(zoom), oy + 3,
+                 olc::WHITE);
+        DrawLine(ox - 3, oy + int32_t(zoom), ox + 3, oy + int32_t(zoom),
+                 olc::WHITE);
 
         // print parameters
         drawParams();
@@ -191,14 +192,14 @@ private:
         return true;
     }
 
-
-    void distort(int32_t ox, int32_t oy, int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+    void distort(int32_t ox, int32_t oy, int32_t x1, int32_t y1, int32_t x2,
+                 int32_t y2)
     {
         for (int32_t i = x1; i < x2; ++i)
             for (int32_t j = y1; j < y2; ++j)
             {
-                float a = float(i-ox) / zoom;
-                float b = float(j-ox) / zoom;
+                float a = float(i - ox) / zoom;
+                float b = float(j - ox) / zoom;
                 float nx = fn_dfdx(a, b);
                 float ny = fn_dfdy(a, b);
                 float z = fn_f(a, b) * zoom;
@@ -219,7 +220,8 @@ private:
 
                 float xd = (alp + z) * tan(i1 - r1);
                 float yd = (alp + z) * tan(i2 - r2);
-                olc::Pixel C = source->GetPixel(i - int32_t(xd), j - int32_t(yd));
+                olc::Pixel C =
+                    source->GetPixel(i - int32_t(xd), j - int32_t(yd));
                 Draw(i, j, C);
             }
     }
@@ -230,16 +232,22 @@ private:
         int nbrows = ScreenHeight() / charHeight;
 
         SetPixelMode(olc::Pixel::ALPHA);
-        FillRect(0, (nbrows - 4) * charHeight, ScreenWidth(), (4 * nbrows) * charHeight, olc::Pixel(0, 0, 0, 128));
+        FillRect(0, (nbrows - 4) * charHeight, ScreenWidth(),
+                 (4 * nbrows) * charHeight, olc::Pixel(0, 0, 0, 128));
         SetPixelMode(olc::Pixel::NORMAL);
 
-        DrawString(charHeight, (nbrows - 3) * charHeight, "zoom = " + std::to_string(zoom) + " [left-right]", olc::WHITE);
-        DrawString(charHeight, (nbrows - 2) * charHeight, "alp  = " + std::to_string(alp) + " [up-down]", olc::WHITE);
-        DrawString(charHeight, (nbrows - 1) * charHeight, "N    = " + std::to_string(N) + " [A-Z]", olc::WHITE);
+        DrawString(charHeight, (nbrows - 3) * charHeight,
+                   "zoom = " + std::to_string(zoom) + " [left-right]",
+                   olc::WHITE);
+        DrawString(charHeight, (nbrows - 2) * charHeight,
+                   "alp  = " + std::to_string(alp) + " [up-down]", olc::WHITE);
+        DrawString(charHeight, (nbrows - 1) * charHeight,
+                   "N    = " + std::to_string(N) + " [A-Z]", olc::WHITE);
     }
 };
 
-int main()
+int
+main()
 {
     Distorsion demo;
     if (demo.Construct(500, 500, 2, 2))

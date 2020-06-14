@@ -9,7 +9,8 @@
 
 typedef std::vector<std::vector<double>> MyArray;
 
-bool manageErr(int err)
+bool
+manageErr(int err)
 {
     switch (err)
     {
@@ -24,7 +25,8 @@ bool manageErr(int err)
     }
 }
 
-bool skipname(FILE *file)
+bool
+skipname(FILE *file)
 {
     for (;;)
     {
@@ -37,7 +39,8 @@ bool skipname(FILE *file)
     }
 }
 
-bool getidx(FILE *file, int *ni, int *nj)
+bool
+getidx(FILE *file, int *ni, int *nj)
 {
     *ni = 1;
     *nj = 1;
@@ -58,13 +61,15 @@ bool getidx(FILE *file, int *ni, int *nj)
     }
 }
 
-bool getvalue(FILE *file, double *val)
+bool
+getvalue(FILE *file, double *val)
 {
     int err = fscanf(file, " =%lf", val);
     return manageErr(err);
 }
 
-bool manageFileErr(FILE *file)
+bool
+manageFileErr(FILE *file)
 {
     if (file)
         return true;
@@ -72,19 +77,22 @@ bool manageFileErr(FILE *file)
     exit(1);
 }
 
-bool openFileR(FILE **file, char *name)
+bool
+openFileR(FILE **file, char *name)
 {
     *file = fopen(name, "r+t");
     return manageFileErr(*file);
 }
 
-bool openFileW(FILE **file, char *name)
+bool
+openFileW(FILE **file, char *name)
 {
     *file = fopen(name, "w+t");
     return manageFileErr(*file);
 }
 
-void getMaxIdx(FILE *file, int *nimax, int *njmax)
+void
+getMaxIdx(FILE *file, int *nimax, int *njmax)
 {
     *nimax = 1;
     *njmax = 1;
@@ -103,7 +111,8 @@ void getMaxIdx(FILE *file, int *nimax, int *njmax)
     }
 }
 
-void fillArray(FILE *file, MyArray &array)
+void
+fillArray(FILE *file, MyArray &array)
 {
     for (;;)
     {
@@ -119,7 +128,8 @@ void fillArray(FILE *file, MyArray &array)
     }
 }
 
-void getMaxIdx(char *name, int *nimax, int *njmax)
+void
+getMaxIdx(char *name, int *nimax, int *njmax)
 {
     FILE *file;
     openFileR(&file, name);
@@ -127,7 +137,8 @@ void getMaxIdx(char *name, int *nimax, int *njmax)
     fclose(file);
 }
 
-void writeArray(char *name, MyArray &array)
+void
+writeArray(char *name, MyArray &array)
 {
     FILE *file;
     openFileW(&file, name);
@@ -143,7 +154,8 @@ void writeArray(char *name, MyArray &array)
     fclose(file);
 }
 
-void allocArray(MyArray &array, int nimax, int njmax)
+void
+allocArray(MyArray &array, int nimax, int njmax)
 {
     array.resize(nimax);
     int i;
@@ -156,7 +168,8 @@ void allocArray(MyArray &array, int nimax, int njmax)
     }
 }
 
-void fillArray(char *name, MyArray &array)
+void
+fillArray(char *name, MyArray &array)
 {
     FILE *file;
     openFileR(&file, name);
@@ -164,7 +177,8 @@ void fillArray(char *name, MyArray &array)
     fclose(file);
 }
 
-void convertFileName(const char *fileM, char *fileT)
+void
+convertFileName(const char *fileM, char *fileT)
 {
     int i = 0;
     while (fileM[i] != '.' && i < 100)
@@ -175,7 +189,8 @@ void convertFileName(const char *fileM, char *fileT)
     strcpy(&(fileT[i]), ".txt");
 }
 
-bool checkFileExist(char *name)
+bool
+checkFileExist(char *name)
 {
     FILE *file = fopen(name, "r+t");
     if (file)
@@ -186,7 +201,8 @@ bool checkFileExist(char *name)
     return false;
 }
 
-bool convertOneFile(char *name)
+bool
+convertOneFile(char *name)
 {
     char fileT[100];
     convertFileName(name, fileT);
@@ -209,7 +225,8 @@ bool convertOneFile(char *name)
     return true;
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     int n;
     for (n = 1; n < argc; ++n)

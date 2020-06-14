@@ -5,207 +5,212 @@
 #include <stdio.h>
 #include <strings.h>
 
-
-char find_next_word (FILE *fileinp, char *buffer, int *lbuf);
+char find_next_word(FILE *fileinp, char *buffer, int *lbuf);
 int count_args(FILE *fileinp, int *nargs);
 
-typedef enum {false,true} boolean;
-typedef struct mytabl s_mytabl; 
-struct mytabl
-  {  char *nom;
-     char *src;
-     int lnom;
-     int nb_vars;
-     int nb_appels;
-     s_mytabl *next;
-  };
-
-int zorglub()
+typedef enum
 {
-  printf("eviv bulgroz !\n");
+    false,
+    true
+} boolean;
+typedef struct mytabl s_mytabl;
+struct mytabl
+{
+    char *nom;
+    char *src;
+    int lnom;
+    int nb_vars;
+    int nb_appels;
+    s_mytabl *next;
+};
+
+int
+zorglub()
+{
+    printf("eviv bulgroz !\n");
 }
 
-int zorglub2(int n)
+int
+zorglub2(int n)
 {
-  printf("eviv bulgroz !\n");
+    printf("eviv bulgroz !\n");
 }
 
 // update liste des appels
 
-     /* un petit test, ti */
+/* un petit test, ti */
 
-int mtcmtms(int)
+int
+mtcmtms(int)
 {
-
 }
 
-int main(int argc,char **argv) // ca va merder ??
+int main(int argc, char **argv) // ca va merder ??
 /* encore plus
 fort
 
 */
 {
-  int n;
-  FILE *fileinp;
-  char buf;
-  char stopchar;
-  int lbuf;
+    int n;
+    FILE *fileinp;
+    char buf;
+    char stopchar;
+    int lbuf;
 
-  char name[100];
-  int lname, nargs;
+    char name[100];
+    int lname, nargs;
 
-  mtcmtms((*DIAMAS),&elemas,&rhoe1,depaie,&(*ANIS1)[ne],&ipos,&ray1,&ray2);
-  mtcmtms(  *DIAMAS  ,&elemas,&rhoe1,depaie,&(*ANIS1)[ne],&ipos,&ray1,&ray2);
+    mtcmtms((*DIAMAS), &elemas, &rhoe1, depaie, &(*ANIS1)[ne], &ipos, &ray1,
+            &ray2);
+    mtcmtms(*DIAMAS, &elemas, &rhoe1, depaie, &(*ANIS1)[ne], &ipos, &ray1,
+            &ray2);
 
-  // test () vides
+    // test () vides
 
-  zorglub();    // routine c
-  zorglub(pipo);
+    zorglub(); // routine c
+    zorglub(pipo);
 
-  zorglub2(a,b);
+    zorglub2(a, b);
 
-  zorg();       // routine fortran
-  zorg( pipo );
+    zorg(); // routine fortran
+    zorg(pipo);
 
-// test bidon
+    // test bidon
 
-robo1(robo2     (robo3(2,6),4),robo4(5,"pipo"));
+    robo1(robo2(robo3(2, 6), 4), robo4(5, "pipo"));
 
-  /*
-  printf("%c = (%d)\n",'A','A');
-  printf("%c = (%d)\n",'z','z');
-  printf("%c = (%d)\n",'_','_');
-  printf("%c = (%d)\n",'0','0');
-  printf("%c = (%d)\n",'9','9');
+    /*
+    printf("%c = (%d)\n",'A','A');
+    printf("%c = (%d)\n",'z','z');
+    printf("%c = (%d)\n",'_','_');
+    printf("%c = (%d)\n",'0','0');
+    printf("%c = (%d)\n",'9','9');
 
-  exit(0);
-  */
+    exit(0);
+    */
 
-  for(n=1;n<argc;n++) {
-      
-    fileinp=fopen(argv[n],"r");
+    for (n = 1; n < argc; n++)
+    {
 
-    count_args(fileinp, &nargs);
+        fileinp = fopen(argv[n], "r");
 
+        count_args(fileinp, &nargs);
+    }
 
-  }
+    nom / (pipo);
 
-  nom / (pipo);
+    main(arg1, arg2, arg3);
 
-  main(arg1, arg2     ,
-       arg3);
+    myfortran(1, 2, i, j);
 
-  myfortran(1, 2,i,j );
+    B[j][i] = aleutil_minor(A, i, j) * (double)n;
 
-      B[j][i] = aleutil_minor(A,i,j)*(double)n;
-
-  mesh2->geom = (S_GEOM*) calloc(1, sizeof(S_GEOM));
-
+    mesh2->geom = (S_GEOM *)calloc(1, sizeof(S_GEOM));
 }
 
-
-
-
-double aleutil_minor(double A[3][3], int i, int j)
+double
+aleutil_minor(double A[3][3], int i, int j)
 {
 }
 
-
-int count_args(FILE *fileinp, int *nargs)
+int
+count_args(FILE *fileinp, int *nargs)
 {
-  char stopchar;
-  char buffer[1000];
-  int lbuf;
+    char stopchar;
+    char buffer[1000];
+    int lbuf;
 
-  char name[100];
-  int lname;
-  int nnargs;
+    char name[100];
+    int lname;
+    int nnargs;
 
-  *nargs=1;
+    *nargs = 1;
 
-  while((stopchar=find_next_word(fileinp, buffer, &lbuf))!=EOF) {
+    while ((stopchar = find_next_word(fileinp, buffer, &lbuf)) != EOF)
+    {
 
-    printf("stop: %c \t word: %s (nargs=%d)\n",stopchar,buffer,*nargs);
-  
-    switch(stopchar) {
+        printf("stop: %c \t word: %s (nargs=%d)\n", stopchar, buffer, *nargs);
 
-    case ',':
-      (*nargs)++; // () obligatoires!
-      printf("nargs = %d!\n",*nargs);
-      break;
+        switch (stopchar)
+        {
 
-    case ')': 
-      printf("return!\n");
-      return 0;
-      break;
-     
-    case '(':
-      if(lbuf!=0) {
-	strcpy(name, buffer);
-	lname = lbuf;
-	
-	printf("call count_args!\n");
-	count_args(fileinp, &nnargs);
-	
-	printf("\t*** function : %s (%d args)\n",name,nnargs);
-      }
-      break;
+        case ',':
+            (*nargs)++; // () obligatoires!
+            printf("nargs = %d!\n", *nargs);
+            break;
 
-    default:
-      break;
+        case ')':
+            printf("return!\n");
+            return 0;
+            break;
 
-    } // ENDSWITCH
+        case '(':
+            if (lbuf != 0)
+            {
+                strcpy(name, buffer);
+                lname = lbuf;
 
+                printf("call count_args!\n");
+                count_args(fileinp, &nnargs);
 
+                printf("\t*** function : %s (%d args)\n", name, nnargs);
+            }
+            break;
 
-  } // endwhile
+        default:
+            break;
 
+        } // ENDSWITCH
 
+    } // endwhile
 }
 
-
-
-
-
-char find_next_word(FILE *fileinp, char *buffer, int *lbuf)
+char
+find_next_word(FILE *fileinp, char *buffer, int *lbuf)
 {
-  char buf;
-  boolean ascii, start,valid;
-  int pos=0;
+    char buf;
+    boolean ascii, start, valid;
+    int pos = 0;
 
-  start=false;
-  valid=false;
+    start = false;
+    valid = false;
 
-  while((buf=getc(fileinp))!=EOF) {
-    
-    ascii=false;
-    if(((buf>='A')&&(buf<='Z'))||((buf>='a')&&(buf<='z'))) {
-      buf=toupper(buf);ascii=true; start=true; 
+    while ((buf = getc(fileinp)) != EOF)
+    {
+
+        ascii = false;
+        if (((buf >= 'A') && (buf <= 'Z')) || ((buf >= 'a') && (buf <= 'z')))
+        {
+            buf = toupper(buf);
+            ascii = true;
+            start = true;
+        }
+
+        // printf("buf = %c (%d)\n",buf,buf);
+
+        if (start == true)
+        {
+            valid = false;
+            if (ascii == true)
+                valid = true;
+            if ((buf >= '0') && (buf <= '9'))
+                valid = true;
+            if (buf == '_')
+                valid = true;
+            if (!valid)
+                break;
+            else
+                buffer[pos++] = buf;
+        }
+        else
+        {
+            if (buf == '(')
+                break;
+        }
     }
 
-    //printf("buf = %c (%d)\n",buf,buf);
+    buffer[pos] = '\0';
+    *lbuf = pos;
 
-    if(start==true) {
-      valid=false;
-      if(ascii==true) valid=true;
-      if((buf>='0')&&(buf<='9')) valid=true;
-      if(buf=='_') valid=true;
-      if(!valid) 
-	break;
-      else
-	buffer[pos++]=buf;
-    }
-    else {
-      if(buf=='(') break;
-
-    }
-
-
-  }
-
-  buffer[pos]='\0';
-  *lbuf = pos;
-
-  return buf;
-
+    return buf;
 }

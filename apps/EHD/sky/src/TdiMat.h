@@ -41,7 +41,7 @@ SKY_API std::ostream &operator<<(std::ostream &out, TdiMat const &obj);
 
 /**
  * @brief Tridiagonal Matrix / Solver
- * 
+ *
  *   - Gestion de Matrices TriDIagonales
  *   - Solver non symetrique (sans gestion de pivots nuls)
  */
@@ -52,8 +52,9 @@ class SKY_API TdiMat
     int nsys_a;
     double *s[3];
     std::string name;
+
 public:
-    TdiMat(std::string const &_name="noname");
+    TdiMat(std::string const &_name = "noname");
     ~TdiMat();
 
     // Routines d'initialisation
@@ -69,14 +70,15 @@ public:
     int solve(double *q, double *x, int type);
     void print_err(FILE *fich, int code);
 
-    static void test();  
+    static void test();
 
-    void mlab(char const *filename, char const *id_txt, int type, int nfile, int opt);
+    void mlab(char const *filename, char const *id_txt, int type, int nfile,
+              int opt);
 
-    friend SKY_API std::ostream &operator<<(std::ostream &out, TdiMat const &obj);
+    friend SKY_API std::ostream &operator<<(std::ostream &out,
+                                            TdiMat const &obj);
 
 private:
-
 };
 
 #endif // __TDIMAT_H__

@@ -17,15 +17,10 @@
 
 using namespace genmai;
 
-Point::Point(double x,
-             double y) : no(0), x(x), y(y)
-{
-}
+Point::Point(double x, double y) : no(0), x(x), y(y) {}
 
-Point::Point(const Point &centre,
-             const Point &axis,
-             double angle,
-             double rayon) : no(0)
+Point::Point(const Point &centre, const Point &axis, double angle, double rayon)
+    : no(0)
 {
     Point pt(centre + rayon * cosin(angle + atan2(axis)));
     x = pt.x;
@@ -39,23 +34,23 @@ Point::Point(const PolarPoint &ppoi)
     y = pt.y;
 }
 
-Point::Point(const Point &p1,
-             const Point &p2,
-             double t) : no(0)
+Point::Point(const Point &p1, const Point &p2, double t) : no(0)
 {
     Point pt(t * p1 + (1.0 - t) * p2);
     x = pt.x;
     y = pt.y;
 }
 
-bool Point::operator==(const Point &pt) const
+bool
+Point::operator==(const Point &pt) const
 {
     return (x == pt.x && y == pt.y);
 }
 
 // friends
 
-namespace genmai {
+namespace genmai
+{
 
 GENMAI_API std::ostream &
 operator<<(std::ostream &o, const Point &v)
@@ -66,4 +61,4 @@ operator<<(std::ostream &o, const Point &v)
     return o;
 }
 
-}
+} // namespace genmai

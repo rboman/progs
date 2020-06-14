@@ -18,12 +18,10 @@
 
 using namespace genmai;
 
-Tool::Tool() : Object(), points(0), curves(0)
-{
-    clear();
-}
+Tool::Tool() : Object(), points(0), curves(0) { clear(); }
 
-void Tool::write(std::ostream &out) const
+void
+Tool::write(std::ostream &out) const
 {
     out << "MATRICE:" << std::endl;
     out << "--------" << std::endl;
@@ -32,7 +30,8 @@ void Tool::write(std::ostream &out) const
     out << std::endl;
 }
 
-void Tool::list() const
+void
+Tool::list() const
 {
     for (auto i = 0; i < points.size(); ++i)
         std::cout << points[i] << std::endl;
@@ -41,7 +40,8 @@ void Tool::list() const
         std::cout << curves[i] << std::endl;
 }
 
-bool Tool::isEmpty() const
+bool
+Tool::isEmpty() const
 {
     if (!points.size())
         return true;
@@ -49,7 +49,8 @@ bool Tool::isEmpty() const
         return false;
 }
 
-void Tool::clear()
+void
+Tool::clear()
 {
     firstp = 0;
     firstc = 0;

@@ -1,12 +1,12 @@
 /***********************************************************************
-*                      Starfield 5  (C++ & Asm)                        *
-*                                                                      *
-* . Utilise le calcul en virgule flotante                              *
-* . Diminution non linéaire de la vitesse des étoiles                  *
-* . Projection centrale                                                *
-* . Grosses étoiles en avant plan                                      *
-*                                                             13.08.96 *
-************************************************************************/
+ *                      Starfield 5  (C++ & Asm)                        *
+ *                                                                      *
+ * . Utilise le calcul en virgule flotante                              *
+ * . Diminution non linéaire de la vitesse des étoiles                  *
+ * . Projection centrale                                                *
+ * . Grosses étoiles en avant plan                                      *
+ *                                                             13.08.96 *
+ ************************************************************************/
 
 #include <stdlib.h>
 #include <conio.h>
@@ -21,7 +21,8 @@ struct etoiles
 etoiles et[100];
 int nb_et;
 
-void putpixel(int x, int y, unsigned char col)
+void
+putpixel(int x, int y, unsigned char col)
 {
     asm mov ax, 0xa000;
     asm mov es, ax;
@@ -33,7 +34,8 @@ void putpixel(int x, int y, unsigned char col)
     asm mov es : [di], al;
 }
 
-void bigstar(int x, int y, unsigned char col)
+void
+bigstar(int x, int y, unsigned char col)
 {
     putpixel(x, y, col);
     putpixel(x + 1, y, col);
@@ -41,7 +43,8 @@ void bigstar(int x, int y, unsigned char col)
     putpixel(x + 1, y + 1, col);
 }
 
-int main()
+int
+main()
 {
     float x, y, p;
 
@@ -85,9 +88,11 @@ int main()
 
             /* Dessine l'étoile */
             if (et[nb_et].plan < 30)
-                bigstar(et[nb_et].xe, et[nb_et].ye, 31 - (int)(et[nb_et].plan / 16));
+                bigstar(et[nb_et].xe, et[nb_et].ye,
+                        31 - (int)(et[nb_et].plan / 16));
             else
-                putpixel(et[nb_et].xe, et[nb_et].ye, 31 - (int)(et[nb_et].plan / 16));
+                putpixel(et[nb_et].xe, et[nb_et].ye,
+                         31 - (int)(et[nb_et].plan / 16));
 
             /* boucle d'attente */
             for (int i = 0; i < 400; i++)

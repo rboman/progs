@@ -5,7 +5,8 @@
 #include <sys/types.h>
 #include <stdlib.h>
 
-int main()
+int
+main()
 {
     char str[1024], *cp;
     int pipefd[2];

@@ -27,7 +27,7 @@ namespace dcm
 {
 
 /**
- * @brief Main class 
+ * @brief Main class
  */
 
 class DCM_API Plane
@@ -84,4 +84,4 @@ private:
 
 } // namespace dcm
 
-#endif //PLANE_H
+#endif // PLANE_H

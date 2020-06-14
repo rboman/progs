@@ -1,4 +1,5 @@
-// from https://www.threadingbuildingblocks.org/tutorial-intel-tbb-thread-local-storage
+// from
+// https://www.threadingbuildingblocks.org/tutorial-intel-tbb-thread-local-storage
 #include <tbb/tbb.h>
 #include <cstdio>
 
@@ -18,11 +19,13 @@ struct Body
     }
 };
 
-int main()
+int
+main()
 {
     tbb::parallel_for(tbb::blocked_range<int>(0, 100000000), Body());
 
-    for (CounterType::const_iterator i = MyCounters.begin(); i != MyCounters.end(); ++i)
+    for (CounterType::const_iterator i = MyCounters.begin();
+         i != MyCounters.end(); ++i)
     {
         printf("Thread stats:\n");
         printf("  calls to operator(): %d", i->first);

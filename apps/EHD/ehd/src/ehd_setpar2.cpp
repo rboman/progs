@@ -21,10 +21,10 @@
  * @brief Donnees du probleme
  */
 
-EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
-                        double *p, double *dp,
-                        double *eta0, double *alpha, double *u, double *um,
-                        double *v, double *dt)
+EHD_API int
+ehd_setpar2(int nn, double *x, double *h, double *h_t0, double *p, double *dp,
+            double *eta0, double *alpha, double *u, double *um, double *v,
+            double *dt)
 {
     int iop = 0;
 
@@ -57,9 +57,10 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
         um[i] = 0.0;
         v[i] = 0.5;
         u[i] = 1.0;
-        p[i] = 1.0e0 - 0.5e0 * (x[i] - L / 2.0) * (x[i] - L / 2.0) / L / L * 4.0;
-        //p[i] = 0.0;
-        //u[i] = 0.0;
+        p[i] =
+            1.0e0 - 0.5e0 * (x[i] - L / 2.0) * (x[i] - L / 2.0) / L / L * 4.0;
+        // p[i] = 0.0;
+        // u[i] = 0.0;
     }
 
     // transitoire
@@ -86,12 +87,12 @@ EHD_API int ehd_setpar2(int nn, double *x, double *h, double *h_t0,
 
     // purge memoire du systeme tridiag
     K.reinit();
-/*
-    iop = mlab_vec("pipo.m", "p", p, nn, MLAB_NEW, MLAB_VERBOSE);
-    iop = mlab_vec("pipo.m", "dp", dp, nn, MLAB_OLD, MLAB_VERBOSE);
-    iop = mlab_vec("pipo.m", "x", x, nn, MLAB_OLD, MLAB_VERBOSE);
-    if(iop!=0) goto FIN;
-*/
+    /*
+        iop = mlab_vec("pipo.m", "p", p, nn, MLAB_NEW, MLAB_VERBOSE);
+        iop = mlab_vec("pipo.m", "dp", dp, nn, MLAB_OLD, MLAB_VERBOSE);
+        iop = mlab_vec("pipo.m", "x", x, nn, MLAB_OLD, MLAB_VERBOSE);
+        if(iop!=0) goto FIN;
+    */
     free(dp2);
 
     return iop;

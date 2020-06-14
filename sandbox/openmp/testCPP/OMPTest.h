@@ -20,7 +20,7 @@
 
 class OMPTest
 {
-  public:
+public:
     virtual ~OMPTest() {}
     virtual void execute(int nbthreads) = 0;
     virtual double flops(int nbthreads) const = 0;
@@ -32,14 +32,14 @@ class OMPTest
 
 class OMPTest1 : public OMPTest
 {
-  protected:
+protected:
     double *a, *b, *c;
     int sizem;
     int sizen;
     int loopin;
     int loopout;
 
-  public:
+public:
     OMPTest1();
     virtual ~OMPTest1();
 
@@ -56,7 +56,7 @@ class OMPTest1 : public OMPTest
 
 class OMPTest2 : public OMPTest1
 {
-  public:
+public:
     OMPTest2();
     virtual void execute(int nbthreads) override;
 };
@@ -67,7 +67,7 @@ class OMPRange
     int rmax;
     int rstep;
 
-  public:
+public:
     OMPRange(int vmin = 0, int vmax = 0, int vstep = 1)
     {
         rmin = vmin;
@@ -90,11 +90,13 @@ class OMPData
     double cpu;
     double flops;
 
-  public:
-    OMPData(int _idx1 = 0, int _idx2 = 0, int _size = 0,
-            int _nbt = 0, double _mem = 0, double _cpu = 0,
-            double _flops = 0) : idx1(_idx1), idx2(_idx2), size(_size), nbt(_nbt),
-                                 mem(_mem), cpu(_cpu), flops(_flops) {}
+public:
+    OMPData(int _idx1 = 0, int _idx2 = 0, int _size = 0, int _nbt = 0,
+            double _mem = 0, double _cpu = 0, double _flops = 0)
+        : idx1(_idx1), idx2(_idx2), size(_size), nbt(_nbt), mem(_mem),
+          cpu(_cpu), flops(_flops)
+    {
+    }
     friend std::ostream &operator<<(std::ostream &out, OMPData const &obj);
 };
 
@@ -102,7 +104,7 @@ class OMPDataSet
 {
     std::vector<std::vector<OMPData>> data;
 
-  public:
+public:
     OMPDataSet(int m, int n);
     OMPData &operator()(int i, int j) { return data[i][j]; }
     friend std::ostream &operator<<(std::ostream &out, OMPDataSet const &obj);
@@ -115,7 +117,7 @@ class OMPTester
     OMPTest &test;
     OMPRange trange; // thread range
     OMPRange srange; // size range
-  public:
+public:
     OMPTester(OMPTest &t);
 
     void setSizes(OMPRange r = OMPRange(100, 20000, 2)) { srange = r; }
@@ -123,4 +125,4 @@ class OMPTester
     void execute();
 };
 
-#endif //OMPTEST_H
+#endif // OMPTEST_H

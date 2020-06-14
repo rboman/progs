@@ -26,12 +26,12 @@ class COUPLAGE_API PlotWin
     std::vector<double> *inc;
     int nstep;
 
-  public:
+public:
     int freq;
     double ymin;
     double ymax;
 
-  public:
+public:
     PlotWin();
     void init(std::vector<double> &_x, std::vector<double> &_inc);
     ~PlotWin();

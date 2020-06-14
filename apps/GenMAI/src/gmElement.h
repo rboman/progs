@@ -19,17 +19,18 @@
 #include "gmObject.h"
 #include <vector>
 
-namespace genmai {
+namespace genmai
+{
 
 class GENMAI_API Element : public Object
 {
 public:
-    std::vector<int> nodes;     ///< list of nodes indexes
+    std::vector<int> nodes; ///< list of nodes indexes
 
     Element(int n1, int n2, int n3, int n4);
     virtual void write(std::ostream &out) const override;
 };
 
-}
+} // namespace genmai
 
-#endif //GMELEMENT_H
+#endif // GMELEMENT_H

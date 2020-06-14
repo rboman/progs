@@ -1,12 +1,12 @@
 /***********************************************************************
-*                      Scrolling 2  (C++ & Asm)                        *
-*                                                                      *
-* . Mémorisation des caractères du DOS                                 *
-* . Nouvelles routines d'affichage avec effets (rainbow, underline)    *
-* . Affichage de la palette du mode 13h + choix au clavier             *
-* . Ecoulement de l'écran pour le retour au dos                        *
-*                                                             12.08.96 *
-************************************************************************/
+ *                      Scrolling 2  (C++ & Asm)                        *
+ *                                                                      *
+ * . Mémorisation des caractères du DOS                                 *
+ * . Nouvelles routines d'affichage avec effets (rainbow, underline)    *
+ * . Affichage de la palette du mode 13h + choix au clavier             *
+ * . Ecoulement de l'écran pour le retour au dos                        *
+ *                                                             12.08.96 *
+ ************************************************************************/
 
 #include <stdio.h>
 #include <conio.h>
@@ -23,17 +23,21 @@
                VARIABLES GLOBALES
 ----------------------------------------------------------------------------*/
 
-char *texte[MAXLIGNES] =
-    {" Premier scroll !!! ... ce programme est écrit en C++ et se passe des drivers BGI ...  ",
-     " Les caractères du DOS sont simplement mémorisés et affichés avec un pas de deux pixels.",
-     " Pour l'instant, je n'ai pas pu me passer des fonctions printf() et getch() : je les reprogrammerai",
-     " dans un avenir proche pour diminuer la taille du code. Une autre amélioration serait d'écrire toutes",
-     " les routines graphiques en assembleur ainsi que la boucle principale.",
-     " Prochaine étape : le scrolling sinusoidal et tridimensionnel ... ",
-     " ---------------------------------------",
-     " ",
-     " ",
-     " "};
+char *texte[MAXLIGNES] = {
+    " Premier scroll !!! ... ce programme est écrit en C++ et se passe des "
+    "drivers BGI ...  ",
+    " Les caractères du DOS sont simplement mémorisés et affichés avec un pas "
+    "de deux pixels.",
+    " Pour l'instant, je n'ai pas pu me passer des fonctions printf() et "
+    "getch() : je les reprogrammerai",
+    " dans un avenir proche pour diminuer la taille du code. Une autre "
+    "amélioration serait d'écrire toutes",
+    " les routines graphiques en assembleur ainsi que la boucle principale.",
+    " Prochaine étape : le scrolling sinusoidal et tridimensionnel ... ",
+    " ---------------------------------------",
+    " ",
+    " ",
+    " "};
 
 uc lettre[107][8];        /* Data caractères             */
 uc color_text, color_bak; /* Couleurs d'affichage du texte et  */
@@ -45,7 +49,8 @@ uc color_text, color_bak; /* Couleurs d'affichage du texte et  */
 
 void putpixel(int x, int y, uc col) /* Affiche un point */
 {
-    asm mov ax, 0xa000 asm mov es, ax asm mov ax, 320 asm mul y asm add ax, x asm mov di, ax asm mov al, byte ptr col asm mov es : [di], al
+    asm mov ax, 0xa000 asm mov es, ax asm mov ax, 320 asm mul y asm add ax,
+        x asm mov di, ax asm mov al, byte ptr col asm mov es : [di], al
 }
 
 void init13h() /* Mode graphique 13h */
@@ -60,25 +65,34 @@ void close13h() /* Retour au mode texte */
     asm int 0x10;
 }
 
-uc getcolor(int x, int y)
+uc
+getcolor(int x, int y)
 {
     uc col;
-    asm mov ax, 0xa000 asm mov es, ax asm mov ax, 320 asm mul y asm add ax, x asm mov di, ax asm mov al, es : [di] asm mov col, al return (col);
+    asm mov ax, 0xa000 asm mov es, ax asm mov ax, 320 asm mul y asm add ax,
+        x asm mov di, ax asm mov al, es : [di] asm mov col, al return (col);
 }
 
-void waitretrace()
+void
+waitretrace()
 {
-    asm mov dx, 0x3da wait1 : asm in al, dx asm test al, 0x8 asm jnz wait1 wait2 : asm in al, dx asm test al, 0x8 asm jz wait2
+    asm mov dx, 0x3da wait1 : asm in al,
+                              dx asm test al,
+                              0x8 asm jnz wait1 wait2 : asm in al,
+                                                        dx asm test al,
+                                                        0x8 asm jz wait2
 }
 
-void bar(int x1, int y1, int x2, int y2, uc col)
+void
+bar(int x1, int y1, int x2, int y2, uc col)
 {
     for (int i = x1; i <= x2; i++)
         for (int j = y1; j <= y2; j++)
             putpixel(i, j, col);
 }
 
-void line(int x1, int y1, int x2, int y2, uc col)
+void
+line(int x1, int y1, int x2, int y2, uc col)
 {
     float a, y;
     int inc;
@@ -113,7 +127,8 @@ void line(int x1, int y1, int x2, int y2, uc col)
     }
 }
 
-void box(int x1, int y1, int x2, int y2, uc col)
+void
+box(int x1, int y1, int x2, int y2, uc col)
 {
     line(x1, y1, x1, y2, col);
     line(x1, y1, x2, y1, col);
@@ -121,12 +136,14 @@ void box(int x1, int y1, int x2, int y2, uc col)
     line(x2, y1, x2, y2, col);
 }
 
-void show_palette()
+void
+show_palette()
 {
     bar(0, 0, 160, 160, 15);
     for (int i = 0; i < 16; i++)
         for (int j = 0; j < 16; j++)
-            bar(i * 10 + 1, j * 10 + 1, (i + 1) * 10 - 1, (j + 1) * 10 - 1, i * 16 + j);
+            bar(i * 10 + 1, j * 10 + 1, (i + 1) * 10 - 1, (j + 1) * 10 - 1,
+                i * 16 + j);
 }
 
 /*----------------------------------------------------------------------------
@@ -164,7 +181,8 @@ aff_char(coord x, coord y, code ASCII, c. av-plan, c. ar-plan, fact, effet)
      .bit 3 = 'underline'
 */
 
-void aff_char(int x, int y, uc num, uc col1, uc col2, uc factor, uc effect)
+void
+aff_char(int x, int y, uc num, uc col1, uc col2, uc factor, uc effect)
 {
     uc col3 = col1, col4 = col2;
     for (int i = 0; i < 8; i++)
@@ -186,7 +204,8 @@ void aff_char(int x, int y, uc num, uc col1, uc col2, uc factor, uc effect)
 
 /* -- Affiche une ligne de texte -- */
 
-void aff_txt(int x, int y, char *txt, uc col1, uc col2, uc factor, uc effect)
+void
+aff_txt(int x, int y, char *txt, uc col1, uc col2, uc factor, uc effect)
 {
     while (*txt != 0)
     {
@@ -198,11 +217,13 @@ void aff_txt(int x, int y, char *txt, uc col1, uc col2, uc factor, uc effect)
 
 /* -- Affiche une ligne de texte (format colonne, ligne) -- */
 
-void aff_txt_ln(int x, int y, char *txt, uc col1, uc col2, uc factor, uc effect)
+void
+aff_txt_ln(int x, int y, char *txt, uc col1, uc col2, uc factor, uc effect)
 {
     while (*txt != 0)
     {
-        aff_char((x - 1) * 8 * factor, (y - 1) * 8 * factor, *txt, col1, col2, factor, effect);
+        aff_char((x - 1) * 8 * factor, (y - 1) * 8 * factor, *txt, col1, col2,
+                 factor, effect);
         txt++;
         x++;
     }
@@ -210,7 +231,8 @@ void aff_txt_ln(int x, int y, char *txt, uc col1, uc col2, uc factor, uc effect)
 
 /* Affiche une tranche de caractère (->scrolling) */
 
-void aff_tranche(int x, int y, uc num, int i, uc col1, uc col2, uc factor)
+void
+aff_tranche(int x, int y, uc num, int i, uc col1, uc col2, uc factor)
 {
     for (int j = 0; j < 8; j++)
     {
@@ -224,7 +246,8 @@ void aff_tranche(int x, int y, uc num, int i, uc col1, uc col2, uc factor)
 /* Routine de scrolling :
     déplace chaque point de 'factor' unités vers la gauche.  */
 
-void scroll(int y, uc factor)
+void
+scroll(int y, uc factor)
 {
     for (int i = 1; i <= 317; i += factor)
         for (int j = y; j < y + 8 * factor; j += factor)
@@ -249,7 +272,8 @@ void good_bye(uc effect) /* effect = 1 : écoulement             */
                 c = getcolor(t, i);
                 asm mov ax, 0xa000 asm mov es, ax for (j = i + 1; j <= 199; j++)
                 {
-                    asm mov ax, 320 asm mul j asm add ax, t asm mov di, ax asm mov al, byte ptr c asm mov es : [di], al
+                    asm mov ax, 320 asm mul j asm add ax, t asm mov di,
+                        ax asm mov al, byte ptr c asm mov es : [di], al
                 }
             }
         }
@@ -279,7 +303,8 @@ void good_bye(uc effect) /* effect = 1 : écoulement             */
                 BOUCLE PRINCIPALE
 ----------------------------------------------------------------------------*/
 
-int main()
+int
+main()
 {
     /* variables */
     char *debut;

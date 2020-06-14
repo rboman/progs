@@ -1,10 +1,7 @@
 #include "mesh.h"
 #include <fstream>
 
-Mesh::Mesh()
-{
-    m = 101;
-}
+Mesh::Mesh() { m = 101; }
 
 COUPLAGE_API std::ostream &
 operator<<(std::ostream &out, Mesh const &obj)
@@ -13,7 +10,8 @@ operator<<(std::ostream &out, Mesh const &obj)
     return out;
 }
 
-void Mesh::save(std::string const &filename) const
+void
+Mesh::save(std::string const &filename) const
 {
     std::ofstream file(filename.c_str());
     file << *this;

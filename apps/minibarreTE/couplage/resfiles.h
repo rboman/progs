@@ -31,10 +31,10 @@ class COUPLAGE_API ResFiles
     double *light;
     int nstep;
 
-  public:
+public:
     int freq;
 
-  public:
+public:
     ResFiles();
     ~ResFiles();
 

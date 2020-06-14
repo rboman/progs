@@ -24,15 +24,13 @@
 
 #define TOL_NR 1.0e-10
 
-EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alpha,
-                      double *x, double *u, double *um, double *v,
-                      double *h_t0, double dt,
-                      double *p, double *dp,
-                      double *PhiP, double *PhiS, double *dPhiP, double *dPhiS,
-                      double Rq1, double Rq2, double gam_s,
-                      TdiMat *K, int nbfix,
-                      int *nnfix, int *ndfix, double *vfix, int opt,
-                      int loi, int scheme)
+EHD_API int
+ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alpha,
+          double *x, double *u, double *um, double *v, double *h_t0, double dt,
+          double *p, double *dp, double *PhiP, double *PhiS, double *dPhiP,
+          double *dPhiS, double Rq1, double Rq2, double gam_s, TdiMat *K,
+          int nbfix, int *nnfix, int *ndfix, double *vfix, int opt, int loi,
+          int scheme)
 {
     int iop = 0;
 
@@ -48,8 +46,8 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
     double *rhs = (double *)malloc(nbnode * sizeof(double));
     double *inc = (double *)malloc(nbnode * sizeof(double));
 
-    //double Re[2];
-    //int nsys;
+    // double Re[2];
+    // int nsys;
 
     double Rq = sqrt(Rq1 * Rq1 + Rq2 * Rq2);
 
@@ -60,8 +58,8 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
     h[i]=0.0;
   }
   */
-    //memset(h,0,nbnode*sizeof(double));
-    //bzero(h,nbnode*sizeof(double));
+    // memset(h,0,nbnode*sizeof(double));
+    // bzero(h,nbnode*sizeof(double));
 
     // CALCUL DES LOCELS
 
@@ -74,8 +72,8 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         locs[i] = 0;
     }
 
-    //bzero(loc2, nbnode*sizeof(double));
-    //bzero(locs, nbnode*sizeof(double));
+    // bzero(loc2, nbnode*sizeof(double));
+    // bzero(locs, nbnode*sizeof(double));
 
     // supprime fix et code la valeur
 
@@ -124,8 +122,8 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         for (int i = 0; i < nbnode; i++)
             rhs[i] = 0.0;
 
-        //memset(rhs,0,nbnode*sizeof(double));
-        //bzero(rhs,nbnode*sizeof(double));
+        // memset(rhs,0,nbnode*sizeof(double));
+        // bzero(rhs,nbnode*sizeof(double));
         // init matrice tridiag
 
         K->fill(0.0);
@@ -135,15 +133,14 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         for (int i = 0; i < nbnode; i++)
             inc[i] = 0.0;
 
-        //bzero(inc,nbnode*sizeof(double));
+        // bzero(inc,nbnode*sizeof(double));
 
         // Mise a jour des flow factors
 
         for (int i = 0; i < nbnode; i++)
         {
-            iop = ehd_flow_factors(h[i], gam_s, Rq, Rq1, Rq2,
-                                   &(PhiP[i]), &(PhiS[i]),
-                                   &(dPhiP[i]), &(dPhiS[i]), loi);
+            iop = ehd_flow_factors(h[i], gam_s, Rq, Rq1, Rq2, &(PhiP[i]),
+                                   &(PhiS[i]), &(dPhiP[i]), &(dPhiS[i]), loi);
         }
 
         // Construction du systeme
@@ -152,21 +149,20 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         {
 
             // calcul de Sp(elem) et Su(elem) + derivees
-            iop = ehd_mat_h(&(x[n]),
-                            &(h[n]), &(u[n]), &(um[n]), &(v[n]),
-                            eta0, alpha, &(p[n]), &(dp[n]),
-                            &(PhiS[n]), &(dPhiS[n]),
-                            &(PhiP[n]), &(dPhiP[n]),
-                            Su, Sp, dSu, dSp, C1, C2, Sv, dSv);
+            iop = ehd_mat_h(&(x[n]), &(h[n]), &(u[n]), &(um[n]), &(v[n]), eta0,
+                            alpha, &(p[n]), &(dp[n]), &(PhiS[n]), &(dPhiS[n]),
+                            &(PhiP[n]), &(dPhiP[n]), Su, Sp, dSu, dSp, C1, C2,
+                            Sv, dSv);
 
             // residu elementaire
             double Re[2];
             for (int i = 0; i < 2; i++)
             {
-                
+
                 Re[i] = 0.0;
                 for (int j = 0; j < 2; j++)
-                    Re[i] += Sp[i][j] * p[n + j] - Su[i][j] * u[n + j] - Sv[i][j] * v[n + j] * Rq - C2[i][j] * h[n + j];
+                    Re[i] += Sp[i][j] * p[n + j] - Su[i][j] * u[n + j] -
+                             Sv[i][j] * v[n + j] * Rq - C2[i][j] * h[n + j];
 
                 if (scheme == EHD_EULER)
                 {
@@ -174,7 +170,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
                         Re[i] += C1[i][j] * (h[n + j] - h_t0[n + j]) / dt;
                 }
             }
-            //printf("Re : %E, %E\n",Re[0],Re[1]);
+            // printf("Re : %E, %E\n",Re[0],Re[1]);
 
             // assemblage
 
@@ -196,11 +192,12 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
                     else
                     {
                         K->ass(ni, nj,
-                               dSp[i][j] - dSu[i][j] - C2[i][j] - dSv[i][j] * Rq);
+                               dSp[i][j] - dSu[i][j] - C2[i][j] -
+                                   dSv[i][j] * Rq);
                         if (scheme == EHD_EULER)
                             K->ass(ni, nj, C1[i][j] / dt);
                     }
-                    //K->ass(ni,nj,-dSu[i][j]);
+                    // K->ass(ni,nj,-dSu[i][j]);
                 }
 
             } // endfor(i)
@@ -216,15 +213,15 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
             sign = 1.0;
 
         if (loc2[n] >= 0)
-        { 
+        {
             // si h libre
             int ni = loc2[n];
             double flux, fluxd[3];
-            ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
-                     PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
+            ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq, PhiS[n],
+                     PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
             rhs[ni] += sign * flux; // rhs = - residu
             K->ass(ni, ni, -sign * fluxd[2]);
-            //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
+            // printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
         }
 
         n = nbnode - 1;
@@ -234,15 +231,15 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
             sign = 1.0;
 
         if (loc2[2 * n] >= 0)
-        { 
+        {
             // si h libre
             int ni = loc2[n];
             double flux, fluxd[3];
-            ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
-                     PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
+            ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq, PhiS[n],
+                     PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
             rhs[ni] += -sign * flux; // rhs = - residu :  SIGN (-) OK cov pure
             K->ass(ni, ni, sign * fluxd[2]);
-            //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
+            // printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
         }
 
         // Suite du calcul du residu
@@ -295,7 +292,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
                 h[i] += inc[loc2[i]];
             else
                 h[i] = vfix[-loc2[i] - 1];
-            //printf("p[%d]=%E \n",i,p[i]);
+            // printf("p[%d]=%E \n",i,p[i]);
         }
 
         ite++;
@@ -309,15 +306,15 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
     // FIN N.-R.
 
     // verif de la solution (le flux ou sa derivee doit etre une constante)
-/*
-    for(n=0;n<nbnode;n++) 
-    {
-        ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
-                 PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
-        printf("flux x=%E : %E\n",x[n],flux);
-        //pipo[n]=flux;
-    }
-*/
+    /*
+        for(n=0;n<nbnode;n++)
+        {
+            ehd_flux(h[n], u[n], v[n], eta0, alpha, p[n], dp[n], Rq,
+                     PhiS[n], PhiP[n], dPhiS[n], dPhiP[n], &flux, fluxd);
+            printf("flux x=%E : %E\n",x[n],flux);
+            //pipo[n]=flux;
+        }
+    */
 
     // Output Matlab
 
@@ -330,8 +327,7 @@ EHD_API int ehd_get_h(int nbelem, int nbnode, double *h, double eta0, double alp
         iop = mlab_vec("pipo.m", "rhs", rhs, nsys, MLAB_OLD, MLAB_SILENT);
         iop = mlab_vec("pipo.m", "p", p, nbnode, MLAB_OLD, MLAB_SILENT);
         iop = mlab_vec("pipo.m", "dp", dp, nbnode, MLAB_OLD, MLAB_SILENT);
-        //iop = K->mlab("pipo.m","",TDI_LU,MLAB_OLD, MLAB_SILENT);
-
+        // iop = K->mlab("pipo.m","",TDI_LU,MLAB_OLD, MLAB_SILENT);
     }
 
     free(loc);

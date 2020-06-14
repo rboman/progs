@@ -20,21 +20,22 @@
 
 #include "el.h"
 
-/* ---------------------------------------------------------------------------------- */
+
 
 /*
  *   FONCTIONS DE FORME & DERIVEES
  */
 
-GAUSS_API void el_quad_ff(double F[][4], double *c)
+GAUSS_API void
+el_quad_ff(double F[][4], double *c)
 {
 
     /*
-   * Fonctions de forme 'F[0][0-3]' et derivees 'F[1-2][0-3]' 
-   * d'un quad bi-lineaire (4 noeuds) aux coords
-   * (ksi,eta) = (c[0],c[1])
-   *
-   */
+     * Fonctions de forme 'F[0][0-3]' et derivees 'F[1-2][0-3]'
+     * d'un quad bi-lineaire (4 noeuds) aux coords
+     * (ksi,eta) = (c[0],c[1])
+     *
+     */
 
     static double demi = 0.5, un = 1.0;
 
@@ -77,13 +78,14 @@ GAUSS_API void el_quad_ff(double F[][4], double *c)
     F[3][2] = rm * dsp;
 }
 
-/* ---------------------------------------------------------------------------------- */
+
 
 /*
- *   DET JACOBIEN 
+ *   DET JACOBIEN
  */
 
-GAUSS_API int el_quad_detj(double jaco[3][3], int ndim, double *res)
+GAUSS_API int
+el_quad_detj(double jaco[3][3], int ndim, double *res)
 {
     double detj = 0.0;
     double ds[3];

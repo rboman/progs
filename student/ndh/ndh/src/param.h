@@ -27,4 +27,4 @@ void param2(char const *texte, int *par);
 
 } // namespace ndh
 
-#endif //PARAM_H
+#endif // PARAM_H

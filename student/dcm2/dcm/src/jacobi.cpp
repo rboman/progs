@@ -15,18 +15,18 @@
 #include "jacobi.h"
 #include <cmath>
 
-#define ROTATE(a, i, j, k, l)        \
-    g = a[i][j];                     \
-    h = a[k][l];                     \
-    a[i][j] = g - s * (h + g * tau); \
+#define ROTATE(a, i, j, k, l)                                                  \
+    g = a[i][j];                                                               \
+    h = a[k][l];                                                               \
+    a[i][j] = g - s * (h + g * tau);                                           \
     a[k][l] = h + s * (g - h * tau);
 
 typedef double TYPE;
 
 /**
- * @brief Calcul des valeurs et vecteurs propres d'une matrice 
+ * @brief Calcul des valeurs et vecteurs propres d'une matrice
  *        par la méthode de Jacobi
- * 
+ *
  *      a Matrice de départ dont on cherche les Valeurs Propres
  *        (! la diagonale sera modifiée après passage)
  *      n Taille de la matrice a
@@ -35,7 +35,8 @@ typedef double TYPE;
  *   nrot nombre de rotations dans la méthode
  */
 
-void jacobi(TYPE **a, int n, TYPE d[], TYPE **v, int &nrot)
+void
+jacobi(TYPE **a, int n, TYPE d[], TYPE **v, int &nrot)
 {
     int j, iq, ip, i;
     TYPE tresh, theta, tau, t, sm, s, h, g, c, *b, *z;
@@ -75,7 +76,8 @@ void jacobi(TYPE **a, int n, TYPE d[], TYPE **v, int &nrot)
             for (iq = ip + 1; iq <= n; iq++)
             {
                 g = 100.0 * fabs(a[ip][iq]);
-                if ((i > 4) && ((TYPE)(fabs(d[ip]) + g) == (TYPE)fabs(d[ip])) && ((TYPE)(fabs(d[iq]) + g) == (TYPE)fabs(d[iq])))
+                if ((i > 4) && ((TYPE)(fabs(d[ip]) + g) == (TYPE)fabs(d[ip])) &&
+                    ((TYPE)(fabs(d[iq]) + g) == (TYPE)fabs(d[iq])))
                     a[ip][iq] = 0.0;
                 else if (fabs(a[ip][iq]) > tresh)
                 {

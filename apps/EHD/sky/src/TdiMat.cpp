@@ -52,7 +52,7 @@
 
 TdiMat::TdiMat(std::string const &_name) : name(_name)
 {
-    //throw std::runtime_error("STOP"); // test exception
+    // throw std::runtime_error("STOP"); // test exception
 
     this->nsys = 0;
     this->nsys_a = 0;
@@ -76,7 +76,8 @@ TdiMat::~TdiMat()
  *              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 
-void TdiMat::reinit()
+void
+TdiMat::reinit()
 {
     // PURGE LA MEMOIRE
 
@@ -100,7 +101,8 @@ void TdiMat::reinit()
  * @brief Definit la taille de la matrice
  */
 
-void TdiMat::setsize(int nsys)
+void
+TdiMat::setsize(int nsys)
 {
     if (nsys <= 0)
         throw std::runtime_error("taille matrice <=0 !");
@@ -118,8 +120,8 @@ void TdiMat::setsize(int nsys)
     this->fill(0.0);
 }
 
-
-void TdiMat::ass(int i, int j, double val)
+void
+TdiMat::ass(int i, int j, double val)
 {
     if (abs(i - j) > 1)
     {
@@ -134,7 +136,8 @@ void TdiMat::ass(int i, int j, double val)
  * @brief Assemble un element dans la matrice TRIDIAG
  */
 
-void TdiMat::set(int i, int j, double val)
+void
+TdiMat::set(int i, int j, double val)
 {
     if (abs(i - j) > 1)
     {
@@ -150,7 +153,8 @@ void TdiMat::set(int i, int j, double val)
  * @brief Remplit un matrice TRIDIAG avec "val"
  */
 
-void TdiMat::fill(double val)
+void
+TdiMat::fill(double val)
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < this->nsys; j++)
@@ -161,7 +165,8 @@ void TdiMat::fill(double val)
  * @brief Solveur
  */
 
-int TdiMat::solve(double *q, double *x, int type)
+int
+TdiMat::solve(double *q, double *x, int type)
 {
     // Decomposition LU
 
@@ -201,10 +206,11 @@ int TdiMat::solve(double *q, double *x, int type)
 }
 
 /**
- * @brief Traitement des codes renvoyes par les solveurs 
+ * @brief Traitement des codes renvoyes par les solveurs
  */
 
-void TdiMat::print_err(FILE *fich, int code)
+void
+TdiMat::print_err(FILE *fich, int code)
 {
     char const *err[3] = {"ok", "pivot nul", "code inconnu"};
     char const *e;
@@ -228,7 +234,8 @@ void TdiMat::print_err(FILE *fich, int code)
  * @brief Routines de test de la classe
  */
 
-void TdiMat::test()
+void
+TdiMat::test()
 {
     double A[5][5] = {{1, 3, 0, 0, 0},
                       {1, 2, 0, 0, 0},
@@ -278,12 +285,14 @@ void TdiMat::test()
  * @brief Ecriture d'une matrice TRIDIAG dans un fichier MATLAB existant ou non
  */
 
-void TdiMat::mlab(char const*filename, char const *id_txt, int type, int nfile, int opt)
+void
+TdiMat::mlab(char const *filename, char const *id_txt, int type, int nfile,
+             int opt)
 {
-    char const*pre[3] = {"", "L", "U"};
+    char const *pre[3] = {"", "L", "U"};
 
-    char const*pre1 = (type == TDI_LU) ? pre[1] : pre[0];
-    char const*pre2 = (type == TDI_LU) ? pre[2] : pre[0];
+    char const *pre1 = (type == TDI_LU) ? pre[1] : pre[0];
+    char const *pre2 = (type == TDI_LU) ? pre[2] : pre[0];
 
     FILE *fich;
     if (nfile == MLAB_OLD)
@@ -291,33 +300,33 @@ void TdiMat::mlab(char const*filename, char const *id_txt, int type, int nfile, 
     else
         fich = fopen(filename, "w");
     if (fich == NULL)
-        throw std::runtime_error("impossible d'ouvrir le fichier "+name);
+        throw std::runtime_error("impossible d'ouvrir le fichier " + name);
 
     for (int i = 0; i < this->nsys; i++)
     {
         int i1 = i + 1;
         if (type == TDI_LU)
-            fprintf(fich, "%s%s%s(%d,%d) = 1.0;\n",
-                    name.c_str(), id_txt, pre1, i1, i1);
-        fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
-                name.c_str(), id_txt, pre2, i1, i1, this->s[1][i]);
+            fprintf(fich, "%s%s%s(%d,%d) = 1.0;\n", name.c_str(), id_txt, pre1,
+                    i1, i1);
+        fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name.c_str(), id_txt, pre2,
+                i1, i1, this->s[1][i]);
         if (i != 0)
-            fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
-                    name.c_str(), id_txt, pre1, i1, i1 - 1, this->s[2][i]);
+            fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name.c_str(), id_txt,
+                    pre1, i1, i1 - 1, this->s[2][i]);
         if (i != this->nsys - 1)
-            fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n",
-                    name.c_str(), id_txt, pre2, i1, i1 + 1, this->s[0][i]);
+            fprintf(fich, "%s%s%s(%d,%d) = %20.15E;\n", name.c_str(), id_txt,
+                    pre2, i1, i1 + 1, this->s[0][i]);
     }
 
     fclose(fich);
 
     if (VERBOSE || (opt == MLAB_VERBOSE))
         printf("matrice \"%s\" sauvee dans le fichier matlab \"%s\" (%s)\n",
-               name.c_str(), filename,
-               (nfile == MLAB_OLD) ? "append" : "new");
+               name.c_str(), filename, (nfile == MLAB_OLD) ? "append" : "new");
 }
 
-SKY_API std::ostream &operator<<(std::ostream &out, TdiMat const &obj)
+SKY_API std::ostream &
+operator<<(std::ostream &out, TdiMat const &obj)
 {
     out << "TdiMat '" << obj.name << "'\n";
     return out;

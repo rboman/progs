@@ -23,9 +23,10 @@
  * @brief Calcul des matrices C1, Sp et du vect Fu
  */
 
-EHD_API int ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *u, double *um,
-                       double *p, double *dp, double Sp[2][2], double Se[2][2],
-                       double Fu[2], double C1[2][2], double Fum[2])
+EHD_API int
+ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *u,
+           double *um, double *p, double *dp, double Sp[2][2], double Se[2][2],
+           double Fu[2], double C1[2][2], double Fum[2])
 {
 
     int iop = 0;
@@ -81,16 +82,18 @@ EHD_API int ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *
 
         // valeur dx/dx au pt de gauss
 
-        double p_g = psih[0][0][n] * p[0] + psih[0][1][n] * dp[0] * detj + psih[0][2][n] * p[1] + psih[0][3][n] * dp[1] * detj;
-        double dpdx_g = psih[1][0][n] * p[0] / detj + psih[1][1][n] * dp[0] + psih[1][2][n] * p[1] / detj + psih[1][3][n] * dp[1];
+        double p_g = psih[0][0][n] * p[0] + psih[0][1][n] * dp[0] * detj +
+                     psih[0][2][n] * p[1] + psih[0][3][n] * dp[1] * detj;
+        double dpdx_g = psih[1][0][n] * p[0] / detj + psih[1][1][n] * dp[0] +
+                        psih[1][2][n] * p[1] / detj + psih[1][3][n] * dp[1];
         double dum_g = (psil[1][0][n] * um[0] + psil[1][1][n] * um[1]) / detj;
 
         // viscosite eta=f(p)
         double eta_g, etad_g;
         ehd_visco(eta0, alpha, p_g, &eta_g, &etad_g);
 
-        //printf("dpdx_g (%d)= %E (%E,%E,%E,%E)\n",n,dpdx_g,p[0],dp[0],p[1],dp[1]);
-        // valeurs temporaires
+        // printf("dpdx_g (%d)= %E
+        // (%E,%E,%E,%E)\n",n,dpdx_g,p[0],dp[0],p[1],dp[1]); valeurs temporaires
 
         double tmp = pg[n] * detj;
         double tmp01 = h_g * h_g / (4.0 * eta_g);
@@ -141,6 +144,6 @@ EHD_API int ehd_mat_dp(double *x, double *h, double eta0, double alpha, double *
     }
 
     /***/
-    
+
     return iop;
 }

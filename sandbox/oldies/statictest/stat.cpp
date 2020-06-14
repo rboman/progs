@@ -5,7 +5,8 @@
 
 // si on ne fait pas cette gymnastique,
 //  - soit le compilateur sgi dit qu'il veut des "template<>"
-//  - soit les autres ignorent la definition (pas d'instanciation generee dans le fichier)
+//  - soit les autres ignorent la definition (pas d'instanciation generee dans
+//  le fichier)
 #ifdef __sgi
 #define TPL_PREFIX template <>
 #else

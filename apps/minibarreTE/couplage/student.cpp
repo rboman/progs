@@ -9,7 +9,8 @@
 #include "bar.h"
 #include "light.h"
 
-void student(Bar const &bar)
+void
+student(Bar const &bar)
 {
     Light light;
     // parametres physiques
@@ -28,14 +29,17 @@ void student(Bar const &bar)
     int k = 0;            // numero du pas de temps
     int nstep = 500;      // nombre de pas de temps
     double deltat = 1e-6; // pas de temps
-    double gamma = 0.501; //0.5;            // newmark
-    double beta = 0.255;  //0.25;           // newmark
+    double gamma = 0.501; // 0.5;            // newmark
+    double beta = 0.255;  // 0.25;           // newmark
 
     // matrices utiles
     std::cout << "init matrices/vectors...\n";
-    gmm::row_matrix<gmm::wsvector<double>> A2(2 * m, 2 * m); // Suivant le schéma de Newmark
-    gmm::row_matrix<gmm::wsvector<double>> A1(2 * m, 2 * m); // Suivant le schéma de Newmark
-    gmm::row_matrix<gmm::wsvector<double>> A0(2 * m, 2 * m); // Suivant le schéma de Newmark
+    gmm::row_matrix<gmm::wsvector<double>> A2(
+        2 * m, 2 * m); // Suivant le schéma de Newmark
+    gmm::row_matrix<gmm::wsvector<double>> A1(
+        2 * m, 2 * m); // Suivant le schéma de Newmark
+    gmm::row_matrix<gmm::wsvector<double>> A0(
+        2 * m, 2 * m); // Suivant le schéma de Newmark
     gmm::row_matrix<gmm::wsvector<double>> Aprime(2 * m, 2 * m);
     std::vector<double> Fnplus1(2 * m), Fn(2 * m), Fnmoins1(2 * m);
     std::vector<double> Znplus1(2 * m), Zn(2 * m), Znmoins1(2 * m);
@@ -46,7 +50,8 @@ void student(Bar const &bar)
     gmm::clear(A0);
     gmm::clear(Aprime);
 
-    // Initialisation des 3 matrices A0, A1, A2 et des 5 vecteurs (on initialise pas Znplus1):
+    // Initialisation des 3 matrices A0, A1, A2 et des 5 vecteurs (on initialise
+    // pas Znplus1):
     for (int i = 0; i < m; i++)
     {
         if (i == 0)
@@ -128,7 +133,8 @@ void student(Bar const &bar)
             if (i == (m - 1) / 2)
             {
                 Fn[i] = Q * (1 + cos(2 * M_PI * f * k * deltat - M_PI));
-                Fnplus1[i] = Q * (1 + cos(2 * M_PI * f * (k + 1) * deltat - M_PI));
+                Fnplus1[i] =
+                    Q * (1 + cos(2 * M_PI * f * (k + 1) * deltat - M_PI));
             }
             else
             {
@@ -138,9 +144,8 @@ void student(Bar const &bar)
         }
     }
 
-    // Création de la matrice Aprime et du vecteur bprime selon le schéma de Newmark.
-    // On résoudra Aprime*Znplus1 = bprime
-    // Conditions aux limites
+    // Création de la matrice Aprime et du vecteur bprime selon le schéma de
+    // Newmark. On résoudra Aprime*Znplus1 = bprime Conditions aux limites
     Aprime(0, 0) = 1;
     Aprime(m - 1, m - 1) = 1;
     Aprime(m, m) = 1;
@@ -155,8 +160,11 @@ void student(Bar const &bar)
     {
         for (int j = 0; j < 2 * m; j++)
         {
-            Aprime(i, j) = A2(i, j) + gamma * deltat * A1(i, j) + beta * deltat * deltat * A0(i, j);                 //ne change plus
-            Aprime(i + m, j) = A2(i + m, j) + gamma * deltat * A1(i + m, j) + beta * deltat * deltat * A0(i + m, j); //ne change plus
+            Aprime(i, j) = A2(i, j) + gamma * deltat * A1(i, j) +
+                           beta * deltat * deltat * A0(i, j); // ne change plus
+            Aprime(i + m, j) =
+                A2(i + m, j) + gamma * deltat * A1(i + m, j) +
+                beta * deltat * deltat * A0(i + m, j); // ne change plus
         }
     }
 
@@ -174,47 +182,141 @@ void student(Bar const &bar)
     }
     myfile << "\n";
 
-    //Calcul de la matrice de préconditionnement et définition du critère d'erreur
+    // Calcul de la matrice de préconditionnement et définition du critère
+    // d'erreur
     std::cout << "computation of the preconditionner...\n";
     gmm::ilutp_precond<gmm::row_matrix<gmm::wsvector<double>>> P(Aprime, m, 0.);
 
     ///////////////////////////////
-    //Boucle sur les pas de temps//
+    // Boucle sur les pas de temps//
     ///////////////////////////////
     Gnuplot plot;
     plot("set title 'Output windows'");
-    //plot("set linetype 1 lw 2 lc rgb 'blue' pointtype 1");
+    // plot("set linetype 1 lw 2 lc rgb 'blue' pointtype 1");
 
     std::cout << "time integration...\n";
     for (k = 1; k < nstep; k++)
     {
-        //std::cout << "k = " << k << ": t = " << k*deltat << "\n";
+        // std::cout << "k = " << k << ": t = " << k*deltat << "\n";
 
         ////////////////////////////
-        //Résolution de l'équation//
+        // Résolution de l'équation//
         ////////////////////////////
-        //Calcul de bprime
+        // Calcul de bprime
         for (int i = 1; i < m - 1; i++)
         {
-            bprime[i] = (2 * A2(i, i) - (1 - 2 * gamma) * deltat * A1(i, i) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i)) * Zn[i] + (-A2(i, i) - (gamma - 1) * deltat * A1(i, i) - (0.5 - gamma + beta) * deltat * deltat * A0(i, i)) * Znmoins1[i];
-            bprime[i] += (2 * A2(i, i - 1) - (1 - 2 * gamma) * deltat * A1(i, i - 1) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i - 1)) * Zn[i - 1] + (-A2(i, i - 1) - (gamma - 1) * deltat * A1(i, i - 1) - (0.5 - gamma + beta) * deltat * deltat * A0(i, i - 1)) * Znmoins1[i - 1];
-            bprime[i] += (2 * A2(i, i + 1) - (1 - 2 * gamma) * deltat * A1(i, i + 1) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i + 1)) * Zn[i + 1] + (-A2(i, i + 1) - (gamma - 1) * deltat * A1(i, i + 1) - (0.5 - gamma + beta) * deltat * deltat * A0(i, i + 1)) * Znmoins1[i + 1];
-            bprime[i] += (2 * A2(i, i + m) - (1 - 2 * gamma) * deltat * A1(i, i + m) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i + m)) * Zn[i + m] + (-A2(i, i + m) - (gamma - 1) * deltat * A1(i, i + m) - (0.5 - gamma + beta) * deltat * deltat * A0(i, i + m)) * Znmoins1[i + m];
-            bprime[i] += (2 * A2(i, i - 1 + m) - (1 - 2 * gamma) * deltat * A1(i, i - 1 + m) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i - 1 + m)) * Zn[i - 1 + m] + (-A2(i, i - 1 + m) - (gamma - 1) * deltat * A1(i, i - 1 + m) - (0.5 - gamma + beta) * deltat * deltat * A0(i, i - 1 + m)) * Znmoins1[i - 1 + m];
-            bprime[i] += (2 * A2(i, i + 1 + m) - (1 - 2 * gamma) * deltat * A1(i, i + 1 + m) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i + 1 + m)) * Zn[i + 1 + m] + (-A2(i, i + 1 + m) - (gamma - 1) * deltat * A1(i, i + 1 + m) - (0.5 - gamma + beta) * deltat * deltat * A0(i, i + 1 + m)) * Znmoins1[i + 1 + m];
-            bprime[i] += deltat * deltat * (beta * Fnplus1[i] + (0.5 + gamma - 2 * beta) * Fn[i] + (0.5 - gamma + beta) * Fnmoins1[i]);
+            bprime[i] =
+                (2 * A2(i, i) - (1 - 2 * gamma) * deltat * A1(i, i) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i)) *
+                    Zn[i] +
+                (-A2(i, i) - (gamma - 1) * deltat * A1(i, i) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i, i)) *
+                    Znmoins1[i];
+            bprime[i] +=
+                (2 * A2(i, i - 1) - (1 - 2 * gamma) * deltat * A1(i, i - 1) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i - 1)) *
+                    Zn[i - 1] +
+                (-A2(i, i - 1) - (gamma - 1) * deltat * A1(i, i - 1) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i, i - 1)) *
+                    Znmoins1[i - 1];
+            bprime[i] +=
+                (2 * A2(i, i + 1) - (1 - 2 * gamma) * deltat * A1(i, i + 1) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i + 1)) *
+                    Zn[i + 1] +
+                (-A2(i, i + 1) - (gamma - 1) * deltat * A1(i, i + 1) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i, i + 1)) *
+                    Znmoins1[i + 1];
+            bprime[i] +=
+                (2 * A2(i, i + m) - (1 - 2 * gamma) * deltat * A1(i, i + m) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i, i + m)) *
+                    Zn[i + m] +
+                (-A2(i, i + m) - (gamma - 1) * deltat * A1(i, i + m) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i, i + m)) *
+                    Znmoins1[i + m];
+            bprime[i] +=
+                (2 * A2(i, i - 1 + m) -
+                 (1 - 2 * gamma) * deltat * A1(i, i - 1 + m) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat *
+                     A0(i, i - 1 + m)) *
+                    Zn[i - 1 + m] +
+                (-A2(i, i - 1 + m) - (gamma - 1) * deltat * A1(i, i - 1 + m) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i, i - 1 + m)) *
+                    Znmoins1[i - 1 + m];
+            bprime[i] +=
+                (2 * A2(i, i + 1 + m) -
+                 (1 - 2 * gamma) * deltat * A1(i, i + 1 + m) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat *
+                     A0(i, i + 1 + m)) *
+                    Zn[i + 1 + m] +
+                (-A2(i, i + 1 + m) - (gamma - 1) * deltat * A1(i, i + 1 + m) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i, i + 1 + m)) *
+                    Znmoins1[i + 1 + m];
+            bprime[i] += deltat * deltat *
+                         (beta * Fnplus1[i] + (0.5 + gamma - 2 * beta) * Fn[i] +
+                          (0.5 - gamma + beta) * Fnmoins1[i]);
 
-            bprime[i + m] = (2 * A2(i + m, i) - (1 - 2 * gamma) * deltat * A1(i + m, i) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i)) * Zn[i] + (-A2(i + m, i) - (gamma - 1) * deltat * A1(i + m, i) - (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i)) * Znmoins1[i];
-            bprime[i + m] += (2 * A2(i + m, i - 1) - (1 - 2 * gamma) * deltat * A1(i + m, i - 1) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i - 1)) * Zn[i - 1] + (-A2(i + m, i - 1) - (gamma - 1) * deltat * A1(i + m, i - 1) - (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i - 1)) * Znmoins1[i - 1];
-            bprime[i + m] += (2 * A2(i + m, i + 1) - (1 - 2 * gamma) * deltat * A1(i + m, i + 1) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i + 1)) * Zn[i + 1] + (-A2(i + m, i + 1) - (gamma - 1) * deltat * A1(i + m, i + 1) - (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i + 1)) * Znmoins1[i + 1];
-            bprime[i + m] += (2 * A2(i + m, i + m) - (1 - 2 * gamma) * deltat * A1(i + m, i + m) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i + m)) * Zn[i + m] + (-A2(i + m, i + m) - (gamma - 1) * deltat * A1(i + m, i + m) - (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i + m)) * Znmoins1[i + m];
-            bprime[i + m] += (2 * A2(i + m, i - 1 + m) - (1 - 2 * gamma) * deltat * A1(i + m, i - 1 + m) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i - 1 + m)) * Zn[i - 1 + m] + (-A2(i + m, i - 1 + m) - (gamma - 1) * deltat * A1(i + m, i - 1 + m) - (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i - 1 + m)) * Znmoins1[i - 1 + m];
-            bprime[i + m] += (2 * A2(i + m, i + 1 + m) - (1 - 2 * gamma) * deltat * A1(i + m, i + 1 + m) - (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i + 1 + m)) * Zn[i + 1 + m] + (-A2(i + m, i + 1 + m) - (gamma - 1) * deltat * A1(i + m, i + 1 + m) - (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i + 1 + m)) * Znmoins1[i + 1 + m];
-            bprime[i + m] += deltat * deltat * (beta * Fnplus1[i + m] + (0.5 + gamma - 2 * beta) * Fn[i + m] + (0.5 - gamma + beta) * Fnmoins1[i + m]);
+            bprime[i + m] =
+                (2 * A2(i + m, i) - (1 - 2 * gamma) * deltat * A1(i + m, i) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat * A0(i + m, i)) *
+                    Zn[i] +
+                (-A2(i + m, i) - (gamma - 1) * deltat * A1(i + m, i) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i)) *
+                    Znmoins1[i];
+            bprime[i + m] +=
+                (2 * A2(i + m, i - 1) -
+                 (1 - 2 * gamma) * deltat * A1(i + m, i - 1) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat *
+                     A0(i + m, i - 1)) *
+                    Zn[i - 1] +
+                (-A2(i + m, i - 1) - (gamma - 1) * deltat * A1(i + m, i - 1) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i - 1)) *
+                    Znmoins1[i - 1];
+            bprime[i + m] +=
+                (2 * A2(i + m, i + 1) -
+                 (1 - 2 * gamma) * deltat * A1(i + m, i + 1) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat *
+                     A0(i + m, i + 1)) *
+                    Zn[i + 1] +
+                (-A2(i + m, i + 1) - (gamma - 1) * deltat * A1(i + m, i + 1) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i + 1)) *
+                    Znmoins1[i + 1];
+            bprime[i + m] +=
+                (2 * A2(i + m, i + m) -
+                 (1 - 2 * gamma) * deltat * A1(i + m, i + m) -
+                 (0.5 + gamma - 2 * beta) * deltat * deltat *
+                     A0(i + m, i + m)) *
+                    Zn[i + m] +
+                (-A2(i + m, i + m) - (gamma - 1) * deltat * A1(i + m, i + m) -
+                 (0.5 - gamma + beta) * deltat * deltat * A0(i + m, i + m)) *
+                    Znmoins1[i + m];
+            bprime[i + m] += (2 * A2(i + m, i - 1 + m) -
+                              (1 - 2 * gamma) * deltat * A1(i + m, i - 1 + m) -
+                              (0.5 + gamma - 2 * beta) * deltat * deltat *
+                                  A0(i + m, i - 1 + m)) *
+                                 Zn[i - 1 + m] +
+                             (-A2(i + m, i - 1 + m) -
+                              (gamma - 1) * deltat * A1(i + m, i - 1 + m) -
+                              (0.5 - gamma + beta) * deltat * deltat *
+                                  A0(i + m, i - 1 + m)) *
+                                 Znmoins1[i - 1 + m];
+            bprime[i + m] += (2 * A2(i + m, i + 1 + m) -
+                              (1 - 2 * gamma) * deltat * A1(i + m, i + 1 + m) -
+                              (0.5 + gamma - 2 * beta) * deltat * deltat *
+                                  A0(i + m, i + 1 + m)) *
+                                 Zn[i + 1 + m] +
+                             (-A2(i + m, i + 1 + m) -
+                              (gamma - 1) * deltat * A1(i + m, i + 1 + m) -
+                              (0.5 - gamma + beta) * deltat * deltat *
+                                  A0(i + m, i + 1 + m)) *
+                                 Znmoins1[i + 1 + m];
+            bprime[i + m] +=
+                deltat * deltat *
+                (beta * Fnplus1[i + m] + (0.5 + gamma - 2 * beta) * Fn[i + m] +
+                 (0.5 - gamma + beta) * Fnmoins1[i + m]);
         }
         // Résolution de l'équation
         gmm::iteration iter(1.e-6);
-        //iter.set_noisy(1);
+        // iter.set_noisy(1);
         gmm::gmres(Aprime, Znplus1, bprime, P, 100, iter);
 
         // Ecriture de la solution dans un fichier
@@ -229,10 +331,12 @@ void student(Bar const &bar)
         }
         myfile << "\n";
 
-        //Actualisation des vecteurs F et des 2 vecteurs Z (Znmoins1 et Zn) pour le pas de temps suivant.
+        // Actualisation des vecteurs F et des 2 vecteurs Z (Znmoins1 et Zn)
+        // pour le pas de temps suivant.
         Fnmoins1[(m - 1) / 2] = Fn[(m - 1) / 2];
         Fn[(m - 1) / 2] = Fnplus1[(m - 1) / 2];
-        Fnplus1[(m - 1) / 2] = Q * (1 + cos(2 * M_PI * f * (k + 1) * deltat - M_PI));
+        Fnplus1[(m - 1) / 2] =
+            Q * (1 + cos(2 * M_PI * f * (k + 1) * deltat - M_PI));
         for (int i = 1; i < m - 1; i++)
         {
             Znmoins1[i] = Zn[i];
@@ -241,8 +345,8 @@ void student(Bar const &bar)
             Zn[i + m] = Znplus1[i + m];
         }
 
-        //plot("plot sin(x)") ;
-        //plot("plot '-' with linespoints");
+        // plot("plot sin(x)") ;
+        // plot("plot '-' with linespoints");
         plot("plot '-' with lines");
         for (int i = 0; i < m; i++)
         {

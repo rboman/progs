@@ -5,7 +5,6 @@
 #include <QStringList>
 #include <QProcess>
 
-
 #include <iostream>
 #include <vector>
 
@@ -16,8 +15,9 @@ class GUI : public QWidget
 {
     Q_OBJECT;
     QTextEdit *textedit;
+
 public:
-    GUI(QWidget* parent = 0) : QWidget(parent)
+    GUI(QWidget *parent = 0) : QWidget(parent)
     {
         QVBoxLayout *vbox = new QVBoxLayout(this);
         textedit = new QTextEdit();
@@ -28,9 +28,9 @@ public:
         this->setLayout(vbox);
         this->setGeometry(300, 300, 350, 300);
         this->setWindowTitle("GUI");
-        this->show();  
+        this->show();
 
-        connect(button, SIGNAL(pressed()), this, SLOT(on_button_pressed()));            
+        connect(button, SIGNAL(pressed()), this, SLOT(on_button_pressed()));
     }
 
 public slots:
@@ -40,21 +40,21 @@ public slots:
         textedit->append("running process...");
 
         QProcess process(this);
-        process.start("python", QStringList() << "-c" << "print 'this is \033[31mred\033[0m.'");
-        if(!process.waitForStarted()) 
+        process.start("python", QStringList()
+                                    << "-c"
+                                    << "print 'this is \033[31mred\033[0m.'");
+        if (!process.waitForStarted())
             textedit->append("=> process didn't start :(");
 
-        if(!process.waitForFinished())
+        if (!process.waitForFinished())
             textedit->append("=> process failure :(");
 
         QByteArray result = process.readAllStandardOutput();
         std::cout << result.toStdString().c_str();
 
         QString s(result.toStdString().c_str());
-        s.replace("\033[31m","<font color=red>");
-        s.replace("\033[0m","</font>");
-        textedit->append("output: "+ s);
+        s.replace("\033[31m", "<font color=red>");
+        s.replace("\033[0m", "</font>");
+        textedit->append("output: " + s);
     }
 };
-
-

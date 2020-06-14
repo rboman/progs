@@ -41,14 +41,16 @@ ResFiles::~ResFiles()
     }
 }
 
-void ResFiles::init(std::vector<double> &_inc, double &_time, double &_light)
+void
+ResFiles::init(std::vector<double> &_inc, double &_time, double &_light)
 {
     inc = &_inc;
     time = &_time;
     light = &_light;
 }
 
-void ResFiles::update()
+void
+ResFiles::update()
 {
     nstep++;
     if (nstep % freq)

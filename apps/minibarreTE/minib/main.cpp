@@ -4,7 +4,8 @@
 #include "Bar.h"
 #include "Mesh.h"
 
-int main()
+int
+main()
 {
     std::cout << "starting simulation...\n";
     Bar bar;

@@ -38,11 +38,12 @@ Fract::Fract(QWidget *parent) : QWidget(parent)
     this->resize(640, 480);
 }
 
-void Fract::paintEvent(QPaintEvent *event)
+void
+Fract::paintEvent(QPaintEvent *event)
 {
     std::cout << "paintEvent: please wait..." << std::endl;
     QPainter painter(this);
-    //QPainter *painter = new QPainter(this);
+    // QPainter *painter = new QPainter(this);
 
     double a1 = x2 - x1;
     double a2 = y2 - y1;
@@ -72,14 +73,15 @@ void Fract::paintEvent(QPaintEvent *event)
             painter.setPen(pen);
             painter.drawPoint(xe, ye);
             // painter->setPen(pen);
-            // painter->drawPoint(xe, ye);            
+            // painter->drawPoint(xe, ye);
         }
     std::cout << "done." << std::endl;
-    //painter->end(); // avoids "qpainter : cannot destroy paint device that is being painted"
-    //painter.end();
+    // painter->end(); // avoids "qpainter : cannot destroy paint device that is
+    // being painted" painter.end();
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     QApplication *app = new QApplication(argc, argv);
     Fract *win = new Fract();

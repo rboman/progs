@@ -18,8 +18,7 @@
 #include "dcm.h"
 #include <iostream>
 
-template <class T>
-class VarArray
+template <class T> class VarArray
 {
     static const bool debug = false;
 

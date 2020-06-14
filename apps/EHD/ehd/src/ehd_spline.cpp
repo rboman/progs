@@ -24,14 +24,15 @@
 //#define STANDALONE
 
 /**
- * @brief Calcule un morceau de spline en n points x[0-(n-1)] 
- * 
+ * @brief Calcule un morceau de spline en n points x[0-(n-1)]
+ *
  * si xi[0-1], yi[0-1], ki[0-1] sont connus
  * (renvoie y[0-(n-1)] et yp[0-(n-1)])
  */
 
-EHD_API void ehd_spline_seg(double *xi, double *yi, double *ki,
-                            double *x, double *y, double *yp, int n)
+EHD_API void
+ehd_spline_seg(double *xi, double *yi, double *ki, double *x, double *y,
+               double *yp, int n)
 {
     // ctes du segment concerne
     double bi = yi[0];
@@ -55,8 +56,9 @@ EHD_API void ehd_spline_seg(double *xi, double *yi, double *ki,
  * @brief Evalue une spline en x et renvoie y (y=f(x)) et y' (derivee)
  */
 
-EHD_API void ehd_spline_y(int nn, double *xi, double *yi, double *ki,
-                         double x, double *y, double *yp)
+EHD_API void
+ehd_spline_y(int nn, double *xi, double *yi, double *ki, double x, double *y,
+             double *yp)
 {
     // recherche du morceau
     int i;
@@ -74,7 +76,8 @@ EHD_API void ehd_spline_y(int nn, double *xi, double *yi, double *ki,
  *  @brief Calcule les ki (derivees 2nd)
  */
 
-EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
+EHD_API int
+ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
 {
     int iop = 0;
 
@@ -128,7 +131,8 @@ EHD_API int ehd_spline_ki(TdiMat *K, int nn, double *xi, double *yi, double *ki)
 
 #ifdef STANDALONE
 
-int main()
+int
+main()
 {
     int iop = 0;
     int nn = 10;
@@ -186,8 +190,7 @@ int main()
     for (x = xi[0]; x <= xi[nn - 1]; x += dx)
     {
         i++;
-        iop = ehd_spline_y(nn, xi, yi, ki,
-                           x, &y, &yp);
+        iop = ehd_spline_y(nn, xi, yi, ki, x, &y, &yp);
         if (iop != 0)
             goto FIN;
 
@@ -208,8 +211,7 @@ int main()
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 }
 

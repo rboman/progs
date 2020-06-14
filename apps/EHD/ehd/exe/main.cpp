@@ -22,20 +22,21 @@
 #include <stdexcept>
 #include <iostream>
 
-int main()
+int
+main()
 {
     try
     {
         return ehd_main2();
     }
-    catch(std::exception &e) 
+    catch (std::exception &e)
     {
         std::cerr << "\n** ERROR:" << e.what() << '\n';
         return 1;
     }
-    catch(...) 
+    catch (...)
     {
         std::cerr << "\n** ERROR: Unknown C++ Runtime Error\n";
         return 1;
-    } 
+    }
 }

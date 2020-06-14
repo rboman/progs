@@ -8,8 +8,8 @@ SINGLETON_CLSATTR(ObjectC)
 #include "ObjectC.h"
 template class SINGLETON_EXPORT Singleton<ObjectC>;
 
-/*  
-// works OK but.... 
+/*
+// works OK but....
 #if defined(__MINGW32__)
 class ObjectC;
 template class MYDLL_API Singleton<ObjectC>;
@@ -20,13 +20,9 @@ template class MYDLL_API Singleton<ObjectC>;
 #endif
 */
 
-ObjectC::ObjectC()
-{
-}
+ObjectC::ObjectC() {}
 
-ObjectC::~ObjectC()
-{
-}
+ObjectC::~ObjectC() {}
 
 void
 ObjectC::print()

@@ -3,33 +3,37 @@
 #include <list>
 #include <cstdlib>
 
-void *operator new(size_t siz) throw(std::bad_alloc)
+void *
+operator new(size_t siz) throw(std::bad_alloc)
 {
     std::cout << "new: " << siz << " bytes" << std::endl;
     return malloc(siz);
 }
 
-void *operator new[](size_t siz) throw(std::bad_alloc)
+void *
+operator new[](size_t siz) throw(std::bad_alloc)
 {
     std::cout << "new[]: " << siz << " bytes" << std::endl;
     return malloc(siz);
 }
 
-void operator delete(void *p)
+void
+operator delete(void *p)
 {
     free(p);
 }
 
 class Obj
 {
-  public:
+public:
     int i, j, k, l; // 4*4 = 16bytes
 };
 
-int main()
+int
+main()
 {
     typedef std::list<Obj> MyList;
-    //typedef int MyList;
+    // typedef int MyList;
     typedef std::vector<MyList> MyVector;
 
     MyVector *pipo;
@@ -50,7 +54,7 @@ int main()
     //--
     std::cout << "**test 2" << std::endl;
     std::vector<int> test(1);
-    //test.push_back(0);
+    // test.push_back(0);
     std::cout << &test << std::endl;
 
     std::cout << "**test 3" << std::endl;

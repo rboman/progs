@@ -20,8 +20,10 @@
  * @brief Calcule le produit Sp p
  */
 
-EHD_API void ehd_spp(double Sp[4][4], double *p, double *dp, double *res)
+EHD_API void
+ehd_spp(double Sp[4][4], double *p, double *dp, double *res)
 {
     for (int i = 0; i < 4; i++)
-        res[i] += Sp[i][0] * p[0] + Sp[i][1] * dp[0] + Sp[i][2] * p[1] + Sp[i][3] * dp[1];
+        res[i] += Sp[i][0] * p[0] + Sp[i][1] * dp[0] + Sp[i][2] * p[1] +
+                  Sp[i][3] * dp[1];
 }

@@ -19,12 +19,12 @@
 
 #include "ehd.h"
 
-
 class EHD_API Main3
 {
     int nn;
+
 public:
-    Main3(int _nn=100);
+    Main3(int _nn = 100);
 
     int execute();
 

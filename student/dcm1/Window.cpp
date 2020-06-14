@@ -29,8 +29,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     viewer = new Barres(this);
     viewer->setMinimumSize(QSize(600, 400));
-    viewer->setSizePolicy(QSizePolicy::Expanding,
-                          QSizePolicy::Expanding);
+    viewer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QHBoxLayout *hbox = new QHBoxLayout();
     this->setLayout(hbox);
@@ -53,7 +52,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QSlider *slider_a1 = new QSlider(Qt::Horizontal);
     gbox->addWidget(slider_a1, 0, 1);
     slider_a1->setRange(0, 100);
-    connect(slider_a1, SIGNAL(valueChanged(int)), viewer, SLOT(set_a1_slot(int)));
+    connect(slider_a1, SIGNAL(valueChanged(int)), viewer,
+            SLOT(set_a1_slot(int)));
 
     // a2
     QLabel *label_a2 = new QLabel("a2");
@@ -61,7 +61,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QSlider *slider_a2 = new QSlider(Qt::Horizontal);
     gbox->addWidget(slider_a2, 1, 1);
     slider_a2->setRange(0, 100);
-    connect(slider_a2, SIGNAL(valueChanged(int)), viewer, SLOT(set_a2_slot(int)));
+    connect(slider_a2, SIGNAL(valueChanged(int)), viewer,
+            SLOT(set_a2_slot(int)));
 
     // a3
     QLabel *label_a3 = new QLabel("a3");
@@ -69,7 +70,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QSlider *slider_a3 = new QSlider(Qt::Horizontal);
     gbox->addWidget(slider_a3, 2, 1);
     slider_a3->setRange(0, 100);
-    connect(slider_a3, SIGNAL(valueChanged(int)), viewer, SLOT(set_a3_slot(int)));
+    connect(slider_a3, SIGNAL(valueChanged(int)), viewer,
+            SLOT(set_a3_slot(int)));
 
     // xb
     QLabel *label_xb = new QLabel("xb");
@@ -77,7 +79,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QSlider *slider_xb = new QSlider(Qt::Horizontal);
     gbox->addWidget(slider_xb, 3, 1);
     slider_xb->setRange(0, 100);
-    connect(slider_xb, SIGNAL(valueChanged(int)), viewer, SLOT(set_xb_slot(int)));
+    connect(slider_xb, SIGNAL(valueChanged(int)), viewer,
+            SLOT(set_xb_slot(int)));
 
     // ya
     QLabel *label_ya = new QLabel("ya");
@@ -85,7 +88,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QSlider *slider_ya = new QSlider(Qt::Horizontal);
     gbox->addWidget(slider_ya, 4, 1);
     slider_ya->setRange(0, 100);
-    connect(slider_ya, SIGNAL(valueChanged(int)), viewer, SLOT(set_ya_slot(int)));
+    connect(slider_ya, SIGNAL(valueChanged(int)), viewer,
+            SLOT(set_ya_slot(int)));
 
     // L
     QLabel *label_L = new QLabel("L");
@@ -109,7 +113,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     QSlider *slider_dp = new QSlider(Qt::Horizontal);
     gbox->addWidget(slider_dp, 7, 1);
     slider_dp->setRange(0, 100);
-    connect(slider_dp, SIGNAL(valueChanged(int)), viewer, SLOT(set_dp_slot(int)));
+    connect(slider_dp, SIGNAL(valueChanged(int)), viewer,
+            SLOT(set_dp_slot(int)));
 
     vbox->addWidget(groupBox);
     vbox->addStretch(1);

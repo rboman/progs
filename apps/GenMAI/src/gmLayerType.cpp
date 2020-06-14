@@ -16,19 +16,25 @@
 
 using namespace genmai;
 
-
-namespace genmai {
+namespace genmai
+{
 
 GENMAI_API std::ostream &
 operator<<(std::ostream &o, const LayerType &v)
 {
-    switch(v)
+    switch (v)
     {
-        case CONSTANT: o << "CONSTANT"; break;
-        case REDUCTION: o << "REDUCTION"; break;
-        default: o << "INVALID"; break;
+    case CONSTANT:
+        o << "CONSTANT";
+        break;
+    case REDUCTION:
+        o << "REDUCTION";
+        break;
+    default:
+        o << "INVALID";
+        break;
     }
     return o;
 }
 
-}
+} // namespace genmai

@@ -28,33 +28,32 @@ struct MyObject
     }
 
     // i/o
-    friend ostream & operator<< (ostream &mystream, const MyObject &obj)
+    friend ostream &operator<<(ostream &mystream, const MyObject &obj)
     {
-        mystream << obj.data << endl ;
+        mystream << obj.data << endl;
         return mystream;
     }
-
 };
 
-
-int main()
+int
+main()
 {
     std::vector<MyObject *> set;
 
-    MyObject obj1(1),obj2(2);
+    MyObject obj1(1), obj2(2);
 
     set.push_back(&obj1);
     set.push_back(&obj2);
 
     // affichage de set
 
-    cout << "obj1 = " << *(set[0]) ;
-    cout << "obj2 = " << *(set[1]) ;
+    cout << "obj1 = " << *(set[0]);
+    cout << "obj2 = " << *(set[1]);
 
     // copie du set via operator=
 
     std::vector<MyObject *> set2;
-    
+
     set2 = set;
 
     // modification des objets via set2
@@ -64,9 +63,8 @@ int main()
 
     // affichage de set
 
-    cout << "obj1 = " << *(set[0]) ;
-    cout << "obj2 = " << *(set[1]) ;
+    cout << "obj1 = " << *(set[0]);
+    cout << "obj2 = " << *(set[1]);
 
     return 0;
 }
-

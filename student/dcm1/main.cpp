@@ -15,7 +15,8 @@
 #include "Window.h"
 #include <QApplication>
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     QApplication *app = new QApplication(argc, argv);
     Window *win = new Window();

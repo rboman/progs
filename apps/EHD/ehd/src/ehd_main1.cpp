@@ -22,17 +22,18 @@
  * @brief Test determination CL
  */
 
-EHD_API int ehd_main1()
+EHD_API int
+ehd_main1()
 {
     int iop = 0;
-    //int i,j,ni,nj,n;
-    //int i, n;
+    // int i,j,ni,nj,n;
+    // int i, n;
 
     const int nbelem = 1000;
     const int nbnode = nbelem + 1;
 
     // variables
-    //double eta0, alpha;
+    // double eta0, alpha;
 
     double *h = (double *)malloc(nbnode * sizeof(double));
     double *h_t0 = (double *)malloc(nbnode * sizeof(double));
@@ -45,8 +46,6 @@ EHD_API int ehd_main1()
     double *p = (double *)malloc(nbnode * sizeof(double));
     double *dp = (double *)malloc(nbnode * sizeof(double));
     double *dpdh0 = (double *)malloc(nbnode * sizeof(double));
-
-
 
 #if 1
     // fixations
@@ -87,7 +86,7 @@ EHD_API int ehd_main1()
     double dt;
 
     int scheme = EHD_STATIO;
-    //int scheme=EHD_EULER;
+    // int scheme=EHD_EULER;
 
 #if 0
   double h2[nbnode];
@@ -113,11 +112,9 @@ EHD_API int ehd_main1()
     iop = sky_initmat(&K);
     iop = sky_setname(&K, "K");
 
-
-    SkyMat K2;    
+    SkyMat K2;
     iop = sky_initmat(&K2);
     iop = sky_setname(&K2, "K2");
-
 
     // NEWTON-RAPHSON
     // --------------
@@ -148,12 +145,10 @@ EHD_API int ehd_main1()
     while (rester)
     {
         // Resolution h(x) -> p(x)
-        iop = ehd_get_p(nbelem, nbnode, h, eta0, alpha, x, um,
-                        u, h_t0, dt, p, dp,
-                        &K, nbfix,
-                        nnfix, ndfix, vfix, EHD_NO_IO, scheme);
+        iop = ehd_get_p(nbelem, nbnode, h, eta0, alpha, x, um, u, h_t0, dt, p,
+                        dp, &K, nbfix, nnfix, ndfix, vfix, EHD_NO_IO, scheme);
 
-        //iop = mlab_vec("pipo2.m", "p1", p, nbnode, MLAB_NEW, MLAB_VERBOSE);
+        // iop = mlab_vec("pipo2.m", "p1", p, nbnode, MLAB_NEW, MLAB_VERBOSE);
 
         residu = p[nL] - pL;
 
@@ -168,9 +163,8 @@ EHD_API int ehd_main1()
         // Correction NR:
         // Resolution h(x), p(x) -> dp/dh0
 
-        iop = ehd_get_dpdh0(nbelem, nbnode, h, eta0, alpha, x,
-                            u, um, dt, p, dp, &K2, nbfix2,
-                            nnfix2, ndfix2, vfix2, dpdh0,
+        iop = ehd_get_dpdh0(nbelem, nbnode, h, eta0, alpha, x, u, um, dt, p, dp,
+                            &K2, nbfix2, nnfix2, ndfix2, vfix2, dpdh0,
                             EHD_NO_IO, scheme);
 
         /*
@@ -178,7 +172,7 @@ EHD_API int ehd_main1()
     for(i=0;i<nbnode;i++)
       h[i]+=0.00001;
     iop = ehd_get_p(nbelem, nbnode, h, eta0, alpha, x,
-                    u, h_t0, dt, p, dp, 
+                    u, h_t0, dt, p, dp,
                     &K, nbfix,
                     nnfix, ndfix, vfix, EHD_NO_IO, scheme);
     if(iop!=0) goto FIN;
@@ -201,10 +195,8 @@ EHD_API int ehd_main1()
 
     // output solution
 
-    iop = ehd_get_p(nbelem, nbnode, h, eta0, alpha, x, um,
-                    u, h_t0, dt, p, dp,
-                    &K, nbfix,
-                    nnfix, ndfix, vfix, EHD_IO, scheme);
+    iop = ehd_get_p(nbelem, nbnode, h, eta0, alpha, x, um, u, h_t0, dt, p, dp,
+                    &K, nbfix, nnfix, ndfix, vfix, EHD_IO, scheme);
 
     /*
   for(i=0;i<nbnode;i++)

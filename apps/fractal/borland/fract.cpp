@@ -32,7 +32,8 @@ float stepx = 0.2, stepy = 0.2, xc = 0, yc = 0, prm[10];
 int sl = 640, sh = 480, nb_coul = 50, inc = 2, couleur = '1';
 int max_it = 0, sav = 0, time1 = 0, time2 = 0;
 
-int main(void)
+int
+main(void)
 {
     /* Déclaration des fonctions */
     float mandelbrot(void);
@@ -96,7 +97,8 @@ int main(void)
 }
 
 /* Initialisation du driver VGA 640x480 et de la palette */
-void init_graph(void)
+void
+init_graph(void)
 {
     palettetype pal;
     int gdriver = 9, gmode = 2, i;
@@ -144,7 +146,8 @@ void init_graph(void)
 }
 
 /* Redéfinition des paramètres */
-void param(char *descript, int par)
+void
+param(char *descript, int par)
 {
     char entree[20];
     extern float prm[];
@@ -155,7 +158,8 @@ void param(char *descript, int par)
 }
 
 /* Algorithme de Mandelbrot */
-float mandelbrot(void)
+float
+mandelbrot(void)
 {
     time1 = clock();
     void init_graph(void);
@@ -208,7 +212,8 @@ float mandelbrot(void)
 }
 
 /* Algorithme de Julia */
-float julia(void)
+float
+julia(void)
 {
     void init_graph(void);
     void axes(void);
@@ -257,7 +262,8 @@ float julia(void)
 }
 
 /* Trace les axes et le quadrillage */
-void axes(void)
+void
+axes(void)
 {
     /* Fonctions */
     void line_horiz(float);
@@ -301,21 +307,24 @@ void axes(void)
     return;
 }
 
-void line_horiz(float y)
+void
+line_horiz(float y)
 {
     extern sl;
     line(0, y, sl, y);
     return;
 }
 
-void line_vert(float x)
+void
+line_vert(float x)
 {
     extern sh;
     line(x, 0, x, sh);
     return;
 }
 
-void titre(void)
+void
+titre(void)
 {
     puts("\t\t\t       +-------------------+");
     puts("\t\t\t       | Fractal v1.0      |");
@@ -325,7 +334,8 @@ void titre(void)
     return;
 }
 
-void var_par(int opt)
+void
+var_par(int opt)
 {
     extern int inc, nb_coul;
     extern float x1, y1, x2, y2, stepx, stepy, prm[], xc, yc;
@@ -359,7 +369,8 @@ void var_par(int opt)
 }
 
 /* Modification des paramètres */
-void modif_param(void)
+void
+modif_param(void)
 {
     void titre(void);
     void var_par(int);
@@ -369,11 +380,12 @@ void modif_param(void)
     int i, exit = 0, choix = 0;
     float swap;
     extern int sav;
-    char *texte[10] = {"\n\nCoin sup. gauche [x1=%f] :", "Coin sup. gauche [y1=%f] :",
-                       "Coin inf. droit  [x2=%f] :", "Coin inf. droit  [y2=%f] :",
-                       "\nQuadrillage [x=%f] :", "Quadrillage [y=%f] :",
-                       "\nQualité [inc=%f] :", "Précision [coul=%f] :",
-                       "\nCte Julia [xc=%f] :", "Cte Julia [yc=%f] :"};
+    char *texte[10] = {
+        "\n\nCoin sup. gauche [x1=%f] :", "Coin sup. gauche [y1=%f] :",
+        "Coin inf. droit  [x2=%f] :",     "Coin inf. droit  [y2=%f] :",
+        "\nQuadrillage [x=%f] :",         "Quadrillage [y=%f] :",
+        "\nQualité [inc=%f] :",           "Précision [coul=%f] :",
+        "\nCte Julia [xc=%f] :",          "Cte Julia [yc=%f] :"};
 
     /* Menu */
     while (exit == 0)
@@ -449,11 +461,13 @@ void modif_param(void)
     return;
 }
 
-void infos(void)
+void
+infos(void)
 {
     clrscr();
     titre();
-    puts("\nMandelbrot: A chaque pt du plan complexe, le programme attribue une");
+    puts("\nMandelbrot: A chaque pt du plan complexe, le programme attribue "
+         "une");
     puts("            couleur relative à la vitesse de convergence de la     ");
     puts("            suite    Zo = 0 , Zn+1 = Zn + C");
     puts("             (C étant le nbre complexe considéré)");
@@ -470,7 +484,8 @@ void infos(void)
     return;
 }
 
-void load_param(void)
+void
+load_param(void)
 {
     extern float prm[];
     char *nom;
@@ -497,7 +512,8 @@ void load_param(void)
     return;
 }
 
-void save_param(void)
+void
+save_param(void)
 {
     extern float prm[];
     char *nom;
@@ -524,7 +540,8 @@ void save_param(void)
     return;
 }
 
-void axes_ortho(void)
+void
+axes_ortho(void)
 {
     extern float stepx, stepy;
     stepx = (stepx + stepy) / 2;
@@ -532,7 +549,8 @@ void axes_ortho(void)
     return;
 }
 
-void couleurs(void)
+void
+couleurs(void)
 {
     extern int couleur;
 
@@ -552,6 +570,7 @@ void couleurs(void)
     return;
 }
 
-void save_picture(void)
+void
+save_picture(void)
 {
 }

@@ -37,10 +37,7 @@ Polynome::Polynome(const Polynome &b)
     }
 }
 
-Polynome::~Polynome()
-{
-    delete a;
-}
+Polynome::~Polynome() { delete a; }
 
 Polynome
 Polynome::operator=(const Polynome &b)
@@ -60,8 +57,7 @@ Polynome::operator=(const Polynome &b)
     return *this;
 }
 
-Polynome
-Polynome::operator!()
+Polynome Polynome::operator!()
 {
     Polynome b(degre);
     degre = 0;
@@ -74,27 +70,25 @@ Polynome::operator!()
     return b;
 }
 
-double &
-    Polynome::operator[](indice i)
+double &Polynome::operator[](indice i)
 {
     if (i <= degre)
         return a[i];
     else
     {
-        std::cerr << "indice trop eleve :" << i
-                  << " Degre maximum = " << degre << '\n';
+        std::cerr << "indice trop eleve :" << i << " Degre maximum = " << degre
+                  << '\n';
         return a[0];
     }
 }
-double
-    Polynome::operator[](indice i) const
+double Polynome::operator[](indice i) const
 {
     if (i <= degre)
         return a[i];
     else
     {
-        std::cerr << "indice trop eleve :" << i
-                  << " Degre maximum = " << degre << '\n';
+        std::cerr << "indice trop eleve :" << i << " Degre maximum = " << degre
+                  << '\n';
         return a[0];
     }
 }
@@ -126,8 +120,7 @@ Polynome::operator-(Polynome const &b) const
     return res;
 }
 
-Polynome
-    Polynome::operator*(Polynome const &b) const
+Polynome Polynome::operator*(Polynome const &b) const
 {
     Polynome res((indice)(degre + b.degre));
     for (indice i = 0; i <= b.degre; i++)
@@ -136,8 +129,7 @@ Polynome
     return res;
 }
 
-DCM_API Polynome
-    dcm::operator*(double a, Polynome const &b)
+DCM_API Polynome dcm::operator*(double a, Polynome const &b)
 {
     Polynome res(b.degre);
     for (Polynome::indice i = 0; i <= b.degre; i++)
@@ -145,8 +137,7 @@ DCM_API Polynome
     return res;
 }
 
-DCM_API Polynome
-    dcm::operator*(Polynome const &b, double a)
+DCM_API Polynome dcm::operator*(Polynome const &b, double a)
 {
     Polynome res(b.degre);
     for (Polynome::indice i = 0; i <= b.degre; i++)
@@ -214,7 +205,8 @@ dcm::operator<<(std::ostream &outp, Polynome const &po)
     return outp;
 }
 
-void Polynome::demo()
+void
+Polynome::demo()
 {
     std::cout << "\nPolynome::demo()!\n\n";
 
@@ -255,6 +247,6 @@ d(X)=a*b= 0 + 5.2 X^1 + 5.6 X^4 + 2.8 X^5 + 1.4 X^7
 d(.5)   = 3.048437
 d'(X)   = 5.2 + 22.4 X^3 + 14 X^4 + 9.8 X^6
 4.361667
-4.361667 
+4.361667
 */
 }

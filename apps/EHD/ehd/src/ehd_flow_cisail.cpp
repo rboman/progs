@@ -22,8 +22,9 @@
  * ATTENTION : routine ecrite pour gam = 1.0
  */
 
-EHD_API void ehd_flow_cisail(double h, double Rq, double Rq1, double Rq2, int loi,
-                            double *PhiF, double *PhiFS, double *PhiFP)
+EHD_API void
+ehd_flow_cisail(double h, double Rq, double Rq1, double Rq2, int loi,
+                double *PhiF, double *PhiFS, double *PhiFP)
 {
     switch (loi)
     {

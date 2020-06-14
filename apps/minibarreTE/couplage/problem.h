@@ -11,7 +11,7 @@
 
 class COUPLAGE_API Problem
 {
-  public:
+public:
     Bar bar;
     Light light;
     Mesh msh;
@@ -19,9 +19,10 @@ class COUPLAGE_API Problem
     ResFiles results;
     PlotWin plot;
 
-  public:
+public:
     Problem();
-    friend COUPLAGE_API std::ostream &operator<<(std::ostream &out, Problem const &obj);
+    friend COUPLAGE_API std::ostream &operator<<(std::ostream &out,
+                                                 Problem const &obj);
     Bar &getBar() { return bar; }
     Light &getLight() { return light; }
     Mesh &getMesh() { return msh; }
@@ -31,7 +32,7 @@ class COUPLAGE_API Problem
 
     void solve();
 
-  private:
+private:
     void applyBC(gmm::row_matrix<gmm::wsvector<double>> &mat, int line);
 };
 

@@ -2,11 +2,10 @@
 #include <iostream>
 #include <algorithm>
 
-Dictionary::Dictionary()
-{
-}
+Dictionary::Dictionary() {}
 
-void Dictionary::load(const std::string &fileName)
+void
+Dictionary::load(const std::string &fileName)
 {
     char *buf1[100], *buf2[100];
     FILE *file;
@@ -22,10 +21,12 @@ void Dictionary::load(const std::string &fileName)
         words.push_back(entry);
     }
     closeFile(&file);
-    //std::cout << words.size() << " keywords loaded from " << fileName.c_str() << std::endl;
+    // std::cout << words.size() << " keywords loaded from " << fileName.c_str()
+    // << std::endl;
 }
 
-void Dictionary::save(const std::string &fileName) const
+void
+Dictionary::save(const std::string &fileName) const
 {
     FILE *file;
     openFile_W(&file, fileName);
@@ -33,14 +34,16 @@ void Dictionary::save(const std::string &fileName) const
     closeFile(&file);
 }
 
-void Dictionary::print(FILE *file) const
+void
+Dictionary::print(FILE *file) const
 {
     MyListItC it;
     for (it = words.begin(); it != words.end(); ++it)
         fprintf(file, "%-40s %s\n", it->first.c_str(), it->second.c_str());
 }
 
-void Dictionary::sort()
+void
+Dictionary::sort()
 {
     words.sort();
     std::unique(words.begin(), words.end());

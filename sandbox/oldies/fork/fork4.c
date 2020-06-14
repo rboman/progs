@@ -7,7 +7,8 @@
 
 static int statv = 0;
 
-int main()
+int
+main()
 {
     int *sharedmem = NULL;
 

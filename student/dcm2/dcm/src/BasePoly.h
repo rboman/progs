@@ -47,9 +47,8 @@ private:
     VarArray<Polynome> ddBase;
 
 public:
-    BasePoly(Masses *_MsX, Polynome _I, Polynome _m,
-             double _young, double _envergure,
-             Polynome &P);
+    BasePoly(Masses *_MsX, Polynome _I, Polynome _m, double _young,
+             double _envergure, Polynome &P);
 
     indice donne_taille() { return taille; }
     double **ajoute_suivant();

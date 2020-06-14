@@ -18,10 +18,9 @@ struct MyS
 
 // superbe template "Stat" (parametre = classe)
 
-template <class T>
-class Stat
+template <class T> class Stat
 {
-  public:
+public:
     static int a; // variable statique de type predefini (bete int)
     static MyS s; // variable statique de type "classe utilisateur"
     T var;        // variable pour utiliser le param du template
@@ -39,15 +38,13 @@ class Stat
 // machin qu'il faut rajouter sous SGI pour que ca linke bien
 // sinon, on n'arrive pas a appeler le constructeur sans arguments
 // (ca marche sur toutes les machines)
-template <class T>
-MyS Stat<T>::s;
+template <class T> MyS Stat<T>::s;
 
 // superbe template "StatI" (parametre = classe, int)
 
-template <class T, int n>
-class StatI
+template <class T, int n> class StatI
 {
-  public:
+public:
     static int a; // variable statique de type predefini (bete int)
     static MyS s; // variable statique de type "classe utilisateur"
     T var;        // variable pour utiliser le param du template
@@ -65,7 +62,6 @@ class StatI
 // machin qu'il faut rajouter sous SGI pour que ca linke bien
 // sinon, on n'arrive pas a appeler le constructeur sans arguments
 // (c'est ignore sur toutes les autres machines)
-template <class T, int n>
-MyS StatI<T, n>::s;
+template <class T, int n> MyS StatI<T, n>::s;
 
 #endif

@@ -84,10 +84,11 @@ BemSolver::BemSolver()
 // ---------------------------------------------------
 
 #include <stdlib.h>
-NDH_API void ndh::clrscr()
+NDH_API void
+ndh::clrscr()
 {
 #ifdef WIN32
-    //system("cls");
+    // system("cls");
 #endif
 }
 
@@ -98,7 +99,8 @@ NDH_API void ndh::clrscr()
 //  . si probleme=SQUARE -> création d'un carré.
 //--------------------------------------------------------------------
 
-void BemSolver::define_geometry()
+void
+BemSolver::define_geometry()
 {
     if (probleme == CIRCLE) // cercle
     {
@@ -139,7 +141,8 @@ void BemSolver::define_geometry()
 //           -les coord. x,y de l'origine des axes.
 //--------------------------------------------------------------------
 
-void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
+void
+BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
 {
     if (j == i)
     {
@@ -170,9 +173,11 @@ void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
         // et stockage des valeurs dans fct et fct2:
         for (int t = 0; t < istep + 1; t++)
         {
-            double temp = sqrt((xint[t] - x) * (xint[t] - x) + (yint[t] - y) * (yint[t] - y));
+            double temp = sqrt((xint[t] - x) * (xint[t] - x) +
+                               (yint[t] - y) * (yint[t] - y));
             fct[t] = (log(1.0 / temp) / (2 * pi));
-            fct2[t] = (-nx * (xint[t] - x) - ny * (yint[t] - y)) / (2 * pi * temp * temp);
+            fct2[t] = (-nx * (xint[t] - x) - ny * (yint[t] - y)) /
+                      (2 * pi * temp * temp);
         }
 
         // initialisation des éléments é calculer:
@@ -200,19 +205,22 @@ void BemSolver::eval_GH(double *g, double *h, int i, int j, double x, double y)
 // Routine d'évaluation des températures sur chaque élément.
 //--------------------------------------------------------------------
 
-void BemSolver::eval_u()
+void
+BemSolver::eval_u()
 {
     for (int i = 0; i < N; i++)
         u[i] = -beta / (2 * k) * (xel[i] * xel[i] + yel[i] * yel[i]);
 }
 
-void BemSolver::exec_full()
+void
+BemSolver::exec_full()
 {
     type = FULL;
     full_calcul();
 }
 
-void BemSolver::exec_sym()
+void
+BemSolver::exec_sym()
 {
     type = SYMMETRIC;
     full_calcul();
@@ -226,19 +234,21 @@ void BemSolver::exec_sym()
 //         - type=SYMMETRIC : calculs optimisés compte tenu de la symétrie.
 //--------------------------------------------------------------------
 
-void BemSolver::full_calcul()
+void
+BemSolver::full_calcul()
 {
     int i, j, i1, j1, t;
     double temp, r, xb, yb;
 
-    //clrscr();
-    //titre();
+    // clrscr();
+    // titre();
     if ((probleme == OTHER) && (type == SYMMETRIC))
     {
         // Cas du probléme qcq. avec calculs optimisés.
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        std::cout << "\nPas de solution rapide pour un probléme QCQ !\n<ESPACE>";
-        //getch();
+        std::cout
+            << "\nPas de solution rapide pour un probléme QCQ !\n<ESPACE>";
+        // getch();
     }
     else
     {
@@ -263,7 +273,7 @@ void BemSolver::full_calcul()
             // Cas du probléme optimisé:
             // ~~~~~~~~~~~~~~~~~~~~~~~~~
             if (probleme == CIRCLE) // *** CERCLE ***
-            {                       // Une seule ligne de H utile:            ******
+            { // Une seule ligne de H utile:            ******
                 for (j = 0; j < N; j++)
                     eval_GH(&(G[0][j]), &(H[0][j]), 0, j, xel[0], yel[0]);
                 // Utilisation de la sym. pour construire G:
@@ -300,7 +310,8 @@ void BemSolver::full_calcul()
         // systéme par Gauss:
         std::cout << "Ok\nRésolution de G q = H u...";
         eval_u();
-        if ((type == SYMMETRIC) && (probleme == CIRCLE)) // cas du cercle optimisé
+        if ((type == SYMMETRIC) &&
+            (probleme == CIRCLE)) // cas du cercle optimisé
         {
             temp = 0.0;
             for (j = 0; j < N; j++)
@@ -365,17 +376,17 @@ void BemSolver::full_calcul()
         // Affichage de la solution
         std::cout << "Ok\nSolution :";
         for (i = 0; i < density; i++)
-            std::cout << "\n"
-                      << T[i][0];
+            std::cout << "\n" << T[i][0];
 
         // Visualisation graphique:
-        //std::cout << "\n       <SPACE> pour solution graphique";
-        //getch();
-        //visu();
+        // std::cout << "\n       <SPACE> pour solution graphique";
+        // getch();
+        // visu();
     }
 }
 
-std::vector<double> BemSolver::getSolution()
+std::vector<double>
+BemSolver::getSolution()
 {
     std::vector<double> vec(density);
     for (int i = 0; i < density; i++)
@@ -387,7 +398,8 @@ std::vector<double> BemSolver::getSolution()
 // Routine de calcul des tempétatures exactes (dans le tableau T).
 //--------------------------------------------------------------------
 
-void BemSolver::eval_Texact()
+void
+BemSolver::eval_Texact()
 {
     int i1, j1, i;
     double temp, xb, yb, r;
@@ -425,15 +437,19 @@ void BemSolver::eval_Texact()
                 {
                     temp = 0.0;
                     for (i = 1; i < 100; i += 2)
-                        temp = temp + (1.0 / (i * i * i)) * pow(-1.0, (i - 1) / 2.0) * (1 - cosh((i * pi * yb) / (2.0 * a)) / cosh((i * pi) / 2.0)) * cos((i * pi * xb) / (2.0 * a));
+                        temp = temp + (1.0 / (i * i * i)) *
+                                          pow(-1.0, (i - 1) / 2.0) *
+                                          (1 - cosh((i * pi * yb) / (2.0 * a)) /
+                                                   cosh((i * pi) / 2.0)) *
+                                          cos((i * pi * xb) / (2.0 * a));
                     T[i1][j1] = -32 * beta * a * a / (pi * pi * pi * k) * temp;
                 }
             }
         time2 = clock();
         find_minmax();
-        //std::cout << "\nCalcul effectué\n<ESPACE> pour voir la solution...";
-        //getch();
-        //visu(); // Visualisation graphique des résultats.
+        // std::cout << "\nCalcul effectué\n<ESPACE> pour voir la solution...";
+        // getch();
+        // visu(); // Visualisation graphique des résultats.
     }
 }
 //--------------------------------------------------------------------
@@ -441,8 +457,9 @@ void BemSolver::eval_Texact()
 // dans un fichier *.DAT
 //--------------------------------------------------------------------
 
-//void tester()
-void BemSolver::generate()
+// void tester()
+void
+BemSolver::generate()
 {
     int i;
     char nom_fich[50];
@@ -463,7 +480,10 @@ void BemSolver::generate()
     for (i = 0; i < N + 1; i++)
     {
         xf[i] = (R - 0.2 + 0.2 * cos(3 * alpha[i])) * cos(alpha[i]);
-        yf[i] = (R - 0.2 + 0.2 * cos(3 * alpha[i]) * 0.01 * (-alpha[i] * alpha[i] * alpha[i] + 2 * pi)) * sin(alpha[i]);
+        yf[i] = (R - 0.2 +
+                 0.2 * cos(3 * alpha[i]) * 0.01 *
+                     (-alpha[i] * alpha[i] * alpha[i] + 2 * pi)) *
+                sin(alpha[i]);
     }
     for (i = 0; i < N; i++)
     {
@@ -472,17 +492,14 @@ void BemSolver::generate()
     }
     // Sortie vers fichier.DAT
     std::cout << "\nNom du fichier (.DAT) :";
-    //gets(nom_fich);
+    // gets(nom_fich);
     std::ofstream fich(nom_fich, std::ios::out);
     fich << N;
-    fich << "\n"
-         << zoom;
+    fich << "\n" << zoom;
     for (i = 0; i <= N; i++)
     {
-        fich << "\n"
-             << xf[i];
-        fich << "\n"
-             << yf[i];
+        fich << "\n" << xf[i];
+        fich << "\n" << yf[i];
     }
     fich.close();
     calcul = 0;
@@ -494,14 +511,16 @@ void BemSolver::generate()
 // (création, destruction,...)
 //--------------------------------------------------------------------
 
-void BemSolver::create_aux()
+void
+BemSolver::create_aux()
 {
     T = new double *[density];
     for (int i = 0; i < density; i++)
         T[i] = new double[range];
 }
 
-void BemSolver::create_GH()
+void
+BemSolver::create_GH()
 {
     H = new double *[N];
     for (int i = 0; i < N; i++)
@@ -511,7 +530,8 @@ void BemSolver::create_GH()
         G[i] = new double[N];
 }
 
-void BemSolver::create_vectors()
+void
+BemSolver::create_vectors()
 {
     alpha = new double[N + 1];
     xf = new double[N + 1];
@@ -529,7 +549,8 @@ void BemSolver::create_vectors()
     create_aux();
 }
 
-void BemSolver::destroy_aux()
+void
+BemSolver::destroy_aux()
 {
     for (int i = 0; i < d_old; i++)
         delete T[i];
@@ -537,7 +558,8 @@ void BemSolver::destroy_aux()
     d_old = density;
 }
 
-void BemSolver::destroy_GH()
+void
+BemSolver::destroy_GH()
 {
     for (int i = 0; i < N; i++)
         delete H[i];
@@ -547,7 +569,8 @@ void BemSolver::destroy_GH()
     delete G;
 }
 
-void BemSolver::destroy_vectors()
+void
+BemSolver::destroy_vectors()
 {
     delete alpha, xf, yf, xel, yel, xint, yint, u, q, fct, fct2;
     delete G1, H1;
@@ -560,9 +583,10 @@ void BemSolver::destroy_vectors()
 // Routine de modification des paramétres
 //--------------------------------------------------------------------
 
-void BemSolver::input_data()
+void
+BemSolver::input_data()
 {
-    //char entree[20];
+    // char entree[20];
 
     clrscr();
     titre();
@@ -610,7 +634,8 @@ void BemSolver::input_data()
 // (attention : pas de vérification de l'existence du fichier!)
 //--------------------------------------------------------------------
 
-void BemSolver::load_data(std::string const &filename)
+void
+BemSolver::load_data(std::string const &filename)
 {
     range = N;
     probleme = OTHER;
@@ -639,16 +664,17 @@ void BemSolver::load_data(std::string const &filename)
 // Sauvegarde des résultats dans un fichier MATLAB (*.M)
 //--------------------------------------------------------------------
 
-void BemSolver::save_Mfile(std::string const &filename)
+void
+BemSolver::save_Mfile(std::string const &filename)
 {
-    //char nom_fich[50];
+    // char nom_fich[50];
     double xb, yb;
     int i1, j1;
 
-    //clrscr();
-    //titre();
-    //std::cout << "\nNom du fichier (.M) :";
-    //gets(nom_fich);
+    // clrscr();
+    // titre();
+    // std::cout << "\nNom du fichier (.M) :";
+    // gets(nom_fich);
 
     std::ofstream fich(filename.c_str(), std::ios::out);
 
@@ -681,7 +707,8 @@ void BemSolver::save_Mfile(std::string const &filename)
             }
             fich << "\nxb(" << i1 + 1 << "," << j1 + 1 << ")=" << xb << ";";
             fich << "\nyb(" << i1 + 1 << "," << j1 + 1 << ")=" << yb << ";";
-            fich << "\nT(" << i1 + 1 << "," << j1 + 1 << ")=" << T[i1][j1] << ";";
+            fich << "\nT(" << i1 + 1 << "," << j1 + 1 << ")=" << T[i1][j1]
+                 << ";";
         }
     if ((probleme == CIRCLE) && (range == 1)) // Commandes de visualisation
         fich << "\nplot(xb,T); grid;";
@@ -690,7 +717,8 @@ void BemSolver::save_Mfile(std::string const &filename)
     fich.close();
 }
 
-void BemSolver::find_minmax()
+void
+BemSolver::find_minmax()
 {
     Tmin = 1e10;
     Tmax = 1e-10;

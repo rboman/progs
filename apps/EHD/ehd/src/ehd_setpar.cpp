@@ -21,8 +21,9 @@
  * Donnees du probleme
  */
 
-EHD_API int ehd_setpar(int nn, double *x, double *h, double *h_t0, double *um,
-                       double *eta0, double *alpha, double *u, double *dt)
+EHD_API int
+ehd_setpar(int nn, double *x, double *h, double *h_t0, double *um, double *eta0,
+           double *alpha, double *u, double *dt)
 {
     int iop = 0;
 
@@ -54,17 +55,17 @@ EHD_API int ehd_setpar(int nn, double *x, double *h, double *h_t0, double *um,
 #if 1
         u[i] = 1.0;
         h[i] = 0.1e-1 - 0.5e-3 * (x[i] - L);
-        //xx = x[i]-xr;
-        //h[i] = R+e-sqrt(R*R-xx*xx);
+        // xx = x[i]-xr;
+        // h[i] = R+e-sqrt(R*R-xx*xx);
         um[i] = 0.0;
-        //eta[i] = visc;
+        // eta[i] = visc;
 #else
         u[i] = -1.0;
         h[i] = 6.0e0 - 0.5e-3 * x[i] / L;
         xx = L - x[i] - xr;
         h[i] = R + e - sqrt(R * R - xx * xx);
         um[i] = 0.0;
-        //eta[i] = visc;
+        // eta[i] = visc;
 #endif
     }
 

@@ -1,9 +1,9 @@
 /***********************************************************************
-*                      Starfield 1  (C++ & Asm)                        *
-*                                                                      *
-* . Déplacement latéral des étoiles                                    *
-*                                                             12.08.96 *
-************************************************************************/
+ *                      Starfield 1  (C++ & Asm)                        *
+ *                                                                      *
+ * . Déplacement latéral des étoiles                                    *
+ *                                                             12.08.96 *
+ ************************************************************************/
 
 #include <stdlib.h>
 #include <conio.h>
@@ -16,7 +16,8 @@ struct etoiles
 etoiles et[500];
 int nb_et;
 
-void putpixel(int x, int y, unsigned char col)
+void
+putpixel(int x, int y, unsigned char col)
 {
     asm mov ax, 0xa000;
     asm mov es, ax;
@@ -28,7 +29,8 @@ void putpixel(int x, int y, unsigned char col)
     asm mov es : [di], al
 }
 
-int main()
+int
+main()
 {
     asm mov ax, 0x13;
     asm int 0x10;

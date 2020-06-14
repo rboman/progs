@@ -19,10 +19,11 @@
 #include "gmPoint.h"
 #include <iostream>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
- * @brief 2D Polar Point defined by a centre, an angle and a radius. 
+ * @brief 2D Polar Point defined by a centre, an angle and a radius.
  */
 
 class GENMAI_API PolarPoint
@@ -39,6 +40,6 @@ public:
     friend std::ostream &operator<<(std::ostream &o, const PolarPoint &v);
 };
 
-}
+} // namespace genmai
 
-#endif //GMPOLARPOINT_H
+#endif // GMPOLARPOINT_H

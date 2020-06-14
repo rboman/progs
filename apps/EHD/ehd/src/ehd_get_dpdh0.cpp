@@ -19,11 +19,11 @@
 /**
  * @brief Cherche dp/dh0
  */
-EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double alpha,
-                          double *x, double *u, double *um, double dt,
-                          double *p, double *dp, SkyMat *K, int nbfix,
-                          int *nnfix, int *ndfix, double *vfix, double *dpdh0,
-                          int opt, int scheme)
+EHD_API int
+ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double alpha,
+              double *x, double *u, double *um, double dt, double *p,
+              double *dp, SkyMat *K, int nbfix, int *nnfix, int *ndfix,
+              double *vfix, double *dpdh0, int opt, int scheme)
 {
     int iop = 0;
 
@@ -86,11 +86,8 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
     for (int n = 0; n < nbelem; n++)
     {
         // calcul de Sp(elem) et Fu(elem)
-        iop = ehd_mat_dp(&(x[n]),
-                         &(h[n]),
-                         eta0, alpha,
-                         &(u[n]), &(um[n]), &(p[n]), &(dp[n]),
-                         Sp, Se, Fu, C1, Fum);
+        iop = ehd_mat_dp(&(x[n]), &(h[n]), eta0, alpha, &(u[n]), &(um[n]),
+                         &(p[n]), &(dp[n]), Sp, Se, Fu, C1, Fum);
 
         for (int i = 0; i < 2; i++)
         {
@@ -120,7 +117,8 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
                 {
                     rhs[ni] += -(Sp[i][j]) * vfix[-loc2[n + j] - 1];
                     rhs[ni] += -(Se[i][j]) * vfix[-loc2[n + j] - 1];
-                    //printf("apply cl (%d) on ddl %d (%E)\n",n+j,ni,vfix[-loc2[n+j]-1]);
+                    // printf("apply cl (%d) on ddl %d
+                    // (%E)\n",n+j,ni,vfix[-loc2[n+j]-1]);
                     continue;
                 }
                 sky_ass(K, ni, nj, Sp[i][j]);
@@ -146,8 +144,9 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
         double flux = u[n] - h[n] * h[n] / 4.0 / eta * dp[n];
         rhs[nj] += sign * flux;
 
-        sky_ass(K, nj, nj, -sign * h[n] * h[n] * h[n] / 12.0 / eta / eta * etad * dp[n]);
-        //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
+        sky_ass(K, nj, nj,
+                -sign * h[n] * h[n] * h[n] / 12.0 / eta / eta * etad * dp[n]);
+        // printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
     }
 
     n = nbnode - 1;
@@ -167,8 +166,8 @@ EHD_API int ehd_get_dpdh0(int nbelem, int nbnode, double *h, double eta0, double
 
         flux = sign * h[n] * h[n] * h[n] / 12.0 / eta / eta * etad * dp[n];
         sky_ass(K, nj, nj, flux);
-        //printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
-        //printf("** dp = %E (flux=%E) %E\n",dp[n],flux, etad/eta);
+        // printf("apply flux on node %d : %E / %E\n",n,flux,rhs[ni]);
+        // printf("** dp = %E (flux=%E) %E\n",dp[n],flux, etad/eta);
     }
 
     if (opt == EHD_IO)

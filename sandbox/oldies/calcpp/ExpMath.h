@@ -1,7 +1,6 @@
 #ifndef EXPMATH_H
 #define EXPMATH_H
 
-
 /**
  * @brief classe d'evaluation d'expression math
  */
@@ -15,7 +14,7 @@ class ExpMath
     float facteur();
     float expr();
 
-  public:
+public:
     ExpMath(char *);
     ExpMath(const ExpMath &);
     ~ExpMath();

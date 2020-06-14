@@ -21,7 +21,8 @@ operator<<(std::ostream &out, Newmark const &obj)
     return out;
 }
 
-void Newmark::save(std::string const &filename) const
+void
+Newmark::save(std::string const &filename) const
 {
     std::ofstream file(filename.c_str());
     file << *this;

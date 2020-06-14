@@ -1,11 +1,11 @@
 /***********************************************************************
-*                      Starfield 2  (C++ & Asm)                        *
-*                                                                      *
-* . Utilise le calcul en virgule flotante                              *
-* . Diminution non linéaire de la vitesse des étoiles                  *
-* . Projection centrale                                                *
-*                                                             13.08.96 *
-************************************************************************/
+ *                      Starfield 2  (C++ & Asm)                        *
+ *                                                                      *
+ * . Utilise le calcul en virgule flotante                              *
+ * . Diminution non linéaire de la vitesse des étoiles                  *
+ * . Projection centrale                                                *
+ *                                                             13.08.96 *
+ ************************************************************************/
 
 #include <stdlib.h>
 #include <conio.h>
@@ -20,7 +20,8 @@ struct etoiles
 etoiles et[100];
 int nb_et;
 
-void putpixel(int x, int y, unsigned char col)
+void
+putpixel(int x, int y, unsigned char col)
 {
     asm mov ax, 0xa000;
     asm mov es, ax;
@@ -32,7 +33,8 @@ void putpixel(int x, int y, unsigned char col)
     asm mov es : [di], al;
 }
 
-int main()
+int
+main()
 {
     float x, y, p;
 
@@ -72,7 +74,8 @@ int main()
             et[nb_et].ye = et[nb_et].y / p + 100.0;
 
             /* Dessine l'étoile */
-            putpixel(et[nb_et].xe, et[nb_et].ye, 31 - (int)(et[nb_et].plan / 16));
+            putpixel(et[nb_et].xe, et[nb_et].ye,
+                     31 - (int)(et[nb_et].plan / 16));
 
             /* boucle d'attente */
             for (int i = 0; i < 400; i++)

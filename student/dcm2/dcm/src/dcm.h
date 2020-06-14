@@ -27,10 +27,10 @@
 
 namespace dcm
 {
-    class Plane;
-    class Polynome;
-    class BasePoly;
-    struct Masses;
-}
+class Plane;
+class Polynome;
+class BasePoly;
+struct Masses;
+} // namespace dcm
 
-#endif //DCM_H
+#endif // DCM_H

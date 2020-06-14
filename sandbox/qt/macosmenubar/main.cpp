@@ -12,11 +12,11 @@ private:
     void about_();
     void dummy_();
 
-    QMenuBar* menu_bar_;
-    QMenu* file_menu_;
-    QMenu* help_menu_;
-    QAction* action_about_;
-    QAction* action_dummy_;
+    QMenuBar *menu_bar_;
+    QMenu *file_menu_;
+    QMenu *help_menu_;
+    QAction *action_about_;
+    QAction *action_dummy_;
 };
 
 MainWindow::MainWindow()
@@ -27,7 +27,8 @@ MainWindow::MainWindow()
     create_menus_();
 }
 
-void MainWindow::create_actions_()
+void
+MainWindow::create_actions_()
 {
     action_about_ = new QAction(tr("About"), this);
     action_dummy_ = new QAction(tr("Dummy"), this);
@@ -35,7 +36,8 @@ void MainWindow::create_actions_()
     connect(action_dummy_, &QAction::triggered, this, &MainWindow::dummy_);
 }
 
-void MainWindow::create_menus_()
+void
+MainWindow::create_menus_()
 {
     menu_bar_ = new QMenuBar(this);
 
@@ -51,17 +53,20 @@ void MainWindow::create_menus_()
     menu_bar_->setNativeMenuBar(true);
 }
 
-void MainWindow::about_()
+void
+MainWindow::about_()
 {
     QMessageBox::about(this, tr("About"), tr("FooBar"));
 }
 
-void MainWindow::dummy_()
+void
+MainWindow::dummy_()
 {
     QMessageBox::about(this, tr("Dummy"), tr("Dummy"));
 }
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 

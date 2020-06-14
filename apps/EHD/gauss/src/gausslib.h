@@ -26,8 +26,8 @@
  *
  * On peut utiliser de 1 a 10 pts de Gauss. Les donnees importantes
  * ne dependant pas de la fct integree (val des fct de forme, positions
- * et poids de Gauss) sont calcules lors du premier appel et conserves 
- * en memoire pour accelerer les integrations suivantes. 
+ * et poids de Gauss) sont calcules lors du premier appel et conserves
+ * en memoire pour accelerer les integrations suivantes.
  *
  * Il existe 2 manieres pour appeler les routines:
  *
@@ -59,7 +59,6 @@
 
 #include "gauss.h"
 
-/* ---------------------------------------------------------------------------------- */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,7 +66,6 @@
 
 #include "el.h"
 
-/* ---------------------------------------------------------------------------------- */
 
 #define GAUSS_MAX_NG 10
 
@@ -77,12 +75,11 @@
 #define GAUSS_EL_QUAD 1
 #define GAUSS_EL_HEXA 2
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
  *   QUAD BI-LINEAIRE 2D/3D
  */
-#ifndef SWIG 
+#ifndef SWIG
 extern double *quad_xg[GAUSS_MAX_NG];
 extern double *quad_pg[GAUSS_MAX_NG];
 extern double ***quad_psi[GAUSS_MAX_NG];
@@ -103,7 +100,7 @@ extern double *hexa_xg[GAUSS_MAX_NG];
 extern double *hexa_pg[GAUSS_MAX_NG];
 extern double ***hexa_psi[GAUSS_MAX_NG];
 
-/* 
+/*
  *   ELEM HERMITE 2 NOEUDS (CUBIQUE) // n'est pas ajoute au cas "generique"
  */
 
@@ -118,8 +115,8 @@ extern double ***hermite_psi[GAUSS_MAX_NG];
 extern double *generic_xg[GAUSS_MAX_EL][GAUSS_MAX_NG];
 extern double *generic_pg[GAUSS_MAX_EL][GAUSS_MAX_NG];
 extern double ***generic_psi[GAUSS_MAX_EL][GAUSS_MAX_NG];
-#endif //SWIG
-/* ---------------------------------------------------------------------------------- */
+#endif // SWIG
+
 
 /* protos */
 
@@ -130,11 +127,12 @@ GAUSS_API int gauss_common_pp(double *xg, double *wg, int ng);
 
 // gauss_quad.c
 
-GAUSS_API int gauss_quad(int ng, int ndim,
-                         double *x1, double *x2, double *x3, double *x4,
+GAUSS_API int gauss_quad(int ng, int ndim, double *x1, double *x2, double *x3,
+                         double *x4,
                          int (*fct)(double *, double *, void *, int, double *),
                          void *par, double *res);
-GAUSS_API void gauss_quad_getx(int no, double ***psi, double **xx, int ndim, double *x);
+GAUSS_API void gauss_quad_getx(int no, double ***psi, double **xx, int ndim,
+                               double *x);
 GAUSS_API int gauss_quad_get_psi(int ng, double ****psi, double *xg);
 GAUSS_API void gauss_quad_jaco(double **xx, double jaco[][3], int no,
                                double *xg, double ***psi, int ndim);
@@ -142,11 +140,11 @@ GAUSS_API int gauss_quad_get_xgpg(int ng, double **xg, double **pg);
 
 // gauss_line.c
 
-GAUSS_API int gauss_line(int ng, int ndim,
-                         double *x1, double *x2,
+GAUSS_API int gauss_line(int ng, int ndim, double *x1, double *x2,
                          int (*fct)(double *, double *, void *, int, double *),
                          void *par, double *res);
-GAUSS_API void gauss_line_getx(int no, double ***psi, double **xx, int ndim, double *x);
+GAUSS_API void gauss_line_getx(int no, double ***psi, double **xx, int ndim,
+                               double *x);
 GAUSS_API void gauss_line_getf(int no, double ***psi, double *ff, double *x);
 GAUSS_API int gauss_line_get_psi(int ng, double ****psi, double *xg);
 GAUSS_API void gauss_line_jaco(double **xx, double jaco[][3], int no,
@@ -155,12 +153,13 @@ GAUSS_API int gauss_line_get_xgpg(int ng, double **xg, double **pg);
 
 // gauss_hexa.c
 
-GAUSS_API int gauss_hexa(int ng, int ndim,
-                         double *x1, double *x2, double *x3, double *x4,
-                         double *x5, double *x6, double *x7, double *x8,
+GAUSS_API int gauss_hexa(int ng, int ndim, double *x1, double *x2, double *x3,
+                         double *x4, double *x5, double *x6, double *x7,
+                         double *x8,
                          int (*fct)(double *, double *, void *, int, double *),
                          void *par, double *res);
-GAUSS_API void gauss_hexa_getx(int no, double ***psi, double **xx, int ndim, double *x);
+GAUSS_API void gauss_hexa_getx(int no, double ***psi, double **xx, int ndim,
+                               double *x);
 GAUSS_API int gauss_hexa_get_psi(int ng, double ****psi, double *xg);
 GAUSS_API void gauss_hexa_jaco(double **xx, double jaco[][3], int no,
                                double *xg, double ***psi, int ndim);
@@ -168,26 +167,27 @@ GAUSS_API int gauss_hexa_get_xgpg(int ng, double **xg, double **pg);
 
 // gauss_generic.c
 
-GAUSS_API int gauss_generic(int ng, int ndim,
-                            double **xx, int type,
-                            int (*fct)(double *, double *, void *, int, double *),
+GAUSS_API int gauss_generic(int ng, int ndim, double **xx, int type,
+                            int (*fct)(double *, double *, void *, int,
+                                       double *),
                             void *par, double *res);
-GAUSS_API void gauss_generic_getx(int no, double ***psi, double **xx,
-                                  int ndim, int nnode, double *x);
+GAUSS_API void gauss_generic_getx(int no, double ***psi, double **xx, int ndim,
+                                  int nnode, double *x);
 GAUSS_API int gauss_generic_get_psi(int ng, double ****psi, double *xg,
                                     int type, int dimp, int nnode, int npg);
 GAUSS_API void gauss_generic_jaco(double **xx, double jaco[][3], int no,
-                                  double *xg, double ***psi, int ndim,
-                                  int dimp, int nnode);
-GAUSS_API int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp, int type,
-                                     int npg);
+                                  double *xg, double ***psi, int ndim, int dimp,
+                                  int nnode);
+GAUSS_API int gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp,
+                                     int type, int npg);
 
 // gauss_hermite.c
 
 GAUSS_API int gauss_hermite_get_psi(int ng, double ****psi, double *xg);
 
-/* ---------------------------------------------------------------------------------- */
 
-GAUSS_API void gauss_line_getf2(int no, double ***psi, double *ff, double *x, double upw);
+
+GAUSS_API void gauss_line_getf2(int no, double ***psi, double *ff, double *x,
+                                double upw);
 
 #endif

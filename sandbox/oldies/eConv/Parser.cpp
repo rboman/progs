@@ -7,9 +7,10 @@ Parser::Parser(const std::string &fileName)
     offset = 0;
 }
 
-bool Parser::findNext(const std::string &word, unsigned long &off)
+bool
+Parser::findNext(const std::string &word, unsigned long &off)
 {
-    //std::cout << "searching for " << word.c_str() << "..." << std::endl;
+    // std::cout << "searching for " << word.c_str() << "..." << std::endl;
     bool enableBBox = isARegularWord(word);
     size_t l = word.size();
     bool mayStart = true;
@@ -48,12 +49,10 @@ bool Parser::findNext(const std::string &word, unsigned long &off)
         return true;
 }
 
-Parser::~Parser()
-{
-    closeFile(&fileIN);
-}
+Parser::~Parser() { closeFile(&fileIN); }
 
-bool Parser::isABoundingChar(char c) const
+bool
+Parser::isABoundingChar(char c) const
 {
     // isalnum = isalpha + isdigit
     if (isalnum(c) || c == '_')
@@ -61,7 +60,8 @@ bool Parser::isABoundingChar(char c) const
     return true;
 }
 
-void Parser::printAsciiTable()
+void
+Parser::printAsciiTable()
 {
     int i;
     for (i = 0; i < 255; ++i)
@@ -70,7 +70,8 @@ void Parser::printAsciiTable()
     }
 }
 
-bool Parser::isARegularWord(const std::string &word) const
+bool
+Parser::isARegularWord(const std::string &word) const
 {
     size_t i;
     for (i = 0; i < word.size(); ++i)

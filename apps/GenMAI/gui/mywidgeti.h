@@ -33,24 +33,23 @@
 #include "MatlabToolExporter.h"
 #include "NodeRenumberer.h"
 
-
 class MyWidgetI : public Ui::MyWidget
 {
     Q_OBJECT
 
 private:
-    MeshParameters  tpar;
+    MeshParameters tpar;
     ToolParameters mpar;
 
 public:
-    MyWidgetI( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    MyWidgetI(QWidget *parent = 0, const char *name = 0, WFlags fl = 0);
     ~MyWidgetI();
 
 private:
-    void   update();
-    int    integerLineEdit(QLineEdit *ledit);
+    void update();
+    int integerLineEdit(QLineEdit *ledit);
     double floatLineEdit(QLineEdit *ledit);
-    void   updateTextLineEdit(QLineEdit *ledit, double val);
+    void updateTextLineEdit(QLineEdit *ledit, double val);
 
 public slots:
     virtual void a_slot();
@@ -78,7 +77,6 @@ public slots:
     virtual void tomatlab_slot();
     virtual void tooofelie_slot();
     virtual void tsave_slot();
-
 };
 
 #endif

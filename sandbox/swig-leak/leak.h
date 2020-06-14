@@ -21,4 +21,4 @@ public:
     void call();
 };
 
-#endif //LEAK_H
+#endif // LEAK_H

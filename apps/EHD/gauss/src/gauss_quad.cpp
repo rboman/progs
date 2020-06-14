@@ -21,16 +21,15 @@
 
 #include "gausslib.h"
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
  *  Integration d'une fonction sur un quad bi-lineaire
  */
 
-GAUSS_API int gauss_quad(int ng, int ndim,
-                         double *x1, double *x2, double *x3, double *x4,
-                         int (*fct)(double *, double *, void *, int, double *),
-                         void *par, double *res)
+GAUSS_API int
+gauss_quad(int ng, int ndim, double *x1, double *x2, double *x3, double *x4,
+           int (*fct)(double *, double *, void *, int, double *), void *par,
+           double *res)
 {
     int iop = 0;
     int i;
@@ -75,7 +74,7 @@ GAUSS_API int gauss_quad(int ng, int ndim,
         gauss_quad_jaco(xx, jaco, i, xg, psi, ndim);
         el_quad_detj(jaco, ndim, &detj);
 
-        //if(detj<=0.0) goto ERR2;
+        // if(detj<=0.0) goto ERR2;
 
         // coordonnees du point traite
         ksi = &(xg[i * EL_QUAD_DIM]);
@@ -93,8 +92,7 @@ GAUSS_API int gauss_quad(int ng, int ndim,
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 ERR1:
     printf("\nErreur: probleme lors de l'evaluation de la fct a integrer");
@@ -112,9 +110,9 @@ ERR3:
     goto FIN;
 }
 
-/* ---------------------------------------------------------------------------------- */
 
-GAUSS_API void gauss_quad_getx(int no, double ***psi, double **xx, int ndim, double *x)
+GAUSS_API void
+gauss_quad_getx(int no, double ***psi, double **xx, int ndim, double *x)
 {
     int i, j;
 
@@ -127,9 +125,9 @@ GAUSS_API void gauss_quad_getx(int no, double ***psi, double **xx, int ndim, dou
     }
 }
 
-/* ---------------------------------------------------------------------------------- */
 
-GAUSS_API int gauss_quad_get_psi(int ng, double ****psi, double *xg)
+GAUSS_API int
+gauss_quad_get_psi(int ng, double ****psi, double *xg)
 {
     int iop = 0;
     int i, j, l, m;
@@ -155,7 +153,8 @@ GAUSS_API int gauss_quad_get_psi(int ng, double ****psi, double *xg)
 
         for (i = 0; i < 1 + EL_QUAD_DIM; i++)
         {
-            quad_psi[ng1][i] = (double **)calloc(EL_QUAD_NODE, sizeof(double *));
+            quad_psi[ng1][i] =
+                (double **)calloc(EL_QUAD_NODE, sizeof(double *));
             if (quad_psi[ng1][i] == NULL)
                 goto ERR1;
             for (j = 0; j < EL_QUAD_NODE; j++)
@@ -188,8 +187,7 @@ GAUSS_API int gauss_quad_get_psi(int ng, double ****psi, double *xg)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 
 ERR1:
@@ -202,14 +200,14 @@ ERR2:
     goto FIN;
 }
 
-/* ---------------------------------------------------------------------------------- */
 
 /*
- *   Retourne la matrice jacobienne "jaco" au pt de Gauss "no" 
+ *   Retourne la matrice jacobienne "jaco" au pt de Gauss "no"
  */
 
-GAUSS_API void gauss_quad_jaco(double **xx, double jaco[][3], int no,
-                               double *xg, double ***psi, int ndim)
+GAUSS_API void
+gauss_quad_jaco(double **xx, double jaco[][3], int no, double *xg,
+                double ***psi, int ndim)
 {
     int i, j, k;
     double va;
@@ -231,13 +229,12 @@ GAUSS_API void gauss_quad_jaco(double **xx, double jaco[][3], int no,
     }
 }
 
-/* ---------------------------------------------------------------------------------- */
-
 /*
  *   Renvoie un ptr vers les points et un ptr vers les poids de Gauss
  */
 
-GAUSS_API int gauss_quad_get_xgpg(int ng, double **xg, double **pg)
+GAUSS_API int
+gauss_quad_get_xgpg(int ng, double **xg, double **pg)
 {
     int iop = 0;
     int i, j;
@@ -292,8 +289,7 @@ GAUSS_API int gauss_quad_get_xgpg(int ng, double **xg, double **pg)
 
 FIN:
     if (iop > 900)
-        printf("\n\t-->" __FILE__
-               "\n");
+        printf("\n\t-->" __FILE__ "\n");
     return iop;
 
 ERR1:
@@ -306,4 +302,3 @@ ERR2:
     goto FIN;
 }
 
-/* ---------------------------------------------------------------------------------- */

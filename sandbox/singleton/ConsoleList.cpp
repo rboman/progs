@@ -2,35 +2,26 @@
 #include "Singleton.h"
 #include "ConsoleList.h"
 
-
 class ConsoleList;
-// on instancie Singleton<ConsoleList> (devrait etre fait dans un fichier séparé)
+// on instancie Singleton<ConsoleList> (devrait etre fait dans un fichier
+// séparé)
 template class Singleton<ConsoleList>;
 #include "Singleton.inl"
-// -- ConsoleList -----------------------------------------------------------------
-
-
+// -- ConsoleList
+// -----------------------------------------------------------------
 
 // on force l'init des le chargement de la DLL!
 
-template<>
+template <>
 ConsoleList *Singleton<ConsoleList>::instance = &ConsoleList::getInstance();
 
+ConsoleList::ConsoleList() {}
 
-ConsoleList::ConsoleList()
-{
-
-}
-
-ConsoleList::~ConsoleList()
-{
-
-}
+ConsoleList::~ConsoleList() {}
 
 void
 ConsoleList::setColor(int color)
 {
-
 }
 
 void
@@ -56,4 +47,3 @@ ConsoleList::empty()
 {
     return consoles.empty();
 }
-

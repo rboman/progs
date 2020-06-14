@@ -9,5 +9,4 @@ public:
     virtual void restoreColor();
 };
 
-#endif //CONSOLE_H
-
+#endif // CONSOLE_H

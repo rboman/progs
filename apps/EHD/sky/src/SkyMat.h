@@ -120,9 +120,9 @@ SKY_API int sky_solve(SkyMat *A, double *q, double *x, int type);
 SKY_API void sky_print_err(FILE *fich, int code);
 
 // Interfaces FORTRAN
-SKY_API void sky_f_solve_usym(double *sitl, double *situ,
-                      int *locsit, int *nsys, int *nsit,
-                      double *q, double *x, int *kkk, int *iop);
+SKY_API void sky_f_solve_usym(double *sitl, double *situ, int *locsit,
+                              int *nsys, int *nsit, double *q, double *x,
+                              int *kkk, int *iop);
 
 SKY_API int sky_test();
 

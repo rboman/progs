@@ -21,7 +21,8 @@ using namespace ndh;
 // ( x=a:b:c  -> fillvector(x,a,b,(c-a)/b+1); )
 //--------------------------------------------------------------------
 
-void ndh::fillvector(double *vect, double v1, double step, int nel)
+void
+ndh::fillvector(double *vect, double v1, double step, int nel)
 {
     vect[0] = v1;
     for (int i = 1; i < nel; i++)
@@ -33,7 +34,8 @@ void ndh::fillvector(double *vect, double v1, double step, int nel)
 // ( c=A*b avec A(dim,dim), b(dim), c(dim) )
 //--------------------------------------------------------------------
 
-void ndh::mmv(int dim, double **A, double *b, double *c)
+void
+ndh::mmv(int dim, double **A, double *b, double *c)
 {
     for (int i = 0; i < dim; i++)
     {
@@ -48,7 +50,8 @@ void ndh::mmv(int dim, double **A, double *b, double *c)
 //  Solveur de A*x=b : Gauss sans pivotage
 //--------------------------------------------------------------------
 
-void ndh::gauss(int dim, double **A, double *x, double *b)
+void
+ndh::gauss(int dim, double **A, double *x, double *b)
 {
     for (int t = 0; t < dim - 1; t++)
         for (int i = t + 1; i < dim; i++)
@@ -72,11 +75,11 @@ void ndh::gauss(int dim, double **A, double *x, double *b)
 // Affichage d'un vecteur à l'écran.
 //--------------------------------------------------------------------
 
-void ndh::vectaff(int dim, double *v)
+void
+ndh::vectaff(int dim, double *v)
 {
     for (int i = 0; i < dim; i++)
-        std::cout << "\n"
-                  << v[i];
+        std::cout << "\n" << v[i];
 }
 
 //--------------------------------------------------------------------
@@ -84,7 +87,8 @@ void ndh::vectaff(int dim, double *v)
 // de la position i1,j1 à la position i2,j2.
 //--------------------------------------------------------------------
 
-void ndh::copy_block(double **A, int i2, int j2, int i1, int j1, int sizebloc)
+void
+ndh::copy_block(double **A, int i2, int j2, int i1, int j1, int sizebloc)
 {
     for (int i = 0; i < sizebloc; i++)
         for (int j = 0; j < sizebloc; j++)

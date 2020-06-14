@@ -6,7 +6,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGrid.h>
 
-class Viz 
+class Viz
 {
 public:
     std::vector<vtkSmartPointer<vtkUnstructuredGrid>> grids;

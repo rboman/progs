@@ -18,10 +18,11 @@
 #include "genmai.h"
 #include <iostream>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
- * @brief 2D Cartesian Point with a number and some basic vector operations 
+ * @brief 2D Cartesian Point with a number and some basic vector operations
  */
 
 class GENMAI_API Point
@@ -37,7 +38,7 @@ public:
 
     Point(const Point &centre, const Point &axis, double angle, double ray);
     Point(const Point &p1, const Point &p2, double t);
-    
+
     Point operator-(const Point &pt) const;
     Point rotate(double angle) const;
     double length() const;
@@ -54,6 +55,6 @@ public:
 
 #include "gmPoint.inl"
 
-}
+} // namespace genmai
 
-#endif //GMPOINT_H
+#endif // GMPOINT_H

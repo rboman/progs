@@ -3,7 +3,8 @@
 #include <vector>
 #include <cassert>
 
-std::ostream &operator<<(std::ostream &out, std::vector<double> const &v)
+std::ostream &
+operator<<(std::ostream &out, std::vector<double> const &v)
 {
     out << '[';
     for (auto it = v.begin(); it != v.end(); ++it)
@@ -27,7 +28,8 @@ mydaxpy(double a, std::vector<double> const &x, std::vector<double> const &y)
     return res;
 }
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
     std::vector<double> x{2.0, 1.0, -1.0};
     std::vector<double> y{1.0, 2.0, 3.0};

@@ -5,10 +5,10 @@
 
 //#include <stdio.h>
 
-//extern template class MYDLL_API ObjectA<int>;
+// extern template class MYDLL_API ObjectA<int>;
 
-
-int main()
+int
+main()
 {
     ObjectA<int> a(1);
     a.print();
@@ -18,6 +18,5 @@ int main()
 
     ObjectC::getInstance().print();
 
-
-    //getchar();
+    // getchar();
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 
-int main()
+int
+main()
 {
     std::cout << "Skel program\n";
     return 0;

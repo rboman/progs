@@ -5,22 +5,22 @@
 
 class Unknowns
 {
-  public:
+public:
     double T;
     double u;
 
-  public:
+public:
     Unknowns() : T(0.0), u(0.0) {}
 };
 
 class Node
 {
-  public:
+public:
     int no;
     double x;
     Unknowns unks;
 
-  public:
+public:
     Node(int _no, double _x) : no(_no), x(_x) {}
     friend std::ostream &operator<<(std::ostream &out, Node const &obj);
 };

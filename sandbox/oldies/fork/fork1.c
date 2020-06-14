@@ -4,13 +4,14 @@
 #include <errno.h>
 #include <unistd.h>
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
     int status;
     int pid;
     char *prog_argv[4];
 
-    /* 
+    /*
      * Build argument list
      */
 
@@ -20,7 +21,7 @@ int main(int argc, char *argv[])
     prog_argv[3] = NULL;
 
     /*
-     * Create a process space for the ls  
+     * Create a process space for the ls
      */
     if ((pid = fork()) < 0)
     {
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
 
     if (pid)
     {
-        /* 
+        /*
          * We're in the parent; let's wait for the child to finish
          */
         waitpid(pid, NULL, 0);

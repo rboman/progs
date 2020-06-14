@@ -20,15 +20,15 @@
 #include <string>
 #include <iostream>
 
-class Gnuplot 
+class Gnuplot
 {
 public:
-	Gnuplot() ;
-	~Gnuplot();
-	void operator ()(const std::string & command);
-	// send any command to gnuplot
+    Gnuplot();
+    ~Gnuplot();
+    void operator()(const std::string &command);
+    // send any command to gnuplot
 protected:
-	FILE *gnuplotpipe;
+    FILE *gnuplotpipe;
 };
 
 #endif

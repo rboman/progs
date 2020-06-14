@@ -14,7 +14,7 @@
 
 class IoObject
 {
-  protected:
+protected:
     bool readFlagOk(int flag) const;
     void openFile_R(FILE **file, const std::string &fileName) const;
     void openFile_W(FILE **file, const std::string &fileName) const;
