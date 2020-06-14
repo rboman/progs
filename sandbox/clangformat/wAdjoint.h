@@ -58,9 +58,10 @@ public:
 private:
     void buildDR(Eigen::SparseMatrix<double, Eigen::RowMajor> &dR);
     void buildDI(Eigen::Map<Eigen::VectorXd> &dL, Eigen::Map<Eigen::VectorXd> &dD);
-    void buildWake(WakeElement *&we, Eigen::MatrixXd &Kupup, Eigen::MatrixXd &Kuplw, Eigen::MatrixXd &Klwup, Eigen::MatrixXd &Klwlw);
+    void buildWake(WakeElement *&we, Eigen::MatrixXd &Kupup, Eigen::MatrixXd &Kuplw, Eigen::MatrixXd &Klwup,
+                   Eigen::MatrixXd &Klwlw);
     void buildBoundary(tbox::Element *&e, tbox::Element *&eV, Eigen::RowVectorXd &be);
 };
 
 } // namespace flow
-#endif //WADJOINT_H
+#endif // WADJOINT_H

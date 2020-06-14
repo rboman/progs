@@ -65,7 +65,7 @@ Adjoint::Adjoint(std::shared_ptr<Solver> _sol) : sol(_sol)
 
 /**
  * @brief Run the linear solver
- * 
+ *
  * Solve the adjoint steady transonic Full Potential Equation
  * i.e. computes sensitivites for lift and drag cost functions
  * @authors Adrien Crovato
@@ -97,17 +97,11 @@ void Adjoint::run()
     Eigen::VectorXd rLambdaL = dR * lambdaL_ - dL_;
     Eigen::VectorXd rLambdaD = dR * lambdaD_ - dD_;
 
-    std::cout << std::setw(8) << "L_Iter"
-              << std::setw(15) << "Sens[lambdaL]"
-              << std::setw(15) << "Sens[lambdaD]"
-              << std::setw(15) << "Res[lambdaL]"
-              << std::setw(15) << "Res[lambdaD]" << std::endl;
+    std::cout << std::setw(8) << "L_Iter" << std::setw(15) << "Sens[lambdaL]" << std::setw(15) << "Sens[lambdaD]"
+              << std::setw(15) << "Res[lambdaL]" << std::setw(15) << "Res[lambdaD]" << std::endl;
     std::cout << std::fixed << std::setprecision(5);
-    std::cout << std::setw(8) << 0
-              << std::setw(15) << lambdaL_.norm()
-              << std::setw(15) << lambdaD_.norm()
-              << std::setw(15) << log10(rLambdaL.norm())
-              << std::setw(15) << log10(rLambdaD.norm()) << std::endl;
+    std::cout << std::setw(8) << 0 << std::setw(15) << lambdaL_.norm() << std::setw(15) << lambdaD_.norm()
+              << std::setw(15) << log10(rLambdaL.norm()) << std::setw(15) << log10(rLambdaD.norm()) << std::endl;
 
     std::cout << ANSI_COLOR_YELLOW << "Warning: the adjoint solver is experimental and has not been validated!\n"
               << ANSI_COLOR_RESET << std::endl;
@@ -131,7 +125,7 @@ void Adjoint::buildDR(Eigen::SparseMatrix<double, Eigen::RowMajor> &dR)
     tbb::parallel_do(fluid->adjMap.begin(), fluid->adjMap.end(), [&](std::pair<Element *, std::vector<Element *>> p) {
         // Current element
         Element *e = p.first;
-        //Upwind element
+        // Upwind element
         Element *eU = p.second[0];
 
         // Subsonic contribution (drho*grad_phi*grad_psi + rho*grad_phi*grad_psi)
@@ -152,13 +146,15 @@ void Adjoint::buildDR(Eigen::SparseMatrix<double, Eigen::RowMajor> &dR)
             Ae2 *= 1 - mu;
 
             // 3rd term (mu*drhoU*grad_phi*grad_psi)
-            Eigen::MatrixXd Ae3 = mu * fluid->rho.evalD(*eU, sol->phi, 0) * e->buildDs(sol->phi, Fct0C(1.)) * eU->computeGrad(sol->phi, 0).transpose() * eU->getVCache().getDsf(0);
+            Eigen::MatrixXd Ae3 = mu * fluid->rho.evalD(*eU, sol->phi, 0) * e->buildDs(sol->phi, Fct0C(1.)) *
+                                  eU->computeGrad(sol->phi, 0).transpose() * eU->getVCache().getDsf(0);
 
             // 4th term (mu*rhoU*grad_phi*grad_psi)
             Eigen::MatrixXd Ae4 = mu * fluid->rho.eval(*eU, sol->phi, 0) * e->buildK(sol->phi, Fct0C(1.));
 
             // 5th term dmu*(rhoU-rho)*grad_phi*grad_psi
-            Eigen::MatrixXd Ae5 = dmu * (fluid->rho.eval(*eU, sol->phi, 0) - fluid->rho.eval(*e, sol->phi, 0)) * e->buildDK(sol->phi, fluid->mach);
+            Eigen::MatrixXd Ae5 = dmu * (fluid->rho.eval(*eU, sol->phi, 0) - fluid->rho.eval(*e, sol->phi, 0)) *
+                                  e->buildDK(sol->phi, fluid->mach);
 
             // Assembly (supersonic)
             tbb::spin_mutex::scoped_lock lock(mutex);
@@ -207,10 +203,10 @@ void Adjoint::buildDR(Eigen::SparseMatrix<double, Eigen::RowMajor> &dR)
                 {
                     Node *nodj = we->surUpE->nodes[jj];
                     T.push_back(Eigen::Triplet<double>(nodi->row, nodj->row, 2 * Kupup(ii, jj)));
-                    //dR.coeffRef(nodi->row, nodj->row) += 2 * Kupup(ii, jj);
+                    // dR.coeffRef(nodi->row, nodj->row) += 2 * Kupup(ii, jj);
                     nodj = we->surLwE->nodes[jj];
                     T.push_back(Eigen::Triplet<double>(nodi->row, nodj->row, Kuplw(ii, jj)));
-                    //dR.coeffRef(nodi->row, nodj->row) += Kuplw(ii, jj);
+                    // dR.coeffRef(nodi->row, nodj->row) += Kuplw(ii, jj);
                 }
             }
             for (size_t ii = 0; ii < we->nColLw; ++ii)
@@ -219,10 +215,10 @@ void Adjoint::buildDR(Eigen::SparseMatrix<double, Eigen::RowMajor> &dR)
                 for (size_t jj = 0; jj < we->nRow; ++jj)
                 {
                     Node *nodj = we->surUpE->nodes[jj];
-                    //dR.coeffRef(nodi->row, nodj->row) -= 2 * Klwup(ii, jj);
+                    // dR.coeffRef(nodi->row, nodj->row) -= 2 * Klwup(ii, jj);
                     T.push_back(Eigen::Triplet<double>(nodi->row, nodj->row, -2 * Klwup(ii, jj)));
                     nodj = we->surLwE->nodes[jj];
-                    //dR.coeffRef(nodi->row, nodj->row) -= Klwlw(ii, jj);
+                    // dR.coeffRef(nodi->row, nodj->row) -= Klwlw(ii, jj);
                     T.push_back(Eigen::Triplet<double>(nodi->row, nodj->row, -Klwlw(ii, jj)));
                 }
             }
@@ -356,7 +352,8 @@ void Adjoint::buildBoundary(Element *&e, Element *&eV, Eigen::RowVectorXd &be)
  * @authors Adrien Crovato
  * @todo Refactor, to be checked and moved to WakeElement::buildAdjNK()
  */
-void Adjoint::buildWake(WakeElement *&we, Eigen::MatrixXd &Kupup, Eigen::MatrixXd &Kuplw, Eigen::MatrixXd &Klwup, Eigen::MatrixXd &Klwlw)
+void Adjoint::buildWake(WakeElement *&we, Eigen::MatrixXd &Kupup, Eigen::MatrixXd &Kuplw, Eigen::MatrixXd &Klwup,
+                        Eigen::MatrixXd &Klwlw)
 {
     // Get shape functions and Gauss points
     Cache &surCacheUp = we->surUpE->getVCache();
