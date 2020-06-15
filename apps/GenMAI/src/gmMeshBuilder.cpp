@@ -35,7 +35,8 @@ MeshBuilder::MeshBuilder(Mesh &_target) : Object(), target(_target)
     layers.push_back(CONSTANT);
 }
 
-void MeshBuilder::write(std::ostream &out) const
+void
+MeshBuilder::write(std::ostream &out) const
 {
     out << "MeshBuilder:\n";
     out << "\torigin               : " << origin << '\n';
@@ -44,11 +45,10 @@ void MeshBuilder::write(std::ostream &out) const
     out << "\tnumberOfElementOnY   : " << numberOfElementOnY << '\n';
     out << "\treductionCoefficient : " << reductionCoefficient << '\n';
     out << "\tlayers               : ";
-    for(auto l : layers)
+    for (auto l : layers)
         out << l << ' ';
     out << '\n';
 }
-
 
 /**
  * @brief Calcul la hauteur de la zone "boundary"
@@ -88,7 +88,8 @@ MeshBuilder::computeReductionFactor()
     if (numberOfElementOnY > 1)
     {
         for (int i = 0; i < numberOfElementOnY; i++)
-            alp += 1.0 + (reductionCoefficient - 1.0) / (numberOfElementOnY - 1) * i;
+            alp += 1.0 +
+                   (reductionCoefficient - 1.0) / (numberOfElementOnY - 1) * i;
     }
     else
     {
@@ -101,9 +102,11 @@ MeshBuilder::computeReductionFactor()
  * @brief Initialisation des variables globales
  */
 
-void MeshBuilder::initialize()
+void
+MeshBuilder::initialize()
 {
-    // initialise la largeur de maille courante a (largeur totale)/(nbre de mailles)
+    // initialise la largeur de maille courante a (largeur totale)/(nbre de
+    // mailles)
     dx = dimension.x / numberOfElementOnX;
 
     // initialise l'ordonnee courante a l'ordonnee de la base
@@ -114,10 +117,12 @@ void MeshBuilder::initialize()
  * @brief début du maillage (generation des noeuds de la base)
  */
 
-void MeshBuilder::meshFirstLine()
+void
+MeshBuilder::meshFirstLine()
 {
     for (int i = 0; i < numberOfElementOnX + 1; i++)
-        target.nodes.push_back(new Point(origin.x + (double)i * dx, currentHeight));
+        target.nodes.push_back(
+            new Point(origin.x + (double)i * dx, currentHeight));
 
     setContactNodes(0, numberOfElementOnX);
 }
@@ -126,7 +131,8 @@ void MeshBuilder::meshFirstLine()
  * @brief Maille la partie "gradient" ("nbm" couches)
  */
 
-void MeshBuilder::meshGradient()
+void
+MeshBuilder::meshGradient()
 {
     for (int lev = 0; lev < numberOfElementOnY; lev++)
         meshGradientLayer(lev);
@@ -135,15 +141,19 @@ void MeshBuilder::meshGradient()
 double
 MeshBuilder::getGradientDelta(int lev)
 {
-    double xp = (dimension.y - computeBoundaryHeight()) / computeReductionFactor();
+    double xp =
+        (dimension.y - computeBoundaryHeight()) / computeReductionFactor();
 
     if (numberOfElementOnY > 1)
-        return xp * (1.0 + (reductionCoefficient - 1.0) / ((double)(numberOfElementOnY - 1)) * (double)(numberOfElementOnY - 1 - lev));
+        return xp * (1.0 + (reductionCoefficient - 1.0) /
+                               ((double)(numberOfElementOnY - 1)) *
+                               (double)(numberOfElementOnY - 1 - lev));
     else
         return xp;
 }
 
-void MeshBuilder::meshGradientLayer(int lev)
+void
+MeshBuilder::meshGradientLayer(int lev)
 {
     increaseHeight(getGradientDelta(lev));
 
@@ -157,7 +167,8 @@ void MeshBuilder::meshGradientLayer(int lev)
  * @brief Maille la partie "boundary" ("type.size()" couches)
  */
 
-void MeshBuilder::meshBoundary()
+void
+MeshBuilder::meshBoundary()
 {
     for (int lev = 0; lev < layers.size(); lev++)
     {
@@ -177,17 +188,19 @@ void MeshBuilder::meshBoundary()
  * @brief Maille une couche de "reduction"
  */
 
-void MeshBuilder::addReductionNodes()
+void
+MeshBuilder::addReductionNodes()
 {
     // Points intermediaires
     increaseHeight((target.nodes[first + 1]->x - target.nodes[first]->x) / 2.0);
 
     for (int i = first; i < last; i++)
-        target.nodes.push_back(new Point((target.nodes[i]->x + target.nodes[i+1]->x) / 2.0, currentHeight));
+        target.nodes.push_back(
+            new Point((target.nodes[i]->x + target.nodes[i + 1]->x) / 2.0,
+                      currentHeight));
 
     for (int i = first + 1; i < last; i += 2)
         target.nodes.push_back(new Point(target.nodes[i]->x, currentHeight));
-
 
     // Ajout des pts du niv. suivant
     increaseHeight((target.nodes[first + 1]->x - target.nodes[first]->x) / 2.0);
@@ -205,7 +218,8 @@ void MeshBuilder::addReductionNodes()
     }
 }
 
-void MeshBuilder::addReductionElements()
+void
+MeshBuilder::addReductionElements()
 {
     int nb = last - first;
     for (int i = 0; i < nb; i += 2)
@@ -232,7 +246,8 @@ void MeshBuilder::addReductionElements()
     }
 }
 
-void MeshBuilder::meshReductionLayer()
+void
+MeshBuilder::meshReductionLayer()
 {
     addReductionNodes();
     addReductionElements();
@@ -244,7 +259,8 @@ void MeshBuilder::meshReductionLayer()
  * @brief Maille une couche "constante"
  */
 
-void MeshBuilder::addConstantNodes()
+void
+MeshBuilder::addConstantNodes()
 {
     for (int i = first; i < last + 1; i++)
     {
@@ -253,21 +269,21 @@ void MeshBuilder::addConstantNodes()
     }
 }
 
-void MeshBuilder::addConstantElements()
+void
+MeshBuilder::addConstantElements()
 {
     for (int i = 0; i < last - first; i++)
     {
-        Element *e = new Element(first + i,
-                          first + i + 1,
-                          last + i + 2,
-                          last + i + 1);
+        Element *e =
+            new Element(first + i, first + i + 1, last + i + 2, last + i + 1);
         target.elements.push_back(e);
     }
 }
 
-void MeshBuilder::meshConstantLayer()
+void
+MeshBuilder::meshConstantLayer()
 {
-    increaseHeight(target.nodes[first+1]->x  - target.nodes[first]->x);
+    increaseHeight(target.nodes[first + 1]->x - target.nodes[first]->x);
 
     addConstantNodes();
     addConstantElements();
@@ -278,7 +294,8 @@ void MeshBuilder::meshConstantLayer()
  * @brief génération du maillage a l'aide des parametres courants
  */
 
-void MeshBuilder::genere()
+void
+MeshBuilder::genere()
 {
     if (!target.isEmpty())
         target.clear();
@@ -293,4 +310,3 @@ void MeshBuilder::genere()
     target.firstContactNode = first;
     target.lastContactNode = last;
 }
-

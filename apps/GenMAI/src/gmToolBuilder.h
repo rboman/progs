@@ -20,7 +20,8 @@
 #include "gmPoint.h"
 #include <vector>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
  * @brief Fills a Tool with the description of a skin pass roll with asperities.
@@ -58,6 +59,6 @@ private:
     virtual void write(std::ostream &out) const override;
 };
 
-}
+} // namespace genmai
 
-#endif //GMTOOLBUILDER_H
+#endif // GMTOOLBUILDER_H

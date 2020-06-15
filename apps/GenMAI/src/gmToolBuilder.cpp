@@ -40,7 +40,8 @@ ToolBuilder::ToolBuilder(Tool &_target) : Object(), target(_target)
     centre.y = 110.0;
 }
 
-void ToolBuilder::write(std::ostream &out) const
+void
+ToolBuilder::write(std::ostream &out) const
 {
     out << "ToolBuilder:\n";
     out << "\tradius             : " << radius << '\n';
@@ -57,7 +58,8 @@ void ToolBuilder::write(std::ostream &out) const
  * @brief génération de la matrice a l'aide des parametres courants
  */
 
-void ToolBuilder::genere()
+void
+ToolBuilder::genere()
 {
     std::cout << "ToolBuilder::genere()...\n";
 
@@ -66,7 +68,8 @@ void ToolBuilder::genere()
         target.clear();
 
     // generation 1er point */
-    target.points.push_back(new Point(centre, getRollAxis(), d2r(initialAngle), radius));
+    target.points.push_back(
+        new Point(centre, getRollAxis(), d2r(initialAngle), radius));
 
     // generation des aspérites
     for (size_t i = 0; i < numberOfAsperities; i++)
@@ -106,7 +109,8 @@ void ToolBuilder::genere()
     target.points.push_back(new Point(*target.points[nbpt2 - 1]));
 
     // Création de la derniere ligne
-    target.curves.push_back(new Curve( {target.points.size() - 1, target.points.size()} ));
+    target.curves.push_back(
+        new Curve({target.points.size() - 1, target.points.size()}));
 
     target.firstp = nbpt2;
     target.firstc = nbcou2;
@@ -124,7 +128,8 @@ ToolBuilder::r2d(double angle)
     return (angle * 180.0 / M_PI);
 }
 
-void ToolBuilder::genereAsperity()
+void
+ToolBuilder::genereAsperity()
 {
     // index courant - récupère le dernier point
     size_t pr = target.points.size() - 1;
@@ -138,18 +143,20 @@ void ToolBuilder::genereAsperity()
 
     // point 3
     Point tmp(p2 - p1);
-    Point p3(p1, tmp, d2r(asperityAngle), tmp.length() / 2.0 / cos(d2r(asperityAngle)));
+    Point p3(p1, tmp, d2r(asperityAngle),
+             tmp.length() / 2.0 / cos(d2r(asperityAngle)));
 
     // ajout des points nouvellement crees
     target.points.push_back(new Point(p3)); // pr+2
     target.points.push_back(new Point(p2)); // pr+3
 
     // ajoute les courbes
-    target.curves.push_back(new Curve( {pr + 1, pr + 2} ));
-    target.curves.push_back(new Curve( {pr + 2, pr + 3} ));
+    target.curves.push_back(new Curve({pr + 1, pr + 2}));
+    target.curves.push_back(new Curve({pr + 2, pr + 3}));
 }
 
-void ToolBuilder::genereInterval()
+void
+ToolBuilder::genereInterval()
 {
     size_t pr = target.points.size() - 1;
     const Point &p1 = *target.points[pr];
@@ -158,10 +165,11 @@ void ToolBuilder::genereInterval()
     Point p2(centre, getRollAxis(), pp1.a - asperityInterval / radius, radius);
 
     target.points.push_back(new Point(p2));
-    target.curves.push_back(new Curve( {pr + 1, pr + 2} ));
+    target.curves.push_back(new Curve({pr + 1, pr + 2}));
 }
 
-void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
+void
+ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
 {
     const Point &p1 = *target.points[i - 1];
     const Point &p2 = *target.points[i + 1];
@@ -181,8 +189,12 @@ void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
     double angle1 = acos((dx1 * dx2) / (dx1.length() * dx2.length()));
     double angle2 = acos((dx2 * dx3) / (dx3.length() * dx2.length()));
 
-    Point p4(p1, p3, smoothnessAngle / tan((M_PI - angle1 - angle2) / 2.0) / dx1.length());
-    Point p5(p2, p3, smoothnessAngle / tan((M_PI - angle1 - angle2) / 2.0) / dx3.length());
+    Point p4(p1, p3,
+             smoothnessAngle / tan((M_PI - angle1 - angle2) / 2.0) /
+                 dx1.length());
+    Point p5(p2, p3,
+             smoothnessAngle / tan((M_PI - angle1 - angle2) / 2.0) /
+                 dx3.length());
     Point p6(p4, (p3 - p1), signpv * (M_PI / 2.0), smoothnessAngle);
     Point p7(p6, (p4 - p6), signpv * (angle1 + angle2) / 2.0, smoothnessAngle);
 
@@ -192,8 +204,8 @@ void ToolBuilder::genereSmoothMatrix(size_t np0, size_t *np1, size_t i)
     target.points.push_back(new Point(p5)); // pr+4
 
     // ajoute les courbes
-    target.curves.push_back(new Curve( {np0, pr + 2} ));
-    target.curves.push_back(new Curve( {pr + 2, pr + 3, pr + 4} ));
+    target.curves.push_back(new Curve({np0, pr + 2}));
+    target.curves.push_back(new Curve({pr + 2, pr + 3, pr + 4}));
 
     *np1 = pr + 4;
 }

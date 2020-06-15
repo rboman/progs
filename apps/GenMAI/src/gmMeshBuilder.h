@@ -22,7 +22,8 @@
 #include "gmLayerType.h"
 #include <vector>
 
-namespace genmai {
+namespace genmai
+{
 
 /**
  * @brief Fills a Mesh with the description of a horizontal sheet of metal.
@@ -42,11 +43,11 @@ public:
     double reductionCoefficient;
     std::vector<LayerType> layers;
 
-  public:
+public:
     MeshBuilder(Mesh &_target);
     void genere();
 
-  private:
+private:
     double currentHeight; ///< ordonnee courante
     double dx;            ///< largeur des mailles courantes
     int first;            ///< no du premier noeud de la ligne
@@ -74,6 +75,6 @@ public:
 
 #include "gmMeshBuilder.inl"
 
-}
+} // namespace genmai
 
-#endif //GMMESHBUILDER_H
+#endif // GMMESHBUILDER_H
