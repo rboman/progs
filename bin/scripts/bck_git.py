@@ -25,6 +25,7 @@
 #       rb.py bck_gitlab.py download --include R.Boman:am-dept
 #
 # .commands used on garfield (april2020)
+#     cd /hdd2/boman/Backups/repos/
 #     rb.py bck_git.py list --update
 #     rb.py bck_git.py clone
 #     rb.py bck_git.py archive
