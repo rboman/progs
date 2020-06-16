@@ -13,11 +13,12 @@ rsync -avz \
 	  /home/boman/ \
 	  /media/boman/Home_Data/home_boman/
 
-echo
-echo "***** BACKUP /hdd2/boman/Data => hdd"
+# Data is on Dropbox now
 
-rsync -avz \
-      --delete --delete-excluded \
-	  /hdd2/boman/Data/ \
-	  /media/boman/Home_Data/Data/
+#echo
+#echo "***** BACKUP /hdd2/boman/Data => hdd"
 
+#rsync -avz \
+#      --delete --delete-excluded \
+#	  /hdd2/boman/Data/ \
+#	  /media/boman/Home_Data/Data/
