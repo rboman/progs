@@ -5,21 +5,47 @@ SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # compiler settings
+MESSAGE("CMAKE_CXX_COMPILER_ID=${CMAKE_CXX_COMPILER_ID}")
 IF(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     # ADD_DEFINITIONS(-DUNICODE)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  # parallel build with MSVC
+ELSEIF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    ADD_DEFINITIONS(-DFORCE_EXPERIMENTAL_FS) 
+    ADD_DEFINITIONS(-fpermissive)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    find_package(X11 REQUIRED)
+    message(STATUS "X11_FOUND = ${X11_FOUND}")
+    message(STATUS "X11_INCLUDE_DIR = ${X11_INCLUDE_DIR}")
+    message(STATUS "X11_LIBRARIES = ${X11_LIBRARIES}")
+    include_directories(${X11_INCLUDE_DIR})
+    find_package(OpenGL REQUIRED)
+    find_package(PNG REQUIRED)
 ENDIF()
+
 
 FIND_PATH(OLC_INCLUDE_DIRS "olcPixelGameEngine.h")
 MESSAGE(STATUS "OLC_INCLUDE_DIRS=${OLC_INCLUDE_DIRS}")
 
 ADD_EXECUTABLE(olcExampleProgram olcExampleProgram.cpp)
 TARGET_INCLUDE_DIRECTORIES(olcExampleProgram PUBLIC ${OLC_INCLUDE_DIRS})
+IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_link_libraries(olcExampleProgram Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
+ENDIF()
 
 ADD_EXECUTABLE(play_with_pge play_with_pge.cpp)
 TARGET_INCLUDE_DIRECTORIES(play_with_pge PUBLIC ${OLC_INCLUDE_DIRS})
+IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_link_libraries(play_with_pge Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
+ENDIF()
+
+
 ADD_EXECUTABLE(distorsion distorsion.cpp)
 TARGET_INCLUDE_DIRECTORIES(distorsion PUBLIC ${OLC_INCLUDE_DIRS})
+IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_link_libraries(distorsion Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
+ENDIF()
 
 configure_file(config.h.in config.h)
 include_directories(${PROJECT_BINARY_DIR})
+
