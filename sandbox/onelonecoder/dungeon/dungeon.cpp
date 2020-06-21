@@ -22,6 +22,8 @@ class Dungeon : public olc::PixelGameEngine
     std::map<std::string, Spr> sprs;
     std::unique_ptr<olc::Sprite> tiles;
 
+    float atime;
+
 public:
     Dungeon() { sAppName = "Dungeon"; }
 
@@ -116,7 +118,27 @@ private:
             FillRect(posx, posy, w, h, olc::Pixel(0, 0, 0, 170));
             SetPixelMode(olc::Pixel::NORMAL);
             DrawString(posx+bord, posy+bord, *in, olc::WHITE);
+
+
+            atime = atime + fElapsedTime;
+            int ni = val.ni;
+            int frame = int(atime*10) % ni;
+
+            // draw sprite
+            int scale = 3;
+            int px = ScreenWidth() - scale*val.w - 10;
+            int py = ScreenHeight() - scale*val.h - 10;
+            
+            DrawPartialSprite(px, py, tiles.get(), val.ox+frame*val.w, val.oy, val.w, val.h, scale);           
         }
+        else
+        {
+            atime = 0.0;
+        }
+
+
+
+
 
 
         return true;
