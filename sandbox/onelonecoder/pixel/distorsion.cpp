@@ -27,27 +27,53 @@ class Distorsion : public olc::PixelGameEngine
     std::unique_ptr<olc::Sprite> source;
     // std::unique_ptr<olc::Sprite> target;
 
+    bool usethreads = true;
+    bool displayHelp = true;
+    bool displayPars = true;
+    bool displayAxes = true;
+
 public:
     Distorsion() { sAppName = "Distorsion"; }
 
 private:
     void fct_sin()
     {
-        fn_f = [](float x, float y) { return sin(x + y); };
-        fn_dfdx = [](float x, float y) { return cos(x + y); };
-        fn_dfdy = [](float x, float y) { return cos(x + y); };
+        static auto sfn_f = [](float x, float y) { return sin(x + y); };
+        static auto sfn_dfdx = [](float x, float y) { return cos(x + y); };
+        static auto sfn_dfdy = [](float x, float y) { return cos(x + y); };
+        fn_f = sfn_f;
+        fn_dfdx = sfn_dfdx;
+        fn_dfdy = sfn_dfdy;
     }
+
     void fct_sin2()
     {
-        fn_f = [](float x, float y) { return sin(x * x + y * y); };
-        fn_dfdx = [](float x, float y) { return 2 * x * cos(x * x + y * y); };
-        fn_dfdy = [](float x, float y) { return 2 * y * cos(x * x + y * y); };
+        static auto sfn_f = [](float x, float y) { return sin(x * x + y * y); };
+        static auto sfn_dfdx = [](float x, float y) {
+            return 2 * x * cos(x * x + y * y);
+        };
+        static auto sfn_dfdy = [](float x, float y) {
+            return 2 * y * cos(x * x + y * y);
+        };
+        fn_f = sfn_f;
+        fn_dfdx = sfn_dfdx;
+        fn_dfdy = sfn_dfdy;
     }
+
     void fct_gauss()
     {
-        fn_f = [](float x, float y) { return exp(-x * x - y * y); };
-        fn_dfdx = [](float x, float y) { return -2 * x * exp(-x * x - y * y); };
-        fn_dfdy = [](float x, float y) { return -2 * y * exp(-x * x - y * y); };
+        static auto sfn_f = [](float x, float y) {
+            return exp(-x * x - y * y);
+        };
+        static auto sfn_dfdx = [](float x, float y) {
+            return -2 * x * exp(-x * x - y * y);
+        };
+        static auto sfn_dfdy = [](float x, float y) {
+            return -2 * y * exp(-x * x - y * y);
+        };
+        fn_f = sfn_f;
+        fn_dfdx = sfn_dfdx;
+        fn_dfdy = sfn_dfdy;
     }
 
     void src_text1()
@@ -100,24 +126,37 @@ private:
 
         // Handle User Input ---------------------------------------------------
 
-        if (GetKey(olc::Key::SPACE).bHeld)
+        if (GetKey(olc::Key::SPACE).bPressed)
             return false; // quit
 
         // chg source image
-        if (GetKey(olc::Key::F1).bHeld)
+        if (GetKey(olc::Key::F1).bPressed)
             src_grid();
-        if (GetKey(olc::Key::F2).bHeld)
+        if (GetKey(olc::Key::F2).bPressed)
             src_text1();
-        if (GetKey(olc::Key::F3).bHeld)
+        if (GetKey(olc::Key::F3).bPressed)
             src_img();
 
         // chg fct
-        if (GetKey(olc::Key::K1).bHeld)
+        if (GetKey(olc::Key::K1).bPressed)
             fct_sin();
-        if (GetKey(olc::Key::K2).bHeld)
+        if (GetKey(olc::Key::K2).bPressed)
             fct_sin2();
-        if (GetKey(olc::Key::K3).bHeld)
+        if (GetKey(olc::Key::K3).bPressed)
             fct_gauss();
+
+        // Help
+        if (GetKey(olc::Key::H).bPressed)
+            displayHelp = !displayHelp;
+        // Parameters
+        if (GetKey(olc::Key::P).bPressed)
+            displayPars = !displayPars;
+        // Parameters
+        if (GetKey(olc::Key::X).bPressed)
+            displayAxes = !displayAxes;
+        // Parameters
+        if (GetKey(olc::Key::T).bPressed)
+            usethreads = !usethreads;
 
         // chg zoom
         if (GetKey(olc::Key::LEFT).bHeld || GetMouseWheel() > 0)
@@ -161,33 +200,51 @@ private:
         int32_t y1 = 0;
         int32_t y2 = ScreenHeight();
 
-        // 1 process
-        // distort(ox, oy, x1, y1, x2, y2);
 
-        // with several threads
-        constexpr int nMaxThreads = 6;
-        int nSectionWidth = (x2 - x1) / nMaxThreads;
+        if (usethreads)
+        {
+            // with several threads
+            constexpr int nMaxThreads = 6;
+            int nSectionWidth = (x2 - x1) / nMaxThreads;
 
-        std::thread t[nMaxThreads];
+            std::thread t[nMaxThreads];
 
-        for (size_t i = 0; i < nMaxThreads; i++)
-            t[i] = std::thread(&Distorsion::distort, this, ox, oy,
-                               x1 + i * nSectionWidth, y1,
-                               x1 + (i + 1) * nSectionWidth, y2);
+            for (int i = 0; i < nMaxThreads; i++)
+            {
+                int xmin = x1 + i * nSectionWidth;
+                int xmax = xmin + nSectionWidth;
+                if (i == nMaxThreads - 1)
+                    xmax = x2;
+                t[i] = std::thread(&Distorsion::distort, this, ox, oy, xmin, y1,
+                                   xmax, y2);
+            }
 
-        for (size_t i = 0; i < nMaxThreads; i++)
-            t[i].join();
+            for (int i = 0; i < nMaxThreads; i++)
+                t[i].join();
+        }
+        else
+        {        
+            // 1 process
+            distort(ox, oy, x1, y1, x2, y2);
+        }
 
         // draw axes
-        DrawLine(0, oy, ScreenWidth(), oy, olc::WHITE);
-        DrawLine(ox, 0, ox, ScreenHeight(), olc::WHITE);
-        DrawLine(ox + int32_t(zoom), oy - 3, ox + int32_t(zoom), oy + 3,
-                 olc::WHITE);
-        DrawLine(ox - 3, oy + int32_t(zoom), ox + 3, oy + int32_t(zoom),
-                 olc::WHITE);
+        if (displayAxes)
+        {
+            DrawLine(0, oy, ScreenWidth(), oy, olc::WHITE);
+            DrawLine(ox, 0, ox, ScreenHeight(), olc::WHITE);
+            DrawLine(ox + int32_t(zoom), oy - 3, ox + int32_t(zoom), oy + 3,
+                     olc::WHITE);
+            DrawLine(ox - 3, oy + int32_t(zoom), ox + 3, oy + int32_t(zoom),
+                     olc::WHITE);
+        }
 
         // print parameters
-        drawParams();
+        if (displayPars)
+            drawParams();
+
+        if (displayHelp)
+            drawHelp();
 
         return true;
     }
@@ -199,7 +256,7 @@ private:
             for (int32_t j = y1; j < y2; ++j)
             {
                 float a = float(i - ox) / zoom;
-                float b = float(j - ox) / zoom;
+                float b = float(j - oy) / zoom;
                 float nx = fn_dfdx(a, b);
                 float ny = fn_dfdy(a, b);
                 float z = fn_f(a, b) * zoom;
@@ -228,8 +285,9 @@ private:
 
     void drawParams()
     {
-        int charHeight = 9;
-        int nbrows = ScreenHeight() / charHeight;
+        int32_t charHeight = 9;
+        int32_t nbrows = ScreenHeight() / charHeight;
+        int32_t nbcols = ScreenWidth() / charHeight;
 
         SetPixelMode(olc::Pixel::ALPHA);
         FillRect(0, (nbrows - 4) * charHeight, ScreenWidth(),
@@ -243,6 +301,43 @@ private:
                    "alp  = " + std::to_string(alp) + " [up-down]", olc::WHITE);
         DrawString(charHeight, (nbrows - 1) * charHeight,
                    "N    = " + std::to_string(N) + " [A-Z]", olc::WHITE);
+
+        std::string txt =
+            std::string("threading:") +
+            ((usethreads) ? std::string("on") : std::string("off"));
+        DrawString((nbcols - int32_t(txt.length()) - 1) * charHeight,
+                   (nbrows - 1) * charHeight, txt, olc::WHITE);
+    }
+
+    void drawHelp()
+    {
+        std::string text = "Distorison\n"
+                           "----------\n\n"
+                           " Keys:\n\n"
+                           " - F1, F2, F3     : background image\n"
+                           " - 1, 2, 3        : distorsion function\n"
+                           " - A-Z            : distorsion index\n"
+                           " - <left>-<right> : zoom\n"
+                           " - <up>-<down>    : depth\n"
+                           " - A-Z            : distorsion index\n"
+                           " - H              : display help\n"
+                           " - X              : display axes\n"
+                           " - P              : display parameters\n"
+                           " - <space>        : quit";
+
+        int charHeight = 9;
+        int nbrows = ScreenHeight() / charHeight;
+
+        int bord = 6;
+        SetPixelMode(olc::Pixel::ALPHA);
+        FillRect(bord * charHeight, bord * charHeight,
+                 ScreenWidth() - bord * 2 * charHeight,
+                 ScreenHeight() - bord * 2 * charHeight,
+                 olc::Pixel(0, 0, 0, 128));
+        SetPixelMode(olc::Pixel::NORMAL);
+
+        DrawString((bord + 1) * charHeight, (bord + 1) * charHeight, text,
+                   olc::WHITE);
     }
 };
 
