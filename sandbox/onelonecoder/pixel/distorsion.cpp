@@ -38,9 +38,9 @@ public:
 private:
     void fct_sin()
     {
-        static auto sfn_f = [](float x, float y) { return sin(x + y); };
-        static auto sfn_dfdx = [](float x, float y) { return cos(x + y); };
-        static auto sfn_dfdy = [](float x, float y) { return cos(x + y); };
+        static auto sfn_f = [](float x, float y) -> float { return sin(x + y); };
+        static auto sfn_dfdx = [](float x, float y) -> float { return cos(x + y); };
+        static auto sfn_dfdy = [](float x, float y)  -> float{ return cos(x + y); };
         fn_f = sfn_f;
         fn_dfdx = sfn_dfdx;
         fn_dfdy = sfn_dfdy;
@@ -48,11 +48,11 @@ private:
 
     void fct_sin2()
     {
-        static auto sfn_f = [](float x, float y) { return sin(x * x + y * y); };
-        static auto sfn_dfdx = [](float x, float y) {
+        static auto sfn_f = [](float x, float y) -> float { return sin(x * x + y * y); };
+        static auto sfn_dfdx = [](float x, float y) -> float {
             return 2 * x * cos(x * x + y * y);
         };
-        static auto sfn_dfdy = [](float x, float y) {
+        static auto sfn_dfdy = [](float x, float y) -> float {
             return 2 * y * cos(x * x + y * y);
         };
         fn_f = sfn_f;
@@ -62,13 +62,13 @@ private:
 
     void fct_gauss()
     {
-        static auto sfn_f = [](float x, float y) {
+        static auto sfn_f = [](float x, float y) -> float{
             return exp(-x * x - y * y);
         };
-        static auto sfn_dfdx = [](float x, float y) {
+        static auto sfn_dfdx = [](float x, float y) -> float {
             return -2 * x * exp(-x * x - y * y);
         };
-        static auto sfn_dfdy = [](float x, float y) {
+        static auto sfn_dfdy = [](float x, float y) -> float {
             return -2 * y * exp(-x * x - y * y);
         };
         fn_f = sfn_f;
