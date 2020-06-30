@@ -40,7 +40,7 @@ def all_files(root,
 
 def main():
 
-    # loop over all files and try to guess encoding...
+    # loop over all files and format them
     encs = {}
     for f in all_files(os.getcwd(), patterns='*.cpp;*.c;*.h;*.hpp',
                        skips='*.git*;*build*;*externals*'):
