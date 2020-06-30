@@ -38,42 +38,31 @@ public:
 private:
     void fct_sin()
     {
-        static auto sfn_f = [](float x, float y) { return sin(x + y); };
-        static auto sfn_dfdx = [](float x, float y) { return cos(x + y); };
-        static auto sfn_dfdy = [](float x, float y) { return cos(x + y); };
-        fn_f = sfn_f;
-        fn_dfdx = sfn_dfdx;
-        fn_dfdy = sfn_dfdy;
+        fn_f = [](float x, float y) -> float { return sin(x + y); };
+        fn_dfdx = [](float x, float y) -> float { return cos(x + y); };
+        fn_dfdy = [](float x, float y) -> float { return cos(x + y); };
     }
 
     void fct_sin2()
     {
-        static auto sfn_f = [](float x, float y) { return sin(x * x + y * y); };
-        static auto sfn_dfdx = [](float x, float y) {
+        fn_f = [](float x, float y) -> float { return sin(x * x + y * y); };
+        fn_dfdx = [](float x, float y) -> float {
             return 2 * x * cos(x * x + y * y);
         };
-        static auto sfn_dfdy = [](float x, float y) {
+        fn_dfdy = [](float x, float y) -> float {
             return 2 * y * cos(x * x + y * y);
         };
-        fn_f = sfn_f;
-        fn_dfdx = sfn_dfdx;
-        fn_dfdy = sfn_dfdy;
     }
 
     void fct_gauss()
     {
-        static auto sfn_f = [](float x, float y) {
-            return exp(-x * x - y * y);
-        };
-        static auto sfn_dfdx = [](float x, float y) {
+        fn_f = [](float x, float y) -> float { return exp(-x * x - y * y); };
+        fn_dfdx = [](float x, float y) -> float {
             return -2 * x * exp(-x * x - y * y);
         };
-        static auto sfn_dfdy = [](float x, float y) {
+        fn_dfdy = [](float x, float y) -> float {
             return -2 * y * exp(-x * x - y * y);
         };
-        fn_f = sfn_f;
-        fn_dfdx = sfn_dfdx;
-        fn_dfdy = sfn_dfdy;
     }
 
     void src_text1()
@@ -200,7 +189,6 @@ private:
         int32_t y1 = 0;
         int32_t y2 = ScreenHeight();
 
-
         if (usethreads)
         {
             // with several threads
@@ -223,7 +211,7 @@ private:
                 t[i].join();
         }
         else
-        {        
+        {
             // 1 process
             distort(ox, oy, x1, y1, x2, y2);
         }
