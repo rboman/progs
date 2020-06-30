@@ -14,7 +14,7 @@
 #    delete .desktop when .url exists
 
 
-import os, re
+import os, re, sys
 import fnmatch
 
 def findlinks(dirs=('.', )):
@@ -32,7 +32,7 @@ def findlinks(dirs=('.', )):
                 for ext in ['*.url','*.desktop']:
                     if fnmatch.fnmatch(name, ext):
                         fullname = os.path.join(path, name)
-                        with open(fullname, 'r') as f:
+                        with open(fullname.encode(sys.getfilesystemencoding()), 'r') as f:
                             match = urlregex.search(f.read()) 
                             if match:
                                 g = match.groups()
@@ -40,7 +40,10 @@ def findlinks(dirs=('.', )):
     return fmap
 
 if __name__ == '__main__':
-
+    print('using', sys.executable, sys.version)
+    if sys.version_info.major<3:
+        raise Exception('please use python 3')
+    
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--convert", help="create .url from .desktop", action="store_true")
