@@ -15,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+import sys
 import platform
 system, node, release, version, machine, processor = platform.uname()
 
@@ -49,11 +50,79 @@ def gcc_version():
     except OSError:
         return 'gcc not found'
     out = out.decode()  # python 3 returns bytes
-    m = re.match(r'gcc \(.+\) (\d\.\d\.\d)', out)
+    m = re.match(r'gcc \(.+\) (\d+\.\d+\.\d+)', out)
     if m and len(m.groups()) > 0:
         return m.group(1)
     else:
         return 'cannot read "gcc --version" output'
 
+def cmake_version():
+    try:
+        out = subprocess.check_output(['cmake', '--version'])
+    except OSError:
+        return 'cmake not found'
+    out = out.decode()  # python 3 returns bytes
+    m = re.match(r'cmake version (\d+\.\d+\.\d+)', out)
+    if m and len(m.groups()) > 0:
+        return m.group(1)
+    else:
+        return 'cannot read "cmake --version" output'
 
-print("gcc:", gcc_version())
+def python_version():
+    #return sys.version
+    return f'{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.minor}'
+
+def numpy_version():
+    try:
+        import numpy
+    except:
+        return 'numpy not installed'
+    return numpy.version.version
+
+def scipy_version():
+    try:
+        import scipy
+    except:
+        return 'scipy not installed'
+    return scipy.version.version
+
+def vtk_version():
+    try:
+        import vtk
+    except:
+        return 'python-vtk not installed'
+    return vtk.vtkVersion.GetVTKVersion()
+
+def qt_version():
+    try:
+        from PyQt5.QtCore import QT_VERSION_STR
+    except:
+        return 'PyQt5 not installed'
+    return QT_VERSION_STR
+
+def pyqt_version():
+    try:
+        from PyQt5.Qt import PYQT_VERSION_STR
+    except:
+        return 'PyQt5 not installed'
+    return PYQT_VERSION_STR
+
+def sip_version():
+    try:
+        from sip import SIP_VERSION_STR
+    except:
+        return 'sip not installed'
+    return SIP_VERSION_STR
+
+
+if __name__=="__main__":
+    print("gcc:", gcc_version())
+    print("cmake:", cmake_version())
+    print("python:", python_version())
+    print("numpy:", numpy_version())
+    print("scipy:", numpy_version())
+    print("VTK:", vtk_version())
+    print("Qt:", qt_version())
+    print("PyQt:", pyqt_version())
+    print("sip:", sip_version())
+
