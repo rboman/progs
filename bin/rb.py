@@ -52,7 +52,8 @@ if __name__ == "__main__":
     import sys
     import os
     import os.path
-
+    print(sys.version)
+    
     # process arguments
     import argparse
     parser = argparse.ArgumentParser(
