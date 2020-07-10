@@ -1,0 +1,16 @@
+debian 10.4 : ok
+drivers nvidia (from nvidia) : ok
+ldap : ok
+mkl/tbb/mpi : 2019.2
+samcef : V18.2
+parasolid 32.1
+matlab :
+scilab : 6.01 ( système)
+cgal (??) système
+gmm/eigen : system
+vtk7/qt5/python3.7/numpy/pySide2/matplotlib/... : system
+triangle / tetgen : system
+gmsh :  /opt/gmsh-4.5.6-linux64-sdk
+mumps : /opt/mumps-4.10.0
+lagamine : /opt/lagamine-200608
+
