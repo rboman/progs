@@ -27,8 +27,8 @@ ENDIF()
 FIND_PATH(OLC_INCLUDE_DIRS "olcPixelGameEngine.h")
 MESSAGE(STATUS "OLC_INCLUDE_DIRS=${OLC_INCLUDE_DIRS}")
 
-
-ADD_EXECUTABLE(dungeon dungeon.cpp engine.cpp)
+FILE(GLOB SRCS *.h *.cpp *.inl)
+ADD_EXECUTABLE(dungeon ${SRCS})
 TARGET_INCLUDE_DIRECTORIES(dungeon PUBLIC ${OLC_INCLUDE_DIRS})
 IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_link_libraries(dungeon Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
