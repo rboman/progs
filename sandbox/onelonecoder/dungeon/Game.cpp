@@ -8,7 +8,7 @@
 #include "Game.h"
 #include "Tiles.h"
 
-Game::Game() : tiles(nullptr)
+Game::Game() : tiles(nullptr), state(State::TILEMAP)
 { 
     sAppName = "Dungeon"; 
 }
@@ -27,6 +27,13 @@ bool Game::OnUserCreate()
 
 bool Game::OnUserUpdate(float fElapsedTime)
 {
-    tiles->update(*this, fElapsedTime);
+    switch(state)
+    {
+        case State::MENU:
+        case State::TILEMAP:
+        default:
+            tiles->update(*this, fElapsedTime);
+    }
+
     return true;
 }

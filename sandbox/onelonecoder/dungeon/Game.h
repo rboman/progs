@@ -6,10 +6,17 @@
 #include "olcPixelGameEngine.h"
 class Tiles;
 
+enum class State
+{
+    MENU,
+    TILEMAP
+};
+
 
 class Game : public olc::PixelGameEngine
 {
     Tiles *tiles;
+    State state;
 
 public:
     Game();

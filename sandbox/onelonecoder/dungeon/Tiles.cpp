@@ -10,9 +10,9 @@ void Tiles::load()
 {
     // load
     std::cout << "loading tiles...\n";
-    tiles = std::make_unique<olc::Sprite>(std::string(CMAKE_SOURCE_DIR) +
+    tileimg = std::make_unique<olc::Sprite>(std::string(CMAKE_SOURCE_DIR) +
                                             "/tiles.png");
-    std::cout << tiles.get()->width << 'x' << tiles.get()->height << '\n';
+    std::cout << tileimg.get()->width << 'x' << tileimg.get()->height << '\n';
 
     // load assets
     std::cout << "loading asset positions...\n";
@@ -35,12 +35,12 @@ void Tiles::load()
             // std::cout << "name=" << name << ", " << ox << ", " << oy <<
             // ", "
             //           << w << ", " << h << ", " << ni << '\n';
-            sprs[name] = {ox, oy, w, h, ni};
+            tilemap[name] = {ox, oy, w, h, ni};
         }
     }
 
     // print sprite map (c++17)
-    // for (auto const &[key, val] : sprs)
+    // for (auto const &[key, val] : tilemap)
     // {
     //     std::cout << key << ':' << val.ox << ", " << val.oy << ", " << val.w
     //               << ", " << val.h << ", " << val.ni << '\n';
@@ -55,7 +55,7 @@ void Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
     pge.Clear(olc::BLACK);
 
     // draw the tile image
-    pge.DrawSprite(0, 0, tiles.get());
+    pge.DrawSprite(0, 0, tileimg.get());
 
     // get mouse ccordinates
     int mx = pge.GetMouseX(); 
@@ -63,7 +63,7 @@ void Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
 
     // draw all the tiles data
     std::string const*in = nullptr;
-    for (auto const &[key, val] : sprs)
+    for (auto const &[key, val] : tilemap)
     {
         pge.DrawRect(val.ox, val.oy, val.w, val.h, olc::WHITE);
         // std::cout << key << ':' << val.ox << ", " << val.oy << ", " << val.w
@@ -77,7 +77,7 @@ void Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
     if(in)
     {
         // draw anim boxes
-        Spr val = sprs[*in];
+        Tile &val = tilemap[*in];
         for(int i=0; i<val.ni; ++i)
             pge.DrawRect(val.ox+i*val.w, val.oy, val.w, val.h, olc::DARK_RED);
 
@@ -86,7 +86,7 @@ void Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
         int bord = 2;
         int posx = mx-bord;
         int posy = my-bord+charSz;
-        int w = in->length()*charSz+2*bord;
+        int w = (int)in->length()*charSz+2*bord;
         int h = charSz+2*bord;
         if(posx+w>pge.ScreenWidth())
             posx = pge.ScreenWidth()-w;
@@ -106,7 +106,7 @@ void Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
         int px = pge.ScreenWidth() - scale*val.w - 10;
         int py = pge.ScreenHeight() - scale*val.h - 10;
         
-        pge.DrawPartialSprite(px, py, tiles.get(), val.ox+frame*val.w, val.oy, val.w, val.h, scale);           
+        pge.DrawPartialSprite(px, py, tileimg.get(), val.ox+frame*val.w, val.oy, val.w, val.h, scale);           
     }
     else
     {

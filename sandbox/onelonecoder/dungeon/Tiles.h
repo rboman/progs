@@ -3,15 +3,15 @@
 
 #include "Game.h"
 
-struct Spr
+struct Tile
 {
     int ox, oy, w, h, ni;
 };
 
 class Tiles
 {
-    std::map<std::string, Spr> sprs;        ///< map of tiles    - rename tiles
-    std::unique_ptr<olc::Sprite> tiles;     ///< sprite/tile image - rename tilemap or tileimg
+    std::map<std::string, Tile> tilemap;        ///< map of tiles    - rename tiles
+    std::unique_ptr<olc::Sprite> tileimg;     ///< sprite/tile image - rename tilemap or tileimg
 
     float atime;
 
