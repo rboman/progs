@@ -23,12 +23,12 @@ Game::OnUserCreate()
     tiles = new Tiles();
     tiles->load();
 
-    hero = new Character("knight_f_idle_anim", "knight_f_run_anim",
-                         "knight_f_hit_anim");
+    // hero = new Character("knight_f_idle_anim", "knight_f_run_anim",
+    //                      "knight_f_hit_anim");
     // hero = new Character("wizzard_f_idle_anim", "wizzard_f_run_anim",
     //                      "wizzard_f_hit_anim");
-    // hero = new Character("big_zombie_idle_anim", "big_zombie_run_anim",
-    //                      "big_zombie_idle_anim");
+    hero = new Character("big_zombie_idle_anim", "big_zombie_run_anim",
+                         "big_zombie_idle_anim");
 
     return true;
 }
