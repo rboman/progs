@@ -1,62 +1,7 @@
 
 #include "Character.h"
 #include "Tiles.h"
-
-
-enum class Justify
-{
-    LEFT,
-    RIGHT,
-    CENTRE
-};
-
-class TextWindow
-{
-    olc::PixelGameEngine &pge;
-    int32_t charHeight = 9;
-    int32_t charWidth = 9;
-public:    
-    int32_t nbrows;
-    int32_t nbcols;
-    int32_t row;   // current row
-
-    olc::Pixel colour = olc::WHITE;
-
-    TextWindow(olc::PixelGameEngine &_pge) : pge(_pge)
-    {
-        nbrows = pge.ScreenHeight() / charHeight;
-        nbcols = pge.ScreenWidth() / charWidth;
-        row = 0;
-    }
-
-    void print(std::string const &text, Justify justify = Justify::LEFT)
-    {
-        int len = text.length();
-
-        int col = 0;
-
-        if (justify==Justify::RIGHT)
-            col = nbcols-len+1;
-        if (justify==Justify::CENTRE)
-            col = (nbcols-len)/2;
-
-        // draw string as sprite (below decals)
-        // pge.DrawString(col * charWidth + 1,
-        //                 row * charHeight + 1, 
-        //                 text, colour);
-        // draw string as decal   
-        pge.DrawStringDecal({(float) (col * charWidth + 1),
-                        (float) (row * charHeight + 1) }, 
-                        text, colour);
-        row++;
-    }
-
-    void clear(olc::Pixel c = olc::RED)
-    {
-        pge.FillRect( {0,0}, {nbrows*charWidth, nbcols*charHeight}, c);
-    }
-};
-
+#include "TextWindow.h"
 
 Character::Character(std::string const &_idlename, std::string const &_runname,
                      std::string const &_hitname)
@@ -185,22 +130,41 @@ Character::update(olc::PixelGameEngine &pge, Tiles *tiles, float fElapsedTime)
 
     // debug
     TextWindow twin(pge);
-    twin.clear(olc::Pixel(100,0,0));
-    twin.print("hello");
-    twin.print("how are you?", Justify::CENTRE);
+    //twin.clear();
+    twin.print("<ESC> to quit", HJustify::CENTRE);
+    //twin.print("1234567890123456789012345678901234567890123456789012345678901234567890");
+    //twin.frame(olc::GREEN);
 
-    twin.print("frame = " + std::to_string(frame), Justify::RIGHT);
-    twin.print("nbrows = " + std::to_string(twin.nbrows), Justify::CENTRE);
-    twin.print("nbcols = " + std::to_string(twin.nbcols), Justify::CENTRE);
+    // twin.print("how are you?", HJustify::CENTRE);
+
+    // twin.print("nbrows = " + std::to_string(twin.nbrows), HJustify::CENTRE);
+    // twin.print("nbcols = " + std::to_string(twin.nbcols), HJustify::CENTRE);
 
     // for(int i=0; i<100; ++i)
     //     twin.print(std::to_string(i));
 
-    twin.print("hello\nmyfriend!\nABCDEFG\n12345");
+    // twin.print("hello\nmyfriend!\nABCDEFG\n12345");
 
     // note
-    //pge.DrawRect(0, 0, 2, 2, olc::GREEN); // fait 3 de large si on inclut la bordure
+    // pge.DrawRect(0, 0, 2, 2, olc::GREEN); // fait 3 de large si on inclut la
+    // bordure
 
-    twin.print("<ESC> to quit", Justify::CENTRE);
+
+
+    TextWindow win2 = twin.subwin(2, 500, HJustify::RIGHT, VJustify::BOTTOM);
+    win2.clear(olc::VERY_DARK_YELLOW);
+    win2.print("frame = " + std::to_string(frame), HJustify::CENTRE);
+
+    // win2.colour = olc::YELLOW;
+    // win2.print("COUCOU!", HJustify::CENTRE);
+    // win2.print("ox="+std::to_string(win2.ox));
+    // win2.print("oy="+std::to_string(win2.oy));
+    // win2.print("nbrows="+std::to_string(win2.nbrows));
+    // win2.print("nbcols="+std::to_string(win2.nbcols));
+    // win2.print("nbrows2="+std::to_string(twin.nbrows));
+    // win2.print("nbcols2="+std::to_string(twin.nbcols));
+    // win2.print("tox="+std::to_string(twin.ox));
+    // win2.print("toy="+std::to_string(twin.oy));
+    // win2.print("test");
 
 }
