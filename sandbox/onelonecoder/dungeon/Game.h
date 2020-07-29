@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-
 #include "config.h"
 #include "olcPixelGameEngine.h"
 class Tiles;
@@ -11,7 +10,6 @@ enum class State
     MENU,
     TILEMAP
 };
-
 
 class Game : public olc::PixelGameEngine
 {
@@ -27,4 +25,4 @@ private:
     bool OnUserUpdate(float fElapsedTime) override;
 };
 
-#endif //GAME_H
+#endif // GAME_H

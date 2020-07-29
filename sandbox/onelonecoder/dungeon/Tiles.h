@@ -10,8 +10,8 @@ struct Tile
 
 class Tiles
 {
-    std::map<std::string, Tile> tilemap;        ///< map of tiles    - rename tiles
-    std::unique_ptr<olc::Sprite> tileimg;     ///< sprite/tile image - rename tilemap or tileimg
+    std::map<std::string, Tile> tilemap;  ///< map of tiles
+    std::unique_ptr<olc::Sprite> tileimg; ///< sprite/tile image
 
     float atime;
 

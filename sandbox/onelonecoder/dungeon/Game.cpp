@@ -8,31 +8,31 @@
 #include "Game.h"
 #include "Tiles.h"
 
-Game::Game() : tiles(nullptr), state(State::TILEMAP)
-{ 
-    sAppName = "Dungeon"; 
+Game::Game() : tiles(nullptr), state(State::TILEMAP) { sAppName = "Dungeon"; }
+
+Game::~Game()
+{
+    if (tiles)
+        delete tiles;
 }
 
-Game::~Game() 
-{ 
-    if(tiles) delete tiles; 
-}
-
-bool Game::OnUserCreate()
+bool
+Game::OnUserCreate()
 {
     tiles = new Tiles();
     tiles->load();
     return true;
 }
 
-bool Game::OnUserUpdate(float fElapsedTime)
+bool
+Game::OnUserUpdate(float fElapsedTime)
 {
-    switch(state)
+    switch (state)
     {
-        case State::MENU:
-        case State::TILEMAP:
-        default:
-            tiles->update(*this, fElapsedTime);
+    case State::MENU:
+    case State::TILEMAP:
+    default:
+        tiles->update(*this, fElapsedTime);
     }
 
     return true;

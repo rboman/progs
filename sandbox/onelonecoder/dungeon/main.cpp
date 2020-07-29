@@ -3,7 +3,6 @@
 // cmake -A x64 ..
 // cmake --build . --config Release && Release\dungeon.exe
 
-
 #include "Game.h"
 
 int
