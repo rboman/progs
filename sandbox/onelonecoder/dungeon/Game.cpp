@@ -36,6 +36,9 @@ public:
         atime = 0.0f;
         action = Action::IDLE;
     }
+
+    void update(olc::PixelGameEngine &pge, Tiles *tiles, float fElapsedTime);
+
 };
 
 Game::Game() : tiles(nullptr), state(State::TEST)
@@ -48,6 +51,8 @@ Game::~Game()
 {
     if (tiles)
         delete tiles;
+    if (hero)
+        delete hero;
 }
 
 bool
@@ -100,109 +105,115 @@ Game::testSprites(float fElapsedTime)
     // Erase previous frame
     Clear(olc::BLACK);
 
+    hero->update(*this, tiles, fElapsedTime);
+}
+
+void 
+Character::update(olc::PixelGameEngine &pge, Tiles *tiles, float fElapsedTime)
+{
     float speed = 200.0f;
 
     bool move = false;
 
     // moving left
-    if (GetKey(olc::Key::LEFT).bHeld || GetKey(olc::Key::Q).bHeld)
+    if (pge.GetKey(olc::Key::LEFT).bHeld || pge.GetKey(olc::Key::Q).bHeld)
     {
         move = true;
-        hero->scale.x = -abs(hero->scale.x);
-        hero->pos += { -speed * fElapsedTime, 0.0f }; 
-        if (hero->pos.x < 0.0f) hero->pos.x = 0.0f;
-        if (hero->action != Action::RUNNING)
+        scale.x = -abs(scale.x);
+        pos += { -speed * fElapsedTime, 0.0f }; 
+        if (pos.x < 0.0f) pos.x = 0.0f;
+        if (action != Action::RUNNING)
         {
-            hero->action = Action::RUNNING;
-            hero->atime = 0.0f;
+            action = Action::RUNNING;
+            atime = 0.0f;
         }
     }
 
     // moving right
-    if (GetKey(olc::Key::RIGHT).bHeld || GetKey(olc::Key::D).bHeld)
+    if (pge.GetKey(olc::Key::RIGHT).bHeld || pge.GetKey(olc::Key::D).bHeld)
     {
         move = true;
-        hero->scale.x = abs(hero->scale.x);
-        hero->pos += { speed * fElapsedTime, 0.0f };
-        if(hero->pos.x > ScreenWidth()) hero->pos.x = (float)ScreenWidth();
-        if (hero->action != Action::RUNNING)
+        scale.x = abs(scale.x);
+        pos += { speed * fElapsedTime, 0.0f };
+        if(pos.x > pge.ScreenWidth()) pos.x = (float)pge.ScreenWidth();
+        if (action != Action::RUNNING)
         {
-            hero->action = Action::RUNNING;
-            hero->atime = 0.0f;
+            action = Action::RUNNING;
+            atime = 0.0f;
         }
     }
 
     // moving up
-    if (GetKey(olc::Key::UP).bHeld || GetKey(olc::Key::Z).bHeld)
+    if (pge.GetKey(olc::Key::UP).bHeld || pge.GetKey(olc::Key::Z).bHeld)
     {
         move = true;
-        hero->pos += { 0.0f, -speed * fElapsedTime };
-        if(hero->pos.y < 0.0f) hero->pos.y = 0.0f;
-        if (hero->action != Action::RUNNING)
+        pos += { 0.0f, -speed * fElapsedTime };
+        if(pos.y < 0.0f) pos.y = 0.0f;
+        if (action != Action::RUNNING)
         {
-            hero->action = Action::RUNNING;
-            hero->atime = 0.0f;
+            action = Action::RUNNING;
+            atime = 0.0f;
         }
     }
 
     // moving down
-    if (GetKey(olc::Key::DOWN).bHeld || GetKey(olc::Key::S).bHeld)
+    if (pge.GetKey(olc::Key::DOWN).bHeld || pge.GetKey(olc::Key::S).bHeld)
     {
         move = true;
-        hero->pos += { 0.0f, speed * fElapsedTime };
-        if(hero->pos.y > ScreenHeight()) hero->pos.y = (float)ScreenHeight();
-        if (hero->action != Action::RUNNING)
+        pos += { 0.0f, speed * fElapsedTime };
+        if(pos.y > pge.ScreenHeight()) pos.y = (float)pge.ScreenHeight();
+        if (action != Action::RUNNING)
         {
-            hero->action = Action::RUNNING;
-            hero->atime = 0.0f;
+            action = Action::RUNNING;
+            atime = 0.0f;
         }
     }
 
     // hit
-    if (GetKey(olc::Key::SPACE).bHeld)
+    if (pge.GetKey(olc::Key::SPACE).bHeld)
     {
         move = true;
-        if (hero->action != Action::HIT)
+        if (action != Action::HIT)
         {
-            hero->action = Action::HIT;
-            hero->atime = 0.0f;
+            action = Action::HIT;
+            atime = 0.0f;
         }
     }
 
     // idle mode
-    if (!move && hero->action != Action::IDLE)
+    if (!move && action != Action::IDLE)
     {
-        hero->action = Action::IDLE;
-        hero->atime = 0.0f;
+        action = Action::IDLE;
+        atime = 0.0f;
     }        
 
     // choose tile according to action
     Tile *tl = nullptr;
-    switch(hero->action)
+    switch(action)
     {
         case Action::RUNNING:
-            tl = &(tiles->tilemap[hero->runname]); break;
+            tl = &(tiles->tilemap[runname]); break;
         case Action::HIT:
-            tl = &(tiles->tilemap[hero->hitname]); break;
+            tl = &(tiles->tilemap[hitname]); break;
         case Action::IDLE:
         default:
-            tl = &(tiles->tilemap[hero->idlename]); break;
+            tl = &(tiles->tilemap[idlename]); break;
     }
 
     // if decal is x-inverted, the ref point is the right corner
-    olc::vf2d pos = hero->pos;
-    if(hero->scale.x<0.0f) pos.x -= tl->w * hero->scale.x;
+    olc::vf2d dpos = pos;
+    if(scale.x<0.0f) dpos.x -= tl->w * scale.x;
 
     // choose which frame to display
-    hero->atime = hero->atime + fElapsedTime;
+    atime = atime + fElapsedTime;
     int ni = tl->ni;
-    int frame = int(hero->atime * 10) % ni;
+    int frame = int(atime * 10) % ni;
 
     // draw decal
-    DrawPartialDecal(pos, tiles->decal.get(),
+    pge.DrawPartialDecal(dpos, tiles->decal.get(),
                      {(float)(tl->ox + frame * tl->w), (float)tl->oy}, 
                      {(float)tl->w, (float)tl->h},
-                     hero->scale, olc::WHITE);
+                     scale, olc::WHITE);
 
 
 }
