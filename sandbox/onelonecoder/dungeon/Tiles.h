@@ -1,6 +1,7 @@
 #ifndef TILES_H
 #define TILES_H
 
+#include "dungeon.h"
 #include "Game.h"
 
 struct Tile

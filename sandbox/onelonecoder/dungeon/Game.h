@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "config.h"
+#include "dungeon.h"
 #include "olcPixelGameEngine.h"
 class Tiles;
 class Character;
