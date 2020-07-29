@@ -10,12 +10,12 @@ struct Tile
 
 class Tiles
 {
+    float atime;    
+public:
     std::map<std::string, Tile> tilemap;  ///< map of tiles
     std::unique_ptr<olc::Sprite> tileimg; ///< sprite/tile image
+    std::unique_ptr<olc::Decal> decal; ///< sprite/tile decal
 
-    float atime;
-
-public:
     Tiles();
 
     void load();

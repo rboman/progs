@@ -9,6 +9,7 @@ Tiles::load()
     std::cout << "loading tiles...\n";
     tileimg = std::make_unique<olc::Sprite>(std::string(CMAKE_SOURCE_DIR) +
                                             "/tiles.png");
+    decal = std::make_unique<olc::Decal>(tileimg.get());
     std::cout << tileimg.get()->width << 'x' << tileimg.get()->height << '\n';
 
     // load assets
