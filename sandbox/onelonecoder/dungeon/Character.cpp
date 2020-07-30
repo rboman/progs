@@ -10,14 +10,15 @@ Character::Character(Tiles *_tiles, std::string const &_idlename, std::string co
     pos = {100.0f, 100.0f};
     scale = {3.0f, 3.0f};
     atime = 0.0f;
-    action = Action::IDLE;
+    action = State::IDLE;
+    speed = 200.0f;
 }
 
-void
-Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
-{
+/// modify the state of the character according to user keys
 
-    float speed = 200.0f;
+void
+Character::userKeys(olc::PixelGameEngine &pge, float fElapsedTime)
+{
 
     bool move = false;
 
@@ -29,9 +30,9 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
         pos += {-speed * fElapsedTime, 0.0f};
         if (pos.x < 0.0f)
             pos.x = 0.0f;
-        if (action != Action::RUNNING)
+        if (action != State::RUNNING)
         {
-            action = Action::RUNNING;
+            action = State::RUNNING;
             atime = 0.0f;
         }
     }
@@ -44,9 +45,9 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
         pos += {speed * fElapsedTime, 0.0f};
         if (pos.x > pge.ScreenWidth())
             pos.x = (float)pge.ScreenWidth();
-        if (action != Action::RUNNING)
+        if (action != State::RUNNING)
         {
-            action = Action::RUNNING;
+            action = State::RUNNING;
             atime = 0.0f;
         }
     }
@@ -58,9 +59,9 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
         pos += {0.0f, -speed * fElapsedTime};
         if (pos.y < 0.0f)
             pos.y = 0.0f;
-        if (action != Action::RUNNING)
+        if (action != State::RUNNING)
         {
-            action = Action::RUNNING;
+            action = State::RUNNING;
             atime = 0.0f;
         }
     }
@@ -72,9 +73,9 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
         pos += {0.0f, speed * fElapsedTime};
         if (pos.y > pge.ScreenHeight())
             pos.y = (float)pge.ScreenHeight();
-        if (action != Action::RUNNING)
+        if (action != State::RUNNING)
         {
-            action = Action::RUNNING;
+            action = State::RUNNING;
             atime = 0.0f;
         }
     }
@@ -83,35 +84,48 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
     if (pge.GetKey(olc::Key::SPACE).bHeld)
     {
         move = true;
-        if (action != Action::HIT)
+        if (action != State::HIT)
         {
-            action = Action::HIT;
+            action = State::HIT;
             atime = 0.0f;
         }
     }
 
     // idle mode
-    if (!move && action != Action::IDLE)
+    if (!move && action != State::IDLE)
     {
-        action = Action::IDLE;
+        action = State::IDLE;
         atime = 0.0f;
     }
+
+}
+
+void
+Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
+{
+
+    // MANAGEMENT OF USER ACTIONS
+    userKeys(pge, fElapsedTime);
+
 
     // choose tile according to action
     Tile *tl = nullptr;
     switch (action)
     {
-    case Action::RUNNING:
+    case State::RUNNING:
         tl = &(tiles->tilemap[runname]);
         break;
-    case Action::HIT:
+    case State::HIT:
         tl = &(tiles->tilemap[hitname]);
         break;
-    case Action::IDLE:
+    case State::IDLE:
     default:
         tl = &(tiles->tilemap[idlename]);
         break;
     }
+
+
+    // DRAWING PART
 
     // if decal is x-inverted, the ref point is the right corner
     olc::vf2d dpos = pos;

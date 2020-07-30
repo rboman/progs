@@ -5,7 +5,7 @@
 #include "olcPixelGameEngine.h"
 class Tiles;
 
-enum class Action
+enum class State
 {
     IDLE,
     RUNNING,
@@ -15,6 +15,7 @@ enum class Action
 class Character
 {
     Tiles *tiles;
+
 public:
     std::string idlename;
     std::string runname;
@@ -22,13 +23,15 @@ public:
 
     olc::vf2d pos;
     olc::vf2d scale;
-    float atime;
-    Action action;
+    float speed;            ///< walking speed
+    float atime;            ///< animation time
+    State action;           ///< current state
 
-    Character(Tiles *_tiles, std::string const &_idlename, std::string const &_runname,
-              std::string const &_hitname);
+    Character(Tiles *_tiles, std::string const &_idlename,
+              std::string const &_runname, std::string const &_hitname);
 
     void update(olc::PixelGameEngine &pge, float fElapsedTime);
+    void userKeys(olc::PixelGameEngine &pge, float fElapsedTime);
 };
 
 #endif // CHARACTER_H

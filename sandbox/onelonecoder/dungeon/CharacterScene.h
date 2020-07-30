@@ -7,6 +7,11 @@
 class CharacterScene
 {
     Character *hero;
+    Character *monster;
+    
+
+    std::map<std::string, Character*> characters;
+
 public:
     CharacterScene(Tiles *tiles);
     ~CharacterScene();

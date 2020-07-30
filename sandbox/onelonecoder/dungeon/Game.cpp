@@ -13,6 +13,7 @@ Game::Game()
 
 Game::~Game()
 {
+    std::cout << "~Game()\n";
     if (tiles)
         delete tiles;
     if (charscene)
