@@ -14,6 +14,7 @@ enum class Action
 
 class Character
 {
+    Tiles *tiles;
 public:
     std::string idlename;
     std::string runname;
@@ -24,10 +25,10 @@ public:
     float atime;
     Action action;
 
-    Character(std::string const &_idlename, std::string const &_runname,
+    Character(Tiles *_tiles, std::string const &_idlename, std::string const &_runname,
               std::string const &_hitname);
 
-    void update(olc::PixelGameEngine &pge, Tiles *tiles, float fElapsedTime);
+    void update(olc::PixelGameEngine &pge, float fElapsedTime);
 };
 
 #endif // CHARACTER_H

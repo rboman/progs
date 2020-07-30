@@ -7,4 +7,6 @@ class Game;
 class Character;
 class Tiles;
 
+class CharacterScene;
+
 #endif // DUNGEON_H

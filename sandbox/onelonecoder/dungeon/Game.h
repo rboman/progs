@@ -18,7 +18,7 @@ class Game : public olc::PixelGameEngine
     Tiles *tiles;
     State state;
 
-    Character *hero;
+    CharacterScene *charscene;
 
 public:
     Game();
@@ -27,8 +27,6 @@ public:
 private:
     bool OnUserCreate() override;
     bool OnUserUpdate(float fElapsedTime) override;
-
-    void testSprites(float fElapsedTime);
 };
 
 #endif // GAME_H

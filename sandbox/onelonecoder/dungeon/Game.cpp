@@ -1,11 +1,12 @@
 
 #include "Game.h"
 #include "Tiles.h"
-#include "Character.h"
+#include "CharacterScene.h"
 
 Game::Game() : tiles(nullptr), state(State::TEST)
 {
     sAppName = "Dungeon";
+    charscene = nullptr;
     state = State::TEST;
 }
 
@@ -13,8 +14,7 @@ Game::~Game()
 {
     if (tiles)
         delete tiles;
-    if (hero)
-        delete hero;
+    if(charscene)delete charscene;
 }
 
 bool
@@ -23,12 +23,7 @@ Game::OnUserCreate()
     tiles = new Tiles();
     tiles->load();
 
-    // hero = new Character("knight_f_idle_anim", "knight_f_run_anim",
-    //                      "knight_f_hit_anim");
-    // hero = new Character("wizzard_f_idle_anim", "wizzard_f_run_anim",
-    //                      "wizzard_f_hit_anim");
-    hero = new Character("big_zombie_idle_anim", "big_zombie_run_anim",
-                         "big_zombie_idle_anim");
+    charscene = new CharacterScene(tiles);
 
     return true;
 }
@@ -49,7 +44,7 @@ Game::OnUserUpdate(float fElapsedTime)
     switch (state)
     {
     case State::TEST:
-        testSprites(fElapsedTime);
+        charscene->update(*this, fElapsedTime);
         break;
     case State::MENU:
     case State::TILEMAP:
@@ -60,11 +55,3 @@ Game::OnUserUpdate(float fElapsedTime)
     return true;
 }
 
-void
-Game::testSprites(float fElapsedTime)
-{
-    // Erase previous frame
-    Clear(olc::BLACK);
-
-    hero->update(*this, tiles, fElapsedTime);
-}
