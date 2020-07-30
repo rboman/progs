@@ -3,18 +3,20 @@
 #include "Tiles.h"
 #include "CharacterScene.h"
 
-Game::Game() : tiles(nullptr), state(State::TEST)
+Game::Game()
 {
     sAppName = "Dungeon";
+    tiles = nullptr;
     charscene = nullptr;
-    state = State::TEST;
+    scene = Scene::CHARACTER;
 }
 
 Game::~Game()
 {
     if (tiles)
         delete tiles;
-    if(charscene)delete charscene;
+    if (charscene)
+        delete charscene;
 }
 
 bool
@@ -28,30 +30,34 @@ Game::OnUserCreate()
     return true;
 }
 
+/// main update function
+/// management of scenes
+
 bool
 Game::OnUserUpdate(float fElapsedTime)
 {
+    // quit if ESC is pressed
     if (GetKey(olc::ESCAPE).bPressed)
         return false;
 
+    // switch between scenes with F* keys
     if (GetKey(olc::F1).bPressed)
-        state = State::MENU;
+        scene = Scene::CHARACTER;
     if (GetKey(olc::F2).bPressed)
-        state = State::TILEMAP;
+        scene = Scene::TILES;
     if (GetKey(olc::F3).bPressed)
-        state = State::TEST;
+        scene = Scene::MAPEDITOR;
 
-    switch (state)
+    switch (scene)
     {
-    case State::TEST:
+    case Scene::CHARACTER:
         charscene->update(*this, fElapsedTime);
         break;
-    case State::MENU:
-    case State::TILEMAP:
+    case Scene::TILES:
+    case Scene::MAPEDITOR:
     default:
         tiles->update(*this, fElapsedTime);
     }
 
     return true;
 }
-

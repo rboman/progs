@@ -6,17 +6,17 @@
 class Tiles;
 class Character;
 
-enum class State
+enum class Scene
 {
-    MENU,
-    TILEMAP,
-    TEST
+    CHARACTER,
+    TILES,
+    MAPEDITOR
 };
 
 class Game : public olc::PixelGameEngine
 {
     Tiles *tiles;
-    State state;
+    Scene scene;
 
     CharacterScene *charscene;
 
