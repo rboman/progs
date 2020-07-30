@@ -9,6 +9,6 @@ BreakBeforeBraces: Allman
 AccessModifierOffset: -4
 SortIncludes: false
 # ColumnLimit: 0
-ColumnLimit: 80
+ColumnLimit: 0
 AlwaysBreakAfterReturnType: TopLevelDefinitions
 ...
