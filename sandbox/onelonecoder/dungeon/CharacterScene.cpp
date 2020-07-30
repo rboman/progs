@@ -41,7 +41,7 @@ CharacterScene::CharacterScene(Tiles *tiles)
     hero = new Character(*characters["elf_f"]);
     monster = new Character(*characters["big_demon"]);
     monster->pos = {200.0f, 200.0f};
-    monster->speed = 150.f;
+    monster->basespeed = 150.f;
 }
 
 CharacterScene::~CharacterScene()

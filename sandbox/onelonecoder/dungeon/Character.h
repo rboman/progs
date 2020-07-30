@@ -23,7 +23,7 @@ public:
 
     olc::vf2d pos;
     olc::vf2d scale;
-    float speed;            ///< walking speed
+    float basespeed;            ///< walking basespeed
     float atime;            ///< animation time
     State action;           ///< current state
 
