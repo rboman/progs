@@ -10,8 +10,9 @@ Character::Character(Tiles *_tiles, std::string const &_idlename, std::string co
     pos = {100.0f, 100.0f};
     scale = {3.0f, 3.0f};
     atime = 0.0f;
-    action = State::IDLE;
+    state = State::IDLE;
     basespeed = 200.0f;
+    tl = &(tiles->tilemap[idlename]);
 }
 
 /// modify the state of the character according to user keys
@@ -19,98 +20,67 @@ Character::Character(Tiles *_tiles, std::string const &_idlename, std::string co
 void
 Character::userKeys(olc::PixelGameEngine &pge, float fElapsedTime)
 {
-
-    bool move = false;
-
-    // moving left
     if (pge.GetKey(olc::Key::LEFT).bHeld || pge.GetKey(olc::Key::Q).bHeld)
-    {
-        move = true;
-        scale.x = -abs(scale.x);
-        pos += {-basespeed * fElapsedTime, 0.0f};
-        if (pos.x < 0.0f)
-            pos.x = 0.0f;
-        if (action != State::RUNNING)
-        {
-            action = State::RUNNING;
-            atime = 0.0f;
-        }
-    }
+        velocity.x = -basespeed; // moving left
+    else if (pge.GetKey(olc::Key::RIGHT).bHeld || pge.GetKey(olc::Key::D).bHeld)
+        velocity.x = basespeed; // moving right
+    else
+        velocity.x = 0.0f;
 
-    // moving right
-    if (pge.GetKey(olc::Key::RIGHT).bHeld || pge.GetKey(olc::Key::D).bHeld)
-    {
-        move = true;
-        scale.x = abs(scale.x);
-        pos += {basespeed * fElapsedTime, 0.0f};
-        if (pos.x > pge.ScreenWidth())
-            pos.x = (float)pge.ScreenWidth();
-        if (action != State::RUNNING)
-        {
-            action = State::RUNNING;
-            atime = 0.0f;
-        }
-    }
-
-    // moving up
     if (pge.GetKey(olc::Key::UP).bHeld || pge.GetKey(olc::Key::Z).bHeld)
-    {
-        move = true;
-        pos += {0.0f, -basespeed * fElapsedTime};
-        if (pos.y < 0.0f)
-            pos.y = 0.0f;
-        if (action != State::RUNNING)
-        {
-            action = State::RUNNING;
-            atime = 0.0f;
-        }
-    }
-
-    // moving down
-    if (pge.GetKey(olc::Key::DOWN).bHeld || pge.GetKey(olc::Key::S).bHeld)
-    {
-        move = true;
-        pos += {0.0f, basespeed * fElapsedTime};
-        if (pos.y > pge.ScreenHeight())
-            pos.y = (float)pge.ScreenHeight();
-        if (action != State::RUNNING)
-        {
-            action = State::RUNNING;
-            atime = 0.0f;
-        }
-    }
-
-    // hit
-    if (pge.GetKey(olc::Key::SPACE).bHeld)
-    {
-        move = true;
-        if (action != State::HIT)
-        {
-            action = State::HIT;
-            atime = 0.0f;
-        }
-    }
-
-    // idle mode
-    if (!move && action != State::IDLE)
-    {
-        action = State::IDLE;
-        atime = 0.0f;
-    }
+        velocity.y = -basespeed; // moving up
+    else if (pge.GetKey(olc::Key::DOWN).bHeld || pge.GetKey(olc::Key::S).bHeld)
+        velocity.y = basespeed; // moving down
+    else
+        velocity.y = 0.0f;
 }
 
 void
 Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
 {
-
-    // MANAGEMENT OF USER ACTIONS
+    // MANGEMENT OF USER ACTIONS
     userKeys(pge, fElapsedTime);
+
+    // HANDLE VELOCITY
+
+    // move the reference point
+    pos += velocity * fElapsedTime;
+
+    // flip image according to velocity
+    if(velocity.x<0.0f) scale.x = -abs(scale.x);
+    if(velocity.x>0.0f) scale.x = abs(scale.x);
+
+    // position of the opposite corner
+    olc::vf2d pos2 = opposite();
+
+    // collisions with borders.+/
+
+    if (pos.x < 0.0f)
+        pos.x = 0.0f;
+    if (pos2.x > pge.ScreenWidth())
+        pos.x -= pos2.x-(float)pge.ScreenWidth();
+    if (pos.y < 0.0f)
+        pos.y = 0.0f;
+    if (pos2.y > pge.ScreenHeight())
+        pos.y -= pos2.y-(float)pge.ScreenHeight();
+           
+    // new state
+    State newstate = State::IDLE;
+
+    if (velocity.x != 0.0 || velocity.x != 0.0 )
+        newstate = State::RUNNING;
+
+    if(state != newstate)
+    {
+        atime = 0.0f;
+        state = newstate;
+    }
 
     // DRAWING PART
 
-    // choose tile according to action
-    Tile *tl = nullptr;
-    switch (action)
+    // choose tile according to state
+    
+    switch (state)
     {
     case State::RUNNING:
         tl = &(tiles->tilemap[runname]);
@@ -141,10 +111,8 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
                          {(float)(tl->ox + frame * tl->w), (float)tl->oy},
                          {(float)tl->w, (float)tl->h}, scale, olc::WHITE);
 
-    // draw reference positions
+    // DEBUG: draw reference positions
     pge.Draw(pos, olc::YELLOW);
-    olc::vf2d pos2 = pos + olc::vf2d{tl->w * std::abs(scale.x), tl->h * scale.y};
-    pge.Draw(pos2, olc::RED);
-
+    pge.Draw(opposite(), olc::RED);
     pge.DrawString(olc::vf2d{pos.x, pos2.y + 1.0f}, "atime=" + std::to_string(atime));
 }

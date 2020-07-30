@@ -6,6 +6,7 @@
 class Game;
 class Character;
 class Tiles;
+struct Tile;
 
 class CharacterScene;
 

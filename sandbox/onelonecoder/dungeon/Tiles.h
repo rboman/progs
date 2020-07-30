@@ -3,19 +3,16 @@
 
 #include "dungeon.h"
 #include "Game.h"
-
-struct Tile
-{
-    int ox, oy, w, h, ni;
-};
+#include "Tile.h"
 
 class Tiles
 {
-    float atime;    
+    float atime;
+
 public:
     std::map<std::string, Tile> tilemap;  ///< map of tiles
     std::unique_ptr<olc::Sprite> tileimg; ///< sprite/tile image
-    std::unique_ptr<olc::Decal> decal; ///< sprite/tile decal
+    std::unique_ptr<olc::Decal> decal;    ///< sprite/tile decal
 
     Tiles();
 
