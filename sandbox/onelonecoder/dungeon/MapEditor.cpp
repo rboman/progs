@@ -9,8 +9,6 @@ MapEditor::MapEditor(Tiles *_tiles)
     mapsize = {120, 80};
     offset = {20.0f, 20.0f};
 
-    floor.resize(mapsize.x * mapsize.y);
-
     floor_tiles["floor_1"] = &(tiles->tilemap["floor_1"]);
     floor_tiles["floor_2"] = &(tiles->tilemap["floor_2"]);
     floor_tiles["floor_3"] = &(tiles->tilemap["floor_3"]);
@@ -19,12 +17,41 @@ MapEditor::MapEditor(Tiles *_tiles)
     floor_tiles["floor_6"] = &(tiles->tilemap["floor_6"]);
     floor_tiles["floor_7"] = &(tiles->tilemap["floor_7"]);
     floor_tiles["floor_8"] = &(tiles->tilemap["floor_8"]);
+    floor_tiles["floor_ladder"] = &(tiles->tilemap["floor_ladder"]);
+    floor_tiles["wall_left"] = &(tiles->tilemap["wall_left"]);
+    floor_tiles["wall_mid"] = &(tiles->tilemap["wall_mid"]);
+    floor_tiles["wall_right"] = &(tiles->tilemap["wall_right"]);
+    floor_tiles["wall_banner_red"] = &(tiles->tilemap["wall_banner_red"]);
+    floor_tiles["wall_banner_blue"] = &(tiles->tilemap["wall_banner_blue"]);
+    floor_tiles["wall_banner_green"] = &(tiles->tilemap["wall_banner_green"]);
+    floor_tiles["wall_banner_yellow"] = &(tiles->tilemap["wall_banner_yellow"]);
+    floor_tiles["wall_hole_1"] = &(tiles->tilemap["wall_hole_1"]);
+    floor_tiles["wall_hole_2"] = &(tiles->tilemap["wall_hole_2"]);
+    floor_tiles["wall_goo"] = &(tiles->tilemap["wall_goo"]);
+    floor_tiles["wall_goo_base"] = &(tiles->tilemap["wall_goo_base"]);
+    floor_tiles["wall_hole"] = &(tiles->tilemap["wall_hole"]);
 
+
+    overlay_tiles["wall_top_left"] = &(tiles->tilemap["wall_top_left"]);
+    overlay_tiles["wall_top_mid"] = &(tiles->tilemap["wall_top_mid"]);
+    overlay_tiles["wall_top_right"] = &(tiles->tilemap["wall_top_right"]);
+    overlay_tiles["wall_fountain_top"] = &(tiles->tilemap["wall_fountain_top"]);
+    overlay_tiles["column_mid"] = &(tiles->tilemap["column_mid"]);
+    overlay_tiles["column_top"] = &(tiles->tilemap["column_mid"]);
+    overlay_tiles["column_base"] = &(tiles->tilemap["column_base"]);
+    overlay_tiles["wall_side_top_left"] = &(tiles->tilemap["wall_side_top_left"]);
+    overlay_tiles["wall_side_mid_left"] = &(tiles->tilemap["wall_side_mid_left"]);
+    overlay_tiles["wall_side_front_left"] = &(tiles->tilemap["wall_side_front_left"]);
+    overlay_tiles["wall_side_top_right"] = &(tiles->tilemap["wall_side_top_right"]);
+    overlay_tiles["wall_side_mid_right"] = &(tiles->tilemap["wall_side_mid_right"]);
+    overlay_tiles["wall_side_front_right"] = &(tiles->tilemap["wall_side_front_right"]);
+
+
+    // INITIAL MAP
+    floor.resize(mapsize.x * mapsize.y);
     for (auto &t : floor)
         t = floor_tiles["floor_1"];
-
     // put random floor tiles
-
     for (int i = 0; i < floor.size() / 10; ++i)
     {
         int posx = rand() % mapsize.x;
@@ -34,14 +61,14 @@ MapEditor::MapEditor(Tiles *_tiles)
         auto it = floor_tiles.begin();
         for (int j = 0; j < type; ++j)
             ++it;
-
-        //std::cout <<posx << "," << posy << ", " << posx*mapsize.x + posy << "<" <<  mapsize.x*mapsize.y    << std::endl;
-
         floor[posy * mapsize.x + posx] = it->second;
     }
-    //std::cout << "done." << std::endl;
+    // initialize the foreground layer (overlay)
+    overlay.resize(mapsize.x * mapsize.y);
+    for (auto &t : overlay)
+        t = nullptr;
 
-    brush = nullptr;
+    brush = nullptr; // current brush is void
 }
 
 MapEditor::~MapEditor()
@@ -82,7 +109,7 @@ MapEditor::update(olc::PixelGameEngine &pge, float fElapsedTime)
     if (i2 > mapsize.y)
         i2 = mapsize.y;
 
-    // draw grid
+    // draw a grid
     for (int i = i1; i < i2; ++i)
         for (int j = j1; j < j2; ++j)
         {
@@ -90,7 +117,7 @@ MapEditor::update(olc::PixelGameEngine &pge, float fElapsedTime)
             pge.DrawRect( pos, {w,h}, olc::VERY_DARK_GREY);
         }
 
-    // draw floor
+    // draw the floor
     for (int i = i1; i < i2; ++i)
         for (int j = j1; j < j2; ++j)
         {
@@ -102,8 +129,22 @@ MapEditor::update(olc::PixelGameEngine &pge, float fElapsedTime)
             }
         }
 
-    // DRAW TILESET
-    olc::vi2d winsz = {16 + 20, pge.ScreenHeight()}; // tileset window
+    // draw the overlay
+    // for (int i = i1; i < i2; ++i)
+    //     for (int j = j1; j < j2; ++j)
+    //     {
+    //         Tile *t = overlay[i * mapsize.x + j];
+    //         if (t)
+    //         {
+    //             olc::vi2d pos = {(int)(offset.x + t->w * j), (int)(offset.y + t->h * i)};
+    //             pge.DrawPartialSprite(pos, tiles->tileimg.get(), {t->ox, t->oy}, {t->w, t->h});
+    //         }
+    //     }
+
+
+
+    // DRAW TILESET WINDOW
+    olc::vi2d winsz = {2*16 + 20, pge.ScreenHeight()}; // tileset window
     pge.FillRect({0, 0}, winsz, olc::BLACK);         // window background
 
     olc::vi2d tilpos = {10, 20};
@@ -116,6 +157,8 @@ MapEditor::update(olc::PixelGameEngine &pge, float fElapsedTime)
                               {til->ox, til->oy}, {til->w, til->h});
         ++k;
     }
+
+    pge.DrawLine( {winsz.x, 0}, {winsz.x, winsz.y}, olc::VERY_DARK_YELLOW);
 
     // MOUSE CURSOR
 
