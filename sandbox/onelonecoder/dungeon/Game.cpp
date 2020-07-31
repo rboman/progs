@@ -23,9 +23,14 @@ Game::~Game()
 bool
 Game::OnUserCreate()
 {
+    // init random numbers
+    srand (static_cast <unsigned> (time(0)));
+
+    // load tiles
     tiles = new Tiles();
     tiles->load();
 
+    // create the scenes
     charscene = new CharacterScene(tiles);
 
     return true;

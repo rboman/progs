@@ -36,7 +36,12 @@ public:
 
 
     void update(olc::PixelGameEngine &pge, float fElapsedTime);
+
+    // velocity management
     void userKeys(olc::PixelGameEngine &pge, float fElapsedTime);
+    void bounce(olc::PixelGameEngine &pge, float fElapsedTime);
+
+    // animation
     void set_state(State newstate);
     void set_tiles(std::string const &_idlename,
               std::string const &_runname, std::string const &_hitname);

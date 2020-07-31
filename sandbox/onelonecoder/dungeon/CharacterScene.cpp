@@ -47,6 +47,13 @@ CharacterScene::CharacterScene(Tiles *tiles)
     monster = new Character(*characters["big_demon"]);
     monster->pos = {200.0f, 200.0f};
     monster->basespeed = 150.f;
+
+    // behaviour
+
+    monster->velocity = {monster->basespeed, monster->basespeed};
+    btimet = 0.f;
+    btime = 0.f;
+
 }
 
 CharacterScene::~CharacterScene()
@@ -73,11 +80,32 @@ CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
         message = "hero changed to " + heroit->first;
     }
 
+    // MONSTER BEHAVIOUR
+    btime += fElapsedTime;
+
+    if(btime>btimet) // change behaviour
+    {
+        int vx = rand() % 3 - 1;
+        int vy = rand() % 3 - 1;
+        monster->velocity = {monster->basespeed*vx, monster->basespeed*vy};
+        btimet = 1+ rand() % 10;
+        btime = 0.f;
+        message = std::to_string(vx)+","+std::to_string(vy)+ " for "+std::to_string(btimet);
+    }
+
+
+    // MANGEMENT OF USER ACTIONS
+    hero->userKeys(pge, fElapsedTime);
+    monster->bounce(pge, fElapsedTime);
+
+    // DRAW
     pge.Clear(olc::BLACK);
     hero->update(pge, fElapsedTime);
     monster->update(pge, fElapsedTime);
 
-    // debug
+    // TEXT
+
+    // info on top of screen
     TextWindow twin(pge);
     twin.print("<ESC> to quit", HJustify::CENTRE);
     twin.print("use Z,Q,S,D to move the hero", HJustify::CENTRE);

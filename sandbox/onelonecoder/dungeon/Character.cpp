@@ -75,27 +75,43 @@ Character::change(Character const &chr)
 }
 
 void
+Character::bounce(olc::PixelGameEngine &pge, float fElapsedTime)
+{
+    olc::vf2d oldpos = pos;
+
+    // predictor
+    pos += velocity * fElapsedTime;
+
+    // position of the lowerright corner
+    olc::vf2d pos2 = lowerright();
+
+    // test collisions with borders and swap velocity is required
+    if (pos.x < 0.0f)
+        velocity.x = -velocity.x;
+    if (pos2.x > pge.ScreenWidth())
+        velocity.x = -velocity.x;
+    if (pos.y < 0.0f)
+        velocity.y = -velocity.y;
+    if (pos2.y > pge.ScreenHeight())
+        velocity.y = -velocity.y;
+
+    // reset current pos
+    pos = oldpos;
+}
+
+
+void
 Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
 {
-    // MANGEMENT OF USER ACTIONS
-    userKeys(pge, fElapsedTime);
-
     // HANDLE VELOCITY
 
     // move the reference point
     pos += velocity * fElapsedTime;
 
-    // flip image according to velocity
-    if (velocity.x < 0.0f)
-        scale.x = -abs(scale.x);
-    if (velocity.x > 0.0f)
-        scale.x = abs(scale.x);
-
     // position of the lowerright corner
     olc::vf2d pos2 = lowerright();
 
     // collisions with borders.
-
     if (pos.x < 0.0f)
         pos.x = 0.0f;
     if (pos2.x > pge.ScreenWidth())
@@ -115,6 +131,12 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
         set_state(newstate);
 
     // DRAWING PART
+
+    // flip image according to velocity
+    if (velocity.x < 0.0f)
+        scale.x = -abs(scale.x);
+    if (velocity.x > 0.0f)
+        scale.x = abs(scale.x);
 
     // if decal is x-inverted, the drawing ref point is the right corner
     olc::vf2d dpos = pos;

@@ -14,6 +14,10 @@ class CharacterScene
 
     std::string message;
 
+    // MONSTER BEHAVIOUR
+    float btime;  // behaviour time
+    float btimet; // total behaviour time
+
 public:
     CharacterScene(Tiles *tiles);
     ~CharacterScene();
