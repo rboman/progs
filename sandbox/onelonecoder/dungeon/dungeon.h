@@ -6,8 +6,9 @@
 class Game;
 class Character;
 class Tiles;
-struct Tile;
+class Tile;
 
 class CharacterScene;
+class MapEditor;
 
 #endif // DUNGEON_H

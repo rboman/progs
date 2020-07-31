@@ -3,9 +3,11 @@
 
 #include "dungeon.h"
 
-struct Tile
+class Tile
 {
+public:
     int ox, oy, w, h, ni;
+    
 };
 
 #endif // TILE_H

@@ -2,13 +2,15 @@
 #include "Game.h"
 #include "Tiles.h"
 #include "CharacterScene.h"
+#include "MapEditor.h"
 
 Game::Game()
 {
     sAppName = "Dungeon";
     tiles = nullptr;
     charscene = nullptr;
-    scene = Scene::CHARACTER;
+    mapeditor = nullptr;
+    scene = Scene::MAPEDITOR;
 }
 
 Game::~Game()
@@ -18,6 +20,8 @@ Game::~Game()
         delete tiles;
     if (charscene)
         delete charscene;
+    if (mapeditor)
+        delete mapeditor;
 }
 
 bool
@@ -32,7 +36,7 @@ Game::OnUserCreate()
 
     // create the scenes
     charscene = new CharacterScene(tiles);
-
+    mapeditor = new MapEditor(tiles);
     return true;
 }
 
@@ -59,8 +63,10 @@ Game::OnUserUpdate(float fElapsedTime)
     case Scene::CHARACTER:
         charscene->update(*this, fElapsedTime);
         break;
-    case Scene::TILES:
     case Scene::MAPEDITOR:
+        mapeditor->update(*this, fElapsedTime);
+        break;
+    case Scene::TILES:
     default:
         tiles->update(*this, fElapsedTime);
     }

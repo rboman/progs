@@ -19,6 +19,7 @@ class Game : public olc::PixelGameEngine
     Scene scene;
 
     CharacterScene *charscene;
+    MapEditor *mapeditor;
 
 public:
     Game();
