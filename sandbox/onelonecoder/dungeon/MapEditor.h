@@ -10,6 +10,7 @@ class MapEditor
 
     olc::vi2d mapsize;
     std::vector<Tile *> floor;
+    olc::vf2d offset;
 
 
     std::map<std::string, Tile *> floor_tiles;

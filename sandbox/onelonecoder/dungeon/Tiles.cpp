@@ -56,7 +56,7 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
     // draw the tile image
     pge.DrawSprite(0, 0, tileimg.get());
 
-    // get mouse ccordinates
+    // get mouse coordinates
     int mx = pge.GetMouseX();
     int my = pge.GetMouseY();
 
