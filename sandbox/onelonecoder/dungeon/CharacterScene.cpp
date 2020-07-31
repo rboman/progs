@@ -10,13 +10,15 @@
 
 CharacterScene::CharacterScene(Tiles *tiles)
 {
+    message = "press <A> to change the hero";
+
     // build character map
     characters["elf_f"] = new Character(tiles, "elf_f_idle_anim", "elf_f_run_anim", "elf_f_hit_anim");
     characters["elf_m"] = new Character(tiles, "elf_m_idle_anim", "elf_m_run_anim", "elf_m_hit_anim");
-    characters["knight_f"] = new Character( tiles, "knight_f_idle_anim", "knight_f_run_anim", "knight_f_hit_anim");
-    characters["knight_m"] = new Character( tiles, "knight_m_idle_anim", "knight_m_run_anim", "knight_m_hit_anim");
+    characters["knight_f"] = new Character(tiles, "knight_f_idle_anim", "knight_f_run_anim", "knight_f_hit_anim");
+    characters["knight_m"] = new Character(tiles, "knight_m_idle_anim", "knight_m_run_anim", "knight_m_hit_anim");
     characters["wizzard_f"] = new Character(tiles, "wizzard_f_idle_anim", "wizzard_f_run_anim", "wizzard_f_hit_anim");
-    characters["wizzard_m"] = new Character(tiles, "wizzard_m_idle_anim", "wizzard_m_run_anim","wizzard_m_hit_anim");
+    characters["wizzard_m"] = new Character(tiles, "wizzard_m_idle_anim", "wizzard_m_run_anim", "wizzard_m_hit_anim");
     characters["lizzard_f"] = new Character(tiles, "lizard_f_idle_anim", "lizard_f_run_anim", "lizard_f_hit_anim");
     characters["lizzard_m"] = new Character(tiles, "lizard_m_idle_anim", "lizard_m_run_anim", "lizard_m_hit_anim");
     characters["big_zombie"] = new Character(tiles, "big_zombie_idle_anim", "big_zombie_run_anim", "big_zombie_idle_anim");
@@ -38,7 +40,10 @@ CharacterScene::CharacterScene(Tiles *tiles)
     characters["chort"] = new Character(tiles, "chort_idle_anim", "chort_run_anim", "chort_idle_anim");
 
     // choose 1 hero and 1 monster
-    hero = new Character(*characters["elf_f"]);
+
+    heroit = characters.find("elf_f");
+    hero = new Character(*heroit->second);
+
     monster = new Character(*characters["big_demon"]);
     monster->pos = {200.0f, 200.0f};
     monster->basespeed = 150.f;
@@ -58,6 +63,16 @@ CharacterScene::~CharacterScene()
 void
 CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
 {
+    // change hero if A is pressed
+    if (pge.GetKey(olc::A).bPressed)
+    {
+        ++heroit;
+        if (heroit == characters.end())
+            heroit = characters.begin();
+        hero->change(*heroit->second);
+        message = "hero changed to " + heroit->first;
+    }
+
     pge.Clear(olc::BLACK);
     hero->update(pge, fElapsedTime);
     monster->update(pge, fElapsedTime);
@@ -67,8 +82,8 @@ CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
     twin.print("<ESC> to quit", HJustify::CENTRE);
     twin.print("use Z,Q,S,D to move the hero", HJustify::CENTRE);
 
+    // debug msg
     TextWindow win2 = twin.subwin(2, 500, HJustify::RIGHT, VJustify::BOTTOM);
     win2.clear(olc::VERY_DARK_YELLOW);
-    win2.print("fElapsedTime = " + std::to_string(fElapsedTime),
-               HJustify::CENTRE);
+    win2.print(message, HJustify::CENTRE);
 }

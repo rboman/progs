@@ -3,16 +3,15 @@
 #include "Tiles.h"
 #include "TextWindow.h"
 
-Character::Character(Tiles *_tiles, std::string const &_idlename, std::string const &_runname,
-                     std::string const &_hitname)
-    : tiles(_tiles), idlename(_idlename), runname(_runname), hitname(_hitname)
+Character::Character(Tiles *_tiles, std::string const &idlename, std::string const &runname,
+                     std::string const &hitname)
+    : tiles(_tiles)
 {
     pos = {100.0f, 100.0f};
     scale = {3.0f, 3.0f};
-    atime = 0.0f;
-    state = State::IDLE;
     basespeed = 200.0f;
-    tl = &(tiles->tilemap[idlename]);
+    set_tiles(idlename, runname, hitname);
+    set_state(State::IDLE);
 }
 
 /// modify the state of the character according to user keys
@@ -36,6 +35,46 @@ Character::userKeys(olc::PixelGameEngine &pge, float fElapsedTime)
 }
 
 void
+Character::set_state(State newstate)
+{
+    state = newstate;
+    // choose current tile according to state
+    switch (newstate)
+    {
+    case State::RUNNING:
+        tl = tile_run;
+        break;
+    case State::HIT:
+        tl = tile_hit;
+        break;
+    case State::IDLE:
+    default:
+        tl = tile_idle;
+        break;
+    }
+    // reset anim counter
+    atime = 0.0f;
+}
+
+void
+Character::set_tiles(std::string const &idlename, std::string const &runname,
+                     std::string const &hitname)
+{
+    tile_idle = &(tiles->tilemap[idlename]);
+    tile_run = &(tiles->tilemap[runname]);
+    tile_hit = &(tiles->tilemap[hitname]);
+}
+
+void
+Character::change(Character const &chr)
+{
+    tile_idle = chr.tile_idle;
+    tile_run = chr.tile_run;
+    tile_hit = chr.tile_hit;
+    set_state(state);
+}
+
+void
 Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
 {
     // MANGEMENT OF USER ACTIONS
@@ -47,54 +86,37 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
     pos += velocity * fElapsedTime;
 
     // flip image according to velocity
-    if(velocity.x<0.0f) scale.x = -abs(scale.x);
-    if(velocity.x>0.0f) scale.x = abs(scale.x);
+    if (velocity.x < 0.0f)
+        scale.x = -abs(scale.x);
+    if (velocity.x > 0.0f)
+        scale.x = abs(scale.x);
 
-    // position of the opposite corner
-    olc::vf2d pos2 = opposite();
+    // position of the lowerright corner
+    olc::vf2d pos2 = lowerright();
 
-    // collisions with borders.+/
+    // collisions with borders.
 
     if (pos.x < 0.0f)
         pos.x = 0.0f;
     if (pos2.x > pge.ScreenWidth())
-        pos.x -= pos2.x-(float)pge.ScreenWidth();
+        pos.x = std::round(pos.x - pos2.x + (float)pge.ScreenWidth());
     if (pos.y < 0.0f)
         pos.y = 0.0f;
     if (pos2.y > pge.ScreenHeight())
-        pos.y -= pos2.y-(float)pge.ScreenHeight();
-           
+        pos.y = std::round(pos.y - pos2.y + (float)pge.ScreenHeight());
+
     // new state
     State newstate = State::IDLE;
 
-    if (velocity.x != 0.0 || velocity.x != 0.0 )
+    if (velocity.x != 0.0 || velocity.x != 0.0)
         newstate = State::RUNNING;
 
-    if(state != newstate)
-    {
-        atime = 0.0f;
-        state = newstate;
-    }
+    if (state != newstate)
+        set_state(newstate);
 
     // DRAWING PART
 
-    // choose tile according to state
-    
-    switch (state)
-    {
-    case State::RUNNING:
-        tl = &(tiles->tilemap[runname]);
-        break;
-    case State::HIT:
-        tl = &(tiles->tilemap[hitname]);
-        break;
-    case State::IDLE:
-    default:
-        tl = &(tiles->tilemap[idlename]);
-        break;
-    }
-
-    // if decal is x-inverted, the ref point is the right corner
+    // if decal is x-inverted, the drawing ref point is the right corner
     olc::vf2d dpos = pos;
     if (scale.x < 0.0f)
         dpos.x -= tl->w * scale.x;
@@ -113,6 +135,7 @@ Character::update(olc::PixelGameEngine &pge, float fElapsedTime)
 
     // DEBUG: draw reference positions
     pge.Draw(pos, olc::YELLOW);
-    pge.Draw(opposite(), olc::RED);
-    pge.DrawString(olc::vf2d{pos.x, pos2.y + 1.0f}, "atime=" + std::to_string(atime));
+    pge.Draw(lowerright(), olc::RED);
+    pge.DrawString(olc::vf2d{pos.x - 50.f, pos2.y + 1.0f}, "atime=" + std::to_string(atime));
+    pge.DrawString(olc::vf2d{pos.x - 50.f, pos2.y + 10.0f}, "pos2=" + std::to_string(pos2.x));
 }

@@ -8,9 +8,11 @@ class CharacterScene
 {
     Character *hero;
     Character *monster;
-    
 
     std::map<std::string, Character*> characters;
+    std::map<std::string, Character*>::iterator heroit;
+
+    std::string message;
 
 public:
     CharacterScene(Tiles *tiles);
