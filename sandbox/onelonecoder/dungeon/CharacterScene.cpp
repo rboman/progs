@@ -53,7 +53,6 @@ CharacterScene::CharacterScene(Tiles *tiles)
     monster->velocity = {monster->basespeed, monster->basespeed};
     btimet = 0.f;
     btime = 0.f;
-
 }
 
 CharacterScene::~CharacterScene()
@@ -83,16 +82,20 @@ CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
     // MONSTER BEHAVIOUR
     btime += fElapsedTime;
 
-    if(btime>btimet) // change behaviour
+    if (btime > btimet) // change behaviour
     {
-        int vx = rand() % 3 - 1;
-        int vy = rand() % 3 - 1;
-        monster->velocity = {monster->basespeed*vx, monster->basespeed*vy};
-        btimet = 1+ rand() % 10;
-        btime = 0.f;
-        message = std::to_string(vx)+","+std::to_string(vy)+ " for "+std::to_string(btimet);
-    }
+        int vx=0, vy=0;
+        if (monster->velocity.x == 0.0 && monster->velocity.x == 0.0)
+        {
+            vx = rand() % 3 - 1;
+            vy = rand() % 3 - 1;
+        }
+        monster->velocity = {monster->basespeed * vx, monster->basespeed * vy};
 
+        btimet = 1 + rand() % 5;
+        btime = 0.f;
+        message = std::to_string(vx) + "," + std::to_string(vy) + " for " + std::to_string(btimet);
+    }
 
     // MANGEMENT OF USER ACTIONS
     hero->userKeys(pge, fElapsedTime);
