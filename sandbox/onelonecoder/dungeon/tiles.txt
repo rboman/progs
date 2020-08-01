@@ -22,10 +22,10 @@ wall_banner_yellow 32 48 16 16 1
 
 column_top 80 80 16 16 1
 column_mid 80 96 16 16 1
-coulmn_base 80 112 16 16 1
+column_base 80 112 16 16 1
 wall_column_top 96 80 16 16 1
 wall_column_mid 96 96 16 16 1
-wall_coulmn_base 96 112 16 16 1
+wall_column_base 96 112 16 16 1
 
 wall_goo 64 80 16 16 1
 wall_goo_base 64 96 16 16 1
@@ -59,11 +59,11 @@ wall_corner_front_left 32 160 16 16 1
 wall_corner_front_right 48 160 16 16 1
 
 wall_inner_corner_l_top_left 80 128 16 16 1
-wall_inner_corner_l_top_rigth 64 128 16 16 1
+wall_inner_corner_l_top_right 64 128 16 16 1
 wall_inner_corner_mid_left 80 144 16 16 1
-wall_inner_corner_mid_rigth 64 144 16 16 1
+wall_inner_corner_mid_right 64 144 16 16 1
 wall_inner_corner_t_top_left 80 160 16 16 1
-wall_inner_corner_t_top_rigth 64 160 16 16 1
+wall_inner_corner_t_top_right 64 160 16 16 1
 
 edge 96 128 16 16 1
 hole 96 144 16 16 1
@@ -71,7 +71,7 @@ hole 96 144 16 16 1
 doors_all 16 221 64 35 1
 doors_frame_left 16 224 16 32 1
 doors_frame_top 32 221 32 3 1
-doors_frame_righ 63 224 16 32 1
+doors_frame_right 64 224 16 32 1
 doors_leaf_closed 32 224 32 32 1
 doors_leaf_open 80 224 32 32 1
 
@@ -187,13 +187,13 @@ knight_m_idle_anim 128 100 16 28 4
 knight_m_run_anim 192 100 16 28 4
 knight_m_hit_anim 256 100 16 28 1
 
-wizzard_f_idle_anim 128 132 16 28 4
-wizzard_f_run_anim 192 132 16 28 4
-wizzard_f_hit_anim 256 132 16 28 1
+wizard_f_idle_anim 128 132 16 28 4
+wizard_f_run_anim 192 132 16 28 4
+wizard_f_hit_anim 256 132 16 28 1
 
-wizzard_m_idle_anim 128 164 16 28 4
-wizzard_m_run_anim 192 164 16 28 4
-wizzard_m_hit_anim 256 164 16 28 1
+wizard_m_idle_anim 128 164 16 28 4
+wizard_m_run_anim 192 164 16 28 4
+wizard_m_hit_anim 256 164 16 28 1
 
 lizard_f_idle_anim 128 196 16 28 4
 lizard_f_run_anim 192 196 16 28 4
