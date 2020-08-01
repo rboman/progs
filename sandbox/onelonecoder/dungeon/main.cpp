@@ -8,7 +8,7 @@ int
 main()
 {
     Game demo;
-    if (demo.Construct(512, 512, 2, 2))
+    if (demo.Construct(800, 600, 2, 2))
         demo.Start();
     return 0;
 }
