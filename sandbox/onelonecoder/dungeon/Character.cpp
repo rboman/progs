@@ -60,9 +60,16 @@ void
 Character::set_tiles(std::string const &idlename, std::string const &runname,
                      std::string const &hitname)
 {
-    tile_idle = &(tiles->tilemap[idlename]);
-    tile_run = &(tiles->tilemap[runname]);
-    tile_hit = &(tiles->tilemap[hitname]);
+    try
+    {    
+        tile_idle = &(tiles->tilemap.at(idlename));
+        tile_run = &(tiles->tilemap.at(runname));
+        tile_hit = &(tiles->tilemap.at(hitname));
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "EXCEPTION: " << e.what() << std::endl;
+    }
 }
 
 void

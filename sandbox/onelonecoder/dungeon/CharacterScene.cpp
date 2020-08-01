@@ -3,10 +3,9 @@
 #include "Character.h"
 #include "TextWindow.h"
 
-// class Hero
-// {
 
-// }
+
+
 
 CharacterScene::CharacterScene(Tiles *tiles)
 {
@@ -17,10 +16,10 @@ CharacterScene::CharacterScene(Tiles *tiles)
     characters["elf_m"] = new Character(tiles, "elf_m_idle_anim", "elf_m_run_anim", "elf_m_hit_anim");
     characters["knight_f"] = new Character(tiles, "knight_f_idle_anim", "knight_f_run_anim", "knight_f_hit_anim");
     characters["knight_m"] = new Character(tiles, "knight_m_idle_anim", "knight_m_run_anim", "knight_m_hit_anim");
-    characters["wizzard_f"] = new Character(tiles, "wizzard_f_idle_anim", "wizzard_f_run_anim", "wizzard_f_hit_anim");
-    characters["wizzard_m"] = new Character(tiles, "wizzard_m_idle_anim", "wizzard_m_run_anim", "wizzard_m_hit_anim");
-    characters["lizzard_f"] = new Character(tiles, "lizard_f_idle_anim", "lizard_f_run_anim", "lizard_f_hit_anim");
-    characters["lizzard_m"] = new Character(tiles, "lizard_m_idle_anim", "lizard_m_run_anim", "lizard_m_hit_anim");
+    characters["wizard_f"] = new Character(tiles, "wizard_f_idle_anim", "wizard_f_run_anim", "wizard_f_hit_anim");
+    characters["wizard_m"] = new Character(tiles, "wizard_m_idle_anim", "wizard_m_run_anim", "wizard_m_hit_anim");
+    characters["lizard_f"] = new Character(tiles, "lizard_f_idle_anim", "lizard_f_run_anim", "lizard_f_hit_anim");
+    characters["lizard_m"] = new Character(tiles, "lizard_m_idle_anim", "lizard_m_run_anim", "lizard_m_hit_anim");
     characters["big_zombie"] = new Character(tiles, "big_zombie_idle_anim", "big_zombie_run_anim", "big_zombie_idle_anim");
     characters["ogre"] = new Character(tiles, "ogre_idle_anim", "ogre_run_anim", "ogre_idle_anim");
     characters["big_demon"] = new Character(tiles, "big_demon_idle_anim", "big_demon_run_anim", "big_demon_idle_anim");
@@ -44,7 +43,7 @@ CharacterScene::CharacterScene(Tiles *tiles)
     heroit = characters.find("elf_f");
     hero = new Character(*heroit->second);
 
-    monster = new Character(*characters["big_demon"]);
+    monster = new Character(*characters.at("big_demon"));
     monster->pos = {200.0f, 200.0f};
     monster->basespeed = 150.f;
 
