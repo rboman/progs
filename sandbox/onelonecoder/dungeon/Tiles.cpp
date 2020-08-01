@@ -57,7 +57,19 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
     olc::vd2d origin = {5, 30};
 
     // draw the tile image
+    int gridsz = 8;
+
+    pge.FillRect(origin.x, origin.y, tileimg.get()->width, tileimg.get()->height, olc::BLACK);
+    for (int i = 0; i < tileimg.get()->width / gridsz; ++i)
+        for (int j = 0; j < tileimg.get()->height / gridsz; ++j)
+        {
+            olc::Pixel col;
+            if ((i + j) % 2)
+                pge.FillRect(origin.x + j * gridsz, origin.y + i * gridsz, gridsz, gridsz, olc::VERY_DARK_GREY);
+        }
+    pge.SetPixelMode(olc::Pixel::ALPHA);
     pge.DrawSprite(origin.x, origin.y, tileimg.get());
+    pge.SetPixelMode(olc::Pixel::NORMAL);
 
     // get mouse coordinates
     int mx = pge.GetMouseX();
@@ -88,20 +100,21 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
         // draw floating string box
         std::vector<std::string> text;
         text.push_back(*in_name);
-        text.push_back("origin="+std::to_string(val.ox)+"x"+std::to_string(val.oy));
-        text.push_back("size="+std::to_string(val.h)+"x"+std::to_string(val.w));
+        text.push_back("origin=" + std::to_string(val.ox) + "x" + std::to_string(val.oy));
+        text.push_back("size=" + std::to_string(val.h) + "x" + std::to_string(val.w));
         int charSz = 8;
         int bord = 2;
         int charsep = 2;
         int posx = mx - bord;
         int posy = my - bord + charSz;
 
-        int wmax=0;
-        for(auto &s : text)
-            if (s.length() >wmax) wmax=s.length();
+        int wmax = 0;
+        for (auto &s : text)
+            if (s.length() > wmax)
+                wmax = s.length();
 
         int w = wmax * charSz + 2 * bord;
-        int h = charSz * text.size() + 2 * bord + text.size()*charsep;
+        int h = charSz * text.size() + 2 * bord + text.size() * charsep;
         if (posx + w > pge.ScreenWidth())
             posx = pge.ScreenWidth() - w;
         if (posy + h > pge.ScreenHeight())
@@ -109,8 +122,8 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
         pge.SetPixelMode(olc::Pixel::ALPHA);
         pge.FillRect(posx, posy, w, h, olc::Pixel(0, 0, 0, 170));
         pge.SetPixelMode(olc::Pixel::NORMAL);
-        for(int i=0; i<text.size(); ++i)
-            pge.DrawString(posx + bord, posy + bord + i*(charSz+charsep), text[i], olc::WHITE);
+        for (int i = 0; i < text.size(); ++i)
+            pge.DrawString(posx + bord, posy + bord + i * (charSz + charsep), text[i], olc::WHITE);
 
         atime = atime + 10 * fElapsedTime;
         int ni = val.ni;
@@ -131,10 +144,21 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
         atime = 0.0;
     }
 
+    // relative mouse position in the tile map
     int rmx = mx - origin.x;
     int rmy = my - origin.y;
+    // nearest grid point
+    int gx = std::round((float)rmx / gridsz) * gridsz;
+    int gy = std::round((float)rmy / gridsz) * gridsz;
+    int crosswidth = 1;
+
     if (rmx >= 0 && rmx < tileimg.get()->width && rmy >= 0 && rmy < tileimg.get()->height)
-        message = std::to_string(rmx) + "," + std::to_string(rmy);
+    {
+        pge.DrawLine({(int)origin.x + gx - crosswidth, (int)origin.y + gy}, {(int)origin.x + gx + crosswidth, (int)origin.y + gy}, olc::YELLOW);
+        pge.DrawLine({(int)origin.x + gx, (int)origin.y + gy - crosswidth}, {(int)origin.x + gx, (int)origin.y + gy + crosswidth}, olc::YELLOW);
+
+        message = "position = " + std::to_string(rmx) + "," + std::to_string(rmy) + " - nearest grid point = " + std::to_string(gx) + "," + std::to_string(gy);
+    }
     else
         message = "";
 
