@@ -1,4 +1,5 @@
 #include "Tiles.h"
+#include "TextWindow.h"
 
 Tiles::Tiles() : atime(0.0f) {}
 
@@ -51,44 +52,56 @@ void
 Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
 {
     // Erase previous frame
-    pge.Clear(olc::BLACK);
+    pge.Clear(olc::BLUE);
+
+    olc::vd2d origin = {5, 30};
 
     // draw the tile image
-    pge.DrawSprite(0, 0, tileimg.get());
+    pge.DrawSprite(origin.x, origin.y, tileimg.get());
 
     // get mouse coordinates
     int mx = pge.GetMouseX();
     int my = pge.GetMouseY();
 
     // draw all the tiles data
-    std::string const *in = nullptr;
+    std::string const *in_name = nullptr;
     for (auto const &[key, val] : tilemap)
     {
-        pge.DrawRect(val.ox, val.oy, val.w, val.h, olc::WHITE);
+        pge.DrawRect(origin.x + val.ox, origin.y + val.oy, val.w, val.h, olc::WHITE);
         // std::cout << key << ':' << val.ox << ", " << val.oy << ", " << val.w
         //           << ", " << val.h << ", " << val.ni << '\n';
-        if (mx > val.ox && mx < val.ox + val.w && my > val.oy &&
-            my < val.oy + val.h)
+        if (mx > origin.x + val.ox && mx < origin.x + val.ox + val.w &&
+            my > origin.y + val.oy && my < origin.y + val.oy + val.h)
         {
-            in = &key;
+            in_name = &key;
         }
     }
 
-    if (in)
+    if (in_name)
     {
         // draw anim boxes
-        Tile &val = tilemap[*in];
+        Tile &val = tilemap[*in_name];
         for (int i = 0; i < val.ni; ++i)
-            pge.DrawRect(val.ox + i * val.w, val.oy, val.w, val.h,
+            pge.DrawRect(origin.x + val.ox + i * val.w, origin.y + val.oy, val.w, val.h,
                          olc::DARK_RED);
 
-        // draw string box
-        int charSz = 9;
+        // draw floating string box
+        std::vector<std::string> text;
+        text.push_back(*in_name);
+        text.push_back("origin="+std::to_string(val.ox)+"x"+std::to_string(val.oy));
+        text.push_back("size="+std::to_string(val.h)+"x"+std::to_string(val.w));
+        int charSz = 8;
         int bord = 2;
+        int charsep = 2;
         int posx = mx - bord;
         int posy = my - bord + charSz;
-        int w = (int)in->length() * charSz + 2 * bord;
-        int h = charSz + 2 * bord;
+
+        int wmax=0;
+        for(auto &s : text)
+            if (s.length() >wmax) wmax=s.length();
+
+        int w = wmax * charSz + 2 * bord;
+        int h = charSz * text.size() + 2 * bord + text.size()*charsep;
         if (posx + w > pge.ScreenWidth())
             posx = pge.ScreenWidth() - w;
         if (posy + h > pge.ScreenHeight())
@@ -96,16 +109,19 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
         pge.SetPixelMode(olc::Pixel::ALPHA);
         pge.FillRect(posx, posy, w, h, olc::Pixel(0, 0, 0, 170));
         pge.SetPixelMode(olc::Pixel::NORMAL);
-        pge.DrawString(posx + bord, posy + bord, *in, olc::WHITE);
+        for(int i=0; i<text.size(); ++i)
+            pge.DrawString(posx + bord, posy + bord + i*(charSz+charsep), text[i], olc::WHITE);
 
-        atime = atime + fElapsedTime;
+        atime = atime + 10 * fElapsedTime;
         int ni = val.ni;
-        int frame = int(atime * 10) % ni;
+        int frame = int(atime) % ni;
+        if (atime > ni)
+            atime -= ni;
 
-        // draw sprite
+        // draw animated sprite
         int scale = 3;
         int px = pge.ScreenWidth() - scale * val.w - 10;
-        int py = pge.ScreenHeight() - scale * val.h - 10;
+        int py = pge.ScreenHeight() - scale * val.h - 50;
 
         pge.DrawPartialSprite(px, py, tileimg.get(), val.ox + frame * val.w,
                               val.oy, val.w, val.h, scale);
@@ -114,4 +130,23 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
     {
         atime = 0.0;
     }
+
+    int rmx = mx - origin.x;
+    int rmy = my - origin.y;
+    if (rmx >= 0 && rmx < tileimg.get()->width && rmy >= 0 && rmy < tileimg.get()->height)
+        message = std::to_string(rmx) + "," + std::to_string(rmy);
+    else
+        message = "";
+
+    // DEBUG
+
+    // info on top of screen
+    TextWindow twin(pge);
+    twin.print("TILE INSPECTOR", HJustify::CENTRE);
+    twin.print("<ESC> to quit", HJustify::CENTRE);
+
+    // debug msg
+    TextWindow win2 = twin.subwin(2, 500, HJustify::RIGHT, VJustify::BOTTOM);
+    win2.clear(olc::VERY_DARK_BLUE);
+    win2.print(message, HJustify::CENTRE);
 }

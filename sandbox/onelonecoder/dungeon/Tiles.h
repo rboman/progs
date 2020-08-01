@@ -8,6 +8,7 @@
 class Tiles
 {
     float atime;
+    std::string message;
 
 public:
     std::map<std::string, Tile> tilemap;  ///< map of tiles
