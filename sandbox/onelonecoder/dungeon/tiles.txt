@@ -202,3 +202,10 @@ lizard_f_hit_anim 256 196 16 28 1
 lizard_m_idle_anim 128 228 16 28 4
 lizard_m_run_anim 192 228 16 28 4
 lizard_m_hit_anim 256 228 16 28 1
+
+button_red_anim 16 192 16 16 2
+button_blue_anim 48 192 16 16 2
+switch_anim 80 192 16 16 2  
+
+angel_idle_anim 368 368 16 16 4
+angel_run_anim 432 368 16 16 4

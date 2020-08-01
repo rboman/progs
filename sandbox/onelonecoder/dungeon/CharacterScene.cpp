@@ -37,6 +37,7 @@ CharacterScene::CharacterScene(Tiles *tiles)
     characters["necromancer"] = new Character(tiles, "necromancer_run_anim", "necromancer_run_anim", "necromancer_run_anim");
     characters["wogol"] = new Character(tiles, "wogol_idle_anim", "wogol_run_anim", "wogol_idle_anim");
     characters["chort"] = new Character(tiles, "chort_idle_anim", "chort_run_anim", "chort_idle_anim");
+    characters["angel"] = new Character(tiles, "angel_idle_anim", "angel_run_anim", "angel_idle_anim");
 
     // choose 1 hero and 1 monster
 
