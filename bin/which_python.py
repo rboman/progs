@@ -24,7 +24,7 @@
 
 # Ensuite, modifier dans un cmd.exe admin:
 
-# assoc .py=Python.File              (au cas o� ce serait pas bon)
+# assoc .py=Python.File              (au cas où ce serait pas bon)
 # ftype Python.File="c:\Windows\py.exe" "%1" %*
 # ftype Python.NoConFile="c:\Windows\pyw.exe" "%1" %*
 
