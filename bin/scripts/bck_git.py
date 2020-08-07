@@ -47,11 +47,19 @@ import shutil
 import datetime
 
 
+#  █████  ██████  ██ 
+# ██   ██ ██   ██ ██ 
+# ███████ ██████  ██ 
+# ██   ██ ██      ██ 
+# ██   ██ ██      ██ 
+
+
 class API(object):
     """Base class for GitLab and Github API.
     """
+
     def __init__(self):
-        self.token_locations = [ r'E:\Dropbox\Bin', r'/hdd2/boman/Dropbox/Bin' ]
+        self.token_locations = [r'E:\Dropbox\Bin', r'/hdd2/boman/Dropbox/Bin']
         self.token_filename = 'token.txt'
         self.dbfile = 'projects.json'
         self.name = 'unknown_name'
@@ -65,9 +73,10 @@ class API(object):
             if os.path.isfile(tokenfile):
                 with open(tokenfile) as f:
                     token = f.readline().rstrip()
-        #print("token='{}'".format(token))
+        # print("token='{}'".format(token))
         if not token:
-            raise Exception('API token {} not found in given locations: {}'.format(self.token_filename, self.token_locations))
+            raise Exception('API token {} not found in given locations: {}'.format(
+                self.token_filename, self.token_locations))
         return token
 
     def get_projects(self, force_update=False):
@@ -80,8 +89,8 @@ class API(object):
             projects = self.request_projects()
             # save projects to file
             print('saving projects to file {}...'.format(self.dbfile))
-            with open(self.dbfile,'w') as f:
-                f.write( json.dumps(projects, sort_keys=True, indent=4) )
+            with open(self.dbfile, 'w') as f:
+                f.write(json.dumps(projects, sort_keys=True, indent=4))
         else:
             # load projects from file
             print('loading projects from file {}...'.format(self.dbfile))
@@ -103,9 +112,16 @@ class API(object):
         return r
 
 
+#  ██████  ██ ████████ ██   ██ ██    ██ ██████
+# ██       ██    ██    ██   ██ ██    ██ ██   ██ 
+# ██   ███ ██    ██    ███████ ██    ██ ██████  
+# ██    ██ ██    ██    ██   ██ ██    ██ ██   ██ 
+#  ██████  ██    ██    ██   ██  ██████  ██████  
+
 class GitHubAPI(API):
     """This class handles the communications with GitHub through its API.
     """
+
     def __init__(self, force_update=False):
         super(GitHubAPI, self).__init__()
         self.token_filename = 'github_api_token.txt'
@@ -125,19 +141,20 @@ class GitHubAPI(API):
         per_page = 25  # gets X projects per page
         max_pages = 10  # an upper limit
         total_pages = '?'
-        while page<max_pages:
-            print ('retrieving page {}/{}'.format(page, total_pages))
-            r = requests.get(url, headers={ "Authorization": 'token {}'.format(token)},
-                                params={'type' : 'all', 'page' : page, 'per_page' : per_page}) # per_page=100 max
+        while page < max_pages:
+            print('retrieving page {}/{}'.format(page, total_pages))
+            r = requests.get(url, headers={"Authorization": 'token {}'.format(token)},
+                             params={'type': 'all', 'page': page, 'per_page': per_page})  # per_page=100 max
             r.raise_for_status()
             # print ('r.headers =', r.headers)
             # print ('r.encoding =', r.encoding)
             # print ('r.url =', r.url)
             # print ('r.text =', r.text)
             # print ('r.json() =', r.json())
-            #print(json.dumps(dict(r.headers), sort_keys=True, indent=4))  # pretty prints the response header
+            # print(json.dumps(dict(r.headers), sort_keys=True, indent=4))  # pretty prints the response header
 
-            print ('  info: API calls remaining: {}/{}'.format(r.headers['X-RateLimit-Remaining'], r.headers['X-RateLimit-Limit']))
+            print('  info: API calls remaining: {}/{}'.format(
+                r.headers['X-RateLimit-Remaining'], r.headers['X-RateLimit-Limit']))
 
             projects.extend(r.json())
 
@@ -146,9 +163,10 @@ class GitHubAPI(API):
                 total_pages = int(m.groups()[0])
             except:
                 break
-            print('total pages=', total_pages, '   page=', page, '   test=', page>=total_pages)
+            print('total pages=', total_pages, '   page=',
+                  page, '   test=', page >= total_pages)
 
-            if page>=total_pages:
+            if page >= total_pages:
                 break
             else:
                 page += 1
@@ -158,47 +176,57 @@ class GitHubAPI(API):
         """Return a *GitLab* key from project "p".
         => translation from GitLab keys used everywhere into GitHub ones
         """
-        if keystr=="path_with_namespace":
+        if keystr == "path_with_namespace":
             # 'path_with_namespace' does not exist in GitHub
             # (we call get_key from super because it manages notfound errors)
-            return super(GitHubAPI, self).get_key(p,"owner,login")+'/'+p['name']
-        elif keystr=="owner,username":
+            return super(GitHubAPI, self).get_key(p, "owner,login")+'/'+p['name']
+        elif keystr == "owner,username":
             # username becomes login in GitHub
-            return super(GitHubAPI, self).get_key(p,"owner,login")
-        elif keystr=="namespace,full_path":
+            return super(GitHubAPI, self).get_key(p, "owner,login")
+        elif keystr == "namespace,full_path":
             # no namespace in GitHub; we use the owner login name
-            return super(GitHubAPI, self).get_key(p,"owner,login")
-        elif keystr=="ssh_url_to_repo":
+            return super(GitHubAPI, self).get_key(p, "owner,login")
+        elif keystr == "ssh_url_to_repo":
             # ssh_url_to_repo => ssh_url
-            return super(GitHubAPI, self).get_key(p,"ssh_url")
-        elif keystr=="wiki_enabled":
+            return super(GitHubAPI, self).get_key(p, "ssh_url")
+        elif keystr == "wiki_enabled":
             # wiki_enabled => has_wiki
-            return super(GitHubAPI, self).get_key(p,"has_wiki")
+            return super(GitHubAPI, self).get_key(p, "has_wiki")
         else:
             return p[keystr]
 
     def export_one(self, p):
-        print ("Note: 'export_one' not implemented for GitHub")
+        print("Note: 'export_one' not implemented for GitHub")
 
     def download_one(self, p):
-        print ("Note: 'download_one' not implemented for GitHub")
+        print("Note: 'download_one' not implemented for GitHub")
 
+
+#  ██████  ██ ████████ ██       █████  ██████
+# ██       ██    ██    ██      ██   ██ ██   ██ 
+# ██   ███ ██    ██    ██      ███████ ██████  
+# ██    ██ ██    ██    ██      ██   ██ ██   ██ 
+#  ██████  ██    ██    ███████ ██   ██ ██████  
 
 class GitLabAPI(API):
     """This class handles the communications with GitLab through its API.
     """
-    def __init__(self, force_update=False):
+
+    def __init__(self, name, url_api, token_filename, dbfile, verify_ssl=True,
+                 force_update=False):
         super(GitLabAPI, self).__init__()
-        self.token_filename = 'gitlab_api_token.txt'
-        self.dbfile = 'gitlab_projects.json'
-        self.name = 'gitlab.uliege.be'
+        self.token_filename = token_filename
+        self.dbfile = dbfile
+        self.name = name
+        self.url_api = url_api
+        self.verify_ssl = verify_ssl # skip SSL verification (self-hosted GitLabs)
         self.projects = self.get_projects(force_update)
 
     def request_projects(self):
         """get all the projects visible by me on gitlab.uliege.be
         """
         # https://docs.gitlab.com/ee/api/projects.html
-        url = 'https://gitlab.uliege.be/api/v4/projects'
+        url = self.url_api
         token = self.get_api_token()
 
         projects = []
@@ -207,30 +235,32 @@ class GitLabAPI(API):
         per_page = 20    # gets X projects per page
         max_pages = 100  # an upper limit
         total_pages = '?'
-        while page<max_pages:
-            print ('retrieving page {}/{}'.format(page, total_pages))
+        while page < max_pages:
+            print('retrieving page {}/{}'.format(page, total_pages))
             # token as a parameter
-            #r = requests.get(url, params={'private_token' : token}) # <= ne renvoie pas les PRIVES!!!
-            r = requests.get(url, params={'private_token' : token,
-                                        'per_page' : per_page,
-                                        'page' : page,
-                                        'membership': True  # remove this to list all visible projects!
-                                        })
+            # r = requests.get(url, params={'private_token' : token}) # <= ne renvoie pas les PRIVES!!!
+            r = requests.get(url, params={'private_token': token,
+                                          'per_page': per_page,
+                                          'page': page,
+                                          'membership': True  # remove this to list all visible projects!
+                                          }, verify=self.verify_ssl)
             # token as a header
-            #r = requests.get(url, headers={ "Private-Token": token }, params={'per_page' : 100000, 'page':1 })
-            # print ('r.status_code =', r.status_code)
-            # print ('r.headers =', r.headers)
-            # print ('r.encoding =', r.encoding)
-            # print ('r.url =', r.url)
-            # print ('r.text =', r.text)
-            # print ('r.json() =', r.json())
+            # r = requests.get(url, headers={
+            #                  "Private-Token": token}, params={'per_page': 100000, 'page': 1}, verify=False)
+            # debug
+            # print('r.status_code =', r.status_code)
+            # print('r.headers =', r.headers)
+            # print('r.encoding =', r.encoding)
+            # print('r.url =', r.url)
+            # print('r.text =', r.text)
+            # print('r.json() =', r.json())
             r.raise_for_status()
 
             projects.extend(r.json())  # adds projects to the list
 
             total_pages = int(r.headers['X-Total-Pages'])
-            #print ('total pages=', total_pages, '   page=', page, '   test=', page>=total_pages)
-            if page>=total_pages:
+            # print ('total pages=', total_pages, '   page=', page, '   test=', page>=total_pages)
+            if page >= total_pages:
                 break
             else:
                 page += 1
@@ -243,14 +273,16 @@ class GitLabAPI(API):
         print("exporting project id={}".format(p["id"]))
 
         url = p["_links"]["self"]+"/export"
-        #print("url={}".format(url))
+        # print("url={}".format(url))
         token = self.get_api_token()
 
         # token as a parameter
-        r = requests.post(url, params={'private_token' : token})
+        r = requests.post(
+            url, params={'private_token': token}, verify=self.verify_ssl)
         # token as a header
-        #r = requests.post(url, headers={ "Private-Token": token })
+        # r = requests.post(url, headers={ "Private-Token": token })
 
+        # debug
         # print ('r.status_code =', r.status_code)
         # print ('r.headers =', r.headers)
         # print ('r.encoding =', r.encoding)
@@ -276,7 +308,8 @@ class GitLabAPI(API):
         # get status
         while True:
             print("requesting status...")
-            r = requests.get(url, params={'private_token' : token})
+            r = requests.get(
+                url, params={'private_token': token}, verify=self.verify_ssl)
             # print ('r.status_code =', r.status_code)
             # print ('r.text =', r.text)
             # print(json.dumps(r.json(), sort_keys=True, indent=4))
@@ -291,11 +324,12 @@ class GitLabAPI(API):
             #       started
             #       finished
             #       regeneration_in_progress
-            if resp['export_status']=='none':
+            if resp['export_status'] == 'none':
                 print('\t export has not been scheduled yet; please, use "export"!')
                 return
-            elif resp['export_status']!='finished':
-                print('\t export is not finished yet (export_status="{}"); waiting 10s...'.format(resp['export_status']))
+            elif resp['export_status'] != 'finished':
+                print('\t export is not finished yet (export_status="{}"); waiting 10s...'.format(
+                    resp['export_status']))
                 # wait 10s... then try again
                 time.sleep(10)
             else:
@@ -306,33 +340,42 @@ class GitLabAPI(API):
         url = resp["_links"]["api_url"]
 
         # "streaming" download
-        with requests.get(resp["_links"]["api_url"], params={'private_token' : token}, stream=True) as r:
+        with requests.get(resp["_links"]["api_url"], params={'private_token': token},
+                          stream=True, verify=self.verify_ssl) as r:
             r.raise_for_status()
-            #print ('r =', r)
-            #print ('r.headers =', r.headers)
+            # print ('r =', r)
+            # print ('r.headers =', r.headers)
             # expl: 'Content-Disposition': 'attachment; filename="2020-03-19_16-42-234_R.Boman_restapi_export.tar.gz"; filename*=UTF-8\'\'2020-03-19_16-42-234_R.Boman_restapi_export.tar.gz'
             # retreive the filename in the header (as 'curl --remote-header-name')
             m = re.search('filename="(.+)"', r.headers['Content-Disposition'])
             local_filename = m.groups()[0]
             # build a new filename within a folder named after the current date
-            local_filename = os.path.join(thedate, 'GitLab_export_'+p["path_with_namespace"].replace('/','_')+'.tar.gz')
-            if os.path.isfile(local_filename): # file exists?
+            local_filename = os.path.join(
+                thedate, 'GitLab_export_'+p["path_with_namespace"].replace('/', '_')+'.tar.gz')
+            if os.path.isfile(local_filename):  # file exists?
                 print('\t file already exits: "{}"'.format(local_filename))
             else:
                 print('\t downloading "{}"...'.format(local_filename))
                 with open(local_filename, 'wb') as f:
                     for chunk in r.iter_content(chunk_size=8192):
-                        if chunk: # filter out keep-alive new chunks
+                        if chunk:  # filter out keep-alive new chunks
                             f.write(chunk)
 
+
+# ███    ███  █████  ███    ██  █████   ██████  ███████ ██████
+# ████  ████ ██   ██ ████   ██ ██   ██ ██       ██      ██   ██ 
+# ██ ████ ██ ███████ ██ ██  ██ ███████ ██   ███ █████   ██████  
+# ██  ██  ██ ██   ██ ██  ██ ██ ██   ██ ██    ██ ██      ██   ██ 
+# ██      ██ ██   ██ ██   ████ ██   ██  ██████  ███████ ██   ██ 
 
 class RepoManager(object):
     """This class manages the backups of the repositories (via "clone" and "export")
     """
+
     def __init__(self):
-        self.include_list = [ '' ] # includes all by default
-        self.exclude_list = [] # excludes nothing
-        self.servers = [] # server lists
+        self.include_list = ['']  # includes all by default
+        self.exclude_list = []  # excludes nothing
+        self.servers = []  # server lists
 
     def add(self, server):
         """Adds a server to the server list
@@ -362,19 +405,20 @@ class RepoManager(object):
         """
         for s in self.servers:
             # loop over projects on the server
-            for i,p in enumerate(s.projects):
+            for i, p in enumerate(s.projects):
                 # name = p["name"]                        # e.g. "oo_meta"
                 # ssh_url_to_repo = p["ssh_url_to_repo"]  # git@...
                 # full_path = p["namespace"]["full_path"] # "am-dept/MN2L"
-                target = s.name+'/'+s.get_key(p, "path_with_namespace") # "am-dept/MN2L/oo_meta"
+                # "am-dept/MN2L/oo_meta"
+                target = s.name+'/'+s.get_key(p, "path_with_namespace")
 
                 process = False
-                #print (self.include_list); sys.exit()
+                # print (self.include_list); sys.exit()
                 for regex in self.include_list:
                     # print('...[include] "{}" search "{}" = {}'.format(regex,
                     #                             target,
                     #                             (not not re.search(regex, target))))
-                    if( re.search(regex, target) ):
+                    if(re.search(regex, target)):
                         process = True
                         break
                 if not process:
@@ -384,45 +428,47 @@ class RepoManager(object):
                     # print('...[exclude] "{}" search "{}" = {}'.format(regex,
                     #                             target,
                     #                             (not not re.search(regex, target))))
-                    if( re.search(regex, target) ):
+                    if(re.search(regex, target)):
                         process = False
                         break
 
                 if not process:
-                    #print( '(ignoring {})'.format(target) )
+                    # print( '(ignoring {})'.format(target) )
                     pass
                 else:
-                    #print( 'yielding', target )
+                    # print( 'yielding', target )
                     yield (s, p)
 
     def list(self):
         """Prints the list of projects, taking the 'include' and 'exclude' lists into account.
         """
-        for i,(s,p) in enumerate(self.iterate()):
-            print ("%04d %s/%s (id=%d) [owner=%s]" % (i+1, s.name,
-                        s.get_key(p, "path_with_namespace"),
-                        s.get_key(p, "id"),
-                        s.get_key(p, "owner,username")) )
+        for i, (s, p) in enumerate(self.iterate()):
+            print("%04d %s/%s (id=%d) [owner=%s]" % (i+1, s.name,
+                                                     s.get_key(
+                                                         p, "path_with_namespace"),
+                                                     s.get_key(p, "id"),
+                                                     s.get_key(p, "owner,username")))
 
     def clone(self):
         """Clones or updates a series of projects in the current folder.
         """
 
         errs = []   # will contain errors
-        rootdir = os.getcwd() # stores the root folder
+        rootdir = os.getcwd()  # stores the root folder
 
-        for s,p in self.iterate():
-            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
-            print ('...processing {}'.format(path_with_namespace))
+        for s, p in self.iterate():
+            path_with_namespace = s.name+'/' + \
+                s.get_key(p, "path_with_namespace")
+            print('...processing {}'.format(path_with_namespace))
 
             # creates a series of folders from the namespace of the project
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
-            if not os.path.isdir( full_path ):
-                print( 'creating', full_path )
-                os.makedirs( full_path )
+            if not os.path.isdir(full_path):
+                print('creating', full_path)
+                os.makedirs(full_path)
 
             # go to namespace folder and clone/update the repo
-            os.chdir( full_path )
+            os.chdir(full_path)
             repo = vrs.GITRepo(s.get_key(p, "name"),
                                s.get_key(p, "ssh_url_to_repo"))
             try:
@@ -436,24 +482,24 @@ class RepoManager(object):
             # clone the wiki if it is "enabled"
             if s.get_key(p, "wiki_enabled"):
                 wiki_name = s.get_key(p, "name")+'.wiki'
-                wiki_url = s.get_key(p, "ssh_url_to_repo").replace(".git",".wiki.git")
+                wiki_url = s.get_key(p, "ssh_url_to_repo").replace(
+                    ".git", ".wiki.git")
                 repo = vrs.GITRepo(wiki_name, wiki_url)
                 try:
                     repo.update()
-                    if len(os.listdir(wiki_name) )<2:  # .git folder
+                    if len(os.listdir(wiki_name)) < 2:  # .git folder
                         print("the wiki is empty, removing folder", wiki_name)
                         shutil.rmtree(wiki_name, ignore_errors=True)
                 except:
                     errs.append(wiki_url)
 
-            os.chdir( rootdir )
+            os.chdir(rootdir)
 
         # display the errors
         if errs:
-            print ("\nERROR: the following repositories were NOT updated:\n")
+            print("\nERROR: the following repositories were NOT updated:\n")
             for e in errs:
-                print ('\t- {}'.format(e))
-
+                print('\t- {}'.format(e))
 
     def archive(self):
         """Archives a series of projects in a folder.
@@ -466,72 +512,85 @@ class RepoManager(object):
 
         errs = []  # will contain errors
 
-        for s,p in self.iterate():
-            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
-            print ('...processing {}'.format(path_with_namespace))
+        for s, p in self.iterate():
+            path_with_namespace = s.name+'/' + \
+                s.get_key(p, "path_with_namespace")
+            print('...processing {}'.format(path_with_namespace))
 
             # check whether repo has been cloned
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
             if not os.path.isdir(path_with_namespace):
-                print ('folder not present - clone repo first!')
+                print('folder not present - clone repo first!')
                 continue
 
             # create a tar.bz2 archive of the cloned repo
             arctype = 'bztar'
             arcext = '.tar.bz2'
             repo_name = s.get_key(p, "name")
-            arc_name = os.path.join(thedate, path_with_namespace.replace('/','_'))
+            arc_name = os.path.join(
+                thedate, path_with_namespace.replace('/', '_'))
             if not os.path.isfile(arc_name+arcext):
-                print ("creating {}".format(arc_name+arcext))
+                print("creating {}".format(arc_name+arcext))
                 try:
                     # windows : available formats = 'bztar', 'gztar', 'tar', 'zip'
-                    shutil.make_archive(arc_name, arctype, root_dir=full_path, base_dir=repo_name)
+                    shutil.make_archive(arc_name, arctype,
+                                        root_dir=full_path, base_dir=repo_name)
                 except:
                     errs.append(path_with_namespace)
             else:
-                print ("{} already exists".format(arc_name+arcext))
+                print("{} already exists".format(arc_name+arcext))
 
             # check whether a wiki has been cloned
             wiki_name = repo_name+'.wiki'
-            if not os.path.isdir(path_with_namespace+'.wiki' ):
+            if not os.path.isdir(path_with_namespace+'.wiki'):
                 continue
             # archive the wiki if present
-            arc_name = os.path.join(thedate, path_with_namespace.replace('/','_')+'.wiki')
+            arc_name = os.path.join(
+                thedate, path_with_namespace.replace('/', '_')+'.wiki')
             if not os.path.isfile(arc_name+arcext):
-                print ("creating {}".format(arc_name+arcext))
+                print("creating {}".format(arc_name+arcext))
                 try:
-                    shutil.make_archive(arc_name, arctype, root_dir=full_path, base_dir=wiki_name)
+                    shutil.make_archive(arc_name, arctype,
+                                        root_dir=full_path, base_dir=wiki_name)
                 except:
                     errs.append(arc_name+arcext)
             else:
-                print ("{} already exists".format(arc_name+arcext))
+                print("{} already exists".format(arc_name+arcext))
 
         # display the errors
         if errs:
-            print ("\nERROR: the following repositories were NOT archived:\n")
+            print("\nERROR: the following repositories were NOT archived:\n")
             for e in errs:
-                print ('\t- {}'.format(e))
+                print('\t- {}'.format(e))
 
     def export(self):
         """Asks the server to "export" a list of projects
         This command will send one e-mail per project!
         """
-        for s,p in self.iterate():
-            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
-            print ('...processing {}'.format(path_with_namespace))
+        for s, p in self.iterate():
+            path_with_namespace = s.name+'/' + \
+                s.get_key(p, "path_with_namespace")
+            print('...processing {}'.format(path_with_namespace))
             s.export_one(p)
 
     def download(self):
         """Asks the server to download a list of projects.
         Wait a little bit before calling "download" after "export".
         """
-        for s,p in self.iterate():
-            path_with_namespace = s.name+'/'+s.get_key(p, "path_with_namespace")
-            print ('...processing {}'.format(path_with_namespace))
+        for s, p in self.iterate():
+            path_with_namespace = s.name+'/' + \
+                s.get_key(p, "path_with_namespace")
+            print('...processing {}'.format(path_with_namespace))
             s.download_one(p)
 
 
-if __name__=="__main__":
+# ███    ███  █████  ██ ███    ██ 
+# ████  ████ ██   ██ ██ ████   ██ 
+# ██ ████ ██ ███████ ██ ██ ██  ██ 
+# ██  ██  ██ ██   ██ ██ ██  ██ ██ 
+# ██      ██ ██   ██ ██ ██   ████ 
+
+if __name__ == "__main__":
 
     # parse cmd-line arguments
     import argparse
@@ -539,28 +598,46 @@ if __name__=="__main__":
     parser.add_argument("--update", help="update cache", action="store_true")
     parser.add_argument("--include", help="include pattern", default='')
     parser.add_argument("--exclude", help="exclude pattern", default='')
-    parser.add_argument('command', help='command', choices=[ 'list', 'clone', 'archive', 'export', 'download' ])
+    parser.add_argument('command', help='command', choices=[
+                        'list', 'clone', 'archive', 'export', 'download'])
     args = parser.parse_args()
-    #print (args)
+    # print (args)
 
     # creates a RepoManager
     mgr = RepoManager()
-    # adds my 2 servers
-    mgr.add(GitLabAPI(args.update))
+    # adds several servers
+    mgr.add(GitLabAPI(name='lam3.org',
+                      url_api='https://lam3.org/gitlab/api/v4/projects',
+                      token_filename='lam3org_api_token.txt',
+                      dbfile='lam3_projects.json',
+                      verify_ssl=False,
+                      force_update=args.update))
+    mgr.add(GitLabAPI(name='mogador.org',
+                      url_api='https://109.89.0.87/api/v4/projects',
+                      token_filename='mogador_api_token.txt',
+                      dbfile='mogador_projects.json',
+                      verify_ssl=False,
+                      force_update=args.update))
+    mgr.add(GitLabAPI(name='gitlab.uliege.be',
+                      url_api='https://gitlab.uliege.be/api/v4/projects',
+                      token_filename='gitlab_api_token.txt',
+                      dbfile='gitlab_projects.json',
+                      verify_ssl=True,
+                      force_update=args.update)
     mgr.add(GitHubAPI(args.update))
 
     mgr.include(args.include)
     mgr.exclude(args.exclude)
 
-    if args.command=='clone':
+    if args.command == 'clone':
         mgr.clone()
-    elif args.command=='export':
+    elif args.command == 'export':
         mgr.export()
-    elif args.command=='download':
+    elif args.command == 'download':
         mgr.download()
-    elif args.command=='list':
+    elif args.command == 'list':
         mgr.list()
-    elif args.command=='archive':
+    elif args.command == 'archive':
         mgr.archive()
     else:
         raise Exception("Unknown arg: {}".format(args.command))
