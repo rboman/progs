@@ -158,13 +158,21 @@ class GitHubAPI(API):
 
             projects.extend(r.json())
 
-            try:
-                m = re.search(r'&page=(\d+)>; rel=\"last\"', r.headers['Link'])
-                total_pages = int(m.groups()[0])
-            except:
-                break
-            print('total pages=', total_pages, '   page=',
-                  page, '   test=', page >= total_pages)
+            if total_pages == '?':
+                # read the number of pages in the link
+                # if the link is not there, we are already at the last page                
+                if r.headers['Link'].find('rel=\"last\"') == -1:
+                    total_pages = 1
+                else:
+                    try:
+                        m = re.search(r'&page=(\d+).*>; rel=\"last\"', r.headers['Link'])
+                        total_pages = int(m.groups()[0])
+                    except:
+                        print("ERROR parsing r.headers['Link']:")
+                        print(r.headers['Link'])
+                        break
+                print('total pages=', total_pages, '   page=',
+                    page, '   test=', page >= total_pages)
 
             if page >= total_pages:
                 break
