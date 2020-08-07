@@ -481,7 +481,7 @@ class RepoManager(object):
 
             # clone the wiki if it is "enabled"
             if s.get_key(p, "wiki_enabled"):
-                wiki_name = s.get_key(p, "name")+'.wiki'
+                wiki_name = s.get_key(p, "path")+'.wiki' # note: "name" can be different from "path"
                 wiki_url = s.get_key(p, "ssh_url_to_repo").replace(
                     ".git", ".wiki.git")
                 repo = vrs.GITRepo(wiki_name, wiki_url)
@@ -519,6 +519,7 @@ class RepoManager(object):
 
             # check whether repo has been cloned
             full_path = s.name+'/'+s.get_key(p, "namespace,full_path")
+            # print(f'full_path={full_path}')
             if not os.path.isdir(path_with_namespace):
                 print('folder not present - clone repo first!')
                 continue
@@ -526,9 +527,12 @@ class RepoManager(object):
             # create a tar.bz2 archive of the cloned repo
             arctype = 'bztar'
             arcext = '.tar.bz2'
-            repo_name = s.get_key(p, "name")
+            # repo_name = s.get_key(p, "name") # NO: "name" can be different from folder! (name can contain spaces - or chosen arbitrarily by the user)
+            repo_name = s.get_key(p, "path")
+            # print(f'repo_name={repo_name}')
             arc_name = os.path.join(
                 thedate, path_with_namespace.replace('/', '_'))
+            # print(f'arc_name={arc_name}')
             if not os.path.isfile(arc_name+arcext):
                 print("creating {}".format(arc_name+arcext))
                 try:
