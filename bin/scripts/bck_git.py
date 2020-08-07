@@ -192,6 +192,10 @@ class GitHubAPI(API):
         elif keystr == "wiki_enabled":
             # wiki_enabled => has_wiki
             return super(GitHubAPI, self).get_key(p, "has_wiki")
+        elif keystr == "path":
+            # GitLab dintinguishes "name" (e.g. "LAM3 User") and "path" (e.g. "lam3user") 
+            # path => name
+            return super(GitHubAPI, self).get_key(p, "name")
         else:
             return p[keystr]
 
