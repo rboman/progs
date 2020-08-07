@@ -623,7 +623,7 @@ if __name__ == "__main__":
                       token_filename='gitlab_api_token.txt',
                       dbfile='gitlab_projects.json',
                       verify_ssl=True,
-                      force_update=args.update)
+                      force_update=args.update))
     mgr.add(GitHubAPI(args.update))
 
     mgr.include(args.include)
