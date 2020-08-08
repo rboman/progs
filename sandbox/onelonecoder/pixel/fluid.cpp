@@ -1,141 +1,27 @@
-// Playing with the "Pixel Game Engine" from Javidx9
+// this code comes from https://www.youtube.com/watch?v=alhpH6ECFvQ
+// "Coding Challenge #132: Fluid Simulation"
+// it has been adapted to the "Pixel Game Engine" from Javidx9
 // https://community.onelonecoder.com/
 //
 // build & run
 // cmake -A x64 .. && cmake --build . --config Release && Release\fluid.exe
 
-// this code comes from https://www.youtube.com/watch?v=alhpH6ECFvQ
-// "Coding Challenge #132: Fluid Simulation"
-
-
 #include "config.h"
-#define OLC_PGE_APPLICATION
+//#define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+#include "colour.h"
 #include <vector>
 
-int N = 128;
+int N = 200;
 int iter = 4;
 int SCALE = 5;
 float t = 0;
-
-
-typedef struct RgbColor
-{
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-} RgbColor;
-
-typedef struct HsvColor
-{
-    unsigned char h;
-    unsigned char s;
-    unsigned char v;
-} HsvColor;
-
-RgbColor HsvToRgb(HsvColor hsv)
-{
-    RgbColor rgb;
-    unsigned char region, p, q, t;
-    unsigned int h, s, v, remainder;
-
-    if (hsv.s == 0)
-    {
-        rgb.r = hsv.v;
-        rgb.g = hsv.v;
-        rgb.b = hsv.v;
-        return rgb;
-    }
-
-    // converting to 16 bit to prevent overflow
-    h = hsv.h;
-    s = hsv.s;
-    v = hsv.v;
-
-    region = h / 43;
-    remainder = (h - (region * 43)) * 6; 
-
-    p = (v * (255 - s)) >> 8;
-    q = (v * (255 - ((s * remainder) >> 8))) >> 8;
-    t = (v * (255 - ((s * (255 - remainder)) >> 8))) >> 8;
-
-    switch (region)
-    {
-        case 0:
-            rgb.r = v;
-            rgb.g = t;
-            rgb.b = p;
-            break;
-        case 1:
-            rgb.r = q;
-            rgb.g = v;
-            rgb.b = p;
-            break;
-        case 2:
-            rgb.r = p;
-            rgb.g = v;
-            rgb.b = t;
-            break;
-        case 3:
-            rgb.r = p;
-            rgb.g = q;
-            rgb.b = v;
-            break;
-        case 4:
-            rgb.r = t;
-            rgb.g = p;
-            rgb.b = v;
-            break;
-        default:
-            rgb.r = v;
-            rgb.g = p;
-            rgb.b = q;
-            break;
-    }
-
-    return rgb;
-}
-
-HsvColor RgbToHsv(RgbColor rgb)
-{
-    HsvColor hsv;
-    unsigned char rgbMin, rgbMax;
-
-    rgbMin = rgb.r < rgb.g ? (rgb.r < rgb.b ? rgb.r : rgb.b) : (rgb.g < rgb.b ? rgb.g : rgb.b);
-    rgbMax = rgb.r > rgb.g ? (rgb.r > rgb.b ? rgb.r : rgb.b) : (rgb.g > rgb.b ? rgb.g : rgb.b);
-
-    hsv.v = rgbMax;
-    if (hsv.v == 0)
-    {
-        hsv.h = 0;
-        hsv.s = 0;
-        return hsv;
-    }
-
-    hsv.s = 255 * ((long)(rgbMax - rgbMin)) / hsv.v;
-    if (hsv.s == 0)
-    {
-        hsv.h = 0;
-        return hsv;
-    }
-
-    if (rgbMax == rgb.r)
-        hsv.h = 0 + 43 * (rgb.g - rgb.b) / (rgbMax - rgbMin);
-    else if (rgbMax == rgb.g)
-        hsv.h = 85 + 43 * (rgb.b - rgb.r) / (rgbMax - rgbMin);
-    else
-        hsv.h = 171 + 43 * (rgb.r - rgb.g) / (rgbMax - rgbMin);
-
-    return hsv;
-}
-
 
 // ███████ ██    ██ ███    ██  ██████ ████████ ██  ██████  ███    ██ ███████ 
 // ██      ██    ██ ████   ██ ██         ██    ██ ██    ██ ████   ██ ██      
 // █████   ██    ██ ██ ██  ██ ██         ██    ██ ██    ██ ██ ██  ██ ███████ 
 // ██      ██    ██ ██  ██ ██ ██         ██    ██ ██    ██ ██  ██ ██      ██ 
 // ██       ██████  ██   ████  ██████    ██    ██  ██████  ██   ████ ███████ 
-
 
 template <typename T>
 T
@@ -148,7 +34,7 @@ constrain(T v, T vmin, T vmax)
     return v;
 }
 
-int
+inline int
 IX(int x, int y)
 {
     x = constrain(x, 0, N - 1);
@@ -159,12 +45,12 @@ IX(int x, int y)
 void
 set_bnd(int b, std::vector<float> &x)
 {
-    for (int i = 1; i < N - 1; i++)
+    for (int i = 1; i < N - 1; ++i)
     {
         x[IX(i, 0)] = b == 2 ? -x[IX(i, 1)] : x[IX(i, 1)];
         x[IX(i, N - 1)] = b == 2 ? -x[IX(i, N - 2)] : x[IX(i, N - 2)];
     }
-    for (int j = 1; j < N - 1; j++)
+    for (int j = 1; j < N - 1; ++j)
     {
         x[IX(0, j)] = b == 1 ? -x[IX(1, j)] : x[IX(1, j)];
         x[IX(N - 1, j)] = b == 1 ? -x[IX(N - 2, j)] : x[IX(N - 2, j)];
@@ -178,103 +64,99 @@ set_bnd(int b, std::vector<float> &x)
 
 void
 lin_solve(int b, std::vector<float> &x,
-          std::vector<float> const &x0, float a, float c)
+          std::vector<float> const &x0,
+          float a, float c)
 {
-    float cRecip = 1.0 / c;
+    float cRecip = 1.0f / c;
     for (int k = 0; k < iter; k++)
     {
         for (int j = 1; j < N - 1; j++)
-        {
             for (int i = 1; i < N - 1; i++)
-            {
                 x[IX(i, j)] =
                     (x0[IX(i, j)] + a * (x[IX(i + 1, j)] + x[IX(i - 1, j)] + x[IX(i, j + 1)] + x[IX(i, j - 1)])) * cRecip;
-            }
-        }
-
         set_bnd(b, x);
     }
 }
 
 void
-diffuse(int b, std::vector<float> &x,
-        std::vector<float> const &x0, float diff, float dt)
+diffuse(int b,
+        std::vector<float> &x,
+        std::vector<float> const &x0,
+        float diff, float dt)
 {
     float a = dt * diff * (N - 2) * (N - 2);
     lin_solve(b, x, x0, a, 1 + 4 * a);
 }
 
 void
-project(std::vector<float> &velocX, std::vector<float> &velocY,
-        std::vector<float> &p, std::vector<float> &div)
+project(std::vector<float> &velocX,
+        std::vector<float> &velocY,
+        std::vector<float> &p,
+        std::vector<float> &div)
 {
-    for (int j = 1; j < N - 1; j++)
-    {
-        for (int i = 1; i < N - 1; i++)
+    for (int j = 1; j < N - 1; ++j)
+        for (int i = 1; i < N - 1; ++i)
         {
             div[IX(i, j)] = -0.5f * (velocX[IX(i + 1, j)] - velocX[IX(i - 1, j)] + velocY[IX(i, j + 1)] - velocY[IX(i, j - 1)]) / N;
             p[IX(i, j)] = 0;
         }
-    }
 
     set_bnd(0, div);
     set_bnd(0, p);
     lin_solve(0, p, div, 1, 4);
 
-    for (int j = 1; j < N - 1; j++)
-    {
-        for (int i = 1; i < N - 1; i++)
+    for (int j = 1; j < N - 1; ++j)
+        for (int i = 1; i < N - 1; ++i)
         {
             velocX[IX(i, j)] -= 0.5f * (p[IX(i + 1, j)] - p[IX(i - 1, j)]) * N;
             velocY[IX(i, j)] -= 0.5f * (p[IX(i, j + 1)] - p[IX(i, j - 1)]) * N;
         }
-    }
+
     set_bnd(1, velocX);
     set_bnd(2, velocY);
 }
 
 void
-advect(int b, std::vector<float> &d, std::vector<float> const &d0,
-       std::vector<float> const &velocX, std::vector<float> const &velocY, float dt)
+advect(int b,
+       std::vector<float> &d,
+       std::vector<float> const &d0,
+       std::vector<float> const &velocX,
+       std::vector<float> const &velocY,
+       float dt)
 {
-    float i0, i1, j0, j1;
-
     float dtx = dt * (N - 2);
     float dty = dt * (N - 2);
 
-    float s0, s1, t0, t1;
-    float tmp1, tmp2, x, y;
-
-    float Nfloat = N;
+    float Nfloat = (float)N;
     float ifloat, jfloat;
     int i, j;
 
-    for (j = 1, jfloat = 1; j < N - 1; j++, jfloat++)
+    for (j = 1, jfloat = 1.0f; j < N - 1; j++, jfloat++)
     {
-        for (i = 1, ifloat = 1; i < N - 1; i++, ifloat++)
+        for (i = 1, ifloat = 1.0f; i < N - 1; i++, ifloat++)
         {
-            tmp1 = dtx * velocX[IX(i, j)];
-            tmp2 = dty * velocY[IX(i, j)];
-            x = ifloat - tmp1;
-            y = jfloat - tmp2;
+            float tmp1 = dtx * velocX[IX(i, j)];
+            float tmp2 = dty * velocY[IX(i, j)];
+            float x = ifloat - tmp1;
+            float y = jfloat - tmp2;
 
             if (x < 0.5f)
                 x = 0.5f;
             if (x > Nfloat + 0.5f)
                 x = Nfloat + 0.5f;
-            i0 = floor(x);
-            i1 = i0 + 1.0f;
+            float i0 = floor(x);
+            float i1 = i0 + 1.0f;
             if (y < 0.5f)
                 y = 0.5f;
             if (y > Nfloat + 0.5f)
                 y = Nfloat + 0.5f;
-            j0 = floor(y);
-            j1 = j0 + 1.0f;
+            float j0 = floor(y);
+            float j1 = j0 + 1.0f;
 
-            s1 = x - i0;
-            s0 = 1.0f - s1;
-            t1 = y - j0;
-            t0 = 1.0f - t1;
+            float s1 = x - i0;
+            float s0 = 1.0f - s1;
+            float t1 = y - j0;
+            float t0 = 1.0f - t1;
 
             int i0i = int(i0);
             int i1i = int(i1);
@@ -299,8 +181,7 @@ advect(int b, std::vector<float> &d, std::vector<float> const &d0,
 
 class Fluid
 {
-    int size;
-    float dt;
+    // int size;
     float diff;
     float visc;
 
@@ -314,10 +195,9 @@ class Fluid
     std::vector<float> Vy0;
 
 public:
-    Fluid(float dt, float diffusion, float viscosity)
+    Fluid(float diffusion, float viscosity)
     {
-        this->size = N;
-        this->dt = dt;
+        // this->size = N;
         this->diff = diffusion;
         this->visc = viscosity;
 
@@ -331,12 +211,11 @@ public:
         this->Vy0.resize(N * N, 0.0);
     }
 
-    void step()
+    void step(float dt)
     {
-        int N = this->size;
+        // int N = this->size;
         float visc = this->visc;
         float diff = this->diff;
-        float dt = this->dt;
         std::vector<float> &Vx = this->Vx;
         std::vector<float> &Vy = this->Vy;
         std::vector<float> &Vx0 = this->Vx0;
@@ -373,11 +252,9 @@ public:
 
     void renderD(olc::PixelGameEngine &pge)
     {
-        //colorMode(HSB, 255);
-
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < N; ++i)
         {
-            for (int j = 0; j < N; j++)
+            for (int j = 0; j < N; ++j)
             {
                 // float x = i * SCALE;
                 // float y = j * SCALE;
@@ -392,33 +269,37 @@ public:
                 //     d = 255;
                 // pge.Draw(i, j, olc::Pixel(d, d, d));
 
-                int d = this->density[IX(i, j)];
-                int v = d; if(v>255) v=255;
+                int d = (int)this->density[IX(i, j)];
+                int v = d;
+                if (v > 255)
+                    v = 255;
                 HsvColor hsv{unsigned char((d + 50) % 255), unsigned char(200), unsigned char(v)};
                 RgbColor rgb = HsvToRgb(hsv);
-                pge.Draw(i, j, olc::Pixel(rgb.r, rgb.g, rgb.b));
+                //pge.Draw(i, j, olc::Pixel(rgb.r, rgb.g, rgb.b));
+                pge.FillRect(i*SCALE, j*SCALE, SCALE, SCALE, olc::Pixel(rgb.r, rgb.g, rgb.b));
             }
         }
     }
 
     void renderV(olc::PixelGameEngine &pge)
     {
-        // for (int i = 0; i < N; i++)
-        // {
-        //     for (int j = 0; j < N; j++)
-        //     {
-        //         float x = i * SCALE;
-        //         float y = j * SCALE;
-        //         float vx = this->Vx[IX(i, j)];
-        //         float vy = this->Vy[IX(i, j)];
-        //         stroke(255);
+        for (int i = 0; i < N; i+=5)
+        {
+            for (int j = 0; j < N; j+=5)
+            {
+                float x = i * SCALE;
+                float y = j * SCALE;
+                float vx = this->Vx[IX(i, j)];
+                float vy = this->Vy[IX(i, j)];
+                //stroke(255);
 
-        //         if (!(abs(vx) < 0.1 && abs(vy) <= 0.1))
-        //         {
-        //             line(x, y, x + vx * SCALE, y + vy * SCALE);
-        //         }
-        //     }
-        // }
+                // if (!(abs(vx) < 0.1 && abs(vy) <= 0.1))
+                // {
+                    //line(x, y, x + vx * SCALE, y + vy * SCALE);
+                    pge.DrawLine(x, y, x + vx * SCALE * 10, y + vy * SCALE * 10);
+                // }
+            }
+        }
     }
 
     void fadeD()
@@ -426,7 +307,7 @@ public:
         for (int i = 0; i < this->density.size(); i++)
         {
             float d = density[i];
-            density[i] = constrain(int(d - 0.02), 0, 255);
+            density[i] = (float)constrain(int(d - 0.02), 0, 255);
         }
     }
 };
@@ -440,9 +321,9 @@ public:
 class CFD : public olc::PixelGameEngine
 {
     Fluid *fluid;
-    float pmx;
-    float pmy;
-    
+    int32_t pmx; ///< previous mouse position
+    int32_t pmy;
+
 public:
     CFD()
     {
@@ -452,31 +333,34 @@ public:
 public:
     bool OnUserCreate() override
     {
-        //fluid = new Fluid(0.2, 1.0, 0.0000001);
-        fluid = new Fluid(0.05, 0.00001, 0.0000001);
-        pmx = GetMouseX();
-        pmy = GetMouseY();
+        fluid = new Fluid(1e-6f, 1e-8f);
+        pmx = GetMouseX() / SCALE;
+        pmy = GetMouseY() / SCALE;
         return true;
     }
 
     bool OnUserUpdate(float fElapsedTime) override
     {
-        // Erase previous frame
-        Clear(olc::BLACK);
+        // get mouse position
+        int32_t mx = GetMouseX() / SCALE;
+        int32_t my = GetMouseY() / SCALE;
 
-        float mx = GetMouseX();
-        float my = GetMouseY();
-
+        // add density and velocity at mouse position
         if (GetMouse(0).bHeld)
         {
             fluid->addDensity(mx, my, 500.);
-            fluid->addVelocity(mx, my, mx-pmx, my-pmy);
         }
+        if (GetMouse(1).bHeld)
+        {
+            fluid->addVelocity(mx, my, (float)(5*(mx - pmx)), (float)(5*(my - pmy)));
+        }
+        // update previous mouse position
         pmx = mx;
         pmy = my;
 
-        fluid->step();
+        fluid->step(fElapsedTime);
         fluid->renderD(*this);
+        fluid->renderV(*this);
 
         return true;
     }
@@ -486,7 +370,7 @@ int
 main()
 {
     CFD demo;
-    if (demo.Construct(N, N, SCALE, SCALE))
+    if (demo.Construct(N*SCALE, N*SCALE, 1, 1))
         demo.Start();
     return 0;
 }
