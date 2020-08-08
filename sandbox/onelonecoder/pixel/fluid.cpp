@@ -12,10 +12,9 @@
 #include "colour.h"
 #include <vector>
 
-int N = 200;
-int iter = 4;
-int SCALE = 5;
-float t = 0;
+constexpr int N = 200;
+constexpr int iter = 5;
+constexpr int SCALE = 5;
 
 // ███████ ██    ██ ███    ██  ██████ ████████ ██  ██████  ███    ██ ███████ 
 // ██      ██    ██ ████   ██ ██         ██    ██ ██    ██ ████   ██ ██      
@@ -37,8 +36,6 @@ constrain(T v, T vmin, T vmax)
 inline int
 IX(int x, int y)
 {
-    x = constrain(x, 0, N - 1);
-    y = constrain(y, 0, N - 1);
     return x + (y * N);
 }
 
@@ -163,6 +160,11 @@ advect(int b,
             int j0i = int(j0);
             int j1i = int(j1);
 
+            i0i = constrain(i0i, 0, N - 1);
+            i1i = constrain(i1i, 0, N - 1);
+            j0i = constrain(j0i, 0, N - 1);
+            j1i = constrain(j1i, 0, N - 1);
+
             // DOUBLE CHECK THIS!!!
             d[IX(i, j)] =
                 s0 * (t0 * d0[IX(i0i, j0i)] + t1 * d0[IX(i0i, j1i)]) +
@@ -256,26 +258,12 @@ public:
         {
             for (int j = 0; j < N; ++j)
             {
-                // float x = i * SCALE;
-                // float y = j * SCALE;
-                // float d = this->density[IX(i, j)];
-                // fill((d + 50) % 255, 200, d);
-                // noStroke();
-                // square(x, y, SCALE);
-
-                // simple RGB
-                // int d = this->density[IX(i, j)];
-                // if (d > 255)
-                //     d = 255;
-                // pge.Draw(i, j, olc::Pixel(d, d, d));
-
                 int d = (int)this->density[IX(i, j)];
                 int v = d;
                 if (v > 255)
                     v = 255;
                 HsvColor hsv{unsigned char((d + 50) % 255), unsigned char(200), unsigned char(v)};
                 RgbColor rgb = HsvToRgb(hsv);
-                //pge.Draw(i, j, olc::Pixel(rgb.r, rgb.g, rgb.b));
                 pge.FillRect(i*SCALE, j*SCALE, SCALE, SCALE, olc::Pixel(rgb.r, rgb.g, rgb.b));
             }
         }
@@ -287,27 +275,12 @@ public:
         {
             for (int j = 0; j < N; j+=5)
             {
-                float x = i * SCALE;
-                float y = j * SCALE;
+                int x = i * SCALE;
+                int y = j * SCALE;
                 float vx = this->Vx[IX(i, j)];
                 float vy = this->Vy[IX(i, j)];
-                //stroke(255);
-
-                // if (!(abs(vx) < 0.1 && abs(vy) <= 0.1))
-                // {
-                    //line(x, y, x + vx * SCALE, y + vy * SCALE);
-                    pge.DrawLine(x, y, x + vx * SCALE * 10, y + vy * SCALE * 10);
-                // }
+                pge.DrawLine(x, y, int(x + vx * SCALE * 10), int(y + vy * SCALE * 10));
             }
-        }
-    }
-
-    void fadeD()
-    {
-        for (int i = 0; i < this->density.size(); i++)
-        {
-            float d = density[i];
-            density[i] = (float)constrain(int(d - 0.02), 0, 255);
         }
     }
 };
@@ -333,7 +306,7 @@ public:
 public:
     bool OnUserCreate() override
     {
-        fluid = new Fluid(1e-6f, 1e-8f);
+        fluid = new Fluid(1e-6f, 1e-10f);
         pmx = GetMouseX() / SCALE;
         pmy = GetMouseY() / SCALE;
         return true;
@@ -348,11 +321,19 @@ public:
         // add density and velocity at mouse position
         if (GetMouse(0).bHeld)
         {
-            fluid->addDensity(mx, my, 500.);
+            int sz=2;
+            for(int i=mx-sz+1; i<mx+sz; ++i)
+                for(int j=my-sz+1; j<my+sz; ++j)
+                    if(i>=0 && i<=N && j>=0 && j<=N)
+                        fluid->addDensity(i, j, 100.);
         }
         if (GetMouse(1).bHeld)
         {
-            fluid->addVelocity(mx, my, (float)(5*(mx - pmx)), (float)(5*(my - pmy)));
+            int sz=4;
+            for(int i=mx-sz+1; i<mx+sz; ++i)
+                for(int j=my-sz+1; j<my+sz; ++j)
+                    if(i>=0 && i<=N && j>=0 && j<=N)            
+                    fluid->addVelocity(i, j, (float)(0.005f*(mx - pmx)/fElapsedTime), (float)(0.005f*(my - pmy)/fElapsedTime));
         }
         // update previous mouse position
         pmx = mx;
@@ -360,7 +341,9 @@ public:
 
         fluid->step(fElapsedTime);
         fluid->renderD(*this);
-        fluid->renderV(*this);
+        // fluid->renderV(*this);
+
+        this->DrawString({5,5}, "Fluid Simulation");
 
         return true;
     }
