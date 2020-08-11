@@ -5,7 +5,7 @@
 
 # f:\f90ppr\moware\f90ppr.exe < tmp.f90 > out.txt
 
-import sys, os, subprocess, shutil
+import sys, os, subprocess, shutil, glob
 sys.path.append(r'C:\msys64\mingw64\bin')
 
 f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
@@ -35,13 +35,21 @@ def main(fname):
     p.stdin.write(b'$define FPPR_FXD_IN 1\n')
     # output format:  0=free format
     p.stdin.write(b'$define FPPR_FXD_OUT 0\n')
+    p.stdin.write(b'      subroutine dummy()\n')
     with open(fname,'rb') as infile:
         for l in infile.readlines():
             p.stdin.write(l)
+    p.stdin.write(b'\n      end()\n') # add a line
     p.stdin.close()
     retcode = p.wait()
     print(f'retcode={retcode}')
     outfile.close()
+
+    # remove first and last line
+    with open(outname,'rb') as f:
+        lines = f.readlines()
+    with open(outname,'wb') as f:
+        f.writelines(lines[1:-1])
 
     # overwrite file
     shutil.copy(outname, fname)
@@ -52,5 +60,5 @@ def main(fname):
 
 if __name__=="__main__":
 
-    f = sys.argv[1]
-    main(f)
+    for f in glob.glob(sys.argv[1]):
+        main(f)
