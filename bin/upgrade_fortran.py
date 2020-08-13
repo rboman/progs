@@ -1,27 +1,36 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
-# py f:\dev\progs\bin\clean_fortran.py ricks.f90
+# this script:
+#  - upgrades .f files to .f90 free-format 
+#  - splits them into separate routines
 
-# f:\f90ppr\moware\f90ppr.exe < tmp.f90 > out.txt
 
 import sys, os, subprocess
 sys.path.append(r'C:\msys64\mingw64\bin')
 
 f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
+f90split_exe = r"F:\f90ppr\moware\f90split"
 
 def main(fname):
 
-    # tmpname = 'tmp.f90'
+    fname = os.path.abspath(fname)
+
+    # checks that the file exists
     if not os.path.isfile(fname):
         raise Exception(f'{fname} not found!')
 
-    base, ext = os.path.splitext(fname)
-    if ext=='.f':
-        outname = base+'.f90'
-    else:
-        outname = base+'.ppr'+ext
+    # CONVERT .f fixed-format file to .f90 free-format -------------------------
 
+    # only processes .f
+    base, ext = os.path.splitext(fname)
+    if ext!='.f':
+        print(f'ignoring {fname}')
+        return
+    outname = base+'.f90'
+
+    # processes the file with "f90ppr"
+    print(f'f90ppr {fname} => {outname}')
     outfile = open(outname,'wb')
     cmd = [ f90ppr_exe ]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=outfile)
@@ -45,6 +54,23 @@ def main(fname):
     print(f'retcode={retcode}')
     outfile.close()
 
+    # -- SPLIT THE FILE INTO SUBROUTINES ---------------------------------------
+
+    tmpdir = 'split'
+    if not os.path.isdir(tmpdir):
+        os.mkdir(tmpdir)
+    os.chdir(tmpdir)
+
+    cmd = [ f90split_exe ]
+    p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    with open(outname,'rb') as infile:
+        for l in infile.readlines():
+            p.stdin.write(l)
+    p.stdin.close()
+    retcode = p.wait()
+    print(f'retcode={retcode}')
+   
+
 
     # if os.path.isfile(tmpname):
     #     os.remove(tmpname)
@@ -52,5 +78,7 @@ def main(fname):
 
 if __name__=="__main__":
 
-    f = sys.argv[1]
-    main(f)
+    main(sys.argv[1])
+    # for f in glob.glob(sys.argv[1]):
+    #     main(f)
+
