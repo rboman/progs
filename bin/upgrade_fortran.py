@@ -4,8 +4,13 @@
 # this script:
 #  - upgrades .f files to .f90 free-format
 #  - splits them into separate routines
+
 # It has been used to upgrade/split the LAM3 fortran source files
 
+# preliminary checks:
+# - replace variables named "type" in f77 code (this is a f90 keyword)
+# - replace "dowhile" by "do while" (fixed format does not care about spaces) 
+# translation:
 # - go to the source folder
 # - run upgrade_fortran.py *.f
 # - powergrep include extensions ".inc" => ".inc90"
