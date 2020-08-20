@@ -16,9 +16,10 @@
 # - powergrep include extensions ".inc" => ".inc90"
 #
 # new interface:
-# upgrade_fortran check *.f
-# upgrade_fortran freeformat *.f
-# upgrade_fortran split *.f90
+# upgrade_fortran check *.f                # optional 
+# upgrade_fortran freeformat *.f           # runs findent (does not truncate comments!)
+# upgrade_fortran pretty *.f               # runs f90ppr (nicer output)
+# upgrade_fortran split *.f90              # runs f90split
 
 
 import sys
