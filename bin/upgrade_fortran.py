@@ -68,7 +68,7 @@ def pretty_one(f90name, keepf=False):
     """
 
     base, ext = os.path.splitext(f90name)
-    f90name = base+'.f90'
+    #f90name = base+'.f90'
 
     # rename orig file to .f90.bak
     bakfile = f90name+'.bak'
@@ -112,7 +112,11 @@ def freeformat_one(f77name, keepf=False):
     """
 
     base, ext = os.path.splitext(f77name)
-    f90name = base+'.f90'
+    opts = []
+    if ext=='.inc':
+        f90name = base+'.inc90'
+    else:
+        f90name = base+'.f90'
 
     # do checks
     check_one(f77name)
@@ -134,6 +138,9 @@ def freeformat_one(f77name, keepf=False):
     else:
         bak = f77name+'.bak'
         os.rename(f77name, bak)
+
+
+
 
 def freeformat_f90ppr_one(f77name, keepf=False):
     """ CONVERT .f fixed-format file to .f90 free-format with f90ppr
@@ -275,12 +282,12 @@ def split(files, keep):
         split_one(f, keep)
 
 def freeformat(files, keep):
-    for f in iterate(files, exts=['.f', '.for', '.f90']):
+    for f in iterate(files, exts=['.f', '.for', '.f90', '.inc']):
         print(f'converting file {f} to free format')
         freeformat_one(f, keep)
 
 def pretty(files, keep):
-    for f in iterate(files, exts=['.f90']):
+    for f in iterate(files, exts=['.f90','.inc90']):
         print(f'f90ppr {f}')
         pretty_one(f, keep)
 
