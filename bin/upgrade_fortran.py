@@ -31,10 +31,13 @@ import platform
 
 if 'Windows' in platform.uname():
     # setup system to be able to call f90ppr
-    sys.path.append(r'C:\msys64\mingw64\bin')
-    f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
-    f90split_exe = r"F:\f90ppr\moware\f90split"
-    findent_exe = r"F:\findent-3.1.6\findent"
+    #sys.path.append(r'C:\msys64\mingw64\bin')
+    # f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
+    # f90split_exe = r"F:\f90ppr\moware\f90split"
+    # findent_exe = r"F:\findent-3.1.6\findent"
+    f90ppr_exe = r"C:\Users\r_bom\f90ppr\moware\f90ppr"
+    f90split_exe = r"C:\Users\r_bom\f90ppr\moware\f90split"
+    findent_exe = r"C:\Users\r_bom\findent-3.1.6\findent"    
 else:
     f90ppr_exe = r"f90ppr"
     f90split_exe = r"f90split"
@@ -43,22 +46,24 @@ else:
 def check_one(f77name):
     """ performs some preliminary checks in the source files
     """
-    # checks line length (f90ppr may truncate long lines of comments)
+    # checks line length: f90ppr truncates long lines of comments 72 columns if the input is in fixed format and 132 in free format
+    #
+    # in vscode, you can set "rulers" (settings.json) to display column limits
     maxlen = 0
     maxno = 0
     warns = []
     with open(f77name, 'rb') as infile:
         for i,l in enumerate(infile.readlines()):
             # checks line length
-            clen = len(l)
+            clen = len(l.decode('ascii', 'ignore').strip())
             if clen>132:
-                warns.append(f'{os.path.basename(f77name)}:{i+1} line exceeds 132 columns!')
+                warns.append(f'{os.path.basename(f77name)}:{i+1} line exceeds 132 columns (ncols={clen})!\n\t'+l.decode('ascii', 'ignore')+'\t'+'-'*130+'>|')
             if clen>maxlen:
                 maxlen = clen
                 maxno = i+1
             # checks some bad patterns
             if b'dowhile' in l.lower():
-                warns.append(f'{os.path.basename(f77name)}:{i+1} replace "dowhile" by "do while"!\n\t'+l.decode().strip())
+                warns.append(f'{os.path.basename(f77name)}:{i+1} replace "dowhile" by "do while"!\n\t'+l.decode('ascii', 'ignore'))
             # if b'type' in l.lower():
             # faire une regex plus subtile! (supprimer commentaires, chaines, variables "typeel")
             #     warns.append(f'{os.path.basename(f77name)}:{i+1} "type" is a reserved keyword in f90!\n\t'+l.decode().strip())
