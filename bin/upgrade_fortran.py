@@ -16,9 +16,10 @@
 # - powergrep include extensions ".inc" => ".inc90"
 #
 # new interface:
-# upgrade_fortran check *.f                # optional 
 # upgrade_fortran freeformat *.f           # runs findent (does not truncate comments!)
-# upgrade_fortran pretty *.f               # runs f90ppr (nicer output).. truncates comments to 132chars!
+# upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (use a ruler in vscode)
+# upgrade_fortran pretty *.f90             # runs f90ppr (nicer output).. truncates comments to 132chars!
+# upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (use a ruler in vscode)
 # upgrade_fortran split *.f90              # runs f90split
 
 
@@ -282,7 +283,7 @@ def iterate(files, exts=['.f', '.for', '.f90','.inc']):
 
 
 def check(files):
-    for f in iterate(files, exts=['.f', '.for','.inc']):
+    for f in iterate(files, exts=['.f', '.for','.inc','.f90']):
         print(f'checking file {f}')
         check_one(f)
 
