@@ -18,7 +18,7 @@
 # new interface:
 # upgrade_fortran check *.f                # optional 
 # upgrade_fortran freeformat *.f           # runs findent (does not truncate comments!)
-# upgrade_fortran pretty *.f               # runs f90ppr (nicer output)
+# upgrade_fortran pretty *.f               # runs f90ppr (nicer output).. truncates comments to 132chars!
 # upgrade_fortran split *.f90              # runs f90split
 
 
