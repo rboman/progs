@@ -27,13 +27,18 @@ import os
 import subprocess
 import shutil
 import glob
+import platform
 
-# setup system to be able to call f90ppr
-sys.path.append(r'C:\msys64\mingw64\bin')
-f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
-f90split_exe = r"F:\f90ppr\moware\f90split"
-findent_exe = r"F:\findent-3.1.6\findent"
-
+if 'Windows' in platform.uname():
+    # setup system to be able to call f90ppr
+    sys.path.append(r'C:\msys64\mingw64\bin')
+    f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
+    f90split_exe = r"F:\f90ppr\moware\f90split"
+    findent_exe = r"F:\findent-3.1.6\findent"
+else:
+    f90ppr_exe = r"f90ppr"
+    f90split_exe = r"f90split"
+    findent_exe = r"findent"
 
 def check_one(f77name):
     """ performs some preliminary checks in the source files
