@@ -84,7 +84,7 @@ def check_one(f77name, format='free'):
             if format=='fixed':
                 # if len(l)>6:
                 #     print (f'{i+1}, "{l}", "{l[0:5]}", "{l[0:5].strip()}", "{l[5]}"') # do not use 'l'!! (bytes)
-                if len(lutf8)>6 and lutf8[0:5].strip()=='' and lutf8[5:6]!=' ':   # remark: l[5] returns an integer! (32 for space char)
+                if len(lutf8)>6 and lutf8[0:5].strip()=='' and lutf8[5:6]!=' ' and (not '\t' in lutf8[0:5]):   # remark: l[5] returns an integer! (32 for space char)
                     # print(f'line {i+1} is a continuation: "{lstrip}"') 
                     # line is a continuation
                     if previous_empty:
@@ -97,9 +97,10 @@ def check_one(f77name, format='free'):
             # is the current line a comment or empty?
             if format=='fixed':
                 previous_empty = (len(lstrip)==0 or lutf8[0:1]=='c' or lutf8[0:1]=='C' or lstrip[0:1]=='!')
-                # print (f'{i+1}, "{l}", "{len(lstrip)}", "{lstrip[0:1]}", "{l[0:1]}"') 
-                if len(lstrip)>0 and lstrip[0:1]=='!' and lutf8[0:1]!='!':
-                    warns.append(f'{f77name}:{i+1} comment character in the middle of the line\n\t'+lutf8)
+
+                # verifie les '!' au milieu des lignes => ne pose pas de probleme
+                # if len(lstrip)>0 and lstrip[0:1]=='!' and lutf8[0:1]!='!':
+                #     warns.append(f'{f77name}:{i+1} comment character in the middle of the line\n\t'+lutf8)
             else:
                 previous_empty = (len(lstrip)==0 or lstrip[0:1]=='!')
             # print(f'previous_empty={previous_empty}')
