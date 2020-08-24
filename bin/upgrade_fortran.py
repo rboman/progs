@@ -54,6 +54,9 @@ def check_one(f77name, format='free'):
     #
     # findent+f90ppr have problems with continuation lines preceded by empty or comment lines 
     # this is checked too
+    #
+    # errors can be CTRL-clicked on vscode to "jump" to them (this requires an absolute PATH)
+
     maxlen = 0
     maxno = 0
     warns = []
@@ -66,13 +69,13 @@ def check_one(f77name, format='free'):
             # checks line length
             clen = len(lstrip)
             if clen>132:
-                warns.append(f'{os.path.basename(f77name)}:{i+1} line exceeds 132 columns (ncols={clen})!\n\t'+lutf8+'\t'+'-'*130+'>|')
+                warns.append(f'{f77name}:{i+1} line exceeds 132 columns (ncols={clen})!\n\t'+lutf8+'\t'+'-'*130+'>|')
             if clen>maxlen:
                 maxlen = clen
                 maxno = i+1
             # checks some bad patterns
             if 'dowhile' in lutf8.lower():
-                warns.append(f'{os.path.basename(f77name)}:{i+1} replace "dowhile" by "do while"!\n\t'+lutf8)
+                warns.append(f'{f77name}:{i+1} replace "dowhile" by "do while"!\n\t'+lutf8)
             # if b'type' in l.lower():
             # faire une regex plus subtile! (supprimer commentaires, chaines, variables "typeel")
             #     warns.append(f'{os.path.basename(f77name)}:{i+1} "type" is a reserved keyword in f90!\n\t'+l.decode().strip())
@@ -85,18 +88,18 @@ def check_one(f77name, format='free'):
                     # print(f'line {i+1} is a continuation: "{lstrip}"') 
                     # line is a continuation
                     if previous_empty:
-                        warns.append(f'{os.path.basename(f77name)}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
+                        warns.append(f'{f77name}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
             else:
                 if len(lstrip)>0 and lstrip[0:1]=='&':
                     if previous_empty:
-                        warns.append(f'{os.path.basename(f77name)}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
+                        warns.append(f'{f77name}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
 
             # is the current line a comment or empty?
             if format=='fixed':
                 previous_empty = (len(lstrip)==0 or lutf8[0:1]=='c' or lutf8[0:1]=='C' or lstrip[0:1]=='!')
                 # print (f'{i+1}, "{l}", "{len(lstrip)}", "{lstrip[0:1]}", "{l[0:1]}"') 
                 if len(lstrip)>0 and lstrip[0:1]=='!' and lutf8[0:1]!='!':
-                    warns.append(f'{os.path.basename(f77name)}:{i+1} comment character in the middle of the line\n\t'+lutf8)
+                    warns.append(f'{f77name}:{i+1} comment character in the middle of the line\n\t'+lutf8)
             else:
                 previous_empty = (len(lstrip)==0 or lstrip[0:1]=='!')
             # print(f'previous_empty={previous_empty}')
