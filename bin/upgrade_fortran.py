@@ -33,41 +33,75 @@ import platform
 if 'Windows' in platform.uname():
     # setup system to be able to call f90ppr
     #sys.path.append(r'C:\msys64\mingw64\bin')
-    # f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
-    # f90split_exe = r"F:\f90ppr\moware\f90split"
-    # findent_exe = r"F:\findent-3.1.6\findent"
-    f90ppr_exe = r"C:\Users\r_bom\f90ppr\moware\f90ppr"
-    f90split_exe = r"C:\Users\r_bom\f90ppr\moware\f90split"
-    findent_exe = r"C:\Users\r_bom\findent-3.1.6\findent"    
+    f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
+    f90split_exe = r"F:\f90ppr\moware\f90split"
+    findent_exe = r"F:\findent-3.1.6\findent"
+    # f90ppr_exe = r"C:\Users\r_bom\f90ppr\moware\f90ppr"
+    # f90split_exe = r"C:\Users\r_bom\f90ppr\moware\f90split"
+    # findent_exe = r"C:\Users\r_bom\findent-3.1.6\findent"    
 else:
     f90ppr_exe = r"f90ppr"
     f90split_exe = r"f90split"
     findent_exe = r"findent"
 
-def check_one(f77name):
+def check_one(f77name, format='free'):
     """ performs some preliminary checks in the source files
     """
-    # checks line length: f90ppr truncates long lines of comments 72 columns if the input is in fixed format and 132 in free format
+    # checks line length: f90ppr truncates long lines of comments 72 columns 
+    # if the input is in fixed format and 132 in free format
     #
     # in vscode, you can set "rulers" (settings.json) to display column limits
+    #
+    # findent+f90ppr have problems with continuation lines preceded by empty or comment lines 
+    # this is checked too
     maxlen = 0
     maxno = 0
     warns = []
+    previous_empty = True
+    previous = b'';
     with open(f77name, 'rb') as infile:
-        for i,l in enumerate(infile.readlines()):
+        for i,l in enumerate(infile.readlines()):  # l = bytes
+            lutf8 = l.decode('ascii', 'ignore') # convert to utf8
+            lstrip = lutf8.strip()              # utf8 too
             # checks line length
-            clen = len(l.decode('ascii', 'ignore').strip())
+            clen = len(lstrip)
             if clen>132:
-                warns.append(f'{os.path.basename(f77name)}:{i+1} line exceeds 132 columns (ncols={clen})!\n\t'+l.decode('ascii', 'ignore')+'\t'+'-'*130+'>|')
+                warns.append(f'{os.path.basename(f77name)}:{i+1} line exceeds 132 columns (ncols={clen})!\n\t'+lutf8+'\t'+'-'*130+'>|')
             if clen>maxlen:
                 maxlen = clen
                 maxno = i+1
             # checks some bad patterns
-            if b'dowhile' in l.lower():
-                warns.append(f'{os.path.basename(f77name)}:{i+1} replace "dowhile" by "do while"!\n\t'+l.decode('ascii', 'ignore'))
+            if 'dowhile' in lutf8.lower():
+                warns.append(f'{os.path.basename(f77name)}:{i+1} replace "dowhile" by "do while"!\n\t'+lutf8)
             # if b'type' in l.lower():
             # faire une regex plus subtile! (supprimer commentaires, chaines, variables "typeel")
             #     warns.append(f'{os.path.basename(f77name)}:{i+1} "type" is a reserved keyword in f90!\n\t'+l.decode().strip())
+
+            # is the line a continuation line?
+            if format=='fixed':
+                # if len(l)>6:
+                #     print (f'{i+1}, "{l}", "{l[0:5]}", "{l[0:5].strip()}", "{l[5]}"') # do not use 'l'!! (bytes)
+                if len(lutf8)>6 and lutf8[0:5].strip()=='' and lutf8[5:6]!=' ':   # remark: l[5] returns an integer! (32 for space char)
+                    # print(f'line {i+1} is a continuation: "{lstrip}"') 
+                    # line is a continuation
+                    if previous_empty:
+                        warns.append(f'{os.path.basename(f77name)}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
+            else:
+                if len(lstrip)>0 and lstrip[0:1]=='&':
+                    if previous_empty:
+                        warns.append(f'{os.path.basename(f77name)}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
+
+            # is the current line a comment or empty?
+            if format=='fixed':
+                previous_empty = (len(lstrip)==0 or lutf8[0:1]=='c' or lutf8[0:1]=='C' or lstrip[0:1]=='!')
+                # print (f'{i+1}, "{l}", "{len(lstrip)}", "{lstrip[0:1]}", "{l[0:1]}"') 
+                if len(lstrip)>0 and lstrip[0:1]=='!' and lutf8[0:1]!='!':
+                    warns.append(f'{os.path.basename(f77name)}:{i+1} comment character in the middle of the line\n\t'+lutf8)
+            else:
+                previous_empty = (len(lstrip)==0 or lstrip[0:1]=='!')
+            # print(f'previous_empty={previous_empty}')
+            previous = lutf8;
+
 
     #print(f'longest line ({maxlen} chars) at line {maxno}')
     for w in warns:
@@ -274,7 +308,7 @@ def iterate(files, exts=['.f', '.for', '.f90','.inc']):
             # check extension
             base, ext = os.path.splitext(gf)
             if not ext in exts:
-                print(f'ignoring {gf}')
+                #print(f'ignoring {gf}')
                 continue
             # check whether file exists
             if not os.path.isfile(gf):
@@ -283,9 +317,12 @@ def iterate(files, exts=['.f', '.for', '.f90','.inc']):
 
 
 def check(files):
-    for f in iterate(files, exts=['.f', '.for','.inc','.f90']):
+    for f in iterate(files, exts=['.f', '.for','.inc']):
         print(f'checking file {f}')
-        check_one(f)
+        check_one(f, format='fixed')
+    for f in iterate(files, exts=['.f90']):
+        print(f'checking file {f}')
+        check_one(f, format='free')
 
 def split(files, keep):
     for f in iterate(files, exts=['.f90']):
