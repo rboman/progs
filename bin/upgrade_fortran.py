@@ -62,6 +62,8 @@ def check_one(f77name, format='free'):
     maxno = 0
     warns = []
     previous_empty = True
+    is_continuation = True
+    previous_has_comment = False
     previous = b'';
     with open(f77name, 'rb') as infile:
         for i,l in enumerate(infile.readlines()):  # l = bytes
@@ -85,15 +87,15 @@ def check_one(f77name, format='free'):
             if format=='fixed':
                 # if len(l)>6:
                 #     print (f'{i+1}, "{l}", "{l[0:5]}", "{l[0:5].strip()}", "{l[5]}"') # do not use 'l'!! (bytes)
-                if len(lutf8)>6 and lutf8[0:5].strip()=='' and lutf8[5:6]!=' ' and (not '\t' in lutf8[0:5]):   # remark: l[5] returns an integer! (32 for space char)
-                    # print(f'line {i+1} is a continuation: "{lstrip}"') 
-                    # line is a continuation
-                    if previous_empty:
-                        warns.append(f'{f77name}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
+                is_continuation = ( len(lutf8)>6 and lutf8[0:5].strip()=='' and lutf8[5:6]!=' ' and (not '\t' in lutf8[0:5]) )   # remark: l[5] returns an integer! (32 for space char)
             else:
-                if len(lstrip)>0 and lstrip[0:1]=='&':
-                    if previous_empty:
-                        warns.append(f'{f77name}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
+                is_continuation = ( len(lstrip)>0 and lstrip[0:1]=='&' )
+
+            if is_continuation and previous_has_comment:
+                warns.append(f'{f77name}:{i+1} continuation line after a line with a comment!\n\t'+previous+'\t'+lutf8)
+
+            if is_continuation and previous_empty:
+                warns.append(f'{f77name}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
 
             # is the current line a comment or empty?
             if format=='fixed':
@@ -101,11 +103,17 @@ def check_one(f77name, format='free'):
 
                 # verifie les '!' au milieu des lignes => ne pose pas de probleme
                 # if len(lstrip)>0 and lstrip[0:1]=='!' and lutf8[0:1]!='!':
-                #     warns.append(f'{f77name}:{i+1} comment character in the middle of the line\n\t'+lutf8)
+                #     warns.append(f'{f77name}:{i+1} comment character in the middle of the line!\n\t'+lutf8)
+
+                # verifie les '\t' au milieu des lignes => ne pose pas de probleme
+                # if len(lstrip)>6 and '\t' in lutf8[6:] and is_continuation:
+                #     warns.append(f'{f77name}:{i+1} TAB character in the middle of a continuation line!\n\t'+lutf8)
             else:
                 previous_empty = (len(lstrip)==0 or lstrip[0:1]=='!')
             # print(f'previous_empty={previous_empty}')
             previous = lutf8;
+            previous_has_comment = ( '!' in lutf8 )
+
 
 
     #print(f'longest line ({maxlen} chars) at line {maxno}')
