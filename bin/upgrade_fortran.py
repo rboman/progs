@@ -17,11 +17,12 @@
 #
 # new interface:
 # upgrade_fortran freeformat *.f           # runs findent (does not truncate comments!)
-# upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (use a ruler in vscode)
+# upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (click on the link in vscode & use a ruler)
 # upgrade_fortran pretty *.f90             # runs f90ppr (nicer output).. truncates comments to 132chars!
-# upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (use a ruler in vscode)
+# upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (click on the link in vscode & use a ruler)
 # upgrade_fortran split *.f90              # runs f90split
-
+#
+# note findent converts line-ending to CRLF on windows! => you can run dos2unix to avoid warnings at commit
 
 import sys
 import os
