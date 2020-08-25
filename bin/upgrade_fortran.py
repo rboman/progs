@@ -31,15 +31,27 @@ import shutil
 import glob
 import platform
 
+# setup system to be able to call f90ppr
+#sys.path.append(r'C:\msys64\mingw64\bin')
+
 if 'Windows' in platform.uname():
-    # setup system to be able to call f90ppr
-    #sys.path.append(r'C:\msys64\mingw64\bin')
-    f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
-    f90split_exe = r"F:\f90ppr\moware\f90split"
-    findent_exe = r"F:\findent-3.1.6\findent"
-    # f90ppr_exe = r"C:\Users\r_bom\f90ppr\moware\f90ppr"
-    # f90split_exe = r"C:\Users\r_bom\f90ppr\moware\f90split"
-    # findent_exe = r"C:\Users\r_bom\findent-3.1.6\findent"    
+    def get_exe(exename):
+        exe_paths = [ 
+            r"F:\f90ppr\moware", 
+            r"F:\findent-3.1.6", 
+            r"C:\Users\r_bom\f90ppr\moware", 
+            r"C:\Users\r_bom\findent-3.1.6" 
+        ]
+        for ep in exe_paths:
+            exe = os.path.join(ep,exename)
+            if os.path.isfile(exe):
+                print(f' > {exe} found.')
+                return exe
+        raise Exception(f'{exename} not found!')
+
+    f90ppr_exe = get_exe('f90ppr.exe')
+    f90split_exe = get_exe('f90split.exe')
+    findent_exe = get_exe('findent.exe')   
 else:
     f90ppr_exe = r"f90ppr"
     f90split_exe = r"f90split"
