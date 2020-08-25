@@ -16,6 +16,7 @@
 # - powergrep include extensions ".inc" => ".inc90"
 #
 # new interface:
+# upgrade_fortran check *.f90              # => fix problems (related to continuation lines)
 # upgrade_fortran freeformat *.f           # runs findent (does not truncate comments!)
 # upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (click on the link in vscode & use a ruler)
 # upgrade_fortran pretty *.f90             # runs f90ppr (nicer output).. truncates comments to 132chars!
@@ -75,12 +76,20 @@ def check_one(f77name, format='free'):
     warns = []
     previous_empty = True
     is_continuation = True
+    has_comment = False
     previous_has_comment = False
     previous = b'';
     with open(f77name, 'rb') as infile:
         for i,l in enumerate(infile.readlines()):  # l = bytes
             lutf8 = l.decode('ascii', 'ignore') # convert to utf8
             lstrip = lutf8.strip()              # utf8 too
+
+            # detect comments hidden after col 72 in fixed format
+            if format=='fixed':
+                has_comment = lutf8[0:1]=='c' or lutf8[0:1]=='C' or ('!' in lutf8[0:72])
+                if not has_comment and lutf8[72:].strip()!='' and not lutf8[72:].strip()[0:1]=='!':
+                    warns.append(f'{f77name}:{i+1} comment hidden after column 72!\n\t'+lutf8+'\t'+'-'*70+'>|')
+
             # checks line length
             clen = len(lstrip)
             if clen>132:
@@ -355,7 +364,7 @@ def split(files, keep):
         split_one(f, keep)
 
 def freeformat(files, keep):
-    for f in iterate(files, exts=['.f', '.for', '.f90', '.inc']):
+    for f in iterate(files, exts=['.f', '.for', '.inc']):
         print(f'converting file {f} to free format')
         freeformat_one(f, keep)
 
