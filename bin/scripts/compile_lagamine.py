@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# This script builds the lagamine API for Metafor (branch 'romain')
+# This script builds the lagamine API for Metafor (branch 'papeleux')
 # usage:
 #   rb.py compile_lagamine.py
 #
@@ -19,7 +19,7 @@ def main():
     o = {
         'target_folder': '/opt' if pu.isUnix() else 'f:/local',
         'target_name': 'lagamine',
-        'branch': 'romain'
+        'branch': 'papeleux'
     }
     print('options =', o)
 
@@ -32,12 +32,12 @@ def main():
                                       base_dir=o['target_name'],)
         print ('%s created.' % arcname)
 
-    # checkout/update 'Lagamine' source code and switch to branch 'romain'
+    # checkout/update 'Lagamine' source code and switch to selected branch
     repo = vrs.GITRepo('Lagamine', 'git@gitlab.uliege.be:UEE/Lagamine.git')
     repo.update()
     repo.checkout(o['branch'])
 
-    # checkout/update 'LagamineAPI' source code and switch to branch 'romain'
+    # checkout/update 'LagamineAPI' source code and switch to selected branch
     repo = vrs.GITRepo(
         'LagamineAPI', 'git@gitlab.uliege.be:am-dept/MN2L/LagamineAPI.git')
     repo.update()
