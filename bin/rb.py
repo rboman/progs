@@ -25,6 +25,8 @@ def exec_pyfile(fname, searchdir, args, banner=False):
         testname = os.path.abspath(fname)
     elif os.path.isfile(os.path.join(searchdir, fname)):
         testname = os.path.join(searchdir, fname)
+    else:
+        testname = ''
     if not testname:
         raise Exception("file not found: %s" % fname)
 
