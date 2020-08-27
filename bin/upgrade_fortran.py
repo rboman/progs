@@ -4,6 +4,7 @@
 # this script:
 #  - upgrades .f files to .f90 free-format
 #  - splits them into separate routines
+#  - prettify (indent, etc) the code
 
 # It has been used to upgrade/split the LAM3 fortran source files
 
@@ -59,17 +60,17 @@ else:
     findent_exe = r"findent"
 
 def check_one(f77name, format='free'):
-    """ performs some preliminary checks in the source files
+    """ performs some preliminary checks in the source files:
+
+    - checks line length: f90ppr truncates long lines of comments 72 columns 
+                          if the input is in fixed format and 132 in free format
+    - findent+f90ppr have problems with continuation lines preceded by empty or comment lines 
+       this is checked too
+    
+    HINTS (vscode): 
+    - in vscode, you can also set "rulers" (settings.json) to display column limits
+    - errors can be CTRL-clicked on vscode to "jump" to them (this requires an absolute PATH)
     """
-    # checks line length: f90ppr truncates long lines of comments 72 columns 
-    # if the input is in fixed format and 132 in free format
-    #
-    # in vscode, you can set "rulers" (settings.json) to display column limits
-    #
-    # findent+f90ppr have problems with continuation lines preceded by empty or comment lines 
-    # this is checked too
-    #
-    # errors can be CTRL-clicked on vscode to "jump" to them (this requires an absolute PATH)
 
     maxlen = 0
     maxno = 0
@@ -135,19 +136,23 @@ def check_one(f77name, format='free'):
             previous = lutf8;
             previous_has_comment = ( '!' in lutf8 )
 
-
-
     #print(f'longest line ({maxlen} chars) at line {maxno}')
     for w in warns:
         print(w)
 
 
 def pretty_one(f90name, keepf=False):
-    """ process .f90 through f90ppr
+    """ process .f90 through f90ppr (free format only!)
+    - sets max line length to 120
+    - convert all keywords to lowercase
+    - indent with 4 spaces
+
+    WARNING: f90ppr only reads 132 chars on each line 
+    => long comments can be truncated
+    => use "check" to highlight the problems
     """
 
     base, ext = os.path.splitext(f90name)
-    #f90name = base+'.f90'
 
     # rename orig file to .f90.bak
     bakfile = f90name+'.bak'
@@ -187,7 +192,9 @@ def pretty_one(f90name, keepf=False):
 
 
 def freeformat_one(f77name, keepf=False):
-    """ CONVERT .f fixed-format file to .f90 free-format with findent
+    """ CONVERT .f fixed-format file to .f90 free-format with "findent" 
+    findent is more robust than "f90ppr" because it reads the whole content
+    of each line and does not truncate long comments exceeding 72 chars
     """
 
     base, ext = os.path.splitext(f77name)
@@ -223,7 +230,7 @@ def freeformat_one(f77name, keepf=False):
 
 def freeformat_f90ppr_one(f77name, keepf=False):
     """ CONVERT .f fixed-format file to .f90 free-format with f90ppr
-    this routine do not read comments after line 72 in free format
+    this routine does not read comments after line 72 in free format
     if these comments are placed after a command
     (comments spanning a whole line are OK)
     """
@@ -270,6 +277,7 @@ def freeformat_f90ppr_one(f77name, keepf=False):
 
 def split_one(f90name, keepf=False):
     """ SPLIT .f90 files, 1 file per subroutine
+    since it uses f90ppr, you should check that each (comment) line is not longer than 132 chars
     """
  
     # runs f90split from another folder
