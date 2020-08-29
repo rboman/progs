@@ -1,7 +1,9 @@
-program main
+! example of the "entry" statement
+
+program test_entry
     call sub1()
     call sub1entry()
-end program main
+end program test_entry
 
 
 subroutine sub1()
