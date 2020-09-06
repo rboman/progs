@@ -41,12 +41,16 @@ def main():
 
     # loop over all files and format them
     encs = {}
-    for f in all_files(os.getcwd(), patterns='*.inc90.in',
+    for f in all_files(os.getcwd(), patterns='*.f90;*.inc',
                        skips='*.git*;*build*'):
-        targetname = f.replace('.inc90.in','.inc.in')
-        print(f, targetname)
 
-        os.rename(f, targetname)
+        targetname = os.path.join(os.path.dirname(f), os.path.basename(f).lower())
+        if(targetname!=f):
+            print(f, targetname)
+
+            os.rename(f, targetname)
+
+
         # cmd = ['clang-format', "-style=file", "-i", f]
         # retcode = subprocess.call(cmd)
         # if retcode != 0:
