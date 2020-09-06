@@ -15,6 +15,19 @@ IF NOT EXIST "%OLCPATH%" (
     set "INCLUDE=%OLCPATH%;%INCLUDE%"
 )
 
+:: lua
+set "LUAPATH=%~dp0..\externals\lua"
+IF NOT EXIST "%LUAPATH%" (
+    ECHO   - lua NOT found in %LUAPATH%!!
+) ELSE (
+    ECHO   - lua found.
+    set "INCLUDE=%LUAPATH%\include;%INCLUDE%"
+    set "LIB=%LUAPATH%;%LIB%"
+    set "PATH=%LUAPATH%;%PATH%"
+)
+
+
+
 :: swig
 set "SWIGPATH=%MYLOCAL%\swig"
 IF NOT EXIST "%SWIGPATH%" (
