@@ -11,3 +11,6 @@ message("LUA_LIBRARIES = ${LUA_LIBRARIES}")
 ADD_EXECUTABLE(mylua ${SRCS})
 TARGET_INCLUDE_DIRECTORIES(mylua PUBLIC ${LUA_INCLUDE_DIR})
 target_link_libraries(mylua ${LUA_LIBRARIES})
+
+configure_file(config.h.in config.h)
+include_directories(${PROJECT_BINARY_DIR})
