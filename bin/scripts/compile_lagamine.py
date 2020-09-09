@@ -62,8 +62,8 @@ def main():
     # configure
     cmd = [
         'cmake',
-        '-DLAGAMINE_USE_METIS=OFF',
-        '-DLAGAMINE_USE_MKL=OFF',
+        '-DLAGAMINE_USE_METIS=OFF',  # could be removed
+        '-DLAGAMINE_USE_MKL=OFF',  # could be removed
         '-DCMAKE_INSTALL_PREFIX=%s/%s' % (
             o['target_folder'], o['target_name'])
     ]
