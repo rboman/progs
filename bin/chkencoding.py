@@ -44,7 +44,7 @@ def getencoding_file(f):  # uses "file" linux command
             cmd, stderr=subprocess.STDOUT, shell=True)
     except OSError:
         return '"file" cmd not found'
-    m = re.match(r'.+charset=(.+)', output)
+    m = re.match(r'.+charset=(.+)', output.decode())
     if m and len(m.groups()) > 0:
         return m.group(1)
     else:
