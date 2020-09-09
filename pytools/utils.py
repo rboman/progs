@@ -111,7 +111,7 @@ class _GetchWindows(object):
 
     def __call__(self):
         import msvcrt
-        return msvcrt.getch()
+        return msvcrt.getch().decode('utf-8')
 
 
 # -- variable globale --
