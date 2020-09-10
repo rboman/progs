@@ -17,7 +17,7 @@
 # - powergrep include extensions ".inc" => ".inc90"
 #
 # new interface:
-# upgrade_fortran check *.f90              # => fix problems (related to continuation lines)
+# upgrade_fortran check *.f                # => fix problems (related to continuation lines)
 # upgrade_fortran freeformat *.f           # runs findent (does not truncate comments!)
 # upgrade_fortran check *.f90              # => fix problems before running f90ppr !! (click on the link in vscode & use a ruler)
 # upgrade_fortran pretty *.f90             # runs f90ppr (nicer output).. truncates comments to 132chars!
