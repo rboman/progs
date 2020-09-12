@@ -52,6 +52,13 @@ IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_link_libraries(fluid Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
 ENDIF()
 
+ADD_EXECUTABLE(cube3d cube3d.cpp engine.cpp)
+TARGET_INCLUDE_DIRECTORIES(cube3d PUBLIC ${OLC_INCLUDE_DIRS})
+IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_link_libraries(cube3d Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
+ENDIF()
+
+
 configure_file(config.h.in config.h)
 include_directories(${PROJECT_BINARY_DIR})
 
