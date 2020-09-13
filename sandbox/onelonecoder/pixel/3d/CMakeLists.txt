@@ -27,29 +27,10 @@ ENDIF()
 FIND_PATH(OLC_INCLUDE_DIRS "olcPixelGameEngine.h")
 MESSAGE(STATUS "OLC_INCLUDE_DIRS=${OLC_INCLUDE_DIRS}")
 
-ADD_EXECUTABLE(olcExampleProgram olcExampleProgram.cpp)
-TARGET_INCLUDE_DIRECTORIES(olcExampleProgram PUBLIC ${OLC_INCLUDE_DIRS})
+ADD_EXECUTABLE(cube3d cube3d.cpp utils.cpp engine.cpp)
+TARGET_INCLUDE_DIRECTORIES(cube3d PUBLIC ${OLC_INCLUDE_DIRS})
 IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_link_libraries(olcExampleProgram Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
-ENDIF()
-
-ADD_EXECUTABLE(play_with_pge play_with_pge.cpp)
-TARGET_INCLUDE_DIRECTORIES(play_with_pge PUBLIC ${OLC_INCLUDE_DIRS})
-IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_link_libraries(play_with_pge Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
-ENDIF()
-
-
-ADD_EXECUTABLE(distorsion distorsion.cpp)
-TARGET_INCLUDE_DIRECTORIES(distorsion PUBLIC ${OLC_INCLUDE_DIRS})
-IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_link_libraries(distorsion Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
-ENDIF()
-
-ADD_EXECUTABLE(fluid fluid.cpp colour.cpp engine.cpp)
-TARGET_INCLUDE_DIRECTORIES(fluid PUBLIC ${OLC_INCLUDE_DIRS})
-IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_link_libraries(fluid Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
+    target_link_libraries(cube3d Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
 ENDIF()
 
 
