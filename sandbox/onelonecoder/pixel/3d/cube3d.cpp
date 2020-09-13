@@ -3,8 +3,6 @@
 
 #include "cube3d.h"
 
-
-
 bool
 Cube3d::OnUserCreate()
 {
@@ -92,13 +90,4 @@ Cube3d::OnUserUpdate(float fElapsedTime)
     }
 
     return true;
-}
-
-int
-main()
-{
-    Cube3d demo;
-    if (demo.Construct(500, 500, 2, 2))
-        demo.Start();
-    return 0;
 }

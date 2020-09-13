@@ -39,8 +39,6 @@ MultiplyMatrixVector(vec3 &i, vec3 &o, mat4x4 &m)
     }
 }
 
-
-
 void createCube(mesh &msh);
 
 #endif

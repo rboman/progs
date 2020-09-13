@@ -27,7 +27,7 @@ ENDIF()
 FIND_PATH(OLC_INCLUDE_DIRS "olcPixelGameEngine.h")
 MESSAGE(STATUS "OLC_INCLUDE_DIRS=${OLC_INCLUDE_DIRS}")
 
-ADD_EXECUTABLE(cube3d cube3d.cpp utils.cpp engine.cpp)
+ADD_EXECUTABLE(cube3d cube3d.cpp utils.cpp engine.cpp main.cpp)
 TARGET_INCLUDE_DIRECTORIES(cube3d PUBLIC ${OLC_INCLUDE_DIRS})
 IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     target_link_libraries(cube3d Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
