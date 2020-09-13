@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <vector>
+#include <string>
 
 struct vec3
 {
@@ -11,11 +12,15 @@ struct vec3
 struct triangle
 {
     vec3 p[3];
+    float col;
 };
 
 struct mesh
 {
     std::vector<triangle> tris;
+
+    bool LoadFromObjectFile(std::string filename);
+
 };
 
 struct mat4x4
