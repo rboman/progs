@@ -1,6 +1,7 @@
 // from Code-It-Yourself! 3D Graphics Engine (javidx9)
 // part #1: https://www.youtube.com/watch?v=ih20l3pJoeU
 // part #2: https://www.youtube.com/watch?v=XgMWc6LumG4
+// part #3: https://www.youtube.com/watch?v=HXSuNxpCzdM
 
 // build & run
 // cmake -A x64 .. && cmake --build . --config Release && Release\cube3d.exe
