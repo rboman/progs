@@ -11,7 +11,9 @@ class Cube3d : public olc::PixelGameEngine
     mat4x4 matProj;
     float fTheta = 0.0f;
     vec3 vCamera;
-    
+    vec3 vLookDir;
+    float fYaw = 0.0;
+
 public:
     bool OnUserCreate() override;
     bool OnUserUpdate(float fElapsedTime) override;

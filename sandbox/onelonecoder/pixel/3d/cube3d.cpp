@@ -6,7 +6,8 @@ Cube3d::OnUserCreate()
 {
     //createCube(meshCube);
     // meshCube.LoadFromObjectFile(CMAKE_SOURCE_DIR "/VideoShip.obj");
-    meshCube.LoadFromObjectFile(CMAKE_SOURCE_DIR "/teapot.obj");
+    // meshCube.LoadFromObjectFile(CMAKE_SOURCE_DIR "/teapot.obj");
+    meshCube.LoadFromObjectFile(CMAKE_SOURCE_DIR "/axis.obj");
 
     // projection matrix
     float fNear = 0.1f;   // z_near (for scaling z to -1,1)
@@ -22,11 +23,36 @@ Cube3d::OnUserCreate()
 bool
 Cube3d::OnUserUpdate(float fElapsedTime)
 {
+
+    if (GetKey(olc::UP).bHeld)
+        vCamera.y += 8.0f * fElapsedTime;
+
+    if (GetKey(olc::DOWN).bHeld)
+        vCamera.y -= 8.0f * fElapsedTime;
+
+    if (GetKey(olc::LEFT).bHeld)
+        vCamera.x -= 8.0f * fElapsedTime;
+
+    if (GetKey(olc::RIGHT).bHeld)
+        vCamera.x += 8.0f * fElapsedTime;
+
+    vec3 vForward = Vector_Mul(vLookDir, 8.0f * fElapsedTime);
+
+    if (GetKey(olc::Z).bHeld)
+        vCamera = Vector_Add(vCamera, vForward);
+    if (GetKey(olc::S).bHeld)
+        vCamera = Vector_Sub(vCamera, vForward);
+
+    if (GetKey(olc::Q).bHeld)
+        fYaw -= 2.0f * fElapsedTime;
+    if (GetKey(olc::D).bHeld)
+        fYaw += 2.0f * fElapsedTime;
+
     // Erase previous frame
     Clear(olc::DARK_BLUE);
 
     mat4x4 matRotZ, matRotX;
-    fTheta += 1.0f * fElapsedTime;
+    // fTheta += 1.0f * fElapsedTime;
 
     // rotations
     matRotZ = Matrix_MakeRotationZ(fTheta);
@@ -40,11 +66,20 @@ Cube3d::OnUserUpdate(float fElapsedTime)
     matWorld = Matrix_MultiplyMatrix(matRotZ, matRotX);
     matWorld = Matrix_MultiplyMatrix(matWorld, matTrans);
 
+    vec3 vUp = {0, 1, 0};
+    vec3 vTarget = {0, 0, 1};
+    mat4x4 matCameraRot = Matrix_MakeRotationY(fYaw);
+    vLookDir = Matrix_MultipyVector(matCameraRot, vTarget);
+    vTarget = Vector_Add(vCamera, vLookDir);
+
+    mat4x4 matCamera = Matrix_PointAt(vCamera, vTarget, vUp);
+    mat4x4 matView = Matrix_QuickInverse(matCamera);
+
     std::vector<triangle> vecTrianglesToRaster;
 
     for (auto &tri : meshCube.tris)
     {
-        triangle triProjected, triTransformed;
+        triangle triProjected, triTransformed, triViewed;
 
         triTransformed.p[0] = Matrix_MultipyVector(matWorld, tri.p[0]);
         triTransformed.p[1] = Matrix_MultipyVector(matWorld, tri.p[1]);
@@ -66,15 +101,29 @@ Cube3d::OnUserUpdate(float fElapsedTime)
             float dp = std::max(0.1f, Vector_DotProduct(light_direction, normal));
             triTransformed.col = (dp > 0.1f) ? dp : 0.1f;
 
+            // convert world space => View space
+
+            triViewed.p[0] = Matrix_MultipyVector(matView, triTransformed.p[0]);
+            triViewed.p[1] = Matrix_MultipyVector(matView, triTransformed.p[1]);
+            triViewed.p[2] = Matrix_MultipyVector(matView, triTransformed.p[2]);
+
             // project from 3D to 2D  = > x,y,z in [-1, 1]
-            triProjected.p[0] = Matrix_MultipyVector(matProj, triTransformed.p[0]);
-            triProjected.p[1] = Matrix_MultipyVector(matProj, triTransformed.p[1]);
-            triProjected.p[2] = Matrix_MultipyVector(matProj, triTransformed.p[2]);
+            triProjected.p[0] = Matrix_MultipyVector(matProj, triViewed.p[0]);
+            triProjected.p[1] = Matrix_MultipyVector(matProj, triViewed.p[1]);
+            triProjected.p[2] = Matrix_MultipyVector(matProj, triViewed.p[2]);
             triProjected.col = triTransformed.col;
 
             triProjected.p[0] = Vector_Div(triProjected.p[0], triProjected.p[0].w);
             triProjected.p[1] = Vector_Div(triProjected.p[1], triProjected.p[1].w);
             triProjected.p[2] = Vector_Div(triProjected.p[2], triProjected.p[2].w);
+
+            // X/Y are inverted so put them back
+            triProjected.p[0].x *= -1.0f;
+            triProjected.p[1].x *= -1.0f;
+            triProjected.p[2].x *= -1.0f;
+            triProjected.p[0].y *= -1.0f;
+            triProjected.p[1].y *= -1.0f;
+            triProjected.p[2].y *= -1.0f;
 
             // offset/scale view (to screen coordinates)
             vec3 vOffsetView = {1, 1, 0};
