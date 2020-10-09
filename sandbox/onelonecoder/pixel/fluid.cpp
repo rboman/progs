@@ -262,7 +262,7 @@ public:
                 int v = d;
                 if (v > 255)
                     v = 255;
-                HsvColor hsv{unsigned char((d + 50) % 255), unsigned char(200), unsigned char(v)};
+                HsvColor hsv{(unsigned char)((d + 50) % 255), (unsigned char)(200), (unsigned char)(v)};
                 RgbColor rgb = HsvToRgb(hsv);
                 pge.FillRect(i*SCALE, j*SCALE, SCALE, SCALE, olc::Pixel(rgb.r, rgb.g, rgb.b));
             }
