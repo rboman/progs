@@ -10,10 +10,7 @@ set LIB=
 
 set OMP_NUM_THREADS=1
 
-set PATH=C:\msys64\mingw64\bin
-::set PATH=%PATH%;C:\MinGW\msys\1.0\bin
-set PATH=%PATH%;C:\Program Files\CMake\bin\
-set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
-set PATH=%PATH%;C:\Program Files\Microsoft VS Code\bin
+set PATH=C:\msys64\mingw64\bin;%PATH%
+set PATH=C:\msys64\usr\bin;%PATH%
 
 %comspec%
