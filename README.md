@@ -6,11 +6,11 @@
 Various progs of mine:
   * `apps`: small almost-finished apps,
   * `bin`: helper scripts,
-  * `cmake`: basic projects using [CMake](https://cmake.org/) and other libs,
   * `docs`: misc text / markdown tests,
-  * `langtests`: test of compiler and language features,
   * `metafor`: programs related to [Metafor](http://metafor.ltas.ulg.ac.be/),
+  * `pytools`: shared python tools,
   * `sandbox`: tutorials I wrote during the learning of a new language/library,
   * `skel`: skeleton of progs including CMake files,
   * `snippets`: useful code fragments,
   * `student`: my old student projects.
+  * `unsorted`: unsorted projects.

@@ -1,0 +1,29 @@
+dist: trusty
+sudo: false
+language: cpp
+script:
+  - cd v_cmake
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .
+  - ls
+  - ./femcode
+  - cd ../..
+  #
+  - cd v_gdb
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .
+  - cd ../..
+  #
+  - cd v_noref
+  - gcc femcode.cpp
+  - ./a.out
+  - cd ..
+  #
+  - cd v_ref
+  - gcc femcode.cpp
+  - ./a.out
+  - cd ..
