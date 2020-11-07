@@ -7,10 +7,13 @@ Various progs of mine:
   * `apps`: small almost-finished apps,
   * `bin`: helper scripts,
   * `docs`: misc text / markdown tests,
+  * `envs`: build environment scripts,
+  * `externals`: place to download/build external dependencies,
+  * `ico`: shared icons and images,
   * `metafor`: programs related to [Metafor](http://metafor.ltas.ulg.ac.be/),
   * `pytools`: shared python tools,
   * `sandbox`: tutorials I wrote during the learning of a new language/library,
   * `skel`: skeleton of progs including CMake files,
   * `snippets`: useful code fragments,
-  * `student`: my old student projects.
+  * `student`: my old student projects,
   * `unsorted`: unsorted projects.
