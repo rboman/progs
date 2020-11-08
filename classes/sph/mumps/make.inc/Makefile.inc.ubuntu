@@ -1,0 +1,97 @@
+# CONFIG file for garfield (Ubuntu 16.04LTS) - March 2018
+# gfortran
+# MKL 2017.2 (including BLACS and SCALAPACK)
+# OpenMPI
+# PORD ordering <= to be changed!
+
+#
+#  This file is part of MUMPS 5.1.2, released
+#  on Mon Oct  2 07:37:01 UTC 2017
+#
+# These settings for a PC under Debian/linux with standard packages :
+# metis (parmetis), scotch (ptscotch), openmpi, gfortran
+
+# packages installation : 
+# apt-get install libmetis-dev libparmetis-dev libscotch-dev libptscotch-dev libatlas-base-dev openmpi-bin libopenmpi-dev lapack-dev
+
+# Begin orderings
+LSCOTCHDIR = /usr/lib
+ISCOTCH   = -I/usr/include/scotch
+
+LSCOTCH =
+#LSCOTCH   = -L$(LSCOTCHDIR) -lptesmumps -lptscotch -lptscotcherr
+#LSCOTCH   = -L$(LSCOTCHDIR) -lesmumps -lscotch -lscotcherr
+
+LPORDDIR = $(topdir)/PORD/lib/
+IPORD    = -I$(topdir)/PORD/include/
+LPORD    = -L$(LPORDDIR) -lpord
+
+LMETISDIR =
+#LMETISDIR = /usr/lib 
+IMETIS =
+#IMETIS    = -I/usr/include/parmetis
+#IMETIS    = -I/usr/include/metis
+
+# LMETIS    = -L$(LMETISDIR) -lparmetis -lmetis
+#LMETIS    = -L$(LMETISDIR) -lmetis
+LMETIS =
+
+# Corresponding variables reused later
+ORDERINGSF =  -Dpord
+#ORDERINGSF = -Dmetis -Dpord -Dparmetis -Dscotch -Dptscotch
+#ORDERINGSF = -Dmetis -Dpord -Dscotch
+ORDERINGSC  = $(ORDERINGSF)
+
+LORDERINGS = $(LMETIS) $(LPORD) $(LSCOTCH)
+#LORDERINGS = $(LPORD)
+#IORDERINGSF = $(ISCOTCH)
+#IORDERINGSC = $(IMETIS) $(IPORD) $(ISCOTCH)
+IORDERINGSF = 
+IORDERINGSC = $(IPORD)
+
+
+# End orderings
+################################################################################
+
+PLAT    =
+LIBEXT  = .a
+OUTC    = -o 
+OUTF    = -o 
+RM = /bin/rm -f
+CC = gcc
+FC = gfortran
+FL = gfortran
+AR = ar vr 
+RANLIB = ranlib
+#LAPACK = -llapack
+#SCALAP  = -lscalapack-openmpi -lblacs-openmpi  -lblacsF77init-openmpi -lblacsCinit-openmpi
+
+SCALAP = 
+LAPACK = -L${MKLROOT}/lib/intel64 -Wl,--no-as-needed -lmkl_scalapack_lp64 -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core -lmkl_blacs_openmpi_lp64 -lgomp -lpthread -lm -ldl
+
+INCPAR = -I/usr/lib/openmpi/include
+
+#LIBPAR = $(SCALAP) $(LAPACK)  -lmpi -lmpi_f77
+# utiliser "mpifort --showme:link"
+
+LIBPAR = $(SCALAP) $(LAPACK) -pthread -I/usr/lib/openmpi/lib -Wl,-rpath -Wl,/usr/lib/openmpi/lib -Wl,--enable-new-dtags -L/usr/lib/openmpi/lib -lmpi_usempif08 -lmpi_usempi_ignore_tkr -lmpi_mpifh -lmpi
+
+#INCSEQ = -I$(topdir)/libseq
+#LIBSEQ  = $(LAPACK) -L$(topdir)/libseq -lmpiseq
+
+#LIBBLAS = -lblas
+#LIBOTHERS = -lpthread
+
+#Preprocessor defs for calling Fortran from C (-DAdd_ or -DAdd__ or -DUPPER)
+CDEFS   = -DAdd_
+
+#Begin Optimized options
+# uncomment -fopenmp in lines below to benefit from OpenMP
+OPTF    = -O -fopenmp -m64
+OPTL    = -O -fopenmp -m64
+OPTC    = -O -fopenmp -m64
+#End Optimized options
+ 
+INCS = $(INCPAR)
+LIBS = $(LIBPAR)
+LIBSEQNEEDED =

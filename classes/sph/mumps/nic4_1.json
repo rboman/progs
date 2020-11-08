@@ -1,0 +1,10 @@
+{
+    "grid.np2" : [89, 89, 89],
+    "verb_level" : 1, // 0-1
+    "mumps.verb_level" : 2, // 0-4
+    "mumps.error_analysis" : false,
+    "mumps.ordering" : "parmetis",   // "amd", "amf", "pord", "metis", "qamd", "parmetis"
+    "save.vti" : false,
+    "bench_no" : 0
+}
+

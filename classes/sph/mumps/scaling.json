@@ -1,0 +1,10 @@
+{
+    "grid.o" : [10.0, 10.0, 10.0],
+    "grid.L" : [10.0, 10.0, 10.0],
+    "grid.np2" : [89, 89, 89],
+    "matlab" : false,
+    "mumps.verb_level" : 0,
+    "save.vti" : false,
+    "bench_no" : 0,
+    "mumps.ordering" : "metis"
+}

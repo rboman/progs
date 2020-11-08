@@ -1,0 +1,15 @@
+{
+    "grid.o" : [10.0, 12.0, 11.0],
+    "grid.L" : [10.0, 10.0, 10.0],
+    "grid.np2" : [19, 19, 19],
+    "matlab" : false,
+    "verb_level" : 0, // 0-1
+    "mumps.verb_level" : 0, // 0-4
+    //"mumps.savemat.file" : "problem",
+    "mumps.error_analysis" : true,
+    "mumps.ordering" : "metis",   // "amd", "amf", "pord", "metis", "qamd", "parmetis"
+    //"mumps.compute_det" : true,
+    "save.vti" : true,
+    "bench_no" : 0
+}
+

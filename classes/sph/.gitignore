@@ -1,0 +1,14 @@
+# list of ignored files/folders
+
+build/
+workspace/
+*~
+*.o
+*.obj
+*.bak
+.vscode/
+
+#*.vtk
+#*.vti
+#*.vtp
+#*.vtu
