@@ -3,9 +3,9 @@
 requires SWIG, gmm.
 
 
-  * etage                 : code 2010 nettoyé
+  * etage                 : code 2010 nettoyÃ©
   * matlab                : postprocessing
-  * couplage              : code2010 nettoyé avec des structures
+  * couplage              : code2010 nettoyÃ© avec des structures
   * _couplage             : interface python (swig)
-  * tests                 : jeux de données - postpro associé
+  * tests                 : jeux de donnÃ©es - postpro associÃ©
   * minib                 : embryon d'un code OO (pas fini du tout)

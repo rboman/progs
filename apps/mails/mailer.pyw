@@ -21,6 +21,9 @@
 # rassemble "mailtest.py", "sendhtml.py" et "anonmail.py"
 #
 
+from __future__ import print_function
+from builtins import str
+from builtins import map
 import sys, os, socket
 from PyQt5.QtCore    import *
 from PyQt5.QtGui     import *
@@ -92,12 +95,12 @@ class MailWindow(QWidget):
         try:
             self.fromw.addItem(os.environ['USERNAME']+"@"+socket.gethostname())
         except:
-            print os.environ
+            print(os.environ)
 
     def write(self, stuff):
         "stdio redirection"
         if '\n' in stuff:
-            map( self.writeLine, stuff.split("\n") )
+            list(map( self.writeLine, stuff.split("\n") ))
         else:
             self.buf += stuff 
         qApp.processEvents()
@@ -117,15 +120,15 @@ class MailWindow(QWidget):
         main fct: send mail using smtplib
         """
         import smtplib
-        fromaddr = unicode(self.fromw.currentText())
-        toaddrs = unicode(self.tow.text())
+        fromaddr = str(self.fromw.currentText())
+        toaddrs = str(self.tow.text())
         
-        head = "From: %s\nTo: %s\nSubject:%s\n" % (fromaddr, toaddrs, unicode(self.subjw.text()))
+        head = "From: %s\nTo: %s\nSubject:%s\n" % (fromaddr, toaddrs, str(self.subjw.text()))
         if self.htmlcheck.checkState() == Qt.Checked:
             head = head+"Content-Type: text/html;\n"
-            body = unicode(self.textw.toHtml())
+            body = str(self.textw.toHtml())
         else:
-            body = unicode(self.textw.toPlainText())
+            body = str(self.textw.toPlainText())
         head+='\n'    
         msg = head+body
         
@@ -139,7 +142,7 @@ def main():
     win = MailWindow()
     win.show()
     app.lastWindowClosed.connect(app.quit)
-    print "Ready!"
+    print("Ready!")
     sys.exit(app.exec_())
  
 if __name__=="__main__":

@@ -1,42 +1,35 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtCore
+""" Test several ways of creating MD5 hash (with Qt / python)
+"""
 
-texte = "grape"
+from PyQt5 import QtCore
 
-blah = QtCore.QString(QtCore.QCryptographicHash.hash((texte),QtCore.QCryptographicHash.Md5).toHex())
+texte = b"grape"
 
-print("Qt (1)          =", blah)
-
+blah = QtCore.QCryptographicHash.hash((texte),QtCore.QCryptographicHash.Md5).toHex()
+print("Qt (1)         =", blah)
 
 
 hash = QtCore.QCryptographicHash(QtCore.QCryptographicHash.Md5)
-hash.addData("gr")
-hash.addData("a")
-hash.addData("pe")
+hash.addData(b"gr")
+hash.addData(b"a")
+hash.addData(b"pe")
 print("Qt (2)         =", hash.result().toHex())
 
-import md5
-m = md5.new()
-m.update("gra")
-m.update("pe")
-print("python md5     =", m.hexdigest())
+
+# import md5          # not available in python 3
+# m = md5.new()
+# m.update(b"gra")
+# m.update(b"pe")
+# print("python md5     =", m.hexdigest())
 
 
 import hashlib
 m = hashlib.md5()
-m.update("grap")
-m.update("e")
+m.update(b"grap")
+m.update(b"e")
 print("python hashlib =", m.hexdigest())
 
-"""
-import hashlib
-m = hashlib.sha224()
-m.update("hello ca roule ")
-m.update("hello ca roule ")
-m.update("hello ca roule ")
-m.update("hello ca roule?")
-print "essai5 =", m.hexdigest()
-"""
 
