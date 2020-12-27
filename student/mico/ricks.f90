@@ -4,6 +4,7 @@
 
 subroutine ricks(x, y, Force)
 
+    implicit none
 ! ----Declarations--------
 
     integer :: i, boucle, t, ii, imax, n
@@ -12,7 +13,7 @@ subroutine ricks(x, y, Force)
     double precision, intent(inout) :: x(n), y(n), Force(n)
 
     double precision :: h, a, b, Vh, Vv, E, Lh, Lv, ETAMAX
-    double precision :: TOL, u, Du1(2)
+    double precision :: TOL, u, v, Du1(2)
     double precision :: lambda, Beta, ETA, Du(2), Du2(2)
     double precision :: R(2), uu(2)
     double precision :: norm, F(2), Kt(2, 2), MAT(2)

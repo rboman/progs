@@ -14,7 +14,7 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS_RELEASE  : " ${CMAKE_Fortran_FLAGS_RELEASE})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
 # reference executable (unmodified)
-ADD_EXECUTABLE(nihoul_orig nihoul_orig.for) 
+ADD_EXECUTABLE(nihoul_orig orig/nihoul.for) 
 
 FILE(GLOB SRCS nihoul.f90)      # .f90/.f95 => free format | .f/.for => fixed
 ADD_EXECUTABLE(nihoul ${SRCS}) 
