@@ -47,19 +47,28 @@ uc color_text, color_bak; /* Couleurs d'affichage du texte et  */
                ROUTINES GRAPHIQUES
 ----------------------------------------------------------------------------*/
 
-void putpixel(int x, int y, uc col) /* Affiche un point */
+void
+putpixel(int x, int y, uc col) /* Affiche un point */
 {
-    asm mov ax, 0xa000 asm mov es, ax asm mov ax, 320 asm mul y asm add ax,
-        x asm mov di, ax asm mov al, byte ptr col asm mov es : [di], al
+    asm mov ax, 0xa000;
+    asm mov es, ax;
+    asm mov ax, 320;
+    asm mul y;
+    asm add ax, x;
+    asm mov di, ax;
+    asm mov al, byte ptr col;
+    asm mov es : [ di ], al
 }
 
-void init13h() /* Mode graphique 13h */
+void
+init13h() /* Mode graphique 13h */
 {
     asm mov ax, 0x13;
     asm int 0x10;
 }
 
-void close13h() /* Retour au mode texte */
+void
+close13h() /* Retour au mode texte */
 {
     asm mov ax, 3;
     asm int 0x10;
@@ -69,18 +78,29 @@ uc
 getcolor(int x, int y)
 {
     uc col;
-    asm mov ax, 0xa000 asm mov es, ax asm mov ax, 320 asm mul y asm add ax,
-        x asm mov di, ax asm mov al, es : [di] asm mov col, al return (col);
+    asm mov ax, 0xa000;
+    asm mov es, ax;
+    asm mov ax, 320;
+    asm mul y;
+    asm add ax, x;
+    asm mov di, ax;
+    asm mov al, es : [ di ];
+    asm mov col, al;
+    return col;
 }
 
 void
 waitretrace()
 {
-    asm mov dx, 0x3da wait1 : asm in al,
-                              dx asm test al,
-                              0x8 asm jnz wait1 wait2 : asm in al,
-                                                        dx asm test al,
-                                                        0x8 asm jz wait2
+    asm mov dx, 0x3da;
+wait1:
+    asm in al, dx;
+    asm test al, 0x8;
+    asm jnz wait1;
+wait2:
+    asm in al, dx;
+    asm test al, 0x8;
+    asm jz wait2;
 }
 
 void
@@ -150,8 +170,9 @@ show_palette()
            ROUTINES DE TRAITEMENT DES CARACTERES
 ----------------------------------------------------------------------------*/
 
-void get_char() /* Remplit le tableau lettres */
-{               /* avec 106 caractères ASCII  */
+void
+get_char() /* Remplit le tableau lettres */
+{          /* avec 106 caractères ASCII  */
     uc col;
     uc x, y, i;
     for (i = ' '; i <= 138; i++)
@@ -258,8 +279,9 @@ scroll(int y, uc factor)
                EFFETS DE FERMETURE
 ----------------------------------------------------------------------------*/
 
-void good_bye(uc effect) /* effect = 1 : écoulement             */
-{                        /*        = 2 : cisaillement           */
+void
+good_bye(uc effect) /* effect = 1 : écoulement             */
+{                   /*        = 2 : cisaillement           */
     uc c;
     register int i, j, t;
     if (effect == 1)
@@ -270,10 +292,16 @@ void good_bye(uc effect) /* effect = 1 : écoulement             */
             for (t = 0; t < 319; t++)
             {
                 c = getcolor(t, i);
-                asm mov ax, 0xa000 asm mov es, ax for (j = i + 1; j <= 199; j++)
+                asm mov ax, 0xa000;
+                asm mov es, ax;
+                for (j = i + 1; j <= 199; j++)
                 {
-                    asm mov ax, 320 asm mul j asm add ax, t asm mov di,
-                        ax asm mov al, byte ptr c asm mov es : [di], al
+                    asm mov ax, 320;
+                    asm mul j;
+                    asm add ax, t;
+                    asm mov di, ax;
+                    asm mov al, byte ptr c;
+                    asm mov es : [ di ], al;
                 }
             }
         }
@@ -381,6 +409,8 @@ main()
         color_bak = it[1] * 16 + jt[1];
     }
     good_bye(cur + 1);
+
     close13h();
+    
     return 0;
 }

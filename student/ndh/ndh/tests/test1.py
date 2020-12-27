@@ -27,7 +27,7 @@ def main():
         bem = ndh.BemSolver()
         f = os.path.join(os.path.dirname(__file__),'test%d.dat'%i)
         bem.load_data(f)
-        bem.exec_full();
+        bem.exec_full()
         bem.save_Mfile("resfrompy%d.m" % i)
 
 
