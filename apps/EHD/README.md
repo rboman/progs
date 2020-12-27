@@ -27,6 +27,11 @@ ctest -C Release
 ```
 You may also double click on `build.py` and cross your fingers.
 
+## Run a test
+```
+run.py ehd\tests\test1.py
+```
+
 ## Notes/TODO
 
   * convert to (real) C++

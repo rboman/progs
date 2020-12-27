@@ -1,8 +1,3 @@
-// mkdir build
-// cd build
-// cmake -G "Visual Studio 14 2015 Win64" ..
-// cmake --build . --config Release
-
 #include "mailsph.h"
 #include "Cylinder.h"
 #include "Sphere.h"

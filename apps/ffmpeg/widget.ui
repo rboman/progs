@@ -67,7 +67,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;pattern for the bitmap file names&lt;/p&gt;&lt;p&gt;anim%4d.bmp =&amp;gt; anim0000.bmp, anim0001.bmp, anim0002.bmp, etc.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;pattern for the bitmap file names&lt;/p&gt;&lt;p&gt;anim%4d.png =&amp;gt; anim0000.png, anim0001.png, anim0002.png, etc.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>filenames</string>

@@ -20,7 +20,7 @@ def main():
 
     #import numpy as np
     #import matplotlib.pyplot as plt
-    import sky
+    import gauss
 
 
 if __name__ == "__main__":
