@@ -23,3 +23,5 @@ This program uses `ffmpeg`.
   * check compatibility with PySide
   * make a smarter preview without loading all the images into memory
   * resize preview window
+  * download ffmpeg if not found
+  * clear settings

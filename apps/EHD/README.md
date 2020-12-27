@@ -37,3 +37,4 @@ run.py ehd\tests\test1.py
   * convert to (real) C++
   * plot results using [matplotlib](https://matplotlib.org/)
   * Check the sign error in "C_2" matrix (?)
+  * Use more python in the tests
