@@ -3,7 +3,6 @@
 # figure matplotlib "propres"
 
 
-from past.utils import old_div
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -13,7 +12,7 @@ scaling = 3.3e-5
 
 x = np.linspace(-3*np.pi, 3*np.pi, 100)
 y1 = np.sin(x) * scaling
-y2 = old_div((np.sin(2*x)+np.cos(x)),2) * scaling
+y2 = (np.sin(2*x)+np.cos(x))/2 * scaling
 
 # figure 1 - default
 

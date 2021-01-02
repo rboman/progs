@@ -3,7 +3,6 @@
 
 # very basic 2D plot using vtkXYPlotActor
 
-from past.utils import old_div
 import vtk
 import math
 
@@ -18,7 +17,7 @@ def drange(start, stop, step):
 def genvalues():
     # generate a list of tuples
     values = []
-    for x in drange(0.0, 4*math.pi, old_div(4*math.pi,100)):
+    for x in drange(0.0, 4*math.pi, 4*math.pi/100):
         values.append( (x, math.sin(x)) )
     return values
 

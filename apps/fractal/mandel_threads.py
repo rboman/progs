@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from past.utils import old_div
 import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -23,8 +22,8 @@ class Transf(object):
 
     def win2ax(self, xe, ye):  # (xe,ye) + wx,wy,ox,oy,zoom => (x,y)
         """ widget to logical coords"""
-        x = self.ox + float(xe-old_div(self.wx,2))/self.zoom
-        y = self.oy - float(ye-old_div(self.wy,2))/self.zoom
+        x = self.ox + float(xe-self.wx/2)/self.zoom
+        y = self.oy - float(ye-self.wy/2)/self.zoom
         return x, y
 
     def __str__(self):
@@ -66,7 +65,7 @@ class RenderThread(QThread):
         colours = []
         for n in range(self.nbc):
             col = QColor()
-            col.setHsv(old_div(255*n,self.nbc), 255, 255)
+            col.setHsv(255*n/self.nbc, 255, 255)
             colours.append(col)
 
         for xe in range(0, self.transf.wx, self.inc):
@@ -201,11 +200,11 @@ class MandelWidget(QWidget):
 
             painter.setPen(Qt.NoPen)
             painter.setBrush(QColor(0, 0, 0, 127))
-            painter.drawRect(old_div((self.width() - textWidth), 2) - 5, 0, textWidth + 10,
+            painter.drawRect((self.width() - textWidth)/ 2 - 5, 0, textWidth + 10,
                              metrics.lineSpacing() + 5)
 
             painter.setPen(Qt.white)
-            painter.drawText(old_div((self.width() - textWidth), 2),
+            painter.drawText((self.width() - textWidth)/2,
                              metrics.leading() + metrics.ascent(), text)
 
         # zoom
@@ -231,7 +230,7 @@ class MandelWidget(QWidget):
         w = x2 - x1
         h = y2 - y1
         ww = int(ar * h)
-        hh = int(old_div(w, ar))
+        hh = int(w/ar)
         if abs(ww) > abs(w):
             x2 = x1 + ww
         elif abs(hh) > abs(h):
@@ -262,8 +261,8 @@ class MandelWidget(QWidget):
                     rect.topLeft().x(), rect.topLeft().y())
                 x2, y2 = self.transf.win2ax(
                     rect.bottomRight().x(), rect.bottomRight().y())
-                ox = old_div((x1+x2),2)
-                oy = old_div((y1+y2),2)
+                ox = (x1+x2)/2
+                oy = (y1+y2)/2
                 zoom1 = abs(float(self.width())/(x2-x1))
                 zoom2 = abs(float(self.height())/(y2-y1))
 

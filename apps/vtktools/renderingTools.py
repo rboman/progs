@@ -3,7 +3,6 @@
 
 # Vtk visualisation functions
 
-from past.utils import old_div
 import vtk
 import generalTools
 import meshingTools
@@ -429,7 +428,7 @@ def create3Planes(image):
     wX.DisplayTextOn()
     wX.SetInput(image)
     wX.SetPlaneOrientationToXAxes()
-    wX.SetSliceIndex(old_div((xMax-xMin),2))
+    wX.SetSliceIndex((xMax-xMin)/2)
     wX.SetKeyPressActivationValue("x")
     wX.SetResliceInterpolateToLinear()
     wX.SetPicker(picker)
@@ -444,7 +443,7 @@ def create3Planes(image):
     wY.DisplayTextOn()
     wY.SetInput(image)
     wY.SetPlaneOrientationToYAxes()
-    wY.SetSliceIndex(old_div((yMax-yMin),2))
+    wY.SetSliceIndex((yMax-yMin)/2)
     wY.SetKeyPressActivationValue("y")
     wY.SetResliceInterpolateToLinear()
     wY.SetPicker(picker)
@@ -460,7 +459,7 @@ def create3Planes(image):
     wZ.DisplayTextOn()
     wZ.SetInput(image)
     wZ.SetPlaneOrientationToZAxes()
-    wZ.SetSliceIndex(old_div((zMax-zMin),2))
+    wZ.SetSliceIndex((zMax-zMin)/2)
     wZ.SetKeyPressActivationValue("z")
     wZ.SetResliceInterpolateToLinear()
     wZ.SetPicker(picker)

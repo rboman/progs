@@ -24,7 +24,6 @@
 # REQUIRES: pdfinfo, pdfseparate, pdfjoin, gs, pdfjam
 #
 
-from past.utils import old_div
 import sys, os, subprocess, re, shutil
 
 def getpdfsize(fname):
@@ -73,8 +72,8 @@ def splitpdf(fname, tmpdir):
     files = []
     for n in range(1,np+1):
         infile = pattern % n
-        dx = int(old_div(sx,2))
-        dy = int(old_div(sy,2))
+        dx = int(sx/2)
+        dy = int(sy/2)
         k = 0
         for i in reversed(list(range(2))):
             for j in range(2):

@@ -5,7 +5,6 @@
 # requiert python/OpenGL
 
 
-from past.utils import old_div
 import sys
 import math
 
@@ -197,13 +196,13 @@ class GLWidget(QOpenGLWidget):
         NumSectors = 200
 
         for i in range(NumSectors):
-            angle1 = old_div((i * 2 * math.pi), NumSectors)
+            angle1 = (i * 2 * math.pi)/NumSectors
             x5 = 0.30 * math.sin(angle1)
             y5 = 0.30 * math.cos(angle1)
             x6 = 0.20 * math.sin(angle1)
             y6 = 0.20 * math.cos(angle1)
 
-            angle2 = old_div(((i + 1) * 2 * math.pi), NumSectors)
+            angle2 = ((i + 1) * 2 * math.pi)/NumSectors
             x7 = 0.20 * math.sin(angle2)
             y7 = 0.20 * math.cos(angle2)
             x8 = 0.30 * math.sin(angle2)

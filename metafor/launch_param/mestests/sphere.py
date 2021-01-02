@@ -12,7 +12,6 @@
 #0. Entète                                # Elle est obligatoire et toujours la même !
 #=====================================================================================
 
-from past.utils import old_div
 from wrap import *                        #Importation des modules
 import math
 
@@ -208,7 +207,7 @@ def buildDomain(_parameters={}):
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,old_div(parameters['Hard'],(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
+                lawset1.put(IH_KSI,parameters['Hard']/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
                 
                 print("Elasto-plastic material with a non-linear isotropic hardening")
             else:
@@ -274,7 +273,7 @@ def buildDomain(_parameters={}):
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,old_div(Hard_Iso,(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
+                lawset1.put(IH_KSI,Hard_Iso/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
                 if(parameters['KinematicHardening'] == "LINEAR"): 
                 
                     lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
@@ -330,7 +329,7 @@ def buildDomain(_parameters={}):
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,old_div(parameters['Hard'],(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
+                lawset1.put(IH_KSI,parameters['Hard']/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
                 
                 print("Elasto-viscoplastic material with a non-linear isotropic hardening")
                 
@@ -403,7 +402,7 @@ def buildDomain(_parameters={}):
                 lawset1 = lawset.define(1, SaturatedIsotropicHardening)                 #Ecrouissage isotrope non-linéaire de Voce 1
                 lawset1.put(IH_SIGEL,   parameters['SigmaY_0'])
                 lawset1.put(IH_Q, parameters['SigmaY_Infty']-parameters['SigmaY_0'])
-                lawset1.put(IH_KSI,old_div(Hard_Iso,(parameters['SigmaY_Infty']-parameters['SigmaY_0'])))
+                lawset1.put(IH_KSI,Hard_Iso/(parameters['SigmaY_Infty']-parameters['SigmaY_0']))
                 
                 if(parameters['KinematicHardening'] == "LINEAR"): 
                     lawset2 = lawset.define(2, DruckerPragerKinematicHardening)     #Ecrouissage cinématique linéaire de Drucker Prager  2                                                        
