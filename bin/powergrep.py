@@ -59,8 +59,12 @@ if __name__ == '__main__':
         #print('f=',f)
 
         # red the whole file
-        file = open(f, mode='r')
-        alllines = file.readlines() 
+        file = open(f, mode='r', encoding='utf-8')
+        try:
+            alllines = file.readlines() 
+        except:
+            print(f'\nERROR: file {f} contains non-unicode characters!\n')
+            raise
         file.close()
 
         newlines = []
@@ -83,7 +87,7 @@ if __name__ == '__main__':
                 newlines.append(l)
 
         if modified:
-            file = open(f, mode='w')
+            file = open(f, mode='w', encoding='utf-8')
             for l in newlines:
                 file.write(l)
             file.close()
