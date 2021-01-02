@@ -1,3 +1,7 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 # OK anaconda2 + freeglut+pyopengl
 
 from OpenGL.GLUT import *
