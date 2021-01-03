@@ -8,3 +8,4 @@ y = sin.(x)
 plot(x, y, label="sin(x)")
 plot!(xlab="x", ylab="f(x)")
 
+readline()
