@@ -4,6 +4,13 @@ pas de julia dans les packages Ubuntu 18.04 => telecharger les binaires linux
 
 gros changements entre version 0.x et 1.x (2018!)
 
+Très lent au démarrage!
+https://www.zverovich.net/2016/05/13/giving-up-on-julia.html
+=> l'utilisation de julia est idéale dans des notebooks jupyter ou autres 
+   ou le temps des "using XXX" n'est compté qu'une seule fois
+=> au final, tracer un simple graphe avec Plots prends plus de 25s
+   (pour 1-2s avec python/matplotlib)
+
 ## Liens
 
 * https://techytok.com/from-zero-to-julia/
