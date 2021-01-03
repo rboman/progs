@@ -15,7 +15,11 @@ gros changements entre version 0.x et 1.x (2018!)
 
 ## Memo
 
+s'installe dans C:\Users\r_bom\AppData\Local\Programs\Julia 1.5.3
+les packages s'installent dans C:\Users\r_bom\.julia
+
 quitter: exit() ou CTRL-D
+]      : entre dans le package manager (CTRL-C pour sortir)
 
 beaucoup de choses comme MATLAB:
 - ";" en interactif supprime l'output
@@ -29,11 +33,19 @@ par contre:
 import Pkg; Pkg.add("Plots") # telecharge une chiée de packages dont Plots
 using Plots                  # précompile Plots la 1ere fois (long!)
 import Pkg; Pkg.add("PyPlot") 
-pyplot()                      # => installe matplotlib, qt, pyqt   et passe en backend pyplot pour Plots
-
+pyplot()                      # => installe matplotlib, qt, pyqt et passe en backend pyplot pour Plots
 plot(rand(4,4))
 
+
+
+
 ?   => passe en mode "help"
+
+
+
+pwd()       # print working directory
+cd("dir")   # change dir
+
 
 ### types
 
@@ -53,7 +65,15 @@ end
 f(x) = 2*x*x   # version courte
 f(x) = 2x^2    # version très courte!
 
-## arrays
+lorsqu'une fct ne retourne rien (pas de return), elle retourne
+la dernière expression calculée 
+
+function f(x)
+    2*x*x
+end
+
+
+### arrays
 
 a=[1,2,3]  # démarre à 1 - ne contient qu'1 seul type!
 append!(a,4)   # ajoute 4 (le "!" signifie que a sera changé)
@@ -72,7 +92,7 @@ a = zeros(2,2)  # matrice 2x2 de zeros
 d = reshape([1,2,3,4,5,6,7,8,9],3,3)
 
 
-## tuples
+### tuples
 
 similaires à python
 
@@ -80,11 +100,11 @@ a = 1,2
 a = (1,2)        # idem
 print("a=$a")    # impression
 
-## dictionnaires
+### dictionnaires
 
 person1 = Dict("Name" => "Aurelio", "Phone" => 123456789, "Shoe-size" => 40)
 
-## control flow
+### control flow
 
 très similaire à python mis à part la présence de "end" pour delimiter les blocs
 
@@ -103,7 +123,7 @@ end
 
 enumerate() # idem à python (retourne un tuple)
 
-## arrays operations
+### arrays operations
 
 a = [1,2,3]  # column vector
 b = [4 5 6]  # row vector
@@ -114,11 +134,127 @@ b*a => 1-element Array{Int64,1} (scalaire)
 NE PAS PRIVILEGIER LES OPERATIONS SUR MATRICES 
  => utiliser des boucles comme en C ou du "broadcasting"
 
-## broadcasting
+### broadcasting
 
 utilise le dot '.'  => expl: a.*b    (à la matlab)
 
 a = [1,2,3]
 sin.(a)          # calcule le sinus de chaque comp 
+
+
+### packages
+
+using Pkg
+Pkg.add("SpecialFunctions")  # installe le package
+
+
+using SpecialFunctions
+gamma(3)
+SpecialFunctions.gamma(3)     # idem
+import SpecialFunctions       # n'importe pas dans le namespace global
+
+definition d'un module:
+
+------------------------
+module MyModule
+export func2             # func2 sera accessible via using .MyModule
+
+a=42
+function func1(x)        # func1 est accessible via MyModule.func1
+    return x^2
+end
+
+function func2(x)       
+    return func1(x) + a
+end
+
+end #end of module
+------------------------
+
+utilisation:
+
+include("mymodule.jl")
+using .MyModule
+...
+
+### types
+
+
+
+abstract type Person   # type abstrait
+end
+
+abstract type Musician <: Person    # "sub-type"
+end
+
+mutable struct Rockstar <: Musician   # type concret non const (mutable)
+	name::String                       # "nom de variable::type"
+	instrument::String
+	bandName::String
+	headbandColor::String
+	instrumentsPlayed::Int
+end
+
+struct ClassicMusician <: Musician   # type concret "const"
+	name::String
+	instrument::String
+end
+
+mutable struct Physicist <: Person
+	name::String
+	sleepHours::Float64
+	favouriteLanguage::String
+end
+
+aure = Physicist("Aurelio", 6, "Julia")
+aure.sleepHours = 8
+
+
+* multiple dispatch: permet de faire des appels à des fcts virtuelles
+et avoir une sorte de polymorphisme:
+
+function introduceMe(person::Person)   # <= fct appelée pour toutes les personnes
+    println("Hello, my name is $(person.name).")
+end
+
+function introduceMe(person::Musician)   # <= fct appelée pour les musiciens
+    println("Hello, my name is $(person.name) and I play $(person.instrument).")
+end
+
+* constructeur
+
+mutable struct MyData
+	x::Float64
+	x2::Float64
+	y::Float64
+	z::Float64
+	function MyData(x::Float64, y::Float64)
+		x2=x^2
+		z = sin(x2+y)
+		new(x, x2, y, z)  # <= crée l'instance
+	end
+end
+
+* types parametriques
+
+mutable struct MyData2{T<:Real}
+	x::T
+	x2::T
+	y::T
+	z::Float64
+	function MyData2{T}(x::T, y::T) where {T<:Real}
+		x2=x^2
+		z = sin(x2+y)
+		new(x, x2, y, z)
+	end
+end
+
+MyData2{Float64}(2.0,3.0)
+MyData2{Int}(2,3)
+
+### packages
+
+]                           # passe en mode package manager
+generate("TestPackage1")    # genere qq fichiers de démarrage
 
 

@@ -1,0 +1,7 @@
+name = "TestPackage1"
+uuid = "26434cfb-f4f6-4edf-ba61-33a231820f34"
+authors = ["Romain Boman <r.boman@uliege.be>"]
+version = "0.1.0"
+
+[deps]
+SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
