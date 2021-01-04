@@ -2,7 +2,7 @@
 
 pas de julia dans les packages Ubuntu 18.04 => telecharger les binaires linux
 
-gros changements entre version 0.x et 1.x (2018!)
+gros changements entre version 0.x et 1.x (aout 2018!)
 
 Très lent au démarrage!
 https://www.zverovich.net/2016/05/13/giving-up-on-julia.html
@@ -10,13 +10,14 @@ https://www.zverovich.net/2016/05/13/giving-up-on-julia.html
    ou le temps des "using XXX" n'est compté qu'une seule fois
 => au final, tracer un simple graphe avec Plots prends plus de 25s
    (pour 1-2s avec python/matplotlib)
+=> inutilisable sous forme de scripts "julia plot.jl"
+
+similarités avec MATLAB et FORTRAN
 
 ## Liens
 
-* https://techytok.com/from-zero-to-julia/
-
+* https://techytok.com/from-zero-to-julia/ (<= très bien)
 * https://syl1.gitbook.io/julia-language-a-concise-tutorial/
-
 * https://benlauwens.github.io/ThinkJulia.jl/latest/book.html
 
 
@@ -33,17 +34,20 @@ beaucoup de choses comme MATLAB:
 - les index démarrent à 1!
 - slices: a[2:3]
 
+similarité avec le FORTRAN
+- les tableaux sont ordonnés colonne par colonne (=> boucles for j, for i)
+- les "modules" font penser au fortran. Les méthodes liées aux objets (types)
+  sont définies en dehors des objets. 
+
 par contre:
 - les variables sont des pointeurs comme en python (a=b, a[2]=... modifie b) 
-- pas besoin de coder avec des operations matricielles => utiliser des boucles "for i,j" est OK!
+- pas besoin de coder avec des operations matricielles => utiliser des boucles "for j,i" est OK!
 
 import Pkg; Pkg.add("Plots") # telecharge une chiée de packages dont Plots
 using Plots                  # précompile Plots la 1ere fois (long!)
 import Pkg; Pkg.add("PyPlot") 
 pyplot()                      # => installe matplotlib, qt, pyqt et passe en backend pyplot pour Plots
 plot(rand(4,4))
-
-
 
 
 ?   => passe en mode "help"
