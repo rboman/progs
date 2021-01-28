@@ -1,0 +1,26 @@
+{
+"version": "0.2.0",
+"configurations": [
+    {
+      "name": "clang++ - Build and debug active file",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/bin/advection",
+      "args": [],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "environment": [ 
+        { 
+            "name": "PATH", 
+            "value": "${env:PATH}:${workspaceFolder}/gmsh-sdk/bin:${workspaceFolder}/gmsh-sdk/lib" 
+        },
+        { 
+            "name": "DYLD_LIBRARY_PATH", 
+            "value": "${env:DYLD_LIBRARY_PATH}:${workspaceFolder}/gmsh-sdk/bin:${workspaceFolder}/gmsh-sdk/lib" 
+        }
+       ],
+      "externalConsole": false,
+      "MIMode": "lldb"
+    }
+  ]
+}

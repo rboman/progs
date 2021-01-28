@@ -1,0 +1,21 @@
+host	GPU	size	prog	nit	time
+treebeard	TITAN V	1000	serial 	4448	4.92523
+treebeard	TITAN V	1000	multicore 	4448	2.53793
+treebeard	TITAN V	1000	managed 	4448	0.287929
+treebeard	TITAN V	1000	manual 	4448	0.380387
+treebeard	TITAN V	1000	manual_async 	4448	0.390175
+treebeard	TITAN V	2000	serial 	9151	42.771
+treebeard	TITAN V	2000	multicore 	9151	2.92333
+treebeard	TITAN V	2000	managed 	9151	0.843497
+treebeard	TITAN V	2000	manual 	9151	1.04664
+treebeard	TITAN V	2000	manual_async 	9151	0.855154
+treebeard	TITAN V	3000	serial 	14223	154.293
+treebeard	TITAN V	3000	multicore 	14223	10.3411
+treebeard	TITAN V	3000	managed 	14223	2.19231
+treebeard	TITAN V	3000	manual 	14223	2.44183
+treebeard	TITAN V	3000	manual_async 	14223	2.15432
+treebeard	TITAN V	4000	serial 	19212	368.037
+treebeard	TITAN V	4000	multicore 	19212	24.664
+treebeard	TITAN V	4000	managed 	19212	4.64984
+treebeard	TITAN V	4000	manual 	19212	4.88048
+treebeard	TITAN V	4000	manual_async 	19212	4.59864
