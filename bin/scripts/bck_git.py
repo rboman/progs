@@ -29,7 +29,7 @@
 #     rb.py bck_git.py list --update
 #     rb.py bck_git.py clone
 #     rb.py bck_git.py archive
-#     rb.py bck_git.py export
+#     rb.py bck_git.py export --exclude lam3.org:mogador
 #     rb.py bck_git.py download
 #     cp -R 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/
 #        or, if folder already exists:
