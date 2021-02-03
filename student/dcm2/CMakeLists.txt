@@ -36,7 +36,7 @@ INCLUDE(fwkMacros)
 MESSAGE(STATUS "CMAKE_SYSTEM_NAME=\"${CMAKE_SYSTEM_NAME}\"")
 
 # -- C++11
-SET(CMAKE_CXX_STANDARD 11) # newer way to set C++11 (requires cmake>=3.1)
+SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # -- Search for Python (requires cmake>=3.12)

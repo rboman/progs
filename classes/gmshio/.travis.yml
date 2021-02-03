@@ -1,0 +1,20 @@
+dist: trusty
+sudo: false
+language: cpp
+script:
+  - cd v1
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .
+  - ./solver ../../geo/cube22.msh
+  - cd ../..
+  #
+  - cd v2
+  - mkdir build
+  - cd build
+  - cmake ..
+  - cmake --build .
+  - ./solver ../../geo/cube22.msh
+
+  

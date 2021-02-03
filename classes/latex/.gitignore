@@ -1,0 +1,29 @@
+# text editors
+*.bak
+*~
+
+# crasses latex
+*.aux
+*.bbl
+*.blg
+*.bm
+*.cdr
+*.dvi
+*.ilg
+*.ind
+*.log
+*.pdf
+*.ps
+*.synctex
+*.toc
+*.vrb
+*.fdb_latexmk
+*.fls
+!powerdot-romain.ps
+
+# misc
+*.avi
+*.rar
+
+
+

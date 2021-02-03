@@ -1,11 +1,19 @@
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 # OK anaconda2 + freeglut+pyopengl
+
+# sous windows:
+# - telecharger freeglut ici: http://freeglut.sourceforge.net/
+# - renommer freeglut.dll en freeglut64.vc14.dll et la mettre dans le path
+# en cas de non chargement regarder ce qui se passe dans C:\Python37\Lib\site-packages\OpenGL\platform\win32.py
 
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 import sys
 
-name = 'ball_glut'
+name = b'ball_glut'
 
 def main():
     glutInit(sys.argv)

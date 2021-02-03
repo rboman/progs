@@ -26,7 +26,7 @@ from PyQt5.QtWidgets import *
 
 from ui_widget import Ui_Form
 
-# ffmpeg -y -r 10 -i anim%4d.bmp -vf fps=25 -c:v libx264 -crf 18 -pix_fmt yuv420p video.mp4
+# ffmpeg -y -r 10 -i anim%4d.png -vf fps=25 -c:v libx264 -crf 18 -pix_fmt yuv420p video.mp4
 
 
 class Window(QWidget, Ui_Form):
@@ -56,7 +56,7 @@ class Window(QWidget, Ui_Form):
         self.ffmpegfolder_lineEdit.setText(settings.value("ffmpegfolder", ""))
         self.workspace_lineEdit.setText(settings.value("workspace", ""))
         self.filenames_lineEdit.setText(
-            settings.value("filenames", "anim%4d.bmp"))
+            settings.value("filenames", "anim%4d.png"))
         self.outdir_lineEdit.setText(settings.value("outdir", ""))
         self.outname_lineEdit.setText(
             settings.value("outname", "video.mp4"))

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from past.utils import old_div
 import sys
 import os
 from PyQt5.QtWidgets import *
@@ -128,10 +127,11 @@ class MainWindow(QMainWindow):
         #               [0., 0., 1.] ])
 
         iK, jK = K.shape
-        ni = old_div((iK-1),2)
-        nj = old_div((jK-1),2)
+        ni = (iK-1)//2
+        nj = (jK-1)//2
         print(iK, jK)
-
+        print('please wait...')
+        
         self.img2 = self.img1.copy()
 
         # for i in xrange(0,self.img1.width()/2):

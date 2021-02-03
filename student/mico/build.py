@@ -12,4 +12,4 @@ if __name__=="__main__":
     addroot()
     import pytools.build as b
     b.build()
-    b.test()
+    # b.test()

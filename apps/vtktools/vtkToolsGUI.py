@@ -10,7 +10,6 @@
 
 from future import standard_library
 standard_library.install_aliases()
-from past.utils import old_div
 import os.path
 import os
 import meshingTools
@@ -374,7 +373,7 @@ class VtkWindow2D(Frame):
         vtkwidget.pack(side="top", expand=1)
         self.viewer = vtkwidget.GetImageViewer()
         self.scale = Scale(self, orient=HORIZONTAL, length=200,
-                           from_=range[0], to=range[1], tickinterval=old_div((range[1]-range[0]),4), font=('Helvetica', 8),
+                           from_=range[0], to=range[1], tickinterval=(range[1]-range[0])/4, font=('Helvetica', 8),
                            command=self.selectSlice)
         self.scale.pack()
         title = Label(self, text='2D View')
@@ -1525,7 +1524,7 @@ class ImagingFrame(Frame):
         if self.image:
             range = self.image.GetScalarRange()
             self.window.set(range[1]-range[0])
-            self.level.set(old_div((range[1]+range[0]),2))
+            self.level.set((range[1]+range[0])/2)
         else:
             self.warningNoImage()
 

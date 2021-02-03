@@ -24,7 +24,7 @@ def convertTab(tabstring):
     tabstring = tabstring.replace('%', '\%')
     tabstring = tabstring.replace('_', '\\_')
     lines = tabstring.split('\n')
-    core="";
+    core=""
     nbcol=-1
     nblin=0
     for line in lines:

@@ -18,7 +18,7 @@ using namespace ndh;
 // VARIABLES GLOBALES! ------------------------
 BemSolver::BemSolver()
 {
-    N = 40;            // Nombre d'éléments frontiéres sur le contour.
+    N = 40;            // Nombre d'éléments frontières sur le contour.
     istep = 20;        // Nombre de pas d'intégration sur un élément.
     density = 15;      // Densité de visualisation de la solution
                        // (nombre de mailles sur un rayon).
@@ -26,7 +26,7 @@ BemSolver::BemSolver()
                        // (1=trapéze, 2=Simpson,...).
     type = FULL;       // Méthode de calcul (1=full, 2=symétrique).
     maillag = 1;       // 1=Dessine le maillage.
-    probleme = CIRCLE; // Type de probléme (1=cercle, 2=carré, 3=qcq.).
+    probleme = CIRCLE; // Type de problème (1=cercle, 2=carré, 3=qcq.).
     whitebg = 1;       // 1=Fond blanc pour l'impression.
     cartesien = false; // 1=maillage rectangulaire (density x density)
                        // (uniquement pour le carré).
@@ -56,7 +56,7 @@ BemSolver::BemSolver()
     xint = nullptr;
     yint = nullptr; // (x,y) des points d'intégration [istep+1].
     fct = nullptr;
-    fct2 = nullptr; // Valeurs des fonctions é intégrer [istep+1].
+    fct2 = nullptr; // Valeurs des fonctions à intégrer [istep+1].
     G1 = nullptr;
     H1 = nullptr; // Vect. auxilaires pour le calcul des T [N].
     u = nullptr;  // Tempétatures sur les éléments [N].
@@ -65,10 +65,10 @@ BemSolver::BemSolver()
     H = nullptr; // Matrices G et H [N,N].
     T = nullptr; // Tableau des T calculées [density,range].
 
-    beta = 80;          // Paramétre du probléme.
+    beta = 80;          // Paramètre du problème.
     k = 400;            // Conductivité thermique.
     R = 1.2;            // Rayon du cercle.
-    a = 1.2;            // Longueur du cété du carré.
+    a = 1.2;            // Longueur du côté du carré.
     pi = 4 * atan(1.0); // 3.141592.
 
     // doubles precedemment pas init...

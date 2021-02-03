@@ -1,0 +1,14 @@
+# list of ignored files/folders
+
+build/
+*~
+*.o
+*.obj
+*.bak
+.vscode/
+*.msh
+gmsh*
+*.tgz
+eigen/
+*.swp
+a.out

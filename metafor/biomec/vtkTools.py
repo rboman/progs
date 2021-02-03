@@ -21,7 +21,6 @@
 # June 2006
 
 
-from past.utils import old_div
 import vtk
 import sys
 
@@ -430,7 +429,7 @@ def create3Planes(image, window, level):
     planeWidgetX.DisplayTextOn()
     planeWidgetX.SetInput(image)
     planeWidgetX.SetPlaneOrientationToXAxes()
-    planeWidgetX.SetSliceIndex(old_div((xMax-xMin),2))
+    planeWidgetX.SetSliceIndex((xMax-xMin)/2)
     planeWidgetX.SetKeyPressActivationValue("x")
     planeWidgetX.SetPicker(picker)
     prop1 = planeWidgetX.GetPlaneProperty()
@@ -440,7 +439,7 @@ def create3Planes(image, window, level):
     planeWidgetY.DisplayTextOn()
     planeWidgetY.SetInput(image)
     planeWidgetY.SetPlaneOrientationToYAxes()
-    planeWidgetY.SetSliceIndex(old_div((yMax-yMin),2))
+    planeWidgetY.SetSliceIndex((yMax-yMin)/2)
     planeWidgetY.SetKeyPressActivationValue("y")
     planeWidgetY.SetPicker(picker)
     prop2 = planeWidgetY.GetPlaneProperty()
@@ -451,7 +450,7 @@ def create3Planes(image, window, level):
     planeWidgetZ.DisplayTextOn()
     planeWidgetZ.SetInput(image)
     planeWidgetZ.SetPlaneOrientationToZAxes()
-    planeWidgetZ.SetSliceIndex(old_div((zMax-zMin),2))
+    planeWidgetZ.SetSliceIndex((zMax-zMin)/2)
     planeWidgetZ.SetKeyPressActivationValue("z")
     planeWidgetZ.SetPicker(picker)
     prop3 = planeWidgetZ.GetPlaneProperty()

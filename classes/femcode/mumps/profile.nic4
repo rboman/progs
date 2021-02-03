@@ -1,0 +1,23 @@
+
+# compilers.profile
+module load cmake
+module load gcc/4.9.2
+module load openmpi/1.6.4/gcc-4.9.2
+module load intel/tbb
+module load intel/mkl
+
+export CC=gcc
+export CXX=g++
+export FC=gfortran
+
+# gmm.profile
+INCLUDE=$INCLUDE:/home/ulg/nlcm/rboman/local/gmm-4.2.1/include
+
+# mumps.profile
+LIB=$LIB:/home/ulg/nlcm/rboman/local/mumps-4.10.0/lib
+INCLUDE=$INCLUDE:/home/ulg/nlcm/rboman/local/mumps-4.10.0/include
+
+
+export INCLUDE
+export LIB
+

@@ -21,6 +21,7 @@ if __name__ == "__main__":
     # else:
     
     sys.path.append(os.path.join(thisdir, 'build'))  # linux/mingw
+    sys.path.append(os.path.join(thisdir, 'build','Release'))  # msvc
 
     # parse args
     import argparse

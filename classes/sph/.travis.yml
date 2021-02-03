@@ -1,0 +1,37 @@
+
+dist: trusty
+language: cpp
+sudo: required
+
+#addons:
+#  apt:
+#    packages:
+      #- cmake    # inutile
+      #- doxygen
+      #- graphviz
+      #- python-pip
+
+before_install:
+  - export PROG_BASE_DIR=$(pwd)
+  - sudo apt-get update
+  - sudo apt-get install gfortran
+  - sudo apt-get install mpich2
+  #- sudo apt-get install libmumps-dev
+
+  # Install rapidjson (from https://gitlab.inria.fr/batsim/batsim/blob/125d64ed566c801b64434f8c0855524bf3b70b81/.travis.yml)
+  - cd ${PROG_BASE_DIR}
+  - git clone https://github.com/Tencent/rapidjson.git
+  - cd rapidjson
+  - git checkout f54b0e4 # v1.1
+  - sudo cp -a include/rapidjson /usr/include
+
+script:
+  - cd ${PROG_BASE_DIR}
+  - mkdir build
+  - cd build
+  #- cmake -DMATH0471_USE_MUMPS=OFF -DMATH0471_USE_MPI=OFF ..
+  - cmake -DMATH0471_USE_MUMPS=OFF ..
+  - make -j $(nproc)
+  - ls bin
+  # tests
+  - ctest --verbose

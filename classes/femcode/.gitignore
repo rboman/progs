@@ -1,0 +1,40 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Misc
+core
+*.pyc
+*.*~
+
+# Gmsh
+*.pos
+*.msh
+#*.opt
+
+.project
+.pydevproject
+.settings
+
+.DS_Store
+*.swp
+*.bak
+
+# sge output
+*.o*
+*.po*
+
+
+
+*/build/*
+*/gmm/*

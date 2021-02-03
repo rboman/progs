@@ -1,6 +1,5 @@
 # from: https://doc.qt.io/qt-5/qtcharts-nesteddonuts-example.html
 
-from past.utils import old_div
 import functools
 import random
 
@@ -39,8 +38,8 @@ class Widget(QWidget):
                 slice_.setLabelPosition(QPieSlice.LabelInsideTangential)
                 slice_.hovered[bool].connect(functools.partial(self.explodeSlice, slice_=slice_))
                 donut.append(slice_)
-                donut.setHoleSize(minSize + old_div(i * (maxSize - minSize), donutCount))
-                donut.setPieSize(minSize + old_div((i + 1) * (maxSize - minSize), donutCount))
+                donut.setHoleSize(minSize + i * (maxSize - minSize)/donutCount)
+                donut.setPieSize(minSize + (i + 1) * (maxSize - minSize)/donutCount)
 
             self.m_donuts.append(donut)
             self.chartView.chart().addSeries(donut)

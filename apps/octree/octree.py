@@ -15,7 +15,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-from past.utils import old_div
 import math
 import random
 import vtk
@@ -43,7 +42,7 @@ class Pt(object):
         return Pt(self.x//scalar, self.y//scalar, self.z//scalar)
 
     def __truediv__(self, scalar):
-        return Pt(old_div(self.x,scalar), old_div(self.y,scalar), old_div(self.z,scalar))
+        return Pt(self.x/scalar, self.y/scalar, self.z/scalar)
 
     def __mul__(self, obj):
         if isinstance(obj, Pt):
@@ -58,7 +57,7 @@ class Pt(object):
         return math.sqrt(self*self)
 
     def normalize(self):
-        return old_div(self,abs(self))
+        return self/abs(self)
 
     def min(self, obj):
         if obj.x < self.x:

@@ -27,8 +27,14 @@ ctest -C Release
 ```
 You may also double click on `build.py` and cross your fingers.
 
+## Run a test
+```
+run.py ehd\tests\test1.py
+```
+
 ## Notes/TODO
 
   * convert to (real) C++
   * plot results using [matplotlib](https://matplotlib.org/)
   * Check the sign error in "C_2" matrix (?)
+  * Use more python in the tests

@@ -1,0 +1,115 @@
+# CONFIG file for NIC4 - March 2018
+# gfortran
+# MKL 2013.SP1 (including BLACS and SCALAPACK)
+# OpenMPI
+# PORD ordering <= to be changed!
+#
+#Currently Loaded Modulefiles:
+#  1) slurm/14.03.11
+#  2) cmake/3.5.2
+#  3) gdb/7.8.1
+#  4) gcc/4.9.2
+#  5) openmpi/1.6.4/gcc-4.9.2
+#  6) intel/tbb/64/4.2/2013_sp1.3.174
+#  7) intel/mkl/64/11.1/2013_sp1.3.174
+#  8) git/2.16.2
+#  9) python/2.7.10
+#
+
+
+# Begin orderings
+LSCOTCHDIR = /usr/lib
+ISCOTCH   = -I/usr/include/scotch
+
+LSCOTCH =
+#LSCOTCH   = -L$(LSCOTCHDIR) -lptesmumps -lptscotch -lptscotcherr
+#LSCOTCH   = -L$(LSCOTCHDIR) -lesmumps -lscotch -lscotcherr
+
+LPORDDIR = $(topdir)/PORD/lib/
+IPORD    = -I$(topdir)/PORD/include/
+LPORD    = -L$(LPORDDIR) -lpord
+
+LMETISDIR =
+#LMETISDIR = /usr/lib 
+IMETIS =
+#IMETIS    = -I/usr/include/parmetis
+#IMETIS    = -I/usr/include/metis
+
+# LMETIS    = -L$(LMETISDIR) -lparmetis -lmetis
+#LMETIS    = -L$(LMETISDIR) -lmetis
+LMETIS =
+
+# Corresponding variables reused later
+ORDERINGSF =  -Dpord
+#ORDERINGSF = -Dmetis -Dpord -Dparmetis -Dscotch -Dptscotch
+#ORDERINGSF = -Dmetis -Dpord -Dscotch
+ORDERINGSC  = $(ORDERINGSF)
+
+LORDERINGS = $(LMETIS) $(LPORD) $(LSCOTCH)
+#LORDERINGS = $(LPORD)
+#IORDERINGSF = $(ISCOTCH)
+#IORDERINGSC = $(IMETIS) $(IPORD) $(ISCOTCH)
+IORDERINGSF = 
+IORDERINGSC = $(IPORD)
+
+
+# End orderings
+################################################################################
+
+PLAT    =
+LIBEXT  = .a
+OUTC    = -o 
+OUTF    = -o 
+RM = /bin/rm -f
+CC = gcc
+FC = gfortran
+FL = gfortran
+AR = ar vr 
+RANLIB = ranlib
+#LAPACK = -llapack
+#SCALAP  = -lscalapack-openmpi -lblacs-openmpi  -lblacsF77init-openmpi -lblacsCinit-openmpi
+
+# from
+# https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor
+# link statique sinon pas openmpi
+
+#
+
+SCALAP = 
+LAPACK =  -L"C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\mkl\lib\intel64" \
+          -lmkl_scalapack_lp64_dll -lmkl_blacs_lp64_dll \
+          -lmkl_intel_lp64_dll  -lmkl_intel_thread_dll -lmkl_core_dll \
+          -L"C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\compiler\lib\intel64" -llibiomp5md \
+          -L"C:\Program Files (x86)\Microsoft SDKs\MPI\Lib\x64" -lmsmpifec -lmsmpi
+
+INCPAR = -IC:/Progra~1/Micros~2/MPI/Include
+INCPAR = -I"C:/Program Files (x86)/Microsoft SDKs/MPI/include" -I"C:/Program Files (x86)/Microsoft SDKs/MPI/include/x64"
+
+
+#LIBPAR = $(SCALAP) $(LAPACK)  -lmpi -lmpi_f77
+# utiliser "mpif90 --showme:link" (ou "mpif77"? mpifort n'existe pas)
+
+LIBPAR = $(SCALAP) $(LAPACK) 
+
+# C:/Program Files (x86)/Microsoft SDKs/MPI/lib/x64/msmpi.lib
+# C:/Program Files (x86)/Microsoft SDKs/MPI/include
+
+#INCSEQ = -I$(topdir)/libseq
+#LIBSEQ  = $(LAPACK) -L$(topdir)/libseq -lmpiseq
+
+#LIBBLAS = $(LAPACK)
+#LIBOTHERS = -lpthread
+
+#Preprocessor defs for calling Fortran from C (-DAdd_ or -DAdd__ or -DUPPER)
+CDEFS   = -DAdd_
+
+#Begin Optimized options
+# uncomment -fopenmp in lines below to benefit from OpenMP
+OPTF    = -m64 -O -fopenmp -D_WIN64 -fno-range-check
+OPTL    = -m64 -O -fopenmp
+OPTC    = -m64 -O -fopenmp
+#End Optimized options
+ 
+INCS = $(INCPAR)
+LIBS = $(LIBPAR)
+LIBSEQNEEDED =

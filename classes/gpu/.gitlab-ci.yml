@@ -1,0 +1,15 @@
+stages:
+    - build
+  
+build_and_test:
+    image: rboman/waves
+    stage: build
+    script:
+        - source ./envs/linux-macos.sh
+        - ./get_gmsh.sh
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make -j 4
+        - ctest
+  

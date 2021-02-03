@@ -1,0 +1,21 @@
+host	GPU	size	prog	nit	time
+garfield	GeForce GTX 1660 Ti	1000	serial 	4448	3.74685
+garfield	GeForce GTX 1660 Ti	1000	multicore 	4448	0.928286
+garfield	GeForce GTX 1660 Ti	1000	managed 	4448	0.349988
+garfield	GeForce GTX 1660 Ti	1000	manual 	4448	0.417058
+garfield	GeForce GTX 1660 Ti	1000	manual_async 	4448	0.355218
+garfield	GeForce GTX 1660 Ti	2000	serial 	9151	31.7148
+garfield	GeForce GTX 1660 Ti	2000	multicore 	9151	8.25495
+garfield	GeForce GTX 1660 Ti	2000	managed 	9151	1.5162
+garfield	GeForce GTX 1660 Ti	2000	manual 	9151	1.61574
+garfield	GeForce GTX 1660 Ti	2000	manual_async 	9151	1.46618
+garfield	GeForce GTX 1660 Ti	3000	serial 	14223	112.355
+garfield	GeForce GTX 1660 Ti	3000	multicore 	14223	28.7745
+garfield	GeForce GTX 1660 Ti	3000	managed 	14223	4.46317
+garfield	GeForce GTX 1660 Ti	3000	manual 	14223	4.55771
+garfield	GeForce GTX 1660 Ti	3000	manual_async 	14223	4.3236
+garfield	GeForce GTX 1660 Ti	4000	serial 	19212	266.324
+garfield	GeForce GTX 1660 Ti	4000	multicore 	19212	68.4478
+garfield	GeForce GTX 1660 Ti	4000	managed 	19212	10.0205
+garfield	GeForce GTX 1660 Ti	4000	manual 	19212	10.1271
+garfield	GeForce GTX 1660 Ti	4000	manual_async 	19212	9.82149

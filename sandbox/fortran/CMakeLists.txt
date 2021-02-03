@@ -6,11 +6,19 @@ PROJECT(FPROGS Fortran)
 # configure Fortran compiler
 GET_FILENAME_COMPONENT(Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
 
-IF(Fortran_COMPILER_NAME MATCHES "gfortran")
+IF(Fortran_COMPILER_NAME MATCHES "f95" OR Fortran_COMPILER_NAME MATCHES "gfortran")
     # SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall") 
-    SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -fcheck=all -fbacktrace")
+    SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall -Wextra -fPIC -fmax-errors=1 -fcheck=all -fbacktrace")
+    SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wimplicit-interface")
+    SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wpedantic")
 ELSEIF(Fortran_COMPILER_NAME MATCHES "ifort")
-    SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -warn all -check all")
+    IF(MSVC)
+        SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} /MP")  # parallel build with MSVC
+        string(REPLACE "/W1" "/warn:all" CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
+        SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} /check:all")
+    ELSE()
+        SET(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -warn all -check all")
+    ENDIF()
 ENDIF()
 
 MESSAGE(STATUS "Fortran_COMPILER_NAME        : " ${Fortran_COMPILER_NAME})

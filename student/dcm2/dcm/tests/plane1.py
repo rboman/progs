@@ -16,7 +16,6 @@
 #   limitations under the License.
 
 
-from past.utils import old_div
 def main():
 
     import numpy as np
@@ -29,7 +28,7 @@ def main():
 
     # traduction mi.m
     x = np.linspace(-plane.enverg, plane.enverg, 101)
-    h = old_div((plane.c1-plane.c0),plane.enverg)*np.abs(x)+plane.c0
+    h = (plane.c1-plane.c0)/plane.enverg*np.abs(x)+plane.c0
     l = 10*h
     i = (l*h**3 - (l-2*plane.ep)*(h-2*plane.ep)**3)/12.
     m = plane.densite*2*plane.ep*(11*h-2*plane.ep)

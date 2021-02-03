@@ -23,7 +23,7 @@ def main():
     import numpy as np
     import ndh
     bem = ndh.BemSolver()
-    bem.exec_full();
+    bem.exec_full()
     bem.save_Mfile("resfrompy.m")
 
 

@@ -1,6 +1,3 @@
-# cmake -G "Visual Studio 14 Win64" ..
-# cmake --build . --config Release
-
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 IF(POLICY CMP0020)
     CMAKE_POLICY(SET CMP0020 NEW)   # Automatically link Qt executables to qtmain target on Windows. (OLD=NO)
@@ -17,7 +14,7 @@ PROJECT(MailSph)
 INCLUDE(CMakeToolsHelpers OPTIONAL)  # integration VSCode + CMake
 
 # -- C++11
-SET(CMAKE_CXX_STANDARD 11) # newer way to set C++11 (requires cmake>=3.1)
+SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 FIND_PACKAGE(VTK REQUIRED)

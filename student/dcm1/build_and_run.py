@@ -15,7 +15,7 @@ try:
     os.chdir('build')
     # cmake
     if 'Windows' in platform.uname():
-        subprocess.call('cmake -G "Visual Studio 14 Win64" ..', shell=True)
+        subprocess.call('cmake -A x64 ..', shell=True)
     else:
         subprocess.call('cmake ..', shell=True)
     subprocess.call('cmake --build . --config Release', shell=True)
