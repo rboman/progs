@@ -17,7 +17,7 @@ import datetime
 def main():
 
     o = {
-        'target_folder': '/opt' if pu.isUnix() else 'f:/local',
+        'target_folder': '/opt' if pu.isUnix() else 'c:/local',
         'target_name': 'lagamine',
         'branch': 'papeleux'
     }
