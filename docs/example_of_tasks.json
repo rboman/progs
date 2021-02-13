@@ -1,0 +1,63 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+    {
+        "label": "cmake",
+        "type": "shell",
+        "command": "cmake",
+        "options": {
+            "cwd": "${workspaceFolder}/build"
+        },
+        "args": [
+            //"-H.",
+            //"-BDebug",
+            //"-DCMAKE_BUILD_TYPE=Debug",
+            //"-DCMAKE_EXPORT_COMPILE_COMMANDS=YES",
+            ".."
+        ],
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "make",
+        "type": "shell",
+        "command": "make",
+        "options": {
+            //"cwd": "${workspaceFolder}/build/Debug"
+            "cwd": "${workspaceFolder}/build"
+        },
+        "args": [],
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "env",
+        "type": "shell",
+        "command": "win-mingw64.cmd",
+        "options": {
+            "cwd": "${workspaceFolder}/envs"
+        },
+        "args": [],
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "problemMatcher": []
+    },
+    {
+        "label": "build",
+        "dependsOrder": "sequence",   
+        "dependsOn": [
+            "env",         
+            "cmake",            
+            "make"             
+        ]
+    }
+]
+}
