@@ -23,7 +23,7 @@ def main():
     }
     print('options =', o)
 
-    # make a backup in current folder
+    # make a backup in current target binary folder (it will be overwritten)
     if os.path.isdir(os.path.join(o['target_folder'], o['target_name'])):
         now = datetime.datetime.now()
         arcname = shutil.make_archive('%s-%s' % (o['target_name'], now.strftime('%Y-%m-%d-%I%M%S')),
