@@ -48,6 +48,19 @@ std::vector<std::string> pulsar = { // middleweight spaceship
     "                 ",
 };
 
+std::vector<std::string> glider_gun = {
+    "                                      ",
+    "                         o            ",
+    "                       o o            ",
+    "             oo      oo            oo ",
+    "            o   o    oo            oo ",
+    " oo        o     o   oo               ",
+    " oo        o   o oo    o o            ",
+    "           o     o       o            ",
+    "            o   o                     ",
+    "             oo                       ",
+    "                                      ",
+};
 
 
 class GameOfLife : public olc::PixelGameEngine
@@ -77,6 +90,7 @@ public:
         objects.push_back(&lwss); 
         objects.push_back(&mwss); 
         objects.push_back(&pulsar); 
+        objects.push_back(&glider_gun); 
     }
 
 public:
@@ -181,6 +195,19 @@ public:
             if (object<0) object=objects.size()-1;
             std::cout << "setting object to " << object << std::endl;
         }      
+
+        if (GetKey(olc::Key::UP).bPressed)
+        {
+            fps*=2;
+            if (fps>120) fps=120;
+            std::cout << "setting fps to " << fps << std::endl;
+        }
+        if (GetKey(olc::Key::DOWN).bPressed)
+        {
+            fps/=2;
+            if (fps<1) fps=1;
+            std::cout << "setting fps to " << fps << std::endl;
+        } 
 
         // get mouse pos
         olc::vi2d mpos = {(GetMouseX() - ox)/scale, 
