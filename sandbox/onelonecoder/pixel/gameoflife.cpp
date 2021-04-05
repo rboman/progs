@@ -8,6 +8,48 @@
 #include <chrono>
 #include <thread>
 
+std::vector<std::string> glider = {
+    "  o",
+    "o o",
+    " oo"
+};
+
+std::vector<std::string> lwss = { // lightweight spaceship
+    " oooo",
+    "o   o",
+    "    o",
+    "o  o"
+};
+
+std::vector<std::string> mwss = { // middleweight spaceship
+    " ooo",
+    "ooooo",
+    "ooo oo",
+    "   oo"
+};
+
+std::vector<std::string> pulsar = { // middleweight spaceship
+    "                 ",
+    "     o     o     ",
+    "     o     o     ",
+    "     oo   oo     ",
+    "                 ",
+    " ooo  oo oo  ooo ",
+    "   o o o o o o   ",
+    "     oo   oo     ",
+    "                 ",
+    "     oo   oo     ",
+    "   o o o o o o   ",
+    " ooo  oo oo  ooo ",
+    "                 ",
+    "     oo   oo     ",
+    "     o     o     ",
+    "     o     o     ",
+    "                 ",
+};
+
+
+
 class GameOfLife : public olc::PixelGameEngine
 {
     std::vector<bool> worldA;       ///< state A of the world
@@ -24,10 +66,17 @@ class GameOfLife : public olc::PixelGameEngine
     int height;           ///< vertical dimension of the world 
     int scale = 3;
 
+    std::vector<std::vector<std::string> *> objects;
+    int object = 0;
+
 public:
     GameOfLife() 
     { 
-        sAppName = "Game of life"; 
+        sAppName = "Game of life";
+        objects.push_back(&glider); 
+        objects.push_back(&lwss); 
+        objects.push_back(&mwss); 
+        objects.push_back(&pulsar); 
     }
 
 public:
@@ -120,6 +169,18 @@ public:
             set_empty(*world0);
         if (GetKey(olc::Key::R).bHeld)
             set_random(*world0);
+        if (GetKey(olc::Key::LEFT).bPressed || GetMouseWheel() > 0)
+        {
+            object+=1;
+            if (object==objects.size()) object=0;
+            std::cout << "setting object to " << object << std::endl;
+        }
+        if (GetKey(olc::Key::RIGHT).bPressed || GetMouseWheel() < 0)
+        {
+            object-=1;
+            if (object<0) object=objects.size()-1;
+            std::cout << "setting object to " << object << std::endl;
+        }      
 
         // get mouse pos
         olc::vi2d mpos = {(GetMouseX() - ox)/scale, 
@@ -146,15 +207,44 @@ public:
         // draw borders
         DrawRect(ox-1, oy-1, scale*width+1, scale*height+1, olc::GREEN);
 
-        // draw mouse pos in red
-        if (mpos.x>=0 && mpos.x<width && mpos.y>=0 && mpos.y<height)
-            FillRect (ox+(mpos.x*scale), oy+(mpos.y*scale), 
-                        scale, scale, 
-                        olc::RED);        
+        // draw current object at mouse pos in red
+        auto &curobj = *objects[object];
+        for(int i=0; i<curobj.size(); ++i)
+            for(int j=0; j<curobj[i].size(); ++j)
+            {
+                if(curobj[i][j]!=' ')
+                {
+                    int posx = mpos.x+j;
+                    int posy = mpos.y+i;
+                    if (posx>=0 && posx<width && posy>=0 && posy<height)
+                        FillRect (ox+(posx*scale), oy+(posy*scale), 
+                                    scale, scale, 
+                                    olc::RED);                    
+                }
+            }
 
+        if (GetMouse(0).bPressed)
+        {
+            std::cout << "creating object\n";
+            for(int i=0; i<curobj.size(); ++i)
+                for(int j=0; j<curobj[i].size(); ++j)
+                {
+                    bool value = false;
+                    if(curobj[i][j]!=' ')
+                        value=true;
+
+                    int posx = mpos.x+j;
+                    int posy = mpos.y+i;
+                    if (posx>=0 && posx<width && posy>=0 && posy<height)
+                        (*world0)[idx(posy,posx)] = value;                    
+
+                }
+
+        }
+
+        // draw title
         this->DrawString({5,5}, "Game of Life");
-        // using namespace std::chrono_literals;
-        // std::this_thread::sleep_for(50ms);
+
         return true;
     }
 };
