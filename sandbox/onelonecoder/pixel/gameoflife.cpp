@@ -1,5 +1,9 @@
 // Conway's Game of Life
+//
+// Wikipedia
 //      https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+// It From Bit: Is The Universe A Cellular Automaton?
+//      https://medium.com/starts-with-a-bang/it-from-bit-is-the-universe-a-cellular-automaton-4a5b1426ba6d
 //
 // build & run
 //  cmake -A x64 .. && cmake --build . --config Release && Release\gameoflife.exe
