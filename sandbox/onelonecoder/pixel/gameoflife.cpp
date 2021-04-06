@@ -8,9 +8,12 @@
 // build & run
 //  cmake -A x64 .. && cmake --build . --config Release && Release\gameoflife.exe
 
+#include "config.h"
 #include "olcPixelGameEngine.h"
 #include <chrono>
 #include <thread>
+#include <fstream>
+#include <algorithm>
 
 std::vector<std::string> glider = {
     "  o",
@@ -83,21 +86,82 @@ class GameOfLife : public olc::PixelGameEngine
     int height;           ///< vertical dimension of the world 
     int scale = 3;
 
-    std::vector<std::vector<std::string> *> objects;
+    std::vector<std::vector<std::string> > objects;
     int object = 0;
 
 public:
     GameOfLife() 
     { 
         sAppName = "Game of life";
-        objects.push_back(&glider); 
-        objects.push_back(&lwss); 
-        objects.push_back(&mwss); 
-        objects.push_back(&pulsar); 
-        objects.push_back(&glider_gun); 
+        objects.push_back(glider); 
+        objects.push_back(lwss); 
+        objects.push_back(mwss); 
+        objects.push_back(pulsar); 
+        objects.push_back(glider_gun);
+        auto object = load_lif(std::string(CMAKE_SOURCE_DIR) + "/life/RABBITS.LIF"); 
+        
+        objects.push_back(object);
     }
 
 public:
+
+    std::vector<std::string> tokenize(std::string const &line)
+    {
+        std::vector<std::string> tokens;
+        std::string token;
+        std::stringstream iss(line);
+        while (std::getline(iss, token,' '))
+            tokens.push_back(token);
+
+        // for(auto &t : tokens)
+        //     std::cout << "token: " << t << '\n';
+        return tokens;
+    }
+
+    std::vector<std::string> load_lif(std::string const &filename)
+    {
+        std::cout << "loading " << filename << '\n';
+
+        std::ifstream infile(filename);
+        if (! infile.is_open())
+        {
+            std::cerr << "ERROR: "<< filename << " file not found!\n";
+            return std::vector<std::string>();
+        }
+
+        std::vector<std::string> object;
+        int ox = 0;
+        int oy = 0;
+
+        std::string line;
+        while (std::getline(infile, line))
+        {
+            // std::cout << "next line...\n";
+            if (line[0]=='#')
+            {
+                auto tokens = tokenize(line);
+                if(tokens[0]=="#Life")
+                {
+                    // std::cout << "file version: " << tokens[1] << '\n';
+                } 
+                else if(tokens[0]=="#P")
+                {
+                    ox = std::stoi(tokens[1]);
+                    oy = std::stoi(tokens[2]);
+                    // std::cout << "ox=" << ox << "; ";
+                    // std::cout << "oy=" << oy << '\n';
+                }
+            }
+            else
+            {
+                std::replace( line.begin(), line.end(), '*', 'o');
+                std::replace( line.begin(), line.end(), '.', ' ');
+                object.push_back(line);
+            }
+        }
+        return object;
+    }
+
     /// convert indices i,j to a 1D array index
     int idx(int i, int j) const
     {
@@ -239,7 +303,7 @@ public:
         DrawRect(ox-1, oy-1, scale*width+1, scale*height+1, olc::GREEN);
 
         // draw current object at mouse pos in red
-        auto &curobj = *objects[object];
+        auto &curobj = objects[object];
         for(int i=0; i<curobj.size(); ++i)
             for(int j=0; j<curobj[i].size(); ++j)
             {
@@ -283,9 +347,14 @@ public:
 int
 main()
 {
-    GameOfLife demo;
-    if (demo.Construct(600, 300, 2, 2))
-        demo.Start();
 
+
+    GameOfLife demo;
+    //demo.load_lif(std::string(CMAKE_SOURCE_DIR) + "/life/RABBITS.LIF");
+
+    
+        if (demo.Construct(600, 300, 2, 2))
+            demo.Start();
+    
     return 0;
 }
