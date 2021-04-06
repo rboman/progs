@@ -15,7 +15,8 @@
 enum class Type
 {
     EMPTY,
-    SAND
+    SAND,
+    WATER
 };
 
 class Pixel
@@ -31,7 +32,7 @@ class SandSim : public olc::PixelGameEngine
     std::vector<Pixel> world;
 
     float timesum = 0.0;            ///< internal variable which stores the accumulted time between 2 updates
-    int fps = 60;                    ///< update frequency
+    int fps = 30;                    ///< update frequency
 
 
 public:
@@ -62,12 +63,18 @@ public:
             {
                 Pixel &pix = world[idx(i,j)];
                 if (pix.type==Type::SAND)
-                    Draw(j, i, olc::Pixel(255, 255, 0));  
+                    Draw(j, i, olc::Pixel(255, 255, 0));
+                else if (pix.type==Type::WATER)
+                    Draw(j, i, olc::Pixel(0, 0, 255));
             }
     }
 
     bool try_move(Pixel &current, int i, int j)
     {
+        if(i<0 || i>=this->ScreenHeight() || 
+            j<0 || j>=this->ScreenWidth())
+            return false;
+
         auto &target = world[idx(i,j)];
         if (target.type==Type::EMPTY)
         {
@@ -78,24 +85,66 @@ public:
         return false;
     }
 
+    void update_sand(Pixel &current, int i, int j)
+    {
+        if (try_move(current, i+1,j)) return;
+        int order=rand()%2;
+        if(order)
+        {
+            if (try_move(current, i+1,j-1)) return;
+            if (try_move(current, i+1,j+1)) return;
+        }
+        else
+        {
+            if (try_move(current, i+1,j+1)) return;
+            if (try_move(current, i+1,j-1)) return;
+        }
+    }
+
+    void update_water(Pixel &current, int i, int &j)
+    {
+        if (try_move(current, i+1,j)) return;
+        int order=rand()%2;
+        if(order)
+        {
+            if (try_move(current, i+1,j-1)) return;
+            if (try_move(current, i+1,j+1)) return;
+        }
+        else
+        {
+            if (try_move(current, i+1,j+1)) return;
+            if (try_move(current, i+1,j-1)) return;
+        }
+
+        order=rand()%2;
+        // order=1;
+        if(order)
+        {
+            if (try_move(current, i, j-1)) return;                    
+            if (try_move(current, i, j+1)) { j++; return; }                   
+        }
+        else
+        {
+            if (try_move(current, i, j+1)) { j++; return; }                   
+            if (try_move(current, i, j-1)) return;                    
+        }
+    }
+
+
     void update_world()
     {
         for (int i = this->ScreenHeight()-2; i >=0; i--)
             for (int j = 0; j < this->ScreenWidth(); j++)
             {
                 auto &current = world[idx(i,j)];
-                if(try_move(current, i+1,j)) 
-                    continue;
-
-                if (j-1>=0)
+                if (current.type==Type::SAND)
                 {
-                    if(try_move(current, i+1,j-1)) continue;
+                    update_sand(current, i, j);
+                } 
+                else if (current.type==Type::WATER)
+                {
+                    update_water(current, i, j);
                 }
-                if (j+1<this->ScreenWidth())
-                {
-                    if(try_move(current, i+1,j+1)) continue;         
-                }                    
-                
             }
     }
 
@@ -104,13 +153,20 @@ public:
         // Erase previous frame
         Clear(olc::BLACK);
 
+        if (GetKey(olc::Key::C).bHeld)
+        {
+            for(auto &p : world)
+                p = Pixel();
+        }
+
         // get mouse pos
         olc::vi2d mpos = {GetMouseX(), GetMouseY()};        
 
+
         if (GetMouse(0).bHeld) // left click - add sand
         {
-            int x = mpos.x + rand() % 10 - 5;
-            int y = mpos.y + rand() % 10 - 5;
+            int x = mpos.x + rand() % 15 - 5;
+            int y = mpos.y + rand() % 15 - 5;
             if (x>0 && x<this->ScreenWidth() && 
                 y>0 && y<this->ScreenHeight() )
                 world[idx(y,x)] = Pixel(Type::SAND);
@@ -123,6 +179,15 @@ public:
             if (x>0 && x<this->ScreenWidth() && 
                 y>0 && y<this->ScreenHeight() )
                 world[idx(y,x)] = Pixel(Type::EMPTY);
+        }
+
+        if (GetMouse(2).bHeld) // right click - remove material
+        {
+            int x = mpos.x + rand() % 10 - 5;
+            int y = mpos.y + rand() % 10 - 5;
+            if (x>0 && x<this->ScreenWidth() && 
+                y>0 && y<this->ScreenHeight() )
+                world[idx(y,x)] = Pixel(Type::WATER);
         }
 
         // accumulate time
