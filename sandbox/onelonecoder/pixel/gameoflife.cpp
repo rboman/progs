@@ -1,9 +1,16 @@
 // Conway's Game of Life
+//      using "Pixel Game Engine" from Javidx9
+//      https://community.onelonecoder.com/
 //
+// 
 // Wikipedia
 //      https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 // It From Bit: Is The Universe A Cellular Automaton?
 //      https://medium.com/starts-with-a-bang/it-from-bit-is-the-universe-a-cellular-automaton-4a5b1426ba6d
+// Cellular Automata FAQ
+//      http://cafaq.com/lifefaq/index.php
+// best 152 patterns from the first quarter-century of Conway's Game of Life (Alan W. Hensel)
+//      http://www.ibiblio.org/lifepatterns/lifep.zip
 //
 // build & run
 //  cmake -A x64 .. && cmake --build . --config Release && Release\gameoflife.exe
@@ -82,29 +89,29 @@ class GameOfLife : public olc::PixelGameEngine
 
     int ox = 20;                ///< x origin of the world
     int oy = 20;                ///< y origin of the world
-    int width;             ///< horizontal dimension of the world    
-    int height;           ///< vertical dimension of the world 
+    int width;                  ///< horizontal dimension of the world    
+    int height;                 ///< vertical dimension of the world 
     int scale = 3;
 
-    std::vector<std::vector<std::string> > objects;
-    int object = 0;
+    std::vector<std::vector<std::string> > objects;     ///< array storing interesting objects
+    int object = 0;             ///< current object 
 
 public:
     GameOfLife() 
     { 
         sAppName = "Game of life";
+        // fill "objects" with interesting patterns
         objects.push_back(glider); 
         objects.push_back(lwss); 
         objects.push_back(mwss); 
         objects.push_back(pulsar); 
         objects.push_back(glider_gun);
-        auto object = load_lif(std::string(CMAKE_SOURCE_DIR) + "/life/RABBITS.LIF"); 
-        
-        objects.push_back(object);
+        objects.push_back(load_lif(std::string(CMAKE_SOURCE_DIR) + "/life/RABBITS.LIF"));
     }
 
-public:
-
+private:
+    /// split a line of text into an array of tokens (words)
+    ///     "a few words" => {"a", "few", "words"}
     std::vector<std::string> tokenize(std::string const &line)
     {
         std::vector<std::string> tokens;
@@ -118,6 +125,8 @@ public:
         return tokens;
     }
 
+    /// load a .LIF file from Alan W. Hensel's library
+    ///     see 
     std::vector<std::string> load_lif(std::string const &filename)
     {
         std::cout << "loading " << filename << '\n';
@@ -142,6 +151,7 @@ public:
                 auto tokens = tokenize(line);
                 if(tokens[0]=="#Life")
                 {
+                    // TODO: check version
                     // std::cout << "file version: " << tokens[1] << '\n';
                 } 
                 else if(tokens[0]=="#P")
@@ -162,12 +172,13 @@ public:
         return object;
     }
 
-    /// convert indices i,j to a 1D array index
+    /// convert i, j indices to a 1D array index
     int idx(int i, int j) const
     {
         return i*width+j;
     }
 
+    /// fill the world with a random set of dots
     void set_random(std::vector<bool> &world)
     {
         // random array
@@ -176,6 +187,7 @@ public:
                 world[idx(i,j)] = !static_cast<bool> (rand() % 5);      
     }
 
+    /// clear the world
     void set_empty(std::vector<bool> &world)
     {
         for (int i = 0; i < height; i++)
@@ -183,7 +195,7 @@ public:
                 world[idx(i,j)] = false;
     }
 
-
+    /// PGE function called when aplication starts
     bool OnUserCreate() override
     {
         // compute size of the world from margins and scale
@@ -202,10 +214,10 @@ public:
         return true;
     }
 
+    /// calculate the new world as a function of the old one
+    ///     apply the rules of the game of life
     void calculate_new_world()
     {
-        // calculate the new world as a function of the old one
-
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
             {
@@ -228,29 +240,35 @@ public:
             }
     }
 
+    /// draw the current state of the world onto the screen
     void draw_world()
     {
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
             {
-                int colour = 0;
+                int colour = 0;     // black
                 if ((*world0)[idx(i,j)])
-                    colour = 255;
+                    colour = 255;   // white
                 FillRect (ox+(j*scale), oy+(i*scale), 
                             scale, scale, 
                             olc::Pixel(colour, colour, colour));
             }                        
     }
 
+    /// PGE function called at every new frame
     bool OnUserUpdate(float fElapsedTime) override
     {
         // Erase previous frame
         Clear(olc::BLACK);
 
+        // User interaction management
+
         if (GetKey(olc::Key::C).bHeld)
             set_empty(*world0);
+
         if (GetKey(olc::Key::R).bHeld)
             set_random(*world0);
+            
         if (GetKey(olc::Key::LEFT).bPressed || GetMouseWheel() > 0)
         {
             object+=1;
