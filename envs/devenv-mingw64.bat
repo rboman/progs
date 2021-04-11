@@ -31,6 +31,9 @@ set PATH=C:\mingw-w64\mingw64\bin
 set PATH=%PATH%;C:\Program Files\CMake\bin\
 set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
 
+set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+set PATH=%PATH%;%LOCALAPPDATA%\Programs\Microsoft VS Code\bin
+
 call "C:\Program Files (x86)\IntelSWTools\compilers_and_libraries\windows\mkl\bin\mklvars.bat" intel64 vs2015
 
 %comspec%
