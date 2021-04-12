@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 #
 # try to replace "old_div(a,b)"" by "a/b" 
-# with a and b being complex expressions involving brackets, etc.
+#   with a and b being complex expressions involving brackets, etc.
 # processes all the python files recursively from the current folder
 #
-# you must the script several times (it processes 1 "old_div" per line at a time)
+# you must use the script several times 
+#   (it processes 1 "old_div" per line at a time)
+# Does not process old_divs spanning several lines such as
+#   old_div(a,
+#       b)
 
 import sys, os
 import fnmatch, re
