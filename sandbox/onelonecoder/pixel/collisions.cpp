@@ -7,6 +7,8 @@
 //      https://www.youtube.com/watch?v=ebq7L2Wtbl4&ab_channel=javidx9
 //  Elastic collisions:
 //      https://en.wikipedia.org/wiki/Elastic_collision
+//  Building Collision Simulations: An Introduction to Computer Graphics
+//      https://www.youtube.com/watch?v=eED4bSkYCB8&ab_channel=Reducible
 //
 // Future:
 //  Convex Polygon Collisions #1
