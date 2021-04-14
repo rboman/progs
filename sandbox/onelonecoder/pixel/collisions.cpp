@@ -1,6 +1,6 @@
 // collisions
 //
-// videos:
+// sources:
 //  Programming Balls #1 Circle Vs Circle Collisions
 //      https://www.youtube.com/watch?v=LPzyNOHY3A4&t=1s&ab_channel=javidx9
 //  Programming Balls #2 Circles V Edges Collisions
@@ -20,105 +20,136 @@
 
 #include "olcPixelGameEngine.h"
 #include <algorithm>
+#include <sstream>
 
 struct Ball
 {
-    olc::vf2d centre;
-    olc::vf2d velocity;
+    Ball(olc::vf2d const &centre, float r = 5.0f)
+    {
+        pos = centre;
+        veloc = {0.0f, 0.0f};
+        accel = {0.0f, 0.0f};
+        radius = r;
+        mass = 10.0f*r*r; // * 10.0f;
+    }
+    olc::vf2d pos;
+    olc::vf2d veloc;
     olc::vf2d accel;
     float radius;
     float mass;
-    int id;
 
-    olc::vf2d old_centre;
-    float fSimTimeRemaing;
+    olc::vf2d old_pos;     ///< position at the beginning of a sub-step
+    float fSimTimeRemaing; ///< remaining time to be simulated
 };
 
 struct LineSegment
 {
-    olc::vf2d start;
-    olc::vf2d end;
+    olc::vf2d start; ///< starting point
+    olc::vf2d end;   ///< ending point
     float radius;
 };
 
 class Collisions : public olc::PixelGameEngine
 {
-    std::vector<Ball> balls;
-    Ball *selectedBall = nullptr;
+    // parameters
+    float drag = 0.8f;
+    olc::vf2d gravity = {0.0f, 90.0f};
+    const int NBALLS = 1000;
+    const float defBallRadius = 2.0f;
+    const float defLineRadius = 4.0f;
+    int nSimulationUpdates = 2; ///< split fElapsedTime into several epochs
+    int maxSimulationSteps = 2; ///< split the epoch in several simulation steps
 
-    std::vector<LineSegment> lines;
-    LineSegment *selectedLine = nullptr;
-    bool bSelectedLineStart = false;
+    // data structures
+    std::vector<Ball> balls;      ///< array of balls
+    Ball *selectedBall = nullptr; ///< current ball selected with the mouse
+
+    Ball *mouseBall = nullptr; ///< current ball at mouse position
+
+    std::vector<LineSegment> lines;      ///< array of lines
+    LineSegment *selectedLine = nullptr; ///< current line selected with the mouse
+    bool bSelectedLineStart = false;     ///< does the user selected the start or the end of the line?
 
 public:
     Collisions() { sAppName = "Collisions"; }
 
 private:
-    void addBall(float x, float y, float r = 5.0f)
-    {
-        Ball b;
-        b.centre = {x, y};
-        b.velocity = {0.0f, 0.0f};
-        b.accel = {0.0f, 0.0f};
-        b.radius = r;
-        b.mass = r * 10.0f;
-        b.id = balls.size();
-        balls.push_back(b);
-    }
-
     bool OnUserCreate() override
     {
-        float defRadius = 10.0f;
-        // addBall(ScreenWidth() * 0.25f, ScreenHeight() * 0.5f, defRadius);
-        // addBall(ScreenWidth() * 0.75f, ScreenHeight() * 0.5f, defRadius);
+        // create balls
+        for (int i = 0; i < NBALLS; ++i)
+            balls.push_back(Ball({float(rand() % ScreenWidth()), float(rand() % ScreenHeight())}, rand() % 2 + defBallRadius));
+        for (int i = 0; i < 5; ++i)
+            balls.push_back(Ball({float(rand() % ScreenWidth()), float(rand() % ScreenHeight())}, rand() % 2 + 15.0f));
+        for (int i = 0; i < 2; ++i)
+            balls.push_back(Ball({float(rand() % ScreenWidth()), float(rand() % ScreenHeight())}, rand() % 2 + 25.0f));
 
-        for (int i = 0; i < 1; ++i)
-            addBall(rand() % ScreenWidth(), rand() % ScreenHeight(), rand() % 16 + 2);
-
-        float fLineRadius = 5.0f;
-        lines.push_back({{30.0f, 30.0f}, {100.0f, 30.0f}, fLineRadius});
+        // create several lines
+        lines.push_back({{18.0f, 327.0f}, {212.0f, 197.0f}, defLineRadius});
+        lines.push_back({{131.0f, 28.0f}, {319.0f, 314.0f}, defLineRadius});
+        lines.push_back({{302.0f, 41.0f}, {435.0f, 41.0f}, defLineRadius});
+        lines.push_back({{347.0f, 208.0f}, {533.0f, 152.0f}, defLineRadius});
 
         return true;
     }
 
-    bool OnUserUpdate(float fElapsedTime) override
+    bool doBallsOverlap(olc::vf2d const &c1, float r1, olc::vf2d const &c2, float r2) const
     {
+        return (c2 - c1).mag2() <= (r1 + r2) * (r1 + r2);
+    }
+    bool isPointInBall(olc::vf2d const &c1, float r1, olc::vf2d const &c2) const
+    {
+        return (c2 - c1).mag2() <= r1 * r1;
+    }
 
-        // convenient functions
-
-        auto doBallsOverlap = [](olc::vf2d c1, float r1, olc::vf2d c2, float r2) {
-            return ((c1.x - c2.x) * (c1.x - c2.x) + (c1.y - c2.y) * (c1.y - c2.y) <= (r1 + r2) * (r1 + r2));
-        };
-        auto isPointInBall = [](olc::vf2d c1, float r1, olc::vf2d c2) {
-            return (c1.x - c2.x) * (c1.x - c2.x) + (c1.y - c2.y) * (c1.y - c2.y) < (r1) * (r1);
-        };
-
+    void handleMouse()
+    {
+        // ---------------------------------------------------------------------
         // mouse interaction - pick a ball with the mouse and move it
+        // ---------------------------------------------------------------------
 
+        olc::vf2d mousePos = {float(GetMouseX()), float(GetMouseY())};
+
+        // ball at mouse position (debug)
+        mouseBall = nullptr;
+        for (auto &ball : balls)
+        {
+            if (isPointInBall(ball.pos, ball.radius, mousePos))
+            {
+                mouseBall = &ball;
+                break;
+            }
+        }
+
+        // left or right mouse click => select a ball or a line extremity
         if (GetMouse(0).bPressed || GetMouse(1).bPressed)
         {
-            olc::vf2d pos = {float(GetMouseX()), float(GetMouseY())};
+            // check balls
+            //  loop over all the balls and test them
             selectedBall = nullptr;
             for (auto &ball : balls)
             {
-
-                if (isPointInBall(ball.centre, ball.radius, pos))
+                if (isPointInBall(ball.pos, ball.radius, mousePos))
                 {
                     selectedBall = &ball;
                     break;
                 }
             }
 
+            // check lines
+            //  loop over all the lines and test both extremities
             selectedLine = nullptr;
             for (auto &line : lines)
             {
-                if (isPointInBall(line.start, line.radius, pos))
+                // test starting point
+                if (isPointInBall(line.start, line.radius, mousePos))
                 {
                     selectedLine = &line;
                     bSelectedLineStart = true;
                     break;
                 }
-                if (isPointInBall(line.end, line.radius, pos))
+                // test ending point
+                if (isPointInBall(line.end, line.radius, mousePos))
                 {
                     selectedLine = &line;
                     bSelectedLineStart = false;
@@ -126,162 +157,193 @@ private:
                 }
             }
         }
+
+        // right mouse button is held => move the ball or the line
         if (GetMouse(0).bHeld)
         {
-            olc::vf2d pos = {float(GetMouseX()), float(GetMouseY())};
-            if (selectedBall != nullptr)
-            {
-                selectedBall->centre = pos;
-            }
+            if (selectedBall != nullptr) // it could be held on nothing
+                selectedBall->pos = mousePos;
 
             if (selectedLine != nullptr)
-            {
                 if (bSelectedLineStart)
-                {
-                    selectedLine->start = pos;
-                }
+                    selectedLine->start = mousePos;
                 else
-                    selectedLine->end = pos;
-            }
+                    selectedLine->end = mousePos;
         }
+        // right mouse button is released => release selection
         if (GetMouse(0).bReleased)
         {
             selectedBall = nullptr;
             selectedLine = nullptr;
         }
+        // left mouse button is released => set veloc for the selected ball
         if (GetMouse(1).bReleased)
         {
             if (selectedBall != nullptr)
             {
-                selectedBall->velocity.x = -5.0f * (float(GetMouseX()) - selectedBall->centre.x);
-                selectedBall->velocity.y = -5.0f * (float(GetMouseY()) - selectedBall->centre.y);
+                selectedBall->veloc = -5.0f * (mousePos - selectedBall->pos);
+                selectedBall = nullptr;
             }
-
-            selectedBall = nullptr;
         }
+    }
 
-        // collision detection and resolution ----------------------------------
+    bool OnUserUpdate(float fElapsedTime) override
+    {
+        handleMouse();
+
+        // ---------------------------------------------------------------------
+        // collision detection and resolution
+        // ---------------------------------------------------------------------
 
         std::vector<std::pair<Ball *, Ball *>> collidedPairs; // remember pair of balls that have been collided
         std::vector<Ball *> fakeBalls;
 
-        // we split fElapsedTime into a sub intervals (epochs)
-        // in order to be more accurate and avoid balls going through each other
-        int nSimulationUpdates = 4;
-        float fSimElapsedTime = fElapsedTime / nSimulationUpdates; // epoch length
+        // we split fElapsedTime into a sub intervals (called 'epochs' by javid)
+        //  in order to be more accurate and avoid balls going through each other
 
-        int maxSimulationSteps = 15; // this is used to resolve more than 1 collision per ball per epoch.
+        float fSimElapsedTime = fElapsedTime / nSimulationUpdates; // epoch duration
+        int nSim = 0;                                              // keep track of max nb of simulations)
 
-        for (int i = 0; i < nSimulationUpdates; ++i) // loop over the epochs (avoids large displacements)
+        // loop over the epochs (avoids large displacements)
+        for (int i = 0; i < nSimulationUpdates; ++i)
         {
+            // initialise the time remaining for each ball
             for (auto &ball : balls)
                 ball.fSimTimeRemaing = fSimElapsedTime;
 
-            for (int j = 0; j < maxSimulationSteps; ++j) // loop over simulation steps (manage complex motion during 1 epoch)
-            {
+            // we also split the epoch in several simulation steps
+            //  this is used to resolve more than 1 collision per ball per epoch.
 
-                // update velocity
+            // loop over simulation steps
+            //  (manage complex motion during 1 epoch)
+            bool simDone = true;
+            int j = 0;
+            for (; j < maxSimulationSteps; ++j)
+            {
+                // update acceleration / veloc / position
                 for (auto &ball : balls)
                 {
-                    ball.old_centre = ball.centre;
+                    // store the position before static collision test
+                    ball.old_pos = ball.pos;
 
                     if (ball.fSimTimeRemaing > 0.0f)
                     {
+                        // prescribed acceleration
+                        ball.accel = -drag * ball.veloc + gravity;
 
-                        ball.accel.x = -ball.velocity.x * 0.8f;
-                        ball.accel.y = -ball.velocity.y * 0.8f;
+                        // compute veloc from acceleration
+                        ball.veloc += ball.accel * ball.fSimTimeRemaing;
 
-                        ball.velocity.x += ball.accel.x * ball.fSimTimeRemaing;
-                        ball.velocity.y += ball.accel.y * ball.fSimTimeRemaing;
+                        // compute position from veloc
+                        ball.pos += ball.veloc * ball.fSimTimeRemaing;
 
-                        ball.centre.x += ball.velocity.x * ball.fSimTimeRemaing;
-                        ball.centre.y += ball.velocity.y * ball.fSimTimeRemaing;
+                        // make balls appear on the other side of the display
+                        if (ball.pos.x < 0.0f)
+                            ball.pos.x += ScreenWidth();
+                        else if (ball.pos.x > ScreenWidth())
+                            ball.pos.x -= ScreenWidth();
+                        if (ball.pos.y < 0.0f)
+                            ball.pos.y += ScreenHeight();
+                        else if (ball.pos.y > ScreenHeight())
+                            ball.pos.y -= ScreenHeight();
 
-                        if (ball.centre.x < 0.0f)
-                            ball.centre.x += ScreenWidth();
-                        if (ball.centre.y < 0.0f)
-                            ball.centre.y += ScreenHeight();
-                        if (ball.centre.x > ScreenWidth())
-                            ball.centre.x -= ScreenWidth();
-                        if (ball.centre.y > ScreenHeight())
-                            ball.centre.y -= ScreenHeight();
-
-                        if ((ball.velocity.x * ball.velocity.x + ball.velocity.y * ball.velocity.y) < 0.01f)
-                        {
-                            ball.velocity.x = 0.0f;
-                            ball.velocity.y = 0.0f;
-                        }
+                        // if veloc is too low, set it to 0
+                        if (ball.veloc.mag2() < 0.0001f)
+                            ball.veloc = {0.0f, 0.0f};
+                        // ! this could stop the ball in the middle of a jump
                     }
                 }
 
-                // naive approach
+                // -------------------------------------------------------------
+                // STATIC COLLISION RESOLUTION
+                //  check all the balls, one by one
                 for (auto &ball : balls)
                 {
+                    bool collided = false;
 
+                    // ... with all the lines
                     for (auto &line : lines)
                     {
-                        olc::vf2d v1 = {line.end.x - line.start.x, line.end.y - line.start.y};
-                        olc::vf2d v2 = {ball.centre.x - line.start.x, ball.centre.y - line.start.y};
-                        float fLineLength2 = v1.x * v1.x + v1.y * v1.y;
+                        // compute the closest point on line from ball
+                        olc::vf2d v1 = line.end - line.start;
+                        olc::vf2d v2 = ball.pos - line.start;
+                        float fLineLength2 = v1.mag2();
+                        float t = std::max<float>(0.0f, std::min<float>(fLineLength2, v1.dot(v2))) / fLineLength2;
+                        olc::vf2d closest = line.start + t * v1;
 
-                        float t = std::max<float>(0.0f, std::min<float>(fLineLength2, v2.x * v1.x + v2.y * v1.y)) / fLineLength2;
+                        // distance between line and ball
+                        float D = (closest - ball.pos).mag();
 
-                        olc::vf2d closest = {line.start.x + t * v1.x, line.start.y + t * v1.y};
-
-                        float D = sqrtf((closest.x - ball.centre.x) * (closest.x - ball.centre.x) +
-                                        (closest.y - ball.centre.y) * (closest.y - ball.centre.y));
-
+                        // check collision & static resolution
                         if (D <= line.radius + ball.radius)
                         {
-
-                            Ball *fakeBall = new Ball();
-                            fakeBall->centre = closest;
-                            fakeBall->radius = line.radius;
+                            collided = true;
+                            // create a fake ball with the same mass and opposite veloc
+                            Ball *fakeBall = new Ball(closest, line.radius);
                             fakeBall->mass = ball.mass;
-                            fakeBall->velocity = {-ball.velocity.x, -ball.velocity.y};
+                            fakeBall->veloc = -ball.veloc;
 
                             collidedPairs.push_back({&ball, fakeBall});
                             fakeBalls.push_back(fakeBall);
 
                             float overlap = (D - ball.radius - fakeBall->radius);
-                            ball.centre.x -= overlap * (ball.centre.x - fakeBall->centre.x) / D;
-                            ball.centre.y -= overlap * (ball.centre.y - fakeBall->centre.y) / D;
+                            ball.pos -= overlap * (ball.pos - fakeBall->pos) / D;
                         }
                     }
 
+                    // ... with all the other balls
                     for (auto &target : balls)
                     {
-                        if (ball.id != target.id)
+                        if (&ball != &target)
                         {
                             // static resolution
-                            if (doBallsOverlap(ball.centre, ball.radius, target.centre, target.radius))
+                            if (doBallsOverlap(ball.pos, ball.radius, target.pos, target.radius))
                             {
-
-                                // std::cout << "overlap!\n";
+                                collided = true;
+                                // ball and target overlap each other
                                 collidedPairs.push_back({&ball, &target});
 
-                                // distance between balls
-                                float D = sqrtf((ball.centre.x - target.centre.x) * (ball.centre.x - target.centre.x) + (ball.centre.y - target.centre.y) * (ball.centre.y - target.centre.y));
+                                // distance between the 2 balls
+                                olc::vf2d distance = ball.pos - target.pos;
+                                float D = distance.mag();
                                 float overlap = 0.5f * (D - ball.radius - target.radius);
 
-                                // displace current ball
-                                ball.centre.x -= overlap * (ball.centre.x - target.centre.x) / D;
-                                ball.centre.y -= overlap * (ball.centre.y - target.centre.y) / D;
+                                // not in javid's code:
+                                //  take mass into consideration for the static resolution
+                                float factor = ball.mass/(ball.mass+target.mass);
 
-                                // displace target ball
-                                target.centre.x += overlap * (ball.centre.x - target.centre.x) / D;
-                                target.centre.y += overlap * (ball.centre.y - target.centre.y) / D;
+                                // displace the 2 balls
+                                ball.pos -= (1.0f-factor) * overlap * distance / D;
+                                target.pos += factor * overlap * distance / D;
                             }
                         }
                     }
 
                     // time displacement
-                    float fIntendedSpeed = sqrtf(ball.velocity.x * ball.velocity.x + ball.velocity.y * ball.velocity.y);
-                    float fIntendedDistance = fIntendedSpeed * ball.fSimTimeRemaing;
-                    float fActualDistance = sqrt((ball.centre.x - ball.old_centre.x) * (ball.centre.x - ball.old_centre.x) +
-                                                 (ball.centre.y - ball.old_centre.y) * (ball.centre.y - ball.old_centre.y));
-                    float fActualTime = fActualDistance / fIntendedSpeed;
-                    ball.fSimTimeRemaing -= fActualTime;
+                    if (collided)
+                    {
+                        float fIntendedSpeed = ball.veloc.mag();
+                        float fIntendedDistance = fIntendedSpeed * ball.fSimTimeRemaing;
+                        float fActualDistance = (ball.pos - ball.old_pos).mag();
+
+                        if (fIntendedSpeed == 0.0f)
+                        {
+                            ball.fSimTimeRemaing = 0.0f;
+                            // std::cout << "fIntendedSpeed=0.0f! fActualDistance=" << fActualDistance << "\n";
+                        }
+                        else
+                        {
+                            float fActualTime = fActualDistance / fIntendedSpeed;
+                            ball.fSimTimeRemaing -= fActualTime;
+                            // if(ball.fSimTimeRemaing<fSimElapsedTime/100.0f)
+                            //     ball.fSimTimeRemaing = 0.0f;
+                        }
+                    }
+                    else
+                        ball.fSimTimeRemaing = 0.0f;
+
+                    if (ball.fSimTimeRemaing > 0.0f) // if a ball still have some simTime 
+                        simDone = false;
                 }
 
                 // dynamic resolution (takes place after the static one)
@@ -289,88 +351,88 @@ private:
                 {
                     Ball *b1 = p.first;
                     Ball *b2 = p.second;
-                    float D = sqrtf((b1->centre.x - b2->centre.x) * (b1->centre.x - b2->centre.x) + (b1->centre.y - b2->centre.y) * (b1->centre.y - b2->centre.y));
-
-                    olc::vf2d normal = {(b2->centre.x - b1->centre.x) / D, (b2->centre.y - b1->centre.y) / D};
-                    olc::vf2d tangent = {-normal.y, normal.x};
-
-                    // tangent response
-                    // float dpTan1 = b1->velocity.x * tangent.x + b1->velocity.y * tangent.y;
-                    // float dpTan2 = b2->velocity.x * tangent.x + b2->velocity.y * tangent.y;
-
-                    // normal response
-                    // float dpNor1 = b1->velocity.x * normal.x + b1->velocity.y * normal.y;
-                    // float dpNor2 = b2->velocity.x * normal.x + b2->velocity.y * normal.y;
-
-                    // 1D elastic collision : https://en.wikipedia.org/wiki/Elastic_collision
-                    // v_1 = ( u_1*(m_1-m_2) + 2*m_2*u_2 )/(m_1+m_2)
-                    // v_2 = ( u_2*(m_2-m_1) + 2*m_1*u_2 )/(m_1+m_2)
-
-                    // float m1 = (dpNor1 * (b1->mass - b2->mass) + 2 * b2->mass * dpNor2) / (b1->mass + b2->mass);
-                    // float m2 = (dpNor2 * (b2->mass - b1->mass) + 2 * b1->mass * dpNor1) / (b1->mass + b2->mass);
-
-                    // b1->velocity = {tangent.x * dpTan1 + m1 * normal.x, tangent.y * dpTan1 + m1 * normal.y};
-                    // b2->velocity = {tangent.x * dpTan2 + m2 * normal.x, tangent.y * dpTan2 + m2 * normal.y};
 
                     // optimised wikipedia version
-                    float kx = (b1->velocity.x - b2->velocity.x);
-                    float ky = (b1->velocity.y - b2->velocity.y);
-                    float p = 2.0 * (normal.x * kx + normal.y * ky) / (b1->mass + b2->mass);
-                    b1->velocity = {b1->velocity.x - p * b2->mass * normal.x,
-                                    b1->velocity.y - p * b2->mass * normal.y};
-                    b2->velocity = {b2->velocity.x + p * b1->mass * normal.x,
-                                    b2->velocity.y + p * b1->mass * normal.y};
+                    //  (https://en.wikipedia.org/wiki/Elastic_collision)
+                    olc::vf2d normal = (b2->pos - b1->pos).norm();
+                    olc::vf2d k = b1->veloc - b2->veloc;
+                    float p = 2.0f * normal.dot(k) / (b1->mass + b2->mass);
+                    b1->veloc -= p * b2->mass * normal;
+                    b2->veloc += p * b1->mass * normal;
+
                 } // dynamic resolution
 
+                // delete temporary fake balls
                 for (auto &b : fakeBalls)
                     delete b;
                 fakeBalls.clear();
 
                 collidedPairs.clear();
 
+                if (simDone)
+                    break;
+
             } // j (simulation steps)
-        }     // i (epochs)
+
+            nSim = std::max(j + 1, nSim);
+
+        } // i (epochs)
 
         // Drawing code --------------------------------------------------------
+        drawScene(nSim);
 
+        return true;
+    }
+
+    void drawScene(int nSim)
+    {
         Clear(olc::DARK_BLUE);
 
         for (auto &b : balls)
         {
-            DrawCircle(b.centre, int32_t(b.radius), olc::WHITE);
-            float theta = atan2f(b.velocity.y, b.velocity.x);
-            DrawLine(b.centre, olc::vi2d(b.centre.x + b.radius * cosf(theta), b.centre.y + b.radius * sinf(theta)),
+            DrawCircle(b.pos, int32_t(b.radius), olc::WHITE);
+            float theta = atan2f(b.veloc.y, b.veloc.x);
+            DrawLine(b.pos, b.pos + b.radius * olc::vf2d(cosf(theta), sinf(theta)),
                      olc::WHITE);
         }
 
         for (auto &line : lines)
         {
-            FillCircle(line.start, line.radius, olc::GREY);
-            FillCircle(line.end, line.radius, olc::GREY);
-            olc::vf2d normal = {-(line.end.y - line.start.y), line.end.x - line.start.x};
-            float d = sqrtf(normal.x * normal.x + normal.y * normal.y);
-            normal.x /= d;
-            normal.y /= d;
-            DrawLine(olc::vi2d(line.start.x + line.radius * normal.x, line.start.y + line.radius * normal.y),
-                     olc::vi2d(line.end.x + line.radius * normal.x, line.end.y + line.radius * normal.y), olc::GREY);
-            DrawLine(olc::vi2d(line.start.x - line.radius * normal.x, line.start.y - line.radius * normal.y),
-                     olc::vi2d(line.end.x - line.radius * normal.x, line.end.y - line.radius * normal.y), olc::GREY);
+            FillCircle(line.start, int(line.radius), olc::GREY);
+            FillCircle(line.end, int(line.radius), olc::GREY);
+            olc::vf2d unitn = (line.end - line.start).perp().norm();
+            DrawLine(line.start + line.radius * unitn, line.end + line.radius * unitn, olc::GREY);
+            DrawLine(line.start - line.radius * unitn, line.end - line.radius * unitn, olc::GREY);
         }
 
-        for (auto p : collidedPairs)
-        {
-            Ball *b1 = p.first;
-            Ball *b2 = p.second;
-            DrawLine(b1->centre, b2->centre, olc::RED);
-        }
+        // for (auto p : collidedPairs)
+        // {
+        //     Ball *b1 = p.first;
+        //     Ball *b2 = p.second;
+        //     DrawLine(b1->pos, b2->pos, olc::RED);
+        // }
+        olc::vi2d mousePos(GetMouseX(), GetMouseY());
 
         if (selectedBall != nullptr)
         {
-            olc::vf2d pos = {float(GetMouseX()), float(GetMouseY())};
-            DrawLine(selectedBall->centre, pos, olc::BLUE);
+            DrawLine(selectedBall->pos, mousePos, olc::BLUE);
         }
 
-        return true;
+        // draw debug info for the ball at mouse position
+        if (mouseBall != nullptr)
+        {
+
+            std::stringstream str;
+            str << "pos = " << mouseBall->pos << '\n';
+            str << "veloc = " << mouseBall->veloc << '\n';
+            str << "accel = " << mouseBall->accel << '\n';
+            DrawString(mousePos, str.str(), olc::YELLOW);
+        }
+
+        std::stringstream str;
+        str << mousePos << '\n';
+        str << "nSim=" << nSim;
+        DrawString({10, 10}, str.str(), olc::YELLOW);
     }
 };
 
@@ -378,7 +440,7 @@ int
 main()
 {
     Collisions demo;
-    if (demo.Construct(300, 200, 3, 3))
+    if (demo.Construct(600, 400, 2, 2))
         demo.Start();
 
     return 0;
