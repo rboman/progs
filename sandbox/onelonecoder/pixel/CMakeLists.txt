@@ -70,6 +70,12 @@ IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 ENDIF()
 
 
+ADD_EXECUTABLE(sweep_and_prune sweep_and_prune.cpp engine.cpp)
+TARGET_INCLUDE_DIRECTORIES(sweep_and_prune PUBLIC ${OLC_INCLUDE_DIRS})
+IF(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_link_libraries(sweep_and_prune Threads::Threads PNG::PNG ${OPENGL_LIBRARIES} ${X11_LIBRARIES} stdc++fs)
+ENDIF()
+
 configure_file(config.h.in config.h)
 include_directories(${PROJECT_BINARY_DIR})
 
