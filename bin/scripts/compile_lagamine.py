@@ -80,7 +80,7 @@ def main():
     if pu.isUnix():
         # Release only then sudo for install
         cmd = ['cmake', '--build', '.',
-               '--config', 'Release']
+               '--config', 'Release', '--', '-j', '8']
         subprocess.call(cmd)
         cmd = ['sudo', 'make', 'install']
         print('\nINSTALLING... Enter your passwd for\n%s' % cmd)

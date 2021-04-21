@@ -43,7 +43,11 @@ def guessSystem():
         print('\tmac_machine =', mac_machine)
         guesses.append('macos')
     if system=='Linux':
-        lin_distname, lin_version, lin_id = platform.linux_distribution()
+        if sys.version_info.minor >= 8:
+            import distro as m
+        else:
+            import platform as m
+        lin_distname, lin_version, lin_id = m.linux_distribution()
         print('\tlin_distname =', lin_distname)
         print('\tlin_version =', lin_version)
         print('\tlin_id =', lin_id)
