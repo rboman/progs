@@ -43,7 +43,7 @@ class GITRepo(Repo):
         if not os.path.isdir(self.name):
             # print "skipping %s" % self.name  # should checkout instead
             # return
-            cmd = 'git clone %s' % self.repo
+            cmd = 'git clone --recursive %s' % self.repo
             if not pu.isUnix():
                 cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
             status = subprocess.call(cmd, shell=True)
@@ -65,6 +65,8 @@ class GITRepo(Repo):
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
             print('status=', status)
             pu.chDir('..')
+
+            # TODO: faire un "git submodule update"?
 
         # set core.filemode=false in .git/config on windows!
         # (otherwise executable files are considered as diffs)
