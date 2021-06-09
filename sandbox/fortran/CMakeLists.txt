@@ -35,6 +35,7 @@ ADD_EXECUTABLE(prog01 prog01.f90 progmod.f90)
 ADD_EXECUTABLE(test_entry test_entry.f90) 
 ADD_EXECUTABLE(test_formats test_formats.f90)
 ADD_EXECUTABLE(test_debug test_debug.f90)
+ADD_EXECUTABLE(test_sort test_sort.f90)
 
 
 # ctest
