@@ -19,7 +19,7 @@ progs = [
     {'path': 'metafor/mailsph', 'travis': False},
     {'path': 'sandbox/md5', 'travis': True},
     {'path': 'sandbox/fortran', 'travis': True},
-    {'path': 'sandbox/using_cmake/fortranc', 'travis': True},
+    {'path': 'sandbox/fortranc/using_cmake', 'travis': True},
     {'path': 'skel/cpp', 'travis': True},
     {'path': 'skel/fortran', 'travis': True},
     {'path': 'skel/staticlib', 'travis': True},
