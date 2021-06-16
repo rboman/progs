@@ -36,8 +36,8 @@ program test_formats
     print "(1x, 5f26.16)", (nd_scn(ni), ni=1, 5)
 
     print "(/,A,I2,A)", 'format variable (sur sz=', sz, ' colonnes)...'  ! "Variable FORMAT expressions"
-    write(fmt,*) sz
-    print "(1x, " // adjustl(fmt) // "f26.16)", (nd_scn(ni), ni=1, 5)
+    write (fmt, *) sz
+    print "(1x, "//adjustl(fmt)//"f26.16)", (nd_scn(ni), ni=1, 5)
 
 end program test_formats
 

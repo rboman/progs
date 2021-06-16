@@ -1,11 +1,5 @@
-!
-!
-!
-!
-!
 
 program test_debug
-
 
     type s_bandecage
         logical :: etatok
@@ -16,8 +10,8 @@ program test_debug
 
     BandeCage%etatok = .true.
     BandeCage%selection = .false.
-    
-    if( BandeCage%etatok .eqv. .true. ) then
+
+    if (BandeCage%etatok .eqv. .true.) then
         print *, "BandeCage%etaok == .true."
     else
         print *, "BandeCage%etaok == .false."
