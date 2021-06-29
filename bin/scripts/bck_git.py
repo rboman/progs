@@ -8,21 +8,21 @@
 # usage examples:
 #
 # .list of projects with name containing "Boman", excluding those which contains "moga" or "lam3"
-#       rb.py bck_gitlab.py list --include Boman --exclude moga:lam3
+#       rb.py bck_git.py list --include Boman --exclude moga:lam3
 #
 # .clone all the projects
-#       rb.py bck_gitlab.py clone
+#       rb.py bck_git.py clone
 #
 # .make tar.bz2 archives of projects
-#       rb.py bck_gitlab.py archive
+#       rb.py bck_git.py archive
 #
 # .retrieve all the projects from GitLab even if the local cache is present in the current folder
-#       rb.py bck_gitlab.py list --update
+#       rb.py bck_git.py list --update
 #
 # .export all my projects and the one of the dept
-#       rb.py bck_gitlab.py list --update --include R.Boman:am-dept
-#       rb.py bck_gitlab.py export --include R.Boman:am-dept
-#       rb.py bck_gitlab.py download --include R.Boman:am-dept
+#       rb.py bck_git.py list --update --include R.Boman:am-dept
+#       rb.py bck_git.py export --include R.Boman:am-dept
+#       rb.py bck_git.py download --include R.Boman:am-dept
 #
 # .commands used on garfield (april2020)
 #     cd /hdd2/boman/Backups/repos/
