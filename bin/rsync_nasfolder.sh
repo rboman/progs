@@ -1,5 +1,5 @@
 #!/bin/bash
-# script de copi d'unrepertoire du nas vers garfield
+# script de copie d'un repertoire du NAS vers garfield
 
 rsync -e ssh -avz \
       --delete --delete-excluded \
