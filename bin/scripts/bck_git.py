@@ -37,6 +37,7 @@
 #
 
 import os
+import sys
 import pytools.utils as pu
 import pytools.versioning as vrs
 import json
@@ -294,15 +295,20 @@ class GitLabAPI(API):
         # token as a header
         # r = requests.post(url, headers={ "Private-Token": token })
 
-        # debug
-        # print ('r.status_code =', r.status_code)
-        # print ('r.headers =', r.headers)
-        # print ('r.encoding =', r.encoding)
-        # print ('r.url =', r.url)
-        # print ('r.text =', r.text)
-        # print ('r.json() =', r.json())
-        # print(json.dumps(r.json(), sort_keys=True, indent=4))
-        print(r.json()['message'])
+        if r.status_code == 429:
+            print ('r.status_code =', r.status_code)
+            print ('r.headers =', r.headers)  # devrait contenir un "Retry-After"... mais non
+            print ('r.encoding =', r.encoding)
+            print ('r.url =', r.url)
+            print ('r.text =', r.text)
+            # print ('r.json() =', r.json())
+            print(json.dumps(r.json(), sort_keys=True, indent=4))
+            sys.exit()   # request failed! => quit
+        else:
+            print('\t'+r.json()['message'])
+        # sleeping 5s
+        print('\twaiting 11s') # to avoid error 429 - too many requests
+        time.sleep(11)
 
     def download_one(self, p):
         """downloads one project "p" which have been exported with self.export_one(p).
