@@ -36,8 +36,8 @@ def all_files(root,
 
 
 def getencoding_file(f):  # uses "file" linux command
-    #cmd = 'file -bi "%s"' % f
-    cmd = r'C:\msys64\usr\bin\file -bi "%s"' % f   # windows
+    cmd = 'file -bi "%s"' % f
+    #cmd = r'C:\msys64\usr\bin\file -bi "%s"' % f   # windows
     #print cmd
     try:
         output = subprocess.check_output(
