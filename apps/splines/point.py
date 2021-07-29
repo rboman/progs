@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import math
 
 class Pt:
     """ A simple point class
@@ -38,7 +39,7 @@ class Pt:
     def __abs__(self):
         return math.sqrt(self*self)
 
-    def normalize(self):
+    def normalized(self):
         return self/abs(self)
 
     def min(self, obj):
