@@ -11,7 +11,9 @@ set LIB=
 set OMP_NUM_THREADS=1
 
 set PATH=C:\msys64\mingw64\bin;%PATH%
-set PATH=C:\msys64\usr\bin;%PATH%
+set PATH=%PATH%;C:\msys64\usr\bin
+:: note: the path to windows cmake should be *before* the one of MSYS! 
+
 set PATH=%PATH%;%LOCALAPPDATA%\Programs\Microsoft VS Code\bin
 
 %comspec%

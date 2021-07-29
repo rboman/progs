@@ -41,6 +41,7 @@ ADD_EXECUTABLE(test_print test_print.f90)
 ADD_EXECUTABLE(test_strings test_strings.f90)
 ADD_EXECUTABLE(test_getarg test_getarg.f90)
 ADD_EXECUTABLE(test_stdin test_stdin.f90)
+ADD_EXECUTABLE(test_stdin_overflow test_stdin_overflow.f90)
 
 
 # ctest
