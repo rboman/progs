@@ -36,7 +36,7 @@ import smtplib
 import time
 
 
-class SysChecker(object):
+class SysChecker:
     def __init__(self, watchers):
         self.watchers = watchers.split(';')
         self.report = ""

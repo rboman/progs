@@ -9,7 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Calculator(object):
+class Ui_Calculator:
     def setupUi(self, Calculator):
         Calculator.setObjectName("Calculator")
         Calculator.resize(224, 64)

@@ -1,6 +1,6 @@
 
 
-class A(object):
+class A:
     def __init__(self, name):
         self.name=name
         print('\tcreate', self.name)

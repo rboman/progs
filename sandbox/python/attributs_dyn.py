@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-class A(object):
+class A:
     static = 1
 
     def __init__(self, x):

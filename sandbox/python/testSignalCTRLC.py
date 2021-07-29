@@ -6,7 +6,7 @@ def test():
     import sys
     import signal
 
-    class SigHandler(object):
+    class SigHandler:
         def __init__(self):
             self.signaled = 0
             self.sn = None

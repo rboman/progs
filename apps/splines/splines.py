@@ -7,7 +7,7 @@ import numpy as np
 import math
 
 
-class Pt(object):
+class Pt:
     """ A simple point class
     """
 

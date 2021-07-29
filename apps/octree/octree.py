@@ -20,7 +20,7 @@ import random
 import vtk
 
 
-class Pt(object):
+class Pt:
     """ A simple point class
     """
 
@@ -91,7 +91,7 @@ class Pt(object):
         return (self.x <= obj.x and self.y <= obj.y and self.z <= obj.z)
 
 
-class Octree(object):
+class Octree:
     def __init__(self, plist, maxlvl=5):
         print("building octree...")
         self.plist = plist
@@ -114,7 +114,7 @@ class Octree(object):
         return "bbox=%s" % self.bbox()
 
 
-class Onode(object):
+class Onode:
     def __init__(self, box, plist, lvl, maxlvl):
         #print lvl*"   " + "==> node lvl(%d) for %d nodes" % (lvl, len(plist))
         self.box = box
@@ -182,7 +182,7 @@ class Onode(object):
                     pts.append(p)
 
 
-class Sphere(object):
+class Sphere:
     def __init__(self, c, R):
         self.c = c
         self.R = float(R)
@@ -193,7 +193,7 @@ class Sphere(object):
         return abs(pt-self.c) < self.R
 
 
-class Box(object):
+class Box:
     def __init__(self, bmin, bmax):
         self.bmin = bmin
         self.bmax = bmax
@@ -248,7 +248,7 @@ class Box(object):
         return [p1, p2, p3, p4, p5, p6, p7, p8]
 
 
-class Window(object):
+class Window:
     def __init__(self):
         self.actors = []
 
@@ -353,7 +353,7 @@ class Window(object):
         iren.Start()
 
 
-class StupidTest(object):
+class StupidTest:
     def __init__(self, npts=100, maxlvl=2):
         self.npts = npts
         self.maxlvl = maxlvl

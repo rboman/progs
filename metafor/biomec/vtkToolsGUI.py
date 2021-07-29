@@ -125,7 +125,7 @@ def CheckAbort(obj, event):
     if obj.GetEventPending() != 0:
         obj.SetAbortRender(1)
 
-class ClipCallBack(object):
+class ClipCallBack:
     def __init__(self,planes, volumeMapper):
         self.planes = planes
         self.volumeMapper = volumeMapper
@@ -133,7 +133,7 @@ class ClipCallBack(object):
         obj.GetPlanes(self.planes)
         self.volumeMapper.SetClippingPlanes(self.planes)
         
-class InteractionCallBack(object):
+class InteractionCallBack:
     def __init__(self,renWin):
         self.renWin = renWin
     def start(self, obj, event):
@@ -238,7 +238,7 @@ class VtkWindow2D(Frame):
 
 # ----------------------------------------------------------------------
 
-class MainWindow(object):
+class MainWindow:
     def __init__(self, master):
         master.protocol("WM_DELETE_WINDOW", self.quitCallback)
         self.master = master

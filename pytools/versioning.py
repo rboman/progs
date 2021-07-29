@@ -25,7 +25,7 @@ import subprocess
 import re
 
 
-class Repo(object):
+class Repo:
     def __init__(self):
         pass
 

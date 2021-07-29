@@ -17,7 +17,7 @@ def mapFromTo(x, a, b, c, d):
         (float(d) - float(c)) + float(c)
     return y
 
-class Star(object):
+class Star:
 
     factor = 4
 

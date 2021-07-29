@@ -21,7 +21,7 @@ print (gc.garbage)
 print ('gc.isenabled()=', gc.isenabled())
 
 
-class B(object):
+class B:
     def __init__(self,name):
         self.name = name
         print('%s.__init__()' % self.name)
@@ -30,7 +30,7 @@ class B(object):
 b=B('b')
 c=B('c')
 
-class ObjA2(object):
+class ObjA2:
     def __init__(self,fct):
         self.fct = fct
     def __del__(self):

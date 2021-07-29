@@ -8,7 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_MyWidget(object):
+class Ui_MyWidget:
     def setupUi(self, MyWidget):
         MyWidget.setObjectName("MyWidget")
         MyWidget.resize(226, 144)

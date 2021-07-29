@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Point(object):
+class Point:
     def __init__(self, num, x, y):
         self.num = num
         self.x = x

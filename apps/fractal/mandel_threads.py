@@ -7,7 +7,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
-class Transf(object):
+class Transf:
     """
     store a "logical coords <=> device coords" transformation
     """

@@ -5,7 +5,7 @@
 import sys
 
 
-class StdoutCatcher(object):
+class StdoutCatcher:
     def __init__(self):
         self.data = ''
 

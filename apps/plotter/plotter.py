@@ -225,7 +225,7 @@ class Plot2DWidget(QWidget):
             self.update()
 
 
-class Point(object):
+class Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -234,7 +234,7 @@ class Point(object):
         return "(%f,%f)" % (self.x, self.y)
 
 
-class Curve(object):
+class Curve:
     def __init__(self):
         self.pts = []
 

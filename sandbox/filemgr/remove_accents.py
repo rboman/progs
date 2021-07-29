@@ -44,7 +44,7 @@ def convert(file, path):
             print("SKIPPED!")
 
 
-class _Getch(object):
+class _Getch:
     """Gets a single character from standard input.  Does not echo to the screen."""
 
     def __init__(self):
@@ -56,7 +56,7 @@ class _Getch(object):
     def __call__(self): return self.impl()
 
 
-class _GetchUnix(object):
+class _GetchUnix:
     def __init__(self):
         import tty
         import sys
@@ -75,7 +75,7 @@ class _GetchUnix(object):
         return ch
 
 
-class _GetchWindows(object):
+class _GetchWindows:
     def __init__(self):
         import msvcrt
 

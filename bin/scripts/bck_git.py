@@ -55,7 +55,7 @@ import datetime
 # ██   ██ ██      ██ 
 
 
-class API(object):
+class API:
     """Base class for GitLab and Github API.
     """
 
@@ -386,7 +386,7 @@ class GitLabAPI(API):
 # ██  ██  ██ ██   ██ ██  ██ ██ ██   ██ ██    ██ ██      ██   ██ 
 # ██      ██ ██   ██ ██   ████ ██   ██  ██████  ███████ ██   ██ 
 
-class RepoManager(object):
+class RepoManager:
     """This class manages the backups of the repositories (via "clone" and "export")
     """
 

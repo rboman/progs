@@ -19,7 +19,7 @@ def mapFromTo(x, a, b, c, d):
     return y
 
 
-class Star(object):
+class Star:
     """a single star"""
     factor = 4.0
 
@@ -64,7 +64,7 @@ class Star(object):
         self.py = sy
 
 
-class Cross(object):
+class Cross:
     def __init__(self, cx, cy):
         self.cx = cx
         self.cy = cy

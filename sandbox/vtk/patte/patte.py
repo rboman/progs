@@ -116,7 +116,7 @@ def cutmesh(filename, ymin, ymax, step):
     view.interact()
 
 
-class BasicView(object):
+class BasicView:
     "defines a basic renderer / window / interactor"
 
     def __init__(self):
@@ -148,7 +148,7 @@ class BasicView(object):
         self.intor.Start() 
 
 
-class ParaviewAxes(object):
+class ParaviewAxes:
     "axes a la paraview"
 
     def __init__(self, intor):

@@ -5,7 +5,7 @@
 from tkinter import *
 
 
-class MyWin(object):
+class MyWin:
     def __init__(self, parent):
         self.master = parent
         top = Frame(root)

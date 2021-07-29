@@ -16,7 +16,7 @@ def findfiles(patterns):
 """
 
 
-class File(object):
+class File:
     def __init__(self, dir, name):
         self.fullname = os.path.join(dir,name)
         self.dir = dir
@@ -33,7 +33,7 @@ class File(object):
         
         return ret
 
-class DB(object):
+class DB:
 
     def __init__(self):
         self.db = []

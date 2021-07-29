@@ -12,7 +12,7 @@ from PyQt5.QtCore import *
 import random
 
 
-class Particle(object):
+class Particle:
     def __init__(self):
         self.x = 300
         self.y = 380
