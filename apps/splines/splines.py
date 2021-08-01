@@ -45,8 +45,11 @@ class Seg:
 class Spline:
     def __init__(self, pts):
         self.pts = pts
-        us = Spline.computeTG(pts)
+        self.rebuild()
 
+    def rebuild(self):
+        # compute tangents from pts
+        us = Spline.computeTG(self.pts)
         # fill segment list
         self.segs = []
         for i in range(len(self.pts)-1):
