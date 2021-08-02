@@ -72,7 +72,7 @@ class SuperShape(QWidget):
         font.setPixelSize(10)
         painter.setFont(font)
 
-        text='';
+        text=''
         for var in ['m','a','b','n1','n2','n3']:
             text += '%s = %f\n' % (var, getattr(self,var))
 
