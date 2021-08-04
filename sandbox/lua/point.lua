@@ -1,7 +1,7 @@
--- example of point class made after reading a lua tutorial
+-- Example of point class made after reading a lua tutorial
 
 -- point class
-Pt = { }
+local Pt = { }
 Pt.x = 0
 Pt.y = 0
 
@@ -58,24 +58,10 @@ end
 
 -- normalized
 Pt.normalized = function(self)
-    return self/self:norm()
+    local n = self:norm()
+    assert(n~=0,"vector norm is 0!")
+    return self/n
 end
 
--- TESTS
 
--- p1 = Pt.new(Pt, {x=1, y=2})
--- p2 = Pt.new(Pt, {x=3, y=4})
-p1 = Pt:new({x=1, y=2})
-p2 = Pt:new({x=3, y=4})
-
-print('p1 = '..tostring(p1))
-print('p2 = '..tostring(p2))
-print('p1+p2 = '..tostring(p1+p2))
-print('p1-p2 = '..tostring(p1-p2))
-print('p1*p2 = '..tostring(p1*p2))
-print('2*p1 = '..tostring(2*p1))
-print('p1*2 = '..tostring(p1*2))
-print('p1/2 = '..tostring(p1/2))
-print('p1:cross(p2) = '..tostring(p1:cross(p2)))
-print('p1:norm() = '..tostring(p1:norm()))
-print('p1:normalized() = '..tostring(p1:normalized()))
+return Pt -- returns the table

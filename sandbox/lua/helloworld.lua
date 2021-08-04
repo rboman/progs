@@ -1,10 +1,10 @@
 -- some lua statements
---
+--      while reading "Lua Quick Start Guide" (Gabor Szauer) Packt 2018
 
 -- PRINT
 
-print('hello')
-print(a)    -- prints nil (a is not defined)   -  'nil' == python None
+print('hello')  -- string quotes = "" or '' as in python
+print(a)    -- prints nil (a is not defined)   -  'nil' == 'python None'
 print(math.sin(5))  -- no need to "import" math
 
 -- TYPES
@@ -236,7 +236,25 @@ print('a.x='..tostring(a.x), 'b.x='..tostring(b.x)) -- b and a share 'x'
 b.x = 3  -- fills the empty array b {} with a new 'x' value (__newindex is not defined)
 print('a.x='..tostring(a.x), 'b.x='..tostring(b.x)) -- b.x=3 but a.x is still 1 
 
+-- THE GLOBAL TABLE _G
+--  all variables / fcts are stored in a global table, which can have a metatable too
+
+a,b,c=nil,nil,nil -- deallocate variables
+arr,vec=nil,nil
+cat=nil
+
+print('\nTHE GLOBAL TABLE:')
+for k,v in pairs(_G) do -- display al the variables
+    print('\t. '..k..'\t\t'..tostring(v))
+end
+print('\nALL FCTS IN math:')
+for k,v in pairs(_G.math) do -- display all the variables in math
+    print('\t. '..k..'\t\t'..tostring(v))
+end
 
 
+-- LIBRARIES
 
+print('INCLUDE='..os.getenv('INCLUDE')..'\n')
 
+print('package.path='..package.path)
