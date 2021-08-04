@@ -7,3 +7,4 @@
 
 - c++ / lua: https://github.com/ThePhD/sol2
 
+debugger for VSCode: https://marketplace.visualstudio.com/items?itemName=actboy168.lua-debug
