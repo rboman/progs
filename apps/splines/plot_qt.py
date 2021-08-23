@@ -68,8 +68,8 @@ class SplineWidget(QWidget):
         painter.setRenderHint(QPainter.Antialiasing, True)
         painter.setPen(QPen(Qt.darkBlue, 3))
         for i in range(len(self.sx)-1):
-            painter.drawLine(self.cx+self.sx[i]*self.scale, self.cy-self.sy[i]*self.scale,
-                             self.cx+self.sx[i+1]*self.scale, self.cy-self.sy[i+1]*self.scale)
+            painter.drawLine(int(self.cx+self.sx[i]*self.scale), int(self.cy-self.sy[i]*self.scale),
+                             int(self.cx+self.sx[i+1]*self.scale), int(self.cy-self.sy[i+1]*self.scale))
 
         # draw knots
         for i, pt in enumerate(self.s.pts):
@@ -80,24 +80,24 @@ class SplineWidget(QWidget):
                 painter.setPen(QPen(Qt.darkGreen, 2))
                 painter.setBrush(Qt.green)
             painter.drawEllipse(
-                QPoint(self.cx+pt.x*self.scale, self.cy-pt.y*self.scale), 6, 6)
+                QPoint(int(self.cx+pt.x*self.scale), int(self.cy-pt.y*self.scale)), 6, 6)
 
         # draw tangents
         painter.setPen(QPen(Qt.darkGreen, 2))
         for seg in self.s.segs:
             p = seg.x1
             u = seg.u1
-            painter.drawLine(self.cx+p.x*self.scale,
-                             self.cy-p.y*self.scale,
-                             self.cx+p.x*self.scale + 50*u.x,
-                             self.cy-p.y*self.scale - 50*u.y)
+            painter.drawLine(int(self.cx+p.x*self.scale),
+                             int(self.cy-p.y*self.scale),
+                             int(self.cx+p.x*self.scale + 50*u.x),
+                             int(self.cy-p.y*self.scale - 50*u.y))
         
         p = self.s.segs[-1].x2
         u = self.s.segs[-1].u2
-        painter.drawLine(self.cx+p.x*self.scale,
-                            self.cy-p.y*self.scale,
-                            self.cx+p.x*self.scale + 50*u.x,
-                            self.cy-p.y*self.scale - 50*u.y)            
+        painter.drawLine(int(self.cx+p.x*self.scale),
+                         int(self.cy-p.y*self.scale),
+                         int(self.cx+p.x*self.scale + 50*u.x),
+                         int(self.cy-p.y*self.scale - 50*u.y))            
         
 
 
