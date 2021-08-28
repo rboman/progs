@@ -10,5 +10,6 @@ class Tile;
 
 class CharacterScene;
 class MapEditor;
+class TextWindowScene;
 
 #endif // DUNGEON_H

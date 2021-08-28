@@ -3,6 +3,7 @@
 #include "Tiles.h"
 #include "CharacterScene.h"
 #include "MapEditor.h"
+#include "TextWindowScene.h"
 
 Game::Game()
 {
@@ -37,6 +38,7 @@ Game::OnUserCreate()
     // create the scenes
     charscene = new CharacterScene(tiles);
     mapeditor = new MapEditor(tiles);
+    twinscene = new TextWindowScene();
     return true;
 }
 
@@ -50,13 +52,15 @@ Game::OnUserUpdate(float fElapsedTime)
     if (GetKey(olc::ESCAPE).bPressed)
         return false;
 
-    // switch between scenes with F* keys
+    // switch between scenes with <Fx> keys
     if (GetKey(olc::F1).bPressed)
         scene = Scene::CHARACTER;
     if (GetKey(olc::F2).bPressed)
         scene = Scene::TILES;
     if (GetKey(olc::F3).bPressed)
         scene = Scene::MAPEDITOR;
+    if (GetKey(olc::F4).bPressed)
+        scene = Scene::TEXTWINDOW;
 
     switch (scene)
     {
@@ -65,6 +69,9 @@ Game::OnUserUpdate(float fElapsedTime)
         break;
     case Scene::MAPEDITOR:
         mapeditor->update(*this, fElapsedTime);
+        break;
+    case Scene::TEXTWINDOW:
+        twinscene->update(*this, fElapsedTime);
         break;
     case Scene::TILES:
     default:

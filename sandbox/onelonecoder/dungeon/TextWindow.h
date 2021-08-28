@@ -18,11 +18,11 @@ enum class VJustify
     CENTRE
 };
 
-// text characters are 8x8 images
-// by default, vertical spacing is 0
-// there is also no spacing with the border of the windows
 
-// this class defines a text zone with borders and linespacing
+/// This class defines a text zone with borders and linespacing
+///     text characters are 8x8 images
+///     by default, vertical spacing is 0
+///     there is also no spacing with the border of the windows
 
 class TextWindow
 {
@@ -30,8 +30,8 @@ class TextWindow
     int32_t charHeight = 8; // should not be changed - font dependant
     int32_t charWidth = 8;  // should not be changed - font dependant
 
-    int32_t border = 2;  // additionnal border around text
-    int32_t linesep = 2; // additionnal spacing between lines
+    int32_t border = 2;  // additional border around text
+    int32_t linesep = 2; // additional spacing between lines
 
 public:
     int32_t ox;     // origin x

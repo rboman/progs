@@ -10,7 +10,7 @@ main()
     try // does not work
     {
         Game demo;
-        if (demo.Construct(800, 600, 2, 2))
+        if (demo.Construct(800, 500, 2, 2))
             demo.Start();
     }
     catch (const std::exception &e)
