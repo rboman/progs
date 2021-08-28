@@ -20,11 +20,12 @@ TextWindowScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
     TextWindow win(pge);
     win.clear(olc::BLUE);
     win.print("This is the main window", HJustify::RIGHT);
-    win.print("(in blue)", HJustify::CENTRE);
+    win.print("(in blue)", HJustify::RIGHT);
 
     // create a new centered window from the main window
     TextWindow wcentre = win.subwin(3, 50, HJustify::CENTRE, VJustify::CENTRE);
     wcentre.clear(olc::RED);
+    wcentre.frame();
     wcentre.print("centre", HJustify::CENTRE);
     wcentre.print("(red)", HJustify::CENTRE);
 
@@ -44,7 +45,7 @@ TextWindowScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
     bottom.clear(olc::CYAN);
     bottom.colour = olc::BLACK;    
     bottom.print("bottom", HJustify::CENTRE);    
-
+    bottom.frame(olc::WHITE);
 
     // text written "by hand"
     std::string text = "This is some multi-line text\nwritten with DrawStringDecal().\n"

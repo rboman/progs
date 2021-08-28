@@ -66,7 +66,7 @@ Tiles::update(olc::PixelGameEngine &pge, float fElapsedTime)
     for (int i = 0; i < tileimg.get()->width / gridsz; ++i)
         for (int j = 0; j < tileimg.get()->height / gridsz; ++j)
         {
-            olc::Pixel col;
+            // olc::Pixel col;
             if ((i + j) % 2)
                 pge.FillRect(origin.x + j * gridsz, origin.y + i * gridsz, gridsz, gridsz, olc::VERY_DARK_GREY);
         }
