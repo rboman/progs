@@ -6,21 +6,21 @@
 #include "Tile.h"
 class Tiles;
 
-enum class State
-{
-    IDLE,
-    RUNNING,
-    HIT
-};
-
 class Character
 {
-    Tiles *tiles;               ///< tiles data
-    Tile *tl = nullptr;         ///< current tile
+    Tiles *tiles;       ///< tiles data
+    Tile *tl = nullptr; ///< current tile
 public:
     Tile *tile_idle;
     Tile *tile_run;
     Tile *tile_hit;
+
+    enum class State
+    {
+        IDLE,
+        RUNNING,
+        HIT
+    };
 
 public:
     olc::vf2d pos;      ///< reference position upper-left corner
@@ -33,8 +33,6 @@ public:
     Character(Tiles *_tiles, std::string const &_idlename,
               std::string const &_runname, std::string const &_hitname);
 
-
-
     void update(olc::PixelGameEngine &pge, float fElapsedTime);
 
     // velocity management
@@ -44,7 +42,7 @@ public:
     // animation
     void set_state(State newstate);
     void set_tiles(std::string const &_idlename,
-              std::string const &_runname, std::string const &_hitname);
+                   std::string const &_runname, std::string const &_hitname);
 
     // positions
     olc::vf2d lowerright() const { return pos + size(); }
@@ -54,7 +52,6 @@ public:
 
     // debug
     void change(Character const &chr);
-
 };
 
 #endif // CHARACTER_H

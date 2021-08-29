@@ -15,7 +15,6 @@ Character::Character(Tiles *_tiles, std::string const &idlename, std::string con
 }
 
 /// modify the state of the character according to user keys
-
 void
 Character::userKeys(olc::PixelGameEngine &pge, float fElapsedTime)
 {

@@ -8,9 +8,12 @@ class CharacterScene
 {
     Character *hero;
     Character *monster;
+    Weapon *weapon;
 
     std::map<std::string, Character*> characters;
     std::map<std::string, Character*>::iterator heroit;
+
+    std::map<std::string, Weapon*> weapons;
 
     std::string message;
 

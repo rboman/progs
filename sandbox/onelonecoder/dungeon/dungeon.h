@@ -5,6 +5,7 @@
 
 class Game;
 class Character;
+class Weapon;
 class Tiles;
 class Tile;
 

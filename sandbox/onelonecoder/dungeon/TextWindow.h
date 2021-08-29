@@ -40,6 +40,8 @@ public:
     int32_t nbcols; // number of columns
     int32_t row;    // current row
 
+    bool grid;  // display a grid for debugging alignment
+
     olc::Pixel colour = olc::WHITE; // colour used to write text
 
     TextWindow(olc::PixelGameEngine &_pge);

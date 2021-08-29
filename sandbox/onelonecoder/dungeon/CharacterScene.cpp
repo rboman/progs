@@ -1,15 +1,12 @@
 
 #include "CharacterScene.h"
 #include "Character.h"
+#include "Weapon.h"
 #include "TextWindow.h"
-
-
-
-
 
 CharacterScene::CharacterScene(Tiles *tiles)
 {
-    message = "press <A> to change the hero";
+    message = "";
 
     // build character map
     characters["elf_f"] = new Character(tiles, "elf_f_idle_anim", "elf_f_run_anim", "elf_f_hit_anim");
@@ -39,7 +36,30 @@ CharacterScene::CharacterScene(Tiles *tiles)
     characters["chort"] = new Character(tiles, "chort_idle_anim", "chort_run_anim", "chort_idle_anim");
     characters["angel"] = new Character(tiles, "angel_idle_anim", "angel_run_anim", "angel_idle_anim");
 
-    // choose 1 hero and 1 monster
+    // weapons
+    weapons["knife"] = new Weapon(tiles, "weapon_knife");
+    weapons["rusty_sword"] = new Weapon(tiles, "weapon_rusty_sword");
+    weapons["regular_sword"] = new Weapon(tiles, "weapon_regular_sword");
+    weapons["red_gem_sword"] = new Weapon(tiles, "weapon_red_gem_sword");
+    weapons["big_hammer"] = new Weapon(tiles, "weapon_big_hammer");
+    weapons["hammer"] = new Weapon(tiles, "weapon_hammer");
+    weapons["baton_with_spikes"] = new Weapon(tiles, "weapon_baton_with_spikes");
+    weapons["mace"] = new Weapon(tiles, "weapon_mace");
+    weapons["katana"] = new Weapon(tiles, "weapon_katana");
+    weapons["saw_sword"] = new Weapon(tiles, "weapon_saw_sword");
+    weapons["anime_sword"] = new Weapon(tiles, "weapon_anime_sword");
+    weapons["axe"] = new Weapon(tiles, "weapon_axe");
+    weapons["machete"] = new Weapon(tiles, "weapon_machete");
+    weapons["cleaver"] = new Weapon(tiles, "weapon_cleaver");
+    weapons["duel_sword"] = new Weapon(tiles, "weapon_duel_sword");
+    weapons["knight_sword"] = new Weapon(tiles, "weapon_knight_sword");
+    weapons["golden_sword"] = new Weapon(tiles, "weapon_golden_sword");
+    weapons["lavish_sword"] = new Weapon(tiles, "weapon_lavish_sword");
+    weapons["red_magic_staff"] = new Weapon(tiles, "weapon_red_magic_staff");
+    weapons["green_magic_staff"] = new Weapon(tiles, "weapon_green_magic_staff");
+    weapons["spear"] = new Weapon(tiles, "weapon_spear");
+
+    // choose 1 hero, 1 monster, 1 weapon
 
     heroit = characters.find("elf_f");
     hero = new Character(*heroit->second);
@@ -47,6 +67,8 @@ CharacterScene::CharacterScene(Tiles *tiles)
     monster = new Character(*characters.at("big_demon"));
     monster->pos = {200.0f, 200.0f};
     monster->basespeed = 150.f;
+
+    weapon = new Weapon(*weapons.at("knife"));
 
     // behaviour
 
@@ -62,14 +84,18 @@ CharacterScene::~CharacterScene()
         delete hero;
     if (monster)
         delete monster;
+    if (weapon)
+        delete weapon;
     for (auto const &[key, val] : characters)
+        delete val;
+    for (auto const &[key, val] : weapons)
         delete val;
 }
 
 void
 CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
 {
-    // change hero if A is pressed
+    // change hero if <A> is pressed
     if (pge.GetKey(olc::A).bPressed)
     {
         ++heroit;
@@ -103,6 +129,7 @@ CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
 
     // DRAW
     pge.Clear(olc::BLACK);
+    weapon->update(pge, fElapsedTime);
     hero->update(pge, fElapsedTime);
     monster->update(pge, fElapsedTime);
 
@@ -111,7 +138,8 @@ CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
     // info on top of screen
     TextWindow twin(pge);
     twin.print("<ESC> to quit", HJustify::CENTRE);
-    twin.print("use Z,Q,S,D to move the hero", HJustify::CENTRE);
+    twin.print("use <Z>,<Q>,<S>,<D> to move the hero", HJustify::CENTRE);
+    twin.print("press <A> to change the hero", HJustify::CENTRE);
 
     // debug msg
     TextWindow win2 = twin.subwin(2, 500, HJustify::RIGHT, VJustify::BOTTOM);

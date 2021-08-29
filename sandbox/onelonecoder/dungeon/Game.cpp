@@ -11,7 +11,8 @@ Game::Game()
     tiles = nullptr;
     charscene = nullptr;
     mapeditor = nullptr;
-    scene = Scene::MAPEDITOR;
+    twinscene = nullptr;
+    scene = Scene::CHARACTER;
 }
 
 Game::~Game()
@@ -23,6 +24,8 @@ Game::~Game()
         delete charscene;
     if (mapeditor)
         delete mapeditor;
+    if (twinscene)
+        delete twinscene;
 }
 
 bool
