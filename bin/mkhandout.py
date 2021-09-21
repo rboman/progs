@@ -23,7 +23,7 @@ def handout(infile):
     if ext != ".pdf":
         raise Exception("file should be a PDF")
 
-    cmd = r'pdfnup --a4paper --keepinfo --nup 1x2 --frame true ' \
+    cmd = r'pdfjam --a4paper --keepinfo --nup 1x2 --frame true ' \
            ' --scale 0.92 --no-landscape ' \
            ' --trim \'-0.2cm -0.2cm -0.2cm -0.2cm\' --delta \'10 10\' ' \
            ' --suffix 1x2 "%s"' % infile
