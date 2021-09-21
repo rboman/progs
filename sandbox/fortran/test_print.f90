@@ -18,4 +18,9 @@ program test_print
 1009 format(10(e14.7, a1, 1 x))
 ! 0.3140000E+01*  0.3140000E+01*  0.3140000E+01*  0.3140000E+01*  0.3140000E+01*  0.3140000E+01*  0.3140000E+01*  0.3140000E+01*  0.3140000E+01*  0.3140000E+01*
 
+print "(1 x, '>> Votre licence de LAM3 ne permet pas la simulation ', 'du laminage des produits plats')"
+print "(1x, '>> Votre licence de LAM3 ne permet pas la simulation du laminage des produits plats')"
+print "('>> Votre licence de LAM3 ne permet pas la simulation du laminage des produits plats')"
+
+
 end
