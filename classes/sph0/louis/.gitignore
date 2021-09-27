@@ -1,0 +1,17 @@
+build/
+*.mod
+*.53
+*.x3d
+
+*.fp
+*.mp
+*.prm
+
+log.txt
+paths.txt
+*.out
+*.res
+*.vtu
+
+*.kdev4
+
