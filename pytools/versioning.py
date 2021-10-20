@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#   Copyright 2019 Romain Boman
+#   Copyright 2017-2021 Romain Boman
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ class Repo:
 
 
 class GITRepo(Repo):
+    """ a git repository
+    """
     def __init__(self, name, repo):
         self.name = name
         self.repo = repo
@@ -43,32 +45,34 @@ class GITRepo(Repo):
         if not os.path.isdir(self.name):
             # print "skipping %s" % self.name  # should checkout instead
             # return
-            cmd = 'git clone --recursive %s' % self.repo
-            if not pu.isUnix():
-                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
-            status = subprocess.call(cmd, shell=True)
+            # cmd = 'git clone --recursive %s' % self.repo
+            # if not pu.isUnix():
+            #     cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
+            cmd = ['git','clone', '--recursive', self.repo ]
+            status = subprocess.call(cmd)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            print('status =', status)
+            # print('status =', status)
 
         else:
             pu.chDir(self.name)
-            if pu.isUnix():
-                cmd = 'git pull'
-            else:
-                cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull"'
-            print(cmd)
+            # if pu.isUnix():
+            #     cmd = 'git pull'
+            # else:
+            #     cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull"'
+            # print(cmd)
             # os.system necessite des "" en plus autour de la cmd)
             #os.system('"%s"' % cmd)
-            status = subprocess.call(cmd, shell=True)
+            cmd = ['git', 'pull']
+            status = subprocess.call(cmd)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            print('status=', status)
+            # print('status=', status)
 
             # update submodules
             if os.path.isfile('.gitmodules'):
                 # '--init' for the case where modules were not present before
-                cmd = ['git','submodule','update','--init'] # '--recursive'] if sub-sub-modules
+                cmd = ['git', 'submodule', 'update', '--init'] # '--recursive'] if sub-sub-modules
                 status = subprocess.call(cmd)
                 if status:
                     raise Exception('"%s" FAILED with error %d' % (cmd, status))                
@@ -79,10 +83,11 @@ class GITRepo(Repo):
         # (otherwise executable files are considered as diffs)
         if not pu.isUnix():
             pu.chDir(self.name)
-            cmd = 'git config core.filemode false'
-            cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
-            print(cmd)
-            status = subprocess.call(cmd, shell=True)
+            # cmd = 'git config core.filemode false'
+            # cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
+            # print(cmd)
+            cmd = ['git', 'config', 'core.filemode', 'false']
+            status = subprocess.call(cmd)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
             pu.chDir('..')
@@ -96,22 +101,22 @@ class GITRepo(Repo):
         else:
             os.chdir(self.name)
 
-        # git remote -v update (fetch everything)
+        # fetch everything
         cmd = ['git', 'remote', '-v', 'update']
-        if not pu.isUnix():
-            cmd = [r'C:\Program Files\Git\bin\sh.exe',
-                   '--login', '-c', ' '.join(cmd)]
+        # if not pu.isUnix():
+        #     cmd = [r'C:\Program Files\Git\bin\sh.exe',
+        #            '--login', '-c', ' '.join(cmd)]
         with open(os.devnull, 'w') as FNULL:
             status = subprocess.call(
                 cmd, stdout=FNULL, stderr=subprocess.STDOUT)
         if status:
             raise Exception('"%s" FAILED with error %d in cwd=%s' % (cmd, status, os.getcwd()))
        
-        # git status -uno  (check "Your branch is up to date") 
+        # check "Your branch is up to date" 
         cmd = ['git', 'status', '-uno']
-        if not pu.isUnix():
-            cmd = [r'C:\Program Files\Git\bin\sh.exe',
-                   '--login', '-c', ' '.join(cmd)]
+        # if not pu.isUnix():
+        #     cmd = [r'C:\Program Files\Git\bin\sh.exe',
+        #            '--login', '-c', ' '.join(cmd)]
         out = subprocess.check_output(cmd)
         out = out.decode()  # python 3 returns bytes
         m = re.search(r'Your branch is up to date', out)
@@ -122,9 +127,9 @@ class GITRepo(Repo):
     def checkout(self, branch='master'):
         os.chdir(self.name)
         cmd = ['git', 'checkout', branch]
-        if not pu.isUnix():
-            cmd = [r'C:\Program Files\Git\bin\sh.exe',
-                   '--login', '-c', ' '.join(cmd)]
+        # if not pu.isUnix():
+        #     cmd = [r'C:\Program Files\Git\bin\sh.exe',
+        #            '--login', '-c', ' '.join(cmd)]
         with open(os.devnull, 'w') as FNULL:
             status = subprocess.call(
                 cmd, stdout=FNULL, stderr=subprocess.STDOUT)
@@ -134,6 +139,8 @@ class GITRepo(Repo):
 
 
 class SVNRepo(Repo):
+    """Old class used to manage SVN repositories
+    """
     def __init__(self, name, repo):
         self.name = name
         self.repo = repo
