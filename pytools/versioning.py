@@ -43,31 +43,17 @@ class GITRepo(Repo):
     def update(self):
 
         if not os.path.isdir(self.name):
-            # print "skipping %s" % self.name  # should checkout instead
-            # return
-            # cmd = 'git clone --recursive %s' % self.repo
-            # if not pu.isUnix():
-            #     cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
-            cmd = ['git','clone', '--recursive', self.repo ]
+            cmd = ['git', 'clone', '--recursive', self.repo ]
             status = subprocess.call(cmd)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            # print('status =', status)
 
         else:
             pu.chDir(self.name)
-            # if pu.isUnix():
-            #     cmd = 'git pull'
-            # else:
-            #     cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "git pull"'
-            # print(cmd)
-            # os.system necessite des "" en plus autour de la cmd)
-            #os.system('"%s"' % cmd)
             cmd = ['git', 'pull']
             status = subprocess.call(cmd)
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
-            # print('status=', status)
 
             # update submodules
             if os.path.isfile('.gitmodules'):
@@ -83,9 +69,6 @@ class GITRepo(Repo):
         # (otherwise executable files are considered as diffs)
         if not pu.isUnix():
             pu.chDir(self.name)
-            # cmd = 'git config core.filemode false'
-            # cmd = r'"C:\Program Files\Git\bin\sh.exe" --login -c "%s"' % cmd
-            # print(cmd)
             cmd = ['git', 'config', 'core.filemode', 'false']
             status = subprocess.call(cmd)
             if status:
@@ -103,6 +86,7 @@ class GITRepo(Repo):
 
         # fetch everything
         cmd = ['git', 'remote', '-v', 'update']
+        # this code can be used if git is not in the PATH
         # if not pu.isUnix():
         #     cmd = [r'C:\Program Files\Git\bin\sh.exe',
         #            '--login', '-c', ' '.join(cmd)]
@@ -114,9 +98,6 @@ class GITRepo(Repo):
        
         # check "Your branch is up to date" 
         cmd = ['git', 'status', '-uno']
-        # if not pu.isUnix():
-        #     cmd = [r'C:\Program Files\Git\bin\sh.exe',
-        #            '--login', '-c', ' '.join(cmd)]
         out = subprocess.check_output(cmd)
         out = out.decode()  # python 3 returns bytes
         m = re.search(r'Your branch is up to date', out)
@@ -127,9 +108,6 @@ class GITRepo(Repo):
     def checkout(self, branch='master'):
         os.chdir(self.name)
         cmd = ['git', 'checkout', branch]
-        # if not pu.isUnix():
-        #     cmd = [r'C:\Program Files\Git\bin\sh.exe',
-        #            '--login', '-c', ' '.join(cmd)]
         with open(os.devnull, 'w') as FNULL:
             status = subprocess.call(
                 cmd, stdout=FNULL, stderr=subprocess.STDOUT)
