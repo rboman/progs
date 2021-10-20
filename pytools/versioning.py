@@ -64,11 +64,18 @@ class GITRepo(Repo):
             if status:
                 raise Exception('"%s" FAILED with error %d' % (cmd, status))
             print('status=', status)
+
+            # update submodules
+            if os.path.isfile('.gitmodules'):
+                # '--init' for the case where modules were not present before
+                cmd = ['git','submodule','update','--init'] # '--recursive'] if sub-sub-modules
+                status = subprocess.call(cmd)
+                if status:
+                    raise Exception('"%s" FAILED with error %d' % (cmd, status))                
+
             pu.chDir('..')
 
-            # TODO: faire un "git submodule update"?
-
-        # set core.filemode=false in .git/config on windows!
+        # set 'core.filemode=false' in '.git/config' on windows!
         # (otherwise executable files are considered as diffs)
         if not pu.isUnix():
             pu.chDir(self.name)
@@ -81,7 +88,8 @@ class GITRepo(Repo):
             pu.chDir('..')
 
     def outdated(self):
-        "checks whether the working copy is outdated"
+        """checks whether the working copy is outdated or not
+        """
 
         if not os.path.isdir(self.name):
             return True
