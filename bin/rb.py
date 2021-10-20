@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#   Copyright 2020 Romain Boman
+#   Copyright 2020-2021 Romain Boman
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -15,9 +15,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+"""
+Script launcher.
+Just adds the root folder to the path so that the shared 'pytools'
+module is available from the script.
 
-from past.builtins import execfile
-
+Example:
+    rb.py updateoffi.py
+"""
 
 def exec_pyfile(fname, searchdir, args, banner=False):
 
@@ -47,14 +52,19 @@ def exec_pyfile(fname, searchdir, args, banner=False):
     env = globals()
     env['__file__'] = testname
 
-    execfile(testname, env)
+    # from past.builtins import execfile
+    # execfile(testname, env)
 
+    # execfile without past.builtins
+    with open(testname) as f:
+        code = compile(f.read(), testname, 'exec')
+        exec(code, env, env)
 
 if __name__ == "__main__":
     import sys
     import os
     import os.path
-    print(sys.version)
+    print('[rb.py] using python', sys.version)
     
     # process arguments
     import argparse

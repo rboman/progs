@@ -43,6 +43,9 @@ Miscellaneous utilities used by all the programs of 'progs'
 
 
 def chDir(dirname):
+    """Change current dir to dirname and display it to the terminal
+    so that we can follow the current location on disk.
+    """
     import os
     os.chdir(dirname)
     print("[in %s]" % os.getcwd())
@@ -55,13 +58,15 @@ def isUnix():
 
 
 def isInstalled(name):
-    """Check whether `name` is on PATH."""
+    """Check whether `name` is in the PATH.
+    """
     from distutils.spawn import find_executable
     return find_executable(name) is not None
 
 
 def cls():
-    """Clear console"""
+    """Clear console
+    """
     import platform
     import os
     uname = platform.uname()
@@ -74,8 +79,9 @@ def cls():
 
 
 class _Getch:
-    """Gets a single character from standard input.  Does not echo to the
-screen."""
+    """Gets a single character from standard input.  
+    Does not echo to the screen.
+    """
 
     def __init__(self):
         try:
@@ -111,7 +117,16 @@ class _GetchWindows:
 
     def __call__(self):
         import msvcrt
-        return msvcrt.getch().decode('utf-8')
+        while True:
+            try:
+                ch = msvcrt.getch().decode('utf-8')
+                # print("returning:", ch)
+                return ch
+            except UnicodeDecodeError:
+                if msvcrt.kbhit():
+                    # pressing an arrow leaves a char in the buffer
+                    garbage = msvcrt.getch()
+                pass
 
 
 # -- variable globale --

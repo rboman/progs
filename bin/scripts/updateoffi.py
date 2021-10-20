@@ -141,9 +141,11 @@ def main(repos, opts):
     # checkout/update everything
     build_mtf_required = False
     build_keygen_required = False
+    print('checking remote repos:')
     for rep in repos:
-        outdated = rep.outdated()
-        print(rep.name, ": outdated =", outdated)
+        # outdated = rep.outdated()
+        outdated = False
+        print('\t', rep.name, ": outdated =", outdated)
         if outdated:
             build_mtf_required = True
             build_keygen_required = True
@@ -165,7 +167,7 @@ def main(repos, opts):
         build_keygen_required = True
     else:
         possiblebins = [os.path.join('keygen', 'build', 'bin', 'keygen'),
-                        os.path.join('kengen', 'build', 'bin', 'Release', 'keygen.exe')]
+                        os.path.join('keygen', 'build', 'bin', 'Release', 'keygen.exe')]
         if not (True in map(os.path.isfile, possiblebins)):
             print('keygen executable not found!')
             build_keygen_required = True
@@ -236,7 +238,7 @@ def main(repos, opts):
 
 
 if __name__ == "__main__":
-
+    
     # options (not finished yet!)
     opts = {
         'build_type': {
