@@ -143,8 +143,8 @@ def main(repos, opts):
     build_keygen_required = False
     print('checking remote repos:')
     for rep in repos:
-        # outdated = rep.outdated()
-        outdated = False
+        outdated = rep.outdated()
+        # outdated = False
         print('\t', rep.name, ": outdated =", outdated)
         if outdated:
             build_mtf_required = True
