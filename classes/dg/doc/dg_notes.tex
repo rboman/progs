@@ -1,0 +1,67 @@
+\documentclass[12pt]{article}
+
+\def\exercisename{DG notes}
+\usepackage{mystyle}
+\begin{document}	
+	\section*{\exercisename}
+
+
+Equation to be solved:
+\begin{equation*}
+    \frac{\partial u}{\partial t} + \frac{\partial au}{\partial x} = 0
+\end{equation*}
+Multiplication by a test function $v(x)$ and integration over each element:
+\begin{equation*}
+	\int_{V_e} \frac{\partial u}{\partial t}\, v\, dV_e + \int_{V_e} \frac{\partial au}{\partial x}\, v\, dV_e = 0
+\end{equation*}
+The second term can be integrated by parts:
+\begin{equation*}
+	\int_{x_1}^{x_2} \frac{\partial u}{\partial t}\, v\, d{V_e} 
+	+ \left[ au\,v\right]_{x_1}^{x_2}
+	  - \int_{x_1}^{x_2} au \frac{\partial v}{\partial x}\, d{V_e} = 0
+\end{equation*}
+The key idea of the method is to replace the flux $au$ on the boundary by a flux numerical $f^*$ that is evaluated from the values of $u$ in the neighbouring elements. Thanks to this numerical flux, all the equations will be coupled.
+\begin{equation*}
+	\int_{x_1}^{x_2} \frac{\partial u}{\partial t}\, v\, d{V_e} 
+	+ \left[ f^*\,v\right]_{x_1}^{x_2}
+	- \int_{x_1}^{x_2} au \frac{\partial v}{\partial x}\, d{V_e} = 0
+\end{equation*}
+We can integrate by parts the last term:
+\begin{equation*}
+	\int_{x_1}^{x_2} \frac{\partial u}{\partial t}\, v\, dx  + \int_{x_1}^{x_2} \frac{\partial au}{\partial x}\, v\, dx
+= \left[ (au - f^*)\,v\right]_{x_1}^{x_2}
+\end{equation*}
+Let $N_i(x)$ be the shape functions.
+\begin{equation*}
+	v(x) = \sum_i N_i(x)\, v_i
+\end{equation*}
+\begin{equation*}
+	u(x,t) = \sum_j N_j(x)\, u_j(t)
+\end{equation*}
+The integral equation becomes:
+\begin{equation*}
+	\sum_i \sum_j 
+	\left[ 
+	\int_{x_1}^{x_2} N_i(x)\,N_j(x)\, dx\, \frac{\partial u_j(t)}{\partial t}
+	+
+	\int_{x_1}^{x_2} N_i(x)\,\frac{\partial N_j(x)}{\partial x}\, dx\,  au_j(t)
+	\right]
+	\, v_i 
+\end{equation*}
+\begin{equation*}
+	= \sum_i \sum_j 
+	\left[ 
+		\left( N_j(x)\,au_j(t) - f^{*}\right)\,N_i(x)
+	\right]_{x_1}^{x_2}
+	\, v_i 
+\end{equation*}
+This equality should be verified for any $v_i$, thus, each coefficient of $v_i$ should vanish. This leads to a system of equations:
+\begin{equation*}
+ \sum_j M_{ij}\, u_j + S_{ij}\,u_j 
+ = 
+ (au_j(x_2)-f^*(x_2))\,N_i(x_2) - (au_j(x_1)-f^*(x_1))\,N_i(x_1)
+\end{equation*}
+
+
+
+\end{document}

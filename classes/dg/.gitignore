@@ -1,0 +1,8 @@
+.vscode/
+*.pyc
+
+# latex
+*.log
+*.aux
+*.gz
+*.pdf

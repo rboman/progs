@@ -39,5 +39,9 @@ program test_formats
     write (fmt, *) sz
     print "(1x, "//adjustl(fmt)//"f26.16)", (nd_scn(ni), ni=1, 5)
 
+    !print '(/,1X,A,T72,A,$)', 'Nombre de type d''elements', ' volumiques utilises dans ce maillage', ': '
+
+    !print '(/,1X,A,I1,T72,A,$)', 'Donnez le code (4 car.) de', ' l''element type ', sz, ': '
+
 end program test_formats
 
