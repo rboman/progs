@@ -17,7 +17,7 @@ echo "***** BACKUP Win10-x64-empty => hdd"
 rsync -av --progress \
       --delete --delete-excluded \
 	  "${VBOXFOLDER}"/Win10-x64-empty/ \
-	  "${HDDFOLDER}"/VBox/VBox/Win10-x64-empty/
+	  "${HDDFOLDER}"/VBox/Win10-x64-empty/
 
 echo
 echo "***** BACKUP Win10-x86 => hdd"
