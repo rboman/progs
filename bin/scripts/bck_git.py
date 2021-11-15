@@ -30,7 +30,7 @@
 #     rb.py bck_git.py clone
 #     rb.py bck_git.py archive
 #     rb.py bck_git.py export --exclude lam3.org:mogador
-#     rb.py bck_git.py download
+#     rb.py bck_git.py download --exclude lam3.org:mogador
 #     cp -R 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/
 #        or, if folder already exists:
 #     rsync -av 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/2020-04-06/
@@ -316,6 +316,8 @@ class GitLabAPI(API):
 
         today = datetime.date.today()
         thedate = today.strftime('%Y-%m-%d')
+        if not os.path.isdir(thedate):
+            os.mkdir(thedate)
 
         print("trying to download project archive {}".format(p["id"]))
 
@@ -634,12 +636,12 @@ if __name__ == "__main__":
                       dbfile='lam3_projects.json',
                       verify_ssl=False,
                       force_update=args.update))
-    mgr.add(GitLabAPI(name='mogador.org',
-                      url_api='https://109.89.0.87/api/v4/projects',
-                      token_filename='mogador_api_token.txt',
-                      dbfile='mogador_projects.json',
-                      verify_ssl=False,
-                      force_update=args.update))
+    # mgr.add(GitLabAPI(name='mogador.org',
+    #                  url_api='https://109.89.0.87/api/v4/projects',
+    #                  token_filename='mogador_api_token.txt',
+    #                  dbfile='mogador_projects.json',
+    #                  verify_ssl=False,
+    #                  force_update=args.update))
     mgr.add(GitLabAPI(name='gitlab.uliege.be',
                       url_api='https://gitlab.uliege.be/api/v4/projects',
                       token_filename='gitlab_api_token.txt',
