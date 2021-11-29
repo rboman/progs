@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#   Copyright 2019 Romain Boman
+#   Copyright 2019-2021 Romain Boman
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -15,10 +15,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+"""A simple Qt GUI for creating movies for a series of bitmap screenshots.
+
+This is a wrapper around ffmpeg and related tools.
+(https://ffmpeg.org/)
+
+The program displays the set of images before running ffmpeg.
+
+Run the script, set the options in the GUI, click "check" (mandatory), then "convert".
+
+TODO: should be (re)tested on linux
+"""
+
 import sys
 import os
 import subprocess
 import re
+import fnmatch
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -26,10 +39,15 @@ from PyQt5.QtWidgets import *
 
 from ui_widget import Ui_Form
 
-# ffmpeg -y -r 10 -i anim%4d.png -vf fps=25 -c:v libx264 -crf 18 -pix_fmt yuv420p video.mp4
+# note: "old" ffmpeg cmd line usage
+#   ffmpeg -y -r 10 -i anim%4d.png -vf fps=25 -c:v libx264 -crf 18 -pix_fmt yuv420p video.mp4
+# (the script now uses a text file as imput so that more complex filename patterns can be used.)
 
 
 class Window(QWidget, Ui_Form):
+
+    tmpfile = "files.ffmpeg.tmp"
+
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
         self.setupUi(self)
@@ -50,13 +68,13 @@ class Window(QWidget, Ui_Form):
         # images
         self.pix = []
 
-        # read settings
+        # read Qt settings for the application
         settings = QSettings()
         self.restoreGeometry(settings.value("Geometry", self.saveGeometry()))
         self.ffmpegfolder_lineEdit.setText(settings.value("ffmpegfolder", ""))
         self.workspace_lineEdit.setText(settings.value("workspace", ""))
         self.filenames_lineEdit.setText(
-            settings.value("filenames", "anim%4d.png"))
+            settings.value("filenames", "anim*.png"))
         self.outdir_lineEdit.setText(settings.value("outdir", ""))
         self.outname_lineEdit.setText(
             settings.value("outname", "video.mp4"))
@@ -100,6 +118,7 @@ class Window(QWidget, Ui_Form):
 
     def on_check_Button_pressed(self):
 
+        # check folders
         print("folders:")
         for p, f in [('ffmpeg', self.ffmpegfolder_lineEdit.text()),
                      ('workspace', self.workspace_lineEdit.text()),
@@ -112,6 +131,7 @@ class Window(QWidget, Ui_Form):
             else:
                 print("doesn't exist!")
 
+        # check programs
         print("programs:")
         for p in ['ffmpeg', 'ffplay', 'ffprobe']:
             print("\t.", p, end=' ')
@@ -125,28 +145,51 @@ class Window(QWidget, Ui_Form):
         if os.path.isdir(self.workspace_lineEdit.text()):
             print("images:")
             # convert sscanf format to regex: anim%4d.png => anim(\d{4}).png
-            regex = re.sub(
-                '(\\%(\\d)d)', '(\\\d{\\2})', self.filenames_lineEdit.text())
-            print("\t. pattern converted to regex:", regex)
-            pattern = re.compile(regex)
+            # regex = re.sub(
+            #     '(\\%(\\d)d)', '(\\\d{\\2})', self.filenames_lineEdit.text())
+            # print("\t. pattern converted to regex:", regex)
+            # pattern = re.compile(regex)
+            pattern = self.filenames_lineEdit.text()
 
             nofiles = 0
-            lowno = 0
-            highno = 0
+            # lowno = 0
+            # highno = 0
             self.pix = []
             self.pixnames = []
             for f in sorted(os.listdir(self.workspace_lineEdit.text())):
-                match = pattern.match(f)
-                if(match):
+                # match = pattern.match(f)
+                if fnmatch.fnmatch(f, pattern):
+                # if(match):
                     nofiles += 1
-                    g = match.groups()
-                    no = int(g[0])
-                    highno = max(no, highno)
-                    lowno = min(no, lowno)
+                    # g = match.groups()
+                    # no = int(g[0])
+                    # highno = max(no, highno)
+                    # lowno = min(no, lowno)
                     self.pixnames.append(os.path.join(
                         self.workspace_lineEdit.text(), f))
-            print("\t. %d files found ranging from %d to %d" % (
-                nofiles, lowno, highno))
+            # print("\t. %d files found ranging from %d to %d" % (
+            #     nofiles, lowno, highno))
+            print("\t. %d files found" % ( nofiles))
+
+            # sort pixnames in a "natural" way (fig10.png after fig1.png)
+            self.pixnames.sort(key=lambda f: int(re.sub('\D', '', f)))
+
+            # create a file with filenames (TODO: could be done in "convert")
+            #   this allows us to have missing files (some holes in the numbering)
+            #   or numbers not filled with zeros: e.g. 1 instead of 0001
+            #   which are required by the "-i %4d" command argument.
+            listfile = os.path.join(self.workspace_lineEdit.text(), self.tmpfile)
+            f=open(listfile, "w")
+            for p in self.pixnames:
+                # f.write(f"file './{os.path.basename(p)}'\n")
+                f.write(f"file '{p}'\n")
+                # f.write(f'duration {1/int(self.input_fps_lineEdit.text())}\n')
+                f.write(f'duration 1\n')   
+                # "duration": aucune influence sur le résultat vu qu'on redéfinit "-r input_fps"
+                # par contre si on supprime cette ligne, des warnings s'affichent (mais
+                # la video est OK)
+            f.close()
+            print(f'{listfile} created.')
 
             if len(self.pixnames):
                 progress = QProgressDialog(
@@ -162,8 +205,8 @@ class Window(QWidget, Ui_Form):
                     if progress.wasCanceled():
                         self.pix = []
                         self.pixname = []
-                        lowno = 0
-                        highno = 100
+                        # lowno = 0
+                        # highno = 100
                         break
                     img = QPixmap(f)  # loads original image
                     # reduce img size if too large
@@ -176,8 +219,11 @@ class Window(QWidget, Ui_Form):
             else:
                 self.img_Label.setText("No preview")
 
-            self.img_Slider.setMinimum(lowno)
-            self.img_Slider.setMaximum(highno)
+            # self.img_Slider.setMinimum(lowno)
+            # self.img_Slider.setMaximum(highno)
+            self.img_Slider.setMinimum(0.0)
+            self.img_Slider.setMaximum(nofiles)
+            
 
     def on_img_Slider_valueChanged(self):
         no = self.img_Slider.value()
@@ -198,7 +244,8 @@ class Window(QWidget, Ui_Form):
             return ""
 
     def getExe(self, exename):
-
+        """look for ffmpeg
+        """
         # try the provided folder name
         if self.ffmpegfolder_lineEdit.text():
             exeinfolder = os.path.join(
@@ -210,7 +257,8 @@ class Window(QWidget, Ui_Form):
         return self.checkExe(exename)
 
     def on_convert_Button_pressed(self):
-
+        """`Convert` Button
+        """
         exeffmpeg = self.getExe("ffmpeg")
         if not exeffmpeg:
             QMessageBox.critical(
@@ -218,9 +266,14 @@ class Window(QWidget, Ui_Form):
 
         cmd = []
         cmd.append(exeffmpeg)
-        cmd.append('-y')
-        # cmd +="-r %s " %
-        cmd.extend(['-r', self.input_fps_lineEdit.text()])
+    
+        cmd.extend(['-f', 'concat'])    # concat filter is more versatile that "-i pattern%4d.png"
+        cmd.extend(['-safe', '0'])      # allows absolute paths in the input text file
+
+        cmd.extend(['-r', self.input_fps_lineEdit.text()]) # input FPS (override the one written in the text file)
+        cmd.extend(['-i', os.path.join(self.workspace_lineEdit.text(), self.tmpfile)]) # input file (written in "check")
+
+        cmd.append('-y') # overwrite output
 
         # check workspace folder
         wrkdir = self.workspace_lineEdit.text()
@@ -229,22 +282,13 @@ class Window(QWidget, Ui_Form):
                 self, 'Error', 'The workspace folder does not exist!')
             return
 
-        inpfiles = os.path.join(
-            self.workspace_lineEdit.text(), self.filenames_lineEdit.text())
-        #cmd +="-i %s " % inpfiles
-        cmd.extend(['-i', inpfiles])
-        #cmd +="-vf fps=%s " % self.output_fps_lineEdit.text()
-        cmd.extend(['-vf', 'fps=%s' % self.output_fps_lineEdit.text()])
-        #cmd +="-c:v libx264 "
-        cmd.extend(['-c:v', 'libx264'])
-        #cmd +="-crf %d " % self.quality_Slider.value()
-        cmd.extend(['-crf', '%d' % self.quality_Slider.value()])
-        #cmd +="-pix_fmt yuv420p "
-        cmd.extend(['-pix_fmt', 'yuv420p'])
-        # cmd +="-vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2\" " # scale if not multiple of 2
-        #cmd +="-vf \"scale=trunc(iw/2)*2:trunc(ih/2)*2, setsar=1\" "
-        # cmd +="-vf \"crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0\" " # crop to odd dimensions...
-        cmd.extend(['-vf', 'crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0'])
+        cmd.extend(['-c:v', 'libx264'])   # codec
+        cmd.extend(['-crf', '%d' % self.quality_Slider.value()]) # quality
+        cmd.extend(['-pix_fmt', 'yuv420p']) # compatibility
+        # add 2 filters
+        #   - first one = "crop": crop to even dimensions required by the mp4 codec
+        #   - second one = "fps": control the output fps
+        cmd.extend(['-filter:v', f'crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0,fps={self.output_fps_lineEdit.text()}'])
 
         # check output folder
         outdir = self.outdir_lineEdit.text()
@@ -304,7 +348,8 @@ class Window(QWidget, Ui_Form):
             self.outdir_lineEdit.setText(QDir.toNativeSeparators(dir))
 
     def closeEvent(self, event):
-        # save settings to registry
+        """save settings to registry and quit
+        """
         settings = QSettings()
         settings.setValue("Geometry", QVariant(self.saveGeometry()))
         settings.setValue("ffmpegfolder", QVariant(
@@ -325,7 +370,8 @@ class Window(QWidget, Ui_Form):
         event.accept()
 
     def write(self, stuff):
-        "stdio redirection"
+        """std IO redirection
+        """
         if '\n' in stuff:
             list(map(self.writeLine, stuff.split("\n")))
         else:
@@ -333,10 +379,13 @@ class Window(QWidget, Ui_Form):
         qApp.processEvents()
 
     def flush(self): # required by py3 stdout redirection
+        """std IO redirection
+        """
         pass
 
     def writeLine(self, stuff):
-        "stdio redirection"
+        """std IO redirection
+        """
         if len(self.buf):
             stuff = self.buf + stuff
             self.buf = ''
