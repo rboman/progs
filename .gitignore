@@ -39,3 +39,4 @@ __pycache__/
 *build/
 workspace/
 test.png
+*.tmp

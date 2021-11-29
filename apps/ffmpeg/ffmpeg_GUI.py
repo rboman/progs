@@ -116,8 +116,11 @@ class Window(QWidget, Ui_Form):
         except Exception as e:
             print(e)
 
-    def on_check_Button_pressed(self):
 
+    def on_check_Button_pressed(self):
+        """check everything before running "convert" and write the file list
+        (mandatory)
+        """
         # check folders
         print("folders:")
         for p, f in [('ffmpeg', self.ffmpegfolder_lineEdit.text()),
@@ -144,31 +147,15 @@ class Window(QWidget, Ui_Form):
 
         if os.path.isdir(self.workspace_lineEdit.text()):
             print("images:")
-            # convert sscanf format to regex: anim%4d.png => anim(\d{4}).png
-            # regex = re.sub(
-            #     '(\\%(\\d)d)', '(\\\d{\\2})', self.filenames_lineEdit.text())
-            # print("\t. pattern converted to regex:", regex)
-            # pattern = re.compile(regex)
             pattern = self.filenames_lineEdit.text()
-
             nofiles = 0
-            # lowno = 0
-            # highno = 0
             self.pix = []
             self.pixnames = []
             for f in sorted(os.listdir(self.workspace_lineEdit.text())):
-                # match = pattern.match(f)
                 if fnmatch.fnmatch(f, pattern):
-                # if(match):
                     nofiles += 1
-                    # g = match.groups()
-                    # no = int(g[0])
-                    # highno = max(no, highno)
-                    # lowno = min(no, lowno)
                     self.pixnames.append(os.path.join(
                         self.workspace_lineEdit.text(), f))
-            # print("\t. %d files found ranging from %d to %d" % (
-            #     nofiles, lowno, highno))
             print("\t. %d files found" % ( nofiles))
 
             # sort pixnames in a "natural" way (fig10.png after fig1.png)
@@ -181,7 +168,6 @@ class Window(QWidget, Ui_Form):
             listfile = os.path.join(self.workspace_lineEdit.text(), self.tmpfile)
             f=open(listfile, "w")
             for p in self.pixnames:
-                # f.write(f"file './{os.path.basename(p)}'\n")
                 f.write(f"file '{p}'\n")
                 # f.write(f'duration {1/int(self.input_fps_lineEdit.text())}\n')
                 f.write(f'duration 1\n')   
@@ -205,8 +191,6 @@ class Window(QWidget, Ui_Form):
                     if progress.wasCanceled():
                         self.pix = []
                         self.pixname = []
-                        # lowno = 0
-                        # highno = 100
                         break
                     img = QPixmap(f)  # loads original image
                     # reduce img size if too large
@@ -219,9 +203,7 @@ class Window(QWidget, Ui_Form):
             else:
                 self.img_Label.setText("No preview")
 
-            # self.img_Slider.setMinimum(lowno)
-            # self.img_Slider.setMaximum(highno)
-            self.img_Slider.setMinimum(0.0)
+            self.img_Slider.setMinimum(0)
             self.img_Slider.setMaximum(nofiles)
             
 
