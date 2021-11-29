@@ -45,7 +45,6 @@ if __name__ == "__main__":
         # read settings
         settings = QSettings("rboman", "progs")
         #settings.remove("pyuic5") # clear stored value
-
         exe = settings.value("pyuic5", "")
         print("using value stored in settings: '%s'" % exe)
 
@@ -54,6 +53,7 @@ if __name__ == "__main__":
         else:
             exe = askUser()
             if tryEXE(exe):
+                settings = QSettings("rboman", "progs")
                 settings.setValue("pyuic5", QVariant(exe))
             else:
                 raise Exception("'%s' does not work!" % exe)

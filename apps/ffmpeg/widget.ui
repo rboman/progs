@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>917</width>
+    <width>931</width>
     <height>528</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;folder containing ffmpeg(.exe)&lt;/p&gt;&lt;p&gt;can be left blank if ffmpeg is in the PATH.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;folder containing ffmpeg(.exe).&lt;/p&gt;&lt;p&gt;can be left blank if ffmpeg is in the PATH.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>ffmpeg folder</string>
@@ -67,7 +67,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;pattern for the bitmap file names&lt;/p&gt;&lt;p&gt;anim%4d.png =&amp;gt; anim0000.png, anim0001.png, anim0002.png, etc.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;pattern for the bitmap file names&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>filenames</string>
@@ -77,7 +77,7 @@
      <item row="2" column="1">
       <widget class="QLineEdit" name="filenames_lineEdit">
        <property name="text">
-        <string>anim%4d.bmp</string>
+        <string>*.png</string>
        </property>
       </widget>
      </item>
@@ -108,7 +108,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_8">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;name of the video file produced by ffmpeg&lt;/p&gt;&lt;p&gt;should have the .mp4 extension&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;name of the video file produced by ffmpeg&lt;/p&gt;&lt;p&gt;(should have the .mp4 extension)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>output name</string>
@@ -125,7 +125,7 @@
      <item row="5" column="0">
       <widget class="QLabel" name="label_4">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;input frame rate&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;sets the number of images used to build 1 second of video&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;input frame rate&lt;/p&gt;&lt;p&gt;sets the number of images used to build 1 second of video&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>input fps</string>
@@ -142,7 +142,7 @@
      <item row="6" column="0">
       <widget class="QLabel" name="label_5">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;output frame rate&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;sets the number of frames used in the video. Usually 25 or 30 or higher. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;if the input fps is lower, frames are added to the video&lt;/p&gt;&lt;p&gt;if the input fps is higher, some frames are dropped&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;output frame rate&lt;/p&gt;&lt;p&gt;sets the number of frames used in the video. Usually 25 or 30 or higher. &lt;/p&gt;&lt;p&gt;if the input fps is lower, frames are added to the video&lt;/p&gt;&lt;p&gt;if the input fps is higher, some frames are dropped&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>output fps</string>
@@ -159,7 +159,7 @@
      <item row="7" column="0">
       <widget class="QLabel" name="label_6">
        <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;quality of the video&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;a low value (e.g. 18) leads to a high quality video (and a large mp4 file).&lt;/p&gt;&lt;p&gt;a high value (e.g. 26) leads to poor quality video with many mpeg artifacts (but a small mp4 file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;quality of the video&lt;/p&gt;&lt;p&gt;a low value (e.g. 18) leads to a high quality video (and a large mp4 file).&lt;/p&gt;&lt;p&gt;a high value (e.g. 26) leads to poor quality video with many mpeg artifacts (but a small mp4 file).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>quality</string>
