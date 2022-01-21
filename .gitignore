@@ -40,3 +40,12 @@ __pycache__/
 workspace/
 test.png
 *.tmp
+
+# latex
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc

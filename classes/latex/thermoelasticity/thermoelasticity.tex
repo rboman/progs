@@ -1,0 +1,988 @@
+% !TeX spellcheck = en_GB
+
+\documentclass[10pt,xcolor=pdftex,dvipsnames,table]{beamer}
+
+\usetheme{Boadilla}
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}     % caracteres accentues
+\usepackage[utf8]{inputenc}  %  encodage unicode des sources .tex
+\usepackage{amsmath,amssymb,amsbsy,dsfont}
+
+% pour \mybox...
+\usepackage{xcolor}
+\setlength{\fboxrule}{0.1pt}
+\newcommand{\mybox}[2]{\fcolorbox{#1}{white}{$\displaystyle#2$}}
+
+
+\title{Thermoelasticity}
+\author{ MATH-0471 }
+%\institute{University of Li\`ege}
+\date{\today}
+
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Outline}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section*{Outline}
+
+\begin{frame}
+	\frametitle{Outline}
+	\tableofcontents
+\end{frame}
+
+% -----------------------------------------------------------------------------------------------------------------------
+\section{ Linear Thermoelasticity  }
+% -----------------------------------------------------------------------------------------------------------------------
+
+
+\begin{frame}
+	\frametitle{ Linear Thermoelasticity }
+	\framesubtitle{ Governing Equations }
+	
+	Coupled system of equations:
+	\begin{equation*}
+				\left\{
+		\begin{aligned}
+			&  \rho\,c\,\dot{T} = - T_0\,\boldsymbol{\alpha}:\mathbb{H}:\dot{\boldsymbol{\varepsilon}} - \boldsymbol{\nabla}\cdot\boldsymbol{q} + s\\
+			&		\rho \ddot{\boldsymbol{u}} = \boldsymbol{\nabla}\cdot\boldsymbol{\sigma} + \rho\boldsymbol{b} \\
+					\end{aligned}
+		\right. \qquad \text{ in } \Omega   
+	\end{equation*}
+	
+	where $T$ is the temperature, $\rho$ is the density, $c$ is the heat capacity, $T_0$ is a reference temperature, $\boldsymbol{\alpha}$ is the thermal expansion tensor, $\mathbb{H}$  is the Hooke's tensor, $\dot{\boldsymbol{\varepsilon}}$ is the strain rate tensor, $\boldsymbol{q}$ is the heat flux, $\boldsymbol{s}$ is the volumic heat source, 
+	$\boldsymbol{u}$ is the displacement,  $\boldsymbol{\sigma}$ is the Cauchy stress tensor and $\boldsymbol{b}$ represents the mechanical volumic forces.
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Linear Thermoelasticity }
+	\framesubtitle{ Governing Equations }
+	
+	The total infinitesimal strain, which is the sum of an elastic part and the thermal part, can be computed from the displacements:
+	\begin{equation*}
+		\boldsymbol{\varepsilon} 
+		= \boldsymbol{\varepsilon}^{\text{el}}+ \boldsymbol{\varepsilon}^{\text{th}} 
+		= \frac{1}{2} \left( \boldsymbol{\nabla}\boldsymbol{u} + (\boldsymbol{\nabla}\boldsymbol{u})^T \right) 
+	\end{equation*}
+	The thermal part of the strain corresponds to the thermal expansion:
+	\begin{equation*}
+		\boldsymbol{\varepsilon}^{\text{th}} = \boldsymbol{\alpha} (T-T_0)
+	\end{equation*}	
+	The elastic part of the strain satisfies the Hooke's law:
+	\begin{equation*}
+		\begin{aligned}
+		\boldsymbol{\sigma} 
+		&= \mathbb{H}:\boldsymbol{\varepsilon}^{\text{el}} \\
+		&= \mathbb{H}: \left( \boldsymbol{\varepsilon} - \boldsymbol{\alpha} (T-T_0)   \right) 
+		\end{aligned}
+	\end{equation*}
+	The heat flux is calculated from the Fourier's law:
+	\begin{equation*}
+		\boldsymbol{q} = -\boldsymbol{\kappa}\cdot \boldsymbol{\nabla} T
+	\end{equation*}	
+	where $\boldsymbol{\kappa}$ is the thermal conductivity tensor.
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{ Linear Thermoelasticity }
+	\framesubtitle{ Boundary conditions }
+	
+	The latter system of PDEs is associated with thermal and mechanical boundary conditions on $\Gamma$, the boundary of $\Omega$:
+	\begin{equation*}
+	\left\{
+	\begin{aligned}
+		&  T = \bar{T}                                      & \text { on } \Gamma_{\bar{T}} & \qquad \text{ : prescribed temperature (Dirichlet)}\\
+		&  \boldsymbol{q}\cdot\boldsymbol{n}  = \bar{q}     & \text { on } \Gamma_{\bar{q}} & \qquad \text{ : prescribed heat flux (Neumann)}\\
+		&  \boldsymbol{u} = \bar{\boldsymbol{u}}     & \qquad \text { on } \Gamma_{\bar{\boldsymbol{u}}} & \qquad \text{ : prescribed displacement (Dirichlet)} \\
+		&  \boldsymbol{\sigma}\cdot\boldsymbol{n}  = \bar{\boldsymbol{t}}     & \text { on } \Gamma_{\bar{\boldsymbol{t}}} & \qquad \text{ : prescribed surface traction (Neumann)} \\
+	\end{aligned}
+	\right.    
+\end{equation*}		
+	with $\Gamma_{\bar{T}} \cup \Gamma_{\bar{q}} = \Gamma$ and $\Gamma_{\bar{T}} \cap \Gamma_{\bar{q}} = \emptyset$
+	
+	and $\Gamma_{\bar{\boldsymbol{u}}} \cup \Gamma_{\bar{\boldsymbol{t}}} = \Gamma$ and $\Gamma_{\bar{\boldsymbol{u}}} \cap \Gamma_{\bar{\boldsymbol{t}}} = \emptyset$
+\end{frame}
+
+\section{ Uncoupled Heat equation  }
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Weak formulation }
+	
+	A first step of this project is to solve the \textbf{uncoupled} heat equation. We also assume an isotropic medium ($\boldsymbol{\kappa} = \kappa \boldsymbol{I}$)	
+	\begin{equation*}
+		  \rho\,c\,\dot{T} =  \boldsymbol{\nabla}\cdot \left(  \kappa \boldsymbol{\nabla} T \right) + s
+	\end{equation*}	
+
+		\vspace{\stretch{1}}
+
+	A \textbf{weak formulation} is obtained by multiplying the PDE by a test function $h(\boldsymbol{x})$ and by integrating over $\Omega$.
+	\begin{equation*}
+		\int_{\Omega}\rho\,c\,\dot{T}\,h\,dV 
+		= \int_{\Omega} \boldsymbol{\nabla}\cdot \left(  \kappa \boldsymbol{\nabla} T \right) \, h \, dV
+		+ \int_{\Omega} s\, h\, dV
+	\end{equation*}		
+	
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Weak formulation }
+	
+	The first term of the right-hand side can be integrated by parts:
+	\begin{equation*}
+	\int_{\Omega} \boldsymbol{\nabla}\cdot \left(  \kappa \boldsymbol{\nabla} T \right) \, h \, dV
+	= \int_{\Gamma_{\bar{T}}} h\,  \kappa \boldsymbol{\nabla} T \cdot \boldsymbol{n}\, dS
+	+ \int_{\Gamma_{\bar{q}}} h\,  \underbrace{\kappa \boldsymbol{\nabla} T \cdot \boldsymbol{n}}_{-\bar{q}}\, dS
+	- \int_{\Omega} \kappa \boldsymbol{\nabla} T \cdot \boldsymbol{\nabla}h \, dV
+	\end{equation*}	
+	
+	The integral on $\Gamma_{\bar{T}}$ can disappear if we choose test functions $h$ that vanish on this boundary.
+		
+		\vspace{\stretch{1}}
+
+	
+	\begin{block}{The weak formulation}
+		Find $T$ with $T=\bar{T}$ on $\Gamma_{\bar{T}}$ such that
+		\begin{equation*}
+			\int_{\Omega}\rho\,c\,\dot{T}\,h\,dV 
+			= - \int_{\Gamma_{\bar{q}}} \bar{q}\, h\, dS
+			- \int_{\Omega} \kappa \boldsymbol{\nabla} T \cdot \boldsymbol{\nabla}h \, dV
+			+ \int_{\Omega} s\, h\, dV
+		\end{equation*}	
+		for all test functions $h$ which are 0 on $\Gamma_{\bar{T}}$.
+	\end{block}
+		
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Finite Elements }
+	
+	Spatial discretization - \textbf{Galerkin} approximation:
+	\begin{equation*}
+		T(\boldsymbol{x}, t) = \sum_i N^i(\boldsymbol{x})\,T^i(t)
+	\end{equation*}	
+	\begin{equation*}
+		h(\boldsymbol{x}) = \sum_i N^i(\boldsymbol{x})\,h^i
+	\end{equation*}		
+	where $N^i(\boldsymbol{x})$ are known functions.
+	
+	\bigskip
+	
+	\textbf{Isoparametric finite elements} ($m$ nodes). Their geometry is interpolated with the same shape functions
+	\footnote{$N^k$: superscript $k$ is related nodes where $N^k=1$}
+	 as the unknown field T and the test functions h.
+	\begin{equation*}
+		\boldsymbol{x}(\boldsymbol{\xi}) = \sum_{k=1}^m N^k(\boldsymbol{\xi})\,\boldsymbol{x}^k
+	\end{equation*}	
+	where $\boldsymbol{\xi}$ are reduced coordinates (usually $\xi_i\in[-1,1]$)
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Finite Elements }
+	
+	\begin{equation*}
+		\int_{\Omega}\rho\,c\,\dot{T}\,h\,dV 
+		= - \int_{\Gamma_{\bar{q}}} \bar{q}\, h\, dS
+		- \int_{\Omega} \kappa \boldsymbol{\nabla} T \cdot \boldsymbol{\nabla}h \, dV
+		+ \int_{\Omega} s\, h\, dV
+	\end{equation*}
+	We use summation over repeated indices from here
+	\begin{equation*}
+		\int_{\Omega}\rho\,c\,  N^j \dot{T}^j   \, N^i h^i\,dV 
+		= 
+		- \int_{\Omega} \kappa \boldsymbol{\nabla} N^j \cdot \boldsymbol{\nabla}N^i\, T^j h^i \, dV + \int_{\Gamma_{\bar{q}}} -\bar{q}\, N^i h^i\, dS
+		+ \int_{\Omega} s\, N^i h^i\, dV
+	\end{equation*}
+
+	\begin{equation*}
+		\begin{aligned}
+		\Rightarrow \left(\underbrace{\int_{\Omega}\rho\,c\, N^i\, N^j \,dV}_{C_{ij}}\,  \dot{T}^j 
+		+ \underbrace{\int_{\Omega} \kappa \boldsymbol{\nabla} N^j \cdot \boldsymbol{\nabla}N^i \, dV}_{K_{ij}}\, T^j
+		\right) h^i \\
+		= \left( \underbrace{\int_{\Gamma_{\bar{q}}} -\bar{q}\, N^i\, dS 
+		+ \int_{\Omega} s\, N^i\, dV}_{f_i} \right)   h^i
+		\end{aligned}
+	\end{equation*}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Finite Elements }
+
+	\begin{block}{Semi-discretized system of equations in matrix form}
+		\begin{equation*}
+			\mathbf{C}\, \dot{\boldsymbol{T}} + \mathbf{K}\, \boldsymbol{T} = \boldsymbol{f}
+		\end{equation*}
+	\end{block}
+
+	\vspace{\stretch{1}}
+
+	\textbf{Assembly}:
+	
+	\bigskip 
+	The integrals involved in the calculation of $\mathbf{C}$, $\mathbf{K}$ and $\boldsymbol{f}$ are expressed as a sum of integrals over each finite element. These elemental contributions are then summed in large structural matrices and vectors.
+
+	
+	\vspace{\stretch{1}}
+	
+	\textbf{Boundary conditions}:
+	
+	\bigskip 
+	
+	The equations of the system corresponding to nodes where Dirichlet boundary conditions are prescribed should be discarded and replaced by equations enforcing these conditions ($T=\bar{T}$) at these nodes.
+	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Finite Elements }
+	\textbf{Practical calculation of the finite element matrices}:
+	\begin{equation*}
+		C_{ij} = \int_{\Omega}\rho\,c\, N^i(\boldsymbol{x})\, N^j(\boldsymbol{x}) \,d\boldsymbol{x}
+	\end{equation*}
+
+	\begin{equation*}
+		C_{ij} = \int_{-1}^1\int_{-1}^1\int_{-1}^1\rho\,c\, N^i(\boldsymbol{\xi})\, N^j(\boldsymbol{\xi}) \, \underbrace{\det (\frac{\partial{\boldsymbol{x}} }{\partial\boldsymbol{\xi}})}_{\text{jacobian}} \,d\boldsymbol{\xi}
+	\end{equation*}
+
+	This integral is calculated using a Gauss quadrature: ($N^{\text{GP}}$ chosen $\rightarrow$  $\boldsymbol{\xi}^p$)
+	
+	
+	\begin{equation*}
+		C_{ij} \approx \sum_{p=1}^{N^{\text{GP}}} \underbrace{\rho(\boldsymbol{\xi}^p)\,c(\boldsymbol{\xi}^p)\, N^i(\boldsymbol{\xi}^p)\, N^j(\boldsymbol{\xi}^p) \, \det (J(\boldsymbol{\xi}^p))}_{\text{integrand evaluated at } \boldsymbol{\xi}=\boldsymbol{\xi}^p} \,w_p
+	\end{equation*}	
+	with $N^{\text{GP}}$, the number of Gauss points, $\boldsymbol{\xi}^p$ the positions and $w_p$, the weights.
+
+	\vspace{\stretch{1}}
+
+	Note: $N^i(\boldsymbol{\xi}^p)$ do not depend on the element and can thus be calculated once and stored in memory. 
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Finite Elements }
+
+	\textbf{Jacobian matrix}\footnote{transposed in \cite{ponthot2020}}: let $\boldsymbol{x}=(x_1, x_2, x_3)$ and $\boldsymbol{\xi}=(\xi_1, \xi_2, \xi_3)$
+	\begin{equation*}
+		J_{ij} (\boldsymbol{\xi}) =\frac{\partial x_i}{\partial \xi_j} = \frac{\partial N^k (\boldsymbol{\xi})}{\partial \xi_j} x_i^k
+	\end{equation*}	
+	where $x_i^k$ is the $i^{\text{th}}$ coordinate of the $k^{\text{th}}$ node of the finite element.	
+
+	\vspace{\stretch{1}}
+	The Jacobian matrix and its determinant must be evaluated at each Gauss point ($\boldsymbol{\xi}=\boldsymbol{\xi}^p$) of each finite element. 
+	
+	\vspace{\stretch{1}}
+		
+	Here again, the derivatives of the shape functions evaluated at the Gauss points $\frac{\partial N^k}{\partial \xi_j} (\boldsymbol{\xi}^p)$ are the same for all elements and can be computed once.	
+		
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Uncoupled Heat equation }
+	\framesubtitle{ Finite Elements }
+	
+	\textbf{Conductivity matrix}: 
+	
+	\begin{equation*}
+		K_{ij} = \int_{\Omega} \kappa \boldsymbol{\nabla}_{\color{red} \boldsymbol{x}} N^j \cdot \boldsymbol{\nabla}_{\color{red} \boldsymbol{x}}  N^i \, dV
+	\end{equation*}		
+	The change of variables for the gradient of the shape functions also involves the Jacobian matrix:
+	\begin{equation*}
+	\frac{\partial}{\partial\xi_i} = \left( \frac{\partial x_j}{\partial \xi_i}  \right) \frac{\partial}{\partial x_j} = J_{ji} \frac{\partial}{\partial x_j} \qquad \Rightarrow \boldsymbol{\nabla}_{\color{red}\boldsymbol{x}} = \mathbf{J}^{-T} \boldsymbol{\nabla}_{\color{red}\boldsymbol{\xi}}
+	\end{equation*}	
+	 
+	\begin{equation*}
+		K_{ij} = \int_{-1}^1\int_{-1}^1\int_{-1}^1
+		\kappa\, 
+		(\mathbf{J}^{-T}\boldsymbol{\nabla}_{\boldsymbol{\xi}} N^j) 
+		\cdot 
+		(\mathbf{J}^{-T}\boldsymbol{\nabla}_{\boldsymbol{\xi}}N^i)\,
+		\det \mathbf{J} \,d\boldsymbol{\xi}
+	\end{equation*}	
+	
+	
+	\begin{equation*}
+	K_{ij} \approx \sum_{p=1}^{N^{\text{GP}}} \underbrace{
+		\kappa\, 
+		(\mathbf{J}^{-T}\boldsymbol{\nabla}_{\boldsymbol{\xi}} N^j) 
+		\cdot 
+		(\mathbf{J}^{-T}\boldsymbol{\nabla}_{\boldsymbol{\xi}}N^i)\,
+		\det \mathbf{J}
+	}_{\text{all the factors evaluated at } \boldsymbol{\xi}=\boldsymbol{\xi}^p} \,w_p
+	\end{equation*}		
+	
+\end{frame}
+
+% -----------------------------------------------------------------------------------------------------------------------
+\section{ Isothermal Elasticity  }
+% -----------------------------------------------------------------------------------------------------------------------
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Summary of equations }
+	
+	Equilibrium in $\Omega$:
+	\begin{equation*}
+		\begin{aligned}
+		 \rho \ddot{\boldsymbol{u}} &= \boldsymbol{\nabla}\cdot\boldsymbol{\sigma} + \rho\boldsymbol{b} 
+		\qquad &\text{ translation } \\
+		 \boldsymbol{\sigma} &= \boldsymbol{\sigma}^T &\text{ rotation }
+		\end{aligned}
+	\end{equation*}
+	Strain-displacement relationship (infinitesimal strains):
+	\begin{equation*}
+		\boldsymbol{\varepsilon} 
+		= \tfrac{1}{2} \left( \boldsymbol{\nabla}\boldsymbol{u} + (\boldsymbol{\nabla}\boldsymbol{u})^T \right) 
+	\end{equation*}
+	Constitutive law (Hooke):
+	\begin{equation*}
+		\boldsymbol{\sigma} = \mathbb{H}:\boldsymbol{\varepsilon}
+	\end{equation*}
+	with
+	\begin{equation*}
+		\mathbb{H}_{ijkl} = \frac{E}{2(1+\nu)} \delta_{ik}\delta_{jl}
+		+ \frac{\nu\,E}{(1+\nu)(1-2\nu)}\delta_{ij}\delta_{kl}
+				\quad\text{ with }
+		\left\{
+		\begin{aligned}
+			&E : \text{Young's modulus} \\
+			&\nu : \text{Poisson's ratio} \\
+		\end{aligned}
+		\right.
+	\end{equation*}	
+	
+	and the boundary conditions:
+	
+		\begin{equation*}
+		\left\{
+		\begin{aligned}
+			&  \boldsymbol{u} = \bar{\boldsymbol{u}}     & \qquad \text { on } \Gamma_{\bar{\boldsymbol{u}}} & \qquad \text{ : prescribed displacement (Dirichlet)} \\
+			&  \boldsymbol{\sigma}\cdot\boldsymbol{n}  = \bar{\boldsymbol{t}}     & \text { on } \Gamma_{\bar{\boldsymbol{t}}} & \qquad \text{ : prescribed surface traction (Neumann)} \\
+		\end{aligned}
+		\right.    
+	\end{equation*}	
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Weak formulation }
+	
+	A weak formulation is obtained as for the heat equation, by multiplying the PDE by a function $\boldsymbol{w}(\boldsymbol{x})$ and by integrating over $\Omega$:
+	
+	\begin{equation*}
+		\int_{\Omega} \boldsymbol{w}\cdot \left( \rho \ddot{\boldsymbol{u}} \right)\, dV 
+		= \int_{\Omega} \boldsymbol{w}\cdot \left(\boldsymbol{\nabla}\cdot\boldsymbol{\sigma}\right)\, dV 
+		+ \int_{\Omega} \rho \boldsymbol{w}\cdot \boldsymbol{b}\, dV
+	\end{equation*}	
+
+	\vspace{\stretch{1}}
+
+	The first term of the right-hand side can be integrated by parts:
+	\begin{equation*}
+	\int_{\Omega} \boldsymbol{w}\cdot \left(\boldsymbol{\nabla}\cdot\boldsymbol{\sigma}\right)\, dV 
+	= \int_{\Gamma_{\bar{\boldsymbol{u}}}} \boldsymbol{w}\cdot \boldsymbol{\sigma} \cdot \boldsymbol{n}\, dS
+	+ \int_{\Gamma_{\bar{\boldsymbol{t}}}} \boldsymbol{w}\cdot \underbrace{\boldsymbol{\sigma} \cdot \boldsymbol{n}}_{\boldsymbol{\bar{t}}}\, dS
+	- \int_{\Omega} \boldsymbol{\nabla}\boldsymbol{w} : \boldsymbol{\sigma}\, dV
+	\end{equation*}	
+	
+	The integral on $\Gamma_{\bar{u}}$ can disappear if we choose test functions $\boldsymbol{w}(\boldsymbol{x})$ that vanish on this boundary.
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{  }
+	
+	Moreover, since $\boldsymbol{\sigma} = \boldsymbol{\sigma}^T$, we can write
+	
+	\begin{equation*}
+		\boldsymbol{\nabla}\boldsymbol{w} : \boldsymbol{\sigma} = \underbrace{\tfrac{1}{2} \left( \boldsymbol{\nabla}\boldsymbol{w} + (\boldsymbol{\nabla}\boldsymbol{w})^T \right)}_{\text{similar to } \boldsymbol{\varepsilon}(\boldsymbol{u})} : \boldsymbol{\sigma}
+	\end{equation*}	
+	
+		
+		
+	\vspace{\stretch{1}}	
+		
+	The weak formulation becomes
+	\footnote{This is also called ``the principle of virtual work'' \\
+		notations in \cite{ponthot2020}: $\boldsymbol{w} \leftrightarrow \boldsymbol{\delta u}$ and $\boldsymbol{\delta \varepsilon} \leftrightarrow \tfrac{1}{2} \left( \boldsymbol{\nabla}\boldsymbol{w} + (\boldsymbol{\nabla}\boldsymbol{w})^T \right)$) \\
+		and $\boldsymbol{u}+\boldsymbol{\delta u}=\boldsymbol{\bar{u}}$ on $\Gamma_{\bar{u}}$ (``kinematically admissible virtual displacement'')\\}:
+
+	\begin{block}{Weak formulation}
+		Find $\boldsymbol{u}$ with $\boldsymbol{u} = \bar{\boldsymbol{u}}$ on $\Gamma_{\bar{u}}$   such that
+		\begin{equation*}
+			\int_{\Omega} \boldsymbol{w}\cdot \left( \rho \ddot{\boldsymbol{u}} \right)\, dV 
+			 = 
+			 \int_{\Gamma_{\bar{\boldsymbol{t}}}} \boldsymbol{w}\cdot \boldsymbol{\bar{t}}\, dS
+			- \int_{\Omega} \tfrac{1}{2} \left( \boldsymbol{\nabla}\boldsymbol{w} + (\boldsymbol{\nabla}\boldsymbol{w})^T \right) : \boldsymbol{\sigma}\, dV		
+			+ \int_{\Omega} \rho\boldsymbol{w} \cdot \boldsymbol{b}\, dV
+		\end{equation*}	
+		for all test functions $\boldsymbol{w}$ which are 0 on $\Gamma_{\bar{u}}$.
+	\end{block}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	The finite element discretization procedure is similar to the one followed for the heat equation, except that the unknown field $\boldsymbol{u}(\boldsymbol{x}, t)$ is now a vector instead of a scalar.
+	
+	\vspace{\stretch{1}}
+		
+	Using Cartesian coordinates, each component of $\boldsymbol{u}(\boldsymbol{x}, t)$ is interpolated using shape functions:
+	\begin{equation*}
+		\left\{
+		\begin{aligned}
+		&u_1(\boldsymbol{x}, t) = \sum_k N^k(\boldsymbol{x})\,u_1^k(t) \\
+		&u_2(\boldsymbol{x}, t) = \sum_k N^k(\boldsymbol{x})\,u_2^k(t) \\
+		&u_3(\boldsymbol{x}, t) = \sum_k N^k(\boldsymbol{x})\,u_3^k(t) \\
+		\end{aligned}
+		\right.
+	\end{equation*}	
+	where $u_i^k$ is the $i^{\text{th}}$ coordinate of node $k$.	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	In matrix form (assuming $m$ nodes):
+	\begin{equation*}
+		\boldsymbol{u}(\boldsymbol{x},t) = \mathbf{N}(\boldsymbol{x})\,\boldsymbol{d}(t)
+	\end{equation*}	
+	with
+	\begin{equation*}
+		\mathbf{N}(\boldsymbol{x}) = 
+		\begin{bmatrix}
+			N_1 & 0   & 0   & N_2 & 0   & 0   & \dots & N_m & 0 & 0 \\
+			0   & N_1 & 0   & 0   & N_2 & 0   & \dots & 0 & N_m & 0  \\
+			0   & 0   & N_1 & 0   & 0   & N_2 & \dots & 0 & 0 & N_m  \\
+		\end{bmatrix}
+	\end{equation*}		
+	\begin{equation*}
+		\boldsymbol{d}^T = 
+		\begin{bmatrix}
+			u_1^1 & u_2^1 & u_3^1 & u_1^2 & u_2^2 & u_3^2 & \dots & u_1^m & u_2^m & u_3^m
+		\end{bmatrix}
+	\end{equation*}	
+
+	\vspace{\stretch{1}}
+
+	Similarly, for the test functions:
+
+	\begin{equation*}
+		\boldsymbol{w}(\boldsymbol{x}) = \mathbf{N}(\boldsymbol{x})\,\boldsymbol{h}
+	\end{equation*}	
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	Voigt's notation: $4^{\text{th}}$ and $2^{\text{nd}}$-order tensors are replaced by matrices and vectors respectively.
+	
+	\begin{equation*}
+		\begin{bmatrix}
+			\sigma_{11} \\
+			\sigma_{22} \\
+			\sigma_{33} \\
+			\sigma_{12} \\
+			\sigma_{13} \\
+			\sigma_{23} \\	
+		\end{bmatrix}
+		= \frac{E}{(1+\nu)(1-2\nu)}
+		\begin{bmatrix}
+			1-\nu & \nu & \nu & 0 & 0 & 0 \\
+			\nu & 1-\nu &  \nu & 0 & 0 & 0 \\
+			\nu & \nu & 1-\nu &  0 & 0 & 0 \\
+			0 &0 & 0 & \frac{1-2\nu}{2} & 0 & 0 \\
+			0 &0 & 0 & 0 &\frac{1-2\nu}{2}  & 0 \\
+			0 &0 & 0  & 0 & 0 & \frac{1-2\nu}{2} \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			\varepsilon_{11} \\
+			\varepsilon_{22} \\
+			\varepsilon_{33} \\
+			2\varepsilon_{12} \\
+			2\varepsilon_{13} \\
+			2\varepsilon_{23} \\	
+		\end{bmatrix}			
+	\end{equation*}	
+	such that
+	\begin{equation*}
+		\boldsymbol{\varepsilon}:\boldsymbol{\sigma} = \boldsymbol{\varepsilon}^v\cdot \boldsymbol{\sigma}^v
+	\end{equation*}	
+	
+	
+	Hooke's law becomes:
+	\begin{equation*}
+		\boldsymbol{\sigma}^v = \mathbf{H}\,\boldsymbol{\varepsilon}^v
+	\end{equation*}		
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	Using Voigt's notation, the strain-displacement relationship becomes:
+	
+	\begin{equation*}
+		\begin{bmatrix}
+			\varepsilon_{11} \\
+			\varepsilon_{22} \\
+			\varepsilon_{33} \\
+			2\varepsilon_{12} \\
+			2\varepsilon_{13} \\
+			2\varepsilon_{23} \\	
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			\frac{\partial}{\partial x_1} & 0 & 0 \\
+			0 &\frac{\partial}{\partial x_2} &  0 \\
+			0 & 0 & \frac{\partial}{\partial x_3}  \\
+			\frac{\partial}{\partial x_2} & \frac{\partial}{\partial x_1} & 0  \\
+			\frac{\partial}{\partial x_3} & 0 & \frac{\partial}{\partial x_1}  \\
+			0 & \frac{\partial}{\partial x_3} & \frac{\partial}{\partial x_2}  \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			u_1 \\	
+			u_2 \\	
+			u_3 \\	
+		\end{bmatrix}						
+	\end{equation*}	
+	
+	or, symbolically
+	\begin{equation*}
+		\boldsymbol{\varepsilon}^v = \boldsymbol{\partial}\,\boldsymbol{u}
+	\end{equation*}		
+	
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	Computation of strains from the nodal displacements $\boldsymbol{d}$:
+	\begin{equation*}
+		\boldsymbol{\varepsilon}^v = \boldsymbol{\partial}\,\boldsymbol{u} = 	\boldsymbol{\partial}\,\mathbf{N}\,\boldsymbol{d} = \mathbf{B}\,\boldsymbol{d}
+	\end{equation*}		
+	with
+	\begin{equation*}
+	\mathbf{B} =
+		\begin{bmatrix}
+			\frac{\partial}{\partial x_1} & 0 & 0 \\
+			0 &\frac{\partial}{\partial x_2} &  0 \\
+			0 & 0 & \frac{\partial}{\partial x_3}  \\
+			\frac{\partial}{\partial x_2} & \frac{\partial}{\partial x_1} & 0  \\
+			\frac{\partial}{\partial x_3} & 0 & \frac{\partial}{\partial x_1}  \\
+			0 & \frac{\partial}{\partial x_3} & \frac{\partial}{\partial x_2}  \\
+		\end{bmatrix}
+		\begin{bmatrix}
+			N^1 & 0   & 0   &  \dots & N^m & 0 & 0 \\
+			0   & N^1 & 0   &  \dots & 0 & N^m & 0  \\
+			0   & 0   & N^1 &  \dots & 0 & 0 & N^m  \\
+		\end{bmatrix}	
+	\end{equation*}
+	
+	
+	\vspace{\stretch{1}}
+		
+	The stresses can also be obtained from the nodal displacement $\boldsymbol{d}$: 
+
+	\begin{equation*}
+		\boldsymbol{\sigma}^v = \mathbf{H}\,\mathbf{B}\,\boldsymbol{d}
+	\end{equation*}		
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	Back to the \textbf{weak formulation}
+	\begin{equation*}
+		\int_{\Omega} \boldsymbol{w}\cdot \left( \rho \ddot{\boldsymbol{u}} \right)\, dV 
+		= 
+		\int_{\Gamma_{\bar{\boldsymbol{t}}}} \boldsymbol{w}\cdot \boldsymbol{\bar{t}}\, dS
+		- \int_{\Omega} 
+		\underbrace{\frac{1}{2} \left( \boldsymbol{\nabla}\boldsymbol{w} + (\boldsymbol{\nabla}\boldsymbol{w})^T \right) 
+		: \boldsymbol{\sigma}}_{(\mathbf{B}\boldsymbol{h})\cdot\boldsymbol{\sigma}^v }\, dV		
+		+ \int_{\Omega} \rho \boldsymbol{w} \cdot \boldsymbol{b}\, dV
+	\end{equation*}	
+	
+	
+	Replacing $\boldsymbol{w}=\mathbf{N}\boldsymbol{h}$ and $\boldsymbol{u}=\mathbf{N}\boldsymbol{d}$ and $\boldsymbol{\sigma}^v = \mathbf{H}\,\mathbf{B}\,\boldsymbol{d}$	
+	
+	
+	\begin{equation*}
+		\begin{aligned}
+			\boldsymbol{h}^T \left( \int_{\Omega} \rho \mathbf{N}^T\mathbf{N}\, dV\right) \ddot{\boldsymbol{d}}
+			&= 
+			\boldsymbol{h}^T \left( \int_{\Gamma_{\bar{\boldsymbol{t}}}} \mathbf{N}^T\boldsymbol{\bar{t}}\, dS \right) \\
+			&- \boldsymbol{h}^T \left(\int_{\Omega}\mathbf{B}^T\mathbf{H}\mathbf{B} \, dV \right) \boldsymbol{d} \\		
+			&+ \boldsymbol{h}^T \left( \int_{\Omega} \rho\mathbf{N}^T\boldsymbol{b}\, dV \right)
+		\end{aligned}
+	\end{equation*}		
+	
+	This relationship should be satisfied for any $\boldsymbol{h}$.
+	
+\end{frame}
+
+
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	This leads to the system of semi-discretized equations:
+	\begin{equation*}
+			\underbrace{\left( \int_{\Omega} \rho \mathbf{N}^T\mathbf{N}\, dV \right)}_{\mathbf{M}} \ddot{\boldsymbol{d}}
+	+  \underbrace{\left(\int_{\Omega}\mathbf{B}^T\mathbf{H}\mathbf{B} \, dV \right)}_{\mathbf{K}} \boldsymbol{d}		
+= 
+			 \underbrace{\left( \int_{\Gamma_{\bar{\boldsymbol{t}}}} \mathbf{N}^T\boldsymbol{\bar{t}}\, dS \right)
++  \left( \int_{\Omega} \rho\mathbf{N}^T\boldsymbol{b}\, dV \right)}_{\boldsymbol{f}}
+	\end{equation*}		
+	
+		\vspace{\stretch{1}}
+		
+	\begin{block}{Semi-discretized equations}	
+		\begin{equation*}
+			\mathbf{M}\ddot{\boldsymbol{d}}+\mathbf{K}\boldsymbol{d}=\boldsymbol{f}
+		\end{equation*}	
+	\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{ Isothermal Elasticity }
+	\framesubtitle{ Finite Elements }
+	
+	Calculation of $\mathbf{K}$ for isoparametric elements:
+	
+	\begin{equation*}
+		K_{ij} = \int_{\Omega} B_{ki}(\boldsymbol{x})\,H_{kl}\,B_{lj}(\boldsymbol{x}) \, dV
+	\end{equation*}		
+	The integration is performed using Gauss quadrature:
+	\begin{equation*}
+		K_{ij} \approx \sum_{p=1}^{N^{\text{GP}}} \underbrace{
+			B_{ki}(\boldsymbol{\xi})\,H_{kl}\,B_{lj}(\boldsymbol{\xi})
+			\det \mathbf{J}
+		}_{\text{all the factors evaluated at } \boldsymbol{\xi}=\boldsymbol{\xi}^p} \,w_p
+	\end{equation*}		
+	The matrix $\mathbf{B}$ contains the derivatives of the shape functions with respect to $\boldsymbol{x}$ which should be transformed into derivatives of the shape functions with respect to $\boldsymbol{\xi}$ using the Jacobian matrix:
+	
+	\begin{equation*}
+		\boldsymbol{\nabla}_{\boldsymbol{x}} N^i = \mathbf{J}^{-T} \boldsymbol{\nabla}_{\boldsymbol{\xi}} N^i
+	\end{equation*}	
+\end{frame}
+
+% -----------------------------------------------------------------------------------------------------------------------
+\section{ Coupled problem  }
+% -----------------------------------------------------------------------------------------------------------------------
+
+\begin{frame}
+	\frametitle{ Coupled problem }
+	\framesubtitle{ Unified Notations  }
+	
+	Let us go back to the \textbf{thermal problem} and define unified notations:
+	
+	\bigskip
+	
+	Matrix of the shape functions (subscript ``$T$''):
+	\begin{equation*}
+		\mathbf{N}_T =
+		\begin{bmatrix}
+			N^1 & N^2 & \dots & N^m
+		\end{bmatrix}	 
+		\qquad\Rightarrow\qquad T = \mathbf{N}_T \boldsymbol{T}\quad;\quad h = \mathbf{N}_T \boldsymbol{h}
+	\end{equation*}	
+	Matrix of the derivatives of the shape functions:
+	\begin{equation*}
+		\mathbf{B}_T =
+		\begin{bmatrix}
+			\boldsymbol{\nabla}N^1 & \boldsymbol{\nabla}N^2 & \dots & \boldsymbol{\nabla}N^m
+		\end{bmatrix}	 
+		\qquad\Rightarrow\qquad \boldsymbol{\nabla}T = \mathbf{B}_T \boldsymbol{T}
+	\end{equation*}	
+	Semi-discretized system:
+	\begin{equation*}
+		\mathbf{C}_{TT}\, \dot{\boldsymbol{T}} + \mathbf{K}_{TT}\, \boldsymbol{T} = \boldsymbol{f}_T
+	\end{equation*}
+	
+	\vspace{\stretch{1}}
+	
+	Similarly, for the \textbf{mechanical problem} (subscript ``$u$''):
+	\begin{equation*}
+		\mathbf{N} \rightarrow \mathbf{N}_u	 
+		\qquad\qquad \mathbf{B} \rightarrow \mathbf{B}_u	
+	\end{equation*}		
+	\begin{equation*}
+		\mathbf{M}\ddot{\boldsymbol{d}}+\mathbf{K}_{uu}\boldsymbol{d}=\boldsymbol{f}_u
+	\end{equation*}		
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Coupled problem }
+	\framesubtitle{ Coupling terms  }
+	
+	\textbf{Thermoelastic damping}:
+	
+	\vspace{\stretch{1}}	
+	
+	The material gets hotter during compression (negative strain rate). It becomes cooler when it is loaded in tension (positive strain rate).
+	
+	\begin{equation*}
+		  \rho\,c\,\dot{T} = {\color{red} - T_0\,\boldsymbol{\alpha}:\mathbb{H}:\dot{\boldsymbol{\varepsilon}} } - \boldsymbol{\nabla}\cdot\boldsymbol{d} + s
+	\end{equation*}	
+	This leads to an additional term in the weak formulation: 
+	
+	\begin{equation*}
+		- \int_{\Omega} h\,T_0\,\boldsymbol{\alpha}:\mathbb{H}:\dot{\boldsymbol{\varepsilon}}\,dV 
+		= - \boldsymbol{h}^T  \underbrace{\int_{\Omega} T_0 \mathbf{N}_T^T\boldsymbol{\alpha}\mathbf{H}\mathbf{B}_u\,dV}_{\mathbf{C}_{Tu}}
+		\,\dot{\boldsymbol{d}}
+	\end{equation*}
+
+	Semi-discretized system for the thermal problem:
+	\begin{equation*}
+		\mathbf{C}_{TT}\, \dot{\boldsymbol{T}} + \mathbf{C}_{Tu}\, \dot{\boldsymbol{d}} + \mathbf{K}_{TT}\, \boldsymbol{T} = \boldsymbol{f}_T
+	\end{equation*}	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Coupled problem }
+	\framesubtitle{ Coupling terms  }
+	
+	\textbf{Thermal expansion}:
+	
+	\vspace{\stretch{1}}		
+	The material expands when heated and shrinks when cooled. 
+	\begin{equation*}
+		\rho \ddot{\boldsymbol{u}} = \boldsymbol{\nabla}\cdot\boldsymbol{\sigma} + \rho\boldsymbol{b}
+		\qquad\text{ with }
+		\qquad		\boldsymbol{\sigma}  	= \mathbb{H}: \left( \boldsymbol{\varepsilon} {\color{red} - \boldsymbol{\alpha} (T-T_0)}   \right) 
+	\end{equation*}
+	Let us define $T^{\star} = T-T_0$ so that we can write the thermal expansion as $\boldsymbol{\alpha}(T-T_0) = \boldsymbol{\alpha}T^{\star}$. Since all the equations remain the same in terms of $T^{\star}$, we will drop the $\star$ in the following equations remembering that $T$ is now the increase of temperature from $T_0$.
+	
+	\vspace{\stretch{1}}	
+	
+	An additional term appears in the weak formulation:
+	\begin{equation*}
+	- \int_{\Omega} 
+		\frac{1}{2} \left( \boldsymbol{\nabla}\boldsymbol{w} + (\boldsymbol{\nabla}\boldsymbol{w})^T \right) 
+		: \mathbb{H}: \left( \boldsymbol{\varepsilon} - \boldsymbol{\alpha} T   \right)
+	\, dV		
+\end{equation*}		
+	\begin{equation*}
+	= - \boldsymbol{h}^T \left(\int_{\Omega}\mathbf{B}_u^T\mathbf{H}\mathbf{B}_u \, dV \right) \boldsymbol{d} + \boldsymbol{h}^T 
+	\underbrace{\left( \int_{\Omega} 
+	  \mathbf{B}_u^T \mathbf{H} \boldsymbol{\alpha}\mathbf{N}_T \, dV \right)}_{-\mathbf{K}_{uT}}	\boldsymbol{T}	
+\end{equation*}			
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{ Coupled problem }
+	\framesubtitle{ Coupling terms  }
+	
+	
+	Semi-discretized system for the mechanical problem:
+	
+	\begin{equation*}
+		\mathbf{M}\ddot{\boldsymbol{d}}+\mathbf{K}_{uu}\boldsymbol{d}+\mathbf{K}_{uT}\boldsymbol{T}=\boldsymbol{f}_u
+	\end{equation*}	
+	
+	\vspace{\stretch{1}}	
+	
+	
+	\begin{block}{Coupled system of equations}
+	
+		\begin{equation*}
+			\begin{bmatrix}
+				0 & 0 \\
+				0 & \mathbf{M} 
+			\end{bmatrix}
+			\begin{bmatrix}
+				\ddot{\boldsymbol{T}} \\
+				\ddot{\boldsymbol{d}} 
+			\end{bmatrix}		
+		+
+			\begin{bmatrix}
+				\mathbf{C}_{TT} & \mathbf{C}_{Tu} \\
+				0 & 0 
+			\end{bmatrix}
+			\begin{bmatrix}
+				\dot{\boldsymbol{T}} \\
+				\dot{\boldsymbol{d}} 
+			\end{bmatrix}
+		+
+			\begin{bmatrix}
+				\mathbf{K}_{TT} & 0 \\
+				\mathbf{K}_{uT} & \mathbf{K}_{uu} 
+			\end{bmatrix}
+			\begin{bmatrix}
+				\boldsymbol{T} \\
+				\boldsymbol{d} 
+			\end{bmatrix}
+			=
+			\begin{bmatrix}
+				\boldsymbol{f}_T \\
+				\boldsymbol{f}_u 
+			\end{bmatrix}				
+		\end{equation*}		
+	\end{block}
+
+\end{frame}
+
+
+% -----------------------------------------------------------------------------------------------------------------------
+\section{ Time integration  }
+% -----------------------------------------------------------------------------------------------------------------------
+
+\begin{frame}
+	\frametitle{ Time integration }
+	\framesubtitle{ Newmark scheme  }
+	
+	The following system of equations can be integrated w.r.t. time:
+	\begin{equation*}
+		\underbrace{\begin{bmatrix}
+			0 & 0 \\
+			0 & \mathbf{M} 
+		\end{bmatrix}}_{\mathbf{A}_2}
+		\underbrace{\begin{bmatrix}
+			\ddot{\boldsymbol{T}} \\
+			\ddot{\boldsymbol{d}} 
+		\end{bmatrix}}_{\ddot{\boldsymbol{x}}}		
+		+
+		\underbrace{\begin{bmatrix}
+			\mathbf{C}_{TT} & \mathbf{C}_{Tu} \\
+			0 & 0 
+		\end{bmatrix}}_{\mathbf{A}_1}
+		\underbrace{\begin{bmatrix}
+			\dot{\boldsymbol{T}} \\
+			\dot{\boldsymbol{d}} 
+		\end{bmatrix}}_{\dot{\boldsymbol{x}}}
+		+
+		\underbrace{\begin{bmatrix}
+			\mathbf{K}_{TT} & 0 \\
+			\mathbf{K}_{uT} & \mathbf{K}_{uu} 
+		\end{bmatrix}}_{\mathbf{A}_0}
+		\underbrace{\begin{bmatrix}
+			\boldsymbol{T} \\
+			\boldsymbol{d} 
+		\end{bmatrix}}_{\boldsymbol{x}}
+		=
+		\underbrace{\begin{bmatrix}
+			\boldsymbol{f}_T \\
+			\boldsymbol{f}_u 
+		\end{bmatrix}}_{\boldsymbol{f}(t)}				
+	\end{equation*}		
+    \begin{equation*}
+		\mathbf{A}_2 \ddot{\boldsymbol{x}} +\mathbf{A}_1 \dot{\boldsymbol{x}} +\mathbf{A}_0 \boldsymbol{x} = \boldsymbol{f}(t)
+	\end{equation*}
+	The Newmark scheme is an implicit method that can be written as:
+	\begin{equation*}
+		\begin{split}
+			(\mathbf{A}_2 + \gamma\Delta t \mathbf{A}_1 +& \beta \Delta t^2 \mathbf{A}_0) \,\boldsymbol{x}^{n+1} = \\
+			& \left[ 2\mathbf{A}_2 - (1-2\gamma)\Delta t \mathbf{A}_1 - (\tfrac{1}{2}+\gamma-2\beta)\Delta t^2 \mathbf{A}_0 \right] \boldsymbol{x}^{n}+ \\
+			& \left[ -\mathbf{A}_2 - (\gamma-1)\Delta t \mathbf{A}_1 - (\tfrac{1}{2}-\gamma+\beta)\Delta t^2 \mathbf{A}_0 \right] \boldsymbol{x}^{n-1}+ \\
+			& \Delta t^2 \left[ \beta\boldsymbol{f}^{n+1} + (\tfrac{1}{2}+\gamma-2\beta)\boldsymbol{f}^{n} + (\tfrac{1}{2}-\gamma+\beta)\boldsymbol{f}^{n-1} \right] \\
+		\end{split}
+	\end{equation*}
+	where the time step $\Delta t$ is constant and $\boldsymbol{f}^{n}=\boldsymbol{f}(t_n)=\boldsymbol{f}(t_0+n
+	\Delta t)$. 	
+\end{frame}
+
+\begin{frame}
+	\frametitle{ Time integration }
+	\framesubtitle{ Newmark scheme  }
+	
+	This scheme is stable if $\gamma\geq\frac{1}{2}$. 
+	\vspace{\stretch{1}}	
+	
+	It is unconditionality stable if $\beta\geq\frac{1}{4}(\gamma+\frac{1}{2})^2$. 
+	
+	\vspace{\stretch{1}}	
+	With the particular choice of $\beta=\frac{1}{4}$ and
+	$\gamma=\frac{1}{2}$, the Newmark scheme is unconditionality stable and second-order accurate.
+	
+		
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{References}
+	\footnotesize{
+		\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be nserted manually as below
+			\bibitem[Wu et al., 2016]{wu2016} L. Wu, V. Lucas, V.-D. Nguyen, J.-C. Golinval, S. Paquay, L. Noels (2016)
+			\newblock A stochastic multi-scale approach for the modeling of thermo-elastic damping in micro-resonators
+			\newblock \emph{Computer Methods in Applied Mechanics and Engineering} 310, 802--839.
+			\newblock \url{https://doi.org/10.1016/j.cma.2016.07.042}
+			\bibitem[Ponthot, 2020]{ponthot2020} J.-P. Ponthot (2020)
+			\newblock An Introduction to the Finite Element Method
+			\newblock \emph{Lecture notes}, chapters 10 -- 11.
+		\end{thebibliography}
+	}
+\end{frame}
+
+%\begin{frame}[t, allowframebreaks]
+%	\frametitle{References}
+%	\nocite{*}
+%	\bibliographystyle{amsalpha}
+%	\bibliography{biblio.bib}
+%\end{frame}
+
+
+
+\end{document}
