@@ -1,0 +1,6 @@
+
+SetNumber("Conditions aux limites/Ground/Potentiel", 0.);
+SetNumber("Conditions aux limites/Courbe 123/Flux", 1.2);
+SetNumber("Materiaux/Surface 1/Permittivite relative", 4.2);
+SetNumber("Materiaux/Surface 2/Permittivite relative", 5.0);
+
