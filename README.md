@@ -1,6 +1,6 @@
 # progs
 
-[![Build Status](https://travis-ci.org/rboman/progs.svg?branch=master)](https://travis-ci.org/rboman/progs) 
+[![build-test](https://github.com/rboman/progs/actions/workflows/build-test.yml/badge.svg)](https://github.com/rboman/progs/actions/workflows/build-test.yml)
 [![Apache License Version 2.0](https://img.shields.io/badge/license-Apache_2.0-green.svg)](LICENSE)
 
 Various progs of mine:
