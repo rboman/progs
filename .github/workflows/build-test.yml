@@ -1,0 +1,28 @@
+name: build-test
+
+on: [ push ]
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
+
+# env:
+#   BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Update repositories
+      run: sudo apt update
+      
+    - name: Install dependencies
+      run: sudo apt install gfortran libpython3-dev swig python3-numpy libgmm++-dev
+
+    - name: Build and test all
+      run: python3 ./build_all.py --travis
+
+      
