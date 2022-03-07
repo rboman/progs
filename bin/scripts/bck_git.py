@@ -19,21 +19,22 @@
 # .retrieve all the projects from GitLab even if the local cache is present in the current folder
 #       rb.py bck_git.py list --update
 #
-# .export all my projects and the one of the dept
+# .export all my projects and the ones of the dept
 #       rb.py bck_git.py list --update --include R.Boman:am-dept
 #       rb.py bck_git.py export --include R.Boman:am-dept
 #       rb.py bck_git.py download --include R.Boman:am-dept
 #
-# .commands used on garfield (april2020)
+# .commands used on garfield (march 2022)
 #     cd /hdd2/boman/Backups/repos/
 #     rb.py bck_git.py list --update
+#     rm -rf github.com gitlab.uliege.be lam3.org
 #     rb.py bck_git.py clone
 #     rb.py bck_git.py archive
 #     rb.py bck_git.py export --exclude lam3.org:mogador
 #     rb.py bck_git.py download --exclude lam3.org:mogador
-#     cp -R 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/
+#     cp -R 2022-03-07/ /hdd2/boman/Dropbox/Backups/Repositories/
 #        or, if folder already exists:
-#     rsync -av 2020-04-06/ /hdd2/boman/Dropbox/Backups/Repositories/2020-04-06/
+#     rsync -av 2022-03-07/ /hdd2/boman/Dropbox/Backups/Repositories/2022-03-07/
 #
 
 import os
