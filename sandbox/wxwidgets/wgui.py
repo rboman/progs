@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 #
 # Tests de wxWindows dans un thread secondaire
-#
-#
 
 
+import threading
 import wx
+
 
 class MyWin(wx.Frame):
     def __init__(self, parent, title):
@@ -22,7 +22,7 @@ class MyWin(wx.Frame):
         sizer.Add(text2, 0, wx.ALL, 10)
         panel.SetSizer(sizer)
         panel.Layout()
-        
+
 
 class MyApp(wx.App):
     def OnInit(self):
@@ -31,19 +31,16 @@ class MyApp(wx.App):
         self.SetTopWindow(frame)
         return True
 
-import threading
+
 class RWin (threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-          
+
     def run(self, *args):
         app = MyApp(True)
         print('starting Wx!')
         app.MainLoop()
-         
+
 
 rw = RWin()
 rw.start()
-
-
-
