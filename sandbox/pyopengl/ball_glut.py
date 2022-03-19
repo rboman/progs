@@ -8,9 +8,10 @@
 # - renommer freeglut.dll en freeglut64.vc14.dll et la mettre dans le path
 # en cas de non chargement regarder ce qui se passe dans C:\Python37\Lib\site-packages\OpenGL\platform\win32.py
 
+from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
-from OpenGL.GL import *
+
 import sys
 
 name = b'ball_glut'
