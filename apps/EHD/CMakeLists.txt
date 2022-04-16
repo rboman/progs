@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 # ----------------------------------------------------------------------------
 PROJECT(EHD CXX)
 # ----------------------------------------------------------------------------
@@ -49,6 +49,7 @@ ELSE()
     SET(CMAKE_SWIG_OUTDIR "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 ENDIF()
 SET(CMAKE_SWIG_FLAGS -py3 -O)
+INCLUDE(${SWIG_USE_FILE})
 
 # -- CTest
 ENABLE_TESTING()

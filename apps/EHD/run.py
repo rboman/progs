@@ -15,6 +15,7 @@ if __name__ == "__main__":
     if pyexe.find('_d.exe') >= 0:
         sys.path.append(os.path.join(thisdir, 'build',
                                      'bin', 'Debug'))  # win/debug
+        print('using Debug build')
     elif pyexe.find('.exe') >= 0:
         sys.path.append(os.path.join(thisdir, 'build',
                                      'bin', 'Release'))  # win/release
