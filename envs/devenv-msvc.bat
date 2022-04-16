@@ -26,8 +26,6 @@ IF NOT EXIST "%LUAPATH%" (
     set "PATH=%LUAPATH%;%PATH%"
 )
 
-
-
 :: swig
 set "SWIGPATH=%MYLOCAL%\swig"
 IF NOT EXIST "%SWIGPATH%" (
@@ -38,7 +36,7 @@ IF NOT EXIST "%SWIGPATH%" (
 )
 
 :: visual studio [required]
-set COMPILERPATH="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build"
+set COMPILERPATH="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build"
 IF NOT EXIST %COMPILERPATH% (
     ECHO   - MSVC compiler NOT found in %COMPILERPATH%!!
     PAUSE
@@ -53,8 +51,8 @@ IF NOT EXIST %INTELPATH% (
     ECHO   - INTEL libraries NOT found in %INTELPATH%!!
 ) ELSE (
     ECHO   - INTEL libraries found.
-    call %INTELPATH%\mkl\bin\mklvars.bat intel64 vs2017
-    call %INTELPATH%\tbb\bin\tbbvars.bat intel64 vs2017
+    call %INTELPATH%\mkl\bin\mklvars.bat intel64 vs2019
+    call %INTELPATH%\tbb\bin\tbbvars.bat intel64 vs2019
 )
 
 :: run MSVC environment
