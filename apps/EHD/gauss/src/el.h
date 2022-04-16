@@ -17,13 +17,13 @@
 /*
  * Librairie "el" :
  * ----------------
- *   Cette librairie defini des fct propres aux elements
+ *   Cette librairie définit des fcts propres aux éléments
  *
- *      - une fct donnant les valeurs des fcts de forme & derivees
+ *      - une fct donnant les valeurs des fcts de forme & dérivees
  *        en un point
  *
- *      - une fonction calculant le determinant du jacobien, le jacobien
- *        et la dimension du problème etant donnes
+ *      - une fonction calculant le déterminant du jacobien, le jacobien
+ *        et la dimension du problème étant donnés
  *
  * RoBo aout 2000
  */
