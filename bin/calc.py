@@ -13,12 +13,12 @@
 #   > calc.py 2*sin(pi/4)/sqrt(3)
 #   0.8164965809277261
 
-import sys
+import sys, os
 import math
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print('usage:\n\tsys.argv[0] math_expression')
+        print(f'usage:\n\t{os.path.basename(sys.argv[0])} <math_expression>')
         sys.exit(1)
     expr = sys.argv[1]
     # teste la chaine à exécuter
