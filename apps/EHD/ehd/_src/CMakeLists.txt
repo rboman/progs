@@ -2,8 +2,6 @@
 #   Uses new policy CMP0078 (UseSWIG generates standard target names)
 #   Requires CMake >=3.13
 
-# INCLUDE(${SWIG_USE_FILE})
-
 FILE(GLOB SRCS *.h *.cpp *.inl *.swg)
 FILE(GLOB ISRCS *.i)
 
