@@ -19,7 +19,7 @@
  */
 
 #include "gausslib.h"
-#include <math.h>
+#include <cmath>
 
 /*
  *   FONCTIONS "TEST"

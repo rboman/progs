@@ -15,7 +15,7 @@
  */
 
 #include "ehd.h"
-#include "math.h"
+#include <cmath>
 
 /*
  * Donnees du probleme

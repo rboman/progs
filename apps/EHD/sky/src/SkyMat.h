@@ -28,7 +28,7 @@
 #define __SKYMAT_H__
 
 #include "sky.h"
-#include <stdio.h>
+#include <cstdio>
 
 #ifdef _UNDERSCORE_
 #define sky_f_solve_usym sky_f_solve_usym_

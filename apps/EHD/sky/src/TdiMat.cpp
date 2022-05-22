@@ -30,11 +30,11 @@
                                     Headers
  **************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <sstream>
-#include <math.h>
+#include <cmath>
 
 #include "TdiMat.h"
 #include "mlab.h"

@@ -15,7 +15,7 @@
  */
 
 #include "ehd.h"
-#include <stdio.h>
+#include <cstdio>
 
 /**
  * @brief Calcule le cisaillement (tau) en un point donne

@@ -33,9 +33,9 @@
 
 #include "gauss.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 
 #define EL_MAX_DIM 3
 #define EL_MAX_NODE 8
