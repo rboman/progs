@@ -94,7 +94,7 @@ TdiMat::reinit()
     this->nsys = 0;
     this->nsys_a = 0;
     for (int i = 0; i < 3; i++)
-        this->s[i] = NULL;
+        this->s[i] = nullptr;
 }
 
 /**
@@ -299,7 +299,7 @@ TdiMat::mlab(char const *filename, char const *id_txt, int type, int nfile,
         fich = fopen(filename, "a");
     else
         fich = fopen(filename, "w");
-    if (fich == NULL)
+    if (fich == nullptr)
         throw std::runtime_error("impossible d'ouvrir le fichier " + name);
 
     for (int i = 0; i < this->nsys; i++)

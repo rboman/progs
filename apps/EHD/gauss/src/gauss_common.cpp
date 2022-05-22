@@ -71,25 +71,25 @@ gauss_common_init()
 
     for (i = 0; i < GAUSS_MAX_NG; i++)
     {
-        line_xg[i] = NULL;
-        line_pg[i] = NULL;
-        line_psi[i] = NULL;
+        line_xg[i] = nullptr;
+        line_pg[i] = nullptr;
+        line_psi[i] = nullptr;
 
-        quad_xg[i] = NULL;
-        quad_pg[i] = NULL;
-        quad_psi[i] = NULL;
+        quad_xg[i] = nullptr;
+        quad_pg[i] = nullptr;
+        quad_psi[i] = nullptr;
 
-        hexa_xg[i] = NULL;
-        hexa_pg[i] = NULL;
-        hexa_psi[i] = NULL;
+        hexa_xg[i] = nullptr;
+        hexa_pg[i] = nullptr;
+        hexa_psi[i] = nullptr;
 
-        hermite_psi[i] = NULL;
+        hermite_psi[i] = nullptr;
 
         for (j = 0; j < GAUSS_MAX_EL; j++)
         {
-            generic_xg[j][i] = NULL;
-            generic_pg[j][i] = NULL;
-            generic_psi[j][i] = NULL;
+            generic_xg[j][i] = nullptr;
+            generic_pg[j][i] = nullptr;
+            generic_psi[j][i] = nullptr;
         }
     }
 

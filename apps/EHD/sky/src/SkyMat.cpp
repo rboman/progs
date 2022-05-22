@@ -155,12 +155,12 @@ sky_initmat(SkyMat *A)
 
     A->nsys = 0;
     A->nsys_a = 0;
-    A->sitl = NULL;
-    A->situ = NULL;
+    A->sitl = nullptr;
+    A->situ = nullptr;
     A->nsit = 0;
     A->nsitl_a = 0;
     A->nsitu_a = 0;
-    A->locsit = NULL;
+    A->locsit = nullptr;
     sky_setname(A, sky_nulname);
     A->sym = SKY_MAT_UNKNOWN;
 
@@ -260,7 +260,7 @@ sky_setname(SkyMat *A, char const *name)
 
     l = strlen(name);
     A->name = (char *)calloc(l + 1, sizeof(char));
-    if (A->name == NULL)
+    if (A->name == nullptr)
         goto ERR2;
     strcpy(A->name, name);
 
@@ -304,7 +304,7 @@ sky_pre_start(SkyMat *A, int nsys)
         if (nsys > A->nsys_a)
         {
             A->locsit = (int *)realloc(A->locsit, (nsys + 1) * sizeof(int));
-            if (A->locsit == NULL)
+            if (A->locsit == nullptr)
                 goto ERR2;
             A->nsys_a = nsys;
         }
@@ -391,7 +391,7 @@ sky_alloc(SkyMat *A, int type)
     if (n > A->nsitl_a)
     {
         A->sitl = (double *)realloc(A->sitl, n * sizeof(double));
-        if (A->sitl == NULL)
+        if (A->sitl == nullptr)
             goto ERR2;
         A->nsitl_a = n;
     }
@@ -401,7 +401,7 @@ sky_alloc(SkyMat *A, int type)
         if (n > A->nsitu_a)
         {
             A->situ = (double *)realloc(A->situ, n * sizeof(double));
-            if (A->situ == NULL)
+            if (A->situ == nullptr)
                 goto ERR2;
             A->nsitu_a = n;
         }

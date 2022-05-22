@@ -55,7 +55,7 @@ mlab_vec(char const *filename, char const *id_txt, double *v, int n, int nfile,
         fich = fopen(filename, "a");
     else
         fich = fopen(filename, "w");
-    if (fich == NULL)
+    if (fich == nullptr)
         goto ERR1;
 
     fprintf(fich, "%s(%d)=0;\n", id_txt, n);
@@ -96,7 +96,7 @@ mlab_mat(char const *filename, char const *id_txt, double **v, int m, int n,
         fich = fopen(filename, "a");
     else
         fich = fopen(filename, "w");
-    if (fich == NULL)
+    if (fich == nullptr)
         goto ERR1;
 
     fprintf(fich, "%s(%d,%d)=0;\n", id_txt, m, n);
@@ -173,7 +173,7 @@ mlab_sky(char const *filename, char const *id_txt, SkyMat *A, int type,
         fich = fopen(filename, "a");
     else
         fich = fopen(filename, "w");
-    if (fich == NULL)
+    if (fich == nullptr)
         goto ERR2;
 
     fprintf(fich, "%s%s_nsit = %d;\n", name, id_txt, A->nsit);

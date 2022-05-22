@@ -69,7 +69,7 @@ test_quad()
     double res = 0.0;
     double *xx[4];
 
-    void *pipo = NULL;
+    void *pipo = nullptr;
 
     xx[0] = x1;
     xx[1] = x2;
@@ -141,7 +141,7 @@ test_hexa()
     double res = 0.0;
     double *xx[4];
 
-    void *pipo = NULL;
+    void *pipo = nullptr;
 
     xx[0] = x1;
     xx[1] = x2;
@@ -209,7 +209,7 @@ test_line()
     double res = 0.0;
     double *xx[4];
 
-    void *pipo = NULL;
+    void *pipo = nullptr;
 
     xx[0] = x1;
     xx[1] = x2;

@@ -177,27 +177,27 @@ gauss_generic_get_psi(int ng, double ****psi, double *xg, int type, int dimp,
 
     // Calcul si pas encore fait
 
-    if (generic_psi[type][ng1] == NULL)
+    if (generic_psi[type][ng1] == nullptr)
     {
 
         // allocation
 
         generic_psi[type][ng1] =
             (double ***)calloc(1 + dimp, sizeof(double **));
-        if (generic_psi[type][ng1] == NULL)
+        if (generic_psi[type][ng1] == nullptr)
             goto ERR1;
 
         for (i = 0; i < 1 + dimp; i++)
         {
             generic_psi[type][ng1][i] =
                 (double **)calloc(nnode, sizeof(double *));
-            if (generic_psi[type][ng1][i] == NULL)
+            if (generic_psi[type][ng1][i] == nullptr)
                 goto ERR1;
             for (j = 0; j < nnode; j++)
             {
                 generic_psi[type][ng1][i][j] =
                     (double *)calloc(npg, sizeof(double));
-                if (generic_psi[type][ng1][i][j] == NULL)
+                if (generic_psi[type][ng1][i][j] == nullptr)
                     goto ERR1;
             }
         }
@@ -299,15 +299,15 @@ gauss_generic_get_xgpg(int ng, double **xg, double **pg, int dimp, int type,
 
     // Calcul si pas encore fait
 
-    if (generic_xg[type][ng1] == NULL)
+    if (generic_xg[type][ng1] == nullptr)
     {
 
         // allocation
         generic_xg[type][ng1] = (double *)calloc(npg * dimp, sizeof(double));
-        if (generic_xg[type][ng1] == NULL)
+        if (generic_xg[type][ng1] == nullptr)
             goto ERR1;
         generic_pg[type][ng1] = (double *)calloc(npg * dimp, sizeof(double));
-        if (generic_pg[type][ng1] == NULL)
+        if (generic_pg[type][ng1] == nullptr)
             goto ERR1;
 
         // calcul points & poids 1d (verif ng dans limites)

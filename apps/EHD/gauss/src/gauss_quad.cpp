@@ -139,25 +139,25 @@ gauss_quad_get_psi(int ng, double ****psi, double *xg)
 
     // Calcul si pas encore fait
 
-    if (quad_psi[ng1] == NULL)
+    if (quad_psi[ng1] == nullptr)
     {
 
         // allocation
 
         quad_psi[ng1] = (double ***)calloc(1 + EL_QUAD_DIM, sizeof(double **));
-        if (quad_psi[ng1] == NULL)
+        if (quad_psi[ng1] == nullptr)
             goto ERR1;
 
         for (i = 0; i < 1 + EL_QUAD_DIM; i++)
         {
             quad_psi[ng1][i] =
                 (double **)calloc(EL_QUAD_NODE, sizeof(double *));
-            if (quad_psi[ng1][i] == NULL)
+            if (quad_psi[ng1][i] == nullptr)
                 goto ERR1;
             for (j = 0; j < EL_QUAD_NODE; j++)
             {
                 quad_psi[ng1][i][j] = (double *)calloc(ng * ng, sizeof(double));
-                if (quad_psi[ng1][i][j] == NULL)
+                if (quad_psi[ng1][i][j] == nullptr)
                     goto ERR1;
             }
         }
@@ -245,15 +245,15 @@ gauss_quad_get_xgpg(int ng, double **xg, double **pg)
 
     // Calcul si pas encore fait
 
-    if (quad_xg[ng1] == NULL)
+    if (quad_xg[ng1] == nullptr)
     {
 
         // allocation
         quad_xg[ng1] = (double *)calloc(ng * ng * EL_QUAD_DIM, sizeof(double));
-        if (quad_xg[ng1] == NULL)
+        if (quad_xg[ng1] == nullptr)
             goto ERR1;
         quad_pg[ng1] = (double *)calloc(ng * ng, sizeof(double));
-        if (quad_pg[ng1] == NULL)
+        if (quad_pg[ng1] == nullptr)
             goto ERR1;
 
         // calcul points & poids 1d (verif ng dans limites)

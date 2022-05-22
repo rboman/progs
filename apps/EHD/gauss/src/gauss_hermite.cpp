@@ -43,26 +43,26 @@ gauss_hermite_get_psi(int ng, double ****psi, double *xg)
 
     // Calcul si pas encore fait
 
-    if (hermite_psi[ng1] == NULL)
+    if (hermite_psi[ng1] == nullptr)
     {
 
         // allocation
 
         hermite_psi[ng1] =
             (double ***)calloc(1 + EL_HERMITE_DIM, sizeof(double **));
-        if (hermite_psi[ng1] == NULL)
+        if (hermite_psi[ng1] == nullptr)
             goto ERR1;
 
         for (i = 0; i < 1 + EL_HERMITE_DIM; i++)
         {
             hermite_psi[ng1][i] =
                 (double **)calloc(EL_HERMITE_NODE, sizeof(double *));
-            if (hermite_psi[ng1][i] == NULL)
+            if (hermite_psi[ng1][i] == nullptr)
                 goto ERR1;
             for (j = 0; j < EL_HERMITE_NODE; j++)
             {
                 hermite_psi[ng1][i][j] = (double *)calloc(ng, sizeof(double));
-                if (hermite_psi[ng1][i][j] == NULL)
+                if (hermite_psi[ng1][i][j] == nullptr)
                     goto ERR1;
             }
         }

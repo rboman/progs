@@ -158,25 +158,25 @@ gauss_line_get_psi(int ng, double ****psi, double *xg)
 
     // Calcul si pas encore fait
 
-    if (line_psi[ng1] == NULL)
+    if (line_psi[ng1] == nullptr)
     {
 
         // allocation
 
         line_psi[ng1] = (double ***)calloc(1 + EL_LINE_DIM, sizeof(double **));
-        if (line_psi[ng1] == NULL)
+        if (line_psi[ng1] == nullptr)
             goto ERR1;
 
         for (i = 0; i < 1 + EL_LINE_DIM; i++)
         {
             line_psi[ng1][i] =
                 (double **)calloc(EL_LINE_NODE, sizeof(double *));
-            if (line_psi[ng1][i] == NULL)
+            if (line_psi[ng1][i] == nullptr)
                 goto ERR1;
             for (j = 0; j < EL_LINE_NODE; j++)
             {
                 line_psi[ng1][i][j] = (double *)calloc(ng, sizeof(double));
-                if (line_psi[ng1][i][j] == NULL)
+                if (line_psi[ng1][i][j] == nullptr)
                     goto ERR1;
             }
         }
@@ -264,15 +264,15 @@ gauss_line_get_xgpg(int ng, double **xg, double **pg)
 
     // Calcul si pas encore fait
 
-    if (line_xg[ng1] == NULL)
+    if (line_xg[ng1] == nullptr)
     {
 
         // allocation
         line_xg[ng1] = (double *)calloc(ng * ng * EL_LINE_DIM, sizeof(double));
-        if (line_xg[ng1] == NULL)
+        if (line_xg[ng1] == nullptr)
             goto ERR1;
         line_pg[ng1] = (double *)calloc(ng * ng, sizeof(double));
-        if (line_pg[ng1] == NULL)
+        if (line_pg[ng1] == nullptr)
             goto ERR1;
 
         // calcul points & poids 1d (verif ng dans limites)
