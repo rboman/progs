@@ -21,12 +21,18 @@ envs = {
         r"c:\local\Qwt\include",
         r"c:\local\parasolid",
         r"c:\local\lagamine\include",
-        r"c:\local\eigen"
+        r"c:\local\eigen",
+        r"%ICPP_COMPILER19%\mkl\include",
+        r"%ICPP_COMPILER19%\tbb\include",
+        r"%ICPP_COMPILER19%\compiler\include",        
     ],
     'LIB':
     [
         r"c:\local\Qwt\lib",
-        r"c:\local\lagamine\lib"
+        r"c:\local\lagamine\lib",
+        r"%ICPP_COMPILER19%\mkl\lib\intel64",
+        r"%ICPP_COMPILER19%\tbb\lib\intel64\vc14",
+        r"%ICPP_COMPILER19%\compiler\lib\intel64"
     ],
     'MYLOCAL':
     [
