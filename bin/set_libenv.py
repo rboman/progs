@@ -12,39 +12,47 @@
 
 import os, subprocess
 
+local_folder = r"c:\local"
+
 envs = {
-    'BOOST_INCLUDEDIR': [ r'c:\local\boost' ],  # not BOOST_INCLUDE_DIR!
-    'BOOST_LIBRARYDIR': [ r'c:\local\boost\lib64-msvc-14.2' ],
-    'CMAKE_INSTALL_PREFIX': [ r'c:\local\CGAL' ],
+    'BOOST_INCLUDEDIR': [ r'%MYLOCAL%\boost' ],  # not BOOST_INCLUDE_DIR!
+    'BOOST_LIBRARYDIR': [ r'%MYLOCAL%\boost\lib64-msvc-14.2' ],
+    'CMAKE_INSTALL_PREFIX': [ r'%MYLOCAL%\CGAL' ],
     'INCLUDE':
     [
-        r"c:\local\Qwt\include",
-        r"c:\local\parasolid",
-        r"c:\local\lagamine\include",
-        r"c:\local\eigen",
+        r"%MYLOCAL%\Qwt\include",
+        r"%MYLOCAL%\parasolid",
+        r"%MYLOCAL%\lagamine\include",
+        r"%MYLOCAL%\eigen",
+        r"%MYLOCAL%\MUMPS\include",
+        r"%MYLOCAL%\zlib\include",
         r"%ICPP_COMPILER19%\mkl\include",
         r"%ICPP_COMPILER19%\tbb\include",
         r"%ICPP_COMPILER19%\compiler\include",        
     ],
     'LIB':
     [
-        r"c:\local\Qwt\lib",
-        r"c:\local\lagamine\lib",
+        r"%MYLOCAL%\Qwt\lib",
+        r"%MYLOCAL%\lagamine\lib",
+        r"%MYLOCAL%\MUMPS\lib",
+        r"%MYLOCAL%\zlib\lib",
         r"%ICPP_COMPILER19%\mkl\lib\intel64",
         r"%ICPP_COMPILER19%\tbb\lib\intel64\vc14",
         r"%ICPP_COMPILER19%\compiler\lib\intel64"
     ],
     'MYLOCAL':
     [
-        r"c:\local"
+        rf"{local_folder}"
     ],
     # 'OMP_NUM_THREADS': [ "1" ],  
-    'P_SCHEMA': [ r"c:\local\parasolid\schema" ],  
+    'P_SCHEMA': [ rf"{local_folder}\parasolid\schema" ],  
     # 'Python3_ROOT_DIR': [ r"c:\Python37" ],  # <=     
     # 'LMS_LICENSE': [ "xxx" ],     
     # 'GIT_SSH': [ r"xxx" ],     
 }
 # print(envs)
+# import sys
+# sys.exit()
 
 if __name__=='__main__':
 
