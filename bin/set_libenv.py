@@ -20,7 +20,8 @@ envs = {
     [
         r"c:\local\Qwt\include",
         r"c:\local\parasolid",
-        r"c:\local\lagamine\include"
+        r"c:\local\lagamine\include",
+        r"c:\local\eigen"
     ],
     'LIB':
     [

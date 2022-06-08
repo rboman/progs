@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#! /usr/bin/env python3
+# -*- coding: utf-8 -*-
 #
 # This script builds the lagamine API for Metafor (branch 'papeleux')
 # usage:
