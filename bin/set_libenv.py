@@ -13,8 +13,8 @@
 import os, subprocess
 
 envs = {
-    'BOOST_INCLUDE_DIR': [ r'c:\local\boost' ],
-    'BOOST_LIBRARY_DIR': [ r'c:\local\boost\lib64-msvc-14.2' ],
+    'BOOST_INCLUDEDIR': [ r'c:\local\boost' ],  # not BOOST_INCLUDE_DIR!
+    'BOOST_LIBRARYDIR': [ r'c:\local\boost\lib64-msvc-14.2' ],
     'CMAKE_INSTALL_PREFIX': [ r'c:\local\CGAL' ],
     'INCLUDE':
     [
@@ -38,7 +38,7 @@ envs = {
     # 'LMS_LICENSE': [ "xxx" ],     
     # 'GIT_SSH': [ r"xxx" ],     
 }
-print(envs)
+# print(envs)
 
 if __name__=='__main__':
 
@@ -49,7 +49,7 @@ if __name__=='__main__':
         # retrieve env key & convert to list
         try:
             oldpaths = os.environ[key]
-            oldpaths = oldpaths.split(';')
+            oldpaths = oldpaths.strip().strip(';').split(';')
             oldpaths = list(map(os.path.normcase, map(os.path.normpath, oldpaths)))
         except:
             oldpaths = [] 
