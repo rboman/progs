@@ -3,6 +3,8 @@
 #
 # ajoute les variables d'environnement liées à mes libs
 #
+# usage: set_libenv.py
+#
 # variables utilisateur système vierge:
 #   OneDrive
 #   OneDriveConsumer
@@ -18,27 +20,29 @@ envs = {
     'BOOST_INCLUDEDIR': [ r'%MYLOCAL%\boost' ],  # not BOOST_INCLUDE_DIR!
     'BOOST_LIBRARYDIR': [ r'%MYLOCAL%\boost\lib64-msvc-14.2' ],
     'CMAKE_INSTALL_PREFIX': [ r'%MYLOCAL%\CGAL' ],
+    # if INCLUDE/LIB starts with %MYLOCAL% instead of c:\local, the variable editor
+    # thinks it is not a list which makes it difficult to be edited (1 long line)... :( 
     'INCLUDE':
     [
-        r"%MYLOCAL%\Qwt\include",
-        r"%MYLOCAL%\parasolid",
-        r"%MYLOCAL%\lagamine\include",
-        r"%MYLOCAL%\eigen",
-        r"%MYLOCAL%\MUMPS\include",
-        r"%MYLOCAL%\zlib\include",
-        r"%ICPP_COMPILER19%\mkl\include",
-        r"%ICPP_COMPILER19%\tbb\include",
-        r"%ICPP_COMPILER19%\compiler\include",        
+        rf"{local_folder}\Qwt\include",   
+        rf"{local_folder}\parasolid",
+        rf"{local_folder}\lagamine\include",
+        rf"{local_folder}\eigen",
+        rf"{local_folder}\MUMPS\include",
+        rf"{local_folder}\zlib\include",
+        r"%oneapi_root%\mkl\latest\include",
+        r"%oneapi_root%\tbb\latest\include",
+        r"%oneapi_root%\compiler\latest\windows\compiler\include"       
     ],
     'LIB':
     [
-        r"%MYLOCAL%\Qwt\lib",
-        r"%MYLOCAL%\lagamine\lib",
-        r"%MYLOCAL%\MUMPS\lib",
-        r"%MYLOCAL%\zlib\lib",
-        r"%ICPP_COMPILER19%\mkl\lib\intel64",
-        r"%ICPP_COMPILER19%\tbb\lib\intel64\vc14",
-        r"%ICPP_COMPILER19%\compiler\lib\intel64"
+        rf"{local_folder}\Qwt\lib",
+        rf"{local_folder}\lagamine\lib",
+        rf"{local_folder}\MUMPS\lib",
+        rf"{local_folder}\zlib\lib",
+        r"%oneapi_root%\mkl\latest\lib\intel64",
+        r"%oneapi_root%\tbb\latest\lib\intel64\vc14",
+        r"%oneapi_root%\compiler\latest\windows\compiler\lib\intel64_win"
     ],
     'MYLOCAL':
     [
