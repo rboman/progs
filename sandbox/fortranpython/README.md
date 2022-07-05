@@ -4,6 +4,7 @@
 - https://docs.scipy.org/doc/numpy/f2py/
 - je compile sous windows avec msys2 / mingw64 / gfortran
 - f2py s'installe : C:\msys64\mingw64\bin\f2py2.exe
+- marche aussi avec le compilateur intel sous windows
 
 intérêts de f2py ./. d'autres solutions:
 - maintenu/utilisé par numpy => risque moins de disparaitre

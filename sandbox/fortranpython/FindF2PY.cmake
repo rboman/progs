@@ -85,6 +85,7 @@ MACRO(F2PY_MACRO F2PYMODULE FSRCS_LIST USEMODULES USEFUNCTIONS)
             OUTPUT ${OUTPUTS}
             COMMAND ${F2PY_EXECUTABLE}
             -m ${F2PYMODULE}
+            --lower   # sinon les fcts uppercases dans le src fortran restent upercase en python
             #--no-lower
             ${${FSRCS_LIST}}
             DEPENDS ${${FSRCS_LIST}}

@@ -22,6 +22,8 @@ if __name__ == "__main__":
     
     sys.path.append(os.path.join(thisdir, 'build'))  # linux/mingw
 
+    sys.path.append(os.path.join(thisdir, 'build', 'Release'))  # windows/ifort
+
     # parse args
     import argparse
     parser = argparse.ArgumentParser()
