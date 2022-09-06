@@ -144,7 +144,7 @@ def main():
 
     # convert files
     #   rem: ISO-8859-1 == latin-1
-    if 0:
+    if 1:
         for enc in encs:
             for f in encs[enc]:
                 # convert to utf-8
@@ -153,6 +153,7 @@ def main():
                 # convertit les fichiers récalcitrants
                 #if enc=='unknown-8bit': enc='ISO-8859-1'
                 #if enc=='unknown-8bit': enc='CP437'
+                if enc=='unknown-8bit': enc='CP1252'  # Windows1252 assumed
                 try:
                     with open(f, "rb") as source:
                         content = str(source.read(), enc).encode('utf-8')
