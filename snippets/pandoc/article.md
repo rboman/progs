@@ -25,7 +25,7 @@ Exercitation est Lorem deserunt adipisicing ipsum enim proident. Anim est adipis
 
 Officia laborum ipsum aliquip id sint elit sunt sint cillum reprehenderit. Tempor aliqua veniam velit laborum irure. Irure deserunt voluptate nostrud quis. Occaecat occaecat aliqua ipsum voluptate sit duis dolor deserunt culpa enim do ex. Minim aliqua non irure sit ex et non culpa elit aute ipsum irure incididunt qui. Velit eiusmod est exercitation ut ullamco id duis et nulla.
 
-### Footnotes
+## Footnotes
 
 Hello[^1]
 Another way to put the footnote[^Hello]
@@ -49,7 +49,7 @@ pandoc article.md -o article.html --standalone --citeproc
 ```
 Utiliser `link-citations: true` dans le frontmatter pour avoir les liens entre la biblio et les citations.
 
-## cross-ref
+## cross-ref {#sec:crossref}
 
 Utiliser {#nom} et installer [pandoc-crossref](https://github.com/lierdakil/pandoc-crossref/releases) (vérifier version identique à pandoc!)
 
@@ -63,6 +63,7 @@ utiliser:
 linkReferences: true        # cree les liens
 nameInLink: true            # inclut "Fig" dans le lien
 ```
+Référence vers @sec:crossref
 
 ## Au delà
 
@@ -84,5 +85,17 @@ margin-left: 2cm
 colorlinks: true
 ```
 Possibilité de faire: `pandoc -V margin-left=2cm ...`
+
+## equations
+
+$$
+a^2 = b^2+c^2
+$$
+
+$$
+\sin(\frac{\pi}{2})=1
+$$ {#eq:sinus}
+
+See @eq:sinus
 
 ## Bibliography

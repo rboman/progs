@@ -14,4 +14,7 @@ papersize: a4
 margin-left: 2cm
 margin-right: 2cm
 colorlinks: true
+# ... autre
+numbersections: true
+autoEqnLabels: true
 ---
