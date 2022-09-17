@@ -1,0 +1,17 @@
+---
+title: My Markdown article
+date: \today
+lang: fr
+# ...citeproc
+bibliography: zotero.bib
+csl: materials-technology.csl
+link-citations: true
+# ...pandoc-crossref
+linkReferences: true
+nameInLink: true
+# ...pdf variables
+papersize: a4
+margin-left: 2cm
+margin-right: 2cm
+colorlinks: true
+---
