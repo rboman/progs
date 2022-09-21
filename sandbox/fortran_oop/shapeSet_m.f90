@@ -6,8 +6,8 @@ module shapeSet_m
     implicit none
 
     type shapeSet
-        type(domainptr), dimension(:), allocatable, private :: dom
-        !type (domainptr), dimension(:), allocatable :: dom
+        !type(domainptr), dimension(:), allocatable, private :: dom
+        type (domainptr), dimension(:), allocatable :: dom
     contains
         procedure :: alloc, add, getdom
     end type shapeSet
@@ -30,8 +30,8 @@ contains
     function getdom(this, i)
         class(shapeSet), intent(in) :: this
         integer, intent(in) :: i
-        type(domainptr) :: getdom
-        getdom = this%dom(i)
+        class(shape), pointer :: getdom
+        getdom => this%dom(i)%p
     end function getdom
 
 end module shapeSet_m

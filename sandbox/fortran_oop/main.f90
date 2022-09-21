@@ -16,7 +16,8 @@ program main
 
     type(shapeSet) myset
 
-    type(domainptr) :: adom
+    ! type(domainptr) :: adom
+    class(shape), pointer :: tmp_shape
 
     integer :: i
 
@@ -48,16 +49,19 @@ program main
     !    print *, 'area (', i, '): ', myset%dom(i)%p%area()   ! OK if dom is public in shapeSet class
     !enddo
 
-    !do i=1,6
-    !print *, 'area (', i, '): ', myset%getdom(i)%p%area()   ! If dom is private: use function 'getdom', but error #8346
-    ! A function reference cannot be used as the leftmost
-    ! part-ref of structure component
-    !enddo
+    do i = 1, 6
+        tmp_shape => myset%getdom(i)
+        ! print *, 'area (', i, '): ', tmp_shape%area()   ! If dom is private: use function 'getdom', but error #8346
+        !print *, 'area (', i, '): ', myset%getdom(i)%area()
+        !print *, 'area (', i, '): ', adom%p%area()   ! If dom is private: use function 'getdom', but error #8346
+        ! A function reference cannot be used as the leftmost
+        ! part-ref of structure component
+    end do
 
     ! workaround if dom is private, but not very satisfactory...
     do i = 1, 6
         associate (adom => myset%getdom(i))
-            print *, 'area (', i, '): ', adom%p%area()
+            print *, 'area (', i, '): ', adom%area()
         end associate
     end do
 
