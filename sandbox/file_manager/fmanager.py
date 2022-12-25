@@ -137,7 +137,10 @@ if __name__ == "__main__":
     for tag, fs in bytags.items():
         print(f'[{tag}]:')
         for f in fs:
-            print('\t', f['fullpath'])
+            try:
+                print('\t', f['fullpath'])
+            except:
+                print('\tENCODING ERROR:', f['fullpath'].encode('ascii', 'ignore'))
 
 
 
