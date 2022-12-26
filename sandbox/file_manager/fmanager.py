@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
     basedir = r"F:\Dropbox\Library\ULg"
     # basedir = r"F:\Dropbox\Library\Science"
-    basedir = r"F:\Dropbox"
+    # basedir = r"F:\Dropbox"
 
     # display_files_info(r"F:\Dropbox\Library\Science")
 
