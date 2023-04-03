@@ -59,7 +59,9 @@ def py2pdf(file):
     cmd.append(f'--output={file}.ps')
     cmd.append(file)
     # print(cmd)
-    with open(os.devnull, 'w') as FNULL:
+    # logf = os.devnull
+    logf = "a2ps.log"
+    with open(logf, 'w') as FNULL:
         subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
 
     # ps to pdf with ghostscript
@@ -70,7 +72,9 @@ def py2pdf(file):
     cmd.append(f'-o{file}.pdf')
     cmd.append(f'{file}.ps')
     # print(cmd)
-    with open(os.devnull, 'w') as FNULL:
+    # logf = os.devnull
+    logf = "gs.log"
+    with open(logf, 'w') as FNULL:
         subprocess.call(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
 
     os.remove(f'{file}.ps')
@@ -90,7 +94,7 @@ if __name__ == '__main__':
     tmpfiles = []
     for f in sys.argv[1:]:
         ext = os.path.splitext(f)[1]
-        if ext in [ '.py', '.h', '.cpp' ] :
+        if ext in [ '.py', '.h', '.cpp', '.hpp' ] :
             # convert python files
             tmp = py2pdf(f)
             tmpfiles.append(tmp)
