@@ -30,8 +30,8 @@
 #     rm -rf github.com gitlab.uliege.be lam3.org
 #     rb.py bck_git.py clone
 #     rb.py bck_git.py archive
-#     rb.py bck_git.py export --exclude lam3.org:mogador
-#     rb.py bck_git.py download --exclude lam3.org:mogador
+#     rb.py bck_git.py export --exclude lam3.org:mogador         # <- API LIMITS REACHED!
+#     rb.py bck_git.py download --exclude lam3.org:mogador       # <- API LIMITS REACHED!
 #     cp -R 2022-03-07/ /hdd2/boman/Dropbox/Backups/Repositories/
 #        or, if folder already exists:
 #     rsync -av 2022-03-07/ /hdd2/boman/Dropbox/Backups/Repositories/2022-03-07/
