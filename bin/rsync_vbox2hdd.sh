@@ -19,10 +19,10 @@ rsync -av --progress \
 	  "${VBOXFOLDER}"/Win10-x64-empty/ \
 	  "${HDDFOLDER}"/VBox/Win10-x64-empty/
 
-echo
-echo "***** BACKUP Win10-x86 => hdd"
+# echo
+# echo "***** BACKUP Win10-x86 => hdd"
 
-rsync -av --progress \
-      --delete --delete-excluded \
-	  "${VBOXFOLDER}"/Win10-x86/ \
-	  "${HDDFOLDER}"/VBox/Win10-x86/
+# rsync -av --progress \
+#       --delete --delete-excluded \
+# 	  "${VBOXFOLDER}"/Win10-x86/ \
+# 	  "${HDDFOLDER}"/VBox/Win10-x86/

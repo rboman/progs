@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# futur utilitaire de gestion de ma dropbox
+#
+# pourrait etre utile à terme pour faire des stats et du bulk-processing 
+# de fichiers
+# (rename / conversion unicode / tags / nettoyages divers / traitement via GUI)
 
 # a regarder: https://pypi.org/project/tinydb/
 
 import os
 import fnmatch
+import re
 
 def all_files(root,
               patterns='*',
@@ -34,25 +40,21 @@ def all_files(root,
         if single_level:
             break
 
-# https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
 def sizeof_fmt(num, suffix="B"):
+    """convert file size into a human-readble string
+    see https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
+    """
     for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
         if abs(num) < 1024.0:
             return f"{num:3.1f}{unit}{suffix}"
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
 
-def main():
 
 
-    # store all files in a DB
-
-    # basedir = r"F:\Dropbox\Library"
-    basedir = r"F:\Dropbox\Library\Science"
-    # basedir = r"F:\Dropbox"
-
-    tags = {}   # tag_name => files
-
+def display_files_info(basedir):
+    """loop of pdf files and print info of each file
+    """
 
     from pathlib import Path # https://docs.python.org/3/library/pathlib.html
     from datetime import datetime
@@ -81,6 +83,64 @@ def main():
     print(f'total size: {sizeof_fmt(totsize)}.')
 
 
+def retrieve_files(basedir):
+
+    files = []
+    for f in all_files(basedir, patterns='*.pdf',
+                       skips='*.git*;*build*'):
+        file = {}
+        file['fullpath'] = f
+        file['folder'] = os.path.dirname(f)
+        file['name'] = os.path.basename(f)
+        _, file['ext'] = os.path.splitext(file['name'])
+        m = re.findall('\[(.+?)\]', file['name'])
+        # https://docs.python.org/3/howto/regex.html#greedy-versus-non-greedy
+        file['tags'] = m
+        # if m:
+        #     print(f'\ttags:{m.groups()}')
+        #     file['tags'] = list(m.groups())
+        # else:
+        #     file['tags'] = []
+        files.append(file)
+    return files
+
 if __name__ == "__main__":
-    main()
+
+    basedir = r"F:\Dropbox\Library\ULg"
+    # basedir = r"F:\Dropbox\Library\Science"
+    # basedir = r"F:\Dropbox"
+
+    # display_files_info(r"F:\Dropbox\Library\Science")
+
+    print("retrieving file info...")
+    files = retrieve_files(basedir)
+    print(f"{len(files)} files processed.")
+
+    # for f in files:
+    #     print(f["name"], '\ttags:', f['tags'])
+
+
+    tags = [] # unique tags
+
+    bytags = {}
+
+    for f in files:
+        for tag in f['tags']:
+            if not tag in tags:
+                tags.append(tag)
+                bytags[tag] = []
+            bytags[tag].append( f )
+    
+    print('\ntags:', tags)
+
+    print('\tfiles by tag:')
+    for tag, fs in bytags.items():
+        print(f'[{tag}]:')
+        for f in fs:
+            try:
+                print('\t', f['fullpath'])
+            except:
+                print('\tENCODING ERROR:', f['fullpath'].encode('ascii', 'ignore'))
+
+
 
