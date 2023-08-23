@@ -1,0 +1,8 @@
+texte en cp1252 (Windows 1252)
+
+température = 8°C
+exposants: ²,³
+oeil 
+euro = €
+accents è é ô ï ì
+cédille ç

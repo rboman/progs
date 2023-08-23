@@ -1,0 +1,9 @@
+texte en utf-8
+
+température = 8°C
+exposants: ²,³
+oeil 
+euro = €
+accents è é ô ï ì
+cédille ç
+
