@@ -22,3 +22,27 @@ if os.path.isdir(pyddir):
     print(nfiles, "files renamed.")
 else:
     print("Error:", pyddir, "not found!")
+
+# powergreppe "VTKPython-targets-debug.cmake"
+
+targetfile = os.path.join(vtkdir, 'lib','cmake','vtk-9.1','VTKPython-targets-debug.cmake')
+
+if os.path.isfile(targetfile):
+    print("powergrepping", targetfile)
+
+    file = open(targetfile, mode='r')
+    alllines = file.readlines()
+    file.close()
+
+    newlines = []
+    for l in alllines:
+        newl = l.replace(".cp310-win_amd64_d.pyd","_d.pyd")
+        newlines.append(newl)
+    
+    file = open(targetfile, mode='w')
+    for l in newlines:
+        file.write(l)
+    file.close()
+else:
+    print("Error:", targetfile, "not found!")
+
