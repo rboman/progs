@@ -62,7 +62,7 @@ if __name__ == '__main__':
     for f in all_files(os.getcwd(), patterns='*.py;*.pyw'):
         #print('f=',f)
 
-        # red the whole file
+        # read the whole file
         file = open(f, mode='r', encoding='utf-8')
         try:
             alllines = file.readlines() 
