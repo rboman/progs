@@ -1,0 +1,10 @@
+NAME
+  vtkBool
+DEPENDS
+  VTK::CommonCore
+  VTK::CommonExecutionModel
+  VTK::FiltersPoints
+  VTK::IOLegacy
+  VTK::FiltersFlowPaths
+DESCRIPTION
+ This module contains the old vtkBooleanOperationPolyDataFilter from VTK 7.1
