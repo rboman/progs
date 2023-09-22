@@ -5,7 +5,7 @@
 # usage:
 #   rb.py compile_lagamine.py
 #
-# works on Win10/linux
+# works on Win10/linux/msys2-mingw64
 
 import os
 import subprocess
@@ -22,6 +22,9 @@ def main():
         'target_name': 'lagamine',
         'branch': 'papeleux'
     }
+    if pu.sysName() == 'mingw':
+        o['target_folder'] = 'c:/msys64/opt'
+
     print('options =', o)
 
     # make a backup in current target binary folder (it will be overwritten)
@@ -68,8 +71,8 @@ def main():
         '-DCMAKE_INSTALL_PREFIX=%s/%s' % (
             o['target_folder'], o['target_name'])
     ]
-    if not pu.isUnix():
-        cmd.extend(['-A', 'x64'])
+    # if not pu.isUnix():
+    #     cmd.extend(['-A', 'x64'])
     cmd.append('..')
     print (cmd)
     iop = subprocess.call(cmd)
@@ -78,13 +81,16 @@ def main():
     print('iop=', iop)
 
     # build/install
-    if pu.isUnix():
+    if pu.sysName() == 'linux':
         # Release only then sudo for install
         cmd = ['cmake', '--build', '.',
                '--config', 'Release', '--', '-j', '8']
         subprocess.call(cmd)
         cmd = ['sudo', 'make', 'install']
         print('\nINSTALLING... Enter your passwd for\n%s' % cmd)
+        subprocess.call(cmd)
+    elif pu.sysName() == 'mingw':
+        cmd = [ 'ninja', 'install' ]
         subprocess.call(cmd)
     else:
         # install both release & debug

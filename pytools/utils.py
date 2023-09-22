@@ -57,6 +57,19 @@ def isUnix():
     return not (uname[0] == 'Windows' or uname[2] == 'Windows')
 
 
+def sysName():
+    import sysconfig
+    plat = sysconfig.get_platform() 
+    if 'win' in plat:
+        return 'win'
+    elif 'mingw' in plat:
+        return 'mingw'
+    elif 'linux' in plat:
+        return'mingw'
+    else:
+        return plat
+
+
 def isInstalled(name):
     """Check whether `name` is in the PATH.
     """
