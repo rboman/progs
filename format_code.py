@@ -3,10 +3,8 @@
 #
 # This script runs "clang-format" recursively on all C/C++ files
 
-import sys
 import os
 import fnmatch
-import re
 import subprocess
 
 
@@ -41,7 +39,6 @@ def all_files(root,
 def main():
 
     # loop over all files and format them
-    encs = {}
     for f in all_files(os.getcwd(), patterns='*.cpp;*.c;*.h;*.hpp',
                        skips='*.git*;*build*;*externals*'):
         print(f)

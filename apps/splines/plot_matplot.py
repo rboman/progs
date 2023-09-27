@@ -7,7 +7,6 @@ import numpy as np
 from splines import *
 
 
-
 def plot_one_seg():
     """ Test routine: create one segment and plot it with matplotlib
     """
@@ -68,7 +67,7 @@ def plot_one_spline():
 
     fig = plt.figure()
     plt.plot(sx, sy)
-    plt.plot(px, py,'o')
+    plt.plot(px, py, 'o')
     plt.grid()
     plt.xlabel('X')
     plt.ylabel('Y')
