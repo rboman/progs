@@ -163,7 +163,8 @@ class GitHubAPI(API):
             if total_pages == '?':
                 # read the number of pages in the link
                 # if the link is not there, we are already at the last page                
-                if r.headers['Link'].find('rel=\"last\"') == -1:
+                if not 'Link' in r.headers or \
+                    r.headers['Link'].find('rel=\"last\"') == -1:
                     total_pages = 1
                 else:
                     try:
