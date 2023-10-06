@@ -15,7 +15,7 @@ if os.path.isdir(pyddir):
     for f in os.listdir(pyddir):
         if f.endswith('_d.pyd'):
             if len(f.split('.')) == 3:
-                newf = f.split('.')[0]+'_d.pyd'
+                newf = f.split('.')[0] + '_d.pyd'
                 print(f, '=>', newf)
                 os.rename(os.path.join(pyddir, f), os.path.join(pyddir, newf))
                 nfiles += 1
@@ -25,7 +25,7 @@ else:
 
 # powergreppe "VTKPython-targets-debug.cmake"
 
-targetfile = os.path.join(vtkdir, 'lib','cmake','vtk-9.1','VTKPython-targets-debug.cmake')
+targetfile = os.path.join(vtkdir, 'lib', 'cmake', 'vtk-9.1', 'VTKPython-targets-debug.cmake')
 
 if os.path.isfile(targetfile):
     print("powergrepping", targetfile)
@@ -36,13 +36,12 @@ if os.path.isfile(targetfile):
 
     newlines = []
     for l in alllines:
-        newl = l.replace(".cp310-win_amd64_d.pyd","_d.pyd")
+        newl = l.replace(".cp310-win_amd64_d.pyd", "_d.pyd")
         newlines.append(newl)
-    
+
     file = open(targetfile, mode='w')
     for l in newlines:
         file.write(l)
     file.close()
 else:
     print("Error:", targetfile, "not found!")
-

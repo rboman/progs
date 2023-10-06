@@ -107,7 +107,7 @@ def main():
     print("sys.getfilesystemencoding():", sys.getfilesystemencoding())
 
     # loop over all files and try to guess text encoding...
-    encs = {} # dict "encoding" => list of files
+    encs = {}  # dict "encoding" => list of files
     for f in all_files(os.getcwd(), patterns=file_types):
         print('{}..'.format(f), end=' ')
         # utilise "file" - marche très bien
@@ -153,7 +153,8 @@ def main():
                 # convertit les fichiers récalcitrants
                 #if enc=='unknown-8bit': enc='ISO-8859-1'
                 #if enc=='unknown-8bit': enc='CP437'
-                if enc=='unknown-8bit': enc='CP1252'  # Windows1252 assumed
+                if enc == 'unknown-8bit':
+                    enc = 'CP1252'  # Windows1252 assumed
                 try:
                     with open(f, "rb") as source:
                         content = str(source.read(), enc).encode('utf-8')

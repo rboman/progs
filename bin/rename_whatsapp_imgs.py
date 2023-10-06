@@ -12,4 +12,3 @@ for f in os.listdir('.'):
         newname = f'{m.group(1)}-{m.group(2)}-{m.group(3)} {m.group(4)}'
         print('renaming', f, 'to', newname)
         os.rename(f, newname)
-

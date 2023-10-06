@@ -26,22 +26,23 @@
 
 import sys, os, subprocess, re, shutil
 
+
 def getpdfsize(fname):
     """ returns (size_x, size_y, number_of_pages)
     """
     try:
-        cmd = ['pdfinfo', fname ]
+        cmd = ['pdfinfo', fname]
         out = subprocess.check_output(cmd)
     except OSError:
         raise Exception('pdfinfo not found')
     out = out.decode()  # python 3 returns bytes
     m = re.search(r'Page size:\s+(\d+) x (\d+)', out)
-    if m and len(m.groups())==2:
+    if m and len(m.groups()) == 2:
         sx, sy = int(m.group(1)), int(m.group(2))
     else:
         raise Exception('cannot read "pdfinfo" output')
     m = re.search(r'Pages:\s+(\d+)', out)
-    if m and len(m.groups())==1:
+    if m and len(m.groups()) == 1:
         np = int(m.group(1))
     else:
         raise Exception('cannot read "pdfinfo" output')
@@ -63,36 +64,35 @@ def splitpdf(fname, tmpdir):
 
     # get the size of the pdf
     sx, sy, np = getpdfsize(fname)
-    #print 'pdf size = %d x %d' % (sx, sy)
-    #print 'pdf has %d pages' % np
+    # print 'pdf size = %d x %d' % (sx, sy)
+    # print 'pdf has %d pages' % np
 
     # crop pdfs
 
-    
     files = []
-    for n in range(1,np+1):
+    for n in range(1, np + 1):
         infile = pattern % n
-        dx = int(sx/2)
-        dy = int(sy/2)
+        dx = int(sx / 2)
+        dy = int(sy / 2)
         k = 0
         for i in reversed(list(range(2))):
             for j in range(2):
-                print('\tcropping files (%d/%d)' % ((n-1)*4+k+1,np*4) , "     \r", end=' ')
+                print('\tcropping files (%d/%d)' % ((n - 1) * 4 + k + 1, np * 4), "     \r", end=' ')
                 sys.stdout.flush()
-                oy = i*dy
-                ox = j*dx
+                oy = i * dy
+                ox = j * dx
                 outfile = infile.replace('.pdf', '_%d.pdf' % k)
                 files.append(outfile)
-                cmd = ['pdfcrop', '--bbox', 
-                    '%d %d %d %d' % (ox, oy, ox+dx, oy+dy),  
-                    infile, outfile]
-                #print cmd
-                #subprocess.call(cmd)
+                cmd = ['pdfcrop', '--bbox',
+                       '%d %d %d %d' % (ox, oy, ox + dx, oy + dy),
+                       infile, outfile]
+                # print cmd
+                # subprocess.call(cmd)
                 runcmd(cmd)
-                k+=1
+                k += 1
         # del pages
         os.unlink(infile)
-    
+
     print("")
     currentdir = os.getcwd()
 
@@ -100,40 +100,40 @@ def splitpdf(fname, tmpdir):
     cmd = ['pdfjoin'] + files
     runcmd(cmd)
 
-    joinedfile = files[-1].replace('.pdf','-joined.pdf')
+    joinedfile = files[-1].replace('.pdf', '-joined.pdf')
 
     # printe le resultat avec ghostview (pour virer tout ce qui n'est pas visible)
     print('\ttrimming file with ghostview')
-    outputfile = joinedfile.replace('.pdf','-trim-a6.pdf')
-    cmd=['gs', '-dNOPAUSE', '-dBATCH', '-sDEVICE=pdfwrite',
-        '-dCompatibilityLevel=1.4', '-dPDFSETTINGS="/ebook"', 
-        '-sOutputFile=%s' % outputfile, 
-        joinedfile]
+    outputfile = joinedfile.replace('.pdf', '-trim-a6.pdf')
+    cmd = ['gs', '-dNOPAUSE', '-dBATCH', '-sDEVICE=pdfwrite',
+           '-dCompatibilityLevel=1.4', '-dPDFSETTINGS="/ebook"',
+           '-sOutputFile=%s' % outputfile,
+           joinedfile]
     runcmd(cmd)
 
-    os.chdir(currentdir) # -- back to initial folder
-   
+    os.chdir(currentdir)  # -- back to initial folder
+
     # convert A6/landscape to A4/landscape
     print('\tconverting from A6 to A4/landscape')
     inputfile = os.path.join(tmpdir, outputfile)
-    outputfile = fname.replace('.pdf','-1x1.pdf')
-    cmd = ['pdfjam', '--outfile', outputfile, '--paper', 
-        'a4paper', '--landscape', inputfile]
+    outputfile = fname.replace('.pdf', '-1x1.pdf')
+    cmd = ['pdfjam', '--outfile', outputfile, '--paper',
+           'a4paper', '--landscape', inputfile]
     runcmd(cmd)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
-    if len(sys.argv)==1:
+    if len(sys.argv) == 1:
         print('usage: %s [files.pdf]' % sys.argv[0])
         sys.exit(1)
 
-    for i in range(1,len(sys.argv)):
+    for i in range(1, len(sys.argv)):
         fname = sys.argv[i]
         if os.path.splitext(fname)[1] != '.pdf':
             print('skipping non pdf file (%s)')
             continue
-        
+
         print('processing', fname)
         # create tmpdir
         fnamef = os.path.abspath(fname)
@@ -141,9 +141,9 @@ if __name__=="__main__":
         # create a tmp folder
         #tmpdir = os.path.join(os.path.dirname(fnamef), 'tmp')
         curdir = os.getcwd()
-        tmpdir = os.path.abspath(os.path.basename(fnamef).replace('.pdf','.tmp').replace('.','_'))
-        #print 'tmpdir =', tmpdir
-        
+        tmpdir = os.path.abspath(os.path.basename(fnamef).replace('.pdf', '.tmp').replace('.', '_'))
+        # print 'tmpdir =', tmpdir
+
         if not os.path.isdir(tmpdir):
             os.mkdir(tmpdir)
 

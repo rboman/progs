@@ -10,6 +10,7 @@ sys.path.append(r'C:\msys64\mingw64\bin')
 
 f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
 
+
 def main(fname):
 
     # tmpname = 'tmp.f90'
@@ -22,16 +23,16 @@ def main(fname):
     #     tmpf.write('$define FPPR_USR_CASE 0\n')
     #     tmpf.write('$define FPPR_STP_INDENT 4\n')
     #     tmpf.write('$define FPPR_FXD_IN 0\n')
-    #     tmpf.write('$define FPPR_FXD_OUT 0\n') 
+    #     tmpf.write('$define FPPR_FXD_OUT 0\n')
     #     with open(f,'r') as infile:
     #         for l in infile.readlines():
     #             tmpf.write(l)
 
     base, ext = os.path.splitext(fname)
-    outname = base+'.ppr'+ext
+    outname = base + '.ppr' + ext
 
-    outfile = open(outname,'wb')
-    cmd = [ f90ppr_exe ]
+    outfile = open(outname, 'wb')
+    cmd = [f90ppr_exe]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=outfile)
     # maximum  line length (2-132)
     p.stdin.write(b'$define FPPR_MAX_LINE 132\n')
@@ -45,7 +46,7 @@ def main(fname):
     p.stdin.write(b'$define FPPR_FXD_IN 0\n')
     # output format:  0=free format
     p.stdin.write(b'$define FPPR_FXD_OUT 0\n')
-    with open(fname,'rb') as infile:
+    with open(fname, 'rb') as infile:
         for l in infile.readlines():
             p.stdin.write(l)
     p.stdin.close()
@@ -53,12 +54,11 @@ def main(fname):
     print(f'retcode={retcode}')
     outfile.close()
 
-
     # if os.path.isfile(tmpname):
     #     os.remove(tmpname)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     f = sys.argv[1]
     main(f)

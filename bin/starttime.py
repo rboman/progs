@@ -23,9 +23,9 @@ import subprocess
 # call like this: python startTime.py $PID
 
 pid = sys.argv[1]
-proc = subprocess.Popen(['ps','-eo','pid,etime'], stdout=subprocess.PIPE)
+proc = subprocess.Popen(['ps', '-eo', 'pid,etime'], stdout=subprocess.PIPE)
 # get data from stdout
-#proc.wait()
+# proc.wait()
 #results = proc.stdout.readlines()
 out, err = proc.communicate()
 results = out.decode().strip().split('\n')
@@ -38,7 +38,7 @@ for result in results:
             # stop after the first one we find
             break
     except IndexError:
-        pass # ignore it
+        pass  # ignore it
 else:
     # didn't find one
     print("Process PID", pid, "doesn't seem to exist!")
@@ -70,7 +70,7 @@ else:
         seconds = int(rest[0])
 
 # get the start time
-secondsSinceStart = days*24*3600 + hours*3600 + minutes*60 + seconds
+secondsSinceStart = days * 24 * 3600 + hours * 3600 + minutes * 60 + seconds
 # unix time (in seconds) of start
 startTime = time.time() - secondsSinceStart
 # final result

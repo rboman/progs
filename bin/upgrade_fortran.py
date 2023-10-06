@@ -10,7 +10,7 @@
 
 # preliminary checks:
 # - replace variables named "type" in f77 code (this is a f90 keyword)
-# - replace "dowhile" by "do while" (fixed format does not care about spaces) 
+# - replace "dowhile" by "do while" (fixed format does not care about spaces)
 # translation:
 # - go to the source folder
 # - run upgrade_fortran.py *.f
@@ -34,18 +34,18 @@ import glob
 import platform
 
 # setup system to be able to call f90ppr
-#sys.path.append(r'C:\msys64\mingw64\bin')
+# sys.path.append(r'C:\msys64\mingw64\bin')
 
 if 'Windows' in platform.uname():
     def get_exe(exename):
-        exe_paths = [ 
-            r"F:\f90ppr\moware", 
-            r"F:\findent-3.1.6", 
-            r"C:\Users\r_bom\f90ppr\moware", 
-            r"C:\Users\r_bom\findent-3.1.6" 
+        exe_paths = [
+            r"F:\f90ppr\moware",
+            r"F:\findent-3.1.6",
+            r"C:\Users\r_bom\f90ppr\moware",
+            r"C:\Users\r_bom\findent-3.1.6"
         ]
         for ep in exe_paths:
-            exe = os.path.join(ep,exename)
+            exe = os.path.join(ep, exename)
             if os.path.isfile(exe):
                 print(f' > {exe} found.')
                 return exe
@@ -53,11 +53,12 @@ if 'Windows' in platform.uname():
 
     f90ppr_exe = get_exe('f90ppr.exe')
     f90split_exe = get_exe('f90split.exe')
-    findent_exe = get_exe('findent.exe')   
+    findent_exe = get_exe('findent.exe')
 else:
     f90ppr_exe = r"f90ppr"
     f90split_exe = r"f90split"
     findent_exe = r"findent"
+
 
 def check_one(f77name, format='free'):
     """ performs some preliminary checks in the source files:
@@ -66,7 +67,7 @@ def check_one(f77name, format='free'):
                           if the input is in fixed format and 132 in free format
     - findent+f90ppr have problems with continuation lines preceded by empty or comment lines 
        this is checked too
-    
+
     HINTS (vscode): 
     - in vscode, you can also set "rulers" (settings.json) to display column limits
     - errors can be CTRL-clicked on vscode to "jump" to them (this requires an absolute PATH)
@@ -79,49 +80,50 @@ def check_one(f77name, format='free'):
     is_continuation = True
     has_comment = False
     previous_has_comment = False
-    previous = b'';
+    previous = b''
     with open(f77name, 'rb') as infile:
-        for i,l in enumerate(infile.readlines()):  # l = bytes
-            lutf8 = l.decode('ascii', 'ignore') # convert to utf8
+        for i, l in enumerate(infile.readlines()):  # l = bytes
+            lutf8 = l.decode('ascii', 'ignore')  # convert to utf8
             lstrip = lutf8.strip()              # utf8 too
 
             # detect comments hidden after col 72 in fixed format
-            if format=='fixed':
-                has_comment = lutf8[0:1]=='c' or lutf8[0:1]=='C' or ('!' in lutf8[0:72])
-                if not has_comment and lutf8[72:].strip()!='' and not lutf8[72:].strip()[0:1]=='!':
-                    warns.append(f'{f77name}:{i+1} comment hidden after column 72!\n\t'+lutf8+'\t'+'-'*70+'>|')
+            if format == 'fixed':
+                has_comment = lutf8[0:1] == 'c' or lutf8[0:1] == 'C' or ('!' in lutf8[0:72])
+                if not has_comment and lutf8[72:].strip() != '' and not lutf8[72:].strip()[0:1] == '!':
+                    warns.append(f'{f77name}:{i+1} comment hidden after column 72!\n\t' + lutf8 + '\t' + '-' * 70 + '>|')
 
             # checks line length
             clen = len(lstrip)
-            if clen>132:
-                warns.append(f'{f77name}:{i+1} line exceeds 132 columns (ncols={clen})!\n\t'+lutf8+'\t'+'-'*130+'>|')
-            if clen>maxlen:
+            if clen > 132:
+                warns.append(f'{f77name}:{i+1} line exceeds 132 columns (ncols={clen})!\n\t' + lutf8 + '\t' + '-' * 130 + '>|')
+            if clen > maxlen:
                 maxlen = clen
-                maxno = i+1
+                maxno = i + 1
             # checks some bad patterns
             if 'dowhile' in lutf8.lower():
-                warns.append(f'{f77name}:{i+1} replace "dowhile" by "do while"!\n\t'+lutf8)
+                warns.append(f'{f77name}:{i+1} replace "dowhile" by "do while"!\n\t' + lutf8)
             # if b'type' in l.lower():
             # faire une regex plus subtile! (supprimer commentaires, chaines, variables "typeel")
             #     warns.append(f'{os.path.basename(f77name)}:{i+1} "type" is a reserved keyword in f90!\n\t'+l.decode().strip())
 
             # is the line a continuation line?
-            if format=='fixed':
+            if format == 'fixed':
                 # if len(l)>6:
                 #     print (f'{i+1}, "{l}", "{l[0:5]}", "{l[0:5].strip()}", "{l[5]}"') # do not use 'l'!! (bytes)
-                is_continuation = ( len(lutf8)>6 and lutf8[0:5].strip()=='' and lutf8[5:6]!=' ' and (not '\t' in lutf8[0:5]) )   # remark: l[5] returns an integer! (32 for space char)
+                is_continuation = (len(lutf8) > 6 and lutf8[0:5].strip() == '' and lutf8[5:6] != ' ' and (
+                    not '\t' in lutf8[0:5]))   # remark: l[5] returns an integer! (32 for space char)
             else:
-                is_continuation = ( len(lstrip)>0 and lstrip[0:1]=='&' )
+                is_continuation = (len(lstrip) > 0 and lstrip[0:1] == '&')
 
             if is_continuation and previous_has_comment:
-                warns.append(f'{f77name}:{i+1} continuation line after a line with a comment!\n\t'+previous+'\t'+lutf8)
+                warns.append(f'{f77name}:{i+1} continuation line after a line with a comment!\n\t' + previous + '\t' + lutf8)
 
             if is_continuation and previous_empty:
-                warns.append(f'{f77name}:{i+1} continuation line after an empty line or comment!\n\t'+previous+'\t'+lutf8)
+                warns.append(f'{f77name}:{i+1} continuation line after an empty line or comment!\n\t' + previous + '\t' + lutf8)
 
             # is the current line a comment or empty?
-            if format=='fixed':
-                previous_empty = (len(lstrip)==0 or lutf8[0:1]=='c' or lutf8[0:1]=='C' or lstrip[0:1]=='!')
+            if format == 'fixed':
+                previous_empty = (len(lstrip) == 0 or lutf8[0:1] == 'c' or lutf8[0:1] == 'C' or lstrip[0:1] == '!')
 
                 # verifie les '!' au milieu des lignes => ne pose pas de probleme
                 # if len(lstrip)>0 and lstrip[0:1]=='!' and lutf8[0:1]!='!':
@@ -131,10 +133,10 @@ def check_one(f77name, format='free'):
                 # if len(lstrip)>6 and '\t' in lutf8[6:] and is_continuation:
                 #     warns.append(f'{f77name}:{i+1} TAB character in the middle of a continuation line!\n\t'+lutf8)
             else:
-                previous_empty = (len(lstrip)==0 or lstrip[0:1]=='!')
+                previous_empty = (len(lstrip) == 0 or lstrip[0:1] == '!')
             # print(f'previous_empty={previous_empty}')
-            previous = lutf8;
-            previous_has_comment = ( '!' in lutf8 )
+            previous = lutf8
+            previous_has_comment = ('!' in lutf8)
 
     #print(f'longest line ({maxlen} chars) at line {maxno}')
     for w in warns:
@@ -155,7 +157,7 @@ def pretty_one(f90name, keepf=False):
     base, ext = os.path.splitext(f90name)
 
     # rename orig file to .f90.bak
-    bakfile = f90name+'.bak'
+    bakfile = f90name + '.bak'
     if os.path.isfile(bakfile):
         os.remove(bakfile)
     os.rename(f90name, bakfile)
@@ -166,7 +168,7 @@ def pretty_one(f90name, keepf=False):
         cmd = [f90ppr_exe]
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=f90file)
         # maximum  line length (2-132)
-        p.stdin.write(b'$define FPPR_MAX_LINE 120\n') # 132 produces errors (missing '&' at the EOL!)
+        p.stdin.write(b'$define FPPR_MAX_LINE 120\n')  # 132 produces errors (missing '&' at the EOL!)
         # keywords case: FPPR_LEAVE, FPPR_UPPER, FPPR_LOWER
         p.stdin.write(b'$define FPPR_KWD_CASE FPPR_LOWER\n')
         # variables case: FPPR_LEAVE, FPPR_UPPER, FPPR_LOWER
@@ -199,10 +201,10 @@ def freeformat_one(f77name, keepf=False):
 
     base, ext = os.path.splitext(f77name)
     opts = []
-    if ext=='.inc':
-        f90name = base+'.inc90'
+    if ext == '.inc':
+        f90name = base + '.inc90'
     else:
-        f90name = base+'.f90'
+        f90name = base + '.f90'
 
     # do checks
     check_one(f77name)
@@ -222,10 +224,8 @@ def freeformat_one(f77name, keepf=False):
         print(f'rm {f77name}')
         os.remove(f77name)
     else:
-        bak = f77name+'.bak'
+        bak = f77name + '.bak'
         os.rename(f77name, bak)
-
-
 
 
 def freeformat_f90ppr_one(f77name, keepf=False):
@@ -236,7 +236,7 @@ def freeformat_f90ppr_one(f77name, keepf=False):
     """
 
     base, ext = os.path.splitext(f77name)
-    f90name = base+'.f90'
+    f90name = base + '.f90'
 
     # do checks
     check_one(f77name)
@@ -247,7 +247,7 @@ def freeformat_f90ppr_one(f77name, keepf=False):
         cmd = [f90ppr_exe]
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=f90file)
         # maximum  line length (2-132)
-        p.stdin.write(b'$define FPPR_MAX_LINE 120\n') # 132 produces errors (missing '&' at the EOL!)
+        p.stdin.write(b'$define FPPR_MAX_LINE 120\n')  # 132 produces errors (missing '&' at the EOL!)
         # keywords case: FPPR_LEAVE, FPPR_UPPER, FPPR_LOWER
         p.stdin.write(b'$define FPPR_KWD_CASE FPPR_LOWER\n')
         # variables case: FPPR_LEAVE, FPPR_UPPER, FPPR_LOWER
@@ -271,7 +271,7 @@ def freeformat_f90ppr_one(f77name, keepf=False):
         print(f'rm {f77name}')
         os.remove(f77name)
     else:
-        bak = f77name+'.bak'
+        bak = f77name + '.bak'
         os.rename(f77name, bak)
 
 
@@ -279,7 +279,7 @@ def split_one(f90name, keepf=False):
     """ SPLIT .f90 files, 1 file per subroutine
     since it uses f90ppr, you should check that each (comment) line is not longer than 132 chars
     """
- 
+
     # runs f90split from another folder
     # otherwise, routines will have a bad name if the initial file already has
     # the name of a subroutine
@@ -319,8 +319,8 @@ def split_one(f90name, keepf=False):
         print(f'rm {f90name}')
         os.remove(f90name)
     else:
-        bak = f90name+'.bak'
-        os.rename(f90name, bak)  
+        bak = f90name + '.bak'
+        os.rename(f90name, bak)
 
     # copy subroutines to initial folder
     f90folder = os.path.dirname(f90name)
@@ -338,7 +338,7 @@ def split_one(f90name, keepf=False):
     os.chdir(origdir)
 
 
-def iterate(files, exts=['.f', '.for', '.f90','.inc']):
+def iterate(files, exts=['.f', '.for', '.f90', '.inc']):
     """ iterates over the files with given extension and 
     performs some checks. 
     Yields valid absolute filenames one by one.
@@ -359,31 +359,33 @@ def iterate(files, exts=['.f', '.for', '.f90','.inc']):
 
 
 def check(files):
-    for f in iterate(files, exts=['.f', '.for','.inc']):
+    for f in iterate(files, exts=['.f', '.for', '.inc']):
         print(f'checking file {f}')
         check_one(f, format='fixed')
     for f in iterate(files, exts=['.f90']):
         print(f'checking file {f}')
         check_one(f, format='free')
 
+
 def split(files, keep):
     for f in iterate(files, exts=['.f90']):
         print(f'splitting file {f}')
         split_one(f, keep)
+
 
 def freeformat(files, keep):
     for f in iterate(files, exts=['.f', '.for', '.inc']):
         print(f'converting file {f} to free format')
         freeformat_one(f, keep)
 
+
 def pretty(files, keep):
-    for f in iterate(files, exts=['.f90','.inc90']):
+    for f in iterate(files, exts=['.f90', '.inc90']):
         print(f'f90ppr {f}')
         pretty_one(f, keep)
 
 
 if __name__ == "__main__":
-
 
     # parse cmd-line arguments
     import argparse
@@ -395,7 +397,7 @@ if __name__ == "__main__":
                         'check', 'split', 'freeformat', 'pretty'])
     parser.add_argument('files', nargs='+', help='fortran files')
     args = parser.parse_args()
-    print (args)
+    print(args)
 
     if args.command == 'check':
         check(args.files)
@@ -408,6 +410,4 @@ if __name__ == "__main__":
     else:
         raise Exception("Unknown arg: {}".format(args.command))
 
-
     # main(sys.argv[1])
-

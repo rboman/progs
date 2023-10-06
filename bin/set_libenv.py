@@ -17,14 +17,14 @@ import os, subprocess
 local_folder = r"c:\local"
 
 envs = {
-    'BOOST_INCLUDEDIR': [ r'%MYLOCAL%\boost' ],  # not BOOST_INCLUDE_DIR!
-    'BOOST_LIBRARYDIR': [ r'%MYLOCAL%\boost\lib64-msvc-14.2' ],
-    'CMAKE_INSTALL_PREFIX': [ r'%MYLOCAL%\CGAL' ],
+    'BOOST_INCLUDEDIR': [r'%MYLOCAL%\boost'],  # not BOOST_INCLUDE_DIR!
+    'BOOST_LIBRARYDIR': [r'%MYLOCAL%\boost\lib64-msvc-14.2'],
+    'CMAKE_INSTALL_PREFIX': [r'%MYLOCAL%\CGAL'],
     # if INCLUDE/LIB starts with %MYLOCAL% instead of c:\local, the variable editor
-    # thinks it is not a list which makes it difficult to be edited (1 long line)... :( 
+    # thinks it is not a list which makes it difficult to be edited (1 long line)... :(
     'INCLUDE':
     [
-        rf"{local_folder}\Qwt\include",   
+        rf"{local_folder}\Qwt\include",
         rf"{local_folder}\parasolid",
         rf"{local_folder}\lagamine\include",
         rf"{local_folder}\eigen",
@@ -32,7 +32,7 @@ envs = {
         rf"{local_folder}\zlib\include",
         r"%oneapi_root%\mkl\latest\include",
         r"%oneapi_root%\tbb\latest\include",
-        r"%oneapi_root%\compiler\latest\windows\compiler\include"       
+        r"%oneapi_root%\compiler\latest\windows\compiler\include"
     ],
     'LIB':
     [
@@ -48,17 +48,17 @@ envs = {
     [
         rf"{local_folder}"
     ],
-    # 'OMP_NUM_THREADS': [ "1" ],  
-    'P_SCHEMA': [ rf"{local_folder}\parasolid\schema" ],  
-    # 'Python3_ROOT_DIR': [ r"c:\Python37" ],  # <=     
-    # 'LMS_LICENSE': [ "xxx" ],     
-    # 'GIT_SSH': [ r"xxx" ],     
+    # 'OMP_NUM_THREADS': [ "1" ],
+    'P_SCHEMA': [rf"{local_folder}\parasolid\schema"],
+    # 'Python3_ROOT_DIR': [ r"c:\Python37" ],  # <=
+    # 'LMS_LICENSE': [ "xxx" ],
+    # 'GIT_SSH': [ r"xxx" ],
 }
 # print(envs)
 # import sys
 # sys.exit()
 
-if __name__=='__main__':
+if __name__ == '__main__':
 
     for key, newpaths in envs.items():
         #print(f'{key} : {folders}')
@@ -70,9 +70,9 @@ if __name__=='__main__':
             oldpaths = oldpaths.strip().strip(';').split(';')
             oldpaths = list(map(os.path.normcase, map(os.path.normpath, oldpaths)))
         except:
-            oldpaths = [] 
+            oldpaths = []
         # print(f'{key} = {oldpaths}')
-        
+
         for f in newpaths:
             # check new folders on disk
             # if not os.path.isdir(f):

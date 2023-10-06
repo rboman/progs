@@ -7,6 +7,7 @@ import os
 target_folder = r'D:\dev\Metafor\oo_metaB\bin\Release'
 mesa3d_archive_url = r'https://github.com/pal1000/mesa-dist-win/releases/download/23.1.6/mesa3d-23.1.6-release-msvc.7z'
 
+
 def download_file(url_file):
     filename = os.path.basename(url_file)
     import urllib.request
@@ -40,5 +41,5 @@ def download_file(url_file):
 # >>> for name, value in headers.items():
 # ...     print(name, value)
 
-if __name__=="__main__":
+if __name__ == "__main__":
     download_file(mesa3d_archive_url)

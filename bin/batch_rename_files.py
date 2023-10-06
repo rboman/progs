@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
-import sys
 import os
 import fnmatch
-import re
-import subprocess
+
 
 
 def all_files(root,
@@ -45,11 +43,10 @@ def main():
                        skips='*.git*;*build*'):
 
         targetname = os.path.join(os.path.dirname(f), os.path.basename(f).lower())
-        if(targetname!=f):
+        if(targetname != f):
             print(f, targetname)
 
             os.rename(f, targetname)
-
 
         # cmd = ['clang-format', "-style=file", "-i", f]
         # retcode = subprocess.call(cmd)
@@ -60,4 +57,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

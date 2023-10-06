@@ -10,6 +10,7 @@ sys.path.append(r'C:\msys64\mingw64\bin')
 
 f90ppr_exe = r"F:\f90ppr\moware\f90ppr"
 
+
 def main(fname):
 
     # tmpname = 'tmp.f90'
@@ -18,10 +19,10 @@ def main(fname):
 
     base, ext = os.path.splitext(fname)
 
-    outname = base+'.ppr'+ext
+    outname = base + '.ppr' + ext
 
-    outfile = open(outname,'wb')
-    cmd = [ f90ppr_exe ]
+    outfile = open(outname, 'wb')
+    cmd = [f90ppr_exe]
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=outfile)
     # maximum  line length (2-132)
     p.stdin.write(b'$define FPPR_MAX_LINE 132\n')
@@ -36,19 +37,19 @@ def main(fname):
     # output format:  0=free format
     p.stdin.write(b'$define FPPR_FXD_OUT 0\n')
     p.stdin.write(b'      subroutine dummy()\n')
-    with open(fname,'rb') as infile:
+    with open(fname, 'rb') as infile:
         for l in infile.readlines():
             p.stdin.write(l)
-    p.stdin.write(b'\n      end()\n') # add a line
+    p.stdin.write(b'\n      end()\n')  # add a line
     p.stdin.close()
     retcode = p.wait()
     print(f'retcode={retcode}')
     outfile.close()
 
     # remove first and last line
-    with open(outname,'rb') as f:
+    with open(outname, 'rb') as f:
         lines = f.readlines()
-    with open(outname,'wb') as f:
+    with open(outname, 'wb') as f:
         f.writelines(lines[1:-1])
 
     # overwrite file
@@ -58,7 +59,7 @@ def main(fname):
         os.remove(outname)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
 
     for f in glob.glob(sys.argv[1]):
         main(f)

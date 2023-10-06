@@ -24,6 +24,7 @@ Example:
     rb.py updateoffi.py
 """
 
+
 def exec_pyfile(fname, searchdir, args, banner=False):
 
     if os.path.isfile(os.path.abspath(fname)):
@@ -60,12 +61,13 @@ def exec_pyfile(fname, searchdir, args, banner=False):
         code = compile(f.read(), testname, 'exec')
         exec(code, env, env)
 
+
 if __name__ == "__main__":
     import sys
     import os
     import os.path
     print('[rb.py] using python', sys.version)
-    
+
     # process arguments
     import argparse
     parser = argparse.ArgumentParser(

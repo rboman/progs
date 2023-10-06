@@ -3,13 +3,13 @@
 
 # USAGE: double cliquer sur ce fichier pour voir quel python est utilisé
 
-#C:\Users\r_bom\Downloads>py --list
-#Installed Pythons found by py Launcher for Windows
+# C:\Users\r_bom\Downloads>py --list
+# Installed Pythons found by py Launcher for Windows
 # -3.7-64 *
 # -2.7-64
 
-#Associer "py.exe" aux fichiers python:
-#======================================
+# Associer "py.exe" aux fichiers python:
+# ======================================
 
 # Tester d'abord ce qui est lancé pour les .py:
 

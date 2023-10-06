@@ -8,7 +8,8 @@ import os, subprocess, shutil
 pars = {}
 pars['destdir'] = '/hdd2/boman/Dropbox/Backups/Repositories'
 pars['srcdir'] = '/hdd2/boman/Backups/rsync'
-pars['folders'] = ['web' ] #['SVN', 'SVN2', 'web']
+pars['folders'] = ['web']  # ['SVN', 'SVN2', 'web']
+
 
 def tar_folder(fname):
     bname = os.path.basename(fname)
@@ -20,21 +21,22 @@ def tar_folder(fname):
     parallel = False
     with open(os.devnull, 'w') as FNULL:
         parallel = not subprocess.call(["which", "pbzip2"], stdout=FNULL, stderr=subprocess.STDOUT)
-     
+
     # parallel compression if possible
     if parallel:
         # parallel (requires 'pbzip2') - ?pxz does not always work ... and is very slow...
-        cmd = ['tar', '-I', 'pbzip2', '-cf', arcname, fname] 
+        cmd = ['tar', '-I', 'pbzip2', '-cf', arcname, fname]
     else:
         print('\tinfo: use "apt-get install pbzip2" for parallel compression')
         cmd = ['tar', '-cjf', arcname, fname]
-    #print cmd
+    # print cmd
     print(" ".join(cmd))
     subprocess.check_call(cmd)
 
     # TODO: utiliser shutil.make_archive ????
 
     return arcname
+
 
 def main(pars):
     destdir = pars['destdir']
@@ -61,5 +63,5 @@ def main(pars):
         shutil.copy2(arcname, target)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main(pars)

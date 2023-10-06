@@ -94,7 +94,7 @@ if __name__ == '__main__':
     tmpfiles = []
     for f in sys.argv[1:]:
         ext = os.path.splitext(f)[1]
-        if ext in [ '.py', '.h', '.cpp', '.hpp' ] :
+        if ext in ['.py', '.h', '.cpp', '.hpp']:
             # convert python files
             tmp = py2pdf(f)
             tmpfiles.append(tmp)
