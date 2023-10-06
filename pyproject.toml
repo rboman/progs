@@ -1,6 +1,7 @@
 # see https://github.com/hhatto/autopep8
 #     https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
+#     https://peps.python.org/pep-0008/
 
 [tool.autopep8]
-max_line_length = 150
-ignore = ["E401"]
+max_line_length = 300
+ignore = ["E401"] # allow multiple imports on one line
