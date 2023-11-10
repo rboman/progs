@@ -13,7 +13,7 @@ class ParticleManager
 {
 public:
     ParticleSort sorting; ///< sorting machine
-    FixedParticle *part;        ///< array of pointers toward particles
+    FixedParticle *part;  ///< array of pointers toward particles
     int numFP;            ///< number of fixed particles
     int numMP;            ///< number of mobile particles
     int numPart;          ///< number of particles (FP+MP)
