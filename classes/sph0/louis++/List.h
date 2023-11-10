@@ -3,9 +3,8 @@
 
 #include "sph.h"
 
-// !> List class
-// !! @n This class is a list that contains pointers toward objects (+distance).
-// !! The only problem of this list class is that only link objects (ptr+r) can be added
+/// This class is a list that contains pointers toward objects (+distance).
+/// The only problem of this list class is that only link objects (ptr+r) can be added
 
 class List
 {

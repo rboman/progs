@@ -4,11 +4,10 @@
 #include "sph.h"
 #include "ParticleSort.h"
 
-// !> Particle_manager class
-// !! @n This class is used to manage all the particles,
-// !! i.e. it contains a reference to every particles,
-// !! it contains a number of parameters useful for the problem
-// !! (variable smoothing length or not, ...), it has a solver, etc.
+/// This class is used to manage all the particles,
+/// i.e. it contains a reference to every particles,
+/// it contains a number of parameters useful for the problem
+/// (variable smoothing length or not, ...), it has a solver, etc.
 
 class ParticleManager
 {

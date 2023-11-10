@@ -102,7 +102,7 @@ module SPH_module
     
     !> Mobile_particle class
     !! @n This is an extension of the fixed_particle class.
-    !! The procedure varUpdtate is overwritten to include the update of u and x.
+    !! The procedure varUpdate is overwritten to include the update of u and x.
     
     type, extends(fixed_particle) :: mobile_particle
         contains
