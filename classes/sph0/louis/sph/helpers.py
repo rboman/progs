@@ -153,7 +153,7 @@ class Model:
         # file.close()
 
     def getexe(self):
-        """ looks for fortran exe
+        """ looks for fortran executable
         """
         dir1 = os.path.abspath(os.path.dirname(__file__) + os.sep + "..") + os.sep + "build"
         if 'Windows' in platform.uname():
