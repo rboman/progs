@@ -1,18 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # converts .res files to Paraview (VTK)
+#
+# - This script is run at the end of each test.
+# - You may want to run it from the workspace/test* folders
+#   if you want to rebuild the vtk files or in case of errors.
+#
+# Note on efficiency: 
+#   Execution is rather slow for large meshes and long simulations.
+#   => Could be rewritten in C++ or at least multithreaded.
+#
+#   tests_waterdrop4: 21'34" !
 
 import glob
 import vtk
-version = vtk.vtkVersion().GetVTKMajorVersion()
 
 
 class ToParaview:
     def __init__(self, verb=False):
         self.verb = verb
 
-    def convertall(self, pattern='*MP*.res'):
+    def convertall(self, pattern='res*.res'):
         print("converting grid to VTK")
         self.convertGrid()
         print("converting %s to VTK" % pattern)
@@ -47,16 +55,12 @@ class ToParaview:
         compressor = vtk.vtkZLibDataCompressor()
         writer.SetCompressor(compressor)
         writer.SetDataModeToBinary()
-        if version > 5:
-            writer.SetInputData(grid)
-        else:
-            writer.SetInput(grid)
+        writer.SetInputData(grid)
         writer.SetFileName(fname.replace('.out', '.vts'))
         writer.Write()
 
     def convertParts(self, fname):
 
-        # if self.verb:
         print('converting', fname)
         file = open(fname)
 
@@ -83,7 +87,6 @@ class ToParaview:
 
         i = 0
         for line in file:
-            # x,y,z, vx,vy,vz, m, p = map(float, line.strip().split())
             try:
                 x, y, z, vx, vy, vz, rho, p, m, c, h, mu, nv = list(map(float, line.strip().split()))
             except:
@@ -119,13 +122,11 @@ class ToParaview:
         compressor = vtk.vtkZLibDataCompressor()
         writer.SetCompressor(compressor)
         writer.SetDataModeToBinary()
-        if version > 5:
-            writer.SetInputData(ugrid)
-        else:
-            writer.SetInput(ugrid)
+        writer.SetInputData(ugrid)
         writer.SetFileName(fname.replace('.res', '.vtu'))
         writer.Write()
 
 
 if __name__ == "__main__":
+    # by default: convert files in the current directory
     ToParaview(verb=True).convertall()

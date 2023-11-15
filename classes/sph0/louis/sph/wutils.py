@@ -32,7 +32,8 @@ def parseargs():
     """
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("-v", "--verb", help="increase output verbosity", action="count", default=0)
+    parser.add_argument("-v", "--verb", help="increase output verbosity",
+                        action="count", default=0)
     parser.add_argument("--nogui", help="disable any graphical output",
                         action="store_true")
     parser.add_argument("-k", help="nb of threads", type=int, default=1)

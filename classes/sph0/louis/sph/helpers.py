@@ -2,12 +2,17 @@
 # -*- coding: utf-8 -*-
 
 # Python helper classes for Louis' code
+# Holds the model parameters in a structured way and makes the interface with 
+# the Fortran executable.
 
 import math, subprocess, os, platform, sys, glob
 import sph.wutils as wu
 
 
 class Kernel:
+    """kernel type: contains a "name" (string) and an option "corrected" (bool) 
+    enabling the correction near the boundaries.
+    """
     names = {'cubic': 1, 'quadratic': 2, 'quintic': 3}
 
     def __init__(self, name='cubic', corr=True):
@@ -25,6 +30,8 @@ class Kernel:
 
 
 class EqState:
+    """equation of state: either liquid or gas.
+    """
     names = {'gas': 1, 'liquid': 2}
 
     def __init__(self, name='liquid'):
@@ -43,18 +50,21 @@ class EqState:
 
 
 class Model:
+    """A SPH problem with all its parameters.
+    """
+
     def __init__(self):
         # default values of the parameters
-        self.h_0 = 0.1         # 3:  [double] initial smoothing length
-        self.c_0 = 1480.0      # 4:  [double] initial speed of sound [m/s]
-        self.rho_0 = 1000.0      # 5:  [double] initial density [kg/m^3]
-        self.dom_dim = 0.0         # 6:  [double] domain size (cube)
-        self.kernel = Kernel()    # 7:  [integer] (1:'cubic'/2:'quadratic'/3:'quintic')
-        self.alpha = 0.5         # 8:  [double] artificial viscosity factor 1
+        self.h_0 = 0.1          # 3:  [double] initial smoothing length
+        self.c_0 = 1480.0       # 4:  [double] initial speed of sound [m/s]
+        self.rho_0 = 1000.0     # 5:  [double] initial density [kg/m^3]
+        self.dom_dim = 0.0      # 6:  [double] domain size (cube)
+        self.kernel = Kernel()  # 7:  [integer] (1:'cubic'/2:'quadratic'/3:'quintic')
+        self.alpha = 0.5        # 8:  [double] artificial viscosity factor 1
         self.beta = 0.0         # 9:  [double] artificial viscosity factor 2
-        self.law = EqState()   # 10: [integer] (1:'gas'/2:'fluid')
-        self.maxTime = 1.0         # 14: [double] simulation time [s]
-        self.saveInt = 0.01        # 15: [double] save interval [s]
+        self.law = EqState()    # 10: [integer] (1:'gas'/2:'fluid')
+        self.maxTime = 1.0      # 14: [double] simulation time [s]
+        self.saveInt = 0.01     # 15: [double] save interval [s]
 
         # sets of particles
         self.fparts = []
@@ -92,39 +102,42 @@ class Model:
         self.mparts += parts
 
     def clean(self):
+        """cleans files from workspace
+        """
         for p in ['res*.*', 'input.*', 'grid.*']:
             for f in glob.glob(p):
                 print('rm %s' % f)
                 os.remove(f)
 
     def run(self):
-
+        """runs a simulation with the given set of parameters and particles.
+        """
         # clean prev results
         self.clean()
 
         # write parameters
         self.writeprm()
 
-        # input.mp - contains mobile particles
+        # "input.mp" - contains mobile particles
         file = open('input.mp', 'w')
         for p in self.mparts:
             p.write(file)
         file.close()
 
-        # input.fp - contains fixed particles
+        # "input.fp" - contains fixed particles
         file = open('input.fp', 'w')
         for p in self.fparts:
             p.write(file)
         file.close()
 
-        # paths.txt - contains path to the input files
+        # "paths.txt" - contains path to the input files
         file = open('paths.txt', 'w')
         file.write('input.prm\n')
         file.write('input.fp\n')
         file.write('input.mp\n')
         file.close()
 
-        # set nb of threads
+        # set nb of OpenMP threads
         args = wu.parseargs()
         os.environ['OMP_NUM_THREADS'] = str(args.k)
 
@@ -132,30 +145,25 @@ class Model:
         exename = self.getexe()
         print("running %s using %s threads" % (exename, os.environ['OMP_NUM_THREADS']))
 
-        # iop = subprocess.call(self.getexe(), shell=True, stdout=sys.stdout, stderr=sys.stderr)
-        # print 'louis returned iop=%d', iop
-
+        # start Fortran code as a subprocess and streams the fortran output
+        # to the standard output
         # http://stackoverflow.com/questions/2715847/python-read-streaming-input-from-subprocess-communicate/17698359#17698359
-
-        # file=open('pipo.txt','w')
         try:
-            proc = subprocess.Popen(exename, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)  # , bufsize=1)
+            proc = subprocess.Popen(exename, stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
             with proc.stdout:
                 for line in iter(proc.stdout.readline, b''):
                     line = line.decode().rstrip('\n').rstrip('\r')
                     print('[F]%s' % line)
-                    # sys.stdout.write(line)
-                    # file.write("line=\"%s\"\n" % line)
             proc.wait()
         except KeyboardInterrupt:
             print('Ignoring CTRL-C')
             pass
-        # file.close()
 
     def getexe(self):
-        """ looks for fortran executable
+        """ looks for Louis' executable
         """
-        dir1 = os.path.abspath(os.path.dirname(__file__) + os.sep + "..") + os.sep + "build"
+        dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","build"))
         if 'Windows' in platform.uname():
             exename = os.path.join(dir1, "Release/louis.exe")
         else:
@@ -185,6 +193,9 @@ class Model:
 
 
 class Particle:
+    """a SPH Particle with position, velocity, pressure, density and mass.
+    """
+
     def __init__(self, x, y, z, vx, vy, vz, rho0, m0):
         self.x = x
         self.y = y
@@ -206,7 +217,8 @@ class Particle:
 
 
 class Cube:
-    """ a basic "cube" defined by its origin (o), size (L), density (rho) and distance between layers (s)
+    """ a basic "cube" defined by its origin (o), size (L), density (rho) and 
+    distance between layers (s)
     """
 
     def __init__(self, o=(0.0, 0.0, 0.0), L=(1.0, 1.0, 1.0), rho=1.0, s=0.1):
@@ -220,6 +232,8 @@ class Cube:
         self.s = s
 
     def generate(self):
+        """returns a list of Particle objects
+        """
         parts = []
         ni = int(math.ceil((self.Lx / self.s))) + 1
         dx = self.Lx / (ni - 1)
