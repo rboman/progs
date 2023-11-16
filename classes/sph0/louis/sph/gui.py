@@ -8,13 +8,14 @@
 #
 # Note on efficiency: 
 #   Execution is rather slow for large meshes and long simulations.
-#   => Could be rewritten in C++ or at least multithreaded.
+#   => Could be rewritten in C++.
 #
-#   tests_waterdrop4: 21'34" !
+#   tests_waterdrop4: 21'34" (sequential) 
+#                      2'22" (parallel - 20 threads) - speedup x9.1
 
 import glob
 import vtk
-
+import multiprocessing
 
 class ToParaview:
     def __init__(self, verb=False):
@@ -24,8 +25,12 @@ class ToParaview:
         print("converting grid to VTK")
         self.convertGrid()
         print("converting %s to VTK" % pattern)
-        for f in glob.glob(pattern):
-            self.convertParts(f)
+
+        pool = multiprocessing.Pool()
+        for result in pool.map(self.convertParts, glob.glob(pattern)):
+            pass
+        # for f in glob.glob(pattern):
+        #     self.convertParts(f)
 
     def convertGrid(self, fname='grid.out'):
         if self.verb:
@@ -129,4 +134,4 @@ class ToParaview:
 
 if __name__ == "__main__":
     # by default: convert files in the current directory
-    ToParaview(verb=True).convertall()
+    ToParaview(verb=False).convertall()
