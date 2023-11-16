@@ -6,16 +6,18 @@
 # - You may want to run it from the workspace/test* folders
 #   if you want to rebuild the vtk files or in case of errors.
 #
-# Note on efficiency: 
+# Note on efficiency:
 #   Execution is rather slow for large meshes and long simulations.
 #   => Could be rewritten in C++.
 #
-#   tests_waterdrop4: 21'34" (sequential) 
+#   tests_waterdrop4: 21'34" (sequential)
 #                      2'22" (parallel - 20 threads) - speedup x9.1
 
+import os
 import glob
 import vtk
 import multiprocessing
+
 
 class ToParaview:
     def __init__(self, verb=False):
@@ -33,6 +35,12 @@ class ToParaview:
         #     self.convertParts(f)
 
     def convertGrid(self, fname='grid.out'):
+
+        outname = fname.replace('.out', '.vts')
+
+        if os.path.exists(outname):
+            return
+
         if self.verb:
             print('converting', fname)
 
@@ -61,10 +69,15 @@ class ToParaview:
         writer.SetCompressor(compressor)
         writer.SetDataModeToBinary()
         writer.SetInputData(grid)
-        writer.SetFileName(fname.replace('.out', '.vts'))
+        writer.SetFileName(outname)
         writer.Write()
 
     def convertParts(self, fname):
+
+        outname = fname.replace('.res', '.vtu')
+
+        if os.path.exists(outname):
+            return
 
         print('converting', fname)
         file = open(fname)
@@ -128,7 +141,7 @@ class ToParaview:
         writer.SetCompressor(compressor)
         writer.SetDataModeToBinary()
         writer.SetInputData(ugrid)
-        writer.SetFileName(fname.replace('.res', '.vtu'))
+        writer.SetFileName(outname)
         writer.Write()
 
 
