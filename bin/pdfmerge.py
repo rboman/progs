@@ -14,6 +14,22 @@
 #
 # see https://stackoverflow.com/questions/2507766/merge-convert-multiple-pdf-files-into-one-pdf
 
+# notes: A TESTER!!
+
+# autres possibilités pour convertir du python en pdf:
+#   pygmentize: https://pygments.org/docs/cmdline/  (pip install Pygments)
+#   pygmentize -f latex -O full,style=emacs -o code.tex code.py
+#   pdflatex code.tex
+#
+# avec vim:
+#   vim fem.py -c ":hardcopy > abc.ps" -c ":q"
+#   ps2pdf abc.ps abc.pdf
+#
+# avec enscript:
+#   enscript -p code.ps --color=1 --line-numbers=1 --landscape --fancy-header --pretty-print=python code.py
+#   ps2pdf code.ps code.pdf
+#
+
 import os
 import sys
 import subprocess
