@@ -1,0 +1,35 @@
+# list of ignored files/folders
+
+build/
+*~
+*.o
+*.obj
+*.bak
+.vscode/
+*.msh
+gmsh-sdk/
+eigen/
+*.tgz
+*.zip
+*.swp
+a.out
+
+# latex
+*.aux
+*.log
+*.nav
+*.out
+*.pdf
+!fig_*.pdf
+*.snm
+*.synctex*
+*.toc
+*.fls 
+*.fdb_latexmk
+*.bbl
+*.blg
+
+Backup_of*
+tmp/
+out.txt
+*.db

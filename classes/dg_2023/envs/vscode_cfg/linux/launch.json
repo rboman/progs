@@ -1,0 +1,56 @@
+{
+    // How to debug your code with the interactive debugger in VSCode?
+    // ---------------------------------------------------------------
+    //  - Open any C++ file in the editor
+    //  - Select "Run / Add configuration..." in the menu of VS Code
+    //  - Select "C++ (GDB/LLDB)"
+    //  - Click on Button "Add configuration" 
+    //  - Choose "C/C++: (gdb) Launch"
+    //  - Change the content of ".vscode/launch.json" using this file as an example.
+    //      - "program": path to your executable (in the "build" folder)
+    //      - "args": the arguments (e.g. the name of the geo file)
+    //      - "stopAtEntry": set this to "true" so that gdb stops at the beginning
+    //      - "cwd": the working folder (usually the "build" folder)
+    //      - "environment": set the "PATH" to the compiler binaries and gmsh library
+    //  -  Finally, click on the "arrow with the bug" icon on the left
+    //  - select your launch configuration in the combo box 
+    //  - Click on the green arrow
+    //
+
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Debug code9_views",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/gmsh_api/build/code9_views",
+            "args": [ "../rectangle.geo" ],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/examples/gmsh_api/build",
+            "environment": [ 
+                { 
+                    "name": "PATH", 
+                    "value": "${workspaceFolder}/lib/gmsh-sdk/bin:${workspaceFolder}/lib/gmsh-sdk/lib" 
+                }
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+
+    ]
+}

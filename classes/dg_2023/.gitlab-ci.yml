@@ -1,0 +1,92 @@
+stages:
+    - build
+    - deploy
+  
+build_cpp:
+    image: registry.gitlab.com/rboman_docker/gmsh
+    stage: build
+    script:
+        - source ./envs/linux-macos.sh
+        - cd lib && ./get_gmsh.sh && cd ..
+        # --
+        - cd examples/gmsh_api
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make -j 4
+        #- ./code1_loadgeo ../rectangle.geo
+        - ./code2_getgroups ../rectangle.geo
+        - ./code3_buildphymap ../rectangle.geo
+        - ./code4_hierarchy ../rectangle.geo
+        - ./code5_elprops
+        - ./code6_allnodes ../rectangle.geo
+        - ./code7_parameters ../rectangle.geo
+        - ./code8_jacobians ../mono.geo
+        #- ./code9_views ../rectangle.geo
+        - cd ../../..
+        # --
+        - cd examples/sparse_solve
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make -j 4
+        - ./sparse_solve
+        - cd ../../..
+        # --
+        - cd examples/openmp
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make -j 4
+        - ./omp_hello
+        - cd ../../..  
+        # --
+        - cd examples/snippets
+        - mkdir build
+        - cd build
+        - cmake -DCMAKE_BUILD_TYPE=Release ..
+        - make -j 4
+        - ./edges -nopopup
+        - ./set_of_pairs
+        - cd ../../..
+        # --
+        - cd src
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make -j 4
+        - ./solver
+        - cd ../..        
+
+build_pdf:
+    stage: build
+    image: aergus/latex
+    script:
+        - cd doc
+        - make
+        - cd DGM
+        - make
+    artifacts:
+        name: "$CI_PROJECT_NAME-$CI_COMMIT_SHA"
+        paths:
+            - "doc/**/*.pdf"
+        exclude:
+            - doc/**/fig_*.pdf
+            - doc/DGM/figures/*.pdf
+    only:
+        - master
+
+pages:
+    stage: deploy
+    script:
+        - ls -alF
+        - mkdir public
+        # copy pdfs to the root folder of the project:
+        #   e.g. https://rboman.gitlabpages.uliege.be/math0471/bem.pdf ...
+        - find doc \( -name "*.pdf" ! -name "fig_*.pdf" \) -print -exec cp {} public \;
+    artifacts:
+        paths:
+            - public
+    only:
+        - master
+

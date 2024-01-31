@@ -1,0 +1,69 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{1em}
+
+\begin{document}
+
+\begin{center} \Large Discontinuous Galerkin Method for Aeroacoustics
+\end{center}
+
+\begin{center}
+MATH0471 -- Spring 2023 \bigskip
+\end{center}
+
+\bigskip
+
+This project consists in studying the problem of sound propagation in the presence of a non-trivial mean flow in an engine nacelle. This kind of study is of primary importance in the design of aircraft. 
+
+The problem can be solved in two successive steps: the solution of the mean potential flow, which can be modeled by an elliptic PDE, and the solution of small perturbations around this mean flow, which is described by an hyperbolic linear system of 3 equations. These 2 problems will be solved by two distinct solvers. The elliptic solver will provide the mean velocity field to the acoustic solver.
+
+Both sets of equations will be spatially discretized in 2D using the Discontinuous Galerkin (DG) method and Lagrange nodal basis functions on unstructured meshes. 
+Since the DG method requires a more elaborated mesh data structure than the
+classical finite element method, the numerical schemes will be implemented with
+the help of the Gmsh SDK\footnote{\url{http://gmsh.info}} so that meshing,
+computation of surface integrals and postprocessing of results will be
+simplified.
+
+The solvers will be first developed, tested and validated for the solution of simple scalar diffusion and advection problems. Then, they will be enhanced for the solution of the mean flow and the acoustic problem. Finally they will be coupled and validated on reference configurations where analytical solutions can be calculated\footnote{Boucheron et al. 2006 -- Analytical solution of multimodal acoustic propagation in circular ducts with laminar mean flow profile -- \url{https://doi.org/10.1016/j.jsv.2005.08.017}} and on more sophisticated geometries. 
+
+The project is organized as follows:
+\begin{enumerate}
+\item Students will be divided in 2 groups. Each group will write its own
+  solvers. Within each group, one subgroup will be in charge of developing the
+  elliptic solver for the mean flow and one subgroup will be in charge of the hyperbolic solver for the acoustic problem. The group as a whole will be responsible for the coupling and the final applications.
+\item Four intermediate deadlines are given, with a mandatory (but not graded)
+  8-page progress report that should detail the computer implementation and the
+  mathematical, numerical and physical experiments.
+\item The final report (about 60 pages) will present the method and numerical
+  results, the computer implementation and a detailed analysis of physical
+  experiments on non-trivial configurations.
+\item An oral presentation of the main project results will be organized during
+  the June exam session; individual theoretical and practical questions will be
+  asked to each member of the groups.
+\end{enumerate}
+
+Important dates:
+\begin{enumerate}
+\item \textbf{Wednesday March 1st: Intermediate deadline \#1 (Interpolation errors with Gmsh SDK)}. The first weeks will be focused on setting up the development environment\footnote{see 
+ the wiki \url{https://gitlab.uliege.be/rboman/math0471}} (compiler, GitLab repository) and learning the Gmsh SDK (reading of a mesh, calculation of Jacobians, evaluation of shape functions and numerical integration). This first exercise consists in writing a program which takes a geometry and a function as input. The geometry is then meshed by Gmsh, and the function is interpolated at the nodes of the mesh. The program should compute the L2-norm of the interpolation error, show its convergence, and display the interpolated field in Gmsh. 
+\item \textbf{Wednesday March 29th: Intermediate deadline \#2 (Scalar DG solvers)}. Implementation of the DG method using Lagrange shape functions of arbitrary order for the solution of a diffusion equation (subgroup 1) and a transport equation (subgroup 2) in 2D.
+The implementation should take advantage of the Gmsh library for creating or reading the mesh, computing values of shape functions and Jacobians, as well as exporting results. 
+\item \textbf{Wednesday April 26th): Intermediate deadline \#3 (Mean-flow solver and acoustic solver)}. Modification of the two codes for the solution of the mean-flow and the acoustic problems.
+\item \textbf{Wednesday May 10th: Intermediate deadline \#4 (Applications)}. Coupling of the two codes. Tests and analysis of physical results on more sophisticated geometries.
+\item \textbf{Wednesday May 17th: Final deadline}. Final report and code.
+\item \textbf{June session: Exam}. Oral presentation of the projects.
+\end{enumerate}
+
+\sloppypar The full source code should be tagged in the ULiège GitLab for each
+deadline, and should be directly configurable and compilable on the CECI
+clusters\footnote {\url{https://www.ceci-hpc.be}}. The reports in PDF format should also be associated to this tag on
+GitLab for each deadline.
+
+\end{document}
