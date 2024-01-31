@@ -1,6 +1,6 @@
 #!/bin/bash
 # Submission script for Nic5
-#SBATCH --job-name=SPH
+#SBATCH --job-name=sph.drp1
 #SBATCH --time=00:05:00 # hh:mm:ss
 #
 #SBATCH --ntasks=1
@@ -11,13 +11,10 @@
 #SBATCH --mail-user=r.boman@uliege.be
 #SBATCH --mail-type=ALL
 #
-#SBATCH --output=sph.stdout.txt
+#SBATCH --output=waterdrop.stdout.txt
 
 module purge
 module load Python
 module load VTK
 
-THISDIR=`pwd`
-cd $GLOBALSCRATCH
-
-$(THISDIR)/run.py -k 12 $(THISDIR)/tests/waterdrop.py
+../run.py -k 12 ../tests/waterdrop.py
