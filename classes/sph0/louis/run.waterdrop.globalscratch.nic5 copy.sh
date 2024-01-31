@@ -16,10 +16,8 @@
 module purge
 module load Python
 module load VTK
-# export OMP_NUM_THREADS=12
-# export MKL_NUM_THREADS=12
 
-./run.py -k 12 tests/waterdrop.py
+THISDIR=`pwd`
+cd $GLOBALSCRATCH
 
-# mkdir -p $GLOBALSCRATCH/$SLURM_JOB_ID
-# cd $GLOBALSCRATCH/$SLURM_JOB_ID
+$(THISDIR)/run.py -k 12 $(THISDIR)/tests/waterdrop.py
