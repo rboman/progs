@@ -93,17 +93,17 @@ Quelques plugins:
 
 ### NORMAL MODE: undo, delete
 
-| commande      | effet                                       |
-| ------------- | ------------------------------------------- |
-| `u` | undo |
-| `<Ctrl>r` | redo |
-| `d[+mouvt]` | delete  (contenu dans le presse-papier) |
-| `dd` | delete curent line |
-| `dw` | [del-word] delete current word from cursor to the beg of next word  |
-| `de` |  |
-| `d$` | delete until the end of line (content can be pasted with `y`) |
-| `5dd` | delete 5 lignes |
-| `D` | = d$ |
+| commande    | effet                                                        |
+| ----------- | ------------------------------------------------------------ |
+| `u`         | undo                                                         |
+| `<Ctrl>r`   | redo                                                         |
+| `d[+mouvt]` | delete  (contenu dans le presse-papier)                      |
+| `dd`        | delete curent line                                           |
+| `dw`        | [del-word] delete current word from cursor to the beg of next word |
+| `de`        |                                                              |
+| `d$`        | delete until the end of line (content can be pasted with `y`) |
+| `5dd`       | delete 5 lignes                                              |
+| `D`         | = d$                                                         |
 
 ### NORMAL MODE: copy (yank) / paste (put)
 
@@ -115,14 +115,14 @@ Quelques plugins:
 | `p`                | "put" after the cursor             |
 | `P`                | "put" before the cursor            |
 
-### SEARCH / SERACH-REPLACE
+### SEARCH / SEARCH-REPLACE
 
-| commande      | effet                                       |
-| ------------- | ------------------------------------------- |
-| `/text` | search downwards '`text`' |
-| `?text` | search upwards `text`, then use `n` or `N` to navigate forwards/backwards |
-| `:%s/text1/text2/g` | remplace `text1` par `text2` |
-| `:%s/text1/text2/gc` | idem mais demande confirmation |
+| commande             | effet                                                        |
+| -------------------- | ------------------------------------------------------------ |
+| `/text`              | search downwards '`text`'                                    |
+| `?text`              | search upwards `text`, then use `n` or `N` to navigate forwards/backwards |
+| `:%s/text1/text2/g`  | remplace `text1` par `text2`                                 |
+| `:%s/text1/text2/gc` | idem mais demande confirmation                               |
 
 
 ### INSERT MODE
