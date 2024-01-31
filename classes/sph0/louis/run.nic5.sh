@@ -23,5 +23,3 @@ module load VTK
 
 # mkdir -p $GLOBALSCRATCH/$SLURM_JOB_ID
 # cd $GLOBALSCRATCH/$SLURM_JOB_ID
-
-
