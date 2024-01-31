@@ -308,6 +308,7 @@ module SPH_module
         this%p(1) = this%calcPressure(this%rho(1))
         this%c = 0.d0
         this%c(1) = this%calcCelerity(this%rho(1))
+        this%max_mu_ab = 0.d0
     end subroutine particle_loadfromdisk
     
     !> fixed_particle/getNeighbours is a routine that questions the "particle_sort" object
