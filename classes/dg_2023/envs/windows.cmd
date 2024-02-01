@@ -27,7 +27,7 @@ set COMPILERPATH=%USERPROFILE%\mingw64\bin
 set MAKESYSTEM=%~dp0ninja
 :: use mingw32-make (UTF-8 chars in USERPROFILE => KO)
 :: (uncomment the following line if you want to use classical Makefiles)
-::set MAKESYSTEM=%~dp0ninja
+::set MAKESYSTEM=%~dp0make
 
 :: perform some tests...
 IF NOT EXIST "%GMSHSDK%" (
