@@ -73,11 +73,16 @@ if __name__ == "__main__":
         # split streams
         tee = Tee('stdout.txt')
 
-        # start test
-        import time, platform
-        print('-' * 80)
-        print("starting test", testname)
-        print("time:", time.strftime("%c"))
-        print("hostname:", platform.node())
-        print('-' * 80)
-        exec(open(testname, 'r', encoding='utf8').read())
+        if args.post:
+            # only post-processing
+            import sph.gui as gui
+            gui.ToParaview(verb=False).convertall()
+        else:
+            # start test
+            import time, platform
+            print('-' * 80)
+            print("starting test", testname)
+            print("time:", time.strftime("%c"))
+            print("hostname:", platform.node())
+            print('-' * 80)
+            exec(open(testname, 'r', encoding='utf8').read())
