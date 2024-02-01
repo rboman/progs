@@ -1,4 +1,0 @@
-The following modules were not unloaded:
-  (Use "module --force purge" to unload all):
-
-  1) releases/2021b   2) tis/2018.01
