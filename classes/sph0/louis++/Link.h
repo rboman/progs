@@ -11,7 +11,7 @@ class Link
 {
 public:
     FixedParticle *ptr = nullptr; ///< pointer toward a particle
-    double r = 0.0;           ///< distance between neighbours
+    double r = 0.0;               ///< distance between neighbours
 
     // Link() : ptr(nullptr), r(0.0)
     // {

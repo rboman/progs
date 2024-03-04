@@ -3,6 +3,7 @@
 
 #include "sph.h"
 #include "ParticleSort.h"
+#include <vector>
 
 /// This class is used to manage all the particles,
 /// i.e. it contains a reference to every particles,
@@ -13,7 +14,9 @@ class ParticleManager
 {
 public:
     ParticleSort sorting; ///< sorting machine
-    FixedParticle *part;  ///< array of pointers toward particles
+    //FixedParticle *part;  ///< array of pointers toward particles
+    std::vector<FixedParticle *> part; ///< array of pointers toward particles
+
     int numFP;            ///< number of fixed particles
     int numMP;            ///< number of mobile particles
     int numPart;          ///< number of particles (FP+MP)
@@ -47,7 +50,7 @@ public:
 
     void initialisation();
     void solver();
-    void readPRM();
+    void readPRM(std::string const &param_path);
     void timeStepUpdate();
     void slUpdate();
     void savePartSet();

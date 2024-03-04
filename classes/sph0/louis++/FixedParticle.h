@@ -12,24 +12,23 @@
 class FixedParticle
 {
 public:
-    double coord[3][3];           ///< 3x3 array containing the coordinates of a particle.
+    Eigen::Vector3d coord[3];     ///< 3x1 array containing the coordinates of a particle.
+                                  ///      element 1 = currentTime
+                                  ///      element 2 = RKstep
+                                  ///      element 3 = nextTime
+    Eigen::Vector3d speed[3];     ///< 3x1 array containing the velocity of a particle.
                                   ///      column 1 = currentTime
                                   ///      column 2 = RKstep
-                                  ///      column 3 = nextTime
-    double speed[3][3];           ///< 3x3 array containing the velocity of a particle.
-                                  ///      column 1 = currentTime
-                                  ///      column 2 = RKstep
-                                  ///      column 3 = nextTime
     double rho[3];                ///< 3x1 array containing the density of a particle.
                                   ///      element 1 = currentTime
                                   ///      element 2 = RKstep
                                   ///      element 3 = nextTime
     double m;                     ///< mass of the particle
-    double p[3];                  ///< pressure of the particle
+    double p[3];                  ///< 3x1 array containing the pressure of a particle.
                                   ///      element 1 = currentTime
                                   ///      element 2 = RKstep
                                   ///      element 3 = nextTime
-    double c[3];                  ///< speed of sound of a particle
+    double c[3];         ///< 3x1 array containing the speed of sound of a particle.
                                   ///      element 1 = currentTime
                                   ///      element 2 = RKstep
                                   ///      element 3 = nextTime
@@ -47,10 +46,10 @@ public:
     FixedParticle() {}
 
     void save2disk() {}
-    void loadfromdisk() {}
+    void loadfromdisk(std::ifstream &ufile, double h_0);
     void getNeighbours() {}
-    void calcPressure() {}
-    void calcCelerity() {}
+    double calcPressure(double rho);
+    double calcCelerity(double rho);
     void gradW() {}
     void kernel_corr() {}
 

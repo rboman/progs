@@ -29,7 +29,7 @@ module SPH_module
     
     type link
         class(fixed_particle), pointer :: ptr => null()     !< pointer toward a particle
-        real(DP) :: r = 0.0_dp                       !< distance between neighbours
+        real(DP) :: r = 0.0_dp                              !< distance between neighbours
     end type link
     
     
@@ -482,7 +482,7 @@ module SPH_module
         select case(this%manager%eqnState)
         case( LAW_IDEAL_GAS )        
             ! 1 = considering the ideal gas law at 20 degrees C
-            calcCelerity = this%manager%c_0                                       ! eq (3.36)
+            calcCelerity = this%manager%c_0     ! eq (3.36)
         case ( LAW_QINC_FLUID )    
             ! 2 = considering a quasi-incompressible fluid
             calcCelerity = this%manager%c_0 &
