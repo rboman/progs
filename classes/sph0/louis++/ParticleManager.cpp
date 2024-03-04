@@ -21,7 +21,7 @@ ParticleManager::initialisation()
 
     this->timeStep = 1.0e-15; // !< initial time step
     this->currentTime = 0.0;  // !< current time initialisation
-    this->RKstep = 1;         // !< RK step counter initialisation
+    this->RKstep = 0;         // !< RK step counter initialisation
 
     int i; // !< loop counter
     FixedParticle *cur_ptr;
@@ -171,7 +171,7 @@ ParticleManager::solver()
         this->currentTime = this->currentTime + this->timeStep;
 
         // Runge-Kutta loop
-        for (j = 1; j <= 2; j++)
+        for (j = 0; j < 2; j++)
         {
             this->RKstep = j;
             this->sorting.particlesSort();

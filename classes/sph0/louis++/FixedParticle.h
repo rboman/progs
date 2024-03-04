@@ -12,35 +12,24 @@
 class FixedParticle
 {
 public:
-    Eigen::Vector3d coord[3];     ///< 3x1 array containing the coordinates of a particle.
-                                  ///      element 1 = currentTime
-                                  ///      element 2 = RKstep
-                                  ///      element 3 = nextTime
-    Eigen::Vector3d speed[3];     ///< 3x1 array containing the velocity of a particle.
-                                  ///      column 1 = currentTime
-                                  ///      column 2 = RKstep
-    double rho[3];                ///< 3x1 array containing the density of a particle.
-                                  ///      element 1 = currentTime
-                                  ///      element 2 = RKstep
-                                  ///      element 3 = nextTime
-    double m;                     ///< mass of the particle
-    double p[3];                  ///< 3x1 array containing the pressure of a particle.
-                                  ///      element 1 = currentTime
-                                  ///      element 2 = RKstep
-                                  ///      element 3 = nextTime
-    double c[3];                  ///< 3x1 array containing the speed of sound of a particle.
-                                  ///      element 1 = currentTime
-                                  ///      element 2 = RKstep
-                                  ///      element 3 = nextTime
-    double h;                     ///< smoothing length
-    std::vector<Link> neighbours; ///< list of neighbours
-    int numOfNeighbours;          ///< number of neighbours
-    Eigen::Vector3d  vec_gradW[150];     ///< array that contains the gradient for every
-                                  /// neighbours; initially set to 150 elements to
-                                  /// increase the computational efficiency
-    Eigen::Vector3d  vec_gradW_mod[150]; ///< corrected vec_gradW if asked
-    ParticleManager *manager;     ///< pointer toward the object particle_manager
-    double max_mu_ab;             ///< maximum mu_ab of a particle (used for the timestep calculation)
+    Eigen::Vector3d coord[3];           ///< 3x1 array containing the coordinates of a particle.
+                                        ///      element 0 = currentTime
+                                        ///      element 1 = RKstep
+                                        ///      element 2 = nextTime
+    Eigen::Vector3d speed[3];           ///< 3x1 array containing the velocity of a particle.
+    double rho[3];                      ///< 3x1 array containing the density of a particle.
+    double m;                           ///< mass of the particle
+    double p[3];                        ///< 3x1 array containing the pressure of a particle.
+    double c[3];                        ///< 3x1 array containing the speed of sound of a particle.
+    double h;                           ///< smoothing length
+    std::vector<Link> neighbours;       ///< list of neighbours
+    int numOfNeighbours;                ///< number of neighbours
+    Eigen::Vector3d vec_gradW[150];     ///< array that contains the gradient for every
+                                        /// neighbours; initially set to 150 elements to
+                                        /// increase the computational efficiency
+    Eigen::Vector3d vec_gradW_mod[150]; ///< corrected vec_gradW if asked
+    ParticleManager *manager;           ///< pointer toward the object particle_manager
+    double max_mu_ab;                   ///< maximum mu_ab of a particle (used for the timestep calculation)
 
 public:
     FixedParticle() {}

@@ -120,22 +120,22 @@ FixedParticle::varUpdate()
         Delta_rho += this->m * u_ab.dot(this->vec_gradW[i]);
     }
 
-    if (cur_RKstep == 1)
+    if (cur_RKstep == 0) // 1st RK step
     {
-        this->rho[2] = this->rho[1] + Delta_rho * dt;
-        this->rho[3] = this->rho[1] + Delta_rho * dt / 2.0;
+        this->rho[1] = this->rho[0] + Delta_rho * dt;
+        this->rho[2] = this->rho[0] + Delta_rho * dt / 2.0; // prepare second step
+        this->speed[1] = this->speed[0];
+        this->coord[1] = this->coord[0];
+        this->p[1] = this->calcPressure(this->rho[1]);
+        this->c[1] = this->calcCelerity(this->rho[1]);
+    }
+    else // 2nd RK step
+    {
+        this->rho[2] = this->rho[2] + Delta_rho * dt / 2.0;
         this->speed[2] = this->speed[1];
         this->coord[2] = this->coord[1];
         this->p[2] = this->calcPressure(this->rho[2]);
         this->c[2] = this->calcCelerity(this->rho[2]);
-    }
-    else
-    {
-        this->rho[3] = this->rho[3] + Delta_rho * dt / 2.0;
-        this->speed[3] = this->speed[2];
-        this->coord[3] = this->coord[2];
-        this->p[3] = this->calcPressure(this->rho[3]);
-        this->c[3] = this->calcCelerity(this->rho[3]);
     }
 }
 
@@ -157,7 +157,7 @@ FixedParticle::getNeighbours()
     int cur_RKstep = this->manager->RKstep;             // RKstep
     int twice;                                          // [RB]
 
-    if (cur_RKstep == 1)
+    if (cur_RKstep == 0)
     {
         // calculates the number of the cell in which the particle is
         xCell = (int)((xyz(0) - fmod(xyz(0), srt->cellSize)) / srt->cellSize) + 1;
@@ -215,7 +215,7 @@ FixedParticle::getNeighbours()
         }
     }
 
-    if (cur_RKstep == 1)
+    if (cur_RKstep == 0)
     {
         this->neighbours.clear();
         twice = 0; // [RB]
@@ -272,98 +272,6 @@ FixedParticle::getNeighbours()
 
 // !> gradW : creates a vector that contains the values
 // !!       of the gradient for each neighbour.
-
-// subroutine gradW(this)
-//     class(fixed_particle), target :: this
-//     integer  :: i
-//     real(DP) :: alpha_d             !< normalisation coefficient
-//     real(DP) :: r                   !< distance between a particle and a neighbour
-//     class(fixed_particle), pointer :: cur_neigh     !< pointer toward a neighbour
-//     real(DP) :: cur_h               !< value of h
-//     integer  :: cur_RKstep          !< pointer toward the current RK step
-    
-//     if(this%numOfNeighbours>150) then
-//         print *, 'Error: Number of neighbours greater than expected (max 150 for vec_gradW): ', this%numOfNeighbours
-//         stop
-//     end if
-    
-//     cur_h = this%h
-//     cur_RKstep = this%manager%RKstep   
-    
-//     select case(this%manager%kernelKind)
-//     case ( K_CUBIC_SPLINE) 
-    
-//         alpha_d = 3.d0/(2.d0*pi*cur_h**3)    ! [RB] efficiency of x**3.0d0 vs x**3 vs x*x*x ??
-//                                                 ! values of alpha_d in table 2.1 p 23
-//         do i = 1, this%numOfNeighbours
-//             r = this%neighbours%lst(i)%r       ! [RB] a pointer is useless here!
-//             cur_neigh => this%neighbours%lst(i)%ptr
-//             if((r/cur_h>= 0.d0).and.(r/cur_h<1.d0)) then ! [RB] could "r/cur_h" be negative??
-//                 this%vec_gradW(:, i) = alpha_d/cur_h &
-//                             * (3.d0/2.d0*(r/cur_h)**2 - 2.d0*(r/cur_h) ) &
-//                             * (this%coord(:, cur_RKstep) - cur_neigh%coord(:, cur_RKstep))/r       ! eq (2.26)
-//             else if((r/cur_h>= 1.d0).and.(r/cur_h<2.d0)) then
-//                 this%vec_gradW(:, i) = alpha_d/cur_h     &
-//                             * (-0.5d0*(2.d0-r/cur_h)**2) &
-//                             * (this%coord(:, cur_RKstep) - cur_neigh%coord(:, cur_RKstep))/r
-//             else
-//                 this%vec_gradW(:, i) = 0.d0
-//             end if
-//         end do
-        
-//     case ( K_QUADRATIC )
-    
-//         alpha_d = 5.d0/(4.d0*pi*cur_h**3)
-        
-//         do i = 1, this%numOfNeighbours
-//             r = this%neighbours%lst(i)%r  ! [RB] a pointer is useless here!
-//             cur_neigh => this%neighbours%lst(i)%ptr
-            
-//             if((r/cur_h>= 0.d0).and.(r/cur_h<= 2.d0)) then  ! [RB] could "r/cur_h" be negative??
-//                 this%vec_gradW(:, i) = alpha_d/cur_h &
-//                             * (3.d0/8.d0*r/cur_h-3.d0/4.d0)   &
-//                             * (this%coord(:, cur_RKstep)-cur_neigh%coord(:, cur_RKstep))/r            ! eq (2.28)
-//             else
-//                 this%vec_gradW(:, i) = 0.d0
-//             end if
-//         end do
-        
-//     case ( K_QUINTIC_SPLINE)
-    
-//         alpha_d = 3.d0/(359.d0*pi*cur_h**3)
-        
-//         do i = 1, this%numOfNeighbours
-//             r = this%neighbours%lst(i)%r  ! [RB] a pointer is useless here!
-//             cur_neigh => this%neighbours%lst(i)%ptr
-//             if((r/cur_h>= 0.d0).and.(r/cur_h<1.d0)) then
-//                 this%vec_gradW(:, i) = alpha_d/cur_h         &
-//                             * ( -5.d0*(3.d0-r/cur_h)**4      &
-//                                 + 30.d0*(2.d0-r/cur_h)**4    &
-//                                 - 75.d0*(1.d0-r/cur_h)**4 )  &
-//                             * (this%coord(:, cur_RKstep)-cur_neigh%coord(:, cur_RKstep))/r      ! eq (2.32)
-//             elseif((r/cur_h>= 1.d0).and.(r/cur_h<2.d0)) then
-//                 this%vec_gradW(:, i) = alpha_d/cur_h         &
-//                             * ( -5.d0*(3.d0-r/cur_h)**4      &
-//                                 +30.d0*(2.d0-r/cur_h)**4 )   &
-//                             * (this%coord(:, cur_RKstep)-cur_neigh%coord(:, cur_RKstep))/r
-//             elseif((r/cur_h>= 2.d0).and.(r/cur_h<3.d0)) then
-//                 this%vec_gradW(:, i) = alpha_d/cur_h         &
-//                             * (-5.d0*(3.d0-r/cur_h)**4)      &
-//                             * (this%coord(:, cur_RKstep)-cur_neigh%coord(:, cur_RKstep))/r
-//             else
-//                 this%vec_gradW(:, i) = 0.d0
-//             end if
-//         end do
-        
-//     case default
-//         print *, 'Bad value for kernel kind (1,2,3)'
-//         stop
-//     end select
-    
-//     if(this%manager%kernelCorrection == KCORR_ON) then
-//         this%vec_gradW_mod = this%vec_gradW
-//     end if
-// end subroutine gradW
     
 void
 FixedParticle::gradW()

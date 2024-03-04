@@ -684,7 +684,7 @@ module SPH_module
         
         if(cur_RKstep == 1) then                    !< 1st RK step
             this%rho(2) = this%rho(1) + Delta_rho * dt
-            this%rho(3) = this%rho(1) + Delta_rho * dt/2.d0
+            this%rho(3) = this%rho(1) + Delta_rho * dt/2.d0 ! prepare 2nd step
             this%speed(:, 2) = this%speed(:, 1)
             this%coord(:, 2) = this%coord(:, 1)
             this%p(2) = this%calcPressure(this%rho(2))
@@ -714,9 +714,9 @@ module SPH_module
         real(DP), dimension(1:3) :: u_ab         !< relative velocity between the particle and a neighbour
         real(DP), dimension(1:3) :: F            !< Volume forces
         real(DP) :: pi_ab                        !< Artificial viscosity
-        integer :: i                                    !< loopcounter
-        integer :: cur_RKstep                  !< pointer toward the value of the current RK step
-        class(fixed_particle), pointer :: cur_neigh     !< current neighbour
+        integer :: i                             !< loopcounter
+        integer :: cur_RKstep                    !< pointer toward the value of the current RK step
+        class(fixed_particle), pointer :: cur_neigh !< current neighbour
         real(DP) :: dt
         
         Delta_rho = 0.d0
@@ -737,8 +737,6 @@ module SPH_module
         if(cur_RKstep == 1) then
             this%max_mu_ab = 0.d0
         end if
-    
-        
         
         select case(this%manager%kernelCorrection)
         case( KCORR_ON )

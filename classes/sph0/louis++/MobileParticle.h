@@ -12,8 +12,8 @@ class MobileParticle : public FixedParticle
 public:
     MobileParticle() {}
 
-    virtual void varUpdate() {}
-    void ArtificialViscosity() {}
+    virtual void varUpdate();
+    double ArtificialViscosity(FixedParticle *neighObj, double alpha, double beta);
 };
 
 #endif // MOBILEPARTICLE_H
