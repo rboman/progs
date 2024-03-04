@@ -66,7 +66,7 @@ ParticleSort::particlesSort()
             zCell = nCellsSide;
         }
 
-        part_pos = (xCell - 1) * nCellsSide * nCellsSide + (yCell - 1) * nCellsSide + zCell;
+        part_pos = (xCell - 1) * nCellsSide * nCellsSide + (yCell - 1) * nCellsSide + zCell - 1;
 
         this->storage[part_pos].push_back(Link(prt, 0.0));
     }

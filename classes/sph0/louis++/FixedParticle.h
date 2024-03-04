@@ -35,10 +35,10 @@ public:
     double h;                     ///< smoothing length
     std::vector<Link> neighbours; ///< list of neighbours
     int numOfNeighbours;          ///< number of neighbours
-    double vec_gradW[150][3];     ///< array that contains the gradient for every
+    Eigen::Vector3d  vec_gradW[150];     ///< array that contains the gradient for every
                                   /// neighbours; initially set to 150 elements to
                                   /// increase the computational efficiency
-    double vec_gradW_mod[150][3]; ///< corrected vec_gradW if asked
+    Eigen::Vector3d  vec_gradW_mod[150]; ///< corrected vec_gradW if asked
     ParticleManager *manager;     ///< pointer toward the object particle_manager
     double max_mu_ab;             ///< maximum mu_ab of a particle (used for the timestep calculation)
 
@@ -47,13 +47,13 @@ public:
 
     void save2disk(std::ofstream &file);
     void loadfromdisk(std::ifstream &ufile, double h_0);
-    void getNeighbours() {}
+    void getNeighbours();
     double calcPressure(double rho);
     double calcCelerity(double rho);
-    void gradW() {}
+    void gradW();
     void kernel_corr() {}
 
-    virtual void varUpdate() {}
+    virtual void varUpdate();
 };
 
 #endif // FIXEDPARTICLE_H
