@@ -13,6 +13,10 @@ public:
     FixedParticle *ptr = nullptr; ///< pointer toward a particle
     double r = 0.0;               ///< distance between neighbours
 
+    Link(FixedParticle *_ptr, double _r) : ptr(_ptr), r(_r)
+    {
+    }
+
     // Link() : ptr(nullptr), r(0.0)
     // {
     // }

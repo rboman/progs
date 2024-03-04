@@ -1178,7 +1178,7 @@ module SPH_module
     end subroutine setCells
 
     
-    !> particle_sort/particlesSort: sorts every particle in a cell. 
+    !> particle_sort/particlesSort: put every particle in their corresponding cell.
     !!     This will be useful in order to find the neighbours.
     
     subroutine particlesSort(this)

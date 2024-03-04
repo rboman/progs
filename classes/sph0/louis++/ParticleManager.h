@@ -53,7 +53,7 @@ public:
     void readPRM(std::string const &param_path);
     void timeStepUpdate();
     void slUpdate();
-    void savePartSet();
+    void savePartSet(std::string const &name, int ite, int start, int end);
 };
 
 #endif // PARTICLEMANAGER_H

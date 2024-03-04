@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+// loads the state of a particle from disk
+
 void
 FixedParticle::loadfromdisk(std::ifstream &ufile, double h_0)
 {
@@ -79,3 +81,20 @@ FixedParticle::calcCelerity(double rho)
     }
     return celerity;
 }
+
+// saves the state of a particle onto disk
+
+void
+FixedParticle::save2disk(std::ofstream &file)
+{
+    file << this->coord[0].transpose() << " "
+         << this->speed[0].transpose() << " "
+         << this->rho[0] << " "
+         << this->p[0] << " "
+         << this->m << " "
+         << this->c[0] << " "
+         << this->h << " "
+         << this->max_mu_ab << " "
+         << this->numOfNeighbours << '\n';
+}
+

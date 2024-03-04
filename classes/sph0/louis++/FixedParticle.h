@@ -2,7 +2,7 @@
 #define FIXEDPARTICLE_H
 
 #include "sph.h"
-#include "List.h"
+#include "Link.h"
 
 /// This class contains a certain number of parameters describing
 /// the state of a fixed particle (boundary particle). It also
@@ -28,12 +28,12 @@ public:
                                   ///      element 1 = currentTime
                                   ///      element 2 = RKstep
                                   ///      element 3 = nextTime
-    double c[3];         ///< 3x1 array containing the speed of sound of a particle.
+    double c[3];                  ///< 3x1 array containing the speed of sound of a particle.
                                   ///      element 1 = currentTime
                                   ///      element 2 = RKstep
                                   ///      element 3 = nextTime
     double h;                     ///< smoothing length
-    List neighbours;              ///< list of neighbours
+    std::vector<Link> neighbours; ///< list of neighbours
     int numOfNeighbours;          ///< number of neighbours
     double vec_gradW[150][3];     ///< array that contains the gradient for every
                                   /// neighbours; initially set to 150 elements to
@@ -45,7 +45,7 @@ public:
 public:
     FixedParticle() {}
 
-    void save2disk() {}
+    void save2disk(std::ofstream &file);
     void loadfromdisk(std::ifstream &ufile, double h_0);
     void getNeighbours() {}
     double calcPressure(double rho);
