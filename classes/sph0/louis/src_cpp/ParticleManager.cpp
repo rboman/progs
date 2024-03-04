@@ -87,68 +87,6 @@ ParticleManager::initialisation()
 // !> particle_manager/solver: solves the problem. It loops over time and uses
 // !!      a RK22 time integration scheme.
 
-// subroutine solver(this)
-//     class(particle_manager) :: this
-
-//     integer :: i, j
-//     integer :: ite                  !< iteration counter
-//     logical :: to_save              !< saving flag. If true a saving is done
-//     class(fixed_particle), pointer :: p
-
-//     ite = 0
-
-//     do while(this%currentTime <= this%maxTime)
-
-//         ! Time increment and saving status
-//         if((floor(this%currentTime/this%saveInt) /= &
-//             floor((this%currentTime+this%timeStep)/this%saveInt)) .or. ite == 0) then
-//             to_save = .true.
-//         end if
-//         this%currentTime = this%currentTime + this%timeStep
-
-//         ! Runge-Kutta loop
-//         do j = 1, 2
-//             this%RKstep = j
-//             !if (j.eq.1) then ! [RB]
-//                 call this%sorting%particlesSort()
-//             !end if ! [RB]
-//             ! Loop over the particles
-//             !$OMP PARALLEL DO PRIVATE(i) SCHEDULE(DYNAMIC)
-//             do i = 1, this%numPart
-//                 call this%part(i)%ptr%varUpdate()
-//             end do
-//             !$OMP END PARALLEL DO
-//         end do
-
-//         ! Update of the current time variables (currentTime = nextTime)
-//         do i = 1, this%numPart
-//             p => this%part(i)%ptr
-//             p%rho(1)      = p%rho(3)
-//             p%p(1)        = p%p(3)
-//             p%c(1)        = p%c(3)
-//             p%speed(:, 1) = p%speed(:, 3)
-//             p%coord(:, 1) = p%coord(:, 3)
-//         end do
-
-//         ! Test for the data saving
-//         if(to_save) then
-//             call this%savePartSet('resMP', ite, this%numFP+1, this%numFP+this%numMP)
-//             call this%savePartSet('resFP', ite, 1, this%numFP)
-
-//             print *, 'Iteration nb ', ite
-//             print *, '   Time (s) = ', this%currentTime
-//             print *, '   Time step (s) = ', this%timeStep
-//             to_save = .false.
-//         end if
-
-//         call this%timeStepUpdate()
-//         call this%slUpdate()
-
-//         ite = ite + 1
-//     end do
-
-// end subroutine solver
-
 void
 ParticleManager::solver()
 {
@@ -236,16 +174,6 @@ ParticleManager::readPRM(std::string const &param_path)
     file.close();
 }
 
-void
-ParticleManager::timeStepUpdate()
-{
-}
-
-void
-ParticleManager::slUpdate()
-{
-}
-
 // !> save a particle set onto disk
 // !! @param name  : name of the file
 // !! @param ite   : iteration number
@@ -269,4 +197,95 @@ ParticleManager::savePartSet(std::string const &name, int ite, int start, int en
         this->part[i]->save2disk(file);
     }
     file.close();
+}
+
+// computes the next timestep using the properties of the particles.
+
+void
+ParticleManager::timeStepUpdate()
+{
+    double dTf, dTftemp;   // !< time step relative to the body forces
+    double dTcv, dTcvtemp; // !< time step relative to the viscous forces and Courrant number
+    int i;                 // !< loop counter
+    FixedParticle *cur_ptr;
+
+    // computes the timestep relative to the body forces
+    dTf = sqrt(this->part[this->numFP]->h / 9.81);
+    for (i = this->numFP + 1; i < this->numPart; i++)
+    {
+        cur_ptr = this->part[i];
+        dTftemp = sqrt(cur_ptr->h / 9.81);
+        if (dTftemp < dTf)
+        {
+            dTf = dTftemp;
+        }
+    }
+
+    // computes the timestep relative to the CN and the viscous forces
+    dTcv = this->part[this->numFP]->h /
+           (this->part[this->numFP]->c[0] +
+            0.6 * (this->alpha * this->part[this->numFP]->c[0] +
+                   this->beta * this->part[this->numFP]->max_mu_ab));
+    for (i = this->numFP + 1; i < this->numPart; i++)
+    {
+        cur_ptr = this->part[i];
+        dTcvtemp = cur_ptr->h /
+                   (cur_ptr->c[0] +
+                    0.6 * (this->alpha * cur_ptr->c[0] + this->beta * cur_ptr->max_mu_ab));
+        if (dTcvtemp < dTcv)
+        {
+            dTcv = dTcvtemp;
+        }
+    }
+
+    // computes the final timestep
+    if (0.4 * dTf > 0.25 * dTcv)
+    {
+        this->timeStep = 0.25 * dTcv;
+    }
+    else
+    {
+        this->timeStep = 0.4 * dTf;
+    }
+
+    // possibility to change the timestep if we use the ideal gas law
+    if (this->eqnState == LAW_IDEAL_GAS)
+    {
+        this->timeStep = 5 * this->timeStep;
+    }
+}
+
+// updates the smoothing length at each timestep.
+// It is written to provide the same smoothing length for every particle.
+
+void
+ParticleManager::slUpdate()
+{
+    double mean_rho; // !< mean value of the densities of the mobile particles
+    double new_h;    // !< new smoothing length
+    int i;           // !< loop counter
+    mean_rho = 0;
+
+    // calculation of the average density
+    for (i = 0; i < this->numPart; i++)
+    {
+        mean_rho = mean_rho + this->part[i]->rho[0];
+    }
+    mean_rho = mean_rho / this->numPart;
+
+    // calculation of the new smoothing length
+    new_h = this->h_0 * pow(this->rho_0 / mean_rho, 1.0 / 3.0);
+
+    // if the smoothing length is greater than 0.5 the size of a cell, it is limited
+    if (new_h > 0.5 * this->sorting.cellSize)
+    {
+        new_h = 0.5 * this->sorting.cellSize;
+        std::cout << "Warning: the smoothing has been limited" << std::endl;
+    }
+
+    // update of the smoothing length
+    for (i = 0; i < this->numPart; i++)
+    {
+        this->part[i]->h = new_h;
+    }
 }

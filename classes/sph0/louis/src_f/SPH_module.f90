@@ -1066,7 +1066,7 @@ module SPH_module
         end if
         
         !> possibility to change the timestep if we use the ideal gas law
-        if(this%eqnState == 1) then
+        if(this%eqnState == LAW_IDEAL_GAS) then
             this%timeStep = 5.d0 * this%timeStep
         end if
     end subroutine timeStepUpdate

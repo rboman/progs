@@ -40,7 +40,7 @@ public:
     double calcPressure(double rho);
     double calcCelerity(double rho);
     void gradW();
-    void kernel_corr() {}
+    void kernel_corr();
 
     virtual void varUpdate();
 };

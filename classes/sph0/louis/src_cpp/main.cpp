@@ -25,4 +25,6 @@ main()
 
     auto t2 = std::chrono::high_resolution_clock::now();
     std::cout << "Elapsed real time = " << std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count() << '\n';
+
+    return 0;
 }

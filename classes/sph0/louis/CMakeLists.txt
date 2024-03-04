@@ -23,5 +23,9 @@ MESSAGE(STATUS "CMAKE_Fortran_FLAGS          : " ${CMAKE_Fortran_FLAGS})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_RELEASE  : " ${CMAKE_Fortran_FLAGS_RELEASE})
 MESSAGE(STATUS "CMAKE_Fortran_FLAGS_DEBUG    : " ${CMAKE_Fortran_FLAGS_DEBUG})
 
-ADD_EXECUTABLE(louis src/SPH_module.f90 src/SPH_simulation.f90)
+ADD_EXECUTABLE(louis src_f/SPH_module.f90 src_f/SPH_simulation.f90)
 
+
+# --------------
+
+ADD_SUBDIRECTORY( src_cpp )

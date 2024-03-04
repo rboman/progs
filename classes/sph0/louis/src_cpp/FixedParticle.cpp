@@ -268,20 +268,18 @@ FixedParticle::getNeighbours()
     }
 }
 
-
-
 // !> gradW : creates a vector that contains the values
 // !!       of the gradient for each neighbour.
-    
+
 void
 FixedParticle::gradW()
 {
-    double alpha_d; // normalisation coefficient
-    double r;       // distance between a particle and a neighbour
+    double alpha_d;           // normalisation coefficient
+    double r;                 // distance between a particle and a neighbour
     FixedParticle *cur_neigh; // pointer toward a neighbour
-    double cur_h;   // value of h
-    int cur_RKstep; // pointer toward the current RK step
-    int i;          // loop counter
+    double cur_h;             // value of h
+    int cur_RKstep;           // pointer toward the current RK step
+    int i;                    // loop counter
 
     if (this->numOfNeighbours > 150)
     {
@@ -296,8 +294,8 @@ FixedParticle::gradW()
     {
     case K_CUBIC_SPLINE:
     {
-        alpha_d = 3.0 / (2.0 * M_PI * cur_h * cur_h * cur_h);   // [RB] efficiency of x**3.0d0 vs x**3 vs x*x*x ??
-                                                                // values of alpha_d in table 2.1 p 23
+        alpha_d = 3.0 / (2.0 * M_PI * cur_h * cur_h * cur_h); // [RB] efficiency of x**3.0d0 vs x**3 vs x*x*x ??
+                                                              // values of alpha_d in table 2.1 p 23
         for (i = 0; i < this->numOfNeighbours; i++)
         {
             r = this->neighbours[i].r;
@@ -380,5 +378,70 @@ FixedParticle::gradW()
         std::cout << "Bad value for kernel kind (1,2,3)" << std::endl;
         exit(1);
     }
+}
 
+// takes into account the fact that the kernel may be truncated.
+// It corrects the gradient of the kernel.
+
+void
+FixedParticle::kernel_corr()
+{
+    Eigen::Matrix3d M;        // matrix used to correct the kernel gradient
+    Eigen::Matrix3d L;        // inverse of the matrix used to correct the kernel gradient
+    double detM;              // determinant of M
+    double MDivRho;           // m_b/rho_b
+    FixedParticle *cur_neigh; // pointer toward the current neighbour
+    int cur_RKstep;           // current RK step
+    int i;                    // loop counter
+
+    cur_RKstep = this->manager->RKstep;
+    M(0, 0) = 0.0;
+    M(1, 1) = 0.0;
+    M(2, 2) = 0.0;
+    M(0, 1) = 0.0;
+    M(0, 2) = 0.0;
+    M(1, 2) = 0.0;
+
+    for (i = 0; i < this->numOfNeighbours; i++)
+    {
+        cur_neigh = this->neighbours[i].ptr;
+        MDivRho = cur_neigh->m / cur_neigh->rho[cur_RKstep];
+        M(0, 0) = M(0, 0) + MDivRho * (cur_neigh->coord[0](cur_RKstep) - this->coord[0](cur_RKstep)) * this->vec_gradW[i](0);
+        M(1, 1) = M(1, 1) + MDivRho * (cur_neigh->coord[1](cur_RKstep) - this->coord[1](cur_RKstep)) * this->vec_gradW[i](1);
+        M(2, 2) = M(2, 2) + MDivRho * (cur_neigh->coord[2](cur_RKstep) - this->coord[2](cur_RKstep)) * this->vec_gradW[i](2);
+        M(0, 1) = M(0, 1) + MDivRho * (cur_neigh->coord[0](cur_RKstep) - this->coord[0](cur_RKstep)) * this->vec_gradW[i](1);
+        M(0, 2) = M(0, 2) + MDivRho * (cur_neigh->coord[0](cur_RKstep) - this->coord[0](cur_RKstep)) * this->vec_gradW[i](2);
+        M(1, 2) = M(1, 2) + MDivRho * (cur_neigh->coord[1](cur_RKstep) - this->coord[1](cur_RKstep)) * this->vec_gradW[i](2);
+    }
+    M(1, 0) = M(0, 1); // M is symmetric
+    M(2, 0) = M(0, 2); // M is symmetric
+    M(2, 1) = M(1, 2); // M is symmetric
+
+    detM = M(0, 0) * (M(1, 1) * M(2, 2) - M(2, 1) * M(1, 2)) -
+           M(0, 1) * (M(1, 0) * M(2, 2) - M(2, 0) * M(1, 2)) +
+           M(0, 2) * (M(1, 0) * M(2, 1) - M(2, 0) * M(1, 1));
+    if (detM == 0.0)
+    {
+        std::cout << "detM==0!" << std::endl;
+        exit(1);
+    }
+
+    L(0, 0) = M(1, 1) * M(2, 2) - M(2, 1) * M(1, 2);
+    L(1, 1) = M(0, 0) * M(2, 2) - M(2, 0) * M(0, 2);
+    L(2, 2) = M(0, 0) * M(1, 1) - M(1, 0) * M(0, 1);
+    L(0, 1) = M(2, 0) * M(1, 2) - M(1, 0) * M(2, 2);
+    L(1, 0) = L(0, 1); // the inverse of a symmetric matrix is symmetric
+    L(0, 2) = M(1, 0) * M(2, 1) - M(2, 0) * M(1, 1);
+
+    L(2, 0) = L(0, 2); // the inverse of a symmetric matrix is symmetric
+    L(1, 2) = M(2, 0) * M(0, 1) - M(0, 0) * M(2, 1);
+    L(2, 1) = L(1, 2); // the inverse of a symmetric matrix is symmetric
+    L = (1.0 / detM) * L;
+
+    for (i = 0; i < this->numOfNeighbours; i)
+    {
+        this->vec_gradW_mod[i](0) = L(0, 0) * this->vec_gradW[i](0) + L(0, 1) * this->vec_gradW[i](0) + L(0, 2) * this->vec_gradW[i](2);
+        this->vec_gradW_mod[i](1) = L(1, 0) * this->vec_gradW[i](0) + L(1, 1) * this->vec_gradW[i](1) + L(1, 2) * this->vec_gradW[i](2);
+        this->vec_gradW_mod[i](2) = L(2, 0) * this->vec_gradW[i](0) + L(2, 1) * this->vec_gradW[i](1) + L(2, 2) * this->vec_gradW[i](2);
+    }
 }
