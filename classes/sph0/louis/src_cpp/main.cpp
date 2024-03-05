@@ -11,20 +11,44 @@
 #include "ParticleManager.h"
 #include <iostream>
 #include <chrono>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 int
 main()
 {
     std::cout << "============= SPH_simulation (L.Goffin)\n";
 
+#ifdef _OPENMP
+    std::cout << "OpenMP available: OMP_NUM_THREADS=" << omp_get_max_threads() << "\n";
+#else
+    std::cout << "OpenMP not available.\n";
+#endif
+
+#ifdef NDEBUG
+    // code has been configured with "cmake -DCMAKE_BUILD_TYPE=Release .."
+    std::cout << "code built in RELEASE mode.\n";
+#else
+    // code has been configured with "cmake .."
+    std::cout << "code built in DEBUG mode.\n";
+#endif
+
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    ParticleManager manager;
-    manager.initialisation();
-    manager.solver();
+    try
+    {
+        ParticleManager manager;
+        manager.initialisation();
+        manager.solver();
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 
     auto t2 = std::chrono::high_resolution_clock::now();
     std::cout << "Elapsed real time = " << std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count() << '\n';
 
-    return 0;
+    return EXIT_SUCCESS;
 }

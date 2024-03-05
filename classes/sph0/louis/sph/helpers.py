@@ -163,19 +163,21 @@ class Model:
     def getexe(self):
         """ looks for Louis' executable
         """
-        dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","build"))
+        exename="louis"
+        exename="louis++"
+        dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","build","bin"))
         if 'Windows' in platform.uname():
-            exename = os.path.join(dir1, "Release/louis.exe")
+            exename = os.path.join(dir1, f"Release/{exename}.exe")
         else:
-            exename = os.path.join(dir1, "louis")
+            exename = os.path.join(dir1, exename)
         if not os.path.isfile(exename):
             raise Exception("%s NOT found" % exename)
         return exename
 
     def __str__(self):
         txt = "SPH Model:\n"
-        txt += "\tnb fixed particiles              = %d\n" % len(self.fparts)
-        txt += "\tnb mobile particules             = %d\n" % len(self.mparts)
+        txt += "\tnb fixed particles               = %d\n" % len(self.fparts)
+        txt += "\tnb mobile particles              = %d\n" % len(self.mparts)
         txt += "\tinitial smoothing length         = %f\n" % self.h_0
         txt += "\tinitial speed of sound [m/s]     = %f\n" % self.c_0
         txt += "\tinitial density [kg/m^3]         = %f\n" % self.rho_0
