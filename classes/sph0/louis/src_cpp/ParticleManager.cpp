@@ -28,6 +28,11 @@ ParticleManager::initialisation()
 
     // Reading of the paths of the input files
     std::ifstream file("paths.txt");
+    if(!file.is_open())
+    {
+        std::cout << "Error: paths.txt not found" << std::endl;
+        exit(1);
+    }
     file >> param_path;
     file >> fp_path;
     file >> mp_path;
@@ -55,6 +60,11 @@ ParticleManager::initialisation()
 
     // Reading and storing of the data for the fixed particles
     std::ifstream file1(fp_path);
+    if(!file1.is_open())
+    {
+        std::cout << "Error: " << fp_path << " not found" << std::endl;
+        exit(1);
+    }
     for (i = 0; i < this->numFP; i++)
     {
         cur_ptr = new FixedParticle();
@@ -67,6 +77,11 @@ ParticleManager::initialisation()
 
     // Reading and storing of the data for the mobile particles
     std::ifstream file2(mp_path);
+    if(!file2.is_open())
+    {
+        std::cout << "Error: " << mp_path << " not found" << std::endl;
+        exit(1);
+    }
     for (i = 0; i < this->numMP; i++)
     {
         cur_ptr = new MobileParticle();
@@ -135,8 +150,8 @@ ParticleManager::solver()
         // Test for the data saving
         if (to_save)
         {
-            this->savePartSet("resMP", ite, this->numFP + 1, this->numFP + this->numMP);
-            this->savePartSet("resFP", ite, 1, this->numFP);
+            this->savePartSet("resMP", ite, this->numFP, this->numFP + this->numMP-1);
+            this->savePartSet("resFP", ite, 0, this->numFP-1);
             std::cout << "Iteration nb " << ite << std::endl;
             std::cout << "   Time (s) = " << this->currentTime << std::endl;
             std::cout << "   Time step (s) = " << this->timeStep << std::endl;
@@ -156,6 +171,11 @@ void
 ParticleManager::readPRM(std::string const &param_path)
 {
     std::ifstream file(param_path);
+    if(!file.is_open())
+    {
+        std::cout << "Error: " << param_path << " not found" << std::endl;
+        exit(1);
+    }
     file >> this->numFP;
     file >> this->numMP;
     file >> this->h_0;

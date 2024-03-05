@@ -36,16 +36,16 @@ main()
 
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    try
-    {
+    //try
+    //{
         ParticleManager manager;
         manager.initialisation();
         manager.solver();
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    //}
+    //catch (const std::exception &e)
+    //{
+    //    std::cerr << "ERROR: " << e.what() << '\n';
+    //}
 
     auto t2 = std::chrono::high_resolution_clock::now();
     std::cout << "Elapsed real time = " << std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count() << '\n';

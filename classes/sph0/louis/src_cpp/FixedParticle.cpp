@@ -208,7 +208,7 @@ FixedParticle::getNeighbours()
                     }
                     else
                     {
-                        cellsToCheck[(i + 1) * 9 + (j + 1) * 3 + (k + 2) - 1] = 0;
+                        cellsToCheck[(i + 1) * 9 + (j + 1) * 3 + (k + 2) - 1] = -1;
                     }
                 }
             }
@@ -221,7 +221,7 @@ FixedParticle::getNeighbours()
         twice = 0; // [RB]
         for (i = 0; i < 27; i++)
         {
-            if (cellsToCheck[i] > 0)
+            if (cellsToCheck[i] > -1)
             {
                 storage = &srt->storage[cellsToCheck[i]];
                 for (j = 0; j < storage->size(); j++)

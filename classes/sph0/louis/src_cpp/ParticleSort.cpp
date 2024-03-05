@@ -15,11 +15,10 @@ ParticleSort::particlesSort()
     int xCell, yCell, zCell;           ///< number of the cell in the x, y and z direction
     int part_pos;                      ///< absolute position of a particle
     Eigen::Vector3d xyz;               ///< position of a particle
-    int nCellsSide = this->nCellsSide; ///< number of cells on a row
 
     FixedParticle *prt;
 
-    // std::cout << "sorting particles" << std::endl;
+    //std::cout << "sorting particles" << std::endl;
     if (this->init)
     {
         this->setCells();
@@ -31,6 +30,8 @@ ParticleSort::particlesSort()
     {
         this->storage[i].clear();
     }
+
+    int nCellsSide = this->nCellsSide; ///< number of cells on a row
 
     for (i = 0; i < this->manager->numPart; i++)
     {
@@ -70,6 +71,7 @@ ParticleSort::particlesSort()
 
         this->storage[part_pos].push_back(Link(prt, 0.0));
     }
+    //std::cout << "ParticleSort::particlesSort() done." << std::endl;
 }
 
 // sets the size of the cells in which the particles

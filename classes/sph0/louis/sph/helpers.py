@@ -164,7 +164,7 @@ class Model:
         """ looks for Louis' executable
         """
         exename="louis"
-        exename="louis++"
+        #exename="louis++"
         dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","build","bin"))
         if 'Windows' in platform.uname():
             exename = os.path.join(dir1, f"Release/{exename}.exe")
