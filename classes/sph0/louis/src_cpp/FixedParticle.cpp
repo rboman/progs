@@ -438,7 +438,7 @@ FixedParticle::kernel_corr()
     L(2, 1) = L(1, 2); // the inverse of a symmetric matrix is symmetric
     L = (1.0 / detM) * L;
 
-    for (i = 0; i < this->numOfNeighbours; i)
+    for (i = 0; i < this->numOfNeighbours; ++i)
     {
         this->vec_gradW_mod[i](0) = L(0, 0) * this->vec_gradW[i](0) + L(0, 1) * this->vec_gradW[i](0) + L(0, 2) * this->vec_gradW[i](2);
         this->vec_gradW_mod[i](1) = L(1, 0) * this->vec_gradW[i](0) + L(1, 1) * this->vec_gradW[i](1) + L(1, 2) * this->vec_gradW[i](2);

@@ -10,6 +10,8 @@ def setupwdir(testname):
     import os, os.path
     # print "__file__=",__file__
     dir1 = os.path.abspath(os.path.dirname(__file__) + os.sep + "..") + os.sep
+    dir1 = os.path.normcase(dir1) # C:\ and c:\ are the same
+    testname = os.path.normcase(testname)
     print("dir1=", dir1)
     print("testname=", testname)
     common = os.path.commonprefix((testname, dir1))
