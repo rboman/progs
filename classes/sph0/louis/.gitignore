@@ -12,7 +12,9 @@ paths.txt
 *.out
 *.res
 *.vtu
+*.vts
 
 *.kdev4
 
 sph.stdout.txt
+stdout.txt

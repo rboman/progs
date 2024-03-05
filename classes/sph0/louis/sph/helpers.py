@@ -167,7 +167,8 @@ class Model:
         #exename="louis++"
         dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","build","bin"))
         if 'Windows' in platform.uname():
-            exename = os.path.join(dir1, f"Release/{exename}.exe")
+            #exename = os.path.join(dir1, f"Release/{exename}.exe")
+            exename = os.path.join(dir1, f"{exename}.exe")
         else:
             exename = os.path.join(dir1, exename)
         if not os.path.isfile(exename):
