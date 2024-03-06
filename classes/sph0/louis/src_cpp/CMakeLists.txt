@@ -49,3 +49,8 @@ TARGET_INCLUDE_DIRECTORIES(louis++ PUBLIC ${EIGEN_INCLUDE_DIRS})
 IF(OpenMP_CXX_FOUND)
     TARGET_LINK_LIBRARIES(louis++ PUBLIC OpenMP::OpenMP_CXX)
 ENDIF()
+
+TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC EIGEN_DONT_PARALLELIZE)
+# try to increase Eigen performance in Debug mode (inlining and no assertions)
+TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: EIGEN_NO_DEBUG >)
+TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )

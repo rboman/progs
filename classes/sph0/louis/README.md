@@ -19,3 +19,11 @@ requires [Python](https://www.python.org/), [CMake](https://cmake.org/) and a fo
 Results go to `workspace/test_waterdrop`. Conversion to paraview requires [VTK](http://www.vtk.org/).
 
 Load `.vtu` files in [Paraview](http://www.paraview.org/).
+
+
+## New run
+
+Run C++ code in debug using 10 threads
+```
+cmake . -B build -DCMAKE_BUILD_TYPE=Debug && ninja -C build && run.py --cpp -k 10 tests\waterdrop.py
+```

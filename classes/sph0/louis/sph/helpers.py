@@ -106,7 +106,7 @@ class Model:
         """
         for p in ['res*.*', 'input.*', 'grid.*']:
             for f in glob.glob(p):
-                print('rm %s' % f)
+                # print('rm %s' % f)
                 os.remove(f)
 
     def run(self):
@@ -147,7 +147,8 @@ class Model:
 
         langprefix = "[F]"
         if args.cpp:
-            langprefix = "[C++]"
+            langprefix = "[C]"
+        langprefix = "[exe]"
 
         # start Fortran code as a subprocess and streams the fortran output
         # to the standard output

@@ -207,6 +207,10 @@ ParticleManager::savePartSet(std::string const &name, int ite, int start, int en
     std::string filename; // !< file name
     std::ofstream file;   // !< file stream
 
+    // configure output stream to output double as in fortran
+    file.precision(15);
+    file.setf(std::ios::scientific, std::ios::floatfield);
+
     std::ostringstream oss;
     oss << std::setw(8) << std::setfill('0') << ite;
 

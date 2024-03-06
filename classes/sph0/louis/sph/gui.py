@@ -13,11 +13,7 @@
 #   tests_waterdrop4: 21'34" (sequential)
 #                      2'22" (parallel - 20 threads) - speedup x9.1
 
-import os
-import glob
-import vtk
-import multiprocessing
-
+import os, glob, vtk, multiprocessing
 
 class ToParaview:
     def __init__(self, verb=False):

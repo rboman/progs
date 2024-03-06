@@ -20,6 +20,11 @@ main()
 {
     std::cout << "============= SPH_simulation (L.Goffin)\n";
 
+    // configure output stream to output double as in fortran
+    std::cout.precision(15);
+    std::cout.setf(std::ios::scientific, std::ios::floatfield);
+    
+
 #ifdef _OPENMP
     std::cout << "OpenMP available: OMP_NUM_THREADS=" << omp_get_max_threads() << "\n";
 #else
