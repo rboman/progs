@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Python helper classes for Louis' code
-# Holds the model parameters in a structured way and makes the interface with 
+# Holds the model parameters in a structured way and makes the interface with
 # the Fortran executable.
 
 import math, subprocess, os, platform, sys, glob
@@ -145,6 +145,10 @@ class Model:
         exename = self.getexe()
         print("running %s using %s threads" % (exename, os.environ['OMP_NUM_THREADS']))
 
+        langprefix = "[F]"
+        if args.cpp:
+            langprefix = "[C++]"
+
         # start Fortran code as a subprocess and streams the fortran output
         # to the standard output
         # http://stackoverflow.com/questions/2715847/python-read-streaming-input-from-subprocess-communicate/17698359#17698359
@@ -154,7 +158,7 @@ class Model:
             with proc.stdout:
                 for line in iter(proc.stdout.readline, b''):
                     line = line.decode().rstrip('\n').rstrip('\r')
-                    print('[F]%s' % line)
+                    print(f'{langprefix}{line}')
             proc.wait()
         except KeyboardInterrupt:
             print('Ignoring CTRL-C')
@@ -163,15 +167,23 @@ class Model:
     def getexe(self):
         """ looks for Louis' executable
         """
-        exename="louis"
-        exename="louis++"
-        dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","build","bin"))
-        if 'Windows' in platform.uname():
-            #exename = os.path.join(dir1, f"Release/{exename}.exe")
-            exename = os.path.join(dir1, f"{exename}.exe")
+        args = wu.parseargs()
+        if args.cpp:
+            exename = "louis++"
         else:
-            exename = os.path.join(dir1, exename)
-        if not os.path.isfile(exename):
+            exename = "louis"
+        if 'Windows' in platform.uname():
+            exename += ".exe"
+        dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "build", "bin"))
+        paths = [os.path.join(dir1, exename),
+                 os.path.join(dir1, "Release", exename),
+                 os.path.join(dir1, "Debug", exename)]
+
+        for p in paths:
+            if os.path.isfile(p):
+                exename = p
+                break
+        else:
             raise Exception("%s NOT found" % exename)
         return exename
 

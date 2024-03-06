@@ -24,10 +24,12 @@ class ToParaview:
         self.verb = verb
 
     def convertall(self, pattern='res*.res'):
-        print("converting grid to VTK")
+        if self.verb:
+            print("converting grid to VTK")
         self.convertGrid()
-        print("converting %s to VTK" % pattern)
 
+        if self.verb:
+            print("converting %s to VTK" % pattern)
         pool = multiprocessing.Pool()
         for result in pool.map(self.convertParts, glob.glob(pattern)):
             pass
@@ -35,7 +37,8 @@ class ToParaview:
         #     self.convertParts(f)
 
     def convertGrid(self, fname='grid.out'):
-
+        """build a structured grid from the grid.out file
+        """
         outname = fname.replace('.out', '.vts')
 
         if os.path.exists(outname):
@@ -44,16 +47,16 @@ class ToParaview:
         if self.verb:
             print('converting', fname)
 
-        # read file
+        # read file produced by the SPH code
+        #   contains 2 scalars: nx and dx
         file = open(fname)
         line = file.readline()
         nx, dx = line.strip().split()
         nx = int(nx)
         dx = float(dx)
-        # print 'nx=%d, dx=%f' % (nx,dx)
         file.close()
 
-        # build a sgrid
+        # build a VTK structured grid
         grid = vtk.vtkStructuredGrid()
         points = vtk.vtkPoints()
         grid.SetPoints(points)
@@ -64,6 +67,7 @@ class ToParaview:
                     points.InsertNextPoint(i * dx, j * dx, k * dx)
         grid.SetDimensions(nx + 1, nx + 1, nx + 1)
 
+        # save the grid to disk
         writer = vtk.vtkXMLStructuredGridWriter()
         compressor = vtk.vtkZLibDataCompressor()
         writer.SetCompressor(compressor)
@@ -72,14 +76,17 @@ class ToParaview:
         writer.SetFileName(outname)
         writer.Write()
 
-    def convertParts(self, fname):
 
+    def convertParts(self, fname):
+        """convert a .res file to a .vtu file
+        """
         outname = fname.replace('.res', '.vtu')
 
         if os.path.exists(outname):
             return
 
-        print('converting', fname)
+        if self.verb:
+            print('converting', fname)
         file = open(fname)
 
         ugrid = vtk.vtkUnstructuredGrid()
@@ -136,6 +143,7 @@ class ToParaview:
             print("\t...", ugrid.GetNumberOfPoints(), 'points and',
                   ugrid.GetNumberOfCells(), 'cells converted')
 
+        # save the unstructured grid to disk
         writer = vtk.vtkXMLUnstructuredGridWriter()
         compressor = vtk.vtkZLibDataCompressor()
         writer.SetCompressor(compressor)

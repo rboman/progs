@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
 # Python utilities
+
+import sph.wutils as wu
 
 
 def setupwdir(testname):
@@ -8,24 +9,26 @@ def setupwdir(testname):
     creates a working folder for each test
     """
     import os, os.path
-    # print "__file__=",__file__
     dir1 = os.path.abspath(os.path.dirname(__file__) + os.sep + "..") + os.sep
-    dir1 = os.path.normcase(dir1) # C:\ and c:\ are the same
+    dir1 = os.path.normcase(dir1)  # C:\ and c:\ are the same
     testname = os.path.normcase(testname)
-    print("dir1=", dir1)
-    print("testname=", testname)
     common = os.path.commonprefix((testname, dir1))
-    # print "common=", common
     resdir = testname[len(common):].replace(os.sep, "_")
-    resdir = os.path.splitext(resdir)[0]  # remove ".py"
-    # print "resdir=", resdir
+    resdir = os.path.splitext(resdir)[0]
     wdir = os.path.join('workspace', resdir)
+
+    # add c++/fortran suffix
+    args = wu.parseargs()
+    if args.cpp:
+        wdir += "_cpp"
+    else:
+        wdir += "_f"
+
+    # create the folder and change to it
     if not os.path.isdir(wdir):
         print("creating", wdir)
         os.makedirs(wdir)
     os.chdir(wdir)
-
-# ------------------------------------------------------------------------------
 
 
 def parseargs():
@@ -41,6 +44,8 @@ def parseargs():
     parser.add_argument("--post", help="only do post-processing",
                         action="store_true")
     parser.add_argument("-k", help="nb of threads", type=int, default=1)
+    parser.add_argument("--cpp", help="run c++ code instead of fortran code",
+                        action="store_true")
     # parser.add_argument("-p", help="misc parameters")
     parser.add_argument('file', nargs='*', help='python files')
     args = parser.parse_args()
