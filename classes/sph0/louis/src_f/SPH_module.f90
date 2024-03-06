@@ -107,7 +107,7 @@ module SPH_module
     type, extends(fixed_particle) :: mobile_particle
         contains
             procedure :: varUpdate  =>  varUpdate_mobile
-            procedure :: ArtificialViscosity
+            procedure :: artificialViscosity
     end type mobile_particle
     
     
@@ -743,7 +743,7 @@ module SPH_module
             do i = 1, this%numOfNeighbours
                 cur_neigh => this%neighbours%lst(i)%ptr
                 u_ab(:)   = this%speed(:, cur_RKstep) - cur_neigh%speed(:, cur_RKstep)
-                pi_ab     = this%ArtificialViscosity(cur_neigh, this%manager%alpha, this%manager%beta)
+                pi_ab     = this%artificialViscosity(cur_neigh, this%manager%alpha, this%manager%beta)
                 Delta_rho = Delta_rho &
                             + this%m * dot_product(u_ab, this%vec_gradW(:, i))
                 Delta_u   = Delta_u   &
@@ -756,7 +756,7 @@ module SPH_module
             do i = 1, this%numOfNeighbours
                 cur_neigh => this%neighbours%lst(i)%ptr
                 u_ab(:)   = this%speed(:, cur_RKstep) - cur_neigh%speed(:, cur_RKstep)
-                pi_ab     = this%ArtificialViscosity(cur_neigh, this%manager%alpha, this%manager%beta)
+                pi_ab     = this%artificialViscosity(cur_neigh, this%manager%alpha, this%manager%beta)
                 Delta_rho = Delta_rho &
                             + this%m * dot_product(u_ab, this%vec_gradW(:, i))
                 Delta_u   = Delta_u &
@@ -792,18 +792,18 @@ module SPH_module
     end subroutine varUpdate_mobile
 
     
-    !> mobile_particle/ArtificialViscosity calculates the viscosity term
+    !> mobile_particle/artificialViscosity calculates the viscosity term
     !!      in the momentum equation.
     !! @param neighObj : neighbouring object
     !! @param alpha    : coefficicent in the artificial viscosity formulation
     !! @param beta     : coefficicent in the artificial viscosity formulation
     
-    function ArtificialViscosity(this, neighObj, alpha, beta)
+    function artificialViscosity(this, neighObj, alpha, beta)
         class(mobile_particle) :: this
         class(fixed_particle) :: neighObj
         real(DP) :: alpha
         real(DP) :: beta
-        real(DP) :: ArtificialViscosity
+        real(DP) :: artificialViscosity
         real(DP) :: mu_ab = 0.d0                 !< this term represents a kind of viscosity
         real(DP), dimension(1:3) :: u_ab         !< relative velocity of a in comparison with b
         real(DP), dimension(1:3) :: x_ab         !< the distance between a and b
@@ -819,16 +819,16 @@ module SPH_module
             c_ab   = 0.5d0 * (this%c(this%manager%RKstep) + neighObj%c(this%manager%RKstep))
             rho_ab = 0.5d0 * (this%rho(this%manager%RKstep) + neighObj%rho(this%manager%RKstep))
             
-            ArtificialViscosity = (-alpha*c_ab*mu_ab + beta*mu_ab**2.d0)/rho_ab
+            artificialViscosity = (-alpha*c_ab*mu_ab + beta*mu_ab**2.d0)/rho_ab
         else
-            ArtificialViscosity = 0.d0
+            artificialViscosity = 0.d0
         end if
         
         ! update of max_mu_ab for the calculation of the timestep
         if( (this%manager%RKstep == 1).and.(mu_ab>this%max_mu_ab) ) then
             this%max_mu_ab = mu_ab
         end if
-    end function ArtificialViscosity
+    end function artificialViscosity
 
     ! ------------------------------------------------------------------------
     ! particle_manager

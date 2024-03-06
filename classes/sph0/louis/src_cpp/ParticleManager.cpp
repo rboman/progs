@@ -15,20 +15,20 @@ ParticleManager::ParticleManager()
 void
 ParticleManager::initialisation()
 {
-    std::string param_path; // !< path of the parameters file
-    std::string fp_path;    // !< path of the fixed particle(fp) file
-    std::string mp_path;    // !< path of the mobile particle(mp) file
+    std::string param_path; ///< path of the parameters file
+    std::string fp_path;    ///< path of the fixed particle(fp) file
+    std::string mp_path;    ///< path of the mobile particle(mp) file
 
-    this->timeStep = 1.0e-15; // !< initial time step
-    this->currentTime = 0.0;  // !< current time initialisation
-    this->RKstep = 0;         // !< RK step counter initialisation
+    this->timeStep = 1.0e-15; ///< initial time step
+    this->currentTime = 0.0;  ///< current time initialisation
+    this->RKstep = 0;         ///< RK step counter initialisation
 
-    int i; // !< loop counter
+    int i; ///< loop counter
     FixedParticle *cur_ptr;
 
     // Reading of the paths of the input files
     std::ifstream file("paths.txt");
-    if(!file.is_open())
+    if (!file.is_open())
     {
         std::cout << "Error: paths.txt not found" << std::endl;
         exit(1);
@@ -60,7 +60,7 @@ ParticleManager::initialisation()
 
     // Reading and storing of the data for the fixed particles
     std::ifstream file1(fp_path);
-    if(!file1.is_open())
+    if (!file1.is_open())
     {
         std::cout << "Error: " << fp_path << " not found" << std::endl;
         exit(1);
@@ -77,7 +77,7 @@ ParticleManager::initialisation()
 
     // Reading and storing of the data for the mobile particles
     std::ifstream file2(mp_path);
-    if(!file2.is_open())
+    if (!file2.is_open())
     {
         std::cout << "Error: " << mp_path << " not found" << std::endl;
         exit(1);
@@ -105,9 +105,9 @@ ParticleManager::initialisation()
 void
 ParticleManager::solver()
 {
-    int i, j;     // !< loop counters
-    int ite;      // !< iteration counter
-    bool to_save; // !< saving flag. If true a saving is done
+    int i, j;     ///< loop counters
+    int ite;      ///< iteration counter
+    bool to_save; ///< saving flag. If true a saving is done
     FixedParticle *p;
 
     ite = 0;
@@ -150,16 +150,16 @@ ParticleManager::solver()
         // Test for the data saving
         if (to_save)
         {
-            this->savePartSet("resMP", ite, this->numFP, this->numFP + this->numMP-1);
-            this->savePartSet("resFP", ite, 0, this->numFP-1);
+            this->savePartSet("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
+            this->savePartSet("resFP", ite, 0, this->numFP - 1);
             std::cout << "Iteration nb " << ite << std::endl;
             std::cout << "   Time (s) = " << this->currentTime << std::endl;
             std::cout << "   Time step (s) = " << this->timeStep << std::endl;
             to_save = false;
         }
 
-        this->timeStepUpdate();
-        this->slUpdate();
+        this->update_dt();
+        this->update_h();
 
         ite = ite + 1;
     }
@@ -171,7 +171,7 @@ void
 ParticleManager::readPRM(std::string const &param_path)
 {
     std::ifstream file(param_path);
-    if(!file.is_open())
+    if (!file.is_open())
     {
         std::cout << "Error: " << param_path << " not found" << std::endl;
         exit(1);
@@ -194,122 +194,95 @@ ParticleManager::readPRM(std::string const &param_path)
     file.close();
 }
 
-// !> save a particle set onto disk
-// !! @param name  : name of the file
-// !! @param ite   : iteration number
-// !! @param start : first particle to save
-// !! @param end   : last particle to save
+/// Save a particle set onto disk.
+/// @param name  : name of the file
+/// @param ite   : iteration number
+/// @param start : first particle to save
+/// @param end   : last particle to save
 
 void
-ParticleManager::savePartSet(std::string const &name, int ite, int start, int end)
+ParticleManager::savePartSet(std::string const &name, int ite,
+                             int start, int end)
 {
-    int i;                // !< loop counter
-    std::string filename; // !< file name
-    std::ofstream file;   // !< file stream
+    // build filename from name and ite
+    std::ostringstream oss;
+    oss << std::setw(8) << std::setfill('0') << ite;
+    std::string filename = name + "_" + oss.str() + ".res";
 
+    std::ofstream file;
     // configure output stream to output double as in fortran
     file.precision(15);
     file.setf(std::ios::scientific, std::ios::floatfield);
-
-    std::ostringstream oss;
-    oss << std::setw(8) << std::setfill('0') << ite;
-
-    filename = name + "_" + oss.str() + ".res";
     file.open(filename);
-    for (i = start; i <= end; i++)
-    {
+    for (int i = start; i <= end; ++i)
         this->part[i]->save2disk(file);
-    }
     file.close();
 }
 
-// computes the next timestep using the properties of the particles.
+/// Computes the next timestep using the properties of the particles.
 
 void
-ParticleManager::timeStepUpdate()
+ParticleManager::update_dt()
 {
-    double dTf, dTftemp;   // !< time step relative to the body forces
-    double dTcv, dTcvtemp; // !< time step relative to the viscous forces and Courrant number
-    int i;                 // !< loop counter
-    FixedParticle *cur_ptr;
-
     // computes the timestep relative to the body forces
-    dTf = sqrt(this->part[this->numFP]->h / 9.81);
-    for (i = this->numFP + 1; i < this->numPart; i++)
+    double dTf = sqrt(this->part[this->numFP]->h / 9.81);
+    for (int i = this->numFP + 1; i < this->numPart; i++)
     {
-        cur_ptr = this->part[i];
-        dTftemp = sqrt(cur_ptr->h / 9.81);
+        FixedParticle *cur_ptr = this->part[i];
+        double dTftemp = sqrt(cur_ptr->h / 9.81);
         if (dTftemp < dTf)
-        {
             dTf = dTftemp;
-        }
     }
 
     // computes the timestep relative to the CN and the viscous forces
-    dTcv = this->part[this->numFP]->h /
-           (this->part[this->numFP]->c[0] +
-            0.6 * (this->alpha * this->part[this->numFP]->c[0] +
-                   this->beta * this->part[this->numFP]->max_mu_ab));
-    for (i = this->numFP + 1; i < this->numPart; i++)
+    double dTcv = this->part[this->numFP]->h /
+                  (this->part[this->numFP]->c[0] +
+                   0.6 * (this->alpha * this->part[this->numFP]->c[0] +
+                          this->beta * this->part[this->numFP]->max_mu_ab));
+    for (int i = this->numFP + 1; i < this->numPart; i++)
     {
-        cur_ptr = this->part[i];
-        dTcvtemp = cur_ptr->h /
-                   (cur_ptr->c[0] +
-                    0.6 * (this->alpha * cur_ptr->c[0] + this->beta * cur_ptr->max_mu_ab));
+        FixedParticle *cur_ptr = this->part[i];
+        double dTcvtemp = cur_ptr->h /
+                          (cur_ptr->c[0] +
+                           0.6 * (this->alpha * cur_ptr->c[0] + this->beta * cur_ptr->max_mu_ab));
         if (dTcvtemp < dTcv)
-        {
             dTcv = dTcvtemp;
-        }
     }
 
     // computes the final timestep
     if (0.4 * dTf > 0.25 * dTcv)
-    {
         this->timeStep = 0.25 * dTcv;
-    }
     else
-    {
         this->timeStep = 0.4 * dTf;
-    }
 
     // possibility to change the timestep if we use the ideal gas law
     if (this->eqnState == LAW_IDEAL_GAS)
-    {
         this->timeStep = 5 * this->timeStep;
-    }
 }
 
-// updates the smoothing length at each timestep.
-// It is written to provide the same smoothing length for every particle.
+/// Updates the smoothing length at each timestep.
+/// It is written to provide the same smoothing length for every particle.
 
 void
-ParticleManager::slUpdate()
+ParticleManager::update_h()
 {
-    double mean_rho; // !< mean value of the densities of the mobile particles
-    double new_h;    // !< new smoothing length
-    int i;           // !< loop counter
-    mean_rho = 0;
-
     // calculation of the average density
-    for (i = 0; i < this->numPart; i++)
-    {
+    double mean_rho = 0.0;
+    for (int i = 0; i < this->numPart; i++)
         mean_rho = mean_rho + this->part[i]->rho[0];
-    }
     mean_rho = mean_rho / this->numPart;
 
     // calculation of the new smoothing length
-    new_h = this->h_0 * pow(this->rho_0 / mean_rho, 1.0 / 3.0);
+    double new_h = this->h_0 * pow(this->rho_0 / mean_rho, 1.0 / 3.0);
 
-    // if the smoothing length is greater than 0.5 the size of a cell, it is limited
+    // if the smoothing length is too large, it is limited
     if (new_h > 0.5 * this->sorting.cellSize)
     {
         new_h = 0.5 * this->sorting.cellSize;
         std::cout << "Warning: the smoothing has been limited" << std::endl;
     }
 
-    // update of the smoothing length
-    for (i = 0; i < this->numPart; i++)
-    {
+    // update of the smoothing length of all the particles
+    for (int i = 0; i < this->numPart; i++)
         this->part[i]->h = new_h;
-    }
 }

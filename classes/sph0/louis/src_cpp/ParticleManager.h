@@ -51,8 +51,8 @@ public:
     void initialisation();
     void solver();
     void readPRM(std::string const &param_path);
-    void timeStepUpdate();
-    void slUpdate();
+    void update_dt();
+    void update_h();
     void savePartSet(std::string const &name, int ite, int start, int end);
 };
 

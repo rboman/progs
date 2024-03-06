@@ -28,6 +28,6 @@ enum Law
 
 #include <Eigen/Dense>
 
-double eval_r(Eigen::Vector3d const &xyz, Eigen::Vector3d const &xyz2);
+//double eval_r(Eigen::Vector3d const &xyz, Eigen::Vector3d const &xyz2);
 
 #endif // SPH_H

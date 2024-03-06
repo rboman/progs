@@ -35,6 +35,8 @@ ELSE()
 ENDIF()
 
 # find Eigen
+# FIND_PACKAGE(Eigen3 3.4 REQUIRED NO_MODULE)
+
 FIND_PATH(EIGEN_INCLUDE_DIRS "Eigen/Dense" 
           PATHS "${PROJECT_SOURCE_DIR}/lib/eigen" "/usr/include/eigen3")
 MESSAGE(STATUS "EIGEN_INCLUDE_DIRS=" ${EIGEN_INCLUDE_DIRS})
@@ -46,9 +48,11 @@ ENDIF()
 FILE(GLOB SRCS *.h *.cpp)
 ADD_EXECUTABLE(louis++ ${SRCS})
 TARGET_INCLUDE_DIRECTORIES(louis++ PUBLIC ${EIGEN_INCLUDE_DIRS})
+#TARGET_LINK_LIBRARIES(louis++ Eigen3::Eigen)
 IF(OpenMP_CXX_FOUND)
     TARGET_LINK_LIBRARIES(louis++ PUBLIC OpenMP::OpenMP_CXX)
 ENDIF()
+
 
 TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC EIGEN_DONT_PARALLELIZE)
 # try to increase Eigen performance in Debug mode (inlining and no assertions)

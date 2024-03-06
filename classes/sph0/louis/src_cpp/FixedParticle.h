@@ -34,7 +34,7 @@ public:
 public:
     FixedParticle() {}
 
-    void save2disk(std::ofstream &file);
+    void save2disk(std::ofstream &file) const;
     void loadfromdisk(std::ifstream &ufile, double h_0);
     void getNeighbours();
     double calcPressure(double rho);
