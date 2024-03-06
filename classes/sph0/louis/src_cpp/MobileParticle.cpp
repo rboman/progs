@@ -6,7 +6,7 @@
 /// The integration scheme is a RK22 scheme.
 
 void
-MobileParticle::varUpdate()
+MobileParticle::update_vars()
 {
     this->getNeighbours();
     this->gradW();
@@ -28,7 +28,7 @@ MobileParticle::varUpdate()
     {
     case KCORR_ON:
     {
-        for (int i = 0; i < this->numOfNeighbours; i++)
+        for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             FixedParticle *neigh = this->neighbours[i].ptr;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
@@ -40,7 +40,7 @@ MobileParticle::varUpdate()
     }
     case KCORR_OFF:
     {
-        for (int i = 0; i < this->numOfNeighbours; i++)
+        for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             FixedParticle *neigh = this->neighbours[i].ptr;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];

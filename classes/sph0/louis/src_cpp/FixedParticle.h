@@ -23,10 +23,9 @@ public:
     double c[3];                        ///< 3x1 array containing the speed of sound of a particle.
     double h;                           ///< smoothing length
     std::vector<Link> neighbours;       ///< list of neighbours
-    int numOfNeighbours;                ///< number of neighbours
     Eigen::Vector3d vec_gradW[150];     ///< array that contains the gradient for every
-                                        /// neighbours; initially set to 150 elements to
-                                        /// increase the computational efficiency
+                                        ///  neighbours; initially set to 150 elements to
+                                        ///  increase the computational efficiency
     Eigen::Vector3d vec_gradW_mod[150]; ///< corrected vec_gradW if asked
     ParticleManager *manager;           ///< pointer toward the object particle_manager
     double max_mu_ab;                   ///< maximum mu_ab of a particle (used for the timestep calculation)
@@ -37,12 +36,12 @@ public:
     void save2disk(std::ofstream &file) const;
     void loadfromdisk(std::ifstream &ufile, double h_0);
     void getNeighbours();
-    double calcPressure(double rho);
-    double calcCelerity(double rho);
+    double calcPressure(double rho) const;
+    double calcCelerity(double rho) const;
     void gradW();
     void kernel_corr();
 
-    virtual void varUpdate();
+    virtual void update_vars();
 };
 
 #endif // FIXEDPARTICLE_H

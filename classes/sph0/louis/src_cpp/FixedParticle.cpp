@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-/// loads the state of a particle from disk
+/// Loads the state of a particle from disk
 
 void
 FixedParticle::loadfromdisk(std::ifstream &ufile, double h_0)
@@ -25,7 +25,7 @@ FixedParticle::loadfromdisk(std::ifstream &ufile, double h_0)
 // @param rho  : actual density
 
 double
-FixedParticle::calcPressure(double rho)
+FixedParticle::calcPressure(double rho) const
 {
     double pressure;
     const double idealGasCst = 8.3144621;
@@ -56,7 +56,7 @@ FixedParticle::calcPressure(double rho)
 /// @param rho  : actual density
 
 double
-FixedParticle::calcCelerity(double rho)
+FixedParticle::calcCelerity(double rho) const
 {
     double celerity;
 
@@ -90,11 +90,11 @@ FixedParticle::save2disk(std::ofstream &file) const
          << this->c[0] << " "
          << this->h << " "
          << this->max_mu_ab << " "
-         << this->numOfNeighbours << '\n';
+         << this->neighbours.size() << '\n';
 }
 
 void
-FixedParticle::varUpdate()
+FixedParticle::update_vars()
 {
     this->getNeighbours();
     this->gradW();
@@ -102,7 +102,7 @@ FixedParticle::varUpdate()
     int RKstep = this->manager->RKstep;
 
     double delta_rho = 0.0; // \f$d\rho/dt\f$
-    for (int i = 0; i < this->numOfNeighbours; i++)
+    for (size_t i = 0; i < this->neighbours.size(); i++)
     {
         FixedParticle *neigh = this->neighbours[i].ptr;
         Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
@@ -138,14 +138,14 @@ FixedParticle::getNeighbours()
 
     if (RKstep == 0)
     {
-        ParticleSort *srt = &this->manager->sorting;        // pointer toward the sorting machine
-        int nCellsSide = this->manager->sorting.nCellsSide; // number of cells on a row of the domain    
-        int cellsToCheck[27];                               // number of the cells to check for the neighbours
+        ParticleSort *sorter = &this->manager->sorter;     // pointer toward the sorter machine
+        int nCellsSide = this->manager->sorter.nCellsSide; // number of cells on a row of the domain
+        int cellsToCheck[27];                              // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
-        int xCell = (int)((xyz(0) - fmod(xyz(0), srt->cellSize)) / srt->cellSize) + 1;
-        int yCell = (int)((xyz(1) - fmod(xyz(1), srt->cellSize)) / srt->cellSize) + 1;
-        int zCell = (int)((xyz(2) - fmod(xyz(2), srt->cellSize)) / srt->cellSize) + 1;
+        int xCell = (int)((xyz(0) - fmod(xyz(0), sorter->cellSize)) / sorter->cellSize) + 1;
+        int yCell = (int)((xyz(1) - fmod(xyz(1), sorter->cellSize)) / sorter->cellSize) + 1;
+        int zCell = (int)((xyz(2) - fmod(xyz(2), sorter->cellSize)) / sorter->cellSize) + 1;
 
         if (xCell < 1)
             xCell = 1;
@@ -165,7 +165,9 @@ FixedParticle::getNeighbours()
             for (int j = -1; j < 2; j++)
                 for (int k = -1; k < 2; k++)
                 {
-                    if ((xCell + i > 0) && (yCell + j > 0) && (zCell + k > 0) &&
+                    if ((xCell + i > 0) &&
+                        (yCell + j > 0) &&
+                        (zCell + k > 0) &&
                         (xCell + i <= nCellsSide) &&
                         (yCell + j <= nCellsSide) &&
                         (zCell + k <= nCellsSide))
@@ -196,7 +198,7 @@ FixedParticle::getNeighbours()
         {
             if (cellsToCheck[i] > -1)
             {
-                std::vector<Link> *storage = &srt->storage[cellsToCheck[i]];
+                std::vector<Link> *storage = &sorter->storage[cellsToCheck[i]];
                 for (size_t j = 0; j < storage->size(); j++)
                 {
                     FixedParticle *neigh = (*storage)[j].ptr;
@@ -204,7 +206,7 @@ FixedParticle::getNeighbours()
                     double r = (xyz - neighXYZ).norm();
                     if (r <= this->manager->kappa * this->h)
                     {
-                        //if (r > 1e-12) // Louis
+                        // if (r > 1e-12) // Louis
                         if (neigh != this)
                             this->neighbours.push_back(Link(neigh, r));
                         else
@@ -213,7 +215,7 @@ FixedParticle::getNeighbours()
                 }
             }
         }
-        // [RB] safeguard
+        // [RB] safeguard (useless?)
         if (twice != 1)
         {
             std::stringstream str;
@@ -223,17 +225,16 @@ FixedParticle::getNeighbours()
             str << "    yCell = " << yCell << '\n';
             str << "    zCell = " << zCell << '\n';
             str << "    cellsToCheck = ";
-            for(int i = 0; i < 27; i++)
+            for (int i = 0; i < 27; i++)
                 str << cellsToCheck[i] << ",";
             str << '\n';
             throw std::runtime_error(str.str());
         }
-        this->numOfNeighbours = this->neighbours.size();
     }
     else
     {
         // RK step2 - same neighbours and r is updated
-        for (int i = 0; i < this->numOfNeighbours; i++)
+        for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             Link *link = &this->neighbours[i];
             Eigen::Vector3d neighXYZ = link->ptr->coord[RKstep];
@@ -242,40 +243,38 @@ FixedParticle::getNeighbours()
     }
 }
 
-// !> gradW : creates a vector that contains the values
-// !!       of the gradient for each neighbour.
+/// Creates a vector that contains the values of the gradient of the kernel
+/// for each neighbour.
 
 void
 FixedParticle::gradW()
 {
-    if (this->numOfNeighbours > 150)
-    {
-        throw std::runtime_error("Error: Number of neighbours greater than expected (max 150 for vec_gradW): " + std::to_string(this->numOfNeighbours));
-    }
+    if (this->neighbours.size() > 150)
+        throw std::runtime_error("Error: Number of neighbours greater than expected (max 150 for vec_gradW): " + std::to_string(this->neighbours.size()));
 
-    double cur_h = this->h;
+    double h = this->h;
     int RKstep = this->manager->RKstep;
 
     switch (this->manager->kernelKind)
     {
     case K_CUBIC_SPLINE:
     {
-        double alpha_d = 3.0 / (2.0 * M_PI * cur_h * cur_h * cur_h);
-        // values of alpha_d in table 2.1 p 23
-        for (int i = 0; i < this->numOfNeighbours; i++)
+        double alpha_d = 3.0 / (2.0 * M_PI * h * h * h);
+        // values of alpha_d in table (2.1) p 23
+        for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             double r = this->neighbours[i].r;
             FixedParticle *neigh = this->neighbours[i].ptr;
-            if ((r / cur_h >= 0.0) && (r / cur_h < 1.0))
+            if ((r / h >= 0.0) && (r / h < 1.0))
             {
-                this->vec_gradW[i] = alpha_d / cur_h *
-                                     (1.5 * (r / cur_h) * (r / cur_h) - 2.0 * (r / cur_h)) *
+                this->vec_gradW[i] = alpha_d / h *
+                                     (1.5 * (r / h) * (r / h) - 2.0 * (r / h)) *
                                      (this->coord[RKstep] - neigh->coord[RKstep]) / r;
             }
-            else if ((r / cur_h >= 1.0) && (r / cur_h < 2.0))
+            else if ((r / h >= 1.0) && (r / h < 2.0))
             {
-                this->vec_gradW[i] = alpha_d / cur_h *
-                                     (-0.5 * (2.0 - r / cur_h) * (2.0 - r / cur_h)) *
+                this->vec_gradW[i] = alpha_d / h *
+                                     (-0.5 * (2.0 - r / h) * (2.0 - r / h)) *
                                      (this->coord[RKstep] - neigh->coord[RKstep]) / r;
             }
             else
@@ -287,50 +286,47 @@ FixedParticle::gradW()
     }
     case K_QUADRATIC:
     {
-        double alpha_d = 5.0 / (4.0 * M_PI * cur_h * cur_h * cur_h);
-        for (int i = 0; i < this->numOfNeighbours; i++)
+        double alpha_d = 5.0 / (4.0 * M_PI * h * h * h);
+        for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             double r = this->neighbours[i].r;
             FixedParticle *neigh = this->neighbours[i].ptr;
-            if ((r / cur_h >= 0.0) && (r / cur_h <= 2.0))
-            {
-                this->vec_gradW[i] = alpha_d / cur_h *
-                                     (0.375 * r / cur_h - 0.75) *
+            if ((r / h >= 0.0) && (r / h <= 2.0))
+                this->vec_gradW[i] = alpha_d / h *
+                                     (0.375 * r / h - 0.75) *
                                      (this->coord[RKstep] - neigh->coord[RKstep]) / r;
-            }
+
             else
-            {
                 this->vec_gradW[i] = Eigen::Vector3d::Zero();
-            }
         }
         break;
     }
     case K_QUINTIC_SPLINE:
     {
-        double alpha_d = 3.0 / (359.0 * M_PI * cur_h * cur_h * cur_h);
-        for (int i = 0; i < this->numOfNeighbours; i++)
+        double alpha_d = 3.0 / (359.0 * M_PI * h * h * h);
+        for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             double r = this->neighbours[i].r;
             FixedParticle *neigh = this->neighbours[i].ptr;
-            if ((r / cur_h >= 0.0) && (r / cur_h < 1.0))
+            if ((r / h >= 0.0) && (r / h < 1.0))
             {
-                this->vec_gradW[i] = alpha_d / cur_h *
-                                     (-5.0 * pow(3.0 - r / cur_h, 4) +
-                                      30.0 * pow(2.0 - r / cur_h, 4) -
-                                      75.0 * pow(1.0 - r / cur_h, 4)) *
+                this->vec_gradW[i] = alpha_d / h *
+                                     (-5.0 * pow(3.0 - r / h, 4) +
+                                      30.0 * pow(2.0 - r / h, 4) -
+                                      75.0 * pow(1.0 - r / h, 4)) *
                                      (this->coord[RKstep] - neigh->coord[RKstep]) / r;
             }
-            else if ((r / cur_h >= 1.0) && (r / cur_h < 2.0))
+            else if ((r / h >= 1.0) && (r / h < 2.0))
             {
-                this->vec_gradW[i] = alpha_d / cur_h *
-                                     (-5.0 * pow(3.0 - r / cur_h, 4) +
-                                      30.0 * pow(2.0 - r / cur_h, 4)) *
+                this->vec_gradW[i] = alpha_d / h *
+                                     (-5.0 * pow(3.0 - r / h, 4) +
+                                      30.0 * pow(2.0 - r / h, 4)) *
                                      (this->coord[RKstep] - neigh->coord[RKstep]) / r;
             }
-            else if ((r / cur_h >= 2.0) && (r / cur_h < 3.0))
+            else if ((r / h >= 2.0) && (r / h < 3.0))
             {
-                this->vec_gradW[i] = alpha_d / cur_h *
-                                     (-5.0 * pow(3.0 - r / cur_h, 4)) *
+                this->vec_gradW[i] = alpha_d / h *
+                                     (-5.0 * pow(3.0 - r / h, 4)) *
                                      (this->coord[RKstep] - neigh->coord[RKstep]) / r;
             }
             else
@@ -353,55 +349,22 @@ FixedParticle::kernel_corr()
 {
     int RKstep = this->manager->RKstep;
 
-    Eigen::Matrix3d M;        // matrix used to correct the kernel gradient
-    M(0, 0) = 0.0;
-    M(1, 1) = 0.0;
-    M(2, 2) = 0.0;
-    M(0, 1) = 0.0;
-    M(0, 2) = 0.0;
-    M(1, 2) = 0.0;
+    Eigen::Matrix3d M;
+    M.setZero();
 
-    for (int i = 0; i < this->numOfNeighbours; i++)
+    for (size_t i = 0; i < this->neighbours.size(); i++)
     {
         FixedParticle *neigh = this->neighbours[i].ptr;
-        double MDivRho = neigh->m / neigh->rho[RKstep];
-        M(0, 0) = M(0, 0) + MDivRho * (neigh->coord[0](RKstep) - this->coord[0](RKstep)) * this->vec_gradW[i](0);
-        M(1, 1) = M(1, 1) + MDivRho * (neigh->coord[1](RKstep) - this->coord[1](RKstep)) * this->vec_gradW[i](1);
-        M(2, 2) = M(2, 2) + MDivRho * (neigh->coord[2](RKstep) - this->coord[2](RKstep)) * this->vec_gradW[i](2);
-        M(0, 1) = M(0, 1) + MDivRho * (neigh->coord[0](RKstep) - this->coord[0](RKstep)) * this->vec_gradW[i](1);
-        M(0, 2) = M(0, 2) + MDivRho * (neigh->coord[0](RKstep) - this->coord[0](RKstep)) * this->vec_gradW[i](2);
-        M(1, 2) = M(1, 2) + MDivRho * (neigh->coord[1](RKstep) - this->coord[1](RKstep)) * this->vec_gradW[i](2);
-    }
-    M(1, 0) = M(0, 1); // M is symmetric
-    M(2, 0) = M(0, 2); // M is symmetric
-    M(2, 1) = M(1, 2); // M is symmetric
+        Eigen::Vector3d &pb = neigh->coord[RKstep];
+        Eigen::Vector3d &pa = this->coord[RKstep];
 
-    double detM = M(0, 0) * (M(1, 1) * M(2, 2) - M(2, 1) * M(1, 2)) -
-           M(0, 1) * (M(1, 0) * M(2, 2) - M(2, 0) * M(1, 2)) +
-           M(0, 2) * (M(1, 0) * M(2, 1) - M(2, 0) * M(1, 1));
-    if (detM == 0.0)
-    {
-        std::cout << "detM==0!" << std::endl;
-        exit(1);
+        double factor = neigh->m / neigh->rho[RKstep];
+        M += factor * (pb - pa) * this->vec_gradW[i].transpose();
+        // TODO: check if should not be transposed
     }
 
-    Eigen::Matrix3d L; // inverse of the matrix used to correct the kernel gradient
-    L(0, 0) = M(1, 1) * M(2, 2) - M(2, 1) * M(1, 2);
-    L(1, 1) = M(0, 0) * M(2, 2) - M(2, 0) * M(0, 2);
-    L(2, 2) = M(0, 0) * M(1, 1) - M(1, 0) * M(0, 1);
-    L(0, 1) = M(2, 0) * M(1, 2) - M(1, 0) * M(2, 2);
-    L(1, 0) = L(0, 1); // the inverse of a symmetric matrix is symmetric
-    L(0, 2) = M(1, 0) * M(2, 1) - M(2, 0) * M(1, 1);
+    Eigen::Matrix3d L = M.inverse();
 
-    L(2, 0) = L(0, 2); // the inverse of a symmetric matrix is symmetric
-    L(1, 2) = M(2, 0) * M(0, 1) - M(0, 0) * M(2, 1);
-    L(2, 1) = L(1, 2); // the inverse of a symmetric matrix is symmetric
-    L = (1.0 / detM) * L;
-
-    for (int i = 0; i < this->numOfNeighbours; ++i)
-    {
-        this->vec_gradW_mod[i](0) = L(0, 0) * this->vec_gradW[i](0) + L(0, 1) * this->vec_gradW[i](0) + L(0, 2) * this->vec_gradW[i](2);
-        this->vec_gradW_mod[i](1) = L(1, 0) * this->vec_gradW[i](0) + L(1, 1) * this->vec_gradW[i](1) + L(1, 2) * this->vec_gradW[i](2);
-        this->vec_gradW_mod[i](2) = L(2, 0) * this->vec_gradW[i](0) + L(2, 1) * this->vec_gradW[i](1) + L(2, 2) * this->vec_gradW[i](2);
-    }
+    for (size_t i = 0; i < this->neighbours.size(); ++i)
+        this->vec_gradW_mod[i] = L * this->vec_gradW[i];
 }

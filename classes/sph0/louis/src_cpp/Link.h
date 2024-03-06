@@ -4,7 +4,7 @@
 #include "sph.h"
 
 /// This class contains a pointer that points toward an object
-/// and the distance between 2 particles. 
+/// and the distance between 2 particles.
 /// This class is used to build vectors of pointers toward objects.
 
 class Link

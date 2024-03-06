@@ -13,7 +13,7 @@
 class ParticleManager
 {
 public:
-    ParticleSort sorting; ///< sorting machine
+    ParticleSort sorter; ///< sorter machine
 
     std::vector<FixedParticle *> part; ///< array of pointers toward particles
 

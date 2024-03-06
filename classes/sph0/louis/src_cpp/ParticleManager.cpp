@@ -93,8 +93,8 @@ ParticleManager::initialisation()
     file2.close();
 
     // Particle sort
-    this->sorting.manager = this;
-    this->sorting.init = true;
+    this->sorter.manager = this;
+    this->sorter.init = true;
 
     std::cout << "Initialisation finished." << std::endl;
 }
@@ -127,12 +127,12 @@ ParticleManager::solver()
         for (j = 0; j < 2; j++)
         {
             this->RKstep = j;
-            this->sorting.particlesSort();
+            this->sorter.particlesSort();
             // Loop over the particles
 #pragma omp parallel for private(i) schedule(dynamic)
             for (i = 0; i < this->numPart; i++)
             {
-                this->part[i]->varUpdate();
+                this->part[i]->update_vars();
             }
         }
 
@@ -276,9 +276,9 @@ ParticleManager::update_h()
     double new_h = this->h_0 * pow(this->rho_0 / mean_rho, 1.0 / 3.0);
 
     // if the smoothing length is too large, it is limited
-    if (new_h > 0.5 * this->sorting.cellSize)
+    if (new_h > 0.5 * this->sorter.cellSize)
     {
-        new_h = 0.5 * this->sorting.cellSize;
+        new_h = 0.5 * this->sorter.cellSize;
         std::cout << "Warning: the smoothing has been limited" << std::endl;
     }
 
