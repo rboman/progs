@@ -5,17 +5,18 @@
 #include <fstream>
 #include <iostream>
 
+ParticleSort::ParticleSort(ParticleManager &m) : manager(m)
+{
+}
+
 /// Put every particle in their corresponding cell.
 /// This will be useful in order to find the neighbours.
 
 void
-ParticleSort::particlesSort()
+ParticleSort::execute()
 {
-    if (this->init)
-    {
+    if (this->storage.size() == 0)
         this->setCells();
-        this->init = false;
-    }
 
     // the lists of every cell are reset
     for (int i = 0; i < this->nCells; i++)
@@ -23,10 +24,10 @@ ParticleSort::particlesSort()
 
     int nCellsSide = this->nCellsSide; ///< number of cells on a row
 
-    for (int i = 0; i < this->manager->numPart; i++)
+    for (int i = 0; i < this->manager.numPart; i++)
     {
-        FixedParticle *prt = this->manager->part[i];
-        Eigen::Vector3d xyz = prt->coord[this->manager->RKstep];
+        FixedParticle *prt = this->manager.particles[i];
+        Eigen::Vector3d xyz = prt->coord[this->manager.RKstep];
 
         int xCell = (int)((xyz(0) - fmod(xyz(0), this->cellSize)) / this->cellSize) + 1;
         int yCell = (int)((xyz(1) - fmod(xyz(1), this->cellSize)) / this->cellSize) + 1;
@@ -65,14 +66,14 @@ ParticleSort::setCells()
     this->get_h_max();
 
     this->nCellsSide = 0;
-    while (this->manager->dom_dim / (this->nCellsSide + 1) > this->manager->kappa * this->h_max)
+    while (this->manager.dom_dim / (this->nCellsSide + 1) > this->manager.kappa * this->h_max)
         this->nCellsSide++;
 
     this->nCells = this->nCellsSide * this->nCellsSide * this->nCellsSide;
 
     // allocated with the necessary number of cells.
     this->storage.resize(this->nCells);
-    this->cellSize = this->manager->dom_dim / this->nCellsSide;
+    this->cellSize = this->manager.dom_dim / this->nCellsSide;
 
     // [RB] info
     std::cout << "INFO particle_sort/setCells()\n";
@@ -96,13 +97,13 @@ void
 ParticleSort::get_h_max()
 {
     this->h_max = 0.0;
-    for (int i = 0; i < this->manager->numPart; i++)
-        if (this->manager->part[i]->h > this->h_max)
-            this->h_max = this->manager->part[i]->h;
+    for (int i = 0; i < this->manager.numPart; i++)
+        if (this->manager.particles[i]->h > this->h_max)
+            this->h_max = this->manager.particles[i]->h;
 
     // Increase of h_max in order to have a security if h changes.
     // This is done according to the equation of state used.
-    if (this->manager->eqnState == LAW_IDEAL_GAS)
+    if (this->manager.eqnState == LAW_IDEAL_GAS)
         this->h_max = 1.1 * this->h_max;
     else
         this->h_max = 1.02 * this->h_max;

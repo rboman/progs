@@ -15,7 +15,7 @@ class ParticleManager
 public:
     ParticleSort sorter; ///< sorter machine
 
-    std::vector<FixedParticle *> part; ///< array of pointers toward particles
+    std::vector<FixedParticle *> particles; ///< array of pointers toward particles
 
     int numFP;            ///< number of fixed particles
     int numMP;            ///< number of mobile particles
@@ -48,12 +48,15 @@ public:
 public:
     ParticleManager();
 
-    void initialisation();
-    void solver();
-    void readPRM(std::string const &param_path);
+    void initialise();
+    void solve();
+
+private:
+    void load_parameters(std::string const &param_path);
+    void save_particles(std::string const &name, int ite, int start, int end) const;
     void update_dt();
     void update_h();
-    void savePartSet(std::string const &name, int ite, int start, int end);
+
 };
 
 #endif // PARTICLEMANAGER_H

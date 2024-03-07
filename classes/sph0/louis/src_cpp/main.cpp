@@ -18,46 +18,25 @@
 int
 main()
 {
-    std::cout << "============= SPH_simulation (L.Goffin)\n";
+    int retcode = EXIT_SUCCESS;
 
-    // configure output stream to output double as in fortran
-    // std::cout.precision(15);
-    // std::cout.setf(std::ios::scientific, std::ios::floatfield);
-    
+    print_banner();
 
-#ifdef _OPENMP
-    std::cout << "OpenMP available: OMP_NUM_THREADS=" << omp_get_max_threads() << "\n";
-#else
-    std::cout << "OpenMP not available.\n";
-#endif
-
-#ifdef NDEBUG
-    // code has been configured with "cmake -DCMAKE_BUILD_TYPE=Release .."
-    std::cout << "code built in RELEASE mode.\n";
-#else
-    // code has been configured with "cmake .."
-    std::cout << "code built in DEBUG mode.\n";
-#endif
-
-    timers["total"].start();
-
+    timers["TOTAL"].start();
     try
     {
         ParticleManager manager;
-        manager.initialisation();
-        manager.solver();
+        manager.initialise();
+        manager.solve();
     }
     catch (const std::exception &e)
     {
-       std::cerr << "ERROR: " << e.what() << '\n';
+       std::cerr << "\n** ERROR: " << e.what() << "\n\n";
+       retcode = EXIT_FAILURE;
     }
+    timers["TOTAL"].stop();
 
-    timers["total"].stop();
-    std::cout << "Elapsed real time = " << timers["total"] << '\n';
+    print_timers();
 
-    std::cout << "Timers:\n";
-    for(auto &t : timers)
-        std::cout << std::setw(20) << t.first << " = " << t.second << '\n';
-
-    return EXIT_SUCCESS;
+    return retcode;
 }

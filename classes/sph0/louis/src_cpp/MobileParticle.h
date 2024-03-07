@@ -11,10 +11,10 @@
 class MobileParticle : public FixedParticle
 {
 public:
-    MobileParticle() : FixedParticle() {}
+    MobileParticle(ParticleManager &m);
 
     virtual void update_vars();
-    double artificialViscosity(FixedParticle *neigh,
+    double compute_viscosity(FixedParticle *neigh,
                                double alpha, double beta);
 };
 

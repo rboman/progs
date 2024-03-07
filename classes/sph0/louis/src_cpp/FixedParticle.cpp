@@ -3,6 +3,9 @@
 #include <fstream>
 #include <iostream>
 
+    FixedParticle::FixedParticle(ParticleManager &m) : manager(m) 
+    {}
+
 /// Loads the state of a particle from disk
 
 void
@@ -16,8 +19,8 @@ FixedParticle::loadfromdisk(std::ifstream &ufile, double h_0)
     this->rho[0] = rho;
     this->m = m;
     this->h = h_0;
-    this->p[0] = this->calcPressure(rho);
-    this->c[0] = this->calcCelerity(rho);
+    this->p[0] = this->compute_pressure(rho);
+    this->c[0] = this->compute_speedofsound(rho);
     this->max_mu_ab = 0.0;
 }
 
@@ -25,24 +28,24 @@ FixedParticle::loadfromdisk(std::ifstream &ufile, double h_0)
 // @param rho  : actual density
 
 double
-FixedParticle::calcPressure(double rho) const
+FixedParticle::compute_pressure(double rho) const
 {
     double pressure;
     const double idealGasCst = 8.3144621;
 
-    switch (this->manager->eqnState)
+    switch (this->manager.eqnState)
     {
     case LAW_IDEAL_GAS:
     {
-        pressure = (rho / this->manager->rho_0 - 1.0) *
-                   idealGasCst * 293.15 / this->manager->molMass; // eq (3.24)
+        pressure = (rho / this->manager.rho_0 - 1.0) *
+                   idealGasCst * 293.15 / this->manager.molMass; // eq (3.24)
         break;
     }
     case LAW_QINC_FLUID:
     {
-        double B = this->manager->c_0 * this->manager->c_0 *
-                   this->manager->rho_0 / this->manager->state_gamma; // eq (3.27)
-        pressure = B * (pow(rho / this->manager->rho_0, this->manager->state_gamma) - 1.0);
+        double B = this->manager.c_0 * this->manager.c_0 *
+                   this->manager.rho_0 / this->manager.state_gamma; // eq (3.27)
+        pressure = B * (pow(rho / this->manager.rho_0, this->manager.state_gamma) - 1.0);
         break;
     }
     default:
@@ -56,20 +59,20 @@ FixedParticle::calcPressure(double rho) const
 /// @param rho  : actual density
 
 double
-FixedParticle::calcCelerity(double rho) const
+FixedParticle::compute_speedofsound(double rho) const
 {
     double celerity;
 
-    switch (this->manager->eqnState)
+    switch (this->manager.eqnState)
     {
     case LAW_IDEAL_GAS:
         // 1 = considering the ideal gas law at 20 degrees C
-        celerity = this->manager->c_0; // eq (3.36)
+        celerity = this->manager.c_0; // eq (3.36)
         break;
     case LAW_QINC_FLUID:
         // 2 = considering a quasi-incompressible fluid
-        celerity = this->manager->c_0 *
-                   pow(rho / this->manager->rho_0, (this->manager->state_gamma - 1) / 2); // eq (3.37)
+        celerity = this->manager.c_0 *
+                   pow(rho / this->manager.rho_0, (this->manager.state_gamma - 1) / 2); // eq (3.37)
         break;
     default:
         throw std::runtime_error("Bad value for equation of state (1,2)");
@@ -99,7 +102,7 @@ FixedParticle::update_vars()
     this->getNeighbours();
     this->gradW();
 
-    int RKstep = this->manager->RKstep;
+    int RKstep = this->manager.RKstep;
 
     double delta_rho = 0.0; // \f$d\rho/dt\f$
     for (size_t i = 0; i < this->neighbours.size(); i++)
@@ -109,7 +112,7 @@ FixedParticle::update_vars()
         delta_rho += this->m * u_ab.dot(this->vec_gradW[i]);
     }
 
-    double dt = this->manager->timeStep;
+    double dt = this->manager.timeStep;
 
     if (RKstep == 0) // 1st RK step
     {
@@ -117,29 +120,29 @@ FixedParticle::update_vars()
         this->rho[2] = this->rho[0] + delta_rho * dt / 2.0; // prepare second step
         this->speed[1] = this->speed[0];
         this->coord[1] = this->coord[0];
-        this->p[1] = this->calcPressure(this->rho[1]);
-        this->c[1] = this->calcCelerity(this->rho[1]);
+        this->p[1] = this->compute_pressure(this->rho[1]);
+        this->c[1] = this->compute_speedofsound(this->rho[1]);
     }
     else // 2nd RK step
     {
         this->rho[2] = this->rho[2] + delta_rho * dt / 2.0;
         this->speed[2] = this->speed[1];
         this->coord[2] = this->coord[1];
-        this->p[2] = this->calcPressure(this->rho[2]);
-        this->c[2] = this->calcCelerity(this->rho[2]);
+        this->p[2] = this->compute_pressure(this->rho[2]);
+        this->c[2] = this->compute_speedofsound(this->rho[2]);
     }
 }
 
 void
 FixedParticle::getNeighbours()
 {
-    int RKstep = this->manager->RKstep;
+    int RKstep = this->manager.RKstep;
     Eigen::Vector3d xyz = this->coord[RKstep]; // position of the particle
 
     if (RKstep == 0)
     {
-        ParticleSort *sorter = &this->manager->sorter;     // pointer toward the sorter machine
-        int nCellsSide = this->manager->sorter.nCellsSide; // number of cells on a row of the domain
+        ParticleSort *sorter = &this->manager.sorter;     // pointer toward the sorter machine
+        int nCellsSide = this->manager.sorter.nCellsSide; // number of cells on a row of the domain
         int cellsToCheck[27];                              // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
@@ -204,7 +207,7 @@ FixedParticle::getNeighbours()
                     FixedParticle *neigh = (*storage)[j].ptr;
                     Eigen::Vector3d neighXYZ = neigh->coord[RKstep];
                     double r = (xyz - neighXYZ).norm();
-                    if (r <= this->manager->kappa * this->h)
+                    if (r <= this->manager.kappa * this->h)
                     {
                         // if (r > 1e-12) // Louis
                         if (neigh != this)
@@ -253,9 +256,9 @@ FixedParticle::gradW()
         throw std::runtime_error("Error: Number of neighbours greater than expected (max 150 for vec_gradW): " + std::to_string(this->neighbours.size()));
 
     double h = this->h;
-    int RKstep = this->manager->RKstep;
+    int RKstep = this->manager.RKstep;
 
-    switch (this->manager->kernelKind)
+    switch (this->manager.kernelKind)
     {
     case K_CUBIC_SPLINE:
     {
@@ -347,7 +350,7 @@ FixedParticle::gradW()
 void
 FixedParticle::kernel_corr()
 {
-    int RKstep = this->manager->RKstep;
+    int RKstep = this->manager.RKstep;
 
     Eigen::Matrix3d M;
     M.setZero();

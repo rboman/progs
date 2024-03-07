@@ -26,12 +26,13 @@ enum Law
     LAW_QINC_FLUID = 2
 };
 
-
 #include <Eigen/Dense>
 #include "Timer.h"
 #include <map>
 
 extern std::map<std::string, Timer> timers; ///< global timers
 
+void print_banner();
+void print_timers();
 
 #endif // SPH_H
