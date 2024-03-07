@@ -1,11 +1,11 @@
-#include "ParticleSorter.h"
+#include "Sorter.h"
 #include "Model.h"
 #include "FixedParticle.h"
 #include "Neighbour.h"
 #include <fstream>
 #include <iostream>
 
-ParticleSorter::ParticleSorter(Model &m) : model(m)
+Sorter::Sorter(Model &m) : model(m)
 {
 }
 
@@ -13,7 +13,7 @@ ParticleSorter::ParticleSorter(Model &m) : model(m)
 /// This will be useful in order to find the neighbours.
 
 void
-ParticleSorter::execute()
+Sorter::execute()
 {
     if (this->cells.size() == 0)
         this->init_cells();
@@ -58,7 +58,7 @@ ParticleSorter::execute()
 // reallocated at each iteration.
 
 void
-ParticleSorter::init_cells()
+Sorter::init_cells()
 {
     // calculates the necessary number of cells on a side
     double hmax = this->compute_hmax();
@@ -88,7 +88,7 @@ ParticleSorter::init_cells()
 /// This is useful when it is not constant over the particles.
 
 double 
-ParticleSorter::compute_hmax()
+Sorter::compute_hmax()
 {
     double hmax = 0.0;
     for(auto &p : this->model.particles)

@@ -102,13 +102,13 @@ void
 Particle::getNeighbours()
 {
     int RKstep = this->model.RKstep;
-    Eigen::Vector3d xyz = this->coord[RKstep]; // position of the particle
+    Eigen::Vector3d &xyz = this->coord[RKstep]; // position of the particle
 
     if (RKstep == 0)
     {
-        ParticleSorter *sorter = &this->model.sorter;
+        Sorter *sorter = &this->model.sorter;
         int nx = this->model.sorter.nx; // number of cells on a row of the domain
-        int cellsToCheck[27];                             // number of the cells to check for the neighbours
+        int cellsToCheck[27];           // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
         int xCell = (int)((xyz(0) - fmod(xyz(0), sorter->dx)) / sorter->dx) + 1;
@@ -169,14 +169,13 @@ Particle::getNeighbours()
                 std::vector<Particle *> *cells = &sorter->cells[cellsToCheck[i]];
                 for (size_t j = 0; j < cells->size(); j++)
                 {
-                    Particle *neigh = (*cells)[j];
-                    Eigen::Vector3d &neighXYZ = neigh->coord[RKstep];
+                    Particle *p = (*cells)[j];
+                    Eigen::Vector3d &neighXYZ = p->coord[RKstep];
                     double r = (xyz - neighXYZ).norm();
                     if (r <= this->model.kappa * this->h)
                     {
-                        // if (r > 1e-12) // Louis
-                        if (neigh != this)
-                            this->neighbours.push_back(Neighbour(neigh, r));
+                        if (p != this)
+                            this->neighbours.push_back(Neighbour(p, r));
                         else
                             twice++;
                     }
@@ -204,9 +203,9 @@ Particle::getNeighbours()
         // RK step2 - same neighbours and r is updated
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
-            Neighbour *link = &this->neighbours[i];
-            Eigen::Vector3d neighXYZ = link->p->coord[RKstep];
-            link->r = (xyz - neighXYZ).norm();
+            Neighbour *neigh = &this->neighbours[i];
+            Eigen::Vector3d &neighXYZ = neigh->p->coord[RKstep];
+            neigh->r = (xyz - neighXYZ).norm();
         }
     }
 }
@@ -230,97 +229,11 @@ Particle::gradW()
     {
         double r = this->neighbours[i].r;
         Particle *neigh = this->neighbours[i].p;
-        if(r>0.0)
-            this->vec_gradW[i] = (this->coord[RKstep] - neigh->coord[RKstep]) / r * this->model.kernel->dW(r, h);  
+        if (r > 0.0)
+            this->vec_gradW[i] = (this->coord[RKstep] - neigh->coord[RKstep]) / r * this->model.kernel->dW(r, h);
         else
             this->vec_gradW[i] = Eigen::Vector3d::Zero();
     }
-/*
-    switch (this->model.kernelKind)
-    {
-    case K_CUBIC_SPLINE:
-    {
-        double alpha_d = 3.0 / (2.0 * M_PI * h * h * h);
-        // values of alpha_d in table (2.1) p 23
-        for (size_t i = 0; i < this->neighbours.size(); i++)
-        {
-            double r = this->neighbours[i].r;
-            Particle *neigh = this->neighbours[i].p;
-            if ((r / h >= 0.0) && (r / h < 1.0))
-            {
-                this->vec_gradW[i] = alpha_d / h *
-                                     (1.5 * (r / h) * (r / h) - 2.0 * (r / h)) *
-                                     (this->coord[RKstep] - neigh->coord[RKstep]) / r;
-            }
-            else if ((r / h >= 1.0) && (r / h < 2.0))
-            {
-                this->vec_gradW[i] = alpha_d / h *
-                                     (-0.5 * (2.0 - r / h) * (2.0 - r / h)) *
-                                     (this->coord[RKstep] - neigh->coord[RKstep]) / r;
-            }
-            else
-            {
-                this->vec_gradW[i] = Eigen::Vector3d::Zero();
-            }
-        }
-        break;
-    }
-    case K_QUADRATIC:
-    {
-        double alpha_d = 5.0 / (4.0 * M_PI * h * h * h);
-        for (size_t i = 0; i < this->neighbours.size(); i++)
-        {
-            double r = this->neighbours[i].r;
-            Particle *neigh = this->neighbours[i].p;
-            if ((r / h >= 0.0) && (r / h <= 2.0))
-                this->vec_gradW[i] = alpha_d / h *
-                                     (0.375 * r / h - 0.75) *
-                                     (this->coord[RKstep] - neigh->coord[RKstep]) / r;
-
-            else
-                this->vec_gradW[i] = Eigen::Vector3d::Zero();
-        }
-        break;
-    }
-    case K_QUINTIC_SPLINE:
-    {
-        double alpha_d = 3.0 / (359.0 * M_PI * h * h * h);
-        for (size_t i = 0; i < this->neighbours.size(); i++)
-        {
-            double r = this->neighbours[i].r;
-            Particle *neigh = this->neighbours[i].p;
-            if ((r / h >= 0.0) && (r / h < 1.0))
-            {
-                this->vec_gradW[i] = alpha_d / h *
-                                     (-5.0 * pow(3.0 - r / h, 4) +
-                                      30.0 * pow(2.0 - r / h, 4) -
-                                      75.0 * pow(1.0 - r / h, 4)) *
-                                     (this->coord[RKstep] - neigh->coord[RKstep]) / r;
-            }
-            else if ((r / h >= 1.0) && (r / h < 2.0))
-            {
-                this->vec_gradW[i] = alpha_d / h *
-                                     (-5.0 * pow(3.0 - r / h, 4) +
-                                      30.0 * pow(2.0 - r / h, 4)) *
-                                     (this->coord[RKstep] - neigh->coord[RKstep]) / r;
-            }
-            else if ((r / h >= 2.0) && (r / h < 3.0))
-            {
-                this->vec_gradW[i] = alpha_d / h *
-                                     (-5.0 * pow(3.0 - r / h, 4)) *
-                                     (this->coord[RKstep] - neigh->coord[RKstep]) / r;
-            }
-            else
-            {
-                this->vec_gradW[i] = Eigen::Vector3d::Zero();
-            }
-        }
-        break;
-    }
-    default:
-        throw std::runtime_error("Bad value for kernel kind (1,2,3)");
-    }
-    */
 }
 
 /// Takes into account the fact that the kernel may be truncated.
@@ -331,7 +244,6 @@ Particle::kernel_corr()
 {
     // if(this->vec_gradW_mod.size()<this->neighbours.size())
     //     this->vec_gradW_mod.resize(this->neighbours.size());
-
 
     int RKstep = this->model.RKstep;
 

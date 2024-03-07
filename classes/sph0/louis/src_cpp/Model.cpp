@@ -6,7 +6,7 @@
 #include <iomanip>
 #include "FixedParticle.h"
 #include "MobileParticle.h"
-#include "ParticleSorter.h"
+#include "Sorter.h"
 #include "Kernels.h"
 
 Model::Model() : sorter(*this)
@@ -74,22 +74,7 @@ Model::initialise()
     }
     file2.close();
 
-    // create kernel
-    switch (this->kernelKind)
-    {
-    case K_CUBIC_SPLINE:
-        this->kernel = new CubicSplineKernel();
-        break;
-    case K_QUADRATIC:
-        this->kernel = new QuadraticKernel();
-        break;
-    case K_QUINTIC_SPLINE:
-        this->kernel = new QuinticSplineKernel();
-        break;
-    default:
-        throw std::runtime_error("Bad value of kernel kind");
-    }
-    this->kappa = this->kernel->kappa;
+
 
     std::cout << "Initialisation finished." << std::endl;
     timers["initialisation"].stop();
@@ -190,7 +175,8 @@ Model::load_parameters(std::string const &param_path)
     file >> this->c_0;
     file >> this->rho_0;
     file >> this->dom_dim;
-    file >> this->kernelKind;
+    int kernelKind;
+    file >> kernelKind;
     file >> this->alpha;
     file >> this->beta;
     file >> this->eqnState;
@@ -200,6 +186,23 @@ Model::load_parameters(std::string const &param_path)
     file >> this->maxTime;
     file >> this->saveInt;
     file.close();
+
+    // create kernel
+    switch (kernelKind)
+    {
+    case K_CUBIC_SPLINE:
+        this->kernel = new CubicSplineKernel();
+        break;
+    case K_QUADRATIC:
+        this->kernel = new QuadraticKernel();
+        break;
+    case K_QUINTIC_SPLINE:
+        this->kernel = new QuinticSplineKernel();
+        break;
+    default:
+        throw std::runtime_error("Bad value of kernel kind");
+    }
+    this->kappa = this->kernel->kappa;    
 }
 
 /// Save a particle set onto disk.

@@ -6,7 +6,7 @@ class Neighbour;
 class FixedParticle;
 class MobileParticle;
 class Model;
-class ParticleSorter;
+class Sorter;
 class Kernel;
 class CubicSplineKernel;
 class QuadraticKernel;

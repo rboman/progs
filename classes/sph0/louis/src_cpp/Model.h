@@ -2,7 +2,7 @@
 #define SPH_MODEL_H
 
 #include "sph.h"
-#include "ParticleSorter.h"
+#include "Sorter.h"
 #include <vector>
 
 /// This class is used to manage all the particles,
@@ -13,7 +13,7 @@
 class Model
 {
 public:
-    ParticleSorter sorter; ///< sorter machine
+    Sorter sorter; ///< sorter machine
     Kernel *kernel;
 
     std::vector<Particle *> particles; ///< array of pointers toward particles
@@ -21,7 +21,7 @@ public:
     int numFP;            ///< number of fixed particles
     int numMP;            ///< number of mobile particles
     int numPart;          ///< number of particles (FP+MP)
-    int kernelKind;       ///< kind of kernel
+
     int kappa;            ///< kappa linked to the eqn state
     double alpha;         ///< weighting factor in the artificial viscosity formulation
     double beta;          ///< weighting factor in the artificial viscosity formulation
