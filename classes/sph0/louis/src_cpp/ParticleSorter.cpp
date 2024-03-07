@@ -1,11 +1,11 @@
-#include "ParticleSort.h"
+#include "ParticleSorter.h"
 #include "ParticleManager.h"
 #include "FixedParticle.h"
 #include "Link.h"
 #include <fstream>
 #include <iostream>
 
-ParticleSort::ParticleSort(ParticleManager &m) : manager(m)
+ParticleSorter::ParticleSorter(ParticleManager &m) : manager(m)
 {
 }
 
@@ -13,7 +13,7 @@ ParticleSort::ParticleSort(ParticleManager &m) : manager(m)
 /// This will be useful in order to find the neighbours.
 
 void
-ParticleSort::execute()
+ParticleSorter::execute()
 {
     if (this->storage.size() == 0)
         this->setCells();
@@ -26,7 +26,7 @@ ParticleSort::execute()
 
     for (int i = 0; i < this->manager.numPart; i++)
     {
-        FixedParticle *prt = this->manager.particles[i];
+        Particle *prt = this->manager.particles[i];
         Eigen::Vector3d xyz = prt->coord[this->manager.RKstep];
 
         int xCell = (int)((xyz(0) - fmod(xyz(0), this->cellSize)) / this->cellSize) + 1;
@@ -60,7 +60,7 @@ ParticleSort::execute()
 // reallocated at each iteration.
 
 void
-ParticleSort::setCells()
+ParticleSorter::setCells()
 {
     // calculates the necessary number of cells on a side
     this->get_h_max();
@@ -94,7 +94,7 @@ ParticleSort::setCells()
 /// This is useful when it is not constant over the particles.
 
 void
-ParticleSort::get_h_max()
+ParticleSorter::get_h_max()
 {
     this->h_max = 0.0;
     for (int i = 0; i < this->manager.numPart; i++)

@@ -1,11 +1,12 @@
 #ifndef SPH_H
 #define SPH_H
 
-class FixedParticle;
+class Particle;
 class Link;
+class FixedParticle;
 class MobileParticle;
 class ParticleManager;
-class ParticleSort;
+class ParticleSorter;
 
 enum Kernel
 {

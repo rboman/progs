@@ -32,7 +32,7 @@ MobileParticle::update_vars()
     {
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
-            FixedParticle *neigh = this->neighbours[i].ptr;
+            Particle *neigh = this->neighbours[i].ptr;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
             double pi_ab = this->compute_viscosity(neigh, this->manager.alpha, this->manager.beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
@@ -44,7 +44,7 @@ MobileParticle::update_vars()
     {
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
-            FixedParticle *neigh = this->neighbours[i].ptr;
+            Particle *neigh = this->neighbours[i].ptr;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
             double pi_ab = this->compute_viscosity(neigh, this->manager.alpha, this->manager.beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
@@ -89,7 +89,7 @@ MobileParticle::update_vars()
 // @param beta     : coefficicent in the artificial viscosity formulation
 
 double
-MobileParticle::compute_viscosity(FixedParticle *neigh, double alpha, double beta)
+MobileParticle::compute_viscosity(Particle *neigh, double alpha, double beta)
 {
     double viscosity = 0.0;
     int RKstep = this->manager.RKstep;

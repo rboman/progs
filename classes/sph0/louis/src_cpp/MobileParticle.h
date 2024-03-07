@@ -5,7 +5,7 @@
 #include "FixedParticle.h"
 
 /// This is an extension of the FixedParticle class.
-/// The procedure update_vars is overwritten to include the update 
+/// The procedure update_vars is overwritten to include the update
 /// of u and x.
 
 class MobileParticle : public FixedParticle
@@ -14,8 +14,10 @@ public:
     MobileParticle(ParticleManager &m);
 
     virtual void update_vars();
-    double compute_viscosity(FixedParticle *neigh,
-                               double alpha, double beta);
+
+private:
+    double compute_viscosity(Particle *neigh,
+                             double alpha, double beta);
 };
 
 #endif // MOBILEPARTICLE_H

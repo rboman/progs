@@ -8,10 +8,10 @@
 class Link
 {
 public:
-    FixedParticle *ptr = nullptr; ///< pointer towards a particle
-    double r = 0.0;               ///< distance between neighbours
+    Particle *ptr = nullptr; ///< pointer towards a particle
+    double r = 0.0;          ///< distance between neighbours
 
-    Link(FixedParticle *_ptr, double _r) : ptr(_ptr), r(_r)
+    Link(Particle *_ptr, double _r) : ptr(_ptr), r(_r)
     {
     }
 };

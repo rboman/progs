@@ -2,7 +2,7 @@
 #define PARTICLEMANAGER_H
 
 #include "sph.h"
-#include "ParticleSort.h"
+#include "ParticleSorter.h"
 #include <vector>
 
 /// This class is used to manage all the particles,
@@ -13,9 +13,9 @@
 class ParticleManager
 {
 public:
-    ParticleSort sorter; ///< sorter machine
+    ParticleSorter sorter; ///< sorter machine
 
-    std::vector<FixedParticle *> particles; ///< array of pointers toward particles
+    std::vector<Particle *> particles; ///< array of pointers toward particles
 
     int numFP;            ///< number of fixed particles
     int numMP;            ///< number of mobile particles
