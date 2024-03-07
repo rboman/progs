@@ -11,7 +11,7 @@
 class MobileParticle : public FixedParticle
 {
 public:
-    MobileParticle(ParticleManager &m);
+    MobileParticle(Model &m);
 
     virtual void update_vars();
 

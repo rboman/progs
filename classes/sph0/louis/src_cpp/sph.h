@@ -5,8 +5,12 @@ class Particle;
 class Neighbour;
 class FixedParticle;
 class MobileParticle;
-class ParticleManager;
+class Model;
 class ParticleSorter;
+class KernelF;
+class CubicSplineKernel;
+class QuadraticKernel;
+class QuinticSplineKernel;
 
 enum Kernel
 {

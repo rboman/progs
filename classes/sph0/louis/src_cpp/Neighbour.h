@@ -8,10 +8,10 @@
 class Neighbour
 {
 public:
-    Particle *ptr;
-    double r;      ///< distance between neighbours
+    Particle *p;
+    double r;      ///< distance
 
-    Neighbour(Particle *_ptr, double _r) : ptr(_ptr), r(_r)
+    Neighbour(Particle *_p, double _r) : p(_p), r(_r)
     {
     }
 };

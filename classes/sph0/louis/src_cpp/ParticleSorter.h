@@ -9,7 +9,7 @@
 
 class ParticleSorter
 {
-    ParticleManager &manager;
+    Model &model;
     double h_max;    ///< maximum smoothing length
 
 public:
@@ -19,7 +19,7 @@ public:
     std::vector<std::vector<Particle *>> cells; ///< vector of lists that contain
                                           /// the particles in a cell
 public:
-    ParticleSorter(ParticleManager &m);
+    ParticleSorter(Model &m);
 
     void execute();
 

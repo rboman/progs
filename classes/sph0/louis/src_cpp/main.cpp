@@ -8,7 +8,7 @@
 // @date    2013-05-26
 // @version 1.0.0
 
-#include "ParticleManager.h"
+#include "Model.h"
 #include <iostream>
 #include <iomanip>
 #ifdef _OPENMP
@@ -25,9 +25,9 @@ main()
     timers["TOTAL"].start();
     try
     {
-        ParticleManager manager;
-        manager.initialise();
-        manager.solve();
+        Model model;
+        model.initialise();
+        model.solve();
     }
     catch (const std::exception &e)
     {

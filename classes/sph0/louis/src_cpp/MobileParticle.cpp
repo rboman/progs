@@ -1,8 +1,8 @@
 #include "MobileParticle.h"
-#include "ParticleManager.h"
+#include "Model.h"
 #include <iostream>
 
-MobileParticle::MobileParticle(ParticleManager &m) : FixedParticle(m)
+MobileParticle::MobileParticle(Model &m) : FixedParticle(m)
 {
 }
 
@@ -15,28 +15,29 @@ MobileParticle::update_vars()
     this->getNeighbours();
     this->gradW();
 
-    if (this->manager.kernelCorrection == KCORR_ON)
+    if (this->model.kernelCorrection == KCORR_ON)
         this->kernel_corr();
 
     // reset max_mu_ab
-    int RKstep = this->manager.RKstep;
+    int RKstep = this->model.RKstep;
     if (RKstep == 0)
         this->max_mu_ab = 0.0;
 
     double drho_dt = 0.0;
     Eigen::Vector3d du_dt = Eigen::Vector3d::Zero();
 
-    switch (this->manager.kernelCorrection)
+    switch (this->model.kernelCorrection)
     {
     case KCORR_ON:
     {
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
-            Particle *neigh = this->neighbours[i].ptr;
+            Particle *neigh = this->neighbours[i].p;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
-            double pi_ab = this->compute_viscosity(neigh, this->manager.alpha, this->manager.beta);
+            double pi_ab = this->compute_viscosity(neigh, this->model.alpha, this->model.beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
-            du_dt += this->m * (neigh->p[RKstep] / pow(neigh->rho[RKstep], 2) + this->p[RKstep] / pow(this->rho[RKstep], 2) + pi_ab) * this->vec_gradW_mod[i];
+            double rho2 = neigh->rho[RKstep] * neigh->rho[RKstep];
+            du_dt += this->m * (neigh->p[RKstep] / rho2 + this->p[RKstep] / rho2 + pi_ab) * this->vec_gradW_mod[i];
         }
         break;
     }
@@ -44,11 +45,12 @@ MobileParticle::update_vars()
     {
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
-            Particle *neigh = this->neighbours[i].ptr;
+            Particle *neigh = this->neighbours[i].p;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
-            double pi_ab = this->compute_viscosity(neigh, this->manager.alpha, this->manager.beta);
+            double pi_ab = this->compute_viscosity(neigh, this->model.alpha, this->model.beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
-            du_dt += this->m * (neigh->p[RKstep] / pow(neigh->rho[RKstep], 2) + this->p[RKstep] / pow(this->rho[RKstep], 2) + pi_ab) * this->vec_gradW[i];
+            double rho2 = neigh->rho[RKstep] * neigh->rho[RKstep];
+            du_dt += this->m * (neigh->p[RKstep] / rho2 + this->p[RKstep] / rho2 + pi_ab) * this->vec_gradW[i];
         }
         break;
     }
@@ -59,7 +61,7 @@ MobileParticle::update_vars()
     Eigen::Vector3d F = Eigen::Vector3d(0.0, 0.0, -9.81); ///< Volume forces
     du_dt = -du_dt + F;
 
-    double dt = this->manager.timeStep;
+    double dt = this->model.timeStep;
 
     if (RKstep == 0) // 1st RK step
     {
@@ -89,7 +91,7 @@ double
 MobileParticle::compute_viscosity(Particle *neigh, double alpha, double beta)
 {
     double viscosity = 0.0;
-    int RKstep = this->manager.RKstep;
+    int RKstep = this->model.RKstep;
 
     Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
     Eigen::Vector3d x_ab = this->coord[RKstep] - neigh->coord[RKstep];

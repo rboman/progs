@@ -1,11 +1,11 @@
 #include "ParticleSorter.h"
-#include "ParticleManager.h"
+#include "Model.h"
 #include "FixedParticle.h"
 #include "Neighbour.h"
 #include <fstream>
 #include <iostream>
 
-ParticleSorter::ParticleSorter(ParticleManager &m) : manager(m)
+ParticleSorter::ParticleSorter(Model &m) : model(m)
 {
 }
 
@@ -22,9 +22,9 @@ ParticleSorter::execute()
     for(auto &cell : this->cells)
         cell.clear();
 
-    for(auto &p : this->manager.particles)
+    for(auto &p : this->model.particles)
     {
-        Eigen::Vector3d &pos = p->coord[this->manager.RKstep];
+        Eigen::Vector3d &pos = p->coord[this->model.RKstep];
 
         int ix = (int)((pos(0) - fmod(pos(0), this->dx)) / this->dx) + 1;
         int iy = (int)((pos(1) - fmod(pos(1), this->dx)) / this->dx) + 1;
@@ -63,14 +63,14 @@ ParticleSorter::init_cells()
     // calculates the necessary number of cells on a side
     double hmax = this->compute_hmax();
     this->nx = 0;
-    while (this->manager.dom_dim / (this->nx + 1) > this->manager.kappa * hmax)
+    while (this->model.dom_dim / (this->nx + 1) > this->model.kappa * hmax)
         this->nx++;
 
     int nCells = this->nx * this->nx * this->nx;
 
     // allocated with the necessary number of cells.
     this->cells.resize(nCells);
-    this->dx = this->manager.dom_dim / this->nx;
+    this->dx = this->model.dom_dim / this->nx;
 
     // [RB] info
     std::cout << "INFO:\n";
@@ -91,13 +91,13 @@ double
 ParticleSorter::compute_hmax()
 {
     double hmax = 0.0;
-    for(auto &p : this->manager.particles)
+    for(auto &p : this->model.particles)
         if (p->h > h_max)
             hmax = p->h;
 
     // Increase of h_max in order to have a security if h changes.
     // This is done according to the equation of state used.
-    if (this->manager.eqnState == LAW_IDEAL_GAS)
+    if (this->model.eqnState == LAW_IDEAL_GAS)
         hmax = 1.1 * hmax;
     else
         hmax = 1.02 * hmax;

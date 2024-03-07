@@ -12,7 +12,7 @@
 class Particle
 {
 protected:
-    ParticleManager &manager;           ///< pointer toward the object particle_manager
+    Model &model;
 
 public:
     Eigen::Vector3d coord[3];           ///< 3x1 array containing the coordinates of a particle.
@@ -25,25 +25,33 @@ public:
     double p[3];                        ///< 3x1 array containing the pressure of a particle.
     double c[3];                        ///< 3x1 array containing the speed of sound of a particle.
     double h;                           ///< smoothing length
-    std::vector<Neighbour> neighbours;       ///< list of neighbours
+    double max_mu_ab;                   ///< maximum mu_ab of a particle (used for the timestep calculation)
+
+    std::vector<Neighbour> neighbours;  ///< list of neighbours
+
+    // std::vector<Eigen::Vector3d> vec_gradW;      // slow
+    // std::vector<Eigen::Vector3d> vec_gradW_mod;  // slow
+
     Eigen::Vector3d vec_gradW[150];     ///< array that contains the gradient for every
                                         ///  neighbours; initially set to 150 elements to
                                         ///  increase the computational efficiency
     Eigen::Vector3d vec_gradW_mod[150]; ///< corrected vec_gradW if asked
-    double max_mu_ab;                   ///< maximum mu_ab of a particle (used for the timestep calculation)
 
 public:
-    Particle(ParticleManager &m);
+    Particle(Model &m);
+    virtual ~Particle() = default;
 
-    void save2disk(std::ofstream &file) const;
-    void loadfromdisk(std::ifstream &ufile, double h_0);
-    void getNeighbours();
+    void save(std::ofstream &file) const;
+    void load(std::ifstream &ufile, double h_0);
+
+    virtual void update_vars() = 0;
+
+protected:
     double compute_pressure(double rho) const;
     double compute_speedofsound(double rho) const;
     void gradW();
     void kernel_corr();
-
-    virtual void update_vars() = 0;
+    void getNeighbours();
 };
 
 #endif // SPH_PARTICLE_H

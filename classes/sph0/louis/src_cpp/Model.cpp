@@ -1,4 +1,4 @@
-#include "ParticleManager.h"
+#include "Model.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -8,7 +8,7 @@
 #include "MobileParticle.h"
 #include "ParticleSorter.h"
 
-ParticleManager::ParticleManager() : sorter(*this)
+Model::Model() : sorter(*this)
 {
     this->timeStep = 1.0e-15;
     this->currentTime = 0.0;
@@ -16,7 +16,7 @@ ParticleManager::ParticleManager() : sorter(*this)
 }
 
 void
-ParticleManager::initialise()
+Model::initialise()
 {
     timers["initialisation"].start();
 
@@ -60,7 +60,7 @@ ParticleManager::initialise()
     for (int i = 0; i < this->numFP; i++)
     {
         FixedParticle *p = new FixedParticle(*this);
-        p->loadfromdisk(file1, this->h_0);
+        p->load(file1, this->h_0);
         this->particles.push_back(p);
     }
     file1.close();
@@ -73,7 +73,7 @@ ParticleManager::initialise()
     for (int i = 0; i < this->numMP; i++)
     {
         MobileParticle *p = new MobileParticle(*this);
-        p->loadfromdisk(file2, this->h_0);
+        p->load(file2, this->h_0);
         this->particles.push_back(p);
     }
     file2.close();
@@ -85,7 +85,7 @@ ParticleManager::initialise()
 /// Solves the problem using a RK22 time integration scheme.
 
 void
-ParticleManager::solve()
+Model::solve()
 {
     int ite = 0;
 
@@ -165,7 +165,7 @@ ParticleManager::solve()
 // Reading and storing of the data in the parameter files
 
 void
-ParticleManager::load_parameters(std::string const &param_path)
+Model::load_parameters(std::string const &param_path)
 {
     std::ifstream file(param_path);
     if (!file.is_open())
@@ -198,7 +198,7 @@ ParticleManager::load_parameters(std::string const &param_path)
 /// @param end   : last particle to save
 
 void
-ParticleManager::save_particles(std::string const &name, int ite,
+Model::save_particles(std::string const &name, int ite,
                                 int start, int end) const
 {
     timers["save"].start();
@@ -210,7 +210,7 @@ ParticleManager::save_particles(std::string const &name, int ite,
     std::ofstream file;
     file.open(filename);
     for (int i = start; i <= end; ++i)
-        this->particles[i]->save2disk(file);
+        this->particles[i]->save(file);
     file.close();
     timers["save"].stop();
 }
@@ -218,7 +218,7 @@ ParticleManager::save_particles(std::string const &name, int ite,
 /// Computes the next timestep using the properties of the particles.
 
 void
-ParticleManager::update_dt()
+Model::update_dt()
 {
     timers["update_dt"].start();
 
@@ -258,7 +258,7 @@ ParticleManager::update_dt()
 /// It is written to provide the same smoothing length for every particle.
 
 void
-ParticleManager::update_h()
+Model::update_h()
 {
     timers["update_h"].start();
 

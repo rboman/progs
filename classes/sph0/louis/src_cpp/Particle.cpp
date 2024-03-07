@@ -1,16 +1,16 @@
 #include "Particle.h"
-#include "ParticleManager.h"
+#include "Model.h"
 #include <fstream>
 #include <iostream>
 
-Particle::Particle(ParticleManager &m) : manager(m)
+Particle::Particle(Model &m) : model(m)
 {
 }
 
 /// Loads the state of a particle from disk
 
 void
-Particle::loadfromdisk(std::ifstream &ufile, double h_0)
+Particle::load(std::ifstream &ufile, double h_0)
 {
     double x, y, z, u_x, u_y, u_z, rho, m;
     ufile >> x >> y >> z >> u_x >> u_y >> u_z >> rho >> m;
@@ -34,19 +34,19 @@ Particle::compute_pressure(double rho) const
     double pressure;
     const double idealGasCst = 8.3144621;
 
-    switch (this->manager.eqnState)
+    switch (this->model.eqnState)
     {
     case LAW_IDEAL_GAS:
     {
-        pressure = (rho / this->manager.rho_0 - 1.0) *
-                   idealGasCst * 293.15 / this->manager.molMass; // eq (3.24)
+        pressure = (rho / this->model.rho_0 - 1.0) *
+                   idealGasCst * 293.15 / this->model.molMass; // eq (3.24)
         break;
     }
     case LAW_QINC_FLUID:
     {
-        double B = this->manager.c_0 * this->manager.c_0 *
-                   this->manager.rho_0 / this->manager.state_gamma; // eq (3.27)
-        pressure = B * (pow(rho / this->manager.rho_0, this->manager.state_gamma) - 1.0);
+        double B = this->model.c_0 * this->model.c_0 *
+                   this->model.rho_0 / this->model.state_gamma; // eq (3.27)
+        pressure = B * (pow(rho / this->model.rho_0, this->model.state_gamma) - 1.0);
         break;
     }
     default:
@@ -64,16 +64,16 @@ Particle::compute_speedofsound(double rho) const
 {
     double celerity;
 
-    switch (this->manager.eqnState)
+    switch (this->model.eqnState)
     {
     case LAW_IDEAL_GAS:
         // 1 = considering the ideal gas law at 20 degrees C
-        celerity = this->manager.c_0; // eq (3.36)
+        celerity = this->model.c_0; // eq (3.36)
         break;
     case LAW_QINC_FLUID:
         // 2 = considering a quasi-incompressible fluid
-        celerity = this->manager.c_0 *
-                   pow(rho / this->manager.rho_0, (this->manager.state_gamma - 1) / 2); // eq (3.37)
+        celerity = this->model.c_0 *
+                   pow(rho / this->model.rho_0, (this->model.state_gamma - 1) / 2); // eq (3.37)
         break;
     default:
         throw std::runtime_error("Bad value for equation of state (1,2)");
@@ -84,7 +84,7 @@ Particle::compute_speedofsound(double rho) const
 /// Saves the state of a particle onto disk
 
 void
-Particle::save2disk(std::ofstream &file) const
+Particle::save(std::ofstream &file) const
 {
     file << this->coord[0].transpose() << " "
          << this->speed[0].transpose() << " "
@@ -100,13 +100,13 @@ Particle::save2disk(std::ofstream &file) const
 void
 Particle::getNeighbours()
 {
-    int RKstep = this->manager.RKstep;
+    int RKstep = this->model.RKstep;
     Eigen::Vector3d xyz = this->coord[RKstep]; // position of the particle
 
     if (RKstep == 0)
     {
-        ParticleSorter *sorter = &this->manager.sorter;
-        int nx = this->manager.sorter.nx; // number of cells on a row of the domain
+        ParticleSorter *sorter = &this->model.sorter;
+        int nx = this->model.sorter.nx; // number of cells on a row of the domain
         int cellsToCheck[27];                             // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
@@ -155,7 +155,7 @@ Particle::getNeighbours()
         // In each cell, the distance between the two particles is calculated.
         // If it is lower than the support domain and it is not the particle we
         // are working with (r>0 but here r>1E-12 for numerical errors), an  element
-        // link(ptr+r) is added to the neighbours list.
+        // link(p+r) is added to the neighbours list.
         // For the second RK step, only the distances r are recalculated. It is assumed that
         // the neighbours remain the same between 2 RK step.
 
@@ -171,7 +171,7 @@ Particle::getNeighbours()
                     Particle *neigh = (*cells)[j];
                     Eigen::Vector3d &neighXYZ = neigh->coord[RKstep];
                     double r = (xyz - neighXYZ).norm();
-                    if (r <= this->manager.kappa * this->h)
+                    if (r <= this->model.kappa * this->h)
                     {
                         // if (r > 1e-12) // Louis
                         if (neigh != this)
@@ -204,7 +204,7 @@ Particle::getNeighbours()
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             Neighbour *link = &this->neighbours[i];
-            Eigen::Vector3d neighXYZ = link->ptr->coord[RKstep];
+            Eigen::Vector3d neighXYZ = link->p->coord[RKstep];
             link->r = (xyz - neighXYZ).norm();
         }
     }
@@ -216,13 +216,16 @@ Particle::getNeighbours()
 void
 Particle::gradW()
 {
+    // if(this->vec_gradW.size()<this->neighbours.size())
+    //     this->vec_gradW.resize(this->neighbours.size());
+
     if (this->neighbours.size() > 150)
-        throw std::runtime_error("Error: Number of neighbours greater than expected (max 150 for vec_gradW): " + std::to_string(this->neighbours.size()));
+        throw std::runtime_error("number of neighbours greater than expected (max 150 for vec_gradW): " + std::to_string(this->neighbours.size()));
 
     double h = this->h;
-    int RKstep = this->manager.RKstep;
+    int RKstep = this->model.RKstep;
 
-    switch (this->manager.kernelKind)
+    switch (this->model.kernelKind)
     {
     case K_CUBIC_SPLINE:
     {
@@ -231,7 +234,7 @@ Particle::gradW()
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             double r = this->neighbours[i].r;
-            Particle *neigh = this->neighbours[i].ptr;
+            Particle *neigh = this->neighbours[i].p;
             if ((r / h >= 0.0) && (r / h < 1.0))
             {
                 this->vec_gradW[i] = alpha_d / h *
@@ -257,7 +260,7 @@ Particle::gradW()
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             double r = this->neighbours[i].r;
-            Particle *neigh = this->neighbours[i].ptr;
+            Particle *neigh = this->neighbours[i].p;
             if ((r / h >= 0.0) && (r / h <= 2.0))
                 this->vec_gradW[i] = alpha_d / h *
                                      (0.375 * r / h - 0.75) *
@@ -274,7 +277,7 @@ Particle::gradW()
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             double r = this->neighbours[i].r;
-            Particle *neigh = this->neighbours[i].ptr;
+            Particle *neigh = this->neighbours[i].p;
             if ((r / h >= 0.0) && (r / h < 1.0))
             {
                 this->vec_gradW[i] = alpha_d / h *
@@ -314,14 +317,18 @@ Particle::gradW()
 void
 Particle::kernel_corr()
 {
-    int RKstep = this->manager.RKstep;
+    // if(this->vec_gradW_mod.size()<this->neighbours.size())
+    //     this->vec_gradW_mod.resize(this->neighbours.size());
+
+
+    int RKstep = this->model.RKstep;
 
     Eigen::Matrix3d M;
     M.setZero();
 
     for (size_t i = 0; i < this->neighbours.size(); i++)
     {
-        Particle *neigh = this->neighbours[i].ptr;
+        Particle *neigh = this->neighbours[i].p;
         Eigen::Vector3d &pb = neigh->coord[RKstep];
         Eigen::Vector3d &pa = this->coord[RKstep];
 

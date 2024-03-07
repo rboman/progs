@@ -1,5 +1,5 @@
-#ifndef SPH_PARTICLEMANAGER_H
-#define SPH_PARTICLEMANAGER_H
+#ifndef SPH_MODEL_H
+#define SPH_MODEL_H
 
 #include "sph.h"
 #include "ParticleSorter.h"
@@ -10,7 +10,7 @@
 /// it contains a number of parameters useful for the problem
 /// (variable smoothing length or not, ...), it has a solver, etc.
 
-class ParticleManager
+class Model
 {
 public:
     ParticleSorter sorter; ///< sorter machine
@@ -46,7 +46,7 @@ public:
                           ///< the domain is assumed to be cubic
 
 public:
-    ParticleManager();
+    Model();
 
     void initialise();
     void solve();
@@ -58,4 +58,4 @@ private:
     void update_h();
 };
 
-#endif // SPH_PARTICLEMANAGER_H
+#endif // SPH_MODEL_H
