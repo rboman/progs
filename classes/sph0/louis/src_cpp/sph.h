@@ -26,8 +26,12 @@ enum Law
     LAW_QINC_FLUID = 2
 };
 
-#include <Eigen/Dense>
 
-//double eval_r(Eigen::Vector3d const &xyz, Eigen::Vector3d const &xyz2);
+#include <Eigen/Dense>
+#include "Timer.h"
+#include <map>
+
+extern std::map<std::string, Timer> timers; ///< global timers
+
 
 #endif // SPH_H

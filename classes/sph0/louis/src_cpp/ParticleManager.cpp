@@ -211,8 +211,8 @@ ParticleManager::savePartSet(std::string const &name, int ite,
 
     std::ofstream file;
     // configure output stream to output double as in fortran
-    file.precision(15);
-    file.setf(std::ios::scientific, std::ios::floatfield);
+    // file.precision(15);
+    // file.setf(std::ios::scientific, std::ios::floatfield);
     file.open(filename);
     for (int i = start; i <= end; ++i)
         this->part[i]->save2disk(file);

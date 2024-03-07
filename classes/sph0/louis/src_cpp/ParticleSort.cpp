@@ -83,8 +83,8 @@ ParticleSort::setCells()
     // save info to disk
     std::ofstream file("grid.out");
     // configure output stream to output double as in fortran
-    file.precision(15);
-    file.setf(std::ios::scientific, std::ios::floatfield);
+    // file.precision(15);
+    // file.setf(std::ios::scientific, std::ios::floatfield);
     file << this->nCellsSide << " " << this->cellSize << '\n';
     file.close();
 }

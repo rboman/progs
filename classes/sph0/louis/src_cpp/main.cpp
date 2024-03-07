@@ -4,13 +4,13 @@
 //    paths.txt, *.prm, *.fp and *.mp.
 // @warning The domain must be cubic!
 // @brief   Main program to launch a SPH simulation
-// @author  Louis Goffin
+// @author  Louis Goffin, Romain Boman
 // @date    2013-05-26
 // @version 1.0.0
 
 #include "ParticleManager.h"
 #include <iostream>
-#include <chrono>
+#include <iomanip>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
@@ -21,8 +21,8 @@ main()
     std::cout << "============= SPH_simulation (L.Goffin)\n";
 
     // configure output stream to output double as in fortran
-    std::cout.precision(15);
-    std::cout.setf(std::ios::scientific, std::ios::floatfield);
+    // std::cout.precision(15);
+    // std::cout.setf(std::ios::scientific, std::ios::floatfield);
     
 
 #ifdef _OPENMP
@@ -39,7 +39,7 @@ main()
     std::cout << "code built in DEBUG mode.\n";
 #endif
 
-    auto t1 = std::chrono::high_resolution_clock::now();
+    timers["total"].start();
 
     try
     {
@@ -52,8 +52,12 @@ main()
        std::cerr << "ERROR: " << e.what() << '\n';
     }
 
-    auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "Elapsed real time = " << std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1).count() << '\n';
+    timers["total"].stop();
+    std::cout << "Elapsed real time = " << timers["total"] << '\n';
+
+    std::cout << "Timers:\n";
+    for(auto &t : timers)
+        std::cout << std::setw(20) << t.first << " = " << t.second << '\n';
 
     return EXIT_SUCCESS;
 }
