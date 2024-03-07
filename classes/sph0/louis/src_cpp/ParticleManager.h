@@ -1,5 +1,5 @@
-#ifndef PARTICLEMANAGER_H
-#define PARTICLEMANAGER_H
+#ifndef SPH_PARTICLEMANAGER_H
+#define SPH_PARTICLEMANAGER_H
 
 #include "sph.h"
 #include "ParticleSorter.h"
@@ -56,7 +56,6 @@ private:
     void save_particles(std::string const &name, int ite, int start, int end) const;
     void update_dt();
     void update_h();
-
 };
 
-#endif // PARTICLEMANAGER_H
+#endif // SPH_PARTICLEMANAGER_H

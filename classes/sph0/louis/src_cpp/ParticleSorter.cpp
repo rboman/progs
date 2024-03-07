@@ -1,7 +1,7 @@
 #include "ParticleSorter.h"
 #include "ParticleManager.h"
 #include "FixedParticle.h"
-#include "Link.h"
+#include "Neighbour.h"
 #include <fstream>
 #include <iostream>
 
@@ -15,96 +15,91 @@ ParticleSorter::ParticleSorter(ParticleManager &m) : manager(m)
 void
 ParticleSorter::execute()
 {
-    if (this->storage.size() == 0)
-        this->setCells();
+    if (this->cells.size() == 0)
+        this->init_cells();
 
     // the lists of every cell are reset
-    for (int i = 0; i < this->nCells; i++)
-        this->storage[i].clear();
+    for(auto &cell : this->cells)
+        cell.clear();
 
-    int nCellsSide = this->nCellsSide; ///< number of cells on a row
-
-    for (int i = 0; i < this->manager.numPart; i++)
+    for(auto &p : this->manager.particles)
     {
-        Particle *prt = this->manager.particles[i];
-        Eigen::Vector3d xyz = prt->coord[this->manager.RKstep];
+        Eigen::Vector3d &pos = p->coord[this->manager.RKstep];
 
-        int xCell = (int)((xyz(0) - fmod(xyz(0), this->cellSize)) / this->cellSize) + 1;
-        int yCell = (int)((xyz(1) - fmod(xyz(1), this->cellSize)) / this->cellSize) + 1;
-        int zCell = (int)((xyz(2) - fmod(xyz(2), this->cellSize)) / this->cellSize) + 1;
+        int ix = (int)((pos(0) - fmod(pos(0), this->dx)) / this->dx) + 1;
+        int iy = (int)((pos(1) - fmod(pos(1), this->dx)) / this->dx) + 1;
+        int iz = (int)((pos(2) - fmod(pos(2), this->dx)) / this->dx) + 1;
 
-        if (xCell < 1)
-            xCell = 1;
-        if (xCell > nCellsSide)
-            xCell = nCellsSide;
-        if (yCell < 1)
-            yCell = 1;
-        else if (yCell > nCellsSide)
-            yCell = nCellsSide;
-        if (zCell < 1)
-            zCell = 1;
-        else if (zCell > nCellsSide)
-            zCell = nCellsSide;
+        if (ix < 1)
+            ix = 1;
+        else if (ix > nx)
+            ix = nx;
+        if (iy < 1)
+            iy = 1;
+        else if (iy > nx)
+            iy = nx;
+        if (iz < 1)
+            iz = 1;
+        else if (iz > nx)
+            iz = nx;
 
-        int part_pos = (xCell - 1) * nCellsSide * nCellsSide + (yCell - 1) * nCellsSide + zCell - 1;
+        int idx = (ix - 1) * nx * nx + (iy - 1) * nx + iz - 1;
 
-        this->storage[part_pos].push_back(Link(prt, 0.0));
+        this->cells[idx].push_back(p); //Neighbour(p, 0.0));
     }
+
 }
 
 // Sets the size of the cells in which the particles
 // will be sorted. A cell must be cubic. The domain is assumed to be cubic.
 // This routine also sets the number of cells and allocates the vector which contains
 // the lists of particles.
-// In ordrer to be as efficient as possible, the storage vector is not deallocated and
+// In ordrer to be as efficient as possible, the cells vector is not deallocated and
 // reallocated at each iteration.
 
 void
-ParticleSorter::setCells()
+ParticleSorter::init_cells()
 {
     // calculates the necessary number of cells on a side
-    this->get_h_max();
+    double hmax = this->compute_hmax();
+    this->nx = 0;
+    while (this->manager.dom_dim / (this->nx + 1) > this->manager.kappa * hmax)
+        this->nx++;
 
-    this->nCellsSide = 0;
-    while (this->manager.dom_dim / (this->nCellsSide + 1) > this->manager.kappa * this->h_max)
-        this->nCellsSide++;
-
-    this->nCells = this->nCellsSide * this->nCellsSide * this->nCellsSide;
+    int nCells = this->nx * this->nx * this->nx;
 
     // allocated with the necessary number of cells.
-    this->storage.resize(this->nCells);
-    this->cellSize = this->manager.dom_dim / this->nCellsSide;
+    this->cells.resize(nCells);
+    this->dx = this->manager.dom_dim / this->nx;
 
     // [RB] info
-    std::cout << "INFO particle_sort/setCells()\n";
-    std::cout << "   .nCellsSide = " << this->nCellsSide << '\n';
-    std::cout << "   .nCells     = " << this->nCells << '\n';
-    std::cout << "   .cellSize   = " << this->cellSize << '\n';
+    std::cout << "INFO:\n";
+    std::cout << "   .nx      = " << this->nx << '\n';
+    std::cout << "   .nCells  = " << this->cells.size() << '\n';
+    std::cout << "   .dx      = " << this->dx << '\n';
 
     // save info to disk
     std::ofstream file("grid.out");
-    // configure output stream to output double as in fortran
-    // file.precision(15);
-    // file.setf(std::ios::scientific, std::ios::floatfield);
-    file << this->nCellsSide << " " << this->cellSize << '\n';
+    file << this->nx << " " << this->dx << '\n';
     file.close();
 }
 
 /// Finds the largest smoothing length of the particles.
 /// This is useful when it is not constant over the particles.
 
-void
-ParticleSorter::get_h_max()
+double 
+ParticleSorter::compute_hmax()
 {
-    this->h_max = 0.0;
-    for (int i = 0; i < this->manager.numPart; i++)
-        if (this->manager.particles[i]->h > this->h_max)
-            this->h_max = this->manager.particles[i]->h;
+    double hmax = 0.0;
+    for(auto &p : this->manager.particles)
+        if (p->h > h_max)
+            hmax = p->h;
 
     // Increase of h_max in order to have a security if h changes.
     // This is done according to the equation of state used.
     if (this->manager.eqnState == LAW_IDEAL_GAS)
-        this->h_max = 1.1 * this->h_max;
+        hmax = 1.1 * hmax;
     else
-        this->h_max = 1.02 * this->h_max;
+        hmax = 1.02 * hmax;
+    return hmax;
 }

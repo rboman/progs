@@ -1,5 +1,5 @@
-#ifndef FIXEDPARTICLE_H
-#define FIXEDPARTICLE_H
+#ifndef SPH_FIXEDPARTICLE_H
+#define SPH_FIXEDPARTICLE_H
 
 #include "sph.h"
 #include "Particle.h"
@@ -13,4 +13,4 @@ public:
     virtual void update_vars();
 };
 
-#endif // FIXEDPARTICLE_H
+#endif // SPH_FIXEDPARTICLE_H

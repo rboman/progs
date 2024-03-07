@@ -105,27 +105,27 @@ Particle::getNeighbours()
 
     if (RKstep == 0)
     {
-        ParticleSorter *sorter = &this->manager.sorter;   // pointer toward the sorter machine
-        int nCellsSide = this->manager.sorter.nCellsSide; // number of cells on a row of the domain
+        ParticleSorter *sorter = &this->manager.sorter;
+        int nx = this->manager.sorter.nx; // number of cells on a row of the domain
         int cellsToCheck[27];                             // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
-        int xCell = (int)((xyz(0) - fmod(xyz(0), sorter->cellSize)) / sorter->cellSize) + 1;
-        int yCell = (int)((xyz(1) - fmod(xyz(1), sorter->cellSize)) / sorter->cellSize) + 1;
-        int zCell = (int)((xyz(2) - fmod(xyz(2), sorter->cellSize)) / sorter->cellSize) + 1;
+        int xCell = (int)((xyz(0) - fmod(xyz(0), sorter->dx)) / sorter->dx) + 1;
+        int yCell = (int)((xyz(1) - fmod(xyz(1), sorter->dx)) / sorter->dx) + 1;
+        int zCell = (int)((xyz(2) - fmod(xyz(2), sorter->dx)) / sorter->dx) + 1;
 
         if (xCell < 1)
             xCell = 1;
-        else if (xCell > nCellsSide)
-            xCell = nCellsSide;
+        else if (xCell > nx)
+            xCell = nx;
         if (yCell < 1)
             yCell = 1;
-        else if (yCell > nCellsSide)
-            yCell = nCellsSide;
+        else if (yCell > nx)
+            yCell = nx;
         if (zCell < 1)
             zCell = 1;
-        else if (zCell > nCellsSide)
-            zCell = nCellsSide;
+        else if (zCell > nx)
+            zCell = nx;
 
         // calculates the number of the neighbouring cells
         for (int i = -1; i < 2; i++)
@@ -135,13 +135,13 @@ Particle::getNeighbours()
                     if ((xCell + i > 0) &&
                         (yCell + j > 0) &&
                         (zCell + k > 0) &&
-                        (xCell + i <= nCellsSide) &&
-                        (yCell + j <= nCellsSide) &&
-                        (zCell + k <= nCellsSide))
+                        (xCell + i <= nx) &&
+                        (yCell + j <= nx) &&
+                        (zCell + k <= nx))
                     {
                         cellsToCheck[(i + 1) * 9 + (j + 1) * 3 + (k + 2) - 1] =
-                            (xCell + i - 1) * nCellsSide * nCellsSide +
-                            (yCell + j - 1) * nCellsSide +
+                            (xCell + i - 1) * nx * nx +
+                            (yCell + j - 1) * nx +
                             (zCell + k) - 1;
                     }
                     else
@@ -165,17 +165,17 @@ Particle::getNeighbours()
         {
             if (cellsToCheck[i] > -1)
             {
-                std::vector<Link> *storage = &sorter->storage[cellsToCheck[i]];
-                for (size_t j = 0; j < storage->size(); j++)
+                std::vector<Particle *> *cells = &sorter->cells[cellsToCheck[i]];
+                for (size_t j = 0; j < cells->size(); j++)
                 {
-                    Particle *neigh = (*storage)[j].ptr;
-                    Eigen::Vector3d neighXYZ = neigh->coord[RKstep];
+                    Particle *neigh = (*cells)[j];
+                    Eigen::Vector3d &neighXYZ = neigh->coord[RKstep];
                     double r = (xyz - neighXYZ).norm();
                     if (r <= this->manager.kappa * this->h)
                     {
                         // if (r > 1e-12) // Louis
                         if (neigh != this)
-                            this->neighbours.push_back(Link(neigh, r));
+                            this->neighbours.push_back(Neighbour(neigh, r));
                         else
                             twice++;
                     }
@@ -203,7 +203,7 @@ Particle::getNeighbours()
         // RK step2 - same neighbours and r is updated
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
-            Link *link = &this->neighbours[i];
+            Neighbour *link = &this->neighbours[i];
             Eigen::Vector3d neighXYZ = link->ptr->coord[RKstep];
             link->r = (xyz - neighXYZ).norm();
         }

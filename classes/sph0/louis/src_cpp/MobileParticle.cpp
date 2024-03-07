@@ -83,28 +83,23 @@ MobileParticle::update_vars()
 }
 
 // Calculates the viscosity term in the momentum equation.
-// Update also "this->max_mu_ab"
-// @param neighObj : neighbouring object
-// @param alpha    : coefficicent in the artificial viscosity formulation
-// @param beta     : coefficicent in the artificial viscosity formulation
+// Update also "this->max_mu_ab" for the calculation of the timestep.
 
 double
 MobileParticle::compute_viscosity(Particle *neigh, double alpha, double beta)
 {
     double viscosity = 0.0;
     int RKstep = this->manager.RKstep;
-    // relative velocity of a in comparison with b
+
     Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
-    // the distance between a and b
     Eigen::Vector3d x_ab = this->coord[RKstep] - neigh->coord[RKstep];
 
     double mu_ab = 0.0; // this term represents a kind of viscosity
     if (u_ab.dot(x_ab) < 0.0)
     {
-        // mu_ab is calculated using \f[\mu_{ab} = \frac{h\vec{u}_{ab}\cdot\vec{x}_{ab}}{\vec{x}_{ab}^2+\eta^2}\f]
         mu_ab = this->h * u_ab.dot(x_ab) / (x_ab.dot(x_ab) + 0.01 * this->h * this->h);
-        double c_ab = 0.5 * (this->c[RKstep] + neigh->c[RKstep]);       // mean speed of sound
-        double rho_ab = 0.5 * (this->rho[RKstep] + neigh->rho[RKstep]); // mean density
+        double c_ab = 0.5 * (this->c[RKstep] + neigh->c[RKstep]);
+        double rho_ab = 0.5 * (this->rho[RKstep] + neigh->rho[RKstep]);
         viscosity = (-alpha * c_ab * mu_ab + beta * mu_ab * mu_ab) / rho_ab;
     }
 

@@ -1,5 +1,5 @@
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef SPH_TIMER_H
+#define SPH_TIMER_H
 
 #include <chrono>
 #include <iostream>
@@ -54,4 +54,4 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Timer &t);
 };
 
-#endif // TIMER_H
+#endif // SPH_TIMER_H

@@ -1,8 +1,8 @@
-#ifndef PARTICLE_H
-#define PARTICLE_H
+#ifndef SPH_PARTICLE_H
+#define SPH_PARTICLE_H
 
 #include "sph.h"
-#include "Link.h"
+#include "Neighbour.h"
 
 /// This class contains a certain number of parameters describing
 /// the state of a fixed particle (boundary particle). It also
@@ -25,7 +25,7 @@ public:
     double p[3];                        ///< 3x1 array containing the pressure of a particle.
     double c[3];                        ///< 3x1 array containing the speed of sound of a particle.
     double h;                           ///< smoothing length
-    std::vector<Link> neighbours;       ///< list of neighbours
+    std::vector<Neighbour> neighbours;       ///< list of neighbours
     Eigen::Vector3d vec_gradW[150];     ///< array that contains the gradient for every
                                         ///  neighbours; initially set to 150 elements to
                                         ///  increase the computational efficiency
@@ -46,4 +46,4 @@ public:
     virtual void update_vars() = 0;
 };
 
-#endif // PARTICLE_H
+#endif // SPH_PARTICLE_H

@@ -1,5 +1,5 @@
-#ifndef MOBILEPARTICLE_H
-#define MOBILEPARTICLE_H
+#ifndef SPH_MOBILEPARTICLE_H
+#define SPH_MOBILEPARTICLE_H
 
 #include "sph.h"
 #include "FixedParticle.h"
@@ -20,4 +20,4 @@ private:
                              double alpha, double beta);
 };
 
-#endif // MOBILEPARTICLE_H
+#endif // SPH_MOBILEPARTICLE_H

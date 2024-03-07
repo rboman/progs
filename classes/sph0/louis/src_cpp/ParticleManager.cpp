@@ -272,9 +272,9 @@ ParticleManager::update_h()
     double new_h = this->h_0 * pow(this->rho_0 / mean_rho, 1.0 / 3.0);
 
     // if the smoothing length is too large, it is limited
-    if (new_h > 0.5 * this->sorter.cellSize)
+    if (new_h > 0.5 * this->sorter.dx)
     {
-        new_h = 0.5 * this->sorter.cellSize;
+        new_h = 0.5 * this->sorter.dx;
         std::cout << "Warning: the smoothing has been limited" << std::endl;
     }
 

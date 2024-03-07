@@ -1,8 +1,8 @@
-#ifndef SPH_H
-#define SPH_H
+#ifndef SPH_SPH_H
+#define SPH_SPH_H
 
 class Particle;
-class Link;
+class Neighbour;
 class FixedParticle;
 class MobileParticle;
 class ParticleManager;
@@ -36,4 +36,4 @@ extern std::map<std::string, Timer> timers; ///< global timers
 void print_banner();
 void print_timers();
 
-#endif // SPH_H
+#endif // SPH_SPH_H
