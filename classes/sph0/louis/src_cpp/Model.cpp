@@ -7,12 +7,21 @@
 #include "FixedParticle.h"
 #include "MobileParticle.h"
 #include "ParticleSorter.h"
+#include "Kernels.h"
 
 Model::Model() : sorter(*this)
 {
     this->timeStep = 1.0e-15;
     this->currentTime = 0.0;
     this->RKstep = 0;
+    this->kernel = nullptr;
+}
+
+Model::~Model()
+{
+    for (int i = 0; i < this->numPart; i++)
+        delete this->particles[i];
+    delete this->kernel;
 }
 
 void
@@ -39,19 +48,6 @@ Model::initialise()
     this->numPart = this->numFP + this->numMP;
     this->particles.reserve(this->numPart);
 
-    switch (this->kernelKind)
-    {
-    case K_CUBIC_SPLINE:
-        this->kappa = 2;
-        break;
-    case K_QUADRATIC:
-        this->kappa = 2;
-        break;
-    case K_QUINTIC_SPLINE:
-        this->kappa = 3;
-        break;
-    }
-
     // Reading and storing of the data for the fixed particles
     std::ifstream file1(fp_path);
     if (!file1.is_open())
@@ -77,6 +73,23 @@ Model::initialise()
         this->particles.push_back(p);
     }
     file2.close();
+
+    // create kernel
+    switch (this->kernelKind)
+    {
+    case K_CUBIC_SPLINE:
+        this->kernel = new CubicSplineKernel();
+        break;
+    case K_QUADRATIC:
+        this->kernel = new QuadraticKernel();
+        break;
+    case K_QUINTIC_SPLINE:
+        this->kernel = new QuinticSplineKernel();
+        break;
+    default:
+        throw std::runtime_error("Bad value of kernel kind");
+    }
+    this->kappa = this->kernel->kappa;
 
     std::cout << "Initialisation finished." << std::endl;
     timers["initialisation"].stop();
@@ -169,10 +182,8 @@ Model::load_parameters(std::string const &param_path)
 {
     std::ifstream file(param_path);
     if (!file.is_open())
-    {
-        std::cout << "Error: " << param_path << " not found" << std::endl;
-        exit(1);
-    }
+        throw std::runtime_error(param_path + " not found");
+
     file >> this->numFP;
     file >> this->numMP;
     file >> this->h_0;

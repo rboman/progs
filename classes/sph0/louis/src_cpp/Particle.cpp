@@ -1,5 +1,6 @@
 #include "Particle.h"
 #include "Model.h"
+#include "Kernels.h"
 #include <fstream>
 #include <iostream>
 
@@ -225,6 +226,16 @@ Particle::gradW()
     double h = this->h;
     int RKstep = this->model.RKstep;
 
+    for (size_t i = 0; i < this->neighbours.size(); i++)
+    {
+        double r = this->neighbours[i].r;
+        Particle *neigh = this->neighbours[i].p;
+        if(r>0.0)
+            this->vec_gradW[i] = (this->coord[RKstep] - neigh->coord[RKstep]) / r * this->model.kernel->dW(r, h);  
+        else
+            this->vec_gradW[i] = Eigen::Vector3d::Zero();
+    }
+/*
     switch (this->model.kernelKind)
     {
     case K_CUBIC_SPLINE:
@@ -309,6 +320,7 @@ Particle::gradW()
     default:
         throw std::runtime_error("Bad value for kernel kind (1,2,3)");
     }
+    */
 }
 
 /// Takes into account the fact that the kernel may be truncated.

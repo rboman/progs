@@ -7,12 +7,12 @@ class FixedParticle;
 class MobileParticle;
 class Model;
 class ParticleSorter;
-class KernelF;
+class Kernel;
 class CubicSplineKernel;
 class QuadraticKernel;
 class QuinticSplineKernel;
 
-enum Kernel
+enum KernelKind
 {
     K_CUBIC_SPLINE = 1,
     K_QUADRATIC = 2,

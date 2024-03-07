@@ -14,6 +14,7 @@ class Model
 {
 public:
     ParticleSorter sorter; ///< sorter machine
+    Kernel *kernel;
 
     std::vector<Particle *> particles; ///< array of pointers toward particles
 
@@ -47,6 +48,7 @@ public:
 
 public:
     Model();
+    ~Model();
 
     void initialise();
     void solve();
