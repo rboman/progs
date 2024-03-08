@@ -22,9 +22,14 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 # increase warning level
 INCLUDE(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-Wall" WALL)
-# IF(WALL)
+# IF(WALL)  # ! trop de warnings sous msvc (liés aux inline d'eigen)
 #     ADD_COMPILE_OPTIONS(-Wall)
 # ENDIF()
+
+
+
+
+
 
 # find OpenMP
 FIND_PACKAGE(OpenMP)
@@ -44,6 +49,28 @@ IF(NOT EIGEN_INCLUDE_DIRS)
     MESSAGE(FATAL_ERROR "Eigen include dir not found!")
 ENDIF()
 
+SET(CMAKE_AUTOMOC ON)
+# SET(CMAKE_AUTORCC ON)
+# SET(CMAKE_AUTOUIC ON)
+FIND_PACKAGE(VTK 9.0 COMPONENTS 
+    GUISupportQt
+    InteractionWidgets
+    FiltersHybrid
+    IOExport
+    IOXML
+    CommonColor
+    CommonCore
+    FiltersSources
+    InteractionStyle
+    RenderingContextOpenGL2
+    RenderingCore
+    RenderingFreeType
+    RenderingGL2PSOpenGL2
+    RenderingOpenGL2
+)
+
+FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED)
+
 
 FILE(GLOB SRCS *.h *.cpp)
 ADD_EXECUTABLE(louis++ ${SRCS})
@@ -53,8 +80,14 @@ IF(OpenMP_CXX_FOUND)
     TARGET_LINK_LIBRARIES(louis++ PUBLIC OpenMP::OpenMP_CXX)
 ENDIF()
 
-
 TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC EIGEN_DONT_PARALLELIZE)
 # try to increase Eigen performance in Debug mode (inlining and no assertions)
 # TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: EIGEN_NO_DEBUG >)
 # TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )
+
+# VTK/Qt
+TARGET_LINK_LIBRARIES(louis++ PUBLIC ${VTK_LIBRARIES} Qt5::Widgets)
+
+vtk_module_autoinit(
+    TARGETS louis++ 
+    MODULES ${VTK_LIBRARIES})
