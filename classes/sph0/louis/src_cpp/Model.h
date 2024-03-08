@@ -28,13 +28,6 @@ public:
     double alpha;         ///< weighting factor in the artificial viscosity formulation
     double beta;          ///< weighting factor in the artificial viscosity formulation
 
-    int eqnState;         ///< equation of state
-                          ///<   1 = ideal gas law
-                          ///<   2 = quasi-incompressible fluid
-    int state_gamma;      ///< power in eqn State 2.
-                          ///< often taken around 7
-    double molMass;       ///< Molar mass of the fluid for the prefect gas law
-
     int kernelCorrection; ///< correction of the kernel
                           ///<   0 = no correction
                           ///<   1 = correction enabled
@@ -42,9 +35,6 @@ public:
     double saveInt;       ///< saving interval
     double h_0;           ///< initial smoothing length
 
-    double rho_0;         ///< density of the fluid at free surface
-    double c_0;           ///< speed of sound in normal conditions
-    
     double timeStep;      ///< timestep (not constant)
     double currentTime;   ///< current time
     int RKstep;           ///< used to know in which RK iteration we are      [RB] (1 or 2)

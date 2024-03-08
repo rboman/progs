@@ -32,27 +32,15 @@ FixedParticle::update_vars()
         this->rho[2] = this->rho[0] + drho_dt * dt / 2.0; // prepare second step
         this->speed[1] = this->speed[0];
         this->coord[1] = this->coord[0];
-        double p = this->model.eqState->pressure(this->rho[1]);
-        double c = this->model.eqState->speed_of_sound(this->rho[1]);
-        this->p[1] = this->compute_pressure(this->rho[1]);
-        this->c[1] = this->compute_speedofsound(this->rho[1]); 
-        if(p != this->p[1] || c != this->c[1])
-        {
-            std::cout << "Pressure or speed of sound changed" << std::endl;
-            std::cout << "p: " << p << " c: " << c << std::endl;
-            std::cout << "p1: " << this->p[1] << " c1: " << this->c[1] << std::endl;
-        }
-
-
+        this->p[1] = this->model.eqState->pressure(this->rho[1]);
+        this->c[1] = this->model.eqState->speed_of_sound(this->rho[1]);
     }
     else // 2nd RK step
     {
         this->rho[2] = this->rho[2] + drho_dt * dt / 2.0;
         this->speed[2] = this->speed[1];
         this->coord[2] = this->coord[1];
-        // this->p[2] = this->model.eqState->pressure(this->rho[2]);
-        // this->c[2] = this->model.eqState->speed_of_sound(this->rho[2]);
-        this->p[2] = this->compute_pressure(this->rho[2]);
-        this->c[2] = this->compute_speedofsound(this->rho[2]);
+        this->p[2] = this->model.eqState->pressure(this->rho[2]);
+        this->c[2] = this->model.eqState->speed_of_sound(this->rho[2]);
     }
 }

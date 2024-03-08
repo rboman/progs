@@ -200,12 +200,6 @@ Model::load_parameters(std::string const &param_path)
     file >> this->saveInt;
     file.close();
 
-    this->c_0 = c0;
-    this->rho_0 = rho0;
-    this->eqnState = eqnState;
-    this->state_gamma = gamma;
-    this->molMass = molMass;
-
     // create kernel
     switch (kernelKind)
     {

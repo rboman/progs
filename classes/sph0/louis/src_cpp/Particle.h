@@ -47,8 +47,6 @@ public:
     virtual void update_vars() = 0;
 
 protected:
-    double compute_pressure(double rho) const;
-    double compute_speedofsound(double rho) const;
     void gradW();
     void kernel_corr();
     void getNeighbours();

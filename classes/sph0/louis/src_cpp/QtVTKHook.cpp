@@ -19,9 +19,7 @@ DisplayWindow::DisplayWindow(QWidget *parent) : QWidget(parent)
     resize(800, 600);
 
     setupGUI();
-
     addCube();
-
 }
 
 DisplayWindow::~DisplayWindow()

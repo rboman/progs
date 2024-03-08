@@ -95,12 +95,6 @@ Sorter::compute_hmax()
     for(auto &p : this->model.particles)
         if (p->h > hmax)
             hmax = p->h;
-
-    // Increase of h_max in order to have a security if h changes.
-    // This is done according to the equation of state used.
-    if (this->model.eqnState == LAW_IDEAL_GAS)
-        hmax = 1.1 * hmax;
-    else
-        hmax = 1.02 * hmax;
+    hmax *= this->model.eqState->h_factor();
     return hmax;
 }

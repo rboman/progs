@@ -10,7 +10,6 @@
 class Sorter
 {
     Model &model;
-   //double h_max;    ///< maximum smoothing length
 
 public:
     double dx; ///< length of a side of a cube
