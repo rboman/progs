@@ -1,6 +1,7 @@
 #include "Particle.h"
 #include "Model.h"
 #include "Kernels.h"
+#include "EqState.h"
 #include <fstream>
 #include <iostream>
 
@@ -22,7 +23,9 @@ Particle::load(std::ifstream &ufile, double h_0)
     this->m = m;
     this->h = h_0;
     this->p[0] = this->compute_pressure(rho);
-    this->c[0] = this->compute_speedofsound(rho);
+    this->c[0] = this->compute_speedofsound(rho);   
+    // this->p[0] = this->model.eqState->pressure(rho);
+    // this->c[0] = this->model.eqState->speed_of_sound(rho);
     this->max_mu_ab = 0.0;
 }
 

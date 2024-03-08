@@ -1,5 +1,6 @@
 #include "MobileParticle.h"
 #include "Model.h"
+#include "EqState.h"
 #include <iostream>
 
 MobileParticle::MobileParticle(Model &m) : FixedParticle(m)
@@ -72,7 +73,9 @@ MobileParticle::update_vars()
         this->coord[1] = this->coord[0] + this->speed[0] * dt;
         this->coord[2] = this->coord[0] + this->speed[0] * dt / 2.0;
         this->p[1] = this->compute_pressure(this->rho[1]);
-        this->c[1] = this->compute_speedofsound(this->rho[1]);
+        this->c[1] = this->compute_speedofsound(this->rho[1]);        
+        // this->p[1] = this->model.eqState->pressure(this->rho[1]);
+        // this->c[1] = this->model.eqState->speed_of_sound(this->rho[1]);
     }
     else // 2nd RK step
     {
@@ -81,6 +84,8 @@ MobileParticle::update_vars()
         this->coord[2] = this->coord[2] + this->speed[1] * dt / 2.0;
         this->p[2] = this->compute_pressure(this->rho[2]);
         this->c[2] = this->compute_speedofsound(this->rho[2]);
+        // this->p[2] = this->model.eqState->pressure(this->rho[2]);
+        // this->c[2] = this->model.eqState->speed_of_sound(this->rho[2]);
     }
 }
 

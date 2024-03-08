@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "FixedParticle.h"
 #include "Neighbour.h"
+#include "EqState.h"
 #include <fstream>
 #include <iostream>
 
@@ -92,7 +93,7 @@ Sorter::compute_hmax()
 {
     double hmax = 0.0;
     for(auto &p : this->model.particles)
-        if (p->h > h_max)
+        if (p->h > hmax)
             hmax = p->h;
 
     // Increase of h_max in order to have a security if h changes.

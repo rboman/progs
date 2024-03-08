@@ -22,9 +22,9 @@ SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 # increase warning level
 INCLUDE(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-Wall" WALL)
-IF(WALL)
-    ADD_COMPILE_OPTIONS(-Wall)
-ENDIF()
+# IF(WALL)
+#     ADD_COMPILE_OPTIONS(-Wall)
+# ENDIF()
 
 # find OpenMP
 FIND_PACKAGE(OpenMP)
@@ -56,5 +56,5 @@ ENDIF()
 
 TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC EIGEN_DONT_PARALLELIZE)
 # try to increase Eigen performance in Debug mode (inlining and no assertions)
-TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: EIGEN_NO_DEBUG >)
-TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )
+# TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: EIGEN_NO_DEBUG >)
+# TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )

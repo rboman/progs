@@ -8,13 +8,16 @@
 #include "MobileParticle.h"
 #include "Sorter.h"
 #include "Kernels.h"
+#include "EqState.h"
+#include "DisplayHook.h"
 
-Model::Model() : sorter(*this)
+Model::Model()
+    : sorter(*this), kernel(nullptr),
+      eqState(nullptr), displayHook(nullptr)
 {
     this->timeStep = 1.0e-15;
     this->currentTime = 0.0;
     this->RKstep = 0;
-    this->kernel = nullptr;
 }
 
 Model::~Model()
@@ -22,6 +25,8 @@ Model::~Model()
     for (int i = 0; i < this->numPart; i++)
         delete this->particles[i];
     delete this->kernel;
+    delete this->eqState;
+    delete this->displayHook;
 }
 
 void
@@ -172,20 +177,29 @@ Model::load_parameters(std::string const &param_path)
     file >> this->numFP;
     file >> this->numMP;
     file >> this->h_0;
-    file >> this->c_0;
-    file >> this->rho_0;
+    double c0, rho0;
+    file >> c0;
+    file >> rho0;
     file >> this->dom_dim;
     int kernelKind;
     file >> kernelKind;
     file >> this->alpha;
     file >> this->beta;
-    file >> this->eqnState;
-    file >> this->state_gamma;
-    file >> this->molMass;
+    int eqnState; 
+    double gamma, molMass;
+    file >> eqnState;
+    file >> gamma;
+    file >> molMass;
     file >> this->kernelCorrection;
     file >> this->maxTime;
     file >> this->saveInt;
     file.close();
+
+    this->c_0 = c0;
+    this->rho_0 = rho0;
+    this->eqnState = eqnState;
+    this->state_gamma = gamma;
+    this->molMass = molMass;
 
     // create kernel
     switch (kernelKind)
@@ -202,7 +216,20 @@ Model::load_parameters(std::string const &param_path)
     default:
         throw std::runtime_error("Bad value of kernel kind");
     }
-    this->kappa = this->kernel->kappa;    
+    this->kappa = this->kernel->kappa;
+
+    // create equation of state
+    switch (eqnState)
+    {
+    case LAW_IDEAL_GAS:
+        this->eqState = new IdealGas(rho0, c0, molMass);
+        break;
+    case LAW_QINC_FLUID:
+        this->eqState = new QincFluid(rho0, c0, gamma);
+        break;
+    default:
+        throw std::runtime_error("Bad value of equation of state");
+    }
 }
 
 /// Save a particle set onto disk.
@@ -213,7 +240,7 @@ Model::load_parameters(std::string const &param_path)
 
 void
 Model::save_particles(std::string const &name, int ite,
-                                int start, int end) const
+                      int start, int end) const
 {
     timers["save"].start();
     // build filename from name and ite
@@ -262,8 +289,10 @@ Model::update_dt()
     this->timeStep = std::min(0.4 * dTf, 0.25 * dTcv);
 
     // possibility to change the timestep if we use the ideal gas law
-    if (this->eqnState == LAW_IDEAL_GAS)
-        this->timeStep = 5 * this->timeStep;
+    this->timeStep *= this->eqState->dt_factor();
+
+    // if (this->eqnState == LAW_IDEAL_GAS)
+    //     this->timeStep = 5 * this->timeStep;
 
     timers["update_dt"].stop();
 }
@@ -283,7 +312,7 @@ Model::update_h()
     mean_rho = mean_rho / this->numPart;
 
     // calculation of the new smoothing length
-    double new_h = this->h_0 * pow(this->rho_0 / mean_rho, 1.0 / 3.0);
+    double new_h = this->h_0 * pow(this->eqState->rho0 / mean_rho, 1.0 / 3.0);
 
     // if the smoothing length is too large, it is limited
     if (new_h > 0.5 * this->sorter.dx)

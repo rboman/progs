@@ -7,6 +7,7 @@ class DisplayHook
 {
 public:
     DisplayHook();
+    virtual ~DisplayHook() = default;
     virtual void display() = 0;
 };
 
