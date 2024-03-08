@@ -1,6 +1,7 @@
 #include "Particle.h"
 #include "Model.h"
 #include "Kernels.h"
+#include "EqState.h"
 #include <fstream>
 #include <iostream>
 
@@ -21,66 +22,11 @@ Particle::load(std::ifstream &ufile, double h_0)
     this->rho[0] = rho;
     this->m = m;
     this->h = h_0;
-    this->p[0] = this->compute_pressure(rho);
-    this->c[0] = this->compute_speedofsound(rho);
+    this->p[0] = this->model.eqState->pressure(rho);
+    this->c[0] = this->model.eqState->speed_of_sound(rho);
     this->max_mu_ab = 0.0;
 }
 
-// calculates the pressure according to the equation of state chosen.
-// @param rho  : actual density
-
-double
-Particle::compute_pressure(double rho) const
-{
-    double pressure;
-    const double idealGasCst = 8.3144621;
-
-    switch (this->model.eqnState)
-    {
-    case LAW_IDEAL_GAS:
-    {
-        pressure = (rho / this->model.rho_0 - 1.0) *
-                   idealGasCst * 293.15 / this->model.molMass; // eq (3.24)
-        break;
-    }
-    case LAW_QINC_FLUID:
-    {
-        double B = this->model.c_0 * this->model.c_0 *
-                   this->model.rho_0 / this->model.state_gamma; // eq (3.27)
-        pressure = B * (pow(rho / this->model.rho_0, this->model.state_gamma) - 1.0);
-        break;
-    }
-    default:
-        throw std::runtime_error("Bad value for equation of state (1,2)");
-    }
-    return pressure;
-}
-
-/// Calculates the celerity according to the equation of state chosen.
-/// The equation used is @f[c = \sqrt{\frac{dp}{d\rho}}@f]
-/// @param rho  : actual density
-
-double
-Particle::compute_speedofsound(double rho) const
-{
-    double celerity;
-
-    switch (this->model.eqnState)
-    {
-    case LAW_IDEAL_GAS:
-        // 1 = considering the ideal gas law at 20 degrees C
-        celerity = this->model.c_0; // eq (3.36)
-        break;
-    case LAW_QINC_FLUID:
-        // 2 = considering a quasi-incompressible fluid
-        celerity = this->model.c_0 *
-                   pow(rho / this->model.rho_0, (this->model.state_gamma - 1) / 2); // eq (3.37)
-        break;
-    default:
-        throw std::runtime_error("Bad value for equation of state (1,2)");
-    }
-    return celerity;
-}
 
 /// Saves the state of a particle onto disk
 

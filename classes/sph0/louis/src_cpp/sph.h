@@ -11,6 +11,10 @@ class Kernel;
 class CubicSplineKernel;
 class QuadraticKernel;
 class QuinticSplineKernel;
+class DisplayHook;
+class EqState;
+class IdealGas;
+class QIncFluid;
 
 enum KernelKind
 {

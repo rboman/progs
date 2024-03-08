@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "FixedParticle.h"
 #include "Neighbour.h"
+#include "EqState.h"
 #include <fstream>
 #include <iostream>
 
@@ -97,9 +98,7 @@ Sorter::compute_hmax()
 
     // Increase of h_max in order to have a security if h changes.
     // This is done according to the equation of state used.
-    if (this->model.eqnState == LAW_IDEAL_GAS)
-        hmax = 1.1 * hmax;
-    else
-        hmax = 1.02 * hmax;
+    h_max *= this->model.eqState->h_factor();
+
     return hmax;
 }
