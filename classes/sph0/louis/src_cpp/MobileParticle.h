@@ -13,7 +13,7 @@ class MobileParticle : public FixedParticle
 public:
     MobileParticle(Model &m);
 
-    virtual void update_vars();
+    virtual void update_vars() override;
 
 private:
     double compute_viscosity(Particle *neigh,

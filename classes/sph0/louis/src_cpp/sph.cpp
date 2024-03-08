@@ -33,6 +33,7 @@ print_timers()
     for (auto &t : timers)
         std::cout << std::setw(20) << t.first << " = "
                   << std::setw(10) << std::fixed << std::setprecision(2) << t.second << "s"
-                  << std::setw(10) << t.second.elapsed() / timers["TOTAL"].elapsed() * 100 << "%\n";
+                  << std::setw(10) << t.second.elapsed() / timers["TOTAL"].elapsed() * 100 << "%" 
+                  << std::endl;
     std::cout.flags(f); // restore flags
 }

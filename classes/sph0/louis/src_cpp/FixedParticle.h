@@ -10,7 +10,7 @@ class FixedParticle : public Particle
 public:
     FixedParticle(Model &m);
 
-    virtual void update_vars();
+    virtual void update_vars() override;
 };
 
 #endif // SPH_FIXEDPARTICLE_H

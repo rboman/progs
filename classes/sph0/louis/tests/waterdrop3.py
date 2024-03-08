@@ -77,5 +77,8 @@ if __name__ == "__main__":
     model.run()
 
     # convert to VTK
-    import sph.gui as gui
-    gui.ToParaview(verb=False).convertall()
+    try:
+        import sph.gui as gui
+        gui.ToParaview(verb=False).convertall()
+    except Exception as e:
+        print("\n**ERROR while converting to VTK:", e)

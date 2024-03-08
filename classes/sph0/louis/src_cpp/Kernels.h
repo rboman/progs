@@ -21,21 +21,21 @@ class CubicSplineKernel : public Kernel
 {
 public:
     CubicSplineKernel();
-    virtual double dW(double r, double h) const;
+    virtual double dW(double r, double h) const override;
 };
 
 class QuadraticKernel : public Kernel
 {
 public:
     QuadraticKernel();
-    virtual double dW(double r, double h) const;
+    virtual double dW(double r, double h) const override;
 };
 
 class QuinticSplineKernel : public Kernel
 {
 public:
     QuinticSplineKernel();
-    virtual double dW(double r, double h) const;
+    virtual double dW(double r, double h) const override;
 };
 
 #endif // SPH_KERNELS_H

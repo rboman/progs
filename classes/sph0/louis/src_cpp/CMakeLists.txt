@@ -36,9 +36,9 @@ ENDIF()
 
 # find Eigen
 # FIND_PACKAGE(Eigen3 3.4 REQUIRED NO_MODULE)
-
+# set(CMAKE_FIND_DEBUG_MODE TRUE)
 FIND_PATH(EIGEN_INCLUDE_DIRS "Eigen/Dense" 
-          PATHS "${PROJECT_SOURCE_DIR}/lib/eigen" "/usr/include/eigen3")
+          PATHS "${PROJECT_SOURCE_DIR}/lib/eigen" "/usr/include/eigen3" "c:/msys64/mingw64/include/eigen3")
 MESSAGE(STATUS "EIGEN_INCLUDE_DIRS=" ${EIGEN_INCLUDE_DIRS})
 IF(NOT EIGEN_INCLUDE_DIRS)
     MESSAGE(FATAL_ERROR "Eigen include dir not found!")
