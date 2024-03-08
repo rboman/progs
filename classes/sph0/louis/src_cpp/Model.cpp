@@ -137,6 +137,10 @@ Model::solve()
         // Test for the data saving
         if (to_save)
         {
+            if(this->displayHook != nullptr)
+                this->displayHook->display();
+
+
             this->save_particles("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
             this->save_particles("resFP", ite, 0, this->numFP - 1);
 
@@ -186,7 +190,8 @@ Model::load_parameters(std::string const &param_path)
     file >> this->alpha;
     file >> this->beta;
     int eqnState; 
-    double gamma, molMass;
+    int gamma;
+    double molMass;
     file >> eqnState;
     file >> gamma;
     file >> molMass;

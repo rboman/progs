@@ -9,6 +9,7 @@
 // @version 1.0.0
 
 #include "Model.h"
+#include "QtVTKHook.h"
 #include <iostream>
 #include <iomanip>
 #ifdef _OPENMP
@@ -16,7 +17,7 @@
 #endif
 
 int
-main()
+main(int argc, char *argv[])
 {
     int retcode = EXIT_SUCCESS;
 
@@ -27,12 +28,17 @@ main()
     {
         Model model;
         model.initialise();
+
+        //QtVTKHook gui(argc, argv, model);
+
         model.solve();
+
+        //gui.loop();
     }
     catch (const std::exception &e)
     {
-       std::cerr << "\n** ERROR: " << e.what() << "\n\n";
-       retcode = EXIT_FAILURE;
+        std::cerr << "\n** ERROR: " << e.what() << "\n\n";
+        retcode = EXIT_FAILURE;
     }
     timers["TOTAL"].stop();
 

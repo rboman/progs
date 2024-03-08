@@ -49,7 +49,7 @@ public:
 
 class QincFluid : public EqState
 {
-    double gamma;
+    int gamma;
 
 public:
     QincFluid(double _rho0, double _c0, double _gamma)

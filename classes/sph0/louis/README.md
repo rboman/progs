@@ -28,8 +28,16 @@ Run C++ code in debug using 10 threads
 cmake . -B build -DCMAKE_BUILD_TYPE=Debug && ninja -C build && run.py --cpp -k 10 tests\waterdrop.py
 ```
 
+
+
 ## MSYS2
 
 ```
 pacman -S mingw64/mingw-w64-x86_64-eigen3
+```
+
+## Win
+
+```
+cmake . -B build && cmake --build build --config Release && run.py --cpp tests\small.py
 ```
