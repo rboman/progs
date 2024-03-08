@@ -31,7 +31,7 @@ public:
     virtual double pressure(double rho) const override
     {
         static const double RT = 8.3144621 * 293.15; // J/(mol K) * K
-        return RT / M * (rho / rho0 - 1.0) // eq (3.24)
+        return RT / M * (rho / rho0 - 1.0); // eq (3.24)
     }
     virtual double speed_of_sound(double rho) const override
     {
@@ -62,7 +62,7 @@ public:
     }
     virtual double speed_of_sound(double rho) const override
     {
-        return c_0 * pow(rho / rho0, (gamma - 1.0) / 2.0);
+        return c0 * pow(rho / rho0, (gamma - 1.0) / 2.0);
     }
     virtual double h_factor() const override
     {
