@@ -9,6 +9,7 @@ public:
     DisplayHook() {}
     virtual ~DisplayHook() = default;
     virtual void display() = 0;
+    virtual void loop() = 0;
 };
 
 #endif //SPH_DISPLAYHOOK_H

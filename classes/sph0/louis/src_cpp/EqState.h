@@ -49,10 +49,10 @@ public:
 
 class QincFluid : public EqState
 {
-    double gamma;
+    int gamma;
 
 public:
-    QincFluid(double rho0, double c_0, double gamma)
+    QincFluid(double rho0, double c_0, int gamma)
         : EqState(rho0, c0), gamma(gamma) {}
 
     virtual double pressure(double rho) const override

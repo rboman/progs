@@ -188,7 +188,8 @@ Model::load_parameters(std::string const &param_path)
     file >> this->alpha;
     file >> this->beta;
     int eqnState; 
-    double gamma, molMass;
+    int gamma;
+    double molMass;
     file >> eqnState;
     file >> gamma;
     file >> molMass;

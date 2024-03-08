@@ -10,6 +10,8 @@
 #include <vtkCamera.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <QHBoxLayout>
+#include <vtkProperty.h>
+
 
 DisplayWindow::DisplayWindow(QWidget *parent) : QWidget(parent)
 {
@@ -18,11 +20,8 @@ DisplayWindow::DisplayWindow(QWidget *parent) : QWidget(parent)
 
     setupGUI();
 
-    QObject::connect(QApplication::instance(), SIGNAL(lastWindowClosed()),
-                     QApplication::instance(), SLOT(quit()));
+    addCube();
 
-    this->show();
-    // this->vtkwidget->Initialize();
 }
 
 DisplayWindow::~DisplayWindow()
@@ -38,30 +37,45 @@ DisplayWindow::setupGUI()
     vtkwidget->setRenderWindow(window.Get());
 
     // Camera
-    vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
-    camera->SetViewUp(0, 1, 0);
-    camera->SetPosition(0, 0, 10);
-    camera->SetFocalPoint(0, 0, 0);
+    // vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
+    // camera->SetViewUp(0, 1, 0);
+    // camera->SetPosition(0, 0, 10);
+    // camera->SetFocalPoint(0, 0, 0);
 
     // Renderer
     renderer = vtkSmartPointer<vtkRenderer>::New();
-    renderer->SetActiveCamera(camera);
-    renderer->SetBackground(0.5, 0.5, 0.5);
+    // renderer->SetActiveCamera(camera);
+    renderer->SetBackground(1.0, 1.0, 1.0);
     vtkwidget->renderWindow()->AddRenderer(renderer);
 
-    // renderer = vtkSmartPointer<vtkRenderer>::New();
-    // renderer->SetBackground(1.0, 1.0, 1.0);
-    // vtkwidget->GetRenderWindow()->AddRenderer(renderer);
+    // Reset the camera
+    renderer->ResetCamera();
 
-    // style = vtk.vtkInteractorStyleTrackballCamera()
-    // self.vtkwidget.SetInteractorStyle(style)
-
-    // vtkSmartPointer<vtkInteractorStyleTrackballCamera> style = vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-    // this->vtkwidget->SetInteractorStyle(style);
-
+    // Layout Qt
     QHBoxLayout *hbox = new QHBoxLayout();
     this->setLayout(hbox);
     hbox->addWidget(this->vtkwidget);
+}
+
+void
+DisplayWindow::addCube()
+{
+    // Create a cube source
+    vtkSmartPointer<vtkCubeSource> cubeSource = vtkSmartPointer<vtkCubeSource>::New();
+
+    // Create a mapper
+    vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mapper->SetInputConnection(cubeSource->GetOutputPort());
+
+    // Create an actor
+    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+    actor->SetMapper(mapper);
+    actor->GetProperty()->SetColor(1.0, 0.0, 0.0); // Set color to red
+    actor->GetProperty()->SetSpecular(1.0); // Enable specular reflection
+    actor->GetProperty()->SetSpecularPower(50.0); // Set specular power
+
+    // Add the actor to the scene
+    renderer->AddActor(actor);
 }
 
 // -----------------------------------------------------------------------------
@@ -71,9 +85,14 @@ QtVTKHook::QtVTKHook(int &argc, char **argv,
 {
     app = new QApplication(argc, argv);
 
-    DisplayWindow *window = new DisplayWindow();
-    window->show();
-    app->exec();
+    window = new DisplayWindow();
+    //window->show();
+
+    //window->setAttribute(Qt::WA_QuitOnClose);
+    QObject::connect( app, SIGNAL( lastWindowClosed() ), app, SLOT( quit() ) );
+
+    // app->exec();
+    
 
     model.displayHook = this;
 }
@@ -86,7 +105,20 @@ QtVTKHook::~QtVTKHook()
 void
 QtVTKHook::display()
 {
+    //window->show();
+
+    // app->exec();
+    // std::cout << "quit()" << std::endl;
+}
+
+
+void
+QtVTKHook::loop()
+{
+    //window->show();
+
     app->exec();
+    std::cout << "quit()" << std::endl;
 }
 
 void

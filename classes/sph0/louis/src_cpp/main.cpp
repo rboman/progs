@@ -29,9 +29,11 @@ main(int argc, char *argv[])
         Model model;
         model.initialise();
 
-        QtVTKHook &gui = QtVTKHook(argc, argv, model);
+        //QtVTKHook gui(argc, argv, model);
 
         model.solve();
+
+        //gui.loop();
     }
     catch (const std::exception &e)
     {

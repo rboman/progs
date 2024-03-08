@@ -22,6 +22,7 @@ public:
 
 private:
     void setupGUI();
+    void addCube();
 };
 
 // -----------------------------------------------------------------------------
@@ -29,13 +30,15 @@ private:
 class QtVTKHook : public DisplayHook
 {
     QApplication *app;
-
+DisplayWindow *window; 
     Model &model;
 
 public:
     QtVTKHook(int &argc, char **argv, Model &model);
     virtual ~QtVTKHook();
     virtual void display() override;
+
+    virtual void loop() override;
 
     void demo();
 };
