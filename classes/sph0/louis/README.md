@@ -34,6 +34,29 @@ cmake . -B build -DCMAKE_BUILD_TYPE=Debug && ninja -C build && run.py --cpp -k 1
 
 ```
 pacman -S mingw64/mingw-w64-x86_64-eigen3
+pacman -S mingw64/mingw-w64-x86_64-vtk
+pacman -S mingw64/mingw-w64-x86_64-python-pyqt6
+# libs qui manquent pour "import vtk" sous python (debug avec python3 -c "import vtk" et "dependenciesGUI" jusqu'à ce que ça marche)
+pacman -S mingw64/mingw-w64-x86_64-nlohmann-json
+pacman -S mingw64/mingw-w64-x86_64-fast_float
+pacman -S mingw64/mingw-w64-x86_64-gl2ps
+pacman -S mingw64/mingw-w64-x86_64-openvr
+pacman -S mingw64/mingw-w64-x86_64-ffmpeg
+pacman -S mingw64/mingw-w64-x86_64-python-meshio  # pas sur
+pacman -S mingw64/mingw-w64-x86_64-hdf5
+pacman -S mingw64/mingw-w64-x86_64-postgresql
+pacman -S mingw64/mingw-w64-x86_64-libexodus
+pacman -S mingw64/mingw-w64-x86_64-pdal
+pacman -S mingw64/mingw-w64-x86_64-openvdb
+pacman -S mingw64/mingw-w64-x86_64-unixodbc
+pacman -S mingw64/mingw-w64-x86_64-opencascade
+pacman -S mingw64/mingw-w64-x86_64-liblas
+pacman -S mingw64/mingw-w64-x86_64-seacas
+pacman -S mingw64/mingw-w64-x86_64-cgns
+pacman -S mingw64/mingw-w64-x86_64-adios2
+pacman -S mingw64/mingw-w64-x86_64-openturns
+pacman -S mingw64/mingw-w64-x86_64-openslide
+CXX=g++ FC=gfortran cmake . -B build && cmake --build build && ./run.py --cpp -k 10 tests/small.py
 ```
 
 ## Win

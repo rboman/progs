@@ -69,8 +69,10 @@ FIND_PACKAGE(VTK 9.0 COMPONENTS
     RenderingOpenGL2
 )
 
-FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED)
-
+find_package(Qt6 COMPONENTS Core)
+if (NOT Qt6_FOUND)
+    find_package(Qt5 5.15 REQUIRED COMPONENTS Core)
+endif()
 
 FILE(GLOB SRCS *.h *.cpp)
 ADD_EXECUTABLE(louis++ ${SRCS})
@@ -86,7 +88,7 @@ TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC EIGEN_DONT_PARALLELIZE)
 # TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )
 
 # VTK/Qt
-TARGET_LINK_LIBRARIES(louis++ PUBLIC ${VTK_LIBRARIES} Qt5::Widgets)
+TARGET_LINK_LIBRARIES(louis++ PUBLIC ${VTK_LIBRARIES} Qt::Widgets)
 
 vtk_module_autoinit(
     TARGETS louis++ 
