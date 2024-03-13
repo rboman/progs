@@ -8,6 +8,7 @@
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkSmartPointer.h>
 #include <vtkRenderer.h>
+#include <vtkPoints.h>
 
 /// this class manages the VTK widget (window) for 3D display.
 /// TODO: this should be converted to a MainWindow class later
@@ -20,10 +21,12 @@ class DisplayWindow : public QWidget
 
     QVTKOpenGLNativeWidget *vtkwidget;          ///< Qt widget for VTK display
     vtkSmartPointer<vtkRenderer> renderer;
+    vtkSmartPointer<vtkPoints> points;
 
 public:
     DisplayWindow(Model &model, QWidget *parent = nullptr);
     ~DisplayWindow();
+void updateParticlePositions();
 
 private:
     void setupGUI();

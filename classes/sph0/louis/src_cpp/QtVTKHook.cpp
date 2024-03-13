@@ -73,7 +73,7 @@ void
 DisplayWindow::addParticles()
 {
     // Assuming models.particles is a std::vector of some 3D point type
-    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+    points = vtkSmartPointer<vtkPoints>::New();
 
     for (const auto &particle : model.particles)
     {
@@ -99,6 +99,25 @@ DisplayWindow::addParticles()
     actor->SetMapper(mapper);
 
     renderer->AddActor(actor);
+}
+
+void
+DisplayWindow::updateParticlePositions()
+{
+    if(!points) return;
+    // loop over points 
+
+    // std::cout << "updateParticlePositions()" << std::endl;
+    int i=0;
+    for (const auto &particle : model.particles)
+    {
+        auto &pos = particle->coord[0];
+        points->SetPoint(i++, pos(0), pos(1), pos(2));
+    }   
+
+    points->Modified();
+
+    vtkwidget->renderWindow()->Render();
 }
 
 void
@@ -148,6 +167,8 @@ QtVTKHook::display()
 {
     // std::cout << "display()" << std::endl;
     // window->show();
+    window->updateParticlePositions();
+    // window->update();
     app->processEvents();
 }
 
