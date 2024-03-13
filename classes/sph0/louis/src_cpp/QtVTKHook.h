@@ -16,16 +16,19 @@ class DisplayWindow : public QWidget
 {
     Q_OBJECT;
 
-    QVTKOpenGLNativeWidget *vtkwidget;
+    Model &model;
+
+    QVTKOpenGLNativeWidget *vtkwidget;          ///< Qt widget for VTK display
     vtkSmartPointer<vtkRenderer> renderer;
 
 public:
-    DisplayWindow(QWidget *parent = nullptr);
+    DisplayWindow(Model &model, QWidget *parent = nullptr);
     ~DisplayWindow();
 
 private:
     void setupGUI();
     void addCube();
+    void addParticles();
 };
 
 // -----------------------------------------------------------------------------

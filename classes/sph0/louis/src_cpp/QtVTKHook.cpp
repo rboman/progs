@@ -1,5 +1,6 @@
 #include "QtVTKHook.h"
 #include "Model.h"
+#include "Particle.h"
 #include <vtkCubeSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkActor.h>
@@ -11,15 +12,28 @@
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <QHBoxLayout>
 #include <vtkProperty.h>
+#include <vtkVertexGlyphFilter.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
 
+// -----------------------------------------------------------------------------
+// Notes: pourquoi 2 objets?
+//  A terme, on veut garder le code SPH indépendant de Qt.
+//  Il n'est donc pas question de créer un objet QApplication dans main().
+//  Il n'est pas possible de créer un seul objet qui serait un DisplayHook et un
+//  QWidget comme je le fais en python. Ceci parce qu'il n'est pas permis de
+//  créer un widget sans QApplication.
+//  QtVTKHook doit donc être un DisplayHook, et il doit créer un QApplication,
+//  et ensuite le widget Qt.
 
-DisplayWindow::DisplayWindow(QWidget *parent) : QWidget(parent)
+DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QWidget(parent), model(model)
 {
-    setWindowTitle("VTK in Qt");
+    setWindowTitle("SPH (Louis++)");
     resize(800, 600);
 
     setupGUI();
-    addCube();
+    // addCube();
+    addParticles();
 }
 
 DisplayWindow::~DisplayWindow()
@@ -56,6 +70,38 @@ DisplayWindow::setupGUI()
 }
 
 void
+DisplayWindow::addParticles()
+{
+    // Assuming models.particles is a std::vector of some 3D point type
+    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+
+    for (const auto &particle : model.particles)
+    {
+        auto &pos = particle->coord[0];
+        points->InsertNextPoint(pos(0), pos(1), pos(2));
+    }
+
+    vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
+    polydata->SetPoints(points);
+
+    vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    vertexFilter->SetInputData(polydata);
+    vertexFilter->Update();
+
+    vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mapper->SetInputConnection(vertexFilter->GetOutputPort());
+
+    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+    actor->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
+    // actor->GetProperty()->SetSpecular(1.0);        // Enable specular reflection
+    // actor->GetProperty()->SetSpecularPower(50.0);  // Set specular power
+    actor->GetProperty()->SetPointSize(3);
+    actor->SetMapper(mapper);
+
+    renderer->AddActor(actor);
+}
+
+void
 DisplayWindow::addCube()
 {
     // Create a cube source
@@ -69,28 +115,25 @@ DisplayWindow::addCube()
     vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
     actor->SetMapper(mapper);
     actor->GetProperty()->SetColor(1.0, 0.0, 0.0); // Set color to red
-    actor->GetProperty()->SetSpecular(1.0); // Enable specular reflection
-    actor->GetProperty()->SetSpecularPower(50.0); // Set specular power
+    actor->GetProperty()->SetSpecular(1.0);        // Enable specular reflection
+    actor->GetProperty()->SetSpecularPower(50.0);  // Set specular power
 
     // Add the actor to the scene
     renderer->AddActor(actor);
 }
-
-// -----------------------------------------------------------------------------
 
 QtVTKHook::QtVTKHook(int &argc, char **argv,
                      Model &model) : DisplayHook(), model(model)
 {
     app = new QApplication(argc, argv);
 
-    window = new DisplayWindow();
+    window = new DisplayWindow(model);
 
-    //window->setAttribute(Qt::WA_QuitOnClose);
-    QObject::connect( app, SIGNAL( lastWindowClosed() ), app, SLOT( quit() ) );
+    // window->setAttribute(Qt::WA_QuitOnClose);
+    QObject::connect(app, SIGNAL(lastWindowClosed()), app, SLOT(quit()));
 
     window->show();
     // app->exec();
-    
 
     model.displayHook = this;
 }
@@ -103,11 +146,10 @@ QtVTKHook::~QtVTKHook()
 void
 QtVTKHook::display()
 {
-    //std::cout << "display()" << std::endl;
-    //window->show();
+    // std::cout << "display()" << std::endl;
+    // window->show();
     app->processEvents();
 }
-
 
 void
 QtVTKHook::loop()
