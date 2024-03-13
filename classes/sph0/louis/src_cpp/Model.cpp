@@ -79,8 +79,6 @@ Model::initialise()
     }
     file2.close();
 
-
-
     std::cout << "Initialisation finished." << std::endl;
     timers["initialisation"].stop();
 }
@@ -134,13 +132,12 @@ Model::solve()
         }
         timers["copy vars"].stop();
 
+        if (this->displayHook != nullptr)
+            this->displayHook->display();
+
         // Test for the data saving
         if (to_save)
         {
-            if(this->displayHook != nullptr)
-                this->displayHook->display();
-
-
             this->save_particles("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
             this->save_particles("resFP", ite, 0, this->numFP - 1);
 
@@ -189,7 +186,7 @@ Model::load_parameters(std::string const &param_path)
     file >> kernelKind;
     file >> this->alpha;
     file >> this->beta;
-    int eqnState; 
+    int eqnState;
     int gamma;
     double molMass;
     file >> eqnState;

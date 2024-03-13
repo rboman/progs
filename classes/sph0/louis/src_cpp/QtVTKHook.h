@@ -9,6 +9,9 @@
 #include <vtkSmartPointer.h>
 #include <vtkRenderer.h>
 
+/// this class manages the VTK widget (window) for 3D display.
+/// TODO: this should be converted to a MainWindow class later
+
 class DisplayWindow : public QWidget
 {
     Q_OBJECT;
@@ -27,10 +30,12 @@ private:
 
 // -----------------------------------------------------------------------------
 
+/// this class manages the Qt application.
+
 class QtVTKHook : public DisplayHook
 {
     QApplication *app;
-DisplayWindow *window; 
+    DisplayWindow *window;
     Model &model;
 
 public:
@@ -40,7 +45,7 @@ public:
 
     virtual void loop() override;
 
-    void demo();
+    static void standalone_VTK_demo(); // for testing
 };
 
 #endif // QTVTKHOOK_H

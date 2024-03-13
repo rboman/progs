@@ -84,11 +84,11 @@ QtVTKHook::QtVTKHook(int &argc, char **argv,
     app = new QApplication(argc, argv);
 
     window = new DisplayWindow();
-    //window->show();
 
     //window->setAttribute(Qt::WA_QuitOnClose);
     QObject::connect( app, SIGNAL( lastWindowClosed() ), app, SLOT( quit() ) );
 
+    window->show();
     // app->exec();
     
 
@@ -103,24 +103,26 @@ QtVTKHook::~QtVTKHook()
 void
 QtVTKHook::display()
 {
+    //std::cout << "display()" << std::endl;
     //window->show();
-
-    // app->exec();
-    // std::cout << "quit()" << std::endl;
+    app->processEvents();
 }
 
 
 void
 QtVTKHook::loop()
 {
-    //window->show();
+    window->show();
 
     app->exec();
     std::cout << "quit()" << std::endl;
 }
 
+/// This demo is used to test the VTK library.
+/// It does not use Qt.
+
 void
-QtVTKHook::demo()
+QtVTKHook::standalone_VTK_demo()
 {
     // Create a cube source
     vtkSmartPointer<vtkCubeSource> cubeSource = vtkSmartPointer<vtkCubeSource>::New();

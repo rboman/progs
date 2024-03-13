@@ -64,3 +64,9 @@ CXX=g++ FC=gfortran cmake . -B build && cmake --build build && ./run.py --cpp -k
 ```
 cmake . -B build && cmake --build build --config Release && run.py --cpp tests\small.py
 ```
+
+## Linux
+
+```
+cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py tests/small.py -k 10 --cpp
+```

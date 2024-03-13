@@ -23,26 +23,27 @@ main(int argc, char *argv[])
 
     print_banner();
 
-    timers["TOTAL"].start();
+    // QtVTKHook::standalone_VTK_demo(); // is VTK working?
+
     try
     {
+        timers["TOTAL"].start();
         Model model;
         model.initialise();
-
-        //QtVTKHook gui(argc, argv, model);
+        QtVTKHook gui(argc, argv, model);
 
         model.solve();
 
-        //gui.loop();
+        timers["TOTAL"].stop();
+        print_timers();
+
+        gui.loop();
     }
     catch (const std::exception &e)
     {
         std::cerr << "\n** ERROR: " << e.what() << "\n\n";
         retcode = EXIT_FAILURE;
     }
-    timers["TOTAL"].stop();
-
-    print_timers();
 
     return retcode;
 }
