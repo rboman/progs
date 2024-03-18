@@ -11,7 +11,7 @@
 class MobileParticle : public FixedParticle
 {
 public:
-    MobileParticle(Model &m);
+    explicit MobileParticle(Model &m);
 
     virtual void update_vars() override;
 

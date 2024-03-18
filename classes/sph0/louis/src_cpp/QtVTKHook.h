@@ -26,7 +26,8 @@ class DisplayWindow : public QWidget
 public:
     DisplayWindow(Model &model, QWidget *parent = nullptr);
     ~DisplayWindow();
-void updateParticlePositions();
+    
+    void updateParticlePositions();
 
 private:
     void setupGUI();

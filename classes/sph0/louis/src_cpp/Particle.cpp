@@ -47,7 +47,7 @@ void
 Particle::getNeighbours()
 {
     int RKstep = this->model.RKstep;
-    Eigen::Vector3d &xyz = this->coord[RKstep]; // position of the particle
+    Eigen::Vector3d const &xyz = this->coord[RKstep]; // position of the particle
 
     if (RKstep == 0)
     {
@@ -115,7 +115,7 @@ Particle::getNeighbours()
                 for (size_t j = 0; j < cells->size(); j++)
                 {
                     Particle *p = (*cells)[j];
-                    Eigen::Vector3d &neighXYZ = p->coord[RKstep];
+                    Eigen::Vector3d const &neighXYZ = p->coord[RKstep];
                     double r = (xyz - neighXYZ).norm();
                     if (r <= this->model.kappa * this->h)
                     {
@@ -149,7 +149,7 @@ Particle::getNeighbours()
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             Neighbour *neigh = &this->neighbours[i];
-            Eigen::Vector3d &neighXYZ = neigh->p->coord[RKstep];
+            Eigen::Vector3d const &neighXYZ = neigh->p->coord[RKstep];
             neigh->r = (xyz - neighXYZ).norm();
         }
     }
@@ -167,7 +167,7 @@ Particle::gradW()
     if (this->neighbours.size() > 150)
         throw std::runtime_error("number of neighbours greater than expected (max 150 for vec_gradW): " + std::to_string(this->neighbours.size()));
 
-    double h = this->h;
+    // double h = this->h;
     int RKstep = this->model.RKstep;
 
     for (size_t i = 0; i < this->neighbours.size(); i++)
@@ -198,8 +198,8 @@ Particle::kernel_corr()
     for (size_t i = 0; i < this->neighbours.size(); i++)
     {
         Particle *neigh = this->neighbours[i].p;
-        Eigen::Vector3d &pb = neigh->coord[RKstep];
-        Eigen::Vector3d &pa = this->coord[RKstep];
+        Eigen::Vector3d const &pb = neigh->coord[RKstep];
+        Eigen::Vector3d const &pa = this->coord[RKstep];
 
         double factor = neigh->m / neigh->rho[RKstep];
         M += factor * (pb - pa) * this->vec_gradW[i].transpose();

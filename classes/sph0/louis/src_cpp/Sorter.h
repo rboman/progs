@@ -19,7 +19,7 @@ public:
     std::vector<std::vector<Particle *>> cells; 
 
 public:
-    Sorter(Model &m);
+    explicit Sorter(Model &m);
 
     void execute();
 

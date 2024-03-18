@@ -8,6 +8,8 @@
 
 Sorter::Sorter(Model &m) : model(m)
 {
+    this->dx = 0.0;
+    this->nx = 0;
 }
 
 /// Put every particle in their corresponding cell.
@@ -23,9 +25,9 @@ Sorter::execute()
     for(auto &cell : this->cells)
         cell.clear();
 
-    for(auto &p : this->model.particles)
+    for(auto const &p : this->model.particles)
     {
-        Eigen::Vector3d &pos = p->coord[this->model.RKstep];
+        Eigen::Vector3d const &pos = p->coord[this->model.RKstep];
 
         int ix = (int)((pos(0) - fmod(pos(0), this->dx)) / this->dx) + 1;
         int iy = (int)((pos(1) - fmod(pos(1), this->dx)) / this->dx) + 1;

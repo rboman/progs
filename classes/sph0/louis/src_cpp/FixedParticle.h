@@ -8,7 +8,7 @@ class FixedParticle : public Particle
 
 {
 public:
-    FixedParticle(Model &m);
+    explicit FixedParticle(Model &m);
 
     virtual void update_vars() override;
 };

@@ -18,6 +18,19 @@ Model::Model()
     this->timeStep = 1.0e-15;
     this->currentTime = 0.0;
     this->RKstep = 0;
+
+    // init other variables
+    this->numFP = 0;
+    this->numMP = 0;
+    this->h_0 = 0.0;
+    this->dom_dim = 0.0;
+    this->alpha = 0.0;
+    this->beta = 0.0;
+    this->kappa = 0.0;
+    this->kernelCorrection = 0.0;
+    this->maxTime = 0.0;
+    this->saveInt = 0.0;
+    this->numPart = 0;
 }
 
 Model::~Model()
@@ -264,7 +277,7 @@ Model::update_dt()
     double dTf = std::numeric_limits<double>::max();
     for (int i = this->numFP + 1; i < this->numPart; i++)
     {
-        Particle *p = this->particles[i];
+        Particle const *p = this->particles[i];
         double dt = sqrt(p->h / 9.81);
         if (dt < dTf)
             dTf = dt;
