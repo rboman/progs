@@ -5,7 +5,6 @@
 #include "Particle.h"
 
 class FixedParticle : public Particle
-
 {
 public:
     explicit FixedParticle(Model &m);

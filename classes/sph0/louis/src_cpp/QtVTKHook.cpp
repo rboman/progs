@@ -77,7 +77,7 @@ DisplayWindow::addParticles()
 
     for (const auto &particle : model.particles)
     {
-        auto &pos = particle->coord[0];
+        auto const &pos = particle->coord[0];
         points->InsertNextPoint(pos(0), pos(1), pos(2));
     }
 

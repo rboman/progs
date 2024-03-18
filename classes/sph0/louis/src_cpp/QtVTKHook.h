@@ -24,9 +24,14 @@ class DisplayWindow : public QWidget
     vtkSmartPointer<vtkPoints> points;
 
 public:
-    DisplayWindow(Model &model, QWidget *parent = nullptr);
+    explicit DisplayWindow(Model &model, QWidget *parent = nullptr);
     ~DisplayWindow();
     
+    // disable copy and move
+    DisplayWindow(const DisplayWindow &) = delete;
+    DisplayWindow(DisplayWindow &&) = delete;
+    DisplayWindow &operator=(const DisplayWindow &) = delete;
+
     void updateParticlePositions();
 
 private:

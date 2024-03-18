@@ -94,7 +94,7 @@ double
 Sorter::compute_hmax()
 {
     double hmax = 0.0;
-    for(auto &p : this->model.particles)
+    for(auto const &p : this->model.particles)
         if (p->h > hmax)
             hmax = p->h;
     hmax *= this->model.eqState->h_factor();

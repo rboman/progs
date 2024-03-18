@@ -62,7 +62,7 @@ CXX=g++ FC=gfortran cmake . -B build && cmake --build build && ./run.py --cpp -k
 ## Win
 
 ```
-cmake . -B build && cmake --build build --config Release && run.py --cpp tests\small.py
+cmake . -B build && cmake --build build --config Release && run.py -k 10 --cpp tests\waterdrop.py
 ```
 
 ## Linux
