@@ -217,7 +217,7 @@ class Particle:
         self.y = y
         self.z = z
         self.vx = vx
-        self.vy = vz
+        self.vy = vy
         self.vz = vz
         self.rho0 = rho0
         self.m0 = m0
@@ -259,8 +259,12 @@ class Cube:
         nk = int(math.ceil((self.Lz / self.s))) + 1
         dz = 0.0 if nk==1 else self.Lz / (nk - 1)
 
+        dvx = self.s if ni==1 else dx
+        dvy = self.s if nj==1 else dy
+        dvz = self.s if nk==1 else dz
+
         vx = vy = vz = 0.0
-        m0 = (dx * dy * dz) * self.rho
+        m0 = (dvx * dvy * dvz) * self.rho
         rho0 = self.rho
 
         for i in range(ni):
