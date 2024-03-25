@@ -235,6 +235,7 @@ class Particle:
 class Cube:
     """ a basic "cube" defined by its origin (o), size (L), density (rho) and 
     distance between layers (s)
+    note: Zero thickness is allowed in any direction.
     """
 
     def __init__(self, o=(0.0, 0.0, 0.0), L=(1.0, 1.0, 1.0), rho=1.0, s=0.1):
@@ -252,11 +253,12 @@ class Cube:
         """
         parts = []
         ni = int(math.ceil((self.Lx / self.s))) + 1
-        dx = self.Lx / (ni - 1)
+        dx = 0.0 if ni==1 else self.Lx / (ni - 1)
         nj = int(math.ceil((self.Ly / self.s))) + 1
-        dy = self.Ly / (nj - 1)
+        dy = 0.0 if nj==1 else self.Ly / (nj - 1)
         nk = int(math.ceil((self.Lz / self.s))) + 1
-        dz = self.Lz / (nk - 1)
+        dz = 0.0 if nk==1 else self.Lz / (nk - 1)
+
         vx = vy = vz = 0.0
         m0 = (dx * dy * dz) * self.rho
         rho0 = self.rho
