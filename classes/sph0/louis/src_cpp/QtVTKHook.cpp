@@ -163,12 +163,15 @@ QtVTKHook::~QtVTKHook()
 }
 
 void
-QtVTKHook::display()
+QtVTKHook::interact()
 {
-    // std::cout << "display()" << std::endl;
-    // window->show();
+    app->processEvents();
+}
+
+void
+QtVTKHook::update_data()
+{
     window->updateParticlePositions();
-    // window->update();
     app->processEvents();
 }
 

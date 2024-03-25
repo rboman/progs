@@ -53,7 +53,8 @@ class QtVTKHook : public DisplayHook
 public:
     QtVTKHook(int &argc, char **argv, Model &model);
     virtual ~QtVTKHook();
-    virtual void display() override;
+    virtual void interact() override;
+    virtual void update_data() override;
 
     virtual void loop() override;
 

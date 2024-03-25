@@ -8,7 +8,8 @@ class DisplayHook
 public:
     DisplayHook() {}
     virtual ~DisplayHook() = default;
-    virtual void display() = 0;
+    virtual void interact() = 0;
+    virtual void update_data() = 0;
     virtual void loop() = 0;
 };
 

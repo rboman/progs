@@ -153,17 +153,17 @@ class Model:
         # start Fortran code as a subprocess and streams the fortran output
         # to the standard output
         # http://stackoverflow.com/questions/2715847/python-read-streaming-input-from-subprocess-communicate/17698359#17698359
-        try:
-            proc = subprocess.Popen(exename, stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
-            with proc.stdout:
-                for line in iter(proc.stdout.readline, b''):
-                    line = line.decode().rstrip('\n').rstrip('\r')
-                    print(f'{langprefix}{line}')
-            proc.wait()
-        except KeyboardInterrupt:
-            print('Ignoring CTRL-C')
-            pass
+        # try:
+        proc = subprocess.Popen(exename, stdout=subprocess.PIPE,
+                                stderr=subprocess.STDOUT)
+        with proc.stdout:
+            for line in iter(proc.stdout.readline, b''):
+                line = line.decode().rstrip('\n').rstrip('\r')
+                print(f'{langprefix}{line}')
+        proc.wait()
+        # except KeyboardInterrupt:
+        #     print('Ignoring CTRL-C')
+        #     pass
 
     def getexe(self):
         """ looks for Louis' executable

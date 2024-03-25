@@ -24,8 +24,16 @@ Load `.vtu` files in [Paraview](http://www.paraview.org/).
 ## New run
 
 Run C++ code in debug using 10 threads
+
+mingw/msys2 
 ```
-cmake . -B build -DCMAKE_BUILD_TYPE=Debug && ninja -C build && run.py --cpp -k 10 tests\waterdrop.py
+cmake . -B build -DCMAKE_BUILD_TYPE=Debug &&  cmake --build build && run.py --cpp -k 10 tests\waterdrop.py
+cmake . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && run.py --cpp -k 10 tests\waterdrop.py
+```
+msvc:
+```
+cmake . -B build && cmake --build build --config Debug && run.py --cpp -k 10 tests\waterdrop.py
+cmake . -B build && cmake --build build --config Release && run.py --cpp -k 10 tests\waterdrop.py
 ```
 
 

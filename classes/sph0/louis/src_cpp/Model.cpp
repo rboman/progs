@@ -101,6 +101,9 @@ Model::initialise()
 void
 Model::solve()
 {
+    Timer hooktimer;
+    hooktimer.start();
+
     int ite = 0;
 
     while (this->currentTime <= this->maxTime)
@@ -145,12 +148,15 @@ Model::solve()
         }
         timers["copy vars"].stop();
 
-        if (this->displayHook != nullptr)
-            this->displayHook->display();
-
         // Test for the data saving
         if (to_save)
         {
+            if (this->displayHook != nullptr && hooktimer.elapsed() > 0.2)
+            {
+                hooktimer.reset();
+                this->displayHook->update_data();
+            }
+
             this->save_particles("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
             this->save_particles("resFP", ite, 0, this->numFP - 1);
 
@@ -170,6 +176,11 @@ Model::solve()
                       << std::endl;
             std::cout.flags(f); // restore flags
             to_save = false;
+        }
+
+        if (this->displayHook != nullptr)
+        {
+            this->displayHook->interact();
         }
 
         this->update_dt();

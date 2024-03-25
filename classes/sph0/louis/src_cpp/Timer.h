@@ -21,8 +21,7 @@ public:
     Timer()
     {
         running = false;
-        tstart = Clock::now();
-        accumulated_time = Duration(0);
+        reset();
     }
 
     void start()
@@ -40,6 +39,13 @@ public:
             running = false;
         }
     }
+
+    void reset()
+    {
+        accumulated_time = Duration(0);
+        tstart = Clock::now();
+    }
+
     double elapsed() const
     {
         if (running)
