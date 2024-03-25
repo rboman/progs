@@ -31,28 +31,32 @@ MobileParticle::update_vars()
     {
     case KCORR_ON:
     {
+        double rho2a = this->rho[RKstep] * this->rho[RKstep];
+
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             Particle *neigh = this->neighbours[i].p;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
             double pi_ab = this->compute_viscosity(neigh, this->model.alpha, this->model.beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
-            double rho2 = neigh->rho[RKstep] * neigh->rho[RKstep];
-            du_dt += this->m * (neigh->p[RKstep] / rho2 + this->p[RKstep] / rho2 + pi_ab) * this->vec_gradW_mod[i];
+            double rho2b = neigh->rho[RKstep] * neigh->rho[RKstep];
+            du_dt += this->m * (neigh->p[RKstep] / rho2b + this->p[RKstep] / rho2a + pi_ab) * this->vec_gradW_mod[i];
             // TODO: BUG: le 2e terme semble etre faux. Il doit impliquer la densité de la particule et pas celle du voisin
         }
         break;
     }
     case KCORR_OFF:
     {
+        double rho2a = this->rho[RKstep] * this->rho[RKstep];
+
         for (size_t i = 0; i < this->neighbours.size(); i++)
         {
             Particle *neigh = this->neighbours[i].p;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
             double pi_ab = this->compute_viscosity(neigh, this->model.alpha, this->model.beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
-            double rho2 = neigh->rho[RKstep] * neigh->rho[RKstep];
-            du_dt += this->m * (neigh->p[RKstep] / rho2 + this->p[RKstep] / rho2 + pi_ab) * this->vec_gradW[i];
+            double rho2b = neigh->rho[RKstep] * neigh->rho[RKstep];
+            du_dt += this->m * (neigh->p[RKstep] / rho2b + this->p[RKstep] / rho2a + pi_ab) * this->vec_gradW[i];
             // TODO: BUG: le 2e terme semble etre faux. Il doit impliquer la densité de la particule et pas celle du voisin
         }
         break;

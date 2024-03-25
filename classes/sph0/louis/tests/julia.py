@@ -25,7 +25,7 @@ if __name__ == "__main__":
     model.dom_dim = boxL   # domain size (cube)
     model.alpha = 0.5      # artificial viscosity factor 1
     model.beta = 0.0       # artificial viscosity factor 2
-    model.maxTime = 1.0    # simulation time
+    model.maxTime = 1.49    # simulation time
     model.saveInt = 0.01   # save interval
 
     # mobile particles
