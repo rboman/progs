@@ -103,12 +103,19 @@ MobileParticle::compute_viscosity(Particle *neigh, double alpha, double beta)
     if (u_ab.dot(x_ab) < 0.0)
     {
         mu_ab = this->h * u_ab.dot(x_ab) / (x_ab.dot(x_ab) + 0.01 * this->h * this->h);
+
         double c_ab = 0.5 * (this->c[RKstep] + neigh->c[RKstep]);
         double rho_ab = 0.5 * (this->rho[RKstep] + neigh->rho[RKstep]);
         viscosity = (-alpha * c_ab * mu_ab + beta * mu_ab * mu_ab) / rho_ab;
+        // TODO: remove negative sign and make mu_ab positive!
     }
 
     // update of max_mu_ab for the calculation of the timestep
+    // TODO: mu_ab is negative; thus max_mu_ab always 0!!
+    //       This is a bug in the code (in Fortran too).
+    //       we should use the absolute value of mu_ab or change the sign of mu_ab
+    //       Anyway, the viscosity is correctly calculated.
+    //       This only impacts the time step calculation.
     if ((RKstep == 0) && (mu_ab > this->max_mu_ab))
         this->max_mu_ab = mu_ab;
 

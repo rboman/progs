@@ -78,3 +78,10 @@ cmake . -B build && cmake --build build --config Release && run.py -k 10 --cpp t
 ```
 cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py tests/small.py -k 10 --cpp
 ```
+
+
+## Notes résultat code C++
+
+* les particules fixes ont une masse de 0 dans paraview
+* la densité des particules fixes est constante et vaut rho0 dans paraview
+* max(mu_ab) est nul dans paraview (c'est un bug dans les 2 codes où mu_ab est toujours negatif!)
