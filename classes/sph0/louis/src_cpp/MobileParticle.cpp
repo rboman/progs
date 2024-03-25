@@ -39,6 +39,7 @@ MobileParticle::update_vars()
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
             double rho2 = neigh->rho[RKstep] * neigh->rho[RKstep];
             du_dt += this->m * (neigh->p[RKstep] / rho2 + this->p[RKstep] / rho2 + pi_ab) * this->vec_gradW_mod[i];
+            // TODO: BUG: le 2e terme semble etre faux. Il doit impliquer la densité de la particule et pas celle du voisin
         }
         break;
     }
@@ -52,6 +53,7 @@ MobileParticle::update_vars()
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
             double rho2 = neigh->rho[RKstep] * neigh->rho[RKstep];
             du_dt += this->m * (neigh->p[RKstep] / rho2 + this->p[RKstep] / rho2 + pi_ab) * this->vec_gradW[i];
+            // TODO: BUG: le 2e terme semble etre faux. Il doit impliquer la densité de la particule et pas celle du voisin
         }
         break;
     }
