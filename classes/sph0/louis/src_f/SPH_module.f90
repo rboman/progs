@@ -818,7 +818,7 @@ module SPH_module
         
         uab_xab = dot_product(u_ab, x_ab)
         if(uab_xab<0.0d0) then
-            ! mistake in the formula in Louis'thesis: missing negative sign
+            ! mistake in the formula in Louis' thesis: missing negative sign
             ! (see Monagan-1989 eq 4.11 p8)
             !   => max(mu_ab) calculated later for the timestep will always be 0!
             ! note: some papers use a negative mu_ab with an absolute value when finding the max.
@@ -1040,12 +1040,15 @@ module SPH_module
         real(DP) :: dTcv, dTcvtemp   !< time step relative to the viscous forces and Courrant number
         integer  :: i
         class(fixed_particle), pointer :: cur_ptr   
-        
+        real(DP) :: sq_g
+
+        sq_g = sqrt(9.81d0)
+
         ! computes the timestep relative to the body forces     
-        dTf = sqrt( this%part(this%numFP+1)%ptr%h / 9.81d0 )
+        dTf = this%part(this%numFP+1)%ptr%h / sq_g
         do i = this%numFP+2, this%numPart
             cur_ptr => this%part(i)%ptr
-            dTftemp = sqrt(cur_ptr%h / 9.81d0)
+            dTftemp = cur_ptr%h / sq_g
             if(dTftemp<dTf) then
                 dTf = dTftemp
             end if

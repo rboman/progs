@@ -41,7 +41,6 @@ MobileParticle::update_vars()
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
             double rho2b = neigh->rho[RKstep] * neigh->rho[RKstep];
             du_dt += this->m * (neigh->p[RKstep] / rho2b + this->p[RKstep] / rho2a + pi_ab) * this->vec_gradW_mod[i];
-            // TODO: BUG: le 2e terme semble etre faux. Il doit impliquer la densité de la particule et pas celle du voisin
         }
         break;
     }
@@ -57,7 +56,6 @@ MobileParticle::update_vars()
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
             double rho2b = neigh->rho[RKstep] * neigh->rho[RKstep];
             du_dt += this->m * (neigh->p[RKstep] / rho2b + this->p[RKstep] / rho2a + pi_ab) * this->vec_gradW[i];
-            // TODO: BUG: le 2e terme semble etre faux. Il doit impliquer la densité de la particule et pas celle du voisin
         }
         break;
     }
@@ -104,22 +102,21 @@ MobileParticle::compute_viscosity(Particle *neigh, double alpha, double beta)
     Eigen::Vector3d x_ab = this->coord[RKstep] - neigh->coord[RKstep];
 
     double mu_ab = 0.0; // this term represents a kind of viscosity
-    if (u_ab.dot(x_ab) < 0.0)
+    double uab_xab = u_ab.dot(x_ab);
+    if (uab_xab < 0.0)
     {
-        mu_ab = this->h * u_ab.dot(x_ab) / (x_ab.dot(x_ab) + 0.01 * this->h * this->h);
+        // mistake in the formula in Louis' thesis: missing negative sign
+        // (see Monagan-1989 eq 4.11 p8)
+        //   => max(mu_ab) calculated later for the timestep will always be 0!
+        // note: some papers use a negative mu_ab with an absolute value when finding the max.
+        mu_ab = - this->h * uab_xab / (x_ab.dot(x_ab) + 0.01 * this->h * this->h);
 
         double c_ab = 0.5 * (this->c[RKstep] + neigh->c[RKstep]);
         double rho_ab = 0.5 * (this->rho[RKstep] + neigh->rho[RKstep]);
-        viscosity = (-alpha * c_ab * mu_ab + beta * mu_ab * mu_ab) / rho_ab;
-        // TODO: remove negative sign and make mu_ab positive!
+        viscosity = (alpha * c_ab * mu_ab + beta * mu_ab * mu_ab) / rho_ab;
+        // negative sign removed here due to sign correction in mu_ab 
     }
 
-    // update of max_mu_ab for the calculation of the timestep
-    // TODO: mu_ab is negative; thus max_mu_ab always 0!!
-    //       This is a bug in the code (in Fortran too).
-    //       we should use the absolute value of mu_ab or change the sign of mu_ab
-    //       Anyway, the viscosity is correctly calculated.
-    //       This only impacts the time step calculation.
     if ((RKstep == 0) && (mu_ab > this->max_mu_ab))
         this->max_mu_ab = mu_ab;
 

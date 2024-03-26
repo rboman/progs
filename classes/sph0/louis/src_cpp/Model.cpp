@@ -284,12 +284,14 @@ Model::update_dt()
     timers["update_dt"].start();
 
     // timestep relative to the body forces
+    // mistake in Louis' thesis: the square root is missing
+    double sq_g = sqrt(9.81);
 
     double dTf = std::numeric_limits<double>::max();
     for (int i = this->numFP + 1; i < this->numPart; i++)
     {
         Particle const *p = this->particles[i];
-        double dt = sqrt(p->h / 9.81);
+        double dt = p->h / sq_g;
         if (dt < dTf)
             dTf = dt;
     }
