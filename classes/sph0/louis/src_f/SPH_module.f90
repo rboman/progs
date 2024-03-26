@@ -722,7 +722,7 @@ module SPH_module
         Delta_rho = 0.d0
         Delta_u = (/ 0.d0, 0.d0, 0.d0 /)
         Delta_x = (/ 0.d0, 0.d0, 0.d0 /)
-        F = (/ real(0, DP), real(0, DP), real(-9.81, DP) /)
+        F = (/ real(0, DP), real(0, DP), real(-9.81, DP) /)  !< hard-coded gravity!
         
         cur_RKstep = this%manager%RKstep
         
@@ -809,17 +809,25 @@ module SPH_module
         real(DP), dimension(1:3) :: x_ab         !< the distance between a and b
         real(DP) :: c_ab                         !< mean speed of sound
         real(DP) :: rho_ab                       !< mean density
+        real(DP) :: uab_xab                      !< scalar product of u_ab and x_ab
+        integer  :: RKstep                       !< value of the current RK step
+
+        RKstep = this%manager%RKstep
+        u_ab = this%speed(:, RKstep) - neighObj%speed(:, RKstep)
+        x_ab = this%coord(:, RKstep) - neighObj%coord(:, RKstep)
         
-        u_ab = this%speed(:, this%manager%RKstep) - neighObj%speed(:, this%manager%RKstep)
-        x_ab = this%coord(:, this%manager%RKstep) - neighObj%coord(:, this%manager%RKstep)
-        
-        if(dot_product(u_ab, x_ab)<0.0d0) then    
-            ! mu_ab is calculated using \f[\mu_{ab} = \frac{h\vec{u}_{ab}\cdot\vec{x}_{ab}}{\vec{x}_{ab}^2+\eta^2}\f]
-            mu_ab  = this%h * dot_product(u_ab, x_ab) / ( dot_product(x_ab, x_ab) + 0.01d0*this%h**2.d0 )
-            c_ab   = 0.5d0 * (this%c(this%manager%RKstep) + neighObj%c(this%manager%RKstep))
-            rho_ab = 0.5d0 * (this%rho(this%manager%RKstep) + neighObj%rho(this%manager%RKstep))
+        uab_xab = dot_product(u_ab, x_ab)
+        if(uab_xab<0.0d0) then
+            ! mistake in the formula in Louis'thesis: missing negative sign
+            ! (see Monagan-1989 eq 4.11 p8)
+            !   => max(mu_ab) calculated later for the timestep will always be 0!
+            ! note: some papers use a negative mu_ab with an absolute value when finding the max.
+            mu_ab  = - this%h * uab_xab / ( dot_product(x_ab, x_ab) + 0.01d0*this%h**2.d0 )
+            c_ab   = 0.5d0 * (this%c(RKstep) + neighObj%c(RKstep))
+            rho_ab = 0.5d0 * (this%rho(RKstep) + neighObj%rho(RKstep))
             
-            artificialViscosity = (-alpha*c_ab*mu_ab + beta*mu_ab**2.d0)/rho_ab
+            ! negative sign removed here due to sign correction in mu_ab 
+            artificialViscosity = (alpha*c_ab*mu_ab + beta*mu_ab**2.d0)/rho_ab
         else
             artificialViscosity = 0.d0
         end if
