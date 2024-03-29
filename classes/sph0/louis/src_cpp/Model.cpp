@@ -284,14 +284,15 @@ Model::update_dt()
     timers["update_dt"].start();
 
     // timestep relative to the body forces
-    // mistake in Louis' thesis: the square root is missing
-    double sq_g = sqrt(9.81);
+    // - mistake in Louis' thesis: the square root is missing
+    // - mistake in Monagan-1989 paper: sq root is applied to g instead of h/g
+    double g = 9.81;
 
     double dTf = std::numeric_limits<double>::max();
     for (int i = this->numFP + 1; i < this->numPart; i++)
     {
         Particle const *p = this->particles[i];
-        double dt = p->h / sq_g;
+        double dt = sqrt( p->h / g );
         if (dt < dTf)
             dTf = dt;
     }

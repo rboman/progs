@@ -1040,15 +1040,15 @@ module SPH_module
         real(DP) :: dTcv, dTcvtemp   !< time step relative to the viscous forces and Courrant number
         integer  :: i
         class(fixed_particle), pointer :: cur_ptr   
-        real(DP) :: sq_g
+        real(DP) :: g
 
-        sq_g = sqrt(9.81d0)
+        g = 9.81d0
 
         ! computes the timestep relative to the body forces     
-        dTf = this%part(this%numFP+1)%ptr%h / sq_g
+        dTf = sqrt( this%part(this%numFP+1)%ptr%h / g )
         do i = this%numFP+2, this%numPart
             cur_ptr => this%part(i)%ptr
-            dTftemp = cur_ptr%h / sq_g
+            dTftemp = sqrt( cur_ptr%h / g )
             if(dTftemp<dTf) then
                 dTf = dTftemp
             end if
