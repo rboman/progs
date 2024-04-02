@@ -75,8 +75,8 @@ if __name__ == "__main__":
 
         if args.post:
             # only post-processing
-            import sph.gui as gui
-            gui.ToParaview(verb=False).convertall()
+            import sph.res2vtp as res2vtp
+            res2vtp.ToParaview(verb=False).convertall()
         else:
             # start test
             import time, platform

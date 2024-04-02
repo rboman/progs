@@ -51,7 +51,7 @@ if __name__ == "__main__":
     # convert to VTK
     try:
         print("Converting to VTK")
-        import sph.gui as gui
-        gui.ToParaview(verb=False).convertall()
+        import sph.res2vtp as res2vtp
+        res2vtp.ToParaview(verb=False).convertall()
     except Exception as e:
         print("\n**ERROR while converting to VTK:", e)
