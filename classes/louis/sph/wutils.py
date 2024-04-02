@@ -33,7 +33,7 @@ def setupwdir(testname):
 
 def parseargs():
     """
-    parses command line arguments
+    parses command line arguments of "run.py"
     """
     import argparse
     parser = argparse.ArgumentParser()

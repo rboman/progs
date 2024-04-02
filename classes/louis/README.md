@@ -2,7 +2,7 @@
 
 [Reference in ORBi](http://orbi.ulg.ac.be/handle/2268/156166)
 
-![Screenshot](screenshot.png)
+![Screenshot](doc/screenshot.png)
 
 ## Compilation (Windows or Linux)
 
@@ -82,4 +82,9 @@ cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py t
 
 ## Notes résultats / TODO
 
-* max(mu_ab) est nul dans paraview (c'est un bug dans les 2 codes où mu_ab est toujours negatif!)
+  - [ ] domaine non cubique
+  - [ ] `--nogui`
+  - [ ] pas de sauvegarde disque des résultats (pour benchs)
+  - [ ] sauvegarde direct en `.vtp`
+  - [ ] timers en fortran
+
