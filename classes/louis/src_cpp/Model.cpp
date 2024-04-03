@@ -126,7 +126,7 @@ Model::solve()
             this->RKstep = j;
 
             g_timers["sort"].start();
-            //if(j==0)
+            // if(j==0)
             this->sorter.execute();
             g_timers["sort"].stop();
 
@@ -160,7 +160,7 @@ Model::solve()
                 this->displayHook->update_data();
             }
 
-            if(!g_nosave)
+            if (!g_nosave)
             {
                 this->save_particles("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
                 this->save_particles("resFP", ite, 0, this->numFP - 1);
@@ -168,10 +168,10 @@ Model::solve()
             to_save = false;
         }
 
-        if(couttimer.elapsed() > 1.0 || ite == 0 || this->currentTime >= this->maxTime)
+        // Display time-step information
+        if (couttimer.elapsed() > 1.0 || ite == 0 ||
+            this->currentTime >= this->maxTime)
         {
-            // Display time-step information
-
             double cpu = g_timers["TOTAL"].elapsed();
             double eta = (this->maxTime - this->currentTime) * cpu / this->currentTime;
 
@@ -302,7 +302,7 @@ Model::update_dt()
     for (int i = this->numFP + 1; i < this->numPart; i++)
     {
         Particle const *p = this->particles[i];
-        double dt = sqrt( p->h / g );
+        double dt = sqrt(p->h / g);
         if (dt < dTf)
             dTf = dt;
     }
