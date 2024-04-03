@@ -6,7 +6,7 @@
 class DisplayHook
 {
 public:
-    DisplayHook() {}
+    DisplayHook() = default;
     virtual ~DisplayHook() = default;
     virtual void interact() = 0;
     virtual void update_data() = 0;

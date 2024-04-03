@@ -17,11 +17,15 @@ print_banner()
 #endif
 
 #ifdef NDEBUG
-    // code has been configured with "cmake -DCMAKE_BUILD_TYPE=Release .."
     std::cout << "code built in RELEASE mode.\n";
 #else
-    // code has been configured with "cmake .."
     std::cout << "code built in DEBUG mode.\n";
+#endif
+
+#ifdef SPH_USE_GUI
+    std::cout << "code built with GUI.\n";
+#else
+    std::cout << "code built without GUI.\n";
 #endif
 }
 

@@ -1,6 +1,8 @@
 #ifndef SPH_SPH_H
 #define SPH_SPH_H
 
+#include "sph_config.h"
+
 class Particle;
 class Neighbour;
 class FixedParticle;

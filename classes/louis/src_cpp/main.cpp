@@ -9,11 +9,13 @@
 // @version 1.0.0
 
 #include "Model.h"
-#include "QtVTKHook.h"
 #include <iostream>
 #include <iomanip>
 #ifdef _OPENMP
 #include <omp.h>
+#endif
+#ifdef SPH_USE_GUI
+#include "QtVTKHook.h"
 #endif
 
 int
@@ -30,14 +32,20 @@ main(int argc, char *argv[])
         timers["TOTAL"].start();
         Model model;
         model.initialise();
+
+#ifdef SPH_USE_GUI
         QtVTKHook gui(argc, argv, model);
+#endif
 
         model.solve();
 
         timers["TOTAL"].stop();
         print_timers();
 
+#ifdef SPH_USE_GUI
         gui.loop();
+#endif
+
     }
     catch (const std::exception &e)
     {

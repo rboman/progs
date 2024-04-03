@@ -5,6 +5,11 @@ PROJECT(LOUIS_CPP
         HOMEPAGE_URL "https://github.com/rboman/progs"
         LANGUAGES CXX)
 
+# Options
+
+OPTION(SPH_USE_GUI "Build Qt/VTK GUI" ON)
+
+
 # build type is "" by default in Linux
 IF(NOT CMAKE_BUILD_TYPE)
     SET( CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
@@ -26,11 +31,6 @@ CHECK_CXX_COMPILER_FLAG("-Wall" WALL)
 #     ADD_COMPILE_OPTIONS(-Wall)
 # ENDIF()
 
-
-
-
-
-
 # find OpenMP
 FIND_PACKAGE(OpenMP)
 IF(OPENMP_FOUND)
@@ -43,39 +43,23 @@ ENDIF()
 # FIND_PACKAGE(Eigen3 3.4 REQUIRED NO_MODULE)
 # set(CMAKE_FIND_DEBUG_MODE TRUE)
 FIND_PATH(EIGEN_INCLUDE_DIRS "Eigen/Dense" 
-          PATHS "${PROJECT_SOURCE_DIR}/lib/eigen" "/usr/include/eigen3" "c:/msys64/mingw64/include/eigen3")
+          PATHS "${PROJECT_SOURCE_DIR}/lib/eigen" 
+                "/usr/include/eigen3" 
+                "c:/msys64/mingw64/include/eigen3")
 MESSAGE(STATUS "EIGEN_INCLUDE_DIRS=" ${EIGEN_INCLUDE_DIRS})
 IF(NOT EIGEN_INCLUDE_DIRS)
     MESSAGE(FATAL_ERROR "Eigen include dir not found!")
 ENDIF()
 
-SET(CMAKE_AUTOMOC ON)
+SET(CMAKE_AUTOMOC ON)  # before target definition
 # SET(CMAKE_AUTORCC ON)
 # SET(CMAKE_AUTOUIC ON)
-FIND_PACKAGE(VTK 9.0 COMPONENTS 
-    GUISupportQt
-    InteractionWidgets
-    FiltersHybrid
-    IOExport
-    IOXML
-    CommonColor
-    CommonCore
-    FiltersSources
-    InteractionStyle
-    RenderingContextOpenGL2
-    RenderingCore
-    RenderingFreeType
-    RenderingGL2PSOpenGL2
-    RenderingOpenGL2
-)
 
-find_package(Qt6 COMPONENTS Core)
-if (NOT Qt6_FOUND)
-    find_package(Qt5 5.15 REQUIRED COMPONENTS Core)
-endif()
 
 FILE(GLOB SRCS *.h *.cpp)
 ADD_EXECUTABLE(louis++ ${SRCS})
+
+
 TARGET_INCLUDE_DIRECTORIES(louis++ PUBLIC ${EIGEN_INCLUDE_DIRS})
 #TARGET_LINK_LIBRARIES(louis++ Eigen3::Eigen)
 IF(OpenMP_CXX_FOUND)
@@ -87,9 +71,51 @@ TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC EIGEN_DONT_PARALLELIZE)
 # TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: EIGEN_NO_DEBUG >)
 # TARGET_COMPILE_DEFINITIONS(louis++ PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )
 
-# VTK/Qt
-TARGET_LINK_LIBRARIES(louis++ PUBLIC ${VTK_LIBRARIES} Qt::Widgets)
 
-vtk_module_autoinit(
-    TARGETS louis++ 
-    MODULES ${VTK_LIBRARIES})
+IF(SPH_USE_GUI)
+
+    FILE(GLOB GUI_SRCS gui/*.h gui/*.cpp)
+    TARGET_SOURCES(louis++ PRIVATE ${GUI_SRCS})
+    TARGET_INCLUDE_DIRECTORIES(louis++ PUBLIC ${PROJECT_SOURCE_DIR}/gui
+                                              ${PROJECT_SOURCE_DIR})
+
+    # -- find Qt
+    FIND_PACKAGE(Qt6 COMPONENTS Core)
+    IF(NOT Qt6_FOUND)
+        FIND_PACKAGE(Qt5 5.15 REQUIRED COMPONENTS Core)
+    ENDIF()
+
+
+    # -- find VTK
+    FIND_PACKAGE(VTK 9.0 COMPONENTS 
+        GUISupportQt
+        InteractionWidgets
+        FiltersHybrid
+        IOExport
+        IOXML
+        CommonColor
+        CommonCore
+        FiltersSources
+        InteractionStyle
+        RenderingContextOpenGL2
+        RenderingCore
+        RenderingFreeType
+        RenderingGL2PSOpenGL2
+        RenderingOpenGL2
+    )
+    IF(NOT VTK_FOUND)
+        MESSAGE(FATAL_ERROR "VTK 9 not found!")
+    ENDIF()
+
+    # VTK/Qt
+    TARGET_LINK_LIBRARIES(louis++ PUBLIC ${VTK_LIBRARIES} Qt::Widgets)
+
+    vtk_module_autoinit( TARGETS louis++ 
+                         MODULES ${VTK_LIBRARIES})
+
+ENDIF()
+
+
+CONFIGURE_FILE(sph_config.h.in sph_config.h)
+INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
+

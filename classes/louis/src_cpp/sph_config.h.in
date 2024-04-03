@@ -1,0 +1,1 @@
+#cmakedefine SPH_USE_GUI "@SPH_USE_GUI@"

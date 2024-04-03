@@ -25,7 +25,7 @@ class DisplayWindow : public QWidget
 
 public:
     explicit DisplayWindow(Model &model, QWidget *parent = nullptr);
-    ~DisplayWindow();
+    virtual ~DisplayWindow();
     
     // disable copy and move
     DisplayWindow(const DisplayWindow &) = delete;
