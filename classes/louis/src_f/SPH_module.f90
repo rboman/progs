@@ -885,7 +885,9 @@ module SPH_module
         
         integer :: i                            !< loop counter
         class(fixed_particle), pointer :: cur_ptr
-    
+
+        call timer_initialisation%start()
+
         this%timeStep    = 1.0d-15              !< initial time step
         this%currentTime = 0.d0                 !< current time initialisation
         this%RKstep      = 1                    !< RK step counter initialisation
@@ -939,6 +941,8 @@ module SPH_module
         this%sorting%init = .true.
 
         print *, 'Initialisation finished.'
+        call timer_initialisation%stop()
+
     end subroutine initialisation
 
     
@@ -992,17 +996,22 @@ module SPH_module
             do j = 1, 2
                 this%RKstep = j
                 !if (j.eq.1) then ! [RB]
-                    call this%sorting%particlesSort()
+                call timer_sort%start()
+                call this%sorting%particlesSort()
+                call timer_sort%stop()
                 !end if ! [RB]
                 ! Loop over the particles
+                call timer_update_vars%start()
                 !$OMP PARALLEL DO PRIVATE(i) SCHEDULE(DYNAMIC)
                 do i = 1, this%numPart
                     call this%part(i)%ptr%varUpdate()
                 end do
                 !$OMP END PARALLEL DO
+                call timer_update_vars%stop()
             end do
             
             ! Update of the current time variables (currentTime = nextTime)
+            call timer_copy_vars%start()
             do i = 1, this%numPart
                 p => this%part(i)%ptr
                 p%rho(1)      = p%rho(3)
@@ -1011,12 +1020,15 @@ module SPH_module
                 p%speed(:, 1) = p%speed(:, 3)
                 p%coord(:, 1) = p%coord(:, 3)
             end do
-            
+            call timer_copy_vars%stop()
+
             ! Test for the data saving
             if(to_save) then
+                call timer_save%start()
                 call this%savePartSet('resMP', ite, this%numFP+1, this%numFP+this%numMP)
                 call this%savePartSet('resFP', ite, 1, this%numFP)
-               
+                call timer_save%stop()
+
                 print *, 'Iteration nb ', ite
                 print *, '   Time (s) = ', this%currentTime
                 print *, '   Time step (s) = ', this%timeStep
@@ -1042,6 +1054,8 @@ module SPH_module
         integer  :: i
         class(fixed_particle), pointer :: cur_ptr   
         real(DP) :: g
+
+        call timer_update_dt%start()
 
         g = 9.81d0
 
@@ -1081,6 +1095,9 @@ module SPH_module
         if(this%eqnState == LAW_IDEAL_GAS) then
             this%timeStep = 5.d0 * this%timeStep
         end if
+
+        call timer_update_dt%stop()
+
     end subroutine timeStepUpdate
 
 
@@ -1092,6 +1109,9 @@ module SPH_module
         real(DP) :: mean_rho     !< mean value of the densities of the mobile particles
         real(DP) :: new_h        !< new smoothing length
         integer :: i
+
+        call timer_update_h%start()
+
         mean_rho = 0.d0
         
         ! calculation of the average density
@@ -1113,6 +1133,9 @@ module SPH_module
         do i = 1, this%numPart
             this%part(i)%ptr%h = new_h
         end do
+
+        call timer_update_h%stop()
+
     end subroutine slUpdate
 
     ! ------------------------------------------------------------------------
