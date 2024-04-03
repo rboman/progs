@@ -126,6 +126,7 @@ Model::solve()
             this->RKstep = j;
 
             g_timers["sort"].start();
+            //if(j==0)
             this->sorter.execute();
             g_timers["sort"].stop();
 
