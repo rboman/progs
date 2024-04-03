@@ -1,5 +1,6 @@
 #include "sph.h"
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #ifdef _OPENMP
 #include <omp.h>
@@ -7,6 +8,7 @@
 
 std::map<std::string, Timer> g_timers;
 bool g_nogui = false;
+bool g_nosave = false;
 
 void
 print_banner()
@@ -44,11 +46,22 @@ print_timers()
 }
 
 void
+save_timers()
+{
+    std::ofstream file("timers.txt");
+    for (auto &t : g_timers)
+        file << std::setw(20) << t.first << '\t' << t.second.elapsed() << '\n';
+}
+
+
+void
 read_args(int argc, char *argv[])
 {
     for(int i=1; i<argc; i++)
     {
         if (std::string(argv[i]) == "--nogui")
             g_nogui = true;
+        if (std::string(argv[i]) == "--nosave")
+            g_nosave = true;
     }
 }

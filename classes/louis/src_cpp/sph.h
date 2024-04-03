@@ -42,10 +42,12 @@ enum Law
 #include <map>
 
 extern std::map<std::string, Timer> g_timers; ///< global g_timers
-extern bool g_nogui;   ///< use GUI or not
+extern bool g_nogui;     ///< use GUI or not
+extern bool g_nosave;    ///< do not write results to disk
 
 void print_banner();
 void print_timers();
+void save_timers();
 void read_args(int argc, char *argv[]);
 
 #endif // SPH_SPH_H

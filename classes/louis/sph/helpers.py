@@ -141,19 +141,21 @@ class Model:
         args = wu.parseargs()
         os.environ['OMP_NUM_THREADS'] = str(args.k)
 
-        # run program
+        # build command line
         exename = self.getexe()
         print("running %s using %s threads" % (exename, os.environ['OMP_NUM_THREADS']))
 
         cmd = [ exename ]
-        if args.nogui:
-            cmd.append('--nogui')
+
+        # add arguments
+        for p in ['--nogui', '--nosave']:
+            if p in sys.argv:
+                cmd.append(p)
 
         langprefix = "[F]"
         if args.cpp:
             langprefix = "[C]"
         langprefix = "[exe]"
-
 
         # start Fortran code as a subprocess and streams the fortran output
         # to the standard output

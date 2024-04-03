@@ -103,6 +103,8 @@ Model::solve()
 {
     Timer hooktimer;
     hooktimer.start();
+    Timer couttimer;
+    couttimer.start();
 
     int ite = 0;
 
@@ -135,7 +137,7 @@ Model::solve()
         }
 
         // Update of the current time variables (currentTime = nextTime)
-        g_timers["copy vars"].start();
+        g_timers["copy_vars"].start();
 #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < this->numPart; i++)
         {
@@ -146,7 +148,7 @@ Model::solve()
             p->speed[0] = p->speed[2];
             p->coord[0] = p->coord[2];
         }
-        g_timers["copy vars"].stop();
+        g_timers["copy_vars"].stop();
 
         // Test for the data saving
         if (to_save)
@@ -157,9 +159,16 @@ Model::solve()
                 this->displayHook->update_data();
             }
 
-            this->save_particles("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
-            this->save_particles("resFP", ite, 0, this->numFP - 1);
+            if(!g_nosave)
+            {
+                this->save_particles("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
+                this->save_particles("resFP", ite, 0, this->numFP - 1);
+            }
+            to_save = false;
+        }
 
+        if(couttimer.elapsed() > 1.0 || ite == 0 || this->currentTime >= this->maxTime)
+        {
             // Display time-step information
 
             double cpu = g_timers["TOTAL"].elapsed();
@@ -175,7 +184,7 @@ Model::solve()
                       << " ETA = " << std::setw(10) << eta << "s"
                       << std::endl;
             std::cout.flags(f); // restore flags
-            to_save = false;
+            couttimer.reset();
         }
 
         if (this->displayHook != nullptr)

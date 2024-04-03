@@ -45,6 +45,7 @@ main(int argc, char *argv[])
 
         g_timers["TOTAL"].stop();
         print_timers();
+        save_timers();
 
         if(gui)
         {

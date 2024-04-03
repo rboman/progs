@@ -76,15 +76,17 @@ cmake . -B build && cmake --build build --config Release && run.py -k 10 --cpp t
 ## Linux
 
 ```
-cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py tests/small.py -k 10 --cpp
+cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py tests/small.py -k 10 --cpp --nogui --nosave
 ```
 
 
 ## Notes résultats / TODO
 
   - [ ] domaine non cubique
-  - [ ] `--nogui`
+  - [x] `--nogui`
   - [ ] pas de sauvegarde disque des résultats (pour benchs)
   - [ ] sauvegarde direct en `.vtp`
   - [ ] g_timers en fortran
+  - [ ] c++: visu boite domaine
+  - [ ] remove results if exists
 

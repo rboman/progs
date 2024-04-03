@@ -664,7 +664,7 @@ module SPH_module
         real(DP) :: Delta_rho                        !< \f$d\rho/dt\f$
         real(DP), dimension(1:3) :: u_ab             !< relative velocity between the particle and a neighbour
         integer :: i                                 !< loop counter
-        integer :: cur_RKstep               !< pointer toward the value of the current RK step
+        integer :: cur_RKstep                        !< pointer toward the value of the current RK step
         class(fixed_particle), pointer :: cur_neigh  !< current neighbour
         real(DP) :: dt
         

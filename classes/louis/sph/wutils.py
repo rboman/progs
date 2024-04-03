@@ -41,6 +41,8 @@ def parseargs():
                         action="count", default=0)
     parser.add_argument("--nogui", help="disable any graphical output",
                         action="store_true")
+    parser.add_argument("--nosave", help="disable saving results to disk",
+                        action="store_true")
     parser.add_argument("--post", help="only do post-processing",
                         action="store_true")
     parser.add_argument("-k", help="nb of threads", type=int, default=1)

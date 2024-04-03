@@ -48,7 +48,7 @@ Sorter::execute()
 
         int idx = (ix - 1) * nx * nx + (iy - 1) * nx + iz - 1;
 
-        this->cells[idx].push_back(p); //Neighbour(p, 0.0));
+        this->cells[idx].push_back(p);
     }
 
 }
@@ -93,6 +93,7 @@ Sorter::init_cells()
 double 
 Sorter::compute_hmax()
 {
+    // TODO: reduction openmp??
     double hmax = 0.0;
     for(auto const &p : this->model.particles)
         if (p->h > hmax)
