@@ -45,6 +45,7 @@ end subroutine info_openmp
 program SPH_simulation
 
     use SPH_module
+    use mod_time
     implicit none
     
     integer :: t1, t2, clock_rate, clock_max
@@ -56,13 +57,17 @@ program SPH_simulation
     print *,'============= SPH_simulation (L.Goffin)'
     
     call system_clock(t1, clock_rate, clock_max)
+    call timer_total%start()
     
     call manager%initialisation()
     call manager%solver()
 
+    call timer_total%stop()
     call system_clock(t2, clock_rate, clock_max)
     
     print *,'Elapsed real time = ', DBLE(t2-t1)/clock_rate
+
+    call time_print_stats()
 
 end program SPH_simulation
 

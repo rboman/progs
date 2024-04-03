@@ -6,9 +6,10 @@
 !! @version 1.0.0
 
 module SPH_module
-    
+
+    use mod_time    
     implicit none
-    
+
     integer, parameter :: DP  = KIND(1.0D0)            !< double precision
     !integer, parameter :: DP  = KIND(1.0)             !< single precision
     real(DP), parameter :: pi = 3.141592653589793238462643383279502884197_dp   !< \f$ \pi \f$
