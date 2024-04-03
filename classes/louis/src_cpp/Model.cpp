@@ -45,7 +45,7 @@ Model::~Model()
 void
 Model::initialise()
 {
-    timers["initialisation"].start();
+    g_timers["initialisation"].start();
 
     // Reading of the paths of the input files
     std::ifstream file("paths.txt");
@@ -93,7 +93,7 @@ Model::initialise()
     file2.close();
 
     std::cout << "Initialisation finished." << std::endl;
-    timers["initialisation"].stop();
+    g_timers["initialisation"].stop();
 }
 
 /// Solves the problem using a RK22 time integration scheme.
@@ -123,19 +123,19 @@ Model::solve()
         {
             this->RKstep = j;
 
-            timers["sort"].start();
+            g_timers["sort"].start();
             this->sorter.execute();
-            timers["sort"].stop();
+            g_timers["sort"].stop();
 
-            timers["update_vars"].start();
+            g_timers["update_vars"].start();
 #pragma omp parallel for schedule(dynamic)
             for (int i = 0; i < this->numPart; i++)
                 this->particles[i]->update_vars();
-            timers["update_vars"].stop();
+            g_timers["update_vars"].stop();
         }
 
         // Update of the current time variables (currentTime = nextTime)
-        timers["copy vars"].start();
+        g_timers["copy vars"].start();
 #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < this->numPart; i++)
         {
@@ -146,7 +146,7 @@ Model::solve()
             p->speed[0] = p->speed[2];
             p->coord[0] = p->coord[2];
         }
-        timers["copy vars"].stop();
+        g_timers["copy vars"].stop();
 
         // Test for the data saving
         if (to_save)
@@ -162,7 +162,7 @@ Model::solve()
 
             // Display time-step information
 
-            double cpu = timers["TOTAL"].elapsed();
+            double cpu = g_timers["TOTAL"].elapsed();
             double eta = (this->maxTime - this->currentTime) * cpu / this->currentTime;
 
             auto f(std::cout.flags()); // better choice: "std::format" in C++20
@@ -262,7 +262,7 @@ void
 Model::save_particles(std::string const &name, int ite,
                       int start, int end) const
 {
-    timers["save"].start();
+    g_timers["save"].start();
     // build filename from name and ite
     std::ostringstream oss;
     oss << std::setw(8) << std::setfill('0') << ite;
@@ -273,7 +273,7 @@ Model::save_particles(std::string const &name, int ite,
     for (int i = start; i <= end; ++i)
         this->particles[i]->save(file);
     file.close();
-    timers["save"].stop();
+    g_timers["save"].stop();
 }
 
 /// Computes the next timestep using the properties of the particles.
@@ -281,7 +281,7 @@ Model::save_particles(std::string const &name, int ite,
 void
 Model::update_dt()
 {
-    timers["update_dt"].start();
+    g_timers["update_dt"].start();
 
     // timestep relative to the body forces
     // - mistake in Louis' thesis: the square root is missing
@@ -317,7 +317,7 @@ Model::update_dt()
     // if (this->eqnState == LAW_IDEAL_GAS)
     //     this->timeStep = 5 * this->timeStep;
 
-    timers["update_dt"].stop();
+    g_timers["update_dt"].stop();
 }
 
 /// Updates the smoothing length at each timestep.
@@ -326,7 +326,7 @@ Model::update_dt()
 void
 Model::update_h()
 {
-    timers["update_h"].start();
+    g_timers["update_h"].start();
 
     // calculation of the average density
     double mean_rho = 0.0;
@@ -348,5 +348,5 @@ Model::update_h()
     for (int i = 0; i < this->numPart; i++)
         this->particles[i]->h = new_h;
 
-    timers["update_h"].stop();
+    g_timers["update_h"].stop();
 }

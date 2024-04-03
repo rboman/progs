@@ -145,16 +145,21 @@ class Model:
         exename = self.getexe()
         print("running %s using %s threads" % (exename, os.environ['OMP_NUM_THREADS']))
 
+        cmd = [ exename ]
+        if args.nogui:
+            cmd.append('--nogui')
+
         langprefix = "[F]"
         if args.cpp:
             langprefix = "[C]"
         langprefix = "[exe]"
 
+
         # start Fortran code as a subprocess and streams the fortran output
         # to the standard output
         # http://stackoverflow.com/questions/2715847/python-read-streaming-input-from-subprocess-communicate/17698359#17698359
         # try:
-        proc = subprocess.Popen(exename, stdout=subprocess.PIPE,
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT)
         with proc.stdout:
             for line in iter(proc.stdout.readline, b''):

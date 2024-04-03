@@ -23,29 +23,35 @@ main(int argc, char *argv[])
 {
     int retcode = EXIT_SUCCESS;
 
+    read_args(argc, argv);
     print_banner();
 
     // QtVTKHook::standalone_VTK_demo(); // is VTK working?
 
     try
     {
-        timers["TOTAL"].start();
+        g_timers["TOTAL"].start();
         Model model;
         model.initialise();
 
+        DisplayHook *gui = nullptr;
+
 #ifdef SPH_USE_GUI
-        QtVTKHook gui(argc, argv, model);
+        if(!g_nogui)
+            gui = new QtVTKHook(argc, argv, model);
 #endif
 
         model.solve();
 
-        timers["TOTAL"].stop();
+        g_timers["TOTAL"].stop();
         print_timers();
 
-#ifdef SPH_USE_GUI
-        gui.loop();
-#endif
-
+        if(gui)
+        {
+            std::cout << "\n  >>> Close window to Quit...\n" << std::endl;
+            gui->loop();
+            delete gui;
+        }
     }
     catch (const std::exception &e)
     {

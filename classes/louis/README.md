@@ -86,5 +86,5 @@ cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py t
   - [ ] `--nogui`
   - [ ] pas de sauvegarde disque des résultats (pour benchs)
   - [ ] sauvegarde direct en `.vtp`
-  - [ ] timers en fortran
+  - [ ] g_timers en fortran
 
