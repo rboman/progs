@@ -1,6 +1,6 @@
-#include "FixedParticle.h"
-#include "EqState.h"
-#include "Model.h"
+#include "sphFixedParticle.h"
+#include "sphEqState.h"
+#include "sphModel.h"
 #include <fstream>
 #include <iostream>
 

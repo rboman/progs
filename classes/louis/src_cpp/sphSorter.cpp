@@ -1,8 +1,8 @@
-#include "Sorter.h"
-#include "Model.h"
-#include "FixedParticle.h"
-#include "Neighbour.h"
-#include "EqState.h"
+#include "sphSorter.h"
+#include "sphModel.h"
+#include "sphFixedParticle.h"
+#include "sphNeighbour.h"
+#include "sphEqState.h"
 #include <fstream>
 #include <iostream>
 

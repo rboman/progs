@@ -1,4 +1,4 @@
-#include "Kernels.h"
+#include "sphKernels.h"
 
     Kernel::Kernel(double _kappa) : kappa(_kappa)
     {

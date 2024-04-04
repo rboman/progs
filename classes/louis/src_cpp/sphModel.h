@@ -2,7 +2,7 @@
 #define SPH_MODEL_H
 
 #include "sph.h"
-#include "Sorter.h"
+#include "sphSorter.h"
 #include <vector>
 
 /// This class is used to manage all the particles,

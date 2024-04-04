@@ -38,7 +38,7 @@ enum Law
 };
 
 #include <Eigen/Dense>
-#include "Timer.h"
+#include "sphTimer.h"
 #include <map>
 
 extern std::map<std::string, Timer> g_timers; ///< global g_timers

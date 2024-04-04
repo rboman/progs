@@ -8,14 +8,14 @@
 // @date    2013-05-26
 // @version 1.0.0
 
-#include "Model.h"
+#include "sphModel.h"
 #include <iostream>
 #include <iomanip>
 #ifdef _OPENMP
 #include <omp.h>
 #endif
 #ifdef SPH_USE_GUI
-#include "QtVTKHook.h"
+#include "sphQtVTKHook.h"
 #endif
 
 int

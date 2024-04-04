@@ -2,7 +2,7 @@
 #define SPH_MOBILEPARTICLE_H
 
 #include "sph.h"
-#include "FixedParticle.h"
+#include "sphFixedParticle.h"
 
 /// This is an extension of the FixedParticle class.
 /// The procedure update_vars is overwritten to include the update

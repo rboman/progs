@@ -2,7 +2,7 @@
 #define SPH_SORTER_H
 
 #include "sph.h"
-#include "Neighbour.h"
+#include "sphNeighbour.h"
 
 /// This class is able to sort the particles with the Linked-List method. 
 /// A grid is generated and the particles are sorted in each cell.

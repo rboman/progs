@@ -1,4 +1,4 @@
-#include "Timer.h"
+#include "sphTimer.h"
 
 std::ostream &
 operator<<(std::ostream &os, const Timer &t)

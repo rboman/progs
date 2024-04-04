@@ -1,6 +1,6 @@
-#include "MobileParticle.h"
-#include "Model.h"
-#include "EqState.h"
+#include "sphMobileParticle.h"
+#include "sphModel.h"
+#include "sphEqState.h"
 #include <iostream>
 
 MobileParticle::MobileParticle(Model &m) : FixedParticle(m)

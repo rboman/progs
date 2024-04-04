@@ -1,15 +1,15 @@
-#include "Model.h"
+#include "sphModel.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <iomanip>
-#include "FixedParticle.h"
-#include "MobileParticle.h"
-#include "Sorter.h"
-#include "Kernels.h"
-#include "EqState.h"
-#include "DisplayHook.h"
+#include "sphFixedParticle.h"
+#include "sphMobileParticle.h"
+#include "sphSorter.h"
+#include "sphKernels.h"
+#include "sphEqState.h"
+#include "sphDisplayHook.h"
 
 Model::Model()
     : sorter(*this), kernel(nullptr),

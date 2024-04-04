@@ -2,7 +2,7 @@
 #define QTVTKHOOK_H
 
 #include "sph.h"
-#include "DisplayHook.h"
+#include "sphDisplayHook.h"
 #include <QWidget>
 #include <QApplication>
 #include <QVTKOpenGLNativeWidget.h>

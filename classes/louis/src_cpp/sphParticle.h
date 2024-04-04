@@ -2,7 +2,7 @@
 #define SPH_PARTICLE_H
 
 #include "sph.h"
-#include "Neighbour.h"
+#include "sphNeighbour.h"
 
 /// This class contains a certain number of parameters describing
 /// the state of a fixed particle (boundary particle). It also

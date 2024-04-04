@@ -1,6 +1,6 @@
-#include "QtVTKHook.h"
-#include "Model.h"
-#include "Particle.h"
+#include "sphQtVTKHook.h"
+#include "sphModel.h"
+#include "sphParticle.h"
 #include <vtkCubeSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkActor.h>

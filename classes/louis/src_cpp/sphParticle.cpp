@@ -1,7 +1,7 @@
-#include "Particle.h"
-#include "Model.h"
-#include "Kernels.h"
-#include "EqState.h"
+#include "sphParticle.h"
+#include "sphModel.h"
+#include "sphKernels.h"
+#include "sphEqState.h"
 #include <fstream>
 #include <iostream>
 

@@ -2,7 +2,7 @@
 #define SPH_FIXEDPARTICLE_H
 
 #include "sph.h"
-#include "Particle.h"
+#include "sphParticle.h"
 
 class FixedParticle : public Particle
 {
