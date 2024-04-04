@@ -3,6 +3,8 @@
 #include "sphEqState.h"
 #include <iostream>
 
+using namespace sph;
+
 MobileParticle::MobileParticle(Model &m) : FixedParticle(m)
 {
 }

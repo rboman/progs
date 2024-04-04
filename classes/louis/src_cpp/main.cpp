@@ -18,6 +18,8 @@
 #include "sphQtVTKHook.h"
 #endif
 
+using namespace sph;
+
 int
 main(int argc, char *argv[])
 {

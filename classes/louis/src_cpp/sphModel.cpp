@@ -11,6 +11,8 @@
 #include "sphEqState.h"
 #include "sphDisplayHook.h"
 
+using namespace sph;
+
 Model::Model()
     : sorter(*this), kernel(nullptr),
       eqState(nullptr), displayHook(nullptr)

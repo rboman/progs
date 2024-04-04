@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+using namespace sph;
+
 FixedParticle::FixedParticle(Model &m) : Particle(m)
 {
 }

@@ -4,6 +4,8 @@
 #include <chrono>
 #include <iostream>
 
+namespace sph {
+
 /// @brief A simple timer class
 
 class Timer
@@ -59,5 +61,7 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Timer &t);
 };
+
+}; // namespace sph
 
 #endif // SPH_TIMER_H

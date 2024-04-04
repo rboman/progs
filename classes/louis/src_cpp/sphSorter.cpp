@@ -6,6 +6,8 @@
 #include <fstream>
 #include <iostream>
 
+using namespace sph;
+
 Sorter::Sorter(Model &m) : model(m)
 {
     this->dx = 0.0;

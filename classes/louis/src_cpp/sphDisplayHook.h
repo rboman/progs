@@ -3,6 +3,8 @@
 
 #include "sph.h"
 
+namespace sph {
+
 class DisplayHook
 {
 public:
@@ -12,6 +14,7 @@ public:
     virtual void update_data() = 0;
     virtual void loop() = 0;
 };
+}; // namespace sph
 
 #endif //SPH_DISPLAYHOOK_H
 

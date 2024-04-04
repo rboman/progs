@@ -3,6 +3,8 @@
 
 #include "sph.h"
 
+namespace sph {
+
 /// This set of classes contain the kernels used in the SPH method.
 /// TODO: futur: envoyer un vecteur de "r" et "h"!
 
@@ -37,5 +39,7 @@ public:
     QuinticSplineKernel();
     virtual double dW(double r, double h) const override;
 };
+
+}; // namespace sph
 
 #endif // SPH_KERNELS_H

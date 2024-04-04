@@ -1,7 +1,9 @@
-#ifndef EQSTATE_H
-#define EQSTATE_H
+#ifndef SPH_EQSTATE_H
+#define SPH_EQSTATE_H
 
 #include "sph.h"
+
+namespace sph {
 
 class EqState
 {
@@ -73,5 +75,6 @@ public:
         return 1.0;
     }
 };
+}; // namespace sph
 
-#endif // EQSTATE_H
+#endif // SPH_EQSTATE_H

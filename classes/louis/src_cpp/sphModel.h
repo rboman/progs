@@ -5,6 +5,8 @@
 #include "sphSorter.h"
 #include <vector>
 
+namespace sph {
+
 /// This class is used to manage all the particles,
 /// i.e. it contains a reference to every particles,
 /// it contains a number of parameters useful for the problem
@@ -55,5 +57,8 @@ private:
     void update_dt();
     void update_h();
 };
+
+}; // namespace sph
+
 
 #endif // SPH_MODEL_H

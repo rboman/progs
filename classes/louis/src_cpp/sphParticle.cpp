@@ -5,6 +5,8 @@
 #include <fstream>
 #include <iostream>
 
+using namespace sph;
+
 Particle::Particle(Model &m) : model(m)
 {
 }

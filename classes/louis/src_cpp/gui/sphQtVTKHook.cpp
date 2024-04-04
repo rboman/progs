@@ -16,6 +16,9 @@
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 
+using namespace sph;
+
+
 // -----------------------------------------------------------------------------
 // Notes: pourquoi 2 objets?
 //  A terme, on veut garder le code SPH indépendant de Qt.

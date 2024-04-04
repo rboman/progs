@@ -1,8 +1,12 @@
 #include "sphKernels.h"
 
-    Kernel::Kernel(double _kappa) : kappa(_kappa)
-    {
-    }
+using namespace sph;
+
+Kernel::Kernel(double _kappa) : kappa(_kappa)
+{
+}
+
+// -----------------------------------------------------------------------------
 
 CubicSplineKernel::CubicSplineKernel() : Kernel(2)
 {
@@ -26,6 +30,7 @@ CubicSplineKernel::dW(double r, double h) const
 QuadraticKernel::QuadraticKernel() : Kernel(2)
 {
 }
+
 double
 QuadraticKernel::dW(double r, double h) const
 {

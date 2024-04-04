@@ -4,6 +4,8 @@
 #include "sph.h"
 #include "sphParticle.h"
 
+namespace sph {
+
 class FixedParticle : public Particle
 {
 public:
@@ -11,5 +13,7 @@ public:
 
     virtual void update_vars() override;
 };
+
+}; // namespace sph
 
 #endif // SPH_FIXEDPARTICLE_H

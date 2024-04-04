@@ -4,6 +4,8 @@
 #include "sph.h"
 #include "sphNeighbour.h"
 
+namespace sph {
+
 /// This class contains a certain number of parameters describing
 /// the state of a fixed particle (boundary particle). It also
 /// includes the needed procedures to calculate the continuity
@@ -51,5 +53,7 @@ protected:
     void kernel_corr();
     void getNeighbours();
 };
+
+}; // namespace sph
 
 #endif // SPH_PARTICLE_H

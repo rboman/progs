@@ -10,6 +10,9 @@
 #include <vtkRenderer.h>
 #include <vtkPoints.h>
 
+namespace sph
+{
+
 /// this class manages the VTK widget (window) for 3D display.
 /// TODO: this should be converted to a MainWindow class later
 
@@ -19,14 +22,14 @@ class DisplayWindow : public QWidget
 
     Model &model;
 
-    QVTKOpenGLNativeWidget *vtkwidget;          ///< Qt widget for VTK display
+    QVTKOpenGLNativeWidget *vtkwidget; ///< Qt widget for VTK display
     vtkSmartPointer<vtkRenderer> renderer;
     vtkSmartPointer<vtkPoints> points;
 
 public:
     explicit DisplayWindow(Model &model, QWidget *parent = nullptr);
     virtual ~DisplayWindow();
-    
+
     // disable copy and move
     DisplayWindow(const DisplayWindow &) = delete;
     DisplayWindow(DisplayWindow &&) = delete;
@@ -40,7 +43,12 @@ private:
     void addParticles();
 };
 
+}; // namespace sph
+
 // -----------------------------------------------------------------------------
+
+namespace sph
+{
 
 /// this class manages the Qt application.
 
@@ -60,5 +68,7 @@ public:
 
     static void standalone_VTK_demo(); // for testing
 };
+
+}; // namespace sph
 
 #endif // QTVTKHOOK_H

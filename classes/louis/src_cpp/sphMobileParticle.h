@@ -4,6 +4,8 @@
 #include "sph.h"
 #include "sphFixedParticle.h"
 
+namespace sph {
+
 /// This is an extension of the FixedParticle class.
 /// The procedure update_vars is overwritten to include the update
 /// of u and x.
@@ -19,5 +21,7 @@ private:
     double compute_viscosity(Particle *neigh,
                              double alpha, double beta);
 };
+
+}; // namespace sph
 
 #endif // SPH_MOBILEPARTICLE_H

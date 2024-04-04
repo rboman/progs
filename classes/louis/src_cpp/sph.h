@@ -2,6 +2,11 @@
 #define SPH_SPH_H
 
 #include "sph_config.h"
+#include "sphTimer.h"
+#include <Eigen/Dense>
+#include <map>
+
+namespace sph {
 
 class Particle;
 class Neighbour;
@@ -37,10 +42,6 @@ enum Law
     LAW_QINC_FLUID = 2
 };
 
-#include <Eigen/Dense>
-#include "sphTimer.h"
-#include <map>
-
 extern std::map<std::string, Timer> g_timers; ///< global g_timers
 extern bool g_nogui;     ///< use GUI or not
 extern bool g_nosave;    ///< do not write results to disk
@@ -49,5 +50,9 @@ void print_banner();
 void print_timers();
 void save_timers();
 void read_args(int argc, char *argv[]);
+
+}; // namespace sph
+
+
 
 #endif // SPH_SPH_H

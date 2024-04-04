@@ -3,6 +3,8 @@
 
 #include "sph.h"
 
+namespace sph {
+
 /// A particle and a distance to it.
 
 class Neighbour
@@ -15,5 +17,7 @@ public:
     {
     }
 };
+
+}; // namespace sph
 
 #endif // SPH_NEIGHBOUR_H
