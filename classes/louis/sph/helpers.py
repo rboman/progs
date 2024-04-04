@@ -8,12 +8,12 @@
 import math, subprocess, os, platform, sys, glob
 import sph.wutils as wu
 
-class hModel:
+class Runner:
     """A SPH problem with all its parameters.
     """
 
-    def __init__(self, modelpp):
-        self.modelpp = modelpp
+    def __init__(self, model):
+        self.model = model
 
     def clean(self):
         """cleans files from workspace
@@ -29,7 +29,7 @@ class hModel:
         # clean prev results
         self.clean()
 
-        self.modelpp.to_fortran()   # uniqt si Fortran
+        self.model.to_fortran()   # uniqt si Fortran
 
         # set nb of OpenMP threads
         args = wu.parseargs()
@@ -114,8 +114,8 @@ class Cube:
     note: Zero thickness is allowed in any direction.
     """
 
-    def __init__(self, modelpp, o=(0.0, 0.0, 0.0), L=(1.0, 1.0, 1.0), rho=1.0, s=0.1):
-        self.modelpp = modelpp
+    def __init__(self, model, o=(0.0, 0.0, 0.0), L=(1.0, 1.0, 1.0), rho=1.0, s=0.1):
+        self.model = model
         self.ox = o[0]
         self.oy = o[1]
         self.oz = o[2]
@@ -126,7 +126,7 @@ class Cube:
         self.s = s
 
     def generate(self, ParticleClass):
-        """ fills modelpp with Particle objects of type 'ParticleClass'
+        """ fills model with Particle objects of type 'ParticleClass'
         """
         parts = []
         ni = int(math.ceil((self.Lx / self.s))) + 1
@@ -150,4 +150,4 @@ class Cube:
                 y = self.oy + j * dy
                 for k in range(nk):
                     z = self.oz + k * dz
-                    self.modelpp.add(ParticleClass(x, y, z, vx, vy, vz, rho0, m0))
+                    self.model.add(ParticleClass(x, y, z, vx, vy, vz, rho0, m0))

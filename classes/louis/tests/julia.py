@@ -11,46 +11,44 @@ if __name__ == "__main__":
     Lwater = 0.6
     sep = 0.1
 
-    kernelpp = CubicSplineKernel()
+    kernel = CubicSplineKernel()
 
-    lawpp = QincFluid()
-    lawpp.rho0 = 1000.
-    lawpp.gamma = 7.
-    lawpp.c0 = 35.
+    law = QincFluid()
+    law.rho0 = 1000.
+    law.gamma = 7.
+    law.c0 = 35.
     
     # parameters
-    modelpp = Model()
-    modelpp.kernel = kernelpp
-    modelpp.eqState = lawpp
-    modelpp.h_0 = sep*1.2    # initial smoothing length [m]
-    modelpp.dom_dim = boxL   # domain size (cube)
-    modelpp.alpha = 0.5      # artificial viscosity factor 1
-    modelpp.beta = 0.0       # artificial viscosity factor 2
-    modelpp.kernelCorrection = False    
-    modelpp.maxTime = 1.49    # simulation time
-    modelpp.saveInt = 0.01   # save interval
+    model = Model()
+    model.kernel = kernel
+    model.eqState = law
+    model.h_0 = sep*1.2    # initial smoothing length [m]
+    model.dom_dim = boxL   # domain size (cube)
+    model.alpha = 0.5      # artificial viscosity factor 1
+    model.beta = 0.0       # artificial viscosity factor 2
+    model.kernelCorrection = False    
+    model.maxTime = 1.49    # simulation time
+    model.saveInt = 0.01   # save interval
 
     # fixed particles
-    plane = Cube(modelpp, o=(((boxL - Lfloor) / 2), ((boxL - Lfloor) / 2), (boxL / 2)),
+    plane = Cube(model, o=(((boxL - Lfloor) / 2), ((boxL - Lfloor) / 2), (boxL / 2)),
                  L=(Lfloor, Lfloor, 0),
-                 rho=lawpp.rho0, s=sep)
+                 rho=law.rho0, s=sep)
     plane.generate(FixedParticle)
-    plane = Cube(modelpp, o=(((boxL - Lfloor) / 2) +sep/2, ((boxL - Lfloor) / 2) +sep/2, (boxL / 2) -sep/2),
+    plane = Cube(model, o=(((boxL - Lfloor) / 2) +sep/2, ((boxL - Lfloor) / 2) +sep/2, (boxL / 2) -sep/2),
                  L=(Lfloor -sep, Lfloor -sep, 0),
-                 rho=lawpp.rho0, s=sep)
+                 rho=law.rho0, s=sep)
     plane.generate(FixedParticle)
-
 
     # mobile particles
-    cube = Cube(modelpp, o=(((boxL - Lwater) / 2), ((boxL - Lwater) / 2), ((boxL) / 2) + sep),
+    cube = Cube(model, o=(((boxL - Lwater) / 2), ((boxL - Lwater) / 2), ((boxL) / 2) + sep),
                 L=(Lwater, Lwater, Lwater),
-                rho=lawpp.rho0, s=sep)
+                rho=law.rho0, s=sep)
     cube.generate(MobileParticle)
 
-
     # run SPH model
-    model = hModel(modelpp)
-    model.run()
+    runner = Runner(model)
+    runner.run()
 
     # convert to VTK
     try:
