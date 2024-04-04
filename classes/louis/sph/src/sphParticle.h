@@ -39,13 +39,12 @@ public:
                                         ///  neighbours; initially set to 150 elements to
                                         ///  increase the computational efficiency
     Eigen::Vector3d vec_gradW_mod[150]; ///< corrected vec_gradW if asked
-#endif
 
 public:
-#ifndef SWIG
     explicit Particle(double x=0.0, double y=0.0, double z=0.0,
              double vx=0.0, double vy=0.0, double vz=0.0,
              double rho0=0.0, double m0=0.0);
+    virtual ~Particle() = default;
 
     void save(std::ofstream &file) const;
     void load(std::ifstream &ufile, double h_0);
@@ -53,10 +52,7 @@ public:
     virtual void update_vars() = 0;
 
     void to_fortran(std::ofstream &file) const;
-
 #endif
-
-    virtual ~Particle() = default;
 
 protected:
     void gradW();

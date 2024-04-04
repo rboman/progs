@@ -46,8 +46,6 @@ Model::~Model()
 void
 Model::initialise()
 {
-    std::cout << "Model::initialise()" << std::endl;
-
     g_timers["initialisation"].start();
 
     // Reading of the paths of the input files
@@ -69,12 +67,8 @@ Model::initialise()
     this->numPart = this->numFP + this->numMP;
     this->particles.reserve(this->numPart);
 
-    std::cout << "this->numPart = " << this->numPart << std::endl;
-
-
     // Reading and storing of the data for the fixed particles
 
-    std::cout << "loading " << this->numFP <<  " fixed particles" << std::endl;
     std::ifstream file1(fp_path);
     if (!file1.is_open())
         throw std::runtime_error(fp_path + " not found");
@@ -96,8 +90,6 @@ Model::initialise()
 
     // Reading and storing of the data for the mobile particles
 
-    std::cout << "loading " << this->numMP << " mobile particles" << std::endl;
-
     std::ifstream file2(mp_path);
     if (!file2.is_open())
         throw std::runtime_error(mp_path + " not found");
@@ -111,7 +103,6 @@ Model::initialise()
 
     assert(this->numPart == this->numFP + this->numMP);
 
-    std::cout << "Initialisation finished." << std::endl;
     g_timers["initialisation"].stop();
 }
 
@@ -224,8 +215,6 @@ Model::solve()
 void
 Model::load_parameters(std::string const &param_path)
 {
-    std::cout << "Model::load_parameters()" << std::endl;
-
     std::ifstream file(param_path);
     if (!file.is_open())
         throw std::runtime_error(param_path + " not found");
@@ -345,9 +334,6 @@ Model::update_dt()
     // possibility to change the timestep if we use the ideal gas law
     this->timeStep *= this->eqState->dt_factor();
 
-    // if (this->eqnState == LAW_IDEAL_GAS)
-    //     this->timeStep = 5 * this->timeStep;
-
     g_timers["update_dt"].stop();
 }
 
@@ -388,7 +374,6 @@ void
 Model::to_fortran()
 {
     // particles
-    // std::cout << "input.mp & input.fp"   << std::endl;
 
     std::ofstream file_mp("input.mp");
     if (!file_mp.is_open())
@@ -410,7 +395,6 @@ Model::to_fortran()
     file_fp.close();
 
     // parameters input.prm
-    // std::cout << "input.prm"   << std::endl;
 
     std::ofstream file_prm("input.prm");
     if (!file_prm.is_open())
@@ -421,7 +405,6 @@ Model::to_fortran()
     if(!this->kernel)
         throw std::runtime_error("kernel is not set");
 
-
     file_prm << this->numFP << '\n';
     file_prm << this->numMP << '\n';
     file_prm << this->h_0 << '\n';
@@ -431,8 +414,6 @@ Model::to_fortran()
     file_prm << this->kernel->fortran_kind() << '\n';
     file_prm << this->alpha << '\n';
     file_prm << this->beta << '\n';
-
-    // std::cout << "I was here"   << std::endl;
 
     IdealGas *idealGas = dynamic_cast<IdealGas *>(this->eqState.get());
     QincFluid *qincFluid = dynamic_cast<QincFluid *>(this->eqState.get());
@@ -456,8 +437,6 @@ Model::to_fortran()
     file_prm << this->saveInt << '\n';
 
     file_prm.close();
-
-    // std::cout << "paths.txt"   << std::endl;
 
     // contains paths to the input files
     // TODO: remove the need of this file in the Fortran code
