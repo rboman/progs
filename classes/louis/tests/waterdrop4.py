@@ -11,11 +11,11 @@ if __name__ == "__main__":
     Lwater = 0.5
     sep = 0.05 / 4
 
-    kernel = Kernel('cubic', False)   # 'cubic', 'quadratic' or 'quintic'
-    law = EqState('liquid')           # 'gas' or 'liquid'
+    kernel = hKernel('cubic', False)   # 'cubic', 'quadratic' or 'quintic'
+    law = hEqState('liquid')           # 'gas' or 'liquid'
 
     # parameters
-    model = Model()
+    model = hModel()
     model.kernel = kernel
     model.law = law
 

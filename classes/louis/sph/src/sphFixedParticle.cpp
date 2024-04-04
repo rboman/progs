@@ -6,7 +6,10 @@
 
 using namespace sph;
 
-FixedParticle::FixedParticle(Model &m) : Particle(m)
+FixedParticle::FixedParticle(Model &model, double x, double y, double z,
+                               double vx, double vy, double vz,
+                               double rho0, double m0)
+    : Particle(model, x, y, z, vx, vy, vz, rho0, m0)
 {
 }
 

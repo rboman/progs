@@ -5,7 +5,10 @@
 
 using namespace sph;
 
-MobileParticle::MobileParticle(Model &m) : FixedParticle(m)
+MobileParticle::MobileParticle(Model &model, double x, double y, double z,
+                               double vx, double vy, double vz,
+                               double rho0, double m0)
+    : Particle(model, x, y, z, vx, vy, vz, rho0, m0)
 {
 }
 
@@ -111,12 +114,12 @@ MobileParticle::compute_viscosity(Particle *neigh, double alpha, double beta)
         // (see Monagan-1989 eq 4.11 p8)
         //   => max(mu_ab) calculated later for the timestep will always be 0!
         // note: some papers use a negative mu_ab with an absolute value when finding the max.
-        mu_ab = - this->h * uab_xab / (x_ab.dot(x_ab) + 0.01 * this->h * this->h);
+        mu_ab = -this->h * uab_xab / (x_ab.dot(x_ab) + 0.01 * this->h * this->h);
 
         double c_ab = 0.5 * (this->c[RKstep] + neigh->c[RKstep]);
         double rho_ab = 0.5 * (this->rho[RKstep] + neigh->rho[RKstep]);
         viscosity = (alpha * c_ab * mu_ab + beta * mu_ab * mu_ab) / rho_ab;
-        // negative sign removed here due to sign correction in mu_ab 
+        // negative sign removed here due to sign correction in mu_ab
     }
 
     if ((RKstep == 0) && (mu_ab > this->max_mu_ab))

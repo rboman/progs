@@ -9,7 +9,9 @@ namespace sph {
 class FixedParticle : public Particle
 {
 public:
-    explicit FixedParticle(Model &m);
+    explicit FixedParticle(Model &model, double x=0.0, double y=0.0, double z=0.0,
+             double vx=0.0, double vy=0.0, double vz=0.0,
+             double rho0=0.0, double m0=0.0);
 
     virtual void update_vars() override;
 };

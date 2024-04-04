@@ -25,3 +25,7 @@
 %include "sphKernels.h"
 %nodefault sph::EqState;
 %include "sphEqState.h"
+%nodefault sph::Particle;
+%include "sphParticle.h"
+%include "sphFixedParticle.h"
+%include "sphMobileParticle.h"

@@ -7,8 +7,19 @@
 
 using namespace sph;
 
-Particle::Particle(Model &m) : model(m)
+// Particle::Particle(Model &m) : model(m)
+// {
+// }
+
+Particle::Particle(Model &model,
+                   double x, double y, double z,
+                   double vx, double vy, double vz,
+                   double rho0, double m0) : model(model)
 {
+    this->coord[0] << x, y, z;
+    this->speed[0] << vx, vy, vz;
+    this->rho[0] = rho0;
+    this->m = m0;
 }
 
 /// Loads the state of a particle from disk
@@ -23,12 +34,12 @@ Particle::load(std::ifstream &ufile, double h_0)
     this->speed[0] << u_x, u_y, u_z;
     this->rho[0] = rho;
     this->m = m;
-    this->h = h_0;  
+    this->h = h_0;
     this->p[0] = this->model.eqState->pressure(rho);
     this->c[0] = this->model.eqState->speed_of_sound(rho);
     this->max_mu_ab = 0.0;
 
-    assert(this->m > 0.0);  // TODO: do more tests
+    assert(this->m > 0.0); // TODO: do more tests
 }
 
 /// Saves the state of a particle onto disk

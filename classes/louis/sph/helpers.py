@@ -9,14 +9,14 @@ import math, subprocess, os, platform, sys, glob
 import sph.wutils as wu
 
 
-class Kernel:
+class hKernel:
     """kernel type: contains a "name" (string) and an option "corrected" (bool) 
     enabling the correction near the boundaries.
     """
     names = {'cubic': 1, 'quadratic': 2, 'quintic': 3}
 
     def __init__(self, name='cubic', corr=True):
-        if name in Kernel.names:
+        if name in hKernel.names:
             self.name = name
         else:
             raise Exception('unknown kernel kind "%s"' % name)
@@ -26,16 +26,16 @@ class Kernel:
         return '%s kernel (%d)' % (self.name, self.val())
 
     def val(self):
-        return Kernel.names[self.name]
+        return hKernel.names[self.name]
 
 
-class EqState:
+class hEqState:
     """equation of state: either liquid or gas.
     """
     names = {'gas': 1, 'liquid': 2}
 
     def __init__(self, name='liquid'):
-        if name in EqState.names:
+        if name in hEqState.names:
             self.name = name
         else:
             raise Exception('unknown equ of state "%s"' % name)
@@ -46,10 +46,10 @@ class EqState:
         return '%s (%d)' % (self.name, self.val())
 
     def val(self):
-        return EqState.names[self.name]
+        return hEqState.names[self.name]
 
 
-class Model:
+class hModel:
     """A SPH problem with all its parameters.
     """
 
@@ -59,10 +59,10 @@ class Model:
         self.c_0 = 1480.0       # 4:  [double] initial speed of sound [m/s]
         self.rho_0 = 1000.0     # 5:  [double] initial density [kg/m^3]
         self.dom_dim = 0.0      # 6:  [double] domain size (cube)
-        self.kernel = Kernel()  # 7:  [integer] (1:'cubic'/2:'quadratic'/3:'quintic')
+        self.kernel = hKernel()  # 7:  [integer] (1:'cubic'/2:'quadratic'/3:'quintic')
         self.alpha = 0.5        # 8:  [double] artificial viscosity factor 1
         self.beta = 0.0         # 9:  [double] artificial viscosity factor 2
-        self.law = EqState()    # 10: [integer] (1:'gas'/2:'fluid')
+        self.law = hEqState()    # 10: [integer] (1:'gas'/2:'fluid')
         self.maxTime = 1.0      # 14: [double] simulation time [s]
         self.saveInt = 0.01     # 15: [double] save interval [s]
 
@@ -215,7 +215,7 @@ class Model:
         return txt
 
 
-class Particle:
+class hParticle:
     """a SPH Particle with position, velocity, pressure, density and mass.
     """
 
@@ -280,6 +280,6 @@ class Cube:
                 y = self.oy + j * dy
                 for k in range(nk):
                     z = self.oz + k * dz
-                    p = Particle(x, y, z, vx, vy, vz, rho0, m0)
+                    p = hParticle(x, y, z, vx, vy, vz, rho0, m0)
                     parts.append(p)
         return parts

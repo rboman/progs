@@ -55,7 +55,16 @@ if __name__ == "__main__":
     import sys, os
     # adds "." to the pythonpath
     thisdir = os.path.split(__file__)[0]
-    sys.path.append(thisdir)
+
+    # add sph module to pythonpath
+    sys.path.append(os.path.join(thisdir, "build", "bin")) # "import sphw"
+    sys.path.append(thisdir)  # "import sph"
+    import sph
+
+    # print(dir(sph))
+
+    # sys.exit()
+
     import sph.wutils as wu
 
     # parse args
