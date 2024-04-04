@@ -12,12 +12,15 @@ public:
 protected:
     const double c0;   ///< speed of sound
 public:
+#ifndef SWIG
     EqState(double _rho0, double _c0) : rho0(_rho0), c0(_c0) {}
     virtual ~EqState() = default;
+
     virtual double pressure(double rho) const = 0;
     virtual double speed_of_sound(double rho) const = 0;
     virtual double h_factor() const = 0;
     virtual double dt_factor() const = 0;
+#endif
 
 };
 
@@ -30,6 +33,8 @@ public:
         : EqState(_rho0, _c0), M(_M)
     {
     }
+
+#ifndef SWIG
     virtual double pressure(double rho) const override
     {
         static const double RT = 8.3144621 * 293.15; // J/(mol K) * K
@@ -47,6 +52,7 @@ public:
     {
         return 5.0;
     }
+#endif
 };
 
 class QincFluid : public EqState
@@ -57,6 +63,7 @@ public:
     QincFluid(double _rho0, double _c0, double _gamma)
         : EqState(_rho0, _c0), gamma(_gamma) {}
 
+#ifndef SWIG
     virtual double pressure(double rho) const override
     {
         double B = c0 * c0 * rho0 / gamma; // eq (3.27)
@@ -74,7 +81,9 @@ public:
     {
         return 1.0;
     }
+#endif
 };
+
 }; // namespace sph
 
 #endif // SPH_EQSTATE_H

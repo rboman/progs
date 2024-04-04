@@ -15,12 +15,14 @@ namespace sph {
 class Model
 {
 public:
+#ifndef SWIG
     Sorter sorter;
     Kernel *kernel;
     EqState *eqState;
     DisplayHook *displayHook;
 
     std::vector<Particle *> particles; ///< array of pointers toward particles
+#endif
 
     int numFP;            ///< number of fixed particles
     int numMP;            ///< number of mobile particles
