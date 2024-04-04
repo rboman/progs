@@ -8,9 +8,9 @@ namespace sph {
 class EqState
 {
 public:
-    const double rho0; ///< reference density
-protected:
-    const double c0;   ///< speed of sound
+    double rho0; ///< reference density
+    double c0;   ///< speed of sound  (public for the export to Fortran)
+
 public:
 #ifndef SWIG
     EqState(double _rho0, double _c0) : rho0(_rho0), c0(_c0) {}
@@ -26,10 +26,11 @@ public:
 
 class IdealGas : public EqState
 {
+public:
     double M;
 
 public:
-    IdealGas(double _rho0, double _c0, double _M)
+    explicit IdealGas(double _rho0=1000., double _c0=35., double _M=28.97e-3)
         : EqState(_rho0, _c0), M(_M)
     {
     }
@@ -57,10 +58,11 @@ public:
 
 class QincFluid : public EqState
 {
-    int gamma;
+public:
+    double gamma;
 
 public:
-    QincFluid(double _rho0, double _c0, double _gamma)
+    explicit QincFluid(double _rho0=1000., double _c0=35., double _gamma=7.)
         : EqState(_rho0, _c0), gamma(_gamma) {}
 
 #ifndef SWIG

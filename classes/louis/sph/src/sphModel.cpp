@@ -14,8 +14,7 @@
 using namespace sph;
 
 Model::Model()
-    : sorter(*this), kernel(nullptr),
-      eqState(nullptr), displayHook(nullptr)
+    : sorter(*this), displayHook(nullptr)
 {
     this->timeStep = 1.0e-15;
     this->currentTime = 0.0;
@@ -37,16 +36,18 @@ Model::Model()
 
 Model::~Model()
 {
-    for (int i = 0; i < this->numPart; i++)
-        delete this->particles[i];
-    delete this->kernel;
-    delete this->eqState;
+    // for (int i = 0; i < this->numPart; i++)
+    //     delete this->particles[i];
+    // delete this->kernel;
+    // delete this->eqState;
     delete this->displayHook;
 }
 
 void
 Model::initialise()
 {
+    std::cout << "Model::initialise()" << std::endl;
+
     g_timers["initialisation"].start();
 
     // Reading of the paths of the input files
@@ -68,31 +69,47 @@ Model::initialise()
     this->numPart = this->numFP + this->numMP;
     this->particles.reserve(this->numPart);
 
+    std::cout << "this->numPart = " << this->numPart << std::endl;
+
+
     // Reading and storing of the data for the fixed particles
+
+    std::cout << "loading " << this->numFP <<  " fixed particles" << std::endl;
     std::ifstream file1(fp_path);
     if (!file1.is_open())
         throw std::runtime_error(fp_path + " not found");
 
-    for (int i = 0; i < this->numFP; i++)
+    int fsizFP = this->numFP;
+    int fsizMP = this->numMP;
+    this->numFP = 0;
+    this->numMP = 0;
+
+    for (int i = 0; i < fsizFP; i++)
     {
-        FixedParticle *p = new FixedParticle(*this);
+        // std::cout << "loading fixed particle " << i << " " << this->numFP << std::endl;
+        auto p = this->add(std::make_shared<FixedParticle>());
+        // std::cout << "p->load(file1, this->h_0) " << std::endl;
         p->load(file1, this->h_0);
-        this->particles.push_back(p);
+
     }
     file1.close();
 
     // Reading and storing of the data for the mobile particles
+
+    std::cout << "loading " << this->numMP << " mobile particles" << std::endl;
+
     std::ifstream file2(mp_path);
     if (!file2.is_open())
         throw std::runtime_error(mp_path + " not found");
 
-    for (int i = 0; i < this->numMP; i++)
+    for (int i = 0; i < fsizMP; i++)
     {
-        MobileParticle *p = new MobileParticle(*this);
+        auto p = this->add(std::make_shared<MobileParticle>());
         p->load(file2, this->h_0);
-        this->particles.push_back(p);
     }
     file2.close();
+
+    assert(this->numPart == this->numFP + this->numMP);
 
     std::cout << "Initialisation finished." << std::endl;
     g_timers["initialisation"].stop();
@@ -144,7 +161,7 @@ Model::solve()
 #pragma omp parallel for schedule(dynamic)
         for (int i = 0; i < this->numPart; i++)
         {
-            Particle *p = this->particles[i];
+            Particle *p = this->particles[i].get();
             p->rho[0] = p->rho[2];
             p->p[0] = p->p[2];
             p->c[0] = p->c[2];
@@ -207,6 +224,8 @@ Model::solve()
 void
 Model::load_parameters(std::string const &param_path)
 {
+    std::cout << "Model::load_parameters()" << std::endl;
+
     std::ifstream file(param_path);
     if (!file.is_open())
         throw std::runtime_error(param_path + " not found");
@@ -237,13 +256,13 @@ Model::load_parameters(std::string const &param_path)
     switch (kernelKind)
     {
     case K_CUBIC_SPLINE:
-        this->kernel = new CubicSplineKernel();
+        this->kernel = std::make_shared<CubicSplineKernel>();
         break;
     case K_QUADRATIC:
-        this->kernel = new QuadraticKernel();
+        this->kernel = std::make_shared<QuadraticKernel>();
         break;
     case K_QUINTIC_SPLINE:
-        this->kernel = new QuinticSplineKernel();
+        this->kernel = std::make_shared<QuinticSplineKernel>();
         break;
     default:
         throw std::runtime_error("Bad value of kernel kind");
@@ -254,10 +273,10 @@ Model::load_parameters(std::string const &param_path)
     switch (eqnState)
     {
     case LAW_IDEAL_GAS:
-        this->eqState = new IdealGas(rho0, c0, molMass);
+        this->eqState = std::make_shared<IdealGas>(rho0, c0, molMass);
         break;
     case LAW_QINC_FLUID:
-        this->eqState = new QincFluid(rho0, c0, gamma);
+        this->eqState = std::make_shared<QincFluid>(rho0, c0, gamma);
         break;
     default:
         throw std::runtime_error("Bad value of equation of state");
@@ -303,7 +322,7 @@ Model::update_dt()
     double dTf = std::numeric_limits<double>::max();
     for (int i = this->numFP + 1; i < this->numPart; i++)
     {
-        Particle const *p = this->particles[i];
+        Particle const *p = this->particles[i].get();
         double dt = sqrt(p->h / g);
         if (dt < dTf)
             dTf = dt;
@@ -314,7 +333,7 @@ Model::update_dt()
     double dTcv = std::numeric_limits<double>::max();
     for (int i = this->numFP + 1; i < this->numPart; i++)
     {
-        Particle *p = this->particles[i];
+        Particle *p = this->particles[i].get();
         double dt = p->h / (p->c[0] + 0.6 * (this->alpha * p->c[0] + this->beta * p->max_mu_ab));
         if (dt < dTcv)
             dTcv = dt;
@@ -361,4 +380,114 @@ Model::update_h()
         this->particles[i]->h = new_h;
 
     g_timers["update_h"].stop();
+}
+
+/// Send the particles to a file which will be read by Louis' FORTRAN code
+
+void
+Model::to_fortran()
+{
+    // particles
+    // std::cout << "input.mp & input.fp"   << std::endl;
+
+    std::ofstream file_mp("input.mp");
+    if (!file_mp.is_open())
+        throw std::runtime_error("error opening input.mp");
+
+    std::ofstream file_fp("input.fp");
+    if (!file_fp.is_open())
+        throw std::runtime_error("error opening input.fp");
+
+    for (auto p : this->particles)
+    {
+        if (dynamic_cast<FixedParticle *>(p.get()))
+            p->to_fortran(file_fp);
+        else
+            p->to_fortran(file_mp);
+    }
+
+    file_mp.close();
+    file_fp.close();
+
+    // parameters input.prm
+    // std::cout << "input.prm"   << std::endl;
+
+    std::ofstream file_prm("input.prm");
+    if (!file_prm.is_open())
+        throw std::runtime_error("error opening input.prm");
+
+    if(!this->eqState)
+        throw std::runtime_error("eqState is not set");
+    if(!this->kernel)
+        throw std::runtime_error("kernel is not set");
+
+
+    file_prm << this->numFP << '\n';
+    file_prm << this->numMP << '\n';
+    file_prm << this->h_0 << '\n';
+    file_prm << this->eqState->c0 << '\n';
+    file_prm << this->eqState->rho0 << '\n';
+    file_prm << this->dom_dim << '\n';
+    file_prm << this->kernel->fortran_kind() << '\n';
+    file_prm << this->alpha << '\n';
+    file_prm << this->beta << '\n';
+
+    // std::cout << "I was here"   << std::endl;
+
+    IdealGas *idealGas = dynamic_cast<IdealGas *>(this->eqState.get());
+    QincFluid *qincFluid = dynamic_cast<QincFluid *>(this->eqState.get());
+
+    if (idealGas)
+    {
+        file_prm << LAW_IDEAL_GAS << '\n';
+        file_prm << QincFluid().gamma << '\n';
+        file_prm << idealGas->M << '\n';
+    }
+    else if(qincFluid)
+    {
+        file_prm << LAW_QINC_FLUID << '\n';
+        file_prm << qincFluid->gamma << '\n';
+        file_prm << IdealGas().M << '\n';
+    }
+    else
+        throw std::runtime_error("Bad value of equation of state");
+    file_prm << this->kernelCorrection << '\n';
+    file_prm << this->maxTime << '\n';
+    file_prm << this->saveInt << '\n';
+
+    file_prm.close();
+
+    // std::cout << "paths.txt"   << std::endl;
+
+    // contains paths to the input files
+    // TODO: remove the need of this file in the Fortran code
+
+    std::ofstream file_paths("paths.txt");
+    if (!file_paths.is_open())
+        throw std::runtime_error("error opening paths.txt");
+    file_paths << "input.prm\n";
+    file_paths << "input.fp\n";
+    file_paths << "input.mp\n";
+    file_paths.close();
+}
+
+std::shared_ptr<Particle> 
+Model::add(std::shared_ptr<Particle> p)
+{
+    if (dynamic_cast<FixedParticle *>(p.get()))
+    {
+        // TODO: attention, le code fait parfois l'hypothèse que les fixes précèdent les mobiles!
+        // => à modifier!!
+        if (this->numMP != 0)
+            throw std::runtime_error("Fixed particles must be added before mobile particles");
+        this->numFP++;
+    }
+    else
+    {
+        this->numMP++;
+    }
+    this->particles.push_back(p);
+    p->model = this;
+
+    return p;
 }

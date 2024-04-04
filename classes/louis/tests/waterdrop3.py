@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
+from sph import *
 from sph.helpers import *
 
 if __name__ == "__main__":
@@ -11,69 +11,71 @@ if __name__ == "__main__":
     Lwater = 0.5
     sep = 0.05 / 2
 
-    kernel = hKernel('cubic', False)   # 'cubic', 'quadratic' or 'quintic'
-    law = hEqState('liquid')           # 'gas' or 'liquid'
+    kernelpp = CubicSplineKernel()
+
+    lawpp = QincFluid()
+    lawpp.rho0 = 1000.
+    lawpp.gamma = 7.
+    lawpp.c0 = 35.
 
     # parameters
-    model = hModel()
-    model.kernel = kernel
-    model.law = law
-
-    model.h_0 = 0.06 / 2       # initial smoothing length [m]
-    model.c_0 = 35.0           # initial speed of sound  [m/s]
-    model.rho_0 = 1000.0       # initial density [kg/m^3]
-    model.dom_dim = boxL       # domain size (cube)
-    model.alpha = 0.5          # artificial viscosity factor 1
-    model.beta = 0.0           # artificial viscosity factor 2
-    model.maxTime = 3.0        # simulation time
-    model.saveInt = 0.01 / 2   # save interval
-
-    # mobile particles
-    cube = Cube(o=(((boxL - Lwater) / 2), ((boxL - Lwater) / 2), ((boxL) / 2) + 0.5),
-                L=(Lwater, Lwater, Lwater),
-                rho=model.rho_0,
-                s=sep)
-    model.addMobile(cube.generate())
+    modelpp = Model()
+    modelpp.kernel = kernelpp
+    modelpp.eqState = lawpp
+    modelpp.h_0 = 0.06 / 2       # initial smoothing length [m]
+    modelpp.dom_dim = boxL       # domain size (cube)
+    modelpp.alpha = 0.5          # artificial viscosity factor 1
+    modelpp.beta = 0.0           # artificial viscosity factor 2
+    modelpp.kernelCorrection = False 
+    modelpp.maxTime = 3.0        # simulation time
+    modelpp.saveInt = 0.01 / 2   # save interval
 
     # fixed particles
     # obstacle
-    plane = Cube(o=(((boxL - Lfloor) / 2), ((boxL - Lfloor) / 2), (boxL / 2)),
+    plane = Cube(modelpp, o=(((boxL - Lfloor) / 2), ((boxL - Lfloor) / 2), (boxL / 2)),
                  L=(Lfloor, Lfloor, sep),
-                 rho=model.rho_0,
+                 rho=lawpp.rho0,
                  s=sep)
-    model.addFixed(plane.generate())
+    plane.generate(FixedParticle)
     # floor
-    plane = Cube(o=(0, 0, 0),
+    plane = Cube(modelpp, o=(0, 0, 0),
                  L=(boxL, boxL, sep),
-                 rho=model.rho_0, s=sep)
-    model.addFixed(plane.generate())
+                 rho=lawpp.rho0, s=sep)
+    plane.generate(FixedParticle)
     # x=0
-    plane = Cube(o=(0, 0, 2 * sep),
+    plane = Cube(modelpp, o=(0, 0, 2 * sep),
                  L=(sep, boxL, boxL - 2 * sep),
-                 rho=model.rho_0,
+                 rho=lawpp.rho0,
                  s=sep)
-    model.addFixed(plane.generate())
+    plane.generate(FixedParticle)
     # y=0
-    plane = Cube(o=(2 * sep, 0, 2 * sep),
+    plane = Cube(modelpp, o=(2 * sep, 0, 2 * sep),
                  L=(boxL - 4 * sep, sep, boxL - 2 * sep),
-                 rho=model.rho_0,
+                 rho=lawpp.rho0,
                  s=sep)
-    model.addFixed(plane.generate())
+    plane.generate(FixedParticle)
     # x=L
-    plane = Cube(o=(boxL - sep, 0, 2 * sep),
+    plane = Cube(modelpp, o=(boxL - sep, 0, 2 * sep),
                  L=(sep, boxL, boxL - 2 * sep),
-                 rho=model.rho_0,
+                 rho=lawpp.rho0,
                  s=sep)
-    model.addFixed(plane.generate())
+    plane.generate(FixedParticle)
     # y=L
-    plane = Cube(o=(2 * sep, boxL - sep, 2 * sep),
+    plane = Cube(modelpp, o=(2 * sep, boxL - sep, 2 * sep),
                  L=(boxL - 4 * sep, sep, boxL - 2 * sep),
-                 rho=model.rho_0,
+                 rho=lawpp.rho0,
                  s=sep)
-    model.addFixed(plane.generate())
+    plane.generate(FixedParticle)
+
+    # mobile particles
+    cube = Cube(modelpp, o=(((boxL - Lwater) / 2), ((boxL - Lwater) / 2), ((boxL) / 2) + 0.5),
+                L=(Lwater, Lwater, Lwater),
+                rho=lawpp.rho0,
+                s=sep)
+    cube.generate(MobileParticle)
 
     # run SPH model
-    print(model)
+    model = hModel(modelpp)
     model.run()
 
     # convert to VTK

@@ -14,11 +14,10 @@ namespace sph
 
 class Particle
 {
-protected:
-    Model &model;
-
-public:
 #ifndef SWIG
+public:
+    Model *model;
+
     Eigen::Vector3d coord[3]; ///< 3x1 array containing the coordinates of a particle.
                               ///      element 0 = currentTime
                               ///      element 1 = RKstep
@@ -44,17 +43,20 @@ public:
 
 public:
 #ifndef SWIG
-    explicit Particle(Model &model, double x=0.0, double y=0.0, double z=0.0,
+    explicit Particle(double x=0.0, double y=0.0, double z=0.0,
              double vx=0.0, double vy=0.0, double vz=0.0,
              double rho0=0.0, double m0=0.0);
-
-    virtual ~Particle() = default;
 
     void save(std::ofstream &file) const;
     void load(std::ifstream &ufile, double h_0);
 
     virtual void update_vars() = 0;
+
+    void to_fortran(std::ofstream &file) const;
+
 #endif
+
+    virtual ~Particle() = default;
 
 protected:
     void gradW();

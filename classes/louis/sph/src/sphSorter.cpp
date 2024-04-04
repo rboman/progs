@@ -50,7 +50,7 @@ Sorter::execute()
 
         int idx = (ix - 1) * nx * nx + (iy - 1) * nx + iz - 1;
 
-        this->cells[idx].push_back(p);
+        this->cells[idx].push_back(p.get());
     }
 
 }

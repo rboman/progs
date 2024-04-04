@@ -5,10 +5,10 @@
 
 using namespace sph;
 
-MobileParticle::MobileParticle(Model &model, double x, double y, double z,
+MobileParticle::MobileParticle(double x, double y, double z,
                                double vx, double vy, double vz,
                                double rho0, double m0)
-    : Particle(model, x, y, z, vx, vy, vz, rho0, m0)
+    : Particle(x, y, z, vx, vy, vz, rho0, m0)
 {
 }
 
@@ -18,21 +18,23 @@ MobileParticle::MobileParticle(Model &model, double x, double y, double z,
 void
 MobileParticle::update_vars()
 {
+    assert(this->model != nullptr);
+
     this->getNeighbours();
     this->gradW();
 
-    if (this->model.kernelCorrection == KCORR_ON)
+    if (this->model->kernelCorrection == KCORR_ON)
         this->kernel_corr();
 
     // reset max_mu_ab
-    int RKstep = this->model.RKstep;
+    int RKstep = this->model->RKstep;
     if (RKstep == 0)
         this->max_mu_ab = 0.0;
 
     double drho_dt = 0.0;
     Eigen::Vector3d du_dt = Eigen::Vector3d::Zero();
 
-    switch (this->model.kernelCorrection)
+    switch (this->model->kernelCorrection)
     {
     case KCORR_ON:
     {
@@ -42,7 +44,7 @@ MobileParticle::update_vars()
         {
             Particle *neigh = this->neighbours[i].p;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
-            double pi_ab = this->compute_viscosity(neigh, this->model.alpha, this->model.beta);
+            double pi_ab = this->compute_viscosity(neigh, this->model->alpha, this->model->beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
             double rho2b = neigh->rho[RKstep] * neigh->rho[RKstep];
             du_dt += this->m * (neigh->p[RKstep] / rho2b + this->p[RKstep] / rho2a + pi_ab) * this->vec_gradW_mod[i];
@@ -57,7 +59,7 @@ MobileParticle::update_vars()
         {
             Particle *neigh = this->neighbours[i].p;
             Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
-            double pi_ab = this->compute_viscosity(neigh, this->model.alpha, this->model.beta);
+            double pi_ab = this->compute_viscosity(neigh, this->model->alpha, this->model->beta);
             drho_dt += this->m * u_ab.dot(this->vec_gradW[i]);
             double rho2b = neigh->rho[RKstep] * neigh->rho[RKstep];
             du_dt += this->m * (neigh->p[RKstep] / rho2b + this->p[RKstep] / rho2a + pi_ab) * this->vec_gradW[i];
@@ -71,7 +73,7 @@ MobileParticle::update_vars()
     Eigen::Vector3d F = Eigen::Vector3d(0.0, 0.0, -9.81); ///< Volume forces
     du_dt = -du_dt + F;
 
-    double dt = this->model.timeStep;
+    double dt = this->model->timeStep;
 
     if (RKstep == 0) // 1st RK step
     {
@@ -81,16 +83,16 @@ MobileParticle::update_vars()
         this->speed[2] = this->speed[0] + du_dt * dt / 2.0;
         this->coord[1] = this->coord[0] + this->speed[0] * dt;
         this->coord[2] = this->coord[0] + this->speed[0] * dt / 2.0;
-        this->p[1] = this->model.eqState->pressure(this->rho[1]);
-        this->c[1] = this->model.eqState->speed_of_sound(this->rho[1]);
+        this->p[1] = this->model->eqState->pressure(this->rho[1]);
+        this->c[1] = this->model->eqState->speed_of_sound(this->rho[1]);
     }
     else // 2nd RK step
     {
         this->rho[2] = this->rho[2] + drho_dt * dt / 2.0;
         this->speed[2] = this->speed[2] + du_dt * dt / 2.0;
         this->coord[2] = this->coord[2] + this->speed[1] * dt / 2.0;
-        this->p[2] = this->model.eqState->pressure(this->rho[2]);
-        this->c[2] = this->model.eqState->speed_of_sound(this->rho[2]);
+        this->p[2] = this->model->eqState->pressure(this->rho[2]);
+        this->c[2] = this->model->eqState->speed_of_sound(this->rho[2]);
     }
 }
 
@@ -100,8 +102,10 @@ MobileParticle::update_vars()
 double
 MobileParticle::compute_viscosity(Particle *neigh, double alpha, double beta)
 {
+    assert(this->model != nullptr);
+
     double viscosity = 0.0;
-    int RKstep = this->model.RKstep;
+    int RKstep = this->model->RKstep;
 
     Eigen::Vector3d u_ab = this->speed[RKstep] - neigh->speed[RKstep];
     Eigen::Vector3d x_ab = this->coord[RKstep] - neigh->coord[RKstep];

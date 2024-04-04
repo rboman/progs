@@ -7,14 +7,9 @@
 
 using namespace sph;
 
-// Particle::Particle(Model &m) : model(m)
-// {
-// }
-
-Particle::Particle(Model &model,
-                   double x, double y, double z,
+Particle::Particle(double x, double y, double z,
                    double vx, double vy, double vz,
-                   double rho0, double m0) : model(model)
+                   double rho0, double m0) : model(nullptr)
 {
     this->coord[0] << x, y, z;
     this->speed[0] << vx, vy, vz;
@@ -27,6 +22,8 @@ Particle::Particle(Model &model,
 void
 Particle::load(std::ifstream &ufile, double h_0)
 {
+    assert(this->model != nullptr);
+
     double x, y, z, u_x, u_y, u_z, rho, m;
     ufile >> x >> y >> z >> u_x >> u_y >> u_z >> rho >> m;
 
@@ -35,8 +32,8 @@ Particle::load(std::ifstream &ufile, double h_0)
     this->rho[0] = rho;
     this->m = m;
     this->h = h_0;
-    this->p[0] = this->model.eqState->pressure(rho);
-    this->c[0] = this->model.eqState->speed_of_sound(rho);
+    this->p[0] = this->model->eqState->pressure(rho);
+    this->c[0] = this->model->eqState->speed_of_sound(rho);
     this->max_mu_ab = 0.0;
 
     assert(this->m > 0.0); // TODO: do more tests
@@ -58,16 +55,27 @@ Particle::save(std::ofstream &file) const
          << this->neighbours.size() << '\n';
 }
 
+/// Send the particle to a file which will be read by Louis' FORTRAN code
+
+void
+Particle::to_fortran(std::ofstream &file) const
+{
+    file << this->coord[0].transpose() << " "
+         << this->speed[0].transpose() << " "
+         << this->rho[0] << " "
+         << this->m << '\n';
+}
+
 void
 Particle::getNeighbours()
 {
-    int RKstep = this->model.RKstep;
+    int RKstep = this->model->RKstep;
     Eigen::Vector3d const &xyz = this->coord[RKstep]; // position of the particle
 
     if (RKstep == 0)
     {
-        Sorter *sorter = &this->model.sorter;
-        int nx = this->model.sorter.nx; // number of cells on a row of the domain
+        Sorter *sorter = &this->model->sorter;
+        int nx = this->model->sorter.nx; // number of cells on a row of the domain
         int cellsToCheck[27];           // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
@@ -132,7 +140,7 @@ Particle::getNeighbours()
                     Particle *p = (*cells)[j];
                     Eigen::Vector3d const &neighXYZ = p->coord[RKstep];
                     double r = (xyz - neighXYZ).norm();
-                    if (r <= this->model.kappa * this->h)
+                    if (r <= this->model->kappa * this->h)
                     {
                         if (p != this)
                             this->neighbours.push_back(Neighbour(p, r));
@@ -183,14 +191,14 @@ Particle::gradW()
         throw std::runtime_error("number of neighbours greater than expected (max 150 for vec_gradW): " + std::to_string(this->neighbours.size()));
 
     // double h = this->h;
-    int RKstep = this->model.RKstep;
+    int RKstep = this->model->RKstep;
 
     for (size_t i = 0; i < this->neighbours.size(); i++)
     {
         double r = this->neighbours[i].r;
         Particle *neigh = this->neighbours[i].p;
         if (r > 0.0)
-            this->vec_gradW[i] = (this->coord[RKstep] - neigh->coord[RKstep]) / r * this->model.kernel->dW(r, h);
+            this->vec_gradW[i] = (this->coord[RKstep] - neigh->coord[RKstep]) / r * this->model->kernel->dW(r, h);
         else
             this->vec_gradW[i] = Eigen::Vector3d::Zero();
     }
@@ -205,7 +213,7 @@ Particle::kernel_corr()
     // if(this->vec_gradW_mod.size()<this->neighbours.size())
     //     this->vec_gradW_mod.resize(this->neighbours.size());
 
-    int RKstep = this->model.RKstep;
+    int RKstep = this->model->RKstep;
 
     Eigen::Matrix3d M;
     M.setZero();

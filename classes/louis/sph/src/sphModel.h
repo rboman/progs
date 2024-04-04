@@ -4,6 +4,7 @@
 #include "sph.h"
 #include "sphSorter.h"
 #include <vector>
+#include <memory>
 
 namespace sph {
 
@@ -17,12 +18,16 @@ class Model
 public:
 #ifndef SWIG
     Sorter sorter;
-    Kernel *kernel;
-    EqState *eqState;
+
     DisplayHook *displayHook;
 
-    std::vector<Particle *> particles; ///< array of pointers toward particles
+    /// array of pointers toward particles.
+    /// the particles are generated in python, so we need to use shared_ptrs
+    std::vector<std::shared_ptr<Particle>> particles;
 #endif
+    
+    std::shared_ptr<Kernel> kernel;
+    std::shared_ptr<EqState> eqState;
 
     int numFP;            ///< number of fixed particles
     int numMP;            ///< number of mobile particles
@@ -52,6 +57,9 @@ public:
 
     void initialise();
     void solve();
+
+    void to_fortran();
+    std::shared_ptr<Particle> add(std::shared_ptr<Particle> p);
 
 private:
     void load_parameters(std::string const &param_path);

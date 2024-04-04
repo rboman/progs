@@ -88,5 +88,11 @@ cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py t
   - [ ] sauvegarde direct en `.vtp`
   - [ ] g_timers en fortran
   - [ ] c++: visu boite domaine
-  - [ ] remove results if exists
+  - [ ] imprimer parametres de Model au démarrage
+  - [ ] faire un "print" des autres objets
+  - [ ] fortran: ETA
+  - [ ] ETA en hms si nécessaire
+  - [ ] démarrer le C++ sans passer par les fichiers fortran
+  - [ ] supprimer fichier paths.txt
+  - [ ] faire plusieurs modules
 
