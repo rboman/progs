@@ -1,3 +1,5 @@
+# sphw.pyd - python interface of sph.dll
+
 # SWIG
 FIND_PACKAGE(SWIG REQUIRED)
 IF(CMAKE_GENERATOR MATCHES "Visual Studio") # not MSVC because of nmake & jom
@@ -18,6 +20,6 @@ SET_PROPERTY(TARGET sphw PROPERTY SWIG_USE_TARGET_INCLUDE_DIRECTORIES ON)
 MACRO_DebugPostfix(sphw)
 
 TARGET_INCLUDE_DIRECTORIES(sphw PRIVATE ${PROJECT_SOURCE_DIR}/sph/_src
-                                        ${PYTHON_INCLUDE_PATH})
-TARGET_LINK_LIBRARIES(sphw PRIVATE sph ${PYTHON_LIBRARIES})
+                                        ${Python3_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(sphw PRIVATE sph ${Python3_LIBRARIES})
 

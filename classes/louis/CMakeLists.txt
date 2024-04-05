@@ -39,12 +39,8 @@ ENDIF()
 # Python
 # use Python3_ROOT_DIR if wrong python found (e.g. anaconda)
 FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
-SET(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
-SET(PYTHON_LIBRARIES ${Python3_LIBRARIES})
-SET(PYTHON_INCLUDE_PATH ${Python3_INCLUDE_DIRS}) 
-SET(PYTHONLIBS_VERSION_STRING ${Python3_VERSION})
-cmake_print_variables(PYTHON_EXECUTABLE PYTHON_LIBRARIES 
-                      PYTHON_INCLUDE_PATH PYTHONLIBS_VERSION_STRING)
+cmake_print_variables(Python3_EXECUTABLE Python3_LIBRARIES 
+                      Python3_INCLUDE_DIRS Python3_VERSION)
 
 MACRO(MACRO_DebugPostfix libname)
     IF(MSVC)
