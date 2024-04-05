@@ -21,10 +21,16 @@ def setup_pythonpath():
     # add binary dir to PYTHONPATH
     pyexe = os.path.basename(sys.executable)
     print(f'pyexe = {pyexe}')
-    add_folder2pypath(os.path.join(this_script_dir, 
-                                   'build', 'bin'))  # gcc/mingw
-    add_folder2pypath(os.path.join(this_script_dir, 
-                                   'build', 'bin', 'Release'))  # msvc
+    if '_d' in pyexe:
+        # msvc/debug version
+        add_folder2pypath(os.path.join(this_script_dir, 
+                                       'build', 'bin', 'Debug'))
+    else:
+        add_folder2pypath(os.path.join(this_script_dir, 
+                                        'build', 'bin'))  # gcc/mingw
+        add_folder2pypath(os.path.join(this_script_dir, 
+                                        'build', 'bin', 'Release'))  # msvc
+
 
 if __name__ == "__main__":
 

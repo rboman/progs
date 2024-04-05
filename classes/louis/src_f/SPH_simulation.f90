@@ -17,7 +17,7 @@ subroutine info_debug()
   
     options = compiler_options()
   
-    compiled_with_g =  index(options, "-g") > 0
+    compiled_with_g =  index(options, "-g") > 0 .or. index(options, "/Od") > 0
     if(compiled_with_g) then
         print *, "code built in DEBUG mode."
     else

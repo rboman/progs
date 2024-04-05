@@ -1,5 +1,6 @@
-# Options
+# sph.dll (including gui if SPH_USE_GUI=ON)
 
+# Options
 OPTION(SPH_USE_GUI "Build Qt/VTK GUI" ON)
 
 SET(LIBNAME "sph")
@@ -20,14 +21,15 @@ ADD_LIBRARY(${LIBNAME} SHARED ${SRCS})
 FIND_PATH(EIGEN_INCLUDE_DIRS "Eigen/Dense" 
           PATHS "${PROJECT_SOURCE_DIR}/lib/eigen" 
                 "/usr/include/eigen3" 
-                "c:/msys64/mingw64/include/eigen3")
-MESSAGE(STATUS "EIGEN_INCLUDE_DIRS=" ${EIGEN_INCLUDE_DIRS})
-IF(NOT EIGEN_INCLUDE_DIRS)
-    MESSAGE(FATAL_ERROR "Eigen include dir not found!")
-ENDIF()
+                "c:/msys64/mingw64/include/eigen3" REQUIRED)
+cmake_print_variables(EIGEN_INCLUDE_DIRS)                
 
 TARGET_INCLUDE_DIRECTORIES(${LIBNAME} PUBLIC ${EIGEN_INCLUDE_DIRS})
 #TARGET_LINK_LIBRARIES(${LIBNAME} Eigen3::Eigen)
+TARGET_COMPILE_DEFINITIONS(${LIBNAME} PUBLIC EIGEN_DONT_PARALLELIZE)
+# try to increase Eigen performance in Debug mode (inlining and no assertions)
+# TARGET_COMPILE_DEFINITIONS(${LIBNAME} PUBLIC $<$<CONFIG:Debug>: EIGEN_NO_DEBUG >)
+# TARGET_COMPILE_DEFINITIONS(${LIBNAME} PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )
 
 # find OpenMP
 FIND_PACKAGE(OpenMP)
@@ -36,16 +38,11 @@ IF(OPENMP_FOUND)
 ELSE()
     MESSAGE (STATUS "OpenMP disabled.")
 ENDIF()
-
 IF(OpenMP_CXX_FOUND)
     TARGET_LINK_LIBRARIES(${LIBNAME} PUBLIC OpenMP::OpenMP_CXX)
 ENDIF()
 
-TARGET_COMPILE_DEFINITIONS(${LIBNAME} PUBLIC EIGEN_DONT_PARALLELIZE)
-# try to increase Eigen performance in Debug mode (inlining and no assertions)
-# TARGET_COMPILE_DEFINITIONS(${LIBNAME} PUBLIC $<$<CONFIG:Debug>: EIGEN_NO_DEBUG >)
-# TARGET_COMPILE_DEFINITIONS(${LIBNAME} PUBLIC $<$<CONFIG:Debug>: "EIGEN_STRONG_INLINE=__attribute__((always_inline)) inline" > )
-
+# useful for gui/*.* and also inherited by the SWIG interface
 TARGET_INCLUDE_DIRECTORIES(${LIBNAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
 IF(SPH_USE_GUI)
@@ -55,7 +52,7 @@ IF(SPH_USE_GUI)
     TARGET_INCLUDE_DIRECTORIES(${LIBNAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/gui)
 
     # -- find Qt
-    FIND_PACKAGE(Qt6 COMPONENTS Core)
+    FIND_PACKAGE(Qt6 COMPONENTS Core QUIET)
     IF(NOT Qt6_FOUND)
         FIND_PACKAGE(Qt5 5.15 REQUIRED COMPONENTS Core)
     ENDIF()
