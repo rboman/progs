@@ -1,3 +1,5 @@
+
+# needed here because multiprocessing.Pool does not find the DLLs
 import platform, os, sys
 if platform.system() == 'Windows' and sys.version_info.minor >= 8:
     for v in os.environ['path'].split(';'):
@@ -5,4 +7,4 @@ if platform.system() == 'Windows' and sys.version_info.minor >= 8:
             os.add_dll_directory(v)
 
 from sphw import *
-
+from .utils import *
