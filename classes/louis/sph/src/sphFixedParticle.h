@@ -6,7 +6,7 @@
 
 namespace sph {
 
-class FixedParticle : public Particle
+class SPH_API FixedParticle : public Particle
 {
 public:
     explicit FixedParticle(double x=0.0, double y=0.0, double z=0.0,

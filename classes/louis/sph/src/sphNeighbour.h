@@ -7,7 +7,7 @@ namespace sph {
 
 /// A particle and a distance to it.
 
-class Neighbour
+class SPH_API Neighbour
 {
 public:
     Particle *p;

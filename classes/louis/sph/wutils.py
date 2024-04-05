@@ -48,7 +48,6 @@ def parseargs():
     parser.add_argument("-k", help="nb of threads", type=int, default=1)
     parser.add_argument("--cpp", help="run c++ code instead of fortran code",
                         action="store_true")
-    # parser.add_argument("-p", help="misc parameters")
-    parser.add_argument('file', nargs='*', help='python files')
+    parser.add_argument('file', help='python file', type=str, nargs='?')
     args = parser.parse_args()
     return args

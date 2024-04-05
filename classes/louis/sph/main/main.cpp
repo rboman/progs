@@ -8,7 +8,9 @@
 // @date    2013-05-26
 // @version 1.0.0
 
+#include "sph.h"
 #include "sphModel.h"
+#include "sphDisplayHook.h"
 #include <iostream>
 #include <iomanip>
 #ifdef _OPENMP

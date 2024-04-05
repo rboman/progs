@@ -20,6 +20,7 @@
 #   - fixes the python path in a dev environment
 #   - creates a workspace folder
 
+print('in run.py')
 
 class DupStream:
     def __init__(self, stream1, stream2):
@@ -51,28 +52,68 @@ class Tee:
         self.file.close()
 
 
+
+
+def rm_folder_from_pypath(folder):
+    sys.path = [p for p in sys.path if not folder in p]
+
+
+def add_folder2pypath(folder):
+    if os.path.isdir(folder):
+        print(f'{folder} added to pythonpath')
+        sys.path.append(folder)
+
+
+def rm_folder_from_path(folder):
+    import platform
+    if 'Windows' in platform.uname():
+        path = [p for p in os.environ['PATH'].split(';') if not folder in p]
+        os.environ['PATH'] = ';'.join(path)
+        # print(f'{folder} added to PATH')
+        # print(f"os.environ['PATH']={os.environ['PATH']}")
+
+
+def add_folder2pypath(folder):
+    if os.path.isdir(folder):
+        print(f'{folder} added to pythonpath')
+        sys.path.append(folder)
+
+def setup_pythonpath():
+    """setup PYTHONPATH
+    """
+    # adds script folder to the pythonpath
+    this_script_dir = os.path.split(os.path.abspath(__file__))[0]
+    this_script_dir = os.path.normcase(this_script_dir)
+    # add_folder2pypath(this_script_dir) # already there as first entry
+
+    # add binary dir to PYTHONPATH
+    pyexe = os.path.basename(sys.executable)
+    print(f'pyexe = {pyexe}')
+    add_folder2pypath(os.path.join(this_script_dir, 
+                                   'build', 'bin'))  # gcc/mingw
+    add_folder2pypath(os.path.join(this_script_dir, 
+                                   'build', 'bin', 'Release'))  # msvc
+
 if __name__ == "__main__":
+
     import sys, os
-    # adds "." to the pythonpath
-    thisdir = os.path.split(__file__)[0]
 
-    # add sph module to pythonpath
-    sys.path.append(os.path.join(thisdir, "build", "bin")) # "import sphw"
-    sys.path.append(thisdir)  # "import sph"
+    # add main program folder and binaries dir to the PYTHONPATH
+    setup_pythonpath()
+
+    # if the following import fails, check that all the dlls are in the PATH
+    # (in particular gmsh.dll)
     import sph
-
-    # print(dir(sph))
-
-    # sys.exit()
-
+    
+    # parse args   
     import sph.wutils as wu
-
-    # parse args
     args = wu.parseargs()
 
-    # run all tests sequentially
-    for testname in args.file:
-        testname = os.path.abspath(testname)
+    if args.file:
+        testname = os.path.abspath(args.file)
+        testname = os.path.normcase(testname)  # F:/ => f:/ on Windows
+        print(f'testname = {testname}')
+
         if not os.path.isfile(testname):
             raise Exception("file not found: %s" % testname)
 
@@ -82,16 +123,21 @@ if __name__ == "__main__":
         # split streams
         tee = Tee('stdout.txt')
 
-        if args.post:
-            # only post-processing
-            import sph.res2vtp as res2vtp
-            res2vtp.ToParaview(verb=False).convertall()
-        else:
-            # start test
-            import time, platform
-            print('-' * 80)
-            print("starting test", testname)
-            print("time:", time.strftime("%c"))
-            print("hostname:", platform.node())
-            print('-' * 80)
-            exec(open(testname, 'r', encoding='utf8').read())
+        try:
+            if args.post:
+                # only post-processing
+                import sph.res2vtp as res2vtp
+                res2vtp.ToParaview(verb=False).convertall()
+            else:
+                # start test
+                import time, platform
+                print('-' * 80)
+                print("starting test", testname)
+                print("time:", time.strftime("%c"))
+                print("hostname:", platform.node())
+                print('-' * 80)
+                exec(open(testname, 'r', encoding='utf8').read())
+        except Exception as err:
+            print(f'\n** ERROR: {err}\n')
+            import traceback
+            traceback.print_exc()

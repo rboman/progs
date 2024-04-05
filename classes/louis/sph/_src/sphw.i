@@ -38,6 +38,7 @@
 %shared_ptr(sph::QuadraticKernel);
 %shared_ptr(sph::QuinticSplineKernel);
 
+%include "sph.h"
 %include "sphKernels.h"
 
 %nodefault sph::EqState;
