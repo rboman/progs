@@ -66,6 +66,14 @@ class Runner:
         #     print('Ignoring CTRL-C')
         #     pass
 
+        # convert results to VTK
+        try:
+            import sph.res2vtp as res2vtp
+            res2vtp.ToParaview(verb=False).convertall()
+        except Exception as e:
+            print("\n**ERROR while converting to VTK:", e)
+
+
     def getexe(self):
         """ looks for Louis' executable
         """

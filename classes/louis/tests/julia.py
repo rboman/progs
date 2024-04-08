@@ -27,7 +27,7 @@ if __name__ == "__main__":
     model.alpha = 0.5      # artificial viscosity factor 1
     model.beta = 0.0       # artificial viscosity factor 2
     model.kernelCorrection = False    
-    model.maxTime = 1.49    # simulation time
+    model.maxTime = 1.49   # simulation time
     model.saveInt = 0.01   # save interval
 
     # fixed particles
@@ -49,11 +49,3 @@ if __name__ == "__main__":
     # run SPH model
     runner = Runner(model)
     runner.run()
-
-    # convert to VTK
-    try:
-        import sph.res2vtp as res2vtp
-        res2vtp.ToParaview(verb=False).convertall()
-    except Exception as e:
-        print("\n**ERROR while converting to VTK:", e)
-        

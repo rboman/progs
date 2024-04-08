@@ -77,10 +77,3 @@ if __name__ == "__main__":
     # run SPH model
     runner = Runner(model)
     runner.run()
-
-    # convert to VTK
-    try:
-        import sph.res2vtp as res2vtp
-        res2vtp.ToParaview(verb=False).convertall()
-    except Exception as e:
-        print("\n**ERROR while converting to VTK:", e)
