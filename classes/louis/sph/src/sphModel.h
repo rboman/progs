@@ -33,7 +33,6 @@ public:
     int numMP;            ///< number of mobile particles
     int numPart;          ///< number of particles (FP+MP)
 
-    //int kappa;            ///< kappa linked to the eqn state
     double alpha;         ///< weighting factor in the artificial viscosity formulation
     double beta;          ///< weighting factor in the artificial viscosity formulation
 
@@ -59,7 +58,7 @@ public:
     void set_hook(std::shared_ptr<DisplayHook> hook) { displayHook = hook; }
 
 #ifndef SWIG
-    void initialise();
+    //void initialise();
     void solve();
     friend SPH_API std::ostream &operator<<(std::ostream &os, const Model &m);
 #endif
@@ -67,7 +66,7 @@ public:
     std::shared_ptr<Particle> add(std::shared_ptr<Particle> p);
 
 private:
-    void load_parameters(std::string const &param_path);
+    //void load_parameters(std::string const &param_path);
     void save_particles(std::string const &name, int ite, int start, int end) const;
     void update_dt();
     void update_h();

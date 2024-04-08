@@ -42,6 +42,7 @@ Model::~Model()
     // nothing needed: memory managed by shared_ptr's
 }
 
+/*
 void
 Model::initialise()
 {
@@ -104,6 +105,7 @@ Model::initialise()
 
     g_timers["initialisation"].stop();
 }
+*/
 
 /// Solves the problem using a RK22 time integration scheme.
 
@@ -211,6 +213,7 @@ Model::solve()
 
 // Reading and storing of the data in the parameter files
 
+/*
 void
 Model::load_parameters(std::string const &param_path)
 {
@@ -270,6 +273,7 @@ Model::load_parameters(std::string const &param_path)
         throw std::runtime_error("Bad value of equation of state");
     }
 }
+*/
 
 /// Save a particle set onto disk.
 /// @param name  : name of the file
