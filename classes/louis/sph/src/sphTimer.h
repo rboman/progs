@@ -60,7 +60,7 @@ public:
             return std::chrono::duration_cast<std::chrono::duration<double>>(accumulated_time).count();
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const Timer &t);
+    friend SPH_API std::ostream &operator<<(std::ostream &os, const Timer &t);
 };
 
 }; // namespace sph

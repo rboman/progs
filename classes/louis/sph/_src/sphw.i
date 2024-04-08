@@ -30,6 +30,7 @@
 #include "wCppBuf2Py.h"
 
 #include <memory> // needed for shared_ptrs
+#include <signal.h>
 
 %}
 
@@ -56,6 +57,38 @@
      } 
    } 
 %} 
+
+
+// exit when ctrl-c ?
+// from: http://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event-c
+//
+// note:
+// https://docs.python.org/3/library/signal.html 
+// A long-running calculation implemented purely in C 
+// (such as regular expression matching on a large body of text) may run 
+// uninterrupted for an arbitrary amount of time, regardless of any signals 
+// received. The Python signal handlers will be called when the calculation finishes.
+
+%inline %{
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+
+void signal_callback_handler(int signum) {
+   std::cerr << "Caught signal " << signum << std::endl;
+   exit(signum);
+}
+
+void setup_signal_handler() {
+   signal(SIGINT, signal_callback_handler);
+}
+%}
+
+%init %{
+   setup_signal_handler();
+%}
+
 
 %exception { 
    try { 

@@ -4,7 +4,7 @@ using namespace sph;
 
 namespace sph {
 
-std::ostream &
+SPH_API std::ostream &
 operator<<(std::ostream &os, const Timer &t)
 {
     os << t.elapsed();
