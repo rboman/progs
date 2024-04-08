@@ -9,7 +9,7 @@ namespace sph
 /// This set of classes contain the kernels used in the SPH method.
 /// TODO: futur: envoyer un vecteur de "r" et "h"!
 
-class Kernel
+class SPH_API Kernel
 {
 public:
     const double kappa;
@@ -24,7 +24,7 @@ public:
 #endif
 };
 
-class CubicSplineKernel : public Kernel
+class SPH_API CubicSplineKernel : public Kernel
 {
 public:
     CubicSplineKernel();
@@ -35,7 +35,7 @@ public:
 #endif
 };
 
-class QuadraticKernel : public Kernel
+class SPH_API QuadraticKernel : public Kernel
 {
 public:
     QuadraticKernel();
@@ -46,7 +46,7 @@ public:
 #endif
 };
 
-class QuinticSplineKernel : public Kernel
+class SPH_API QuinticSplineKernel : public Kernel
 {
 public:
     QuinticSplineKernel();

@@ -64,13 +64,23 @@ pacman -S mingw64/mingw-w64-x86_64-cgns
 pacman -S mingw64/mingw-w64-x86_64-adios2
 pacman -S mingw64/mingw-w64-x86_64-openturns
 pacman -S mingw64/mingw-w64-x86_64-openslide
-CXX=g++ FC=gfortran cmake . -B build && cmake --build build && ./run.py --cpp -k 10 tests/small.py
 ```
+build & run 
+```
+CXX=g++ FC=gfortran cmake . -B build -DPython3_ROOT_DIR="c:/msys64/mingw64/bin" && cmake --build build && ./run.py --cpp -k 10 tests/julia.py
+```
+(check that msys version of python is used, otherwise "import _sphw" will fail)
 
 ## Win
 
+release
 ```
 cmake . -B build && cmake --build build --config Release && run.py -k 10 --cpp tests\waterdrop.py
+```
+
+debug
+```
+cmake . -B build -DSPH_USE_GUI=ON && cmake --build build --config Debug && python_d run.py -k 10 tests\julia.py --nogui --cpp
 ```
 
 ## Linux

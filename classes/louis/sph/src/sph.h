@@ -1,6 +1,16 @@
 #ifndef SPH_SPH_H
 #define SPH_SPH_H
 
+#if defined(WIN32)
+#ifdef sph_EXPORTS
+#define SPH_API __declspec(dllexport)
+#else
+#define SPH_API __declspec(dllimport)
+#endif
+#else
+#define SPH_API
+#endif
+
 #include "sph_config.h"
 #include "sphTimer.h"
 #include <Eigen/Dense>
@@ -22,6 +32,7 @@ class DisplayHook;
 class EqState;
 class IdealGas;
 class QIncFluid;
+class Timer;
 
 enum KernelKind
 {
@@ -42,14 +53,16 @@ enum Law
     LAW_QINC_FLUID = 2
 };
 
-extern std::map<std::string, Timer> g_timers; ///< global g_timers
-extern bool g_nogui;     ///< use GUI or not
-extern bool g_nosave;    ///< do not write results to disk
+#ifndef SWIG
+extern SPH_API std::map<std::string, Timer> g_timers; ///< global g_timers
+extern SPH_API bool g_nogui;     ///< use GUI or not
+extern SPH_API bool g_nosave;    ///< do not write results to disk
+#endif
 
-void print_banner();
-void print_timers();
-void save_timers();
-void read_args(int argc, char *argv[]);
+SPH_API void print_banner();
+SPH_API void print_timers();
+SPH_API void save_timers();
+SPH_API void read_args(int argc, char *argv[]);
 
 }; // namespace sph
 

@@ -6,7 +6,7 @@
 # the Fortran executable.
 
 import math, subprocess, os, platform, sys, glob
-import sph.wutils as wu
+import sph
 
 class Runner:
     """A SPH problem with all its parameters.
@@ -32,7 +32,7 @@ class Runner:
         self.model.to_fortran()   # uniqt si Fortran
 
         # set nb of OpenMP threads
-        args = wu.parseargs()
+        args = sph.parseargs()
         os.environ['OMP_NUM_THREADS'] = str(args.k)
 
         # build command line
@@ -69,7 +69,7 @@ class Runner:
     def getexe(self):
         """ looks for Louis' executable
         """
-        args = wu.parseargs()
+        args = sph.parseargs()
         if args.cpp:
             exename = "louis++"
         else:

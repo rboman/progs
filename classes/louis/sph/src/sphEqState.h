@@ -5,7 +5,7 @@
 
 namespace sph {
 
-class EqState
+class SPH_API EqState
 {
 public:
     double rho0; ///< reference density
@@ -24,7 +24,7 @@ public:
 
 };
 
-class IdealGas : public EqState
+class SPH_API IdealGas : public EqState
 {
 public:
     double M;
@@ -56,7 +56,7 @@ public:
 #endif
 };
 
-class QincFluid : public EqState
+class SPH_API QincFluid : public EqState
 {
 public:
     double gamma;

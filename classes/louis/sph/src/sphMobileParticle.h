@@ -10,7 +10,7 @@ namespace sph {
 /// The procedure update_vars is overwritten to include the update
 /// of u and x.
 
-class MobileParticle : public Particle
+class SPH_API MobileParticle : public Particle
 {
 public:
     explicit MobileParticle(double x=0.0, double y=0.0, double z=0.0,

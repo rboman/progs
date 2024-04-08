@@ -1,5 +1,5 @@
-#ifndef QTVTKHOOK_H
-#define QTVTKHOOK_H
+#ifndef SPH_QTVTKHOOK_H
+#define SPH_QTVTKHOOK_H
 
 #include "sph.h"
 #include "sphDisplayHook.h"
@@ -10,13 +10,17 @@
 #include <vtkRenderer.h>
 #include <vtkPoints.h>
 
+// #ifndef sph_EXPORTS
+// #error "sph_EXPORTS not defined"
+// #endif
+
 namespace sph
 {
 
 /// this class manages the VTK widget (window) for 3D display.
 /// TODO: this should be converted to a MainWindow class later
 
-class DisplayWindow : public QWidget
+class SPH_API DisplayWindow : public QWidget
 {
     Q_OBJECT;
 
@@ -52,7 +56,7 @@ namespace sph
 
 /// this class manages the Qt application.
 
-class QtVTKHook : public DisplayHook
+class SPH_API QtVTKHook : public DisplayHook
 {
     QApplication *app;
     DisplayWindow *window;
@@ -71,4 +75,4 @@ public:
 
 }; // namespace sph
 
-#endif // QTVTKHOOK_H
+#endif // SPH_QTVTKHOOK_H

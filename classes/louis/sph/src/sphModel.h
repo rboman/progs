@@ -13,7 +13,7 @@ namespace sph {
 /// it contains a number of parameters useful for the problem
 /// (variable smoothing length or not, ...), it has a solver, etc.
 
-class Model
+class SPH_API Model
 {
 public:
 #ifndef SWIG

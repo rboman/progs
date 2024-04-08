@@ -1,14 +1,15 @@
 #ifndef SPH_TIMER_H
 #define SPH_TIMER_H
 
+#include "sph.h"
 #include <chrono>
 #include <iostream>
 
 namespace sph {
 
-/// @brief A simple timer class
+/// A simple timer class.
 
-class Timer
+class SPH_API Timer
 {
     // Type aliases
     using Clock = std::chrono::high_resolution_clock;

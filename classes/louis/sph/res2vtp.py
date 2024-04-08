@@ -13,7 +13,7 @@
 #   tests_waterdrop4: 21'34" (sequential)
 #                      2'22" (parallel - 20 threads) - speedup x9.1
 
-import os, glob, vtk, multiprocessing
+import os, sys, glob, vtk, multiprocessing, math
 
 class ToParaview:
     def __init__(self, verb=False):
@@ -24,13 +24,25 @@ class ToParaview:
             print("converting grid to VTK")
         self.convertGrid()
 
-        if self.verb:
-            print("converting %s to VTK" % pattern)
-        pool = multiprocessing.Pool()
-        for result in pool.map(self.convertParts, glob.glob(pattern)):
-            pass
+        # if self.verb:
+        print("converting %s to VTK" % pattern)
+
+        # parallel version:
+        #  Each thread will rerun the current script (import "input file")
+        #  This is why it is important to protect things with if __name__ == "__main__"
+        #  On windows, the "sph" will be imported. Although the pythonpath is inherited by
+        #  each child process, "os.add_dll_directory" is not! 
+        #  Thus, some DLLs needed by _sphw.pyd are not found. 
+        #  => This is why os.add_dll_directory is done in the __init__.py of the sph module.
+        with multiprocessing.Pool(processes=math.ceil(os.cpu_count()/2)) as pool:
+            for result in pool.map(self.convertParts, glob.glob(pattern)):
+                pass
+
+        # seqential version
         # for f in glob.glob(pattern):
         #     self.convertParts(f)
+
+        print('done.')
 
     def convertGrid(self, fname='grid.out'):
         """build a structured grid from the grid.out file

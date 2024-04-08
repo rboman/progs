@@ -1,7 +1,35 @@
 # -*- coding: utf-8 -*-
 # Python utilities
 
-import sph.wutils as wu
+import sys
+
+
+class DupStream:
+    def __init__(self, stream1, stream2):
+        self.stream1 = stream1
+        self.stream2 = stream2
+
+    def write(self, data):
+        self.stream1.write(data)
+        self.stream2.write(data)
+
+    def flush(self):
+        self.stream1.flush()
+        self.stream2.flush()
+
+
+class Tee:
+    def __init__(self, name):
+        self.file = open(name, 'w')
+        self.stdoutbak = sys.stdout
+        self.stderrbak = sys.stderr
+        sys.stdout = DupStream(sys.stdout, self.file)
+        sys.stderr = DupStream(sys.stderr, self.file)
+
+    def __del__(self):
+        sys.stdout = self.stdoutbak
+        sys.stderr = self.stderrbak
+        self.file.close()
 
 
 def setupwdir(testname):
@@ -18,7 +46,7 @@ def setupwdir(testname):
     wdir = os.path.join('workspace', resdir)
 
     # add c++/fortran suffix
-    args = wu.parseargs()
+    args = parseargs()
     if args.cpp:
         wdir += "_cpp"
     else:
@@ -48,7 +76,6 @@ def parseargs():
     parser.add_argument("-k", help="nb of threads", type=int, default=1)
     parser.add_argument("--cpp", help="run c++ code instead of fortran code",
                         action="store_true")
-    # parser.add_argument("-p", help="misc parameters")
-    parser.add_argument('file', nargs='*', help='python files')
+    parser.add_argument('file', help='python file', type=str, nargs='?')
     args = parser.parse_args()
     return args

@@ -9,7 +9,7 @@ namespace sph {
 /// This class is able to sort the particles with the Linked-List method. 
 /// A grid is generated and the particles are sorted in each cell.
 
-class Sorter
+class SPH_API Sorter
 {
     Model &model;
 
