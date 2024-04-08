@@ -3,11 +3,20 @@
 
 #include "sph.h"
 #include "sphDisplayHook.h"
-#include <QWidget>
+#include <QMainWindow>
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkSmartPointer.h>
 #include <vtkRenderer.h>
 #include <vtkPoints.h>
+
+
+// https://doc.qt.io/qt-5/designer-creating-mainwindows.html
+// https://doc.qt.io/qt-5/designer-using-a-ui-file.html
+namespace Ui
+{
+class DisplayWindow;
+}
+
 
 namespace sph
 {
@@ -15,7 +24,7 @@ namespace sph
 /// this class manages the VTK widget (window) for 3D display.
 /// TODO: this should be converted to a MainWindow class later
 
-class SPH_API DisplayWindow : public QWidget
+class SPH_API DisplayWindow : public QMainWindow
 {
     Q_OBJECT;
 
@@ -39,6 +48,8 @@ public:
 #endif
 
 private:
+    Ui::DisplayWindow *ui;
+
     void setupGUI();
     void addCube();
     void addParticles();

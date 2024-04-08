@@ -16,6 +16,8 @@
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 
+#include "ui_DisplayWindow.h"
+
 #include <QHBoxLayout>
 
 using namespace sph;
@@ -31,8 +33,10 @@ using namespace sph;
 //  QtVTKHook doit donc être un DisplayHook, et il doit créer un QApplication,
 //  et ensuite le widget Qt.
 
-DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QWidget(parent), model(model)
+DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QMainWindow(parent), model(model), ui(new Ui::DisplayWindow)
 {
+    ui->setupUi(this);
+
     setWindowTitle("SPH (Louis++)");
     resize(800, 600);
 
@@ -43,12 +47,14 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QWidget(parent), m
 
 DisplayWindow::~DisplayWindow()
 {
+    delete ui;
 }
 
 void
 DisplayWindow::setupGUI()
 {
     this->vtkwidget = new QVTKOpenGLNativeWidget(this);
+    this->setCentralWidget(this->vtkwidget);
 
     vtkNew<vtkGenericOpenGLRenderWindow> window;
     vtkwidget->setRenderWindow(window.Get());
@@ -69,9 +75,9 @@ DisplayWindow::setupGUI()
     renderer->ResetCamera();
 
     // Layout Qt
-    QHBoxLayout *hbox = new QHBoxLayout();
-    this->setLayout(hbox);
-    hbox->addWidget(this->vtkwidget);
+    // QHBoxLayout *hbox = new QHBoxLayout();
+    // this->setLayout(hbox);
+    // hbox->addWidget(this->vtkwidget);
 }
 
 void
