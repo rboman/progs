@@ -18,6 +18,7 @@
 #include "sphNeighbour.h"
 #include "sphSorter.h"
 #include "sphTimer.h"
+
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 #include <memory>

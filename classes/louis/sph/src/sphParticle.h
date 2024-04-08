@@ -7,10 +7,7 @@
 namespace sph
 {
 
-/// This class contains a certain number of parameters describing
-/// the state of a fixed particle (boundary particle). It also
-/// includes the needed procedures to calculate the continuity
-/// and some other equations.
+/// Base class for particles.
 
 class Particle
 {
@@ -44,6 +41,7 @@ public:
     explicit Particle(double x=0.0, double y=0.0, double z=0.0,
              double vx=0.0, double vy=0.0, double vz=0.0,
              double rho0=0.0, double m0=0.0);
+
     virtual ~Particle() = default;
 
     void save(std::ofstream &file) const;
@@ -53,6 +51,7 @@ public:
 
     void to_fortran(std::ofstream &file) const;
 #endif
+
 
 protected:
     void gradW();
