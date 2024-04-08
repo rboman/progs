@@ -8,6 +8,7 @@
 import math, subprocess, os, platform, sys, glob
 import sph
 
+
 class Runner:
     """A SPH problem with all its parameters.
     """
@@ -24,14 +25,47 @@ class Runner:
                 os.remove(f)
 
     def run(self):
-        """runs a simulation with the given set of parameters and particles.
-        """
         # clean prev results
         self.clean()
 
-        self.model.to_fortran()   # uniqt si Fortran
+        args = sph.parseargs()
+        if args.cpp:
+            self.run_cpp()
+        else:
+            self.run_fortran()
 
-        # set nb of OpenMP threads
+        # convert results to VTK
+        try:
+            import sph.res2vtp as res2vtp
+            res2vtp.ToParaview(verb=False).convertall()
+        except Exception as e:
+            print("\n**ERROR while converting to VTK:", e)
+
+    def run_cpp(self):
+        """runs a simulation using C++ implementation.
+        """
+        gui = None
+        try:
+            args = sph.parseargs()
+            if not args.nogui:
+                gui = sph.QtVTKHook(self.model)
+                self.model.set_hook(gui)
+        except AttributeError:  # code built without GUI
+            gui = None
+
+        self.model.run()
+
+        if gui:
+            print("\n  >>> Close window to Quit...\n")
+            gui.loop()
+
+    def run_fortran(self):
+        """runs a simulation using Fortran implementation.
+        """
+        # convertr data to fortran input format
+        self.model.to_fortran()
+
+        # setup multithreading for the child process
         args = sph.parseargs()
         os.environ['OMP_NUM_THREADS'] = str(args.k)
 
@@ -39,17 +73,14 @@ class Runner:
         exename = self.getexe()
         print("running %s using %s threads" % (exename, os.environ['OMP_NUM_THREADS']))
 
-        cmd = [ exename ]
+        cmd = [exename]
 
         # add arguments
-        for p in ['--nogui', '--nosave']:
-            if p in sys.argv:
-                cmd.append(p)
+        # for p in ['--nogui', '--nosave']:
+        #     if p in sys.argv:
+        #         cmd.append(p)
 
         langprefix = "[F]"
-        if args.cpp:
-            langprefix = "[C]"
-        langprefix = "[exe]"
 
         # start Fortran code as a subprocess and streams the fortran output
         # to the standard output
@@ -66,22 +97,11 @@ class Runner:
         #     print('Ignoring CTRL-C')
         #     pass
 
-        # convert results to VTK
-        try:
-            import sph.res2vtp as res2vtp
-            res2vtp.ToParaview(verb=False).convertall()
-        except Exception as e:
-            print("\n**ERROR while converting to VTK:", e)
-
-
     def getexe(self):
         """ looks for Louis' executable
         """
-        args = sph.parseargs()
-        if args.cpp:
-            exename = "louis++"
-        else:
-            exename = "louis"
+
+        exename = "louis"
         if 'Windows' in platform.uname():
             exename += ".exe"
         dir1 = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "build", "bin"))
@@ -116,6 +136,7 @@ class Runner:
     #     txt += "\tsave interval [s]                = %f\n" % self.saveInt
     #     return txt
 
+
 class Cube:
     """ a basic "cube" defined by its origin (o), size (L), density (rho) and 
     distance between layers (s)
@@ -138,15 +159,15 @@ class Cube:
         """
         parts = []
         ni = int(math.ceil((self.Lx / self.s))) + 1
-        dx = 0.0 if ni==1 else self.Lx / (ni - 1)
+        dx = 0.0 if ni == 1 else self.Lx / (ni - 1)
         nj = int(math.ceil((self.Ly / self.s))) + 1
-        dy = 0.0 if nj==1 else self.Ly / (nj - 1)
+        dy = 0.0 if nj == 1 else self.Ly / (nj - 1)
         nk = int(math.ceil((self.Lz / self.s))) + 1
-        dz = 0.0 if nk==1 else self.Lz / (nk - 1)
+        dz = 0.0 if nk == 1 else self.Lz / (nk - 1)
 
-        dvx = self.s if ni==1 else dx
-        dvy = self.s if nj==1 else dy
-        dvz = self.s if nk==1 else dz
+        dvx = self.s if ni == 1 else dx
+        dvy = self.s if nj == 1 else dy
+        dvz = self.s if nk == 1 else dz
 
         vx = vy = vz = 0.0
         m0 = (dvx * dvy * dvz) * self.rho

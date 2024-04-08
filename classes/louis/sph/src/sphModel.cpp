@@ -14,7 +14,7 @@
 using namespace sph;
 
 Model::Model()
-    : sorter(*this), displayHook(nullptr)
+    : sorter(*this)
 {
     this->timeStep = 1.0e-15;
     this->currentTime = 0.0;
@@ -27,20 +27,19 @@ Model::Model()
     this->dom_dim = 0.0;
     this->alpha = 0.0;
     this->beta = 0.0;
-    this->kappa = 0.0;
+    //this->kappa = 0.0;
     this->kernelCorrection = 0.0;
     this->maxTime = 0.0;
     this->saveInt = 0.0;
     this->numPart = 0;
+
+    this->kernel = std::make_shared<CubicSplineKernel>();
+    this->eqState = std::make_shared<QincFluid>();
 }
 
 Model::~Model()
 {
-    // for (int i = 0; i < this->numPart; i++)
-    //     delete this->particles[i];
-    // delete this->kernel;
-    // delete this->eqState;
-    delete this->displayHook;
+    // nothing needed: memory managed by shared_ptr's
 }
 
 void
@@ -164,7 +163,7 @@ Model::solve()
         // Test for the data saving
         if (to_save)
         {
-            if (this->displayHook != nullptr && hooktimer.elapsed() > 0.2)
+            if (this->displayHook && hooktimer.elapsed() > 0.2)
             {
                 hooktimer.reset();
                 this->displayHook->update_data();
@@ -198,7 +197,7 @@ Model::solve()
             couttimer.reset();
         }
 
-        if (this->displayHook != nullptr)
+        if (this->displayHook)
         {
             this->displayHook->interact();
         }
@@ -256,7 +255,7 @@ Model::load_parameters(std::string const &param_path)
     default:
         throw std::runtime_error("Bad value of kernel kind");
     }
-    this->kappa = this->kernel->kappa;
+    //this->kappa = this->kernel->kappa;
 
     // create equation of state
     switch (eqnState)
@@ -466,7 +465,58 @@ Model::add(std::shared_ptr<Particle> p)
         this->numMP++;
     }
     this->particles.push_back(p);
+    this->numPart = this->numFP + this->numMP; // a supprimer
     p->model = this;
 
     return p;
 }
+
+void
+Model::run()
+{
+    //g_nosave = false;
+
+    std::cout << *this << std::endl;
+
+    print_banner();
+
+    for(auto &p : this->particles)
+        p->initialise(this->h_0);
+
+    //return;
+
+    g_timers["TOTAL"].start();
+    this->solve();
+    g_timers["TOTAL"].stop();
+
+    print_timers();
+    save_timers();
+}
+
+namespace sph {
+
+SPH_API std::ostream &operator<<(std::ostream &os, const Model &m)
+{
+    os << "Model:\n";
+    os << "  numFP = " << m.numFP << "\n";
+    os << "  numMP = " << m.numMP << "\n";
+    os << "  numPart = " << m.numPart << "\n";
+    os << "  h_0 = " << m.h_0 << "\n";
+    os << "  dom_dim = " << m.dom_dim << "\n";
+    os << "  alpha = " << m.alpha << "\n";
+    os << "  beta = " << m.beta << "\n";
+    //os << "  kappa = " << m.kappa << "\n";
+    os << "  kernelCorrection = " << m.kernelCorrection << "\n";
+    os << "  maxTime = " << m.maxTime << "\n";
+    os << "  saveInt = " << m.saveInt << "\n";
+    os << "  timeStep = " << m.timeStep << "\n";
+    os << "  currentTime = " << m.currentTime << "\n";
+    os << "  RKstep = " << m.RKstep << "\n";
+    os << "  kernel = " << *m.kernel << "\n";
+    os << "  eqState = " << *m.eqState << "\n";
+
+    return os;
+}
+
+}; // namespace sph
+

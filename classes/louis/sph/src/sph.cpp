@@ -10,7 +10,7 @@ namespace sph
 {
 /// global variables
 SPH_API std::map<std::string, Timer> g_timers;
-SPH_API bool g_nogui = false;
+//SPH_API bool g_nogui = false;
 SPH_API bool g_nosave = false;
 }; // namespace sph
 
@@ -32,7 +32,7 @@ sph::print_banner()
 #endif
 
 #ifdef SPH_USE_GUI
-    std::cout << "code built with GUI (" << (g_nogui ? "disabled" : "enabled") << ").\n";
+    std::cout << "code built with GUI.\n";
 #else
     std::cout << "code built without GUI.\n";
 #endif
@@ -64,8 +64,8 @@ sph::read_args(int argc, char *argv[])
 {
     for (int i = 1; i < argc; i++)
     {
-        if (std::string(argv[i]) == "--nogui")
-            g_nogui = true;
+        // if (std::string(argv[i]) == "--nogui")
+        //     g_nogui = true;
         if (std::string(argv[i]) == "--nosave")
             g_nosave = true;
     }

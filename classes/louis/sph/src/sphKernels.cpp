@@ -6,6 +6,16 @@ Kernel::Kernel(double _kappa) : kappa(_kappa)
 {
 }
 
+namespace sph
+{
+SPH_API std::ostream &
+operator<<(std::ostream &os, const Kernel &k)
+{
+    k.write(os);
+    return os;
+}
+} // namespace sph
+
 // -----------------------------------------------------------------------------
 
 CubicSplineKernel::CubicSplineKernel() : Kernel(2)

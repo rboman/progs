@@ -19,7 +19,7 @@ public:
 #ifndef SWIG
     Sorter sorter;
 
-    DisplayHook *displayHook;
+    std::shared_ptr<DisplayHook> displayHook;
 
     /// array of pointers toward particles.
     /// the particles are generated in python, so we need to use shared_ptrs
@@ -33,7 +33,7 @@ public:
     int numMP;            ///< number of mobile particles
     int numPart;          ///< number of particles (FP+MP)
 
-    int kappa;            ///< kappa linked to the eqn state
+    //int kappa;            ///< kappa linked to the eqn state
     double alpha;         ///< weighting factor in the artificial viscosity formulation
     double beta;          ///< weighting factor in the artificial viscosity formulation
 
@@ -55,9 +55,14 @@ public:
     Model();
     ~Model();
 
+    void run();
+    void set_hook(std::shared_ptr<DisplayHook> hook) { displayHook = hook; }
+
+#ifndef SWIG
     void initialise();
     void solve();
-
+    friend SPH_API std::ostream &operator<<(std::ostream &os, const Model &m);
+#endif
     void to_fortran();
     std::shared_ptr<Particle> add(std::shared_ptr<Particle> p);
 

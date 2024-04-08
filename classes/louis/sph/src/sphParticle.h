@@ -46,6 +46,7 @@ public:
 
     void save(std::ofstream &file) const;
     void load(std::ifstream &ufile, double h_0);
+    void initialise(double h_0);
 
     virtual void update_vars() = 0;
 

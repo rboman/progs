@@ -3,6 +3,7 @@
 #include "sphFixedParticle.h"
 #include "sphNeighbour.h"
 #include "sphEqState.h"
+#include "sphKernels.h"
 #include <fstream>
 #include <iostream>
 
@@ -68,7 +69,7 @@ Sorter::init_cells()
     // calculates the necessary number of cells on a side
     double hmax = this->compute_hmax();
     this->nx = 0;
-    while (this->model.dom_dim / (this->nx + 1) > this->model.kappa * hmax)
+    while (this->model.dom_dim / (this->nx + 1) > this->model.kernel->kappa * hmax)
         this->nx++;
 
     int nCells = this->nx * this->nx * this->nx;

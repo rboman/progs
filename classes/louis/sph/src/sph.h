@@ -55,7 +55,7 @@ enum Law
 
 #ifndef SWIG
 extern SPH_API std::map<std::string, Timer> g_timers; ///< global g_timers
-extern SPH_API bool g_nogui;     ///< use GUI or not
+//extern SPH_API bool g_nogui;     ///< use GUI or not
 extern SPH_API bool g_nosave;    ///< do not write results to disk
 #endif
 

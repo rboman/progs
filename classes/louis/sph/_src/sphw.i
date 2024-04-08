@@ -19,6 +19,12 @@
 #include "sphSorter.h"
 #include "sphTimer.h"
 
+#ifdef SPH_USE_GUI
+#include "sphQtVTKHook.h"
+#endif
+
+#include "OpenMP.h"
+
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 #include "wCppBuf2Py.h"
@@ -69,6 +75,7 @@
 %warnfilter(401); //Nothing known about base class 'std::basic_streambuf< char >'
 %include "wCppBuf2Py.h"
 %warnfilter(+401);
+%include "OpenMP.h"
 
 // SPH classes
 
@@ -86,9 +93,11 @@
 %shared_ptr(sph::QuadraticKernel);
 %shared_ptr(sph::QuinticSplineKernel);
 
+%shared_ptr(sph::DisplayHook);
+%shared_ptr(sph::QtVTKHook);
 
 
-
+%include "sph_config.h"
 %include "sph.h"
 %include "sphKernels.h"
 
@@ -101,3 +110,10 @@
 %include "sphMobileParticle.h"
 
 %include "sphModel.h"
+
+
+%include "sphDisplayHook.h"
+
+#ifdef SPH_USE_GUI
+%include "sphQtVTKHook.h"
+#endif

@@ -21,6 +21,8 @@ public:
     virtual double dW(double r, double h) const = 0;
 #ifndef SWIG
     virtual KernelKind fortran_kind() const = 0;
+    friend SPH_API std::ostream &operator<<(std::ostream &os, const Kernel &k);
+    virtual void write(std::ostream &os) const = 0;
 #endif
 };
 
@@ -32,6 +34,7 @@ public:
     virtual double dW(double r, double h) const override;
 #ifndef SWIG
     virtual KernelKind fortran_kind() const override { return K_CUBIC_SPLINE; }
+    virtual void write(std::ostream &os) const override { os << "CubicSplineKernel"; }
 #endif
 };
 
@@ -43,6 +46,7 @@ public:
     virtual double dW(double r, double h) const override;
 #ifndef SWIG
     virtual KernelKind fortran_kind() const override { return K_QUADRATIC; }
+    virtual void write(std::ostream &os) const override { os << "QuadraticKernel"; }
 #endif
 };
 
@@ -54,6 +58,7 @@ public:
     virtual double dW(double r, double h) const override;
 #ifndef SWIG
     virtual KernelKind fortran_kind() const override { return K_QUINTIC_SPLINE; }
+    virtual void write(std::ostream &os) const override { os << "QuinticSplineKernel"; }
 #endif
 };
 

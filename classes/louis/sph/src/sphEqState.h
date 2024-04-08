@@ -20,6 +20,12 @@ public:
     virtual double speed_of_sound(double rho) const = 0;
     virtual double h_factor() const = 0;
     virtual double dt_factor() const = 0;
+    friend SPH_API std::ostream &operator<<(std::ostream &os, const EqState &k) 
+    {
+        k.write(os);
+        return os;
+    }
+    virtual void write(std::ostream &os) const = 0;
 #endif
 
 };
@@ -53,6 +59,10 @@ public:
     {
         return 5.0;
     }
+    virtual void write(std::ostream &os) const override
+    {
+        os << "IdealGas M=" << M << " rho0=" << rho0 << " c0=" << c0;
+    }
 #endif
 };
 
@@ -82,6 +92,10 @@ public:
     virtual double dt_factor() const override
     {
         return 1.0;
+    }
+    virtual void write(std::ostream &os) const override
+    {
+        os << "QincFluid gamma=" << gamma << " rho0=" << rho0 << " c0=" << c0;
     }
 #endif
 };

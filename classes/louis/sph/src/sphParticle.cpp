@@ -31,9 +31,18 @@ Particle::load(std::ifstream &ufile, double h_0)
     this->speed[0] << u_x, u_y, u_z;
     this->rho[0] = rho;
     this->m = m;
+
+    this->initialise(h_0);
+}
+
+void
+Particle::initialise(double h_0)
+{
+    assert(this->model != nullptr);
+
     this->h = h_0;
-    this->p[0] = this->model->eqState->pressure(rho);
-    this->c[0] = this->model->eqState->speed_of_sound(rho);
+    this->p[0] = this->model->eqState->pressure(this->rho[0]);
+    this->c[0] = this->model->eqState->speed_of_sound(this->rho[0]);
     this->max_mu_ab = 0.0;
 
     assert(this->m > 0.0); // TODO: do more tests
@@ -76,7 +85,7 @@ Particle::getNeighbours()
     {
         Sorter *sorter = &this->model->sorter;
         int nx = this->model->sorter.nx; // number of cells on a row of the domain
-        int cellsToCheck[27];           // number of the cells to check for the neighbours
+        int cellsToCheck[27];            // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
         int xCell = (int)((xyz(0) - fmod(xyz(0), sorter->dx)) / sorter->dx) + 1;
@@ -128,6 +137,8 @@ Particle::getNeighbours()
         // For the second RK step, only the distances r are recalculated. It is assumed that
         // the neighbours remain the same between 2 RK step.
 
+        double kappa = this->model->kernel->kappa;  
+
         this->neighbours.clear();
         int twice = 0; // [RB]
         for (int i = 0; i < 27; i++)
@@ -140,7 +151,7 @@ Particle::getNeighbours()
                     Particle *p = (*cells)[j];
                     Eigen::Vector3d const &neighXYZ = p->coord[RKstep];
                     double r = (xyz - neighXYZ).norm();
-                    if (r <= this->model->kappa * this->h)
+                    if (r <= kappa * this->h)
                     {
                         if (p != this)
                             this->neighbours.push_back(Neighbour(p, r));

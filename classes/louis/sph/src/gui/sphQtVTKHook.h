@@ -19,11 +19,11 @@ class SPH_API QtVTKHook : public DisplayHook
     Model &model;
 
 public:
-    QtVTKHook(int &argc, char **argv, Model &model);
+    QtVTKHook(Model &model);
     virtual ~QtVTKHook();
+
     virtual void interact() override;
     virtual void update_data() override;
-
     virtual void loop() override;
 
     static void standalone_VTK_demo(); // for testing

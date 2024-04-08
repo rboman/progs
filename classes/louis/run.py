@@ -48,7 +48,12 @@ if __name__ == "__main__":
     # parse args
     args = sph.parseargs()
 
+    # set number of threads from the "-k" argument
+    os.environ['OMP_NUM_THREADS'] = str(args.k)
+    sph.set_num_threads(args.k)    
+
     if args.file:
+        # check input file
         testname = os.path.abspath(args.file)
         testname = os.path.normcase(testname)  # F:/ => f:/ on Windows
         print(f'testname = {testname}')
@@ -56,6 +61,7 @@ if __name__ == "__main__":
         if not os.path.isfile(testname):
             raise Exception("file not found: %s" % testname)
 
+        # create workspace folder
         sph.setupwdir(testname)
         __file__ = testname
 

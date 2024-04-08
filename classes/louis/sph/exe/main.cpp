@@ -40,10 +40,10 @@ main(int argc, char *argv[])
 
         DisplayHook *gui = nullptr;
 
-#ifdef SPH_USE_GUI
-        if(!g_nogui)
-            gui = new QtVTKHook(argc, argv, model);
-#endif
+// #ifdef SPH_USE_GUI
+//         if(!g_nogui)
+//             gui = new QtVTKHook(argc, argv, model);
+// #endif
 
         model.solve();
 

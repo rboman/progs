@@ -34,7 +34,9 @@ public:
     DisplayWindow(DisplayWindow &&) = delete;
     DisplayWindow &operator=(const DisplayWindow &) = delete;
 
+#ifndef SWIG
     void updateParticlePositions();
+#endif
 
 private:
     void setupGUI();
