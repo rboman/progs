@@ -56,39 +56,7 @@
         PyErr_SetString(PyExc_RuntimeError, "Unknown C++ Runtime Error");
      } 
    } 
-%} 
-
-
-// exit when ctrl-c ?
-// from: http://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event-c
-//
-// note:
-// https://docs.python.org/3/library/signal.html 
-// A long-running calculation implemented purely in C 
-// (such as regular expression matching on a large body of text) may run 
-// uninterrupted for an arbitrary amount of time, regardless of any signals 
-// received. The Python signal handlers will be called when the calculation finishes.
-
-%inline %{
-#include <signal.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-
-void signal_callback_handler(int signum) {
-   std::cerr << "Caught signal " << signum << std::endl;
-   exit(signum);
-}
-
-void setup_signal_handler() {
-   signal(SIGINT, signal_callback_handler);
-}
 %}
-
-%init %{
-   setup_signal_handler();
-%}
-
 
 %exception { 
    try { 
@@ -127,8 +95,6 @@ void setup_signal_handler() {
 %shared_ptr(sph::QuinticSplineKernel);
 
 %shared_ptr(sph::DisplayHook);
-%shared_ptr(sph::QtVTKHook);
-
 
 %include "sph_config.h"
 %include "sph.h"
@@ -144,9 +110,41 @@ void setup_signal_handler() {
 
 %include "sphModel.h"
 
-
 %include "sphDisplayHook.h"
 
 #ifdef SPH_USE_GUI
+%shared_ptr(sph::QtVTKHook);
 %include "sphQtVTKHook.h"
 #endif
+
+// -----------------------------------------------------------------------------
+// Exit program when sending SIGINT (ctrl-c) ?
+// from: http://stackoverflow.com/questions/1641182/how-can-i-catch-a-ctrl-c-event-c
+//
+// note from the official python doc:
+// https://docs.python.org/3/library/signal.html 
+//    A long-running calculation implemented purely in C (such as regular 
+//    expression matching on a large body of text) may run uninterrupted for an 
+//    arbitrary amount of time, regardless of any signals received. The Python 
+//    signal handlers will be called when the calculation finishes.
+
+%inline %{
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+
+void signal_callback_handler(int signum) {
+   std::cerr << "Caught signal " << signum << std::endl;
+   exit(signum);
+}
+
+void setup_signal_handler() {
+   signal(SIGINT, signal_callback_handler);
+}
+%}
+
+%init %{
+   setup_signal_handler();
+%}
+// -----------------------------------------------------------------------------
