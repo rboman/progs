@@ -10,8 +10,6 @@ namespace sph
 {
 /// global variables
 SPH_API std::map<std::string, Timer> g_timers;
-//SPH_API bool g_nogui = false;
-SPH_API bool g_nosave = false;
 }; // namespace sph
 
 using namespace sph;
@@ -57,16 +55,4 @@ sph::save_timers()
     std::ofstream file("timers.txt");
     for (auto &t : g_timers)
         file << std::setw(20) << t.first << '\t' << t.second.elapsed() << '\n';
-}
-
-SPH_API void
-sph::read_args(int argc, char *argv[])
-{
-    for (int i = 1; i < argc; i++)
-    {
-        // if (std::string(argv[i]) == "--nogui")
-        //     g_nogui = true;
-        if (std::string(argv[i]) == "--nosave")
-            g_nosave = true;
-    }
 }

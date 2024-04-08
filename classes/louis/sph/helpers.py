@@ -44,6 +44,10 @@ class Runner:
     def run_cpp(self):
         """runs a simulation using C++ implementation.
         """
+        args = sph.parseargs()
+        if args.nosave:
+            self.model.nosave = True
+
         gui = None
         try:
             args = sph.parseargs()

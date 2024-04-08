@@ -49,6 +49,7 @@ public:
     double dom_dim;       ///< length of a side of the domain
                           ///< (exterior particle to exterior particle).
                           ///< the domain is assumed to be cubic
+    bool nosave;          ///< if true, do not save results to disk
 
 public:
     Model();
@@ -58,7 +59,6 @@ public:
     void set_hook(std::shared_ptr<DisplayHook> hook) { displayHook = hook; }
 
 #ifndef SWIG
-    //void initialise();
     void solve();
     friend SPH_API std::ostream &operator<<(std::ostream &os, const Model &m);
 #endif
@@ -66,7 +66,6 @@ public:
     std::shared_ptr<Particle> add(std::shared_ptr<Particle> p);
 
 private:
-    //void load_parameters(std::string const &param_path);
     void save_particles(std::string const &name, int ite, int start, int end) const;
     void update_dt();
     void update_h();

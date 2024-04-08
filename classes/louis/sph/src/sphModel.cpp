@@ -27,11 +27,11 @@ Model::Model()
     this->dom_dim = 0.0;
     this->alpha = 0.0;
     this->beta = 0.0;
-    //this->kappa = 0.0;
     this->kernelCorrection = 0.0;
     this->maxTime = 0.0;
     this->saveInt = 0.0;
     this->numPart = 0;
+    this->nosave = false;
 
     this->kernel = std::make_shared<CubicSplineKernel>();
     this->eqState = std::make_shared<QincFluid>();
@@ -171,7 +171,7 @@ Model::solve()
                 this->displayHook->update_data();
             }
 
-            if (!g_nosave)
+            if (!this->nosave)
             {
                 this->save_particles("resMP", ite, this->numFP, this->numFP + this->numMP - 1);
                 this->save_particles("resFP", ite, 0, this->numFP - 1);
@@ -210,70 +210,6 @@ Model::solve()
         ite++;
     }
 }
-
-// Reading and storing of the data in the parameter files
-
-/*
-void
-Model::load_parameters(std::string const &param_path)
-{
-    std::ifstream file(param_path);
-    if (!file.is_open())
-        throw std::runtime_error(param_path + " not found");
-
-    file >> this->numFP;
-    file >> this->numMP;
-    file >> this->h_0;
-    double c0, rho0;
-    file >> c0;
-    file >> rho0;
-    file >> this->dom_dim;
-    int kernelKind;
-    file >> kernelKind;
-    file >> this->alpha;
-    file >> this->beta;
-    int eqnState;
-    int gamma;
-    double molMass;
-    file >> eqnState;
-    file >> gamma;
-    file >> molMass;
-    file >> this->kernelCorrection;
-    file >> this->maxTime;
-    file >> this->saveInt;
-    file.close();
-
-    // create kernel
-    switch (kernelKind)
-    {
-    case K_CUBIC_SPLINE:
-        this->kernel = std::make_shared<CubicSplineKernel>();
-        break;
-    case K_QUADRATIC:
-        this->kernel = std::make_shared<QuadraticKernel>();
-        break;
-    case K_QUINTIC_SPLINE:
-        this->kernel = std::make_shared<QuinticSplineKernel>();
-        break;
-    default:
-        throw std::runtime_error("Bad value of kernel kind");
-    }
-    //this->kappa = this->kernel->kappa;
-
-    // create equation of state
-    switch (eqnState)
-    {
-    case LAW_IDEAL_GAS:
-        this->eqState = std::make_shared<IdealGas>(rho0, c0, molMass);
-        break;
-    case LAW_QINC_FLUID:
-        this->eqState = std::make_shared<QincFluid>(rho0, c0, gamma);
-        break;
-    default:
-        throw std::runtime_error("Bad value of equation of state");
-    }
-}
-*/
 
 /// Save a particle set onto disk.
 /// @param name  : name of the file
@@ -478,18 +414,17 @@ Model::add(std::shared_ptr<Particle> p)
 void
 Model::run()
 {
-    //g_nosave = false;
-
     std::cout << *this << std::endl;
 
     print_banner();
 
+    g_timers["TOTAL"].start();
+
+    g_timers["initialisation"].start();
     for(auto &p : this->particles)
         p->initialise(this->h_0);
+    g_timers["initialisation"].stop();
 
-    //return;
-
-    g_timers["TOTAL"].start();
     this->solve();
     g_timers["TOTAL"].stop();
 
