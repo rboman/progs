@@ -3,12 +3,14 @@
 
 #include "sph.h"
 #include "sphDisplayHook.h"
+
 #include <QMainWindow>
 #include <QVTKOpenGLNativeWidget.h>
+
 #include <vtkSmartPointer.h>
 #include <vtkRenderer.h>
 #include <vtkPoints.h>
-
+#include <vtkOrientationMarkerWidget.h>
 
 // https://doc.qt.io/qt-5/designer-creating-mainwindows.html
 // https://doc.qt.io/qt-5/designer-using-a-ui-file.html
@@ -31,8 +33,21 @@ class SPH_API DisplayWindow : public QMainWindow
     Model &model;
 
     QVTKOpenGLNativeWidget *vtkwidget; ///< Qt widget for VTK display
+    
     vtkSmartPointer<vtkRenderer> renderer;
-    vtkSmartPointer<vtkPoints> points;
+
+    // particles
+    vtkSmartPointer<vtkPoints> fixed_points;
+    vtkSmartPointer<vtkPoints> mobile_points;
+
+    // x,y,z axes widget
+    vtkSmartPointer<vtkOrientationMarkerWidget> axes_marker;
+
+    // domain boundaries
+    vtkSmartPointer<vtkActor> box_actor;
+    vtkSmartPointer<vtkActor> boxwf_actor;
+
+
 
 public:
     explicit DisplayWindow(Model &model, QWidget *parent = nullptr);
@@ -48,11 +63,12 @@ public:
 #endif
 
 private:
-    Ui::DisplayWindow *ui;
+    Ui::DisplayWindow *ui; ///< Qt Designer UI
 
     void setupGUI();
-    void addCube();
     void addParticles();
+    void addDomainBox();
+    void addXYZAxes();
 };
 
 }; // namespace sph

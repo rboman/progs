@@ -15,6 +15,10 @@
 #include <vtkVertexGlyphFilter.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
+#include <vtkAxesActor.h>
+#include <vtkOrientationMarkerWidget.h>
+#include <vtkTextProperty.h>
+#include <vtkCaptionActor2D.h>
 
 #include "ui_DisplayWindow.h"
 
@@ -41,8 +45,11 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QMainWindow(parent
     resize(800, 600);
 
     setupGUI();
-    // addCube();
     addParticles();
+    addDomainBox();
+    addXYZAxes();
+
+    renderer->ResetCamera();
 }
 
 DisplayWindow::~DisplayWindow()
@@ -83,17 +90,17 @@ DisplayWindow::setupGUI()
 void
 DisplayWindow::addParticles()
 {
-    // Assuming models.particles is a std::vector of some 3D point type
-    points = vtkSmartPointer<vtkPoints>::New();
+    // Fixed particles
+    fixed_points = vtkSmartPointer<vtkPoints>::New();
 
-    for (const auto &particle : model.particles)
+    for(int i=0; i<model.numFP; i++)
     {
-        auto const &pos = particle->coord[0];
-        points->InsertNextPoint(pos(0), pos(1), pos(2));
+        auto const &pos = model.particles[i]->coord[0];
+        fixed_points->InsertNextPoint(pos(0), pos(1), pos(2));
     }
 
     vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
-    polydata->SetPoints(points);
+    polydata->SetPoints(fixed_points);
 
     vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
     vertexFilter->SetInputData(polydata);
@@ -104,50 +111,114 @@ DisplayWindow::addParticles()
 
     vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
     actor->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
-    // actor->GetProperty()->SetSpecular(1.0);        // Enable specular reflection
-    // actor->GetProperty()->SetSpecularPower(50.0);  // Set specular power
+    actor->GetProperty()->SetOpacity(0.3);
     actor->GetProperty()->SetPointSize(3);
     actor->SetMapper(mapper);
 
     renderer->AddActor(actor);
-}
 
-void
-DisplayWindow::updateParticlePositions()
-{
-    if(!points) return;
-    // loop over points 
+    // Mobile particles
+    mobile_points = vtkSmartPointer<vtkPoints>::New();
 
-    // std::cout << "updateParticlePositions()" << std::endl;
-    int i=0;
-    for (const auto &particle : model.particles)
+    for(int i=model.numFP; i<model.numPart; i++)
     {
-        auto &pos = particle->coord[0];
-        points->SetPoint(i++, pos(0), pos(1), pos(2));
-    }   
+        auto const &pos = model.particles[i]->coord[0];
+        mobile_points->InsertNextPoint(pos(0), pos(1), pos(2));
+    }
 
-    points->Modified();
+    vtkSmartPointer<vtkPolyData> polydata2 = vtkSmartPointer<vtkPolyData>::New();
+    polydata2->SetPoints(mobile_points);
 
-    vtkwidget->renderWindow()->Render();
+    vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter2 = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    vertexFilter2->SetInputData(polydata2);
+    vertexFilter2->Update();
+
+    vtkSmartPointer<vtkPolyDataMapper> mapper2 = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mapper2->SetInputConnection(vertexFilter2->GetOutputPort());
+
+    vtkSmartPointer<vtkActor> actor2 = vtkSmartPointer<vtkActor>::New();
+    actor2->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
+    actor2->GetProperty()->SetOpacity(1.0);
+    actor2->GetProperty()->SetPointSize(3);
+    actor2->SetMapper(mapper2);
+
+    renderer->AddActor(actor2);
 }
 
+/// display a box representing the computational domain
+
 void
-DisplayWindow::addCube()
+DisplayWindow::addDomainBox()
 {
     // Create a cube source
     vtkSmartPointer<vtkCubeSource> cubeSource = vtkSmartPointer<vtkCubeSource>::New();
+    cubeSource->SetBounds(0.0, model.dom_dim, 0.0, model.dom_dim, 0.0, model.dom_dim);
 
     // Create a mapper
     vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
     mapper->SetInputConnection(cubeSource->GetOutputPort());
 
-    // Create an actor
-    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-    actor->SetMapper(mapper);
-    actor->GetProperty()->SetColor(1.0, 0.0, 0.0); // Set color to red
-    actor->GetProperty()->SetSpecular(1.0);        // Enable specular reflection
-    actor->GetProperty()->SetSpecularPower(50.0);  // Set specular power
+    // Transparent box
+    box_actor = vtkSmartPointer<vtkActor>::New();
+    box_actor->SetMapper(mapper);
+    box_actor->GetProperty()->SetColor(0.0, 0.0, 1.0);
+    box_actor->GetProperty()->SetOpacity(0.05);
+    renderer->AddActor(box_actor);
 
-    // Add the actor to the scene
-    renderer->AddActor(actor);
+    // Add a wireframe box
+    boxwf_actor = vtkSmartPointer<vtkActor>::New();
+    boxwf_actor->SetMapper(mapper);
+    boxwf_actor->GetProperty()->SetRepresentationToWireframe();
+    boxwf_actor->GetProperty()->SetColor(0.0, 0.0, 0.0);
+    boxwf_actor->GetProperty()->SetLineWidth(1.0);
+    renderer->AddActor(boxwf_actor);
+}
+
+/// small x,y,z axes in the corner of the window
+
+void
+DisplayWindow::addXYZAxes()
+{
+    vtkSmartPointer<vtkAxesActor> axes = vtkSmartPointer<vtkAxesActor>::New();
+    axes->SetTotalLength(1, 1, 1);
+    axes->SetShaftTypeToCylinder();
+    axes->SetXAxisLabelText("x");
+    axes->SetYAxisLabelText("y");
+    axes->SetZAxisLabelText("z");
+
+    vtkSmartPointer<vtkTextProperty> tprop = vtkSmartPointer<vtkTextProperty>::New();
+    tprop->ItalicOn();
+    tprop->SetColor(0.0, 0.0, 0.0);
+    axes->GetXAxisCaptionActor2D()->SetCaptionTextProperty(tprop);
+    vtkSmartPointer<vtkTextProperty> tprop2 = vtkSmartPointer<vtkTextProperty>::New();
+    tprop2->ShallowCopy(tprop);
+    axes->GetYAxisCaptionActor2D()->SetCaptionTextProperty(tprop2);
+    vtkSmartPointer<vtkTextProperty> tprop3 = vtkSmartPointer<vtkTextProperty>::New();
+    tprop3->ShallowCopy(tprop);
+    axes->GetZAxisCaptionActor2D()->SetCaptionTextProperty(tprop3);
+
+    axes_marker = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
+    axes_marker->SetOrientationMarker(axes);
+    axes_marker->SetInteractor(vtkwidget->renderWindow()->GetInteractor());
+    // axes_marker->SetViewport(0.0, 0.0, 0.3, 0.3);
+    axes_marker->SetEnabled(1);
+    axes_marker->InteractiveOff();
+    // no actor to add to the renderer!
+}
+
+/// loop over particles and update their positions
+void
+DisplayWindow::updateParticlePositions()
+{
+    if(!mobile_points) return;
+
+    // mobile particles only
+    for(int i=model.numFP; i<model.numPart; i++)
+    {
+        auto const &pos = model.particles[i]->coord[0];
+        mobile_points->SetPoint(i-model.numFP, pos(0), pos(1), pos(2));
+    }
+    mobile_points->Modified();
+
+    vtkwidget->renderWindow()->Render();
 }

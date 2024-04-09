@@ -248,7 +248,7 @@ Model::update_dt()
     double g = 9.81;
 
     double dTf = std::numeric_limits<double>::max();
-    for (int i = this->numFP + 1; i < this->numPart; i++)
+    for (int i = this->numFP; i < this->numPart; i++)
     {
         Particle const *p = this->particles[i].get();
         double dt = sqrt(p->h / g);
@@ -259,7 +259,7 @@ Model::update_dt()
     // timestep relative to the Courant number and the viscous forces
 
     double dTcv = std::numeric_limits<double>::max();
-    for (int i = this->numFP + 1; i < this->numPart; i++)
+    for (int i = this->numFP; i < this->numPart; i++)
     {
         Particle *p = this->particles[i].get();
         double dt = p->h / (p->c[0] + 0.6 * (this->alpha * p->c[0] + this->beta * p->max_mu_ab));
