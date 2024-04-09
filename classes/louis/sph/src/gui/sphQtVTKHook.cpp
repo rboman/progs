@@ -33,16 +33,16 @@ using namespace sph;
 
 QtVTKHook::QtVTKHook(Model &model) : DisplayHook(), model(model)
 {
-    // static int argc = 1;
-    // static std::string name = "SPH";
-    // static char *argv[] = {const_cast<char *>(name.c_str()), nullptr};
+    static int argc = 1;
+    static std::string name = "SPH";
+    static char *argv[] = {const_cast<char *>(name.c_str()), nullptr};
 
-    int *argc = new int(1);// mem leak volontaire
+    // int *argc = new int(1);// mem leak volontaire
     // ATTENTION: argv doit rester alloué pdt toute la durée de vie de la QApplication!
-    char **argv = new char*[2];// mem leak volontaire
-    argv[0] = new char[8]; strcpy(argv[0], "Gen4App"); // mem leak volontaire
-    argv[1] = new char[1]; strcpy(argv[1], ""); // mem leak volontaire
-    app = new QApplication(*argc, argv); // argc passé par ref!!
+    // char **argv = new char*[2];// mem leak volontaire
+    // argv[0] = new char[8]; strcpy(argv[0], "Gen4App"); // mem leak volontaire
+    // argv[1] = new char[1]; strcpy(argv[1], ""); // mem leak volontaire
+    app = new QApplication(argc, argv); // argc passé par ref!!
 
 
     window = new DisplayWindow(model);

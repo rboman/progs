@@ -11,6 +11,7 @@
 #include <vtkRenderer.h>
 #include <vtkPoints.h>
 #include <vtkOrientationMarkerWidget.h>
+#include <vtkScalarBarActor.h>
 
 // https://doc.qt.io/qt-5/designer-creating-mainwindows.html
 // https://doc.qt.io/qt-5/designer-using-a-ui-file.html
@@ -40,6 +41,12 @@ class SPH_API DisplayWindow : public QMainWindow
     vtkSmartPointer<vtkPoints> fixed_points;
     vtkSmartPointer<vtkPoints> mobile_points;
 
+    vtkSmartPointer<vtkActor> fixed_actor;
+    vtkSmartPointer<vtkPolyData> mobile_polydata;
+    vtkSmartPointer<vtkActor> mobile_actor;
+
+    vtkSmartPointer<vtkScalarBarActor> scalarBar;
+
     // x,y,z axes widget
     vtkSmartPointer<vtkOrientationMarkerWidget> axes_marker;
 
@@ -65,6 +72,10 @@ public:
 private slots:
     void on_resetCamera_pushButton_clicked();
     void on_stop_pushButton_clicked();
+    void on_pause_pushButton_clicked();
+    void on_showBox_checkBox_toggled(bool checked);
+    void on_showFixed_checkBox_toggled(bool checked);
+    void on_fixedAlpha_slider_valueChanged(int value);
 
 private:
     Ui::DisplayWindow *ui; ///< Qt Designer UI

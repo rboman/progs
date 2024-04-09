@@ -47,12 +47,18 @@
        <property name="text">
         <string>box</string>
        </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="showFixed_checkBox">
        <property name="text">
         <string>fixed</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -66,7 +72,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QSlider" name="horizontalSlider">
+        <widget class="QSlider" name="fixedAlpha_slider">
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>10</number>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -105,6 +117,13 @@
       <widget class="QPushButton" name="resetCamera_pushButton">
        <property name="text">
         <string>Reset Camera</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="resetCamera_pushButton_2">
+       <property name="text">
+        <string>Pause</string>
        </property>
       </widget>
      </item>

@@ -19,10 +19,17 @@
 #include <vtkOrientationMarkerWidget.h>
 #include <vtkTextProperty.h>
 #include <vtkCaptionActor2D.h>
+#include <vtkScalarBarActor.h>
+#include <vtkDoubleArray.h>
+#include <vtkPointData.h>
+#include <vtkLookupTable.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
 
 #include "ui_DisplayWindow.h"
 
 #include <QHBoxLayout>
+#include <QMessageBox>
 
 using namespace sph;
 
@@ -48,6 +55,11 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QMainWindow(parent
     addParticles();
     addDomainBox();
     addXYZAxes();
+
+    vtkNew<vtkNamedColors> colors;
+    renderer->GradientBackgroundOn();
+    renderer->SetBackground(colors->GetColor3d("White").GetData());
+    renderer->SetBackground2(colors->GetColor3d("LightBlue").GetData());
 
     resetCamera();
 }
@@ -90,14 +102,53 @@ void DisplayWindow::resetCamera()
 
 void DisplayWindow::on_resetCamera_pushButton_clicked()
 {
-    std::cout << "resetting Camera..." << std::endl;
+    //std::cout << "resetting Camera..." << std::endl;
     resetCamera();
 }
 
 void DisplayWindow::on_stop_pushButton_clicked()
 {
     std::cout << "STOP..." << std::endl;
-    throw std::runtime_error("STOP");
+
+    // opens a dialog to ask whether the user is sure to quit
+    // if the user clicks "yes", the program will throw an exception    
+    // if the user clicks "no", the dialog will close and the program will continue
+    // if the user closes the dialog, the program will continue
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "STOP", "Are you sure you want to stop the simulation?",
+                                  QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+        throw std::runtime_error("STOP");
+}
+
+void DisplayWindow::on_pause_pushButton_clicked()
+{
+    std::cout << "PAUSE..." << std::endl;
+    // ...
+}
+
+void DisplayWindow::on_showBox_checkBox_toggled(bool checked)
+{
+    box_actor->SetVisibility(checked);
+    boxwf_actor->SetVisibility(checked);
+    vtkwidget->renderWindow()->Render();
+}
+void DisplayWindow::on_showFixed_checkBox_toggled(bool checked)
+{
+    fixed_actor->SetVisibility(checked);
+    vtkwidget->renderWindow()->Render();
+}
+
+void DisplayWindow::on_fixedAlpha_slider_valueChanged(int value)
+{
+    // get max value of the slider
+    int max = ui->fixedAlpha_slider->maximum();
+
+
+    fixed_actor->GetProperty()->SetOpacity(value/(double)max);
+    vtkwidget->renderWindow()->Render();
+
 }
 
 void
@@ -122,13 +173,14 @@ DisplayWindow::addParticles()
     vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
     mapper->SetInputConnection(vertexFilter->GetOutputPort());
 
-    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-    actor->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
-    actor->GetProperty()->SetOpacity(0.3);
-    actor->GetProperty()->SetPointSize(3);
-    actor->SetMapper(mapper);
+    fixed_actor = vtkSmartPointer<vtkActor>::New();
+    fixed_actor->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
+    fixed_actor->GetProperty()->SetOpacity(ui->fixedAlpha_slider->value()/(double)ui->fixedAlpha_slider->maximum());
+    fixed_actor->GetProperty()->SetPointSize(3);
+    fixed_actor->SetVisibility(ui->showFixed_checkBox->isChecked());
+    fixed_actor->SetMapper(mapper);
 
-    renderer->AddActor(actor);
+    renderer->AddActor(fixed_actor);
 
     // Mobile particles
     mobile_points = vtkSmartPointer<vtkPoints>::New();
@@ -139,23 +191,79 @@ DisplayWindow::addParticles()
         mobile_points->InsertNextPoint(pos(0), pos(1), pos(2));
     }
 
-    vtkSmartPointer<vtkPolyData> polydata2 = vtkSmartPointer<vtkPolyData>::New();
-    polydata2->SetPoints(mobile_points);
+    mobile_polydata = vtkSmartPointer<vtkPolyData>::New();
+    mobile_polydata->SetPoints(mobile_points);
 
+    // add scalar pressure to the particles
+    vtkSmartPointer<vtkDoubleArray> pressureArray = vtkSmartPointer<vtkDoubleArray>::New();
+    pressureArray->SetName("Pressure");
+    pressureArray->SetNumberOfComponents(1);
+    pressureArray->SetNumberOfTuples(model.numPart - model.numFP);
+    for (int i = model.numFP; i < model.numPart; i++)
+    {
+        double pressure = model.particles[i]->p[0];
+        pressureArray->SetValue(i - model.numFP, pressure);
+    }
+    // mobile_polydata->GetPointData()->AddArray(pressureArray);
+    mobile_polydata->GetPointData()->SetScalars(pressureArray);  
+
+    // glyph filter
     vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter2 = vtkSmartPointer<vtkVertexGlyphFilter>::New();
-    vertexFilter2->SetInputData(polydata2);
-    vertexFilter2->Update();
+    vertexFilter2->SetInputData(mobile_polydata);
+    // vertexFilter2->Update();
 
+    // mapper
     vtkSmartPointer<vtkPolyDataMapper> mapper2 = vtkSmartPointer<vtkPolyDataMapper>::New();
     mapper2->SetInputConnection(vertexFilter2->GetOutputPort());
+    mapper2->ScalarVisibilityOn();    
+    mapper2->SetColorModeToMapScalars();
+    mapper2->SetScalarModeToUsePointData();
+    // mapper2->SelectColorArray("Pressure");
 
-    vtkSmartPointer<vtkActor> actor2 = vtkSmartPointer<vtkActor>::New();
-    actor2->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
-    actor2->GetProperty()->SetOpacity(1.0);
-    actor2->GetProperty()->SetPointSize(3);
-    actor2->SetMapper(mapper2);
+    //mapper2->SetScalarRange(0.0, 1.0);
+    //mapper2->SetLookupTable(vtkSmartPointer<vtkLookupTable>::New());
 
-    renderer->AddActor(actor2);
+    // add a scalar bar
+    scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+    scalarBar->SetLookupTable(mapper2->GetLookupTable());
+    scalarBar->SetTitle("Pressure");
+    scalarBar->SetNumberOfLabels(5);
+    // scalarBar->SetLabelFormat("%6.2f");
+    // scalarBar->SetPosition(0.1, 0.1);
+    // scalarBar->SetWidth(0.8);
+    // scalarBar->SetHeight(0.1);
+    // scalarBar->SetOrientationToHorizontal();
+    // scalarBar->SetVisibility(1);
+    renderer->AddActor2D(scalarBar);
+
+    // Create a lookup table to share between the mapper and the scalarbar.
+    // vtkNew<vtkLookupTable> hueLut;
+    // hueLut->SetTableRange(0, 1);
+    // hueLut->SetHueRange(0, 1);
+    // hueLut->SetSaturationRange(1, 1);
+    // hueLut->SetValueRange(1, 1);
+    // hueLut->Build();
+
+    // BASIC RED TO BLUE LUT
+    vtkSmartPointer<vtkLookupTable> hueLut = vtkSmartPointer<vtkLookupTable>::New();
+    hueLut->SetHueRange(0.667, 0.0);
+    hueLut->SetSaturationRange(1.0, 1.0);
+    hueLut->SetValueRange(1.0, 1.0);
+    hueLut->SetAlphaRange(1.0, 1.0);
+    hueLut->SetNumberOfTableValues(256);
+    hueLut->Build();
+
+
+    mapper2->SetLookupTable(hueLut);
+    scalarBar->SetLookupTable(hueLut);
+
+    mobile_actor = vtkSmartPointer<vtkActor>::New();
+    mobile_actor->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
+    mobile_actor->GetProperty()->SetOpacity(1.0);
+    mobile_actor->GetProperty()->SetPointSize(3);
+    mobile_actor->SetMapper(mapper2);
+
+    renderer->AddActor(mobile_actor);
 }
 
 /// display a box representing the computational domain
@@ -175,7 +283,9 @@ DisplayWindow::addDomainBox()
     box_actor = vtkSmartPointer<vtkActor>::New();
     box_actor->SetMapper(mapper);
     box_actor->GetProperty()->SetColor(0.0, 0.0, 1.0);
-    box_actor->GetProperty()->SetOpacity(0.05);
+    box_actor->GetProperty()->SetOpacity(0.02);
+    box_actor->SetVisibility(ui->showBox_checkBox->isChecked());
+    
     renderer->AddActor(box_actor);
 
     // Add a wireframe box
@@ -184,6 +294,7 @@ DisplayWindow::addDomainBox()
     boxwf_actor->GetProperty()->SetRepresentationToWireframe();
     boxwf_actor->GetProperty()->SetColor(0.0, 0.0, 0.0);
     boxwf_actor->GetProperty()->SetLineWidth(1.0);
+    boxwf_actor->SetVisibility(ui->showBox_checkBox->isChecked());
     renderer->AddActor(boxwf_actor);
 }
 
@@ -232,6 +343,34 @@ DisplayWindow::updateParticlePositions()
         mobile_points->SetPoint(i-model.numFP, pos(0), pos(1), pos(2));
     }
     mobile_points->Modified();
+
+    auto pressureArray = mobile_polydata->GetPointData()->GetScalars();
+    
+    double pmin = std::numeric_limits<double>::max();
+    double pmax = -std::numeric_limits<double>::max();
+    for (int i = model.numFP; i < model.numPart; i++)
+    {
+        double pressure = model.particles[i]->p[0];
+        if(pressure < pmin) pmin = pressure;
+        if(pressure > pmax) pmax = pressure;
+        pressureArray->SetTuple1(i - model.numFP, pressure);
+    }
+    pressureArray->Modified();
+
+    // update lookup table
+    // auto lut = mobile_actor->GetMapper()->GetLookupTable();
+    // lut->SetRange(pmin, pmax);
+    // std::cout << "lut range: " << pmin << " " << pmax << std::endl;
+    // lut->Modified();
+
+
+    // update the scalar bar
+    // scalarBar->SetLookupTable(mobile_actor->GetMapper()->GetLookupTable());
+    // scalarBar->Modified();
+
+    // update the mapper
+    mobile_actor->GetMapper()->SetScalarRange(pmin, pmax);
+    mobile_actor->GetMapper()->Modified();
 
     vtkwidget->renderWindow()->Render();
 }
