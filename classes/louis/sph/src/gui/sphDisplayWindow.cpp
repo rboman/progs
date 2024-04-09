@@ -42,14 +42,14 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QMainWindow(parent
     ui->setupUi(this);
 
     setWindowTitle("SPH (Louis++)");
-    resize(800, 600);
+    resize(800*1.5, 600*1.5);
 
     setupGUI();
     addParticles();
     addDomainBox();
     addXYZAxes();
 
-    renderer->ResetCamera();
+    resetCamera();
 }
 
 DisplayWindow::~DisplayWindow()
@@ -66,25 +66,38 @@ DisplayWindow::setupGUI()
     vtkNew<vtkGenericOpenGLRenderWindow> window;
     vtkwidget->setRenderWindow(window.Get());
 
-    // Camera
-    // vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
-    // camera->SetViewUp(0, 1, 0);
-    // camera->SetPosition(0, 0, 10);
-    // camera->SetFocalPoint(0, 0, 0);
-
     // Renderer
     renderer = vtkSmartPointer<vtkRenderer>::New();
     // renderer->SetActiveCamera(camera);
     renderer->SetBackground(1.0, 1.0, 1.0);
     vtkwidget->renderWindow()->AddRenderer(renderer);
+}
 
-    // Reset the camera
+/// reset camera to default position / zoom
+
+void DisplayWindow::resetCamera()
+{
+    auto camera = renderer->GetActiveCamera();
+
+    camera->SetPosition(model.dom_dim, -model.dom_dim, model.dom_dim);
+    camera->SetFocalPoint(model.dom_dim/2, model.dom_dim/2, model.dom_dim/2);
+    camera->SetViewUp(0, 0, 1); 
+
+    renderer->ResetCameraClippingRange();
     renderer->ResetCamera();
+    vtkwidget->renderWindow()->Render();
+}
 
-    // Layout Qt
-    // QHBoxLayout *hbox = new QHBoxLayout();
-    // this->setLayout(hbox);
-    // hbox->addWidget(this->vtkwidget);
+void DisplayWindow::on_resetCamera_pushButton_clicked()
+{
+    std::cout << "resetting Camera..." << std::endl;
+    resetCamera();
+}
+
+void DisplayWindow::on_stop_pushButton_clicked()
+{
+    std::cout << "STOP..." << std::endl;
+    throw std::runtime_error("STOP");
 }
 
 void

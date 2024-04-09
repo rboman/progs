@@ -62,10 +62,15 @@ public:
     void updateParticlePositions();
 #endif
 
+private slots:
+    void on_resetCamera_pushButton_clicked();
+    void on_stop_pushButton_clicked();
+
 private:
     Ui::DisplayWindow *ui; ///< Qt Designer UI
 
     void setupGUI();
+    void resetCamera();
     void addParticles();
     void addDomainBox();
     void addXYZAxes();

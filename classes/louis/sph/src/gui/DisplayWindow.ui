@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1001</width>
-    <height>635</height>
+    <width>1277</width>
+    <height>977</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1001</width>
+     <width>1277</width>
      <height>26</height>
     </rect>
    </property>
@@ -100,6 +100,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="resetCamera_pushButton">
+       <property name="text">
+        <string>Reset Camera</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="stop_pushButton">
