@@ -75,8 +75,7 @@ QtVTKHook::update_data()
 void
 QtVTKHook::loop()
 {
-    window->show();
-    app->exec();
+    window->pause();
     std::cout << "quit()" << std::endl;
 }
 

@@ -42,71 +42,6 @@ Model::~Model()
     // nothing needed: memory managed by shared_ptr's
 }
 
-/*
-void
-Model::initialise()
-{
-    g_timers["initialisation"].start();
-
-    // Reading of the paths of the input files
-    std::ifstream file("paths.txt");
-    if (!file.is_open())
-        throw std::runtime_error("paths.txt not found");
-
-    std::string param_path; ///< path of the parameters file
-    file >> param_path;
-    std::string fp_path; ///< path of the fixed particle(fp) file
-    file >> fp_path;
-    std::string mp_path; ///< path of the mobile particle(mp) file
-    file >> mp_path;
-    file.close();
-
-    this->load_parameters(param_path);
-
-    // allocation of the particles array
-    this->numPart = this->numFP + this->numMP;
-    this->particles.reserve(this->numPart);
-
-    // Reading and storing of the data for the fixed particles
-
-    std::ifstream file1(fp_path);
-    if (!file1.is_open())
-        throw std::runtime_error(fp_path + " not found");
-
-    int fsizFP = this->numFP;
-    int fsizMP = this->numMP;
-    this->numFP = 0;
-    this->numMP = 0;
-
-    for (int i = 0; i < fsizFP; i++)
-    {
-        // std::cout << "loading fixed particle " << i << " " << this->numFP << std::endl;
-        auto p = this->add(std::make_shared<FixedParticle>());
-        // std::cout << "p->load(file1, this->h_0) " << std::endl;
-        p->load(file1, this->h_0);
-
-    }
-    file1.close();
-
-    // Reading and storing of the data for the mobile particles
-
-    std::ifstream file2(mp_path);
-    if (!file2.is_open())
-        throw std::runtime_error(mp_path + " not found");
-
-    for (int i = 0; i < fsizMP; i++)
-    {
-        auto p = this->add(std::make_shared<MobileParticle>());
-        p->load(file2, this->h_0);
-    }
-    file2.close();
-
-    assert(this->numPart == this->numFP + this->numMP);
-
-    g_timers["initialisation"].stop();
-}
-*/
-
 /// Solves the problem using a RK22 time integration scheme.
 
 void
@@ -209,6 +144,12 @@ Model::solve()
 
         ite++;
     }
+
+    if (this->displayHook)
+    {
+        this->displayHook->update_data();
+        this->displayHook->loop();
+    }    
 }
 
 /// Save a particle set onto disk.

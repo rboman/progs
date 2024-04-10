@@ -59,10 +59,6 @@ class Runner:
 
         self.model.run()
 
-        if gui:
-            print("\n  >>> Close window to Quit...\n")
-            gui.loop()
-
     def run_fortran(self):
         """runs a simulation using Fortran implementation.
         """

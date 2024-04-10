@@ -39,9 +39,10 @@ class SPH_API DisplayWindow : public QMainWindow
 
     // particles
     vtkSmartPointer<vtkPoints> fixed_points;
-    vtkSmartPointer<vtkPoints> mobile_points;
-
+    vtkSmartPointer<vtkPolyData> fixed_polydata;
     vtkSmartPointer<vtkActor> fixed_actor;
+
+    vtkSmartPointer<vtkPoints> mobile_points;
     vtkSmartPointer<vtkPolyData> mobile_polydata;
     vtkSmartPointer<vtkActor> mobile_actor;
 
@@ -68,18 +69,29 @@ public:
 #ifndef SWIG
     void light_update();
     void heavy_update();
+    void pause();
 #endif
 
 private slots:
     void on_resetCamera_pushButton_clicked();
     void on_stop_pushButton_clicked();
     void on_pause_pushButton_clicked();
+
     void on_showBox_checkBox_toggled(bool checked);
+
     void on_showFixed_checkBox_toggled(bool checked);
+    void on_showMobile_checkBox_toggled(bool checked);
+
     void on_fixedAlpha_slider_valueChanged(int value);
+    void on_mobileAlpha_slider_valueChanged(int value);  
+
+    void on_fixedScalars_checkBox_toggled(bool checked);
+    void on_mobileScalars_checkBox_toggled(bool checked);
 
     void on_minScalar_checkBox_toggled(bool checked);
     void on_maxScalar_checkBox_toggled(bool checked);
+
+    void on_particleSize_slider_valueChanged(int value);
 
 private:
     Ui::DisplayWindow *ui; ///< Qt Designer UI

@@ -53,8 +53,44 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="showMobile_checkBox">
+         <property name="text">
+          <string>mobile</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSlider" name="mobileAlpha_slider">
+         <property name="toolTip">
+          <string>set transparency</string>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QCheckBox" name="mobileScalars_checkBox">
+         <property name="text">
+          <string>scalars</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
         <widget class="QCheckBox" name="showFixed_checkBox">
          <property name="text">
           <string>fixed</string>
@@ -64,7 +100,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="1">
         <widget class="QSlider" name="fixedAlpha_slider">
          <property name="toolTip">
           <string>set transparency</string>
@@ -80,19 +116,26 @@
          </property>
         </widget>
        </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QCheckBox" name="checkBox">
+       <item row="1" column="2">
+        <widget class="QCheckBox" name="fixedScalars_checkBox">
          <property name="text">
           <string>scalars</string>
          </property>
         </widget>
        </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QComboBox" name="comboBox">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>scalar field</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="scalars_comboBox">
          <item>
           <property name="text">
            <string>pressure</string>
@@ -144,6 +187,39 @@
         <widget class="QCheckBox" name="minScalar_checkBox">
          <property name="text">
           <string>min</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>particle size</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="particleSize_slider">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>15</number>
+         </property>
+         <property name="pageStep">
+          <number>5</number>
+         </property>
+         <property name="value">
+          <number>3</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::NoTicks</enum>
          </property>
         </widget>
        </item>

@@ -30,10 +30,9 @@
 
 #include <QHBoxLayout>
 #include <QMessageBox>
-#include <QTime>
+#include <QElapsedTimer>
 
 using namespace sph;
-
 
 // -----------------------------------------------------------------------------
 // Notes: pourquoi 2 objets?
@@ -45,14 +44,15 @@ using namespace sph;
 //  QtVTKHook doit donc être un DisplayHook, et il doit créer un QApplication,
 //  et ensuite le widget Qt.
 
-DisplayWindow::DisplayWindow(Model &model, QWidget *parent) 
-: QMainWindow(parent), model(model), ui(new Ui::DisplayWindow), 
-paused(false)
+DisplayWindow::DisplayWindow(Model &model, QWidget *parent)
+    : QMainWindow(parent), model(model),
+      paused(false),
+      ui(new Ui::DisplayWindow)
 {
     ui->setupUi(this);
 
     setWindowTitle("SPH (Louis++)");
-    resize(800*1.5, 600*1.5);
+    resize(800 * 1.5, 600 * 1.5);
     setMinimumSize(800, 600);
 
     setupGUI();
@@ -100,121 +100,189 @@ DisplayWindow::setupGUI()
 
 /// reset camera to default position / zoom
 
-void DisplayWindow::resetCamera()
+void
+DisplayWindow::resetCamera()
 {
     auto camera = renderer->GetActiveCamera();
 
     camera->SetPosition(model.dom_dim, -model.dom_dim, model.dom_dim);
-    camera->SetFocalPoint(model.dom_dim/2, model.dom_dim/2, model.dom_dim/2);
-    camera->SetViewUp(0, 0, 1); 
+    camera->SetFocalPoint(model.dom_dim / 2, model.dom_dim / 2, model.dom_dim / 2);
+    camera->SetViewUp(0, 0, 1);
 
     renderer->ResetCameraClippingRange();
     renderer->ResetCamera();
     vtkwidget->renderWindow()->Render();
 }
 
-void DisplayWindow::on_resetCamera_pushButton_clicked()
+void
+DisplayWindow::on_resetCamera_pushButton_clicked()
 {
     resetCamera();
 }
 
-void DisplayWindow::on_stop_pushButton_clicked()
+void
+DisplayWindow::on_stop_pushButton_clicked()
 {
     std::cout << "STOP..." << std::endl;
 
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "STOP", "Are you sure you want to stop the simulation?",
-                                  QMessageBox::Yes|QMessageBox::No);
+                                  QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes)
         throw std::runtime_error("STOP");
 }
 
 /// pause the simulation
 
-void DisplayWindow::on_pause_pushButton_clicked()
+void
+DisplayWindow::on_pause_pushButton_clicked()
 {
     QApplication *app = qobject_cast<QApplication *>(QApplication::instance());
 
-    if(!paused)
+    if (!paused)
     {
         paused = true;
         ui->pause_pushButton->setText("Resume");
-        app->exec();        
+        app->exec();
     }
     else
     {
         paused = false;
         ui->pause_pushButton->setText("Pause");
-        app->exit();    
+        app->exit();
     }
 }
 
-void DisplayWindow::on_showBox_checkBox_toggled(bool checked)
+void
+DisplayWindow::pause()
+{
+    on_pause_pushButton_clicked();
+}
+
+void
+DisplayWindow::on_showBox_checkBox_toggled(bool checked)
 {
     box_actor->SetVisibility(checked);
     boxwf_actor->SetVisibility(checked);
     vtkwidget->renderWindow()->Render();
 }
 
-void DisplayWindow::on_showFixed_checkBox_toggled(bool checked)
+void
+DisplayWindow::on_showFixed_checkBox_toggled(bool checked)
 {
     fixed_actor->SetVisibility(checked);
     vtkwidget->renderWindow()->Render();
 }
 
-void DisplayWindow::on_fixedAlpha_slider_valueChanged(int value)
+void
+DisplayWindow::on_showMobile_checkBox_toggled(bool checked)
 {
-    // get max value of the slider
-    int max = ui->fixedAlpha_slider->maximum();
-    fixed_actor->GetProperty()->SetOpacity(value/(double)max);
+    mobile_actor->SetVisibility(checked);
     vtkwidget->renderWindow()->Render();
 }
 
-void DisplayWindow::on_minScalar_checkBox_toggled(bool checked)
+void
+DisplayWindow::on_fixedAlpha_slider_valueChanged(int value)
 {
-    if(paused) this->heavy_update();
+    int max = ui->fixedAlpha_slider->maximum();
+    fixed_actor->GetProperty()->SetOpacity(value / (double)max);
+    vtkwidget->renderWindow()->Render();
 }
 
-void DisplayWindow::on_maxScalar_checkBox_toggled(bool checked)
+void
+DisplayWindow::on_mobileAlpha_slider_valueChanged(int value)
 {
-    if(paused) this->heavy_update();
+    int max = ui->mobileAlpha_slider->maximum();
+    mobile_actor->GetProperty()->SetOpacity(value / (double)max);
+    vtkwidget->renderWindow()->Render();
+}
+
+void
+DisplayWindow::on_minScalar_checkBox_toggled(bool checked)
+{
+    if (paused)
+        this->heavy_update();
+}
+
+void
+DisplayWindow::on_maxScalar_checkBox_toggled(bool checked)
+{
+    if (paused)
+        this->heavy_update();
+}
+
+void DisplayWindow::on_fixedScalars_checkBox_toggled(bool checked)
+{
+    fixed_actor->GetMapper()->SetScalarVisibility(checked);
+    vtkwidget->renderWindow()->Render();
+}
+
+void DisplayWindow::on_mobileScalars_checkBox_toggled(bool checked)
+{
+    mobile_actor->GetMapper()->SetScalarVisibility(checked);
+    vtkwidget->renderWindow()->Render();
+}
+
+void
+DisplayWindow::on_particleSize_slider_valueChanged(int value)
+{
+    fixed_actor->GetProperty()->SetPointSize(value);
+    mobile_actor->GetProperty()->SetPointSize(value);
+    vtkwidget->renderWindow()->Render();
 }
 
 void
 DisplayWindow::addParticles()
 {
-    // Fixed particles
+    // Fixed particles =================================================
+
     fixed_points = vtkSmartPointer<vtkPoints>::New();
 
-    for(int i=0; i<model.numFP; i++)
+    for (int i = 0; i < model.numFP; i++)
     {
         auto const &pos = model.particles[i]->coord[0];
         fixed_points->InsertNextPoint(pos(0), pos(1), pos(2));
     }
 
-    vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
-    polydata->SetPoints(fixed_points);
+    fixed_polydata = vtkSmartPointer<vtkPolyData>::New();
+    fixed_polydata->SetPoints(fixed_points);
 
-    vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
-    vertexFilter->SetInputData(polydata);
-    vertexFilter->Update();
+    // add scalar pressure to the fixed particles
+    vtkSmartPointer<vtkDoubleArray> fixed_scalars = vtkSmartPointer<vtkDoubleArray>::New();
+    fixed_scalars->SetName("Pressure");
+    fixed_scalars->SetNumberOfComponents(1);
+    fixed_scalars->SetNumberOfTuples(model.numFP);
+    for (int i = 0; i < model.numFP; i++)
+    {
+        double pressure = model.particles[i]->p[0];
+        fixed_scalars->SetValue(i, pressure);
+    }
+    fixed_polydata->GetPointData()->SetScalars(fixed_scalars);
 
-    vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    mapper->SetInputConnection(vertexFilter->GetOutputPort());
+    vtkSmartPointer<vtkVertexGlyphFilter> fixed_vfilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    fixed_vfilter->SetInputData(fixed_polydata);
+    fixed_vfilter->Update();
+
+    vtkSmartPointer<vtkPolyDataMapper> fixed_mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    fixed_mapper->SetInputConnection(fixed_vfilter->GetOutputPort());    
+    fixed_mapper->SetColorModeToMapScalars();
+    fixed_mapper->SetScalarModeToUsePointData();
+    fixed_mapper->SetScalarVisibility(ui->fixedScalars_checkBox->isChecked());
 
     fixed_actor = vtkSmartPointer<vtkActor>::New();
     fixed_actor->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
-    fixed_actor->GetProperty()->SetOpacity(ui->fixedAlpha_slider->value()/(double)ui->fixedAlpha_slider->maximum());
-    fixed_actor->GetProperty()->SetPointSize(3);
+    fixed_actor->GetProperty()->SetOpacity(ui->fixedAlpha_slider->value() / (double)ui->fixedAlpha_slider->maximum());
+    fixed_actor->GetProperty()->SetPointSize(ui->particleSize_slider->value());
     fixed_actor->SetVisibility(ui->showFixed_checkBox->isChecked());
-    fixed_actor->SetMapper(mapper);
+    fixed_actor->SetMapper(fixed_mapper);
 
     renderer->AddActor(fixed_actor);
 
-    // Mobile particles
+    // Mobile particles ================================================
+
     mobile_points = vtkSmartPointer<vtkPoints>::New();
 
-    for(int i=model.numFP; i<model.numPart; i++)
+    for (int i = model.numFP; i < model.numPart; i++)
     {
         auto const &pos = model.particles[i]->coord[0];
         mobile_points->InsertNextPoint(pos(0), pos(1), pos(2));
@@ -224,75 +292,79 @@ DisplayWindow::addParticles()
     mobile_polydata->SetPoints(mobile_points);
 
     // add scalar pressure to the particles
-    vtkSmartPointer<vtkDoubleArray> pressureArray = vtkSmartPointer<vtkDoubleArray>::New();
-    pressureArray->SetName("Pressure");
-    pressureArray->SetNumberOfComponents(1);
-    pressureArray->SetNumberOfTuples(model.numPart - model.numFP);
+    vtkSmartPointer<vtkDoubleArray> mobile_scalars = vtkSmartPointer<vtkDoubleArray>::New();
+    mobile_scalars->SetName("Pressure");
+    mobile_scalars->SetNumberOfComponents(1);
+    mobile_scalars->SetNumberOfTuples(model.numPart - model.numFP);
     for (int i = model.numFP; i < model.numPart; i++)
     {
         double pressure = model.particles[i]->p[0];
-        pressureArray->SetValue(i - model.numFP, pressure);
+        mobile_scalars->SetValue(i - model.numFP, pressure);
     }
-    // mobile_polydata->GetPointData()->AddArray(pressureArray);
-    mobile_polydata->GetPointData()->SetScalars(pressureArray);  
+    mobile_polydata->GetPointData()->SetScalars(mobile_scalars);
 
-    // glyph filter
-    vtkSmartPointer<vtkVertexGlyphFilter> vertexFilter2 = vtkSmartPointer<vtkVertexGlyphFilter>::New();
-    vertexFilter2->SetInputData(mobile_polydata);
-    // vertexFilter2->Update();
+    // glyph filter (est-ce bien utile??)
+    vtkSmartPointer<vtkVertexGlyphFilter> mobile_vfilter = vtkSmartPointer<vtkVertexGlyphFilter>::New();
+    mobile_vfilter->SetInputData(mobile_polydata);
 
     // mapper
-    vtkSmartPointer<vtkPolyDataMapper> mapper2 = vtkSmartPointer<vtkPolyDataMapper>::New();
-    mapper2->SetInputConnection(vertexFilter2->GetOutputPort());
-    mapper2->ScalarVisibilityOn();    
-    mapper2->SetColorModeToMapScalars();
-    mapper2->SetScalarModeToUsePointData();
-    // mapper2->SelectColorArray("Pressure");
-
-    //mapper2->SetScalarRange(0.0, 1.0);
-    //mapper2->SetLookupTable(vtkSmartPointer<vtkLookupTable>::New());
-
-    // add a scalar bar
-    scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
-    scalarBar->SetLookupTable(mapper2->GetLookupTable());
-    scalarBar->SetTitle("Pressure");
-    scalarBar->SetNumberOfLabels(5);
-    // scalarBar->SetLabelFormat("%6.2f");
-    // scalarBar->SetPosition(0.1, 0.1);
-    // scalarBar->SetWidth(0.8);
-    // scalarBar->SetHeight(0.1);
-    // scalarBar->SetOrientationToHorizontal();
-    // scalarBar->SetVisibility(1);
-    renderer->AddActor2D(scalarBar);
-
-    // Create a lookup table to share between the mapper and the scalarbar.
-    // vtkNew<vtkLookupTable> hueLut;
-    // hueLut->SetTableRange(0, 1);
-    // hueLut->SetHueRange(0, 1);
-    // hueLut->SetSaturationRange(1, 1);
-    // hueLut->SetValueRange(1, 1);
-    // hueLut->Build();
-
-    // BASIC RED TO BLUE LUT
-    vtkSmartPointer<vtkLookupTable> hueLut = vtkSmartPointer<vtkLookupTable>::New();
-    hueLut->SetHueRange(0.667, 0.0);
-    hueLut->SetSaturationRange(1.0, 1.0);
-    hueLut->SetValueRange(1.0, 1.0);
-    hueLut->SetAlphaRange(1.0, 1.0);
-    hueLut->SetNumberOfTableValues(256);
-    hueLut->Build();
-
-
-    mapper2->SetLookupTable(hueLut);
-    scalarBar->SetLookupTable(hueLut);
+    vtkSmartPointer<vtkPolyDataMapper> mobile_mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mobile_mapper->SetInputConnection(mobile_vfilter->GetOutputPort());
+    mobile_mapper->SetColorModeToMapScalars();
+    mobile_mapper->SetScalarModeToUsePointData();
+    mobile_mapper->SetScalarVisibility(ui->mobileScalars_checkBox->isChecked());
 
     mobile_actor = vtkSmartPointer<vtkActor>::New();
     mobile_actor->GetProperty()->SetColor(0.0, 0.0, 0.0); // Set color to black
-    mobile_actor->GetProperty()->SetOpacity(1.0);
-    mobile_actor->GetProperty()->SetPointSize(3);
-    mobile_actor->SetMapper(mapper2);
+    mobile_actor->GetProperty()->SetOpacity(ui->mobileAlpha_slider->value() / (double)ui->mobileAlpha_slider->maximum());
+    mobile_actor->GetProperty()->SetPointSize(ui->particleSize_slider->value());
+    mobile_actor->SetVisibility(ui->showMobile_checkBox->isChecked());
+    mobile_actor->SetMapper(mobile_mapper);
 
     renderer->AddActor(mobile_actor);
+
+    // scalar bar ======================================================
+
+    // add a scalar bar
+    scalarBar = vtkSmartPointer<vtkScalarBarActor>::New();
+    scalarBar->SetTitle("Pressure");
+    scalarBar->SetNumberOfLabels(5);
+    scalarBar->SetMaximumWidthInPixels(100);
+    scalarBar->SetMaximumHeightInPixels(500);
+    //scalarBar->AnnotationTextScalingOff();
+    scalarBar->UnconstrainedFontSizeOn();
+    scalarBar->SetMaximumNumberOfColors (16);
+    scalarBar->GetLabelTextProperty()->SetFontSize(15);
+    scalarBar->GetLabelTextProperty()->SetColor(0.0, 0.0, 0.0);
+    scalarBar->GetLabelTextProperty()->ShadowOff();
+    scalarBar->GetTitleTextProperty()->SetFontSize(25);
+    scalarBar->GetTitleTextProperty()->SetColor(0.0, 0.0, 0.0);
+    scalarBar->GetTitleTextProperty()->ShadowOff();
+    scalarBar->DrawAboveRangeSwatchOn();
+    scalarBar->DrawBelowRangeSwatchOn();
+    scalarBar->SetAboveRangeAnnotation("");
+    scalarBar->SetBelowRangeAnnotation("");
+    scalarBar->SetVerticalTitleSeparation(10);
+    renderer->AddActor2D(scalarBar);
+
+    // see 
+    // https://www.compilatrix.com/docs/vtk-lookup-tables
+
+    vtkSmartPointer<vtkLookupTable> lut = vtkSmartPointer<vtkLookupTable>::New();
+    lut->SetHueRange(0.667, 0.0);
+    // set above colour to purple
+    lut->SetAboveRangeColor(1.0, 0.0, 1.0, 1.0);
+    lut->SetBelowRangeColor(0.1, 0.1, 0.1, 1.0);
+    lut->UseAboveRangeColorOn();
+    lut->UseBelowRangeColorOn();
+    lut->SetNumberOfTableValues(256);
+    lut->Build();
+
+    // set lut to the mappers
+
+    fixed_mapper->SetLookupTable(lut);
+    mobile_mapper->SetLookupTable(lut);
+    scalarBar->SetLookupTable(lut);
 }
 
 /// display a box representing the computational domain
@@ -314,7 +386,7 @@ DisplayWindow::addDomainBox()
     box_actor->GetProperty()->SetColor(0.0, 0.0, 1.0);
     box_actor->GetProperty()->SetOpacity(0.02);
     box_actor->SetVisibility(ui->showBox_checkBox->isChecked());
-    
+
     renderer->AddActor(box_actor);
 
     // Add a wireframe box
@@ -362,16 +434,15 @@ DisplayWindow::addXYZAxes()
 void
 DisplayWindow::light_update()
 {
-    ui->progressBar->setValue(model.currentTime/model.maxTime*100);
+    ui->progressBar->setValue(model.currentTime / model.maxTime * 100);
 }
 
 void
 DisplayWindow::heavy_update()
 {
     // create a timer and measure time
-    QTime timer;
+    QElapsedTimer timer;
     timer.start();
-
 
     // update particles
     updateParticlePositions();
@@ -387,58 +458,67 @@ DisplayWindow::heavy_update()
     // measure time
     int elapsed = timer.elapsed();
     ui->infos_textEdit->append(QString("GUI update time: %1 ms").arg(elapsed));
-
 }
 
 /// loop over particles and update their positions
 void
 DisplayWindow::updateParticlePositions()
 {
-    if(!mobile_points) return;
+    if (!mobile_points)
+        return;
 
-    // mobile particles only
-    for(int i=model.numFP; i<model.numPart; i++)
+    // positions: mobile particles only
+    for (int i = model.numFP; i < model.numPart; i++)
     {
         auto const &pos = model.particles[i]->coord[0];
-        mobile_points->SetPoint(i-model.numFP, pos(0), pos(1), pos(2));
+        mobile_points->SetPoint(i - model.numFP, pos(0), pos(1), pos(2));
     }
     mobile_points->Modified();
 
-    auto pressureArray = mobile_polydata->GetPointData()->GetScalars();
-    
+    // Update scalar field
+
+    auto mobile_scalars = mobile_polydata->GetPointData()->GetScalars();
+    auto fixed_scalars = fixed_polydata->GetPointData()->GetScalars();
+
     double pmin = std::numeric_limits<double>::max();
     double pmax = -std::numeric_limits<double>::max();
+
+    // fixed particles
+    for (int i = 0; i < model.numFP; i++)
+    {
+        double pressure = model.particles[i]->p[0];
+        if (pressure < pmin)
+            pmin = pressure;
+        if (pressure > pmax)
+            pmax = pressure;
+        fixed_scalars->SetTuple1(i, pressure);
+    }
+    fixed_scalars->Modified();
+
+    // mobile particles
     for (int i = model.numFP; i < model.numPart; i++)
     {
         double pressure = model.particles[i]->p[0];
-        if(pressure < pmin) pmin = pressure;
-        if(pressure > pmax) pmax = pressure;
-        pressureArray->SetTuple1(i - model.numFP, pressure);
+        if (pressure < pmin)
+            pmin = pressure;
+        if (pressure > pmax)
+            pmax = pressure;
+        mobile_scalars->SetTuple1(i - model.numFP, pressure);
     }
-    pressureArray->Modified();
-
-    // update lookup table
-    // auto lut = mobile_actor->GetMapper()->GetLookupTable();
-    // lut->SetRange(pmin, pmax);
-    // std::cout << "lut range: " << pmin << " " << pmax << std::endl;
-    // lut->Modified();
-
-
-    // update the scalar bar
-    // scalarBar->SetLookupTable(mobile_actor->GetMapper()->GetLookupTable());
-    // scalarBar->Modified();
+    mobile_scalars->Modified();
 
     // update min/max values of the mapper
-    if(ui->minScalar_checkBox->isChecked())
+    if (ui->minScalar_checkBox->isChecked())
         pmin = ui->minScalar_lineEdit->text().toDouble();
-    if(ui->maxScalar_checkBox->isChecked())
+    if (ui->maxScalar_checkBox->isChecked())
         pmax = ui->maxScalar_lineEdit->text().toDouble();
-    
-
-
 
     mobile_actor->GetMapper()->SetScalarRange(pmin, pmax);
     mobile_actor->GetMapper()->Modified();
+
+    fixed_actor->GetMapper()->SetScalarRange(pmin, pmax);
+    fixed_actor->GetMapper()->Modified();
+
 
     vtkwidget->renderWindow()->Render();
 }
