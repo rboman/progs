@@ -110,11 +110,6 @@ void DisplayWindow::on_stop_pushButton_clicked()
 {
     std::cout << "STOP..." << std::endl;
 
-    // opens a dialog to ask whether the user is sure to quit
-    // if the user clicks "yes", the program will throw an exception    
-    // if the user clicks "no", the dialog will close and the program will continue
-    // if the user closes the dialog, the program will continue
-
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "STOP", "Are you sure you want to stop the simulation?",
                                   QMessageBox::Yes|QMessageBox::No);
@@ -122,10 +117,25 @@ void DisplayWindow::on_stop_pushButton_clicked()
         throw std::runtime_error("STOP");
 }
 
+/// pause the simulation
+
 void DisplayWindow::on_pause_pushButton_clicked()
 {
-    std::cout << "PAUSE..." << std::endl;
-    // ...
+    static bool paused = false;
+    QApplication *app = qobject_cast<QApplication *>(QApplication::instance());
+
+    if(!paused)
+    {
+        paused = true;
+        ui->pause_pushButton->setText("Resume");
+        app->exec();        
+    }
+    else
+    {
+        paused = false;
+        ui->pause_pushButton->setText("Pause");
+        app->exit();    
+    }
 }
 
 void DisplayWindow::on_showBox_checkBox_toggled(bool checked)

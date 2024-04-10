@@ -86,7 +86,7 @@ cmake . -B build -DSPH_USE_GUI=ON && cmake --build build --config Debug && pytho
 ## Linux
 
 ```
-cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py tests/julia.py -k 10 --cpp --nogui --nosave
+cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py tests/waterdrop.py -k 10 --cpp --nogui --nosave
 ```
 
 
