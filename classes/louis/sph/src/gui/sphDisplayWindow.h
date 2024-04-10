@@ -54,7 +54,7 @@ class SPH_API DisplayWindow : public QMainWindow
     vtkSmartPointer<vtkActor> box_actor;
     vtkSmartPointer<vtkActor> boxwf_actor;
 
-
+    bool paused;
 
 public:
     explicit DisplayWindow(Model &model, QWidget *parent = nullptr);
@@ -77,6 +77,9 @@ private slots:
     void on_showBox_checkBox_toggled(bool checked);
     void on_showFixed_checkBox_toggled(bool checked);
     void on_fixedAlpha_slider_valueChanged(int value);
+
+    void on_minScalar_checkBox_toggled(bool checked);
+    void on_maxScalar_checkBox_toggled(bool checked);
 
 private:
     Ui::DisplayWindow *ui; ///< Qt Designer UI

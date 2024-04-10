@@ -45,7 +45,9 @@ using namespace sph;
 //  QtVTKHook doit donc être un DisplayHook, et il doit créer un QApplication,
 //  et ensuite le widget Qt.
 
-DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QMainWindow(parent), model(model), ui(new Ui::DisplayWindow)
+DisplayWindow::DisplayWindow(Model &model, QWidget *parent) 
+: QMainWindow(parent), model(model), ui(new Ui::DisplayWindow), 
+paused(false)
 {
     ui->setupUi(this);
 
@@ -59,6 +61,16 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QMainWindow(parent
     addXYZAxes();
 
     resetCamera();
+
+    // add QDoubleValidator to lineEdits
+
+    QLocale lo(QLocale::C);
+    lo.setNumberOptions(QLocale::RejectGroupSeparator);
+
+    QDoubleValidator *validator = new QDoubleValidator(this);
+    validator->setLocale(lo); // '.' as decimal separator
+    ui->minScalar_lineEdit->setValidator(validator);
+    ui->maxScalar_lineEdit->setValidator(validator);
 }
 
 DisplayWindow::~DisplayWindow()
@@ -121,7 +133,6 @@ void DisplayWindow::on_stop_pushButton_clicked()
 
 void DisplayWindow::on_pause_pushButton_clicked()
 {
-    static bool paused = false;
     QApplication *app = qobject_cast<QApplication *>(QApplication::instance());
 
     if(!paused)
@@ -157,6 +168,16 @@ void DisplayWindow::on_fixedAlpha_slider_valueChanged(int value)
     int max = ui->fixedAlpha_slider->maximum();
     fixed_actor->GetProperty()->SetOpacity(value/(double)max);
     vtkwidget->renderWindow()->Render();
+}
+
+void DisplayWindow::on_minScalar_checkBox_toggled(bool checked)
+{
+    if(paused) this->heavy_update();
+}
+
+void DisplayWindow::on_maxScalar_checkBox_toggled(bool checked)
+{
+    if(paused) this->heavy_update();
 }
 
 void
@@ -407,7 +428,15 @@ DisplayWindow::updateParticlePositions()
     // scalarBar->SetLookupTable(mobile_actor->GetMapper()->GetLookupTable());
     // scalarBar->Modified();
 
-    // update the mapper
+    // update min/max values of the mapper
+    if(ui->minScalar_checkBox->isChecked())
+        pmin = ui->minScalar_lineEdit->text().toDouble();
+    if(ui->maxScalar_checkBox->isChecked())
+        pmax = ui->maxScalar_lineEdit->text().toDouble();
+    
+
+
+
     mobile_actor->GetMapper()->SetScalarRange(pmin, pmax);
     mobile_actor->GetMapper()->Modified();
 
