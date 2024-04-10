@@ -30,6 +30,7 @@
 
 #include <QHBoxLayout>
 #include <QMessageBox>
+#include <QTime>
 
 using namespace sph;
 
@@ -50,16 +51,12 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent) : QMainWindow(parent
 
     setWindowTitle("SPH (Louis++)");
     resize(800*1.5, 600*1.5);
+    setMinimumSize(800, 600);
 
     setupGUI();
     addParticles();
     addDomainBox();
     addXYZAxes();
-
-    vtkNew<vtkNamedColors> colors;
-    renderer->GradientBackgroundOn();
-    renderer->SetBackground(colors->GetColor3d("White").GetData());
-    renderer->SetBackground2(colors->GetColor3d("LightBlue").GetData());
 
     resetCamera();
 }
@@ -80,8 +77,12 @@ DisplayWindow::setupGUI()
 
     // Renderer
     renderer = vtkSmartPointer<vtkRenderer>::New();
-    // renderer->SetActiveCamera(camera);
-    renderer->SetBackground(1.0, 1.0, 1.0);
+
+    renderer->GradientBackgroundOn();
+    vtkNew<vtkNamedColors> colors;
+    renderer->SetBackground(colors->GetColor3d("White").GetData());
+    renderer->SetBackground2(colors->GetColor3d("LightBlue").GetData());
+
     vtkwidget->renderWindow()->AddRenderer(renderer);
 }
 
@@ -102,7 +103,6 @@ void DisplayWindow::resetCamera()
 
 void DisplayWindow::on_resetCamera_pushButton_clicked()
 {
-    //std::cout << "resetting Camera..." << std::endl;
     resetCamera();
 }
 
@@ -144,6 +144,7 @@ void DisplayWindow::on_showBox_checkBox_toggled(bool checked)
     boxwf_actor->SetVisibility(checked);
     vtkwidget->renderWindow()->Render();
 }
+
 void DisplayWindow::on_showFixed_checkBox_toggled(bool checked)
 {
     fixed_actor->SetVisibility(checked);
@@ -154,11 +155,8 @@ void DisplayWindow::on_fixedAlpha_slider_valueChanged(int value)
 {
     // get max value of the slider
     int max = ui->fixedAlpha_slider->maximum();
-
-
     fixed_actor->GetProperty()->SetOpacity(value/(double)max);
     vtkwidget->renderWindow()->Render();
-
 }
 
 void
@@ -338,6 +336,37 @@ DisplayWindow::addXYZAxes()
     axes_marker->SetEnabled(1);
     axes_marker->InteractiveOff();
     // no actor to add to the renderer!
+}
+
+void
+DisplayWindow::light_update()
+{
+    ui->progressBar->setValue(model.currentTime/model.maxTime*100);
+}
+
+void
+DisplayWindow::heavy_update()
+{
+    // create a timer and measure time
+    QTime timer;
+    timer.start();
+
+
+    // update particles
+    updateParticlePositions();
+
+    // update infos:
+    ui->infos_textEdit->clear();
+    ui->infos_textEdit->append(QString("Time: %1 s").arg(model.currentTime));
+    ui->infos_textEdit->append(QString("Time step: %1 s").arg(model.timeStep));
+    ui->infos_textEdit->append(QString("Number of particles: %1").arg(model.numPart));
+    ui->infos_textEdit->append(QString("Fixed particles: %1").arg(model.numFP));
+    ui->infos_textEdit->append(QString("Mobile particles: %1").arg(model.numMP));
+
+    // measure time
+    int elapsed = timer.elapsed();
+    ui->infos_textEdit->append(QString("GUI update time: %1 ms").arg(elapsed));
+
 }
 
 /// loop over particles and update their positions

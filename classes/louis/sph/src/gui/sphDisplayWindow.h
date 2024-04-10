@@ -66,7 +66,8 @@ public:
     DisplayWindow &operator=(const DisplayWindow &) = delete;
 
 #ifndef SWIG
-    void updateParticlePositions();
+    void light_update();
+    void heavy_update();
 #endif
 
 private slots:
@@ -79,6 +80,8 @@ private slots:
 
 private:
     Ui::DisplayWindow *ui; ///< Qt Designer UI
+
+    void updateParticlePositions();
 
     void setupGUI();
     void resetCamera();

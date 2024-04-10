@@ -61,13 +61,14 @@ QtVTKHook::~QtVTKHook()
 void
 QtVTKHook::interact()
 {
+    window->light_update();
     app->processEvents();
 }
 
 void
 QtVTKHook::update_data()
 {
-    window->updateParticlePositions();
+    window->heavy_update();
     app->processEvents();
 }
 

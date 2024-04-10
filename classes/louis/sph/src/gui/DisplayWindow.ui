@@ -45,17 +45,7 @@
      <item>
       <widget class="QCheckBox" name="showBox_checkBox">
        <property name="text">
-        <string>box</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="showFixed_checkBox">
-       <property name="text">
-        <string>fixed</string>
+        <string>bounding box</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -65,14 +55,20 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QCheckBox" name="showFixed_checkBox">
          <property name="text">
-          <string>alpha</string>
+          <string>fixed</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QSlider" name="fixedAlpha_slider">
+         <property name="toolTip">
+          <string>set transparency</string>
+         </property>
          <property name="maximum">
           <number>100</number>
          </property>
@@ -89,14 +85,59 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QLabel" name="label_2">
+        <widget class="QCheckBox" name="checkBox">
          <property name="text">
           <string>scalars</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox"/>
+        <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>pressure</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>density</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>velocity</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>mass</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="maxScalar_lineEdit"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="maxScalar_checkBox">
+         <property name="text">
+          <string>max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="minScalar_lineEdit"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="minScalar_checkBox">
+         <property name="text">
+          <string>min</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -112,6 +153,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="infos_textEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="progressBar">
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="resetCamera_pushButton">
