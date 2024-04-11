@@ -24,6 +24,24 @@ class DisplayWindow;
 namespace sph
 {
 
+enum class ScalarCode
+{
+    DENSITY,
+    PRESSURE,
+    VELOCITY,
+    MASS
+};
+
+class ScalarField
+{
+public:
+    ScalarCode code;
+    std::string name;
+    ScalarField(ScalarCode code, std::string name) : code(code), name(name) {}
+};
+
+extern std::vector<ScalarField> scalarFields;
+
 /// this class manages the VTK widget (window) for 3D display.
 /// TODO: this should be converted to a MainWindow class later
 

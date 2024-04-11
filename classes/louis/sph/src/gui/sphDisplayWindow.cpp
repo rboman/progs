@@ -32,10 +32,21 @@
 #include <QMessageBox>
 #include <QElapsedTimer>
 
+namespace sph {
+
+std::vector<ScalarField> scalarFields = {
+    ScalarField(ScalarCode::DENSITY, "Density"),
+    ScalarField(ScalarCode::PRESSURE, "Pressure"),
+    ScalarField(ScalarCode::VELOCITY, "Velocity"),
+    ScalarField(ScalarCode::MASS, "Mass")
+    };
+
+}; // namespace sph
+
 using namespace sph;
 
 // -----------------------------------------------------------------------------
-// Notes: pourquoi 2 objets?
+// Notes: pourquoi 2 objets (QtVTKHook et DisplayHook) ?
 //  A terme, on veut garder le code SPH indépendant de Qt.
 //  Il n'est donc pas question de créer un objet QApplication dans main().
 //  Il n'est pas possible de créer un seul objet qui serait un DisplayHook et un
@@ -71,6 +82,10 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent)
     validator->setLocale(lo); // '.' as decimal separator
     ui->minScalar_lineEdit->setValidator(validator);
     ui->maxScalar_lineEdit->setValidator(validator);
+
+    ui->scalars_comboBox->clear();
+    for(auto const &fields : scalarFields)
+        ui->scalars_comboBox->addItem(QString::fromStdString(fields.name));
 }
 
 DisplayWindow::~DisplayWindow()
@@ -211,13 +226,15 @@ DisplayWindow::on_maxScalar_checkBox_toggled(bool checked)
         this->heavy_update();
 }
 
-void DisplayWindow::on_fixedScalars_checkBox_toggled(bool checked)
+void
+DisplayWindow::on_fixedScalars_checkBox_toggled(bool checked)
 {
     fixed_actor->GetMapper()->SetScalarVisibility(checked);
     vtkwidget->renderWindow()->Render();
 }
 
-void DisplayWindow::on_mobileScalars_checkBox_toggled(bool checked)
+void
+DisplayWindow::on_mobileScalars_checkBox_toggled(bool checked)
 {
     mobile_actor->GetMapper()->SetScalarVisibility(checked);
     vtkwidget->renderWindow()->Render();
@@ -264,7 +281,7 @@ DisplayWindow::addParticles()
     fixed_vfilter->Update();
 
     vtkSmartPointer<vtkPolyDataMapper> fixed_mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    fixed_mapper->SetInputConnection(fixed_vfilter->GetOutputPort());    
+    fixed_mapper->SetInputConnection(fixed_vfilter->GetOutputPort());
     fixed_mapper->SetColorModeToMapScalars();
     fixed_mapper->SetScalarModeToUsePointData();
     fixed_mapper->SetScalarVisibility(ui->fixedScalars_checkBox->isChecked());
@@ -331,9 +348,9 @@ DisplayWindow::addParticles()
     scalarBar->SetNumberOfLabels(5);
     scalarBar->SetMaximumWidthInPixels(100);
     scalarBar->SetMaximumHeightInPixels(500);
-    //scalarBar->AnnotationTextScalingOff();
+    // scalarBar->AnnotationTextScalingOff();
     scalarBar->UnconstrainedFontSizeOn();
-    scalarBar->SetMaximumNumberOfColors (16);
+    scalarBar->SetMaximumNumberOfColors(16);
     scalarBar->GetLabelTextProperty()->SetFontSize(15);
     scalarBar->GetLabelTextProperty()->SetColor(0.0, 0.0, 0.0);
     scalarBar->GetLabelTextProperty()->ShadowOff();
@@ -347,14 +364,13 @@ DisplayWindow::addParticles()
     scalarBar->SetVerticalTitleSeparation(10);
     renderer->AddActor2D(scalarBar);
 
-    // see 
+    // see
     // https://www.compilatrix.com/docs/vtk-lookup-tables
 
     vtkSmartPointer<vtkLookupTable> lut = vtkSmartPointer<vtkLookupTable>::New();
     lut->SetHueRange(0.667, 0.0);
-    // set above colour to purple
-    lut->SetAboveRangeColor(1.0, 0.0, 1.0, 1.0);
-    lut->SetBelowRangeColor(0.1, 0.1, 0.1, 1.0);
+    lut->SetAboveRangeColor(1.0, 0.0, 1.0, 1.0); // purple
+    lut->SetBelowRangeColor(0.1, 0.1, 0.1, 1.0); // almost black
     lut->UseAboveRangeColorOn();
     lut->UseBelowRangeColorOn();
     lut->SetNumberOfTableValues(256);
@@ -374,7 +390,9 @@ DisplayWindow::addDomainBox()
 {
     // Create a cube source
     vtkSmartPointer<vtkCubeSource> cubeSource = vtkSmartPointer<vtkCubeSource>::New();
-    cubeSource->SetBounds(0.0, model.dom_dim, 0.0, model.dom_dim, 0.0, model.dom_dim);
+    cubeSource->SetBounds(0.0, model.dom_dim,
+                          0.0, model.dom_dim,
+                          0.0, model.dom_dim);
 
     // Create a mapper
     vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -425,17 +443,23 @@ DisplayWindow::addXYZAxes()
     axes_marker = vtkSmartPointer<vtkOrientationMarkerWidget>::New();
     axes_marker->SetOrientationMarker(axes);
     axes_marker->SetInteractor(vtkwidget->renderWindow()->GetInteractor());
-    // axes_marker->SetViewport(0.0, 0.0, 0.3, 0.3);
     axes_marker->SetEnabled(1);
     axes_marker->InteractiveOff();
     // no actor to add to the renderer!
 }
+
+/// This function is called every time steps.
+/// It should remain very fast.
 
 void
 DisplayWindow::light_update()
 {
     ui->progressBar->setValue(model.currentTime / model.maxTime * 100);
 }
+
+/// This function is called every seconds in order to update the display
+/// with the actual data in memory.
+/// It can be slower than light_update.
 
 void
 DisplayWindow::heavy_update()
@@ -455,19 +479,29 @@ DisplayWindow::heavy_update()
     ui->infos_textEdit->append(QString("Fixed particles: %1").arg(model.numFP));
     ui->infos_textEdit->append(QString("Mobile particles: %1").arg(model.numMP));
 
-    // measure time
+    // display time spent in this routine
     int elapsed = timer.elapsed();
     ui->infos_textEdit->append(QString("GUI update time: %1 ms").arg(elapsed));
 }
 
-/// loop over particles and update their positions
+/// Loop over particles and update their positions and scalar field
+
 void
 DisplayWindow::updateParticlePositions()
 {
     if (!mobile_points)
         return;
 
-    // positions: mobile particles only
+    // positions: fixed particles 
+    //  (they can move thanks to prescribed displacements)
+    for (int i = 0; i < model.numFP; i++)
+    {
+        auto const &pos = model.particles[i]->coord[0];
+        fixed_points->SetPoint(i, pos(0), pos(1), pos(2));
+    }
+    fixed_points->Modified();
+
+    // positions: mobile particles
     for (int i = model.numFP; i < model.numPart; i++)
     {
         auto const &pos = model.particles[i]->coord[0];
@@ -518,7 +552,6 @@ DisplayWindow::updateParticlePositions()
 
     fixed_actor->GetMapper()->SetScalarRange(pmin, pmax);
     fixed_actor->GetMapper()->Modified();
-
 
     vtkwidget->renderWindow()->Render();
 }

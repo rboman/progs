@@ -92,17 +92,19 @@ cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py t
 
 ## Notes résultats / TODO
 
-  - [ ] domaine non cubique
+
   - [x] `--nogui`
-  - [ ] pas de sauvegarde disque des résultats (pour benchs)
+  - [x] pas de sauvegarde disque des résultats (pour benchs)
+  - [x] c++: visu boite domaine
+  - [x] démarrer le C++ sans passer par les fichiers fortran
+  - [ ] c++: visu de tous les champs dans GUI
+  - [ ] domaine non cubique 
   - [ ] sauvegarde direct en `.vtp`
   - [ ] g_timers en fortran
-  - [ ] c++: visu boite domaine
   - [ ] imprimer parametres de Model au démarrage
   - [ ] faire un "print" des autres objets
   - [ ] fortran: ETA
   - [ ] ETA en hms si nécessaire
-  - [ ] démarrer le C++ sans passer par les fichiers fortran
   - [ ] supprimer fichier paths.txt
-  - [ ] faire plusieurs modules
+  - [ ] fortran: faire plusieurs modules
 
