@@ -97,14 +97,21 @@ cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py t
   - [x] pas de sauvegarde disque des résultats (pour benchs)
   - [x] c++: visu boite domaine
   - [x] démarrer le C++ sans passer par les fichiers fortran
-  - [ ] c++: visu de tous les champs dans GUI
+  - [x] c++: visu de tous les champs dans GUI
+  - [ ] affichage stats (nb min, max, moy part. dans les cellules.)
   - [ ] domaine non cubique 
   - [ ] sauvegarde direct en `.vtp`
   - [ ] g_timers en fortran
-  - [ ] imprimer parametres de Model au démarrage
+  - [x] imprimer parametres de Model au démarrage
   - [ ] faire un "print" des autres objets
   - [ ] fortran: ETA
   - [ ] ETA en hms si nécessaire
-  - [ ] supprimer fichier paths.txt
+  - [ ] supprimer fichier `paths.txt`
   - [ ] fortran: faire plusieurs modules
+  - [ ] implémenter Euler
+  - [ ] probes: a given particle through time
+  - [ ] probes: a field evaluated along a line at regular intervals
+  - [ ] probes: max, min, dDx, Dy, Dy
+  - [ ] probes: dt
+  - [ ] initial pressure: p0(z) = rho g z
 
