@@ -88,9 +88,9 @@ Particle::getNeighbours()
         int cellsToCheck[27];            // number of the cells to check for the neighbours
 
         // calculates the number of the cell in which the particle is
-        int xCell = (int)((xyz(0) - fmod(xyz(0), sorter->dx)) / sorter->dx) + 1;
-        int yCell = (int)((xyz(1) - fmod(xyz(1), sorter->dx)) / sorter->dx) + 1;
-        int zCell = (int)((xyz(2) - fmod(xyz(2), sorter->dx)) / sorter->dx) + 1;
+        int xCell = round((xyz(0) - fmod(xyz(0), sorter->dx)) / sorter->dx) + 1;
+        int yCell = round((xyz(1) - fmod(xyz(1), sorter->dx)) / sorter->dx) + 1;
+        int zCell = round((xyz(2) - fmod(xyz(2), sorter->dx)) / sorter->dx) + 1;
 
         if (xCell < 1)
             xCell = 1;

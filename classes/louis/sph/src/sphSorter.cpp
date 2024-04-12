@@ -32,9 +32,9 @@ Sorter::execute()
     {
         Eigen::Vector3d const &pos = p->coord[this->model.RKstep];
 
-        int ix = (int)((pos(0) - fmod(pos(0), this->dx)) / this->dx) + 1;
-        int iy = (int)((pos(1) - fmod(pos(1), this->dx)) / this->dx) + 1;
-        int iz = (int)((pos(2) - fmod(pos(2), this->dx)) / this->dx) + 1;
+        int ix = round((pos(0) - fmod(pos(0), this->dx)) / this->dx) + 1;
+        int iy = round((pos(1) - fmod(pos(1), this->dx)) / this->dx) + 1;
+        int iz = round((pos(2) - fmod(pos(2), this->dx)) / this->dx) + 1;
 
         if (ix < 1)
             ix = 1;
