@@ -149,6 +149,8 @@ Model::solve()
         ite++;
     }
 
+    std::cout << "End of the simulation." << std::endl;
+
     if (this->displayHook)
     {
         g_timers["GUI"].start();

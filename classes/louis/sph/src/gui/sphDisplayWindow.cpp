@@ -486,15 +486,16 @@ DisplayWindow::heavy_update()
     // update infos:
     ui->infos_textEdit->clear();
     ui->infos_textEdit->append(QString("Time: %1 / %2 s").arg(model.currentTime).arg(model.maxTime));
-    ui->infos_textEdit->append(QString("Time step: %1 s").arg(model.timeStep));
+    ui->infos_textEdit->append(QString("Time step: %1 s\n").arg(model.timeStep));
+    
     ui->infos_textEdit->append(QString("Number of particles: %1").arg(model.numPart));
     ui->infos_textEdit->append(QString("Fixed particles: %1 (%2 %)").arg(model.numFP).arg(model.numFP * 100.0 / model.numPart));
-    ui->infos_textEdit->append(QString("Mobile particles: %1 (%2 %)").arg(model.numMP).arg(model.numMP * 100.0 / model.numPart));
+    ui->infos_textEdit->append(QString("Mobile particles: %1 (%2 %)\n").arg(model.numMP).arg(model.numMP * 100.0 / model.numPart));
 
     // cpu times
     double cpu_total = g_timers["TOTAL"].elapsed() - g_timers["GUI"].elapsed();
     ui->infos_textEdit->append(QString("CPU sort: %1 %").arg( g_timers["sort"].elapsed() / cpu_total * 100));
-    ui->infos_textEdit->append(QString("CPU update: %1 %").arg( g_timers["update_vars"].elapsed() / cpu_total * 100));
+    ui->infos_textEdit->append(QString("CPU update: %1 %\n").arg( g_timers["update_vars"].elapsed() / cpu_total * 100));
 
     // display time spent in this routine
     int elapsed = timer.elapsed();

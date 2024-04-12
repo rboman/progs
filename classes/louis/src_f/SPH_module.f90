@@ -715,7 +715,7 @@ module SPH_module
         real(DP), dimension(1:3) :: u_ab         !< relative velocity between the particle and a neighbour
         real(DP), dimension(1:3) :: F            !< Volume forces
         real(DP) :: pi_ab                        !< Artificial viscosity
-        integer :: i                             !< loopcounter
+        integer :: i                             !< loop counter
         integer :: cur_RKstep                    !< pointer toward the value of the current RK step
         class(fixed_particle), pointer :: cur_neigh !< current neighbour
         real(DP) :: dt

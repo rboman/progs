@@ -9,7 +9,7 @@ if __name__ == "__main__":
     boxL = 2.
     Lfloor = 0.7
     Lwater = 0.5
-    sep = 0.05 / 4
+    sep = 0.05 / 4 
 
     kernel = CubicSplineKernel()
 
@@ -22,12 +22,12 @@ if __name__ == "__main__":
     model = Model()
     model.kernel = kernel
     model.eqState = law
-    model.h_0 = 0.06 / 4       # initial smoothing length [m]
+    model.h_0 = sep*1.2        # initial smoothing length [m]
     model.dom_dim = boxL       # domain size (cube)
     model.alpha = 0.5          # artificial viscosity factor 1
     model.beta = 0.0           # artificial viscosity factor 2
     model.kernelCorrection = False 
-    model.maxTime = 3.0        # simulation time
+    model.maxTime = 1e-10        # simulation time
     model.saveInt = 0.01 / 2   # save interval
 
     # fixed particles

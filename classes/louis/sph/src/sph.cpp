@@ -40,7 +40,10 @@ SPH_API void
 sph::print_timers()
 {
     double cpu_total = g_timers["TOTAL"].elapsed();
-    double cpu_gui = g_timers["GUI"].elapsed();
+    double cpu_gui = 0.0;
+    if (g_timers.find("GUI") != g_timers.end())
+        cpu_gui = g_timers["GUI"].elapsed();
+
     double cpu_real = cpu_total - cpu_gui;
 
     auto f(std::cout.flags()); // better choice: "std::format" in C++20
@@ -50,9 +53,9 @@ sph::print_timers()
         std::cout << std::setw(20) << t.first << " = "
                   << std::setw(10) << std::fixed << std::setprecision(2) << t.second << "s"
                   << std::setw(10) << t.second.elapsed() / g_timers["TOTAL"].elapsed() * 100 << "%";
-        if(t.first == "TOTAL")
-            std::cout << std::setw(10) << 100 << "%";
-        else if(t.first != "GUI")
+        if (t.first == "TOTAL")
+            std::cout << std::setw(10) << 100.0 << "%";
+        else if (t.first != "GUI")
             std::cout << std::setw(10) << t.second.elapsed() / cpu_real * 100 << "%";
 
         std::cout << std::endl;

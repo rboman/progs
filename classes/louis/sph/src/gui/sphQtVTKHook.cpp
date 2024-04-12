@@ -75,6 +75,7 @@ QtVTKHook::update_data()
 void
 QtVTKHook::loop()
 {
+    std::cout << "\n<close the window or click \"Resume\" to quit>" << std::endl;
     window->pause();
     std::cout << "quit()" << std::endl;
 }

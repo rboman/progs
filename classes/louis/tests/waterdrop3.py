@@ -22,7 +22,7 @@ if __name__ == "__main__":
     model = Model()
     model.kernel = kernel
     model.eqState = law
-    model.h_0 = 0.06 / 2       # initial smoothing length [m]
+    model.h_0 = sep*1.2       # initial smoothing length [m]
     model.dom_dim = boxL       # domain size (cube)
     model.alpha = 0.5          # artificial viscosity factor 1
     model.beta = 0.0           # artificial viscosity factor 2
