@@ -102,8 +102,10 @@ Model::solve()
         {
             if (this->displayHook && hooktimer.elapsed() > 0.2)
             {
-                hooktimer.reset();
+                hooktimer.reset();                
+                g_timers["GUI"].start();
                 this->displayHook->update_data();
+                g_timers["GUI"].stop();
             }
 
             if (!this->nosave)
@@ -136,7 +138,9 @@ Model::solve()
 
         if (this->displayHook)
         {
+            g_timers["GUI"].start();
             this->displayHook->interact();
+            g_timers["GUI"].stop();
         }
 
         this->update_dt();
@@ -147,8 +151,10 @@ Model::solve()
 
     if (this->displayHook)
     {
+        g_timers["GUI"].start();
         this->displayHook->update_data();
         this->displayHook->loop();
+        g_timers["GUI"].stop();
     }    
 }
 
