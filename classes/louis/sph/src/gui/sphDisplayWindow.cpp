@@ -38,8 +38,12 @@ std::vector<ScalarField> scalarFields = {
     ScalarField(ScalarCode::DENSITY, "Density"),
     ScalarField(ScalarCode::PRESSURE, "Pressure"),
     ScalarField(ScalarCode::VELOCITY, "Velocity"),
-    ScalarField(ScalarCode::MASS, "Mass")
-    };
+    ScalarField(ScalarCode::MASS, "Mass"),
+    ScalarField(ScalarCode::SPEED_OF_SOUND, "Speed of sound"),
+    ScalarField(ScalarCode::NB_NEIGHBOURS, "Number of neighbours"),
+    ScalarField(ScalarCode::MAX_MU_AB, "Max mu_ab"),
+    ScalarField(ScalarCode::SMTH_LENGTH, "Smoothing length")
+};
 
 }; // namespace sph
 
@@ -74,7 +78,6 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent)
     resetCamera();
 
     // add QDoubleValidator to lineEdits
-
     QLocale lo(QLocale::C);
     lo.setNumberOptions(QLocale::RejectGroupSeparator);
 
@@ -83,9 +86,11 @@ DisplayWindow::DisplayWindow(Model &model, QWidget *parent)
     ui->minScalar_lineEdit->setValidator(validator);
     ui->maxScalar_lineEdit->setValidator(validator);
 
+    // fill the comboBox with scalar fields
     ui->scalars_comboBox->clear();
     for(auto const &fields : scalarFields)
         ui->scalars_comboBox->addItem(QString::fromStdString(fields.name));
+
 }
 
 DisplayWindow::~DisplayWindow()
@@ -246,6 +251,13 @@ DisplayWindow::on_particleSize_slider_valueChanged(int value)
     fixed_actor->GetProperty()->SetPointSize(value);
     mobile_actor->GetProperty()->SetPointSize(value);
     vtkwidget->renderWindow()->Render();
+}
+
+void DisplayWindow::on_scalars_comboBox_currentIndexChanged(int index)
+{
+
+    if (paused)
+        this->heavy_update();
 }
 
 void
@@ -478,7 +490,7 @@ DisplayWindow::heavy_update()
     ui->infos_textEdit->append(QString("Number of particles: %1").arg(model.numPart));
     ui->infos_textEdit->append(QString("Fixed particles: %1").arg(model.numFP));
     ui->infos_textEdit->append(QString("Mobile particles: %1").arg(model.numMP));
-
+      
     // display time spent in this routine
     int elapsed = timer.elapsed();
     ui->infos_textEdit->append(QString("GUI update time: %1 ms").arg(elapsed));
@@ -491,8 +503,9 @@ DisplayWindow::updateParticlePositions()
 {
     if (!mobile_points)
         return;
-
+    // -----------------------------------------------------------------
     // positions: fixed particles 
+
     //  (they can move thanks to prescribed displacements)
     for (int i = 0; i < model.numFP; i++)
     {
@@ -509,10 +522,15 @@ DisplayWindow::updateParticlePositions()
     }
     mobile_points->Modified();
 
+
+    // -----------------------------------------------------------------
     // Update scalar field
 
     auto mobile_scalars = mobile_polydata->GetPointData()->GetScalars();
     auto fixed_scalars = fixed_polydata->GetPointData()->GetScalars();
+
+    ScalarField field = scalarFields[ui->scalars_comboBox->currentIndex()];
+
 
     double pmin = std::numeric_limits<double>::max();
     double pmax = -std::numeric_limits<double>::max();
@@ -520,7 +538,34 @@ DisplayWindow::updateParticlePositions()
     // fixed particles
     for (int i = 0; i < model.numFP; i++)
     {
-        double pressure = model.particles[i]->p[0];
+        double pressure = 0.0;
+        switch(field.code)
+        {
+            case ScalarCode::DENSITY:
+                pressure = model.particles[i]->rho[0];
+                break;
+            case ScalarCode::PRESSURE:
+                pressure = model.particles[i]->p[0];
+                break;
+            case ScalarCode::VELOCITY:
+                pressure = model.particles[i]->speed[0].norm();
+                break;
+            case ScalarCode::MASS:
+                pressure = model.particles[i]->m;
+                break;
+            case ScalarCode::SPEED_OF_SOUND:
+                pressure = model.particles[i]->c[0];
+                break;
+            case ScalarCode::NB_NEIGHBOURS:
+                pressure = model.particles[i]->neighbours.size();
+                break;
+            case ScalarCode::MAX_MU_AB:
+                pressure = model.particles[i]->max_mu_ab;
+                break;
+            case ScalarCode::SMTH_LENGTH:
+                pressure = model.particles[i]->h;
+                break;
+        }
         if (pressure < pmin)
             pmin = pressure;
         if (pressure > pmax)
@@ -532,7 +577,34 @@ DisplayWindow::updateParticlePositions()
     // mobile particles
     for (int i = model.numFP; i < model.numPart; i++)
     {
-        double pressure = model.particles[i]->p[0];
+        double pressure = 0.0;
+        switch(field.code)
+        {
+            case ScalarCode::DENSITY:
+                pressure = model.particles[i]->rho[0];
+                break;
+            case ScalarCode::PRESSURE:
+                pressure = model.particles[i]->p[0];
+                break;
+            case ScalarCode::VELOCITY:
+                pressure = model.particles[i]->speed[0].norm();
+                break;
+            case ScalarCode::MASS:
+                pressure = model.particles[i]->m;
+                break;
+            case ScalarCode::SPEED_OF_SOUND:
+                pressure = model.particles[i]->c[0];
+                break;
+            case ScalarCode::NB_NEIGHBOURS:
+                pressure = model.particles[i]->neighbours.size();
+                break;
+            case ScalarCode::MAX_MU_AB:
+                pressure = model.particles[i]->max_mu_ab;
+                break;
+            case ScalarCode::SMTH_LENGTH:
+                pressure = model.particles[i]->h;
+                break;
+        }
         if (pressure < pmin)
             pmin = pressure;
         if (pressure > pmax)
@@ -540,6 +612,9 @@ DisplayWindow::updateParticlePositions()
         mobile_scalars->SetTuple1(i - model.numFP, pressure);
     }
     mobile_scalars->Modified();
+
+    // update scalarbar title
+    scalarBar->SetTitle(field.name.c_str());
 
     // update min/max values of the mapper
     if (ui->minScalar_checkBox->isChecked())

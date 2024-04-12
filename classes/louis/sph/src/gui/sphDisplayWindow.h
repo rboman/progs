@@ -29,7 +29,11 @@ enum class ScalarCode
     DENSITY,
     PRESSURE,
     VELOCITY,
-    MASS
+    MASS,
+    SPEED_OF_SOUND,
+    NB_NEIGHBOURS,
+    MAX_MU_AB,
+    SMTH_LENGTH
 };
 
 class ScalarField
@@ -110,6 +114,7 @@ private slots:
     void on_maxScalar_checkBox_toggled(bool checked);
 
     void on_particleSize_slider_valueChanged(int value);
+    void on_scalars_comboBox_currentIndexChanged(int index);
 
 private:
     Ui::DisplayWindow *ui; ///< Qt Designer UI
