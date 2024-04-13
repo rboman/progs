@@ -9,7 +9,7 @@ import os.path
 def get_api_token():
     """read my api token
     """
-    with open('f:\Dropbox\Bin\dropbox_api_token.txt') as f:
+    with open('g:\Dropbox\Bin\dropbox_api_token.txt') as f:
         token = f.readline().rstrip()
     # print("token='{}'".format(token))
     return token
@@ -78,7 +78,8 @@ if __name__ == "__main__":
 
     # download a file directly to dropbox from a given URL:
     # url = 'https://cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/debian-live-10.3.0-amd64-standard.iso'
-    url = 'https://updates.batocera.org/x86_64/stable/last/batocera-x86_64-x86_64-38-20231014.img.gz'
+    # url = 'https://updates.batocera.org/x86_64/stable/last/batocera-x86_64-x86_64-38-20231014.img.gz'
+    url = 'https://dox.ulg.ac.be/index.php/s/PjdpGbiKkwQdbFL/download' # crée un fichier "download"
     download(url)
 
     # get space usage
