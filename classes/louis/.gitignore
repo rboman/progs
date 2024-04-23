@@ -18,3 +18,5 @@ paths.txt
 
 sph.stdout.txt
 stdout.txt
+
+!*.obj
