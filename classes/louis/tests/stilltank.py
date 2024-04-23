@@ -9,19 +9,15 @@ from sph.helpers import *
 
 def model():
 
-    Ldom = 0.8  # computational domain size
+    boxL = 0.7 # box size
 
-    Lbox = 0.7 # box size
-
-    o = (Ldom-Lbox)/2
+    fluidH = 0.62
 
     Nxy = 35  # nb of particles along x and y
-    Nz = 31  # nb of particles along z
+    # Nz = 31  # nb of particles along z
 
-    # Nxy = (Lbox - sep) / sep
-    # => sep = Lbox/(Nxy+1)
-
-    sep = Lbox/(Nxy+1)
+    # Nxy = (boxL - sep) / sep
+    sep = boxL/(Nxy+1)
 
     kernel = CubicSplineKernel()
 
@@ -35,7 +31,7 @@ def model():
     model.kernel = kernel
     model.eqState = law
     model.h_0 = sep*1.2    # initial smoothing length [m]
-    model.dom_dim = Ldom   # domain size (cube)
+    model.dom_dim = boxL   # domain size (cube)
     model.alpha = 0.5      # artificial viscosity factor 1
     model.beta = 0.0       # artificial viscosity factor 2
     model.kernelCorrection = False    
@@ -44,42 +40,40 @@ def model():
 
     # fixed particles
     # z=0
-    plane = Cube(model, o=(o, o, o),
-                 L=(boxL, boxL, sep),
+    plane = Box(model, o=(0, 0, 0),
+                 L=(boxL, boxL, 0),
                  rho=law.rho0,
                  s=sep)
     plane.generate(FixedParticle)
 
     # x=0
-    plane = Cube(model, o=(0, 0, 2 * sep),
-                L=(sep, boxL, boxL - 2 * sep),
+    plane = Box(model, o=(0, 0, 0),
+                L=(0, boxL, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
     # y=0
-    plane = Cube(model, o=(2 * sep, 0, 2 * sep),
-                L=(boxL - 4 * sep, sep, boxL - 2 * sep),
+    plane = Box(model, o=(0, 0, 0),
+                L=(boxL, 0, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
     # x=L
-    plane = Cube(model, o=(boxL - sep, 0, 2 * sep),
-                L=(sep, boxL, boxL - 2 * sep),
+    plane = Box(model, o=(boxL, 0, 0),
+                L=(0, boxL, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
     # y=L
-    plane = Cube(model, o=(2 * sep, boxL - sep, 2 * sep),
-                L=(boxL - 4 * sep, sep, boxL - 2 * sep),
+    plane = Box(model, o=(0, boxL, 0),
+                L=(boxL, 0, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
 
-
-
     # mobile particles
-    cube = Cube(model, o=(o, o, o),
-                L=(Lbox, 4*L-4*sep, 2*L),
+    cube = Box(model, o=(sep/2, sep/2, sep/2),
+                L=(boxL-sep, boxL-sep, fluidH),
                 rho=law.rho0, s=sep)
     cube.generate(MobileParticle)
 

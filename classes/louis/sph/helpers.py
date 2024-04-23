@@ -137,7 +137,7 @@ class Runner:
     #     return txt
 
 
-class Cube:
+class Box:
     """ a basic "cube" defined by its origin (o), size (L), density (rho) and 
     distance between layers (s)
     note: Zero thickness is allowed in any direction.
@@ -188,3 +188,4 @@ class Cube:
                 for k in range(nk):
                     z = sz + k * dz
                     self.model.add(ParticleClass(x, y, z, vx, vy, vz, rho0, m0))
+

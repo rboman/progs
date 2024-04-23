@@ -33,13 +33,13 @@ def model(raf_factor=1.0, save_interval=0.01, max_time=1.0, walls=False):
 
     # fixed particles
     # obstacle
-    plane = Cube(model, o=(((boxL - Lfloor) / 2), ((boxL - Lfloor) / 2), (boxL / 2)),
+    plane = Box(model, o=(((boxL - Lfloor) / 2), ((boxL - Lfloor) / 2), (boxL / 2)),
                  L=(Lfloor, Lfloor, 0),
                  rho=law.rho0,
                  s=sep)
     plane.generate(FixedParticle)
     # floor
-    plane = Cube(model, o=(0, 0, 0),
+    plane = Box(model, o=(0, 0, 0),
                  L=(boxL, boxL, 0),
                  rho=law.rho0,
                  s=sep)
@@ -47,25 +47,25 @@ def model(raf_factor=1.0, save_interval=0.01, max_time=1.0, walls=False):
 
     if walls:
         # x=0
-        plane = Cube(model, o=(0, 0, 0),
+        plane = Box(model, o=(0, 0, 0),
                     L=(0, boxL, boxL),
                     rho=law.rho0,
                     s=sep)
         plane.generate(FixedParticle)
         # y=0
-        plane = Cube(model, o=(0, 0, 0),
+        plane = Box(model, o=(0, 0, 0),
                     L=(boxL, 0, boxL),
                     rho=law.rho0,
                     s=sep)
         plane.generate(FixedParticle)
         # x=L
-        plane = Cube(model, o=(boxL, 0, 0),
+        plane = Box(model, o=(boxL, 0, 0),
                     L=(0, boxL, boxL),
                     rho=law.rho0,
                     s=sep)
         plane.generate(FixedParticle)
         # y=L
-        plane = Cube(model, o=(0, boxL, 0),
+        plane = Box(model, o=(0, boxL, 0),
                     L=(boxL, 0, boxL),
                     rho=law.rho0,
                     s=sep)
@@ -74,7 +74,7 @@ def model(raf_factor=1.0, save_interval=0.01, max_time=1.0, walls=False):
 
 
     # mobile particles
-    cube = Cube(model, o=(((boxL - Lwater) / 2), ((boxL - Lwater) / 2), ((boxL) / 2) + 0.5),
+    cube = Box(model, o=(((boxL - Lwater) / 2), ((boxL - Lwater) / 2), ((boxL) / 2) + 0.5),
                 L=(Lwater, Lwater, Lwater),
                 rho=law.rho0, s=sep)
     cube.generate(MobileParticle)

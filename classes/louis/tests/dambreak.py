@@ -48,40 +48,40 @@ def model():
 
     # fixed particles
     # z=0
-    plane = Cube(model, o=(0, 0, 0),
+    plane = Box(model, o=(0, 0, 0),
                  L=(boxL, boxL, 0),
                  rho=law.rho0,
                  s=sep)
     plane.generate(FixedParticle)
 
     # x=0
-    plane = Cube(model, o=(0, 0, 0),
+    plane = Box(model, o=(0, 0, 0),
                 L=(0, boxL, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
     # y=0
-    plane = Cube(model, o=(0, 0, 0),
+    plane = Box(model, o=(0, 0, 0),
                 L=(boxL, 0, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
     # x=L
-    plane = Cube(model, o=(boxL, 0, 0),
+    plane = Box(model, o=(boxL, 0, 0),
                 L=(0, boxL, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
     # y=L
-    plane = Cube(model, o=(0, boxL, 0),
+    plane = Box(model, o=(0, boxL, 0),
                 L=(boxL, 0, boxL),
                 rho=law.rho0,
                 s=sep)
     plane.generate(FixedParticle)
 
     # mobile particles
-    cube = Cube(model, o=(sep, sep, sep),
-                L=(L, 4*L-2*sep, 2*L),
+    cube = Box(model, o=(sep/2, sep/2, sep/2),
+                L=(L, 4*L-sep, 2*L),
                 rho=law.rho0, s=sep)
     cube.generate(MobileParticle)
 
