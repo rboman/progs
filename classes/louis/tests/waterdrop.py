@@ -5,7 +5,7 @@ from sph import *
 from sph.helpers import *
 
 
-def model(raf_factor=1.0, save_interval=0.01, max_time=1.0, walls=False):
+def model(raf_factor=1.0, save_interval=0.01, max_time=1.0, walls=False, shape='cube'):
 
     boxL = 2.
     Lfloor = 0.7
@@ -77,7 +77,12 @@ def model(raf_factor=1.0, save_interval=0.01, max_time=1.0, walls=False):
     cube = Box(model, o=(((boxL - Lwater) / 2), ((boxL - Lwater) / 2), ((boxL) / 2) + 0.5),
                 L=(Lwater, Lwater, Lwater),
                 rho=law.rho0, s=sep)
-    cube.generate(MobileParticle)
+    if shape == 'cube':
+        cube.generate(MobileParticle)
+    elif shape == 'sphere':
+        centre = (boxL/2, boxL/2, ((boxL) / 2) + 0.5 + Lwater/2)
+        sphere = Sphere(centre, Lwater/2)
+        cube.generate(MobileParticle, sphere.inside)
 
     # run SPH model
     runner = Runner(model)

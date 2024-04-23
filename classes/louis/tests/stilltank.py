@@ -39,41 +39,15 @@ def model():
     model.saveInt = 0.02   # save interval
 
     # fixed particles
-    # z=0
     plane = Box(model, o=(0, 0, 0),
-                 L=(boxL, boxL, 0),
+                 L=(boxL, boxL, boxL),
                  rho=law.rho0,
                  s=sep)
-    plane.generate(FixedParticle)
-
-    # x=0
-    plane = Box(model, o=(0, 0, 0),
-                L=(0, boxL, boxL),
-                rho=law.rho0,
-                s=sep)
-    plane.generate(FixedParticle)
-    # y=0
-    plane = Box(model, o=(0, 0, 0),
-                L=(boxL, 0, boxL),
-                rho=law.rho0,
-                s=sep)
-    plane.generate(FixedParticle)
-    # x=L
-    plane = Box(model, o=(boxL, 0, 0),
-                L=(0, boxL, boxL),
-                rho=law.rho0,
-                s=sep)
-    plane.generate(FixedParticle)
-    # y=L
-    plane = Box(model, o=(0, boxL, 0),
-                L=(boxL, 0, boxL),
-                rho=law.rho0,
-                s=sep)
-    plane.generate(FixedParticle)
+    plane.generate(FixedParticle, hollow_nohat)
 
     # mobile particles
-    cube = Box(model, o=(sep/2, sep/2, sep/2),
-                L=(boxL-sep, boxL-sep, fluidH),
+    cube = Box(model, o=(sep, sep, sep),
+                L=(boxL-2*sep, boxL-2*sep, fluidH),
                 rho=law.rho0, s=sep)
     cube.generate(MobileParticle)
 

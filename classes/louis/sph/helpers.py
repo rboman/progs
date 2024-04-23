@@ -136,11 +136,28 @@ class Runner:
     #     txt += "\tsave interval [s]                = %f\n" % self.saveInt
     #     return txt
 
+def filled(i, j, k, ni, nj, nk, x, y, z):
+    return True
+
+def hollow(i, j, k, ni, nj, nk, x, y, z):
+    return i == 0 or i == ni - 1 or j == 0 or j == nj - 1 or k == 0 or k == nk - 1
+
+def hollow_nohat(i, j, k, ni, nj, nk, x, y, z):
+    return i == 0 or i == ni - 1 or j == 0 or j == nj - 1 or k == 0
+
+class Sphere:
+    def __init__(self, o, r):
+        self.cx = o[0]
+        self.cy = o[1]
+        self.cz = o[2]
+        self.r = r
+    def inside(self, i, j, k, ni, nj, nk, x, y, z):
+        return (x - self.cx) ** 2 + (y - self.cy) ** 2 + (z - self.cz) ** 2 <= self.r ** 2
 
 class Box:
-    """ a basic "cube" defined by its origin (o), size (L), density (rho) and 
+    """ a basic rectangular cuboid defined by its origin (o), size (L), density (rho) and 
     distance between layers (s)
-    note: Zero thickness is allowed in any direction.
+    note: Zero thickness is allowed in any direction (converted to thickness = s).
     """
 
     def __init__(self, model, o=(0.0, 0.0, 0.0), L=(1.0, 1.0, 1.0), rho=1.0, s=0.1):
@@ -154,7 +171,7 @@ class Box:
         self.rho = rho
         self.s = s
 
-    def generate(self, ParticleClass):
+    def generate(self, ParticleClass, tester=filled):
         """ fills model with Particle objects of type 'ParticleClass'
         """
 
@@ -187,5 +204,6 @@ class Box:
                 y = sy + j * dy
                 for k in range(nk):
                     z = sz + k * dz
-                    self.model.add(ParticleClass(x, y, z, vx, vy, vz, rho0, m0))
+                    if tester(i, j, k, ni, nj, nk, x, y, z):
+                        self.model.add(ParticleClass(x, y, z, vx, vy, vz, rho0, m0))
 
