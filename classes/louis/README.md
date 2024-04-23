@@ -89,6 +89,14 @@ cmake . -B build -DSPH_USE_GUI=ON && cmake --build build --config Debug && pytho
 cmake . -DCMAKE_BUILD_TYPE=Release -B build && make -C build -j 10 && ./run.py tests/waterdrop.py -k 10 --cpp --nogui --nosave
 ```
 
+## Nic5
+
+```
+module load Python VTK  # required at runtime
+module load SWIG Eigen  # required for build
+cmake . -B build -DCMAKE_BUILD_TYPE=Release -DSPH_USE_GUI=OFF && make -C build -j 10
+```
+
 
 ## Notes résultats / TODO
 

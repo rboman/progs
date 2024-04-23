@@ -20,7 +20,7 @@ module load VTK
 THISDIR=`pwd`
 cd $GLOBALSCRATCH
 
-$THISDIR/../run.py -k 32 $THISDIR/../tests/waterdrop4.py
+$THISDIR/../run.py -k 32 --nogui --cpp $THISDIR/../tests/waterdrop4.py
 
 
 # Cluster: nic5

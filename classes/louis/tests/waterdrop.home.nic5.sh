@@ -17,4 +17,4 @@ module purge
 module load Python
 module load VTK
 
-../run.py -k 12 ../tests/waterdrop.py
+../run.py -k 12 --nogui --cpp ../tests/waterdrop.py

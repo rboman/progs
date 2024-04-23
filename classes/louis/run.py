@@ -32,6 +32,15 @@ def setup_pythonpath():
                                         'build', 'bin', 'Release'))  # msvc
 
 
+def run_simulation(testname):
+    """Runs a python file
+    """
+    # thanks to the "compile" command, the filename appears in the stack
+    # trace in case of errors
+    script = open(testname, encoding='utf-8').read()
+    exec(compile(script, testname, 'exec'),
+         {'__file__': testname, '__name__': '__main__'})
+
 if __name__ == "__main__":
 
     import sys, os
@@ -81,7 +90,8 @@ if __name__ == "__main__":
                 print("time:", time.strftime("%c"))
                 print("hostname:", platform.node())
                 print('-' * 80)
-                exec(open(testname, 'r', encoding='utf8').read())
+                run_simulation(testname)
+                # exec(open(testname, 'r', encoding='utf8').read())
         except Exception as err:
             print(f'\n** ERROR: {err}\n')
             import traceback
