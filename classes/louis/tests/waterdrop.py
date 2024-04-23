@@ -34,39 +34,39 @@ def model(raf_factor=1.0, save_interval=0.01, max_time=1.0, walls=False):
     # fixed particles
     # obstacle
     plane = Cube(model, o=(((boxL - Lfloor) / 2), ((boxL - Lfloor) / 2), (boxL / 2)),
-                 L=(Lfloor, Lfloor, sep),
+                 L=(Lfloor, Lfloor, 0),
                  rho=law.rho0,
                  s=sep)
     plane.generate(FixedParticle)
     # floor
     plane = Cube(model, o=(0, 0, 0),
-                 L=(boxL, boxL, sep),
+                 L=(boxL, boxL, 0),
                  rho=law.rho0,
                  s=sep)
     plane.generate(FixedParticle)
 
     if walls:
         # x=0
-        plane = Cube(model, o=(0, 0, 2 * sep),
-                    L=(sep, boxL, boxL - 2 * sep),
+        plane = Cube(model, o=(0, 0, 0),
+                    L=(0, boxL, boxL),
                     rho=law.rho0,
                     s=sep)
         plane.generate(FixedParticle)
         # y=0
-        plane = Cube(model, o=(2 * sep, 0, 2 * sep),
-                    L=(boxL - 4 * sep, sep, boxL - 2 * sep),
+        plane = Cube(model, o=(0, 0, 0),
+                    L=(boxL, 0, boxL),
                     rho=law.rho0,
                     s=sep)
         plane.generate(FixedParticle)
         # x=L
-        plane = Cube(model, o=(boxL - sep, 0, 2 * sep),
-                    L=(sep, boxL, boxL - 2 * sep),
+        plane = Cube(model, o=(boxL, 0, 0),
+                    L=(0, boxL, boxL),
                     rho=law.rho0,
                     s=sep)
         plane.generate(FixedParticle)
         # y=L
-        plane = Cube(model, o=(2 * sep, boxL - sep, 2 * sep),
-                    L=(boxL - 4 * sep, sep, boxL - 2 * sep),
+        plane = Cube(model, o=(0, boxL, 0),
+                    L=(boxL, 0, boxL),
                     rho=law.rho0,
                     s=sep)
         plane.generate(FixedParticle)

@@ -148,35 +148,43 @@ class Cube:
         self.ox = o[0]
         self.oy = o[1]
         self.oz = o[2]
-        self.Lx = L[0]
-        self.Ly = L[1]
-        self.Lz = L[2]
+        self.Lx = float(L[0])
+        self.Ly = float(L[1])
+        self.Lz = float(L[2])
         self.rho = rho
         self.s = s
 
     def generate(self, ParticleClass):
         """ fills model with Particle objects of type 'ParticleClass'
         """
-        parts = []
-        ni = int(math.ceil((self.Lx / self.s))) + 1
-        dx = 0.0 if ni == 1 else self.Lx / (ni - 1)
-        nj = int(math.ceil((self.Ly / self.s))) + 1
-        dy = 0.0 if nj == 1 else self.Ly / (nj - 1)
-        nk = int(math.ceil((self.Lz / self.s))) + 1
-        dz = 0.0 if nk == 1 else self.Lz / (nk - 1)
 
-        dvx = self.s if ni == 1 else dx
-        dvy = self.s if nj == 1 else dy
-        dvz = self.s if nk == 1 else dz
+        # handle planes with "zero" thickness
+        Lx = max(self.Lx, self.s)
+        Ly = max(self.Ly, self.s)
+        Lz = max(self.Lz, self.s)
+
+        ni = round(Lx / self.s)
+        dx = Lx / ni
+        nj = round(Ly / self.s)
+        dy = Ly / nj
+        nk = round(Lz / self.s)
+        dz = Lz / nk
 
         vx = vy = vz = 0.0
-        m0 = (dvx * dvy * dvz) * self.rho
+        m0 = (dx * dy * dz) * self.rho
         rho0 = self.rho
 
+        sx = 0.0 if self.Lx == 0.0 else dx / 2
+        sy = 0.0 if self.Ly == 0.0 else dy / 2
+        sz = 0.0 if self.Lz == 0.0 else dz / 2
+        sx += self.ox
+        sy += self.oy
+        sz += self.oz
+
         for i in range(ni):
-            x = self.ox + i * dx
+            x = sx + i * dx
             for j in range(nj):
-                y = self.oy + j * dy
+                y = sy + j * dy
                 for k in range(nk):
-                    z = self.oz + k * dz
+                    z = sz + k * dz
                     self.model.add(ParticleClass(x, y, z, vx, vy, vz, rho0, m0))

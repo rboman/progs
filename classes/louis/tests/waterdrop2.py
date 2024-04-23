@@ -5,4 +5,4 @@
 from tests.waterdrop import model
 
 if __name__ == "__main__":
-    model(raf_factor=1, save_interval=0.01, max_time=3.0, walls=True)
+    model(raf_factor=1, save_interval=0.01, max_time=2.0, walls=True)
