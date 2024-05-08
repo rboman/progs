@@ -85,12 +85,15 @@ cmake . -B build -DSPH_USE_GUI=ON && cmake --build build --config Debug && pytho
 
 ## Win / mingw
 
+notes: 
+* Python3 should be the one from mingw
+* GUI should be disabled
+* Python3/vtk is required for the conversion of .res to .vtp
+
 ```
-cmake . -B build -DSPH_USE_GUI=OFF -DCMAKE_BUILD_TYPE=Release
+cmake . -B build -DSPH_USE_GUI=OFF -DPython3_ROOT_DIR=c:\Users\r_bom\mingw64\opt\bin
 ninja -C build
 ```
-=> plante au runtime!
-
 
 ## Linux
 

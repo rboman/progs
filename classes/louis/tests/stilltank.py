@@ -32,7 +32,7 @@ def model():
     model.eqState = law
     model.h_0 = sep*1.2    # initial smoothing length [m]
     model.dom_dim = boxL   # domain size (cube)
-    model.alpha = 0.5      # artificial viscosity factor 1
+    model.alpha = 0.05     # artificial viscosity factor 1
     model.beta = 0.0       # artificial viscosity factor 2
     model.kernelCorrection = False    
     model.maxTime = 5.0    # simulation time

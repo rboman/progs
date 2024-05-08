@@ -1,1 +1,3 @@
+:: cet environmenet semble inutile...
+
 %ComSpec% /E:ON /K ""C:\Program Files (x86)\Intel\oneAPI\setvars.bat" intel64 vs2022"
