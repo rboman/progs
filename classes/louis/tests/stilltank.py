@@ -24,7 +24,7 @@ def model():
     law = QincFluid()
     law.rho0 = 1000.
     law.gamma = 7.
-    law.c0 = 35.
+    law.c0 = 30.
 
     # parameters
     model = Model()

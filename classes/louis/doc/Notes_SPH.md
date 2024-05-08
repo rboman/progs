@@ -290,6 +290,12 @@ Et on les combine:
 $$
 \Delta t = \min \left( 0.25 \Delta t_f, 0.4 \Delta t_{cv}\right)
 $$
+Note: la formule est celle de Monaghan-1989, mais Louis la code en inversant les facteurs:
+$$
+\Delta t = \min \left( 0.4 \Delta t_f, 0.25 \Delta t_{cv}\right)
+$$
+ce qui provoque un plus petit pas de temps, car généralement le terme $cv$ est le plus petit des 2.
+
 L'intégrateur temporel est RK22. Si $y' = f(t,y)$
 $$
 \left\{
