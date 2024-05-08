@@ -20,7 +20,7 @@ public:
     virtual double speed_of_sound(double rho) const = 0;
     virtual double h_factor() const = 0;
     virtual double dt_factor() const = 0;
-    friend SPH_API std::ostream &operator<<(std::ostream &os, const EqState &k) 
+    friend std::ostream &operator<<(std::ostream &os, const EqState &k) 
     {
         k.write(os);
         return os;

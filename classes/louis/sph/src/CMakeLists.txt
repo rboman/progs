@@ -72,6 +72,7 @@ IF(SPH_USE_GUI)
         RenderingFreeType
         RenderingGL2PSOpenGL2
         RenderingOpenGL2
+        RenderingAnnotation
     )
     IF(NOT VTK_FOUND)
         MESSAGE(FATAL_ERROR "VTK 9 not found!")
@@ -80,6 +81,7 @@ IF(SPH_USE_GUI)
     # VTK/Qt
     TARGET_LINK_LIBRARIES(${LIBNAME} PUBLIC ${VTK_LIBRARIES} Qt::Widgets)
 
+    message(STATUS "VTK_LIBRARIES=${VTK_LIBRARIES}")
     vtk_module_autoinit( TARGETS ${LIBNAME} 
                          MODULES ${VTK_LIBRARIES})
 

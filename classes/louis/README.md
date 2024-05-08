@@ -71,7 +71,7 @@ CXX=g++ FC=gfortran cmake . -B build -DPython3_ROOT_DIR="c:/msys64/mingw64/bin" 
 ```
 (check that msys version of python is used, otherwise "import _sphw" will fail)
 
-## Win
+## Win / msvc
 
 release
 ```
@@ -82,6 +82,15 @@ debug
 ```
 cmake . -B build -DSPH_USE_GUI=ON && cmake --build build --config Debug && python_d run.py -k 10 tests\julia.py --nogui --cpp
 ```
+
+## Win / mingw
+
+```
+cmake . -B build -DSPH_USE_GUI=OFF -DCMAKE_BUILD_TYPE=Release
+ninja -C build
+```
+=> plante au runtime!
+
 
 ## Linux
 
