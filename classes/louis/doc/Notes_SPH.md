@@ -182,7 +182,7 @@ p = c_0^2\,\rho_0 \left( \frac{\rho}{\rho_0} -1 \right)
 $$
 La *vitesse du son* $c$ se calcule en dérivant l'expression choisie à entropie constante:
 $$
-c = \left.\frac{\partial p}{\partial \rho}\right|_{s}
+c^2 = \left.\frac{\partial p}{\partial \rho}\right|_{s}
 $$
 On obtient pour le fluide quasi-incompressible:
 $$

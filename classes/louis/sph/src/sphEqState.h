@@ -49,6 +49,12 @@ public:
     }
     virtual double speed_of_sound(double rho) const override
     {
+        // d'après la wikipedia: (https://en.wikipedia.org/wiki/Speed_of_sound) 
+        // c = sqrt(gamma * R * T / M) 
+        // avec gamma = adiabatic index ou coef. de Laplace
+        //            = Cp/Cv = 1.4 pour l'air (gas diatomique O2, N2)
+        // => fixer RT, M _et_ c0 ne semble pas avoir de sens!
+        // => à réfléchir
         return c0;
     }
     virtual double h_factor() const override
