@@ -266,7 +266,7 @@ Parfois 2 couches imbriquées peuvent être nécessaires (évite une approx. par
 * On en déduit la densité en inversant l'équation d'état.
 
 $$
-\rho=\rho_0\left( 1+\frac{1}{B}\rho_0 g h\right)^{\frac{1}{\gamma}}
+\rho(z)=\rho_0\left( 1+\frac{1}{B}\rho_0 g z\right)^{\frac{1}{\gamma}}
 $$
 
 * La masse est calculée en multipliant la densité par le volume $s^d$ (où $d$ est la dimension).
