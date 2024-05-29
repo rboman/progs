@@ -16,7 +16,9 @@ class Data(ctypes.Structure):
         ('n', ctypes.c_int),
         ('x', ctypes.POINTER(ctypes.c_double)),
         ('y', ctypes.POINTER(ctypes.c_double)),
-        # We don't know the type where spline pointer points to (it is defined in a module used by interpolate.c), so we use void pointer as a ghost pointer
+        # We don't know the type where spline pointer points to 
+        # (it is defined in a module used by interpolate.c), 
+        # so we use void pointer as a ghost pointer
         ('spline', ctypes.POINTER(ctypes.c_void_p)),  # void pointer to the spline object
         ('acc', ctypes.c_void_p)  # void pointer to the acc object
     ]

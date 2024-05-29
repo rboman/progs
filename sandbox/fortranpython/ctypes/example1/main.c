@@ -1,3 +1,5 @@
+// call fortran from C with a list of structures as argument using iso_c_binding
+//
 // by Julien Heremans
 
 #include <stdio.h>
@@ -5,12 +7,15 @@
 #include <time.h>
 #include "structure.h"
 
+void show_coordinates(node *nodes, int nnodes);
+
 int
 main()
 {
-    node *nodes;
+    // create 10 nodes
+
     int nnodes = 10;
-    nodes = (node *)malloc(nnodes * sizeof(node));
+    node *nodes = (node *)malloc(nnodes * sizeof(node));
 
     srand(time(NULL));
     for (int i = 0; i < nnodes; i++)
@@ -20,7 +25,8 @@ main()
         nodes[i].y = rand() / 1e6;
     }
 
-    // Print data from C.
+    // Print data from C
+
     printf("Print data from C\n\n");
     for (int i = 0; i < nnodes; i++)
     {
@@ -29,6 +35,7 @@ main()
     printf("\n\n");
 
     // Print data from fortran
+
     show_coordinates(nodes, nnodes);
 
     return 1;
