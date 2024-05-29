@@ -1,9 +1,9 @@
 ! Julien Heremans
 
-subroutine cumsum( numbers_c, num_numbers ) bind(c, name='cumsum')
+subroutine cumsum(numbers_c, num_numbers) bind(c, name='cumsum')
 
     use iso_c_binding, only: c_int, c_ptr, c_f_pointer
-    
+
     implicit none
 
     type(c_ptr), value, intent(in) :: numbers_c
@@ -12,8 +12,7 @@ subroutine cumsum( numbers_c, num_numbers ) bind(c, name='cumsum')
     integer :: i
     integer(c_int) :: sum
 
-
-    call c_f_pointer( numbers_c, numbers_f, [num_numbers] )
+    call c_f_pointer(numbers_c, numbers_f, [num_numbers])
 
     sum = 0
     do i = 1, num_numbers
@@ -21,6 +20,4 @@ subroutine cumsum( numbers_c, num_numbers ) bind(c, name='cumsum')
         numbers_f(i) = sum
     end do
 
-    
 end subroutine
-        

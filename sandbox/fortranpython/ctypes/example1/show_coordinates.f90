@@ -1,12 +1,12 @@
 module utilities
 
-    contains
+contains
 
-    subroutine show_coordinates( nodes_c, nnodes ) bind( C, name="show_coordinates")
+    subroutine show_coordinates(nodes_c, nnodes) bind(C, name="show_coordinates")
 
         use, intrinsic :: iso_c_binding, only: c_int, c_double, c_ptr, C_F_POINTER
-        
-        implicit none 
+
+        implicit none
 
         ! Define a C-like structure (defined in 'structure.h') in a Fortran way.
         type, bind(c) :: node
@@ -20,8 +20,8 @@ module utilities
 
         type(node), pointer :: nodes(:)
         integer :: i
-        
-        call c_f_pointer(nodes_c, nodes, [nnodes] )
+
+        call c_f_pointer(nodes_c, nodes, [nnodes])
 
         print *, "Printing data from Fortran"
         do i = 1, nnodes
@@ -30,4 +30,4 @@ module utilities
 
     end subroutine
 
-end module 
+end module
