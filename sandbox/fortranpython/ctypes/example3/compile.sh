@@ -1,0 +1,1 @@
+gcc -shared -o interpolate.so -fPIC interpolate.c -lgsl # l'ordre des flags est important!

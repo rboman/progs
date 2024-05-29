@@ -1,0 +1,1 @@
+gcc -shared -o sumlib.so -fPIC sum.c
