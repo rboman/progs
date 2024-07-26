@@ -65,7 +65,7 @@ def sysName():
     elif 'mingw' in plat:
         return 'mingw'
     elif 'linux' in plat:
-        return'mingw'
+        return 'linux'
     else:
         return plat
 
