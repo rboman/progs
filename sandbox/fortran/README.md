@@ -1,3 +1,3 @@
 # Fortran
 
-several small program to test fortran things
+several small programs to test fortran things

@@ -1,8 +1,11 @@
 ! sort using C qsort
+
 program test_sort
     use, intrinsic:: iso_C_binding
+
     integer, target :: x(10)
     data x/1, 4, 3, 8, 2, 6, 9, 7, 0, 5/
+
     interface
         subroutine qsort(array, n, m, compar) bind(c)
             use, intrinsic:: iso_C_binding
@@ -19,8 +22,8 @@ program test_sort
     call qsort(c_loc(x), 10_c_size_t, c_sizeof(x(1)), c_funloc(icmp))
     print *, x
 end
-!
-integer(c_int) function icmp(a, b) bind(C)
+
+integer(c_int) function icmp(a, b) bind(c)
     use, intrinsic:: iso_C_binding
     integer(c_int) :: a, b
     if (a > b) then

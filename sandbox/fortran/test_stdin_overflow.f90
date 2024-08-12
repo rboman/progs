@@ -1,5 +1,5 @@
 !
-! test stdin with minGW.
+! test stdin with MinGW.
 !
 ! cmake -G "Unix Makefiles" ..
 ! cmake --build . -- -j 3 && test_stdin.exe < ..\test_stdin.txt

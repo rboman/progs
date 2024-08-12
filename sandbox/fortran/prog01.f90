@@ -1,7 +1,7 @@
 ! sandbox fortran90
 
 program prog01
-    use progmod
+    use progmod        ! cfr progmod.f90 - définit "globvar", un entier global
     implicit none
 
     double precision :: z = 1.0d0 ! <= 'd' car 'e' c'est un real (float)

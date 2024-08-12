@@ -17,14 +17,14 @@ program test_formats
 
     nd_scn(1) = 1.0
     nd_scn(2) = 222222.222222222
-    nd_scn(3) = 10000.0   ! < genere des etoiles
+    nd_scn(3) = 10000.0   ! < génère des étoiles
     nd_scn(4) = 4.444444444444444
     nd_scn(5) = 5.555555555555555
 
     print "(A)", 'nd_scn ='
     write (*, 10) (nd_scn(ni), ni=1, 5)
 
-10  format(1x, f26.16)  !< equivalent portable
+10  format(1x, f26.16)  !< équivalent portable
 !10 format(1x,f) !< accepté par uniquement par intel
 !                (gfortran: Error: Nonnegative width required in format string)
 

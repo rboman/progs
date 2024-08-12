@@ -1,6 +1,6 @@
 ! see https://www.intel.com/content/www/us/en/docs/fortran-compiler/developer-guide-reference/2024-0/move-alloc.html
 
-program test_print
+program test_move_alloc
 
     implicit none
 

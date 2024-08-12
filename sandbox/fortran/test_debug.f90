@@ -1,20 +1,24 @@
 
 program test_debug
 
+    implicit none
+
+    ! définition d'une structure "s_bandecage"
     type s_bandecage
         logical :: etatok
         logical :: selection
     end type s_bandecage
 
-    type(s_bandecage)         :: BandeCage
+    ! instanciation de la structure "s_bandecage"
+    type(s_bandecage)         :: b
 
-    BandeCage%etatok = .true.
-    BandeCage%selection = .false.
+    b%etatok = .true.
+    b%selection = .false.
 
-    if (BandeCage%etatok .eqv. .true.) then
-        print *, "BandeCage%etaok == .true."
+    if (b%etatok .eqv. .true.) then
+        print *, "b%etaok == .true."
     else
-        print *, "BandeCage%etaok == .false."
+        print *, "b%etaok == .false."
     end if
 
 end program test_debug

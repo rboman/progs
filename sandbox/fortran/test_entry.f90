@@ -1,4 +1,4 @@
-! example of the "entry" statement
+! example of the "entry" statement (à éviter!!)
 
 program test_entry
     call sub1()
