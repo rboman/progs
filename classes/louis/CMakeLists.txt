@@ -3,7 +3,7 @@ PROJECT(LOUIS_CPP
         VERSION 0.1
         DESCRIPTION "Rewriting of the SPH code of Louis GOFFIN in C++"
         HOMEPAGE_URL "https://github.com/rboman/progs"
-        LANGUAGES CXX)
+        LANGUAGES CXX C)
 INCLUDE(CMakePrintHelpers)
 
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON) # creates "compile_commands.json"
