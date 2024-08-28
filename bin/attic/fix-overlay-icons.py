@@ -10,21 +10,16 @@ import winreg as reg
 # The names of all overlay icons that shall be boosted
 # (you may add empty lines or comment out certain names):
 BOOST = """
-    Tortoise1Normal
-    Tortoise2Modified
-    Tortoise3Conflict
-    Tortoise4Locked
-    Tortoise5ReadOnly
-    Tortoise6Deleted
-    Tortoise7Added
-    Tortoise8Ignored
-    Tortoise9Unversioned
-    Offline Files
-    OneDrive1
-    OneDrive2
-    OneDrive3
     DropboxExt01
     DropboxExt02
+    DropboxExt03
+    DropboxExt04
+    DropboxExt05
+    DropboxExt06
+    DropboxExt07
+    DropboxExt08
+    DropboxExt09
+    DropboxExt10
 """
 
 # Write a backup of the current registry if necessary:
