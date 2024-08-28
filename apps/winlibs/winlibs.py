@@ -16,18 +16,45 @@ def checkExe(exe):
     except OSError:
         return ""
 
-def uncompress_7z(file, targetdir):
-    print(f"uncompressing {file} to {targetdir}")
+def uncompress_7z(file):
+    """uncompress a 7z file to the current directory
+    7z should be installed.
+    """
+    print(f"uncompressing {file} to {os.getcwd()}")
     cmd = [zip7_path, 'x', 
             '-y', # assume Yes on all queries
             '-bd', # disable progress indicator
            file]
     print(cmd)
-    iop = subprocess.call(cmd)
+    with open(os.devnull, 'w') as FNULL:
+        iop = subprocess.call(cmd, stdout=FNULL) #, stderr=subprocess.STDOUT)
     if iop != 0:
         raise Exception(f"failed to uncompress {file}")
 
+def name_version(file_without_ext):
+    """extract name and version from a 7z file
+    """
+    name = file_without_ext.split('-')[0]
+    try:
+        version = file_without_ext.split('-')[1]
+    except:
+        version = "0"
+    return name, version
 
+class Entry:
+    def __init__(self, file, mtime, in_store, installed):
+        self.file = file
+        self.mtime = mtime
+        self.in_store = in_store
+        self.installed = installed
+
+    def __str__(self):
+        strtime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.mtime))
+        name, version = name_version(os.path.splitext(self.file)[0])
+        return f"{name:<15} {version:<8} {strtime:<20} in_store={self.in_store:<2} installed={self.installed:<2}"
+
+    def __repr__(self):
+        return self.__str__()
 
 def main():
     
@@ -47,8 +74,8 @@ def main():
     if not os.path.exists(storagepath):
         raise Exception("storagepath does not exist")
     
-    # list of libraries
-    libs = []
+    # list of libraries in the dropbox folder
+    libs = {}
     for file in os.listdir(storagepath):
         
         if file.endswith(".7z"):
@@ -57,24 +84,50 @@ def main():
             # get modification time
             mtime = os.path.getmtime(fullpath)
             # get version from filename
-            try:
-                version = file_without_ext.split('-')[1]
-            except:
-                version = "0"
+            libname, version = name_version(file_without_ext)
 
-            libs.append({'file': file, 'mtime': mtime, 'version': version}) 
+            libs.setdefault(libname, {}) # define a dict of version if not exists
+            lib_versions = libs[libname]
+            if(version in lib_versions):  # version already exists (if we decide to scan installation folder first in the future)
+                # print(f"{libname}:version {version} already exists")
+                entry = lib_versions[version]
+                entry.in_store = True
+                entry.mtime = mtime
+            else:
+                # print(f"{libname}: adding version {version}")
+                lib_versions[version] = Entry(file, mtime, in_store=True, installed=False)
 
+    # scan installation folder
+    if 1:
+        for folder in os.listdir('.'):
+            if os.path.isdir(folder):
+                libname, version = name_version(folder)             
+                libs.setdefault(libname, {}) # define a dict of version if not exists
+                lib_versions = libs[libname]
+                if(version in lib_versions):  # version already exists (if we decide to scan installation folder first in the future)
+                    entry = lib_versions[version]
+                    entry.installed = True
+                else:
+                    lib_versions[version] = Entry('', '', in_store=False, installed=True)
 
     # pretty print lib names, mod time and version no
 
-    for lib in libs:
-        # convert mtime to string
-        strtime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(lib['mtime']))
-        # print(lib['file'], strtime, lib['version'])
+    if 1:
+        for libname in libs:
+            # print(libname)
+            lib_versions = libs[libname]
+            for version in lib_versions:
+                entry = lib_versions[version]
+                print(entry)
 
-        print("{:<30} {:<22} {:<15}".format(lib['file'], strtime, lib['version']))
 
-        uncompress_7z(os.path.join(storagepath, lib['file']), libpath)
+            # convert mtime to string
+            #strtime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(lib['mtime']))
+            # print(lib['file'], strtime, lib['version'])
+
+            #print("{:<30} {:<22} {:<15}".format(lib['file'], strtime, lib['version']))
+
+            # uncompress_7z(os.path.join(storagepath, lib['file']), libpath)
 
     return 0
 
@@ -84,6 +137,8 @@ def main():
 # from https://stackoverflow.com/questions/12118162/how-to-determine-the-dropbox-folder-location-programmatically
 
 def dropbox_path():
+    """guess the dropbox path from the info.json file
+    """
     import os
     from pathlib import Path
     import json
