@@ -18,9 +18,10 @@ def checkExe(exe):
 
 def uncompress_7z(file, targetdir):
     print(f"uncompressing {file} to {targetdir}")
-    # file = file.replace("\\", "/")
-    # cmd = [zip7_path, 'x', '-o', targetdir, file]
-    cmd = [zip7_path, 'x', file]
+    cmd = [zip7_path, 'x', 
+            '-y', # assume Yes on all queries
+            '-bd', # disable progress indicator
+           file]
     print(cmd)
     iop = subprocess.call(cmd)
     if iop != 0:
