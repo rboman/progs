@@ -1,7 +1,8 @@
-
+! this module defines a file in memory as a linked-list of lines of variable length.
 
 module memfile
     implicit none
+    private
 
     type :: line_t
         character(len=:), allocatable :: line
@@ -10,8 +11,8 @@ module memfile
 
     type, public :: memfile_t
         character(len=:), allocatable :: name
-        type(line_t), pointer :: first => null()
-        type(line_t), pointer :: last => null()
+        type(line_t), pointer, private :: first => null()
+        type(line_t), pointer, private :: last => null()
 
         contains
             procedure :: write => memfile_write
@@ -38,18 +39,19 @@ contains
         this%last => new_line
     end subroutine memfile_write
 
+
     subroutine memfile_print(this)
         class(memfile_t), intent(in) :: this
         type(line_t), pointer :: current
 
         print "(A,A,A,I0,A)", 'file: ', this%name, ' : (', this%nblines(), ' lines)'
-
         current => this%first
         do while (associated(current))
             print *, '"'//current%line//'"'
             current => current%next
         end do
     end subroutine memfile_print
+
 
     function memfile_nblines(this) result(n)
         class(memfile_t), intent(in) :: this
