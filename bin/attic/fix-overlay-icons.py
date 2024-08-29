@@ -1,6 +1,28 @@
 #! /usr/bin/python3
+# -*- coding: utf-8 -*-
+#
+# from https://github.com/Cito/fix-overlay-icons/blob/main/fix-overlay-icons.py
+# added: run as admin.
 
 """Fix the overlay icons in Windows."""
+
+# ------------------------------------------------------------------------------
+# ask for admin's privileges
+# from https://stackoverflow.com/questions/19672352/how-to-run-python-script-with-elevated-privilege-on-windows
+# ------------------------------------------------------------------------------
+import ctypes, sys
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+if not is_admin():
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+    sys.exit()
+
+# ------------------------------------------------------------------------------
 
 import codecs
 import os
