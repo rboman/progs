@@ -3,7 +3,7 @@
 
 import os, time, sys
 import subprocess, shutil
-import _winapi
+import re
 
 def uncompress_7z(file):
     """uncompress a 7z file to the current directory
@@ -181,10 +181,42 @@ def do_clean(db):
             print(f"deleting {folder}...")
             shutil.rmtree(folder)
 
+def list_junctions():
+    """Build a dict of current junctions and their target
+    e.g. {'LLVM': 'LLVM-17.0.6', 'VTK': 'VTK-9.1.0', ...}
+    """
+    junctions = {}
+    cmd = ['dir', '/aL']
+    proc = subprocess.run(cmd, shell=True, capture_output=True)
+    # print('returncode=',  proc.returncode) # fails if no junction (returncode=1)
+    
+    # print(proc.stdout.decode())
+    lines = proc.stdout.decode().split('\n')
+    for line in lines:
+        if 'JUNCTION' in line:
+            # print(line)
+            # regexp to extract folder name and junction target from:
+            # e.g. "02/09/2024  15:20    <JUNCTION>     LLVM [C:\Users\r_bom\dev\progs\apps\winlibs\lib\LLVM-17.0.6]"
+            name, target = re.search(r'JUNCTION\>\s+(.*)\s+\[([^\]]+)', line).groups()
+            junctions[name] = os.path.basename(target)
+    return junctions
+
+
+def do_unlink():
+    """remove all junctions
+    """
+    junctions = list_junctions()
+    for name in junctions:
+        print(f"unlinking {name}...")
+        os.remove(name)
+
 
 def do_link_newest(db):
-    """make symbolic link to the newest version of each library
+    """make symbolic links to the newest version of each library.
+    We try to be smart and link only if the target is different from the current junction
     """
+    junctions = list_junctions()
+    print('junctions=',junctions)
 
     # gather folder names to be linked
 
@@ -198,15 +230,75 @@ def do_link_newest(db):
         newest = versions[-1]
         if newest == '0':
             continue # no version number
-        
+
         # newest_entry = db.libs[libname][newest]
 
+        target = libname+'-'+newest
+
+        # check if a junction already exists
+        if libname in junctions:
+            if junctions[libname] != target:
+                print(f"unlinking {libname}...")
+                os.remove(libname)
+            else:
+                # print(f"{libname} already linked to {target}")
+                continue
+
+        # create a junction
         cmd = ['mklink', '/j', os.fsdecode(libname), os.fsdecode(libname+'-'+newest)]
         print(' '.join(cmd))
         proc = subprocess.run(cmd, shell=True, capture_output=True)
         if proc.returncode:
-            raise OSError(proc.stderr.decode().strip())
+            raise OSError(proc.stderr.decode().strip())        
 
+def version_less(v1, v2):
+    """compare two version strings
+    """
+    v1 = [int(u) for u in v1.split('.')]
+    v2 = [int(u) for u in v2.split('.')]
+    return v1 < v2
+
+def version_equal(v1, v2):
+    """compare two version strings
+    """
+    v1 = [int(u) for u in v1.split('.')]
+    v2 = [int(u) for u in v2.split('.')]
+    return v1 == v2
+
+def do_update_to_newest(db):
+    """update the installed libraries from the storage
+    """
+    for libname in db.libs:
+        print('updating', libname)
+        # sort installed versions and get newest one
+        versions_i = [k for k in db.libs[libname].keys() if db.libs[libname][k].installed]
+        versions_i.sort(key=lambda s: [int(u) for u in s.split('.')])
+        newest_i = None
+        if len(versions_i) != 0:
+            newest_i = versions_i[-1]
+        print('newest_i=', newest_i)
+
+        # sort stored versions and get newest one
+        versions_s = [k for k in db.libs[libname].keys() if db.libs[libname][k].in_store]
+        versions_s.sort(key=lambda s: [int(u) for u in s.split('.')])
+        newest_s = None
+        if len(versions_s) != 0:
+            newest_s = versions_s[-1]
+        print('newest_s=', newest_s)
+
+        if newest_s is None:
+            print(f"{libname}-{newest_i} is not in the storage folder! You may want to zip and store it.")
+            continue
+    
+        if newest_i is not None:
+            if version_less(newest_s, newest_i):
+                print(f"{libname}-{newest_i} is more recent than the one in the storage {newest_s}! You may want to zip and store it.")
+                continue 
+            elif version_equal(newest_s, newest_i):
+                print(f"{libname}-{newest_i} is already up to date")
+                continue
+
+        uncompress_7z(os.path.join(db.storagepath, db.libs[libname][newest_s].file))
 
 
 if __name__ == "__main__":
@@ -217,10 +309,12 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='Winlibs')
     parser.add_argument('command', help='command', choices=[
-                        'status', # list installed and available libraries
-                        'clean', 
-                        'link', 
-                        'update'])
+                        'status',  # list installed and available libraries
+                        'clean',   # remove installed libraries not in the storage
+                        'link',    # link the newest version of each library
+                        'unlink',  # remove all junctions
+                        'update'   # update the libs from the storage
+                        ])
     parser.add_argument('libs', nargs='*', help='libraries')
     args = parser.parse_args()
     # print (args)
@@ -238,7 +332,9 @@ if __name__ == "__main__":
         do_clean(db)
     elif args.command == 'link':
         do_link_newest(db)
+    elif args.command == 'unlink':
+        do_unlink()
     elif args.command == 'update':
-        print('not implemented')
+        do_update_to_newest(db)
     else:
         raise Exception("Unknown arg: {}".format(args.command))
