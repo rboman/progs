@@ -19,7 +19,7 @@
 #   winlibs.py link
 
 # TODO:
-# - gérer l'environement (PATH, INCLUDE, LIB, etc.)
+# - gérer l'environement (PATH, INCLUDE, LIB, etc.) voir script "set_libenv.py"
 # - gérer c:\python3XX
 # - gérer les mises à jour de libs
 
@@ -27,11 +27,16 @@ import os, time
 import subprocess, shutil
 import re
 
+# -- assumed program paths
+zip7_path = r"C:\Program Files\7-Zip\7z.exe"
+local_path = r"c:\local" # <= change to 'lib' for testing
+
 def uncompress_7z(file):
     """uncompress a 7z file to the current directory
     7z should be installed.
     """
-    zip7_path = r"C:\Program Files\7-Zip\7z.exe"
+    if not os.path.exists(zip7_path):
+        raise Exception(f"7z not found at {zip7_path}")
 
     print(f"uncompressing {file} to {os.getcwd()}")
     cmd = [zip7_path, 'x', 
@@ -357,7 +362,7 @@ if __name__ == "__main__":
 
 
     # -- build DB
-    db = DB(libpath=r'c:\local')
+    db = DB(libpath=local_path)
 
     db.populate()
 

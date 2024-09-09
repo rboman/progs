@@ -40,6 +40,7 @@ envs = {
         rf"{local_folder}\lagamine\lib",
         rf"{local_folder}\MUMPS\lib",
         rf"{local_folder}\zlib\lib",
+        # rf"{local_folder}\mesa3D",  # if VM
         r"%oneapi_root%\mkl\latest\lib\intel64",
         r"%oneapi_root%\tbb\latest\lib\intel64\vc14",
         r"%oneapi_root%\compiler\latest\windows\compiler\lib\intel64_win"
@@ -48,7 +49,8 @@ envs = {
     [
         rf"{local_folder}"
     ],
-    # 'OMP_NUM_THREADS': [ "1" ],
+    'OMP_NUM_THREADS': [ "1" ],
+    'MESA3D_ROOT': [ rf"{local_folder}\mesa3d" ],
     'P_SCHEMA': [rf"{local_folder}\parasolid\schema"],
     # 'Python3_ROOT_DIR': [ r"c:\Python37" ],  # <=
     # 'LMS_LICENSE': [ "xxx" ],
