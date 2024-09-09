@@ -15,7 +15,7 @@ C:\local\bin\pathed /REMOVE    C:\local\python\bin  /USER
 C:\local\bin\pathed /REMOVE    C:\local\python\Scripts  /USER
 C:\local\bin\pathed /REMOVE    C:\local\Qt\bin  /USER
 C:\local\bin\pathed /REMOVE    C:\local\zlib\bin  /USER
-C:\local\bin\pathed /REMOVE    C:\local\swig  /USER
+C:\local\bin\pathed /REMOVE    C:\local\swigwin  /USER
 C:\local\bin\pathed /REMOVE    C:\local\VTK\bin  /USER
 C:\local\bin\pathed /REMOVE    C:\local\Qwt\lib  /USER
 C:\local\bin\pathed /REMOVE    C:\local\lagamine\bin  /USER
@@ -33,7 +33,7 @@ C:\local\bin\pathed /ADD    C:\local\MUMPS\bin  /USER
 C:\local\bin\pathed /ADD    C:\local\parasolid\dll  /USER
 C:\local\bin\pathed /ADD    C:\local\Qt\bin  /USER
 C:\local\bin\pathed /ADD    C:\local\zlib\bin  /USER
-C:\local\bin\pathed /ADD    C:\local\swig  /USER
+C:\local\bin\pathed /ADD    C:\local\swigwin  /USER
 C:\local\bin\pathed /ADD    C:\local\VTK\bin  /USER
 C:\local\bin\pathed /ADD    C:\local\Qwt\lib  /USER
 C:\local\bin\pathed /ADD    C:\local\lagamine\bin  /USER
