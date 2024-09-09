@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# ajoute les variables d'environnement liées à mes libs
+# ajoute les variables d'environnement liées à mes libs (sauf PATH!)
 #
 # usage: set_libenv.py
 #
