@@ -1,7 +1,29 @@
-
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, time, sys
+# Ce script permettra, à terme, de gérer les libs Windows de développement 
+# installées sur le système (installation, mise à jour, choix des versions, 
+# archivage, gestion de l'environnement, etc.)
+
+# ...WORK IN PROGRESS...
+
+# fonctions actuelles:
+#    - "status": affiche les libs installées et celles disponibles dans le stockage
+#    - "clean": supprime les libs installées qui ne sont pas dans le stockage
+#    - "link": crée des liens symboliques vers les versions les plus récentes des libs
+#    - "unlink": supprime tous les liens symboliques
+#    - "update": met à jour les libs installées à partir du stockage
+#
+# utilisation:
+#   winlibs.py update
+#   winlibs.py link
+
+# TODO:
+# - gérer l'environement (PATH, INCLUDE, LIB, etc.)
+# - gérer c:\python3XX
+# - gérer les mises à jour de libs
+
+import os, time
 import subprocess, shutil
 import re
 
@@ -86,7 +108,7 @@ class Entry:
 class DB:
     """
     """
-    def __init__(self):
+    def __init__(self, libpath='lib'):
 
         # data is stored in a dictionnary of dictionnaries.
         # the first key is the lib name, the second key is the version
@@ -99,7 +121,7 @@ class DB:
         if not os.path.exists(self.storagepath):
             raise Exception("storagepath does not exist")
 
-        self.libpath = "lib"  # where the libs are installed
+        self.libpath = libpath  # where the libs are installed
         # create the target root directory
         if not os.path.exists(self.libpath):
             os.makedirs(self.libpath)
@@ -145,11 +167,24 @@ class DB:
 
     def __str__(self):
         str = ""
-        for libname in self.libs:
-            lib_versions = self.libs[libname]
-            for version in lib_versions:
-                entry = lib_versions[version]
-                str += f"{entry}\n"
+        str = f"DB:\n"
+        str +=f"\tlibpath = '{os.path.abspath(self.libpath)}'"
+        if os.path.exists(self.libpath):
+            str += f" (exists)\n"
+        else:
+            str += f" (does not exist)\n"
+        str += f"\tstoragepath = '{self.storagepath}'"
+        if os.path.exists(self.storagepath):
+            str += f" (exists)\n"
+        else:
+            str += f" (does not exist)\n"
+        if len(self.libs) != 0:
+            str += f"Libraries:\n"
+            for libname in self.libs:
+                lib_versions = self.libs[libname]
+                for version in lib_versions:
+                    entry = lib_versions[version]
+                    str += f"\t{entry}\n"
         return str
 
 
@@ -317,12 +352,13 @@ if __name__ == "__main__":
                         ])
     parser.add_argument('libs', nargs='*', help='libraries')
     args = parser.parse_args()
-    # print (args)
+    print (args)
 
 
 
     # -- build DB
-    db = DB()
+    db = DB(libpath=r'c:\local')
+
     db.populate()
 
 
