@@ -21,6 +21,7 @@ C:\local\bin\pathed /REMOVE    C:\local\Qwt\lib  /USER
 C:\local\bin\pathed /REMOVE    C:\local\lagamine\bin  /USER
 C:\local\bin\pathed /REMOVE    C:\local\boost\lib64-msvc-14.2  /USER
 C:\local\bin\pathed /REMOVE    C:\local\CGAL\auxiliary\gmp\lib  /USER
+C:\local\bin\pathed /REMOVE    C:\local\pandoc  /USER
 
 C:\local\bin\pathed /ADD    C:\local\bin  /USER
 C:\local\bin\pathed /ADD    C:\local\gmsh\bin  /USER
@@ -39,3 +40,4 @@ C:\local\bin\pathed /ADD    C:\local\Qwt\lib  /USER
 C:\local\bin\pathed /ADD    C:\local\lagamine\bin  /USER
 C:\local\bin\pathed /ADD    C:\local\boost\lib64-msvc-14.2  /USER
 C:\local\bin\pathed /ADD    C:\local\CGAL\auxiliary\gmp\lib  /USER
+C:\local\bin\pathed /ADD    C:\local\pandoc  /USER
