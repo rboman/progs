@@ -3,8 +3,10 @@
 # edit: crontab -e
 # list: crontab -l
 # 30 0 * * * ~/dev/progs/bin/rsync_repos.sh
+#
+# see also "bck_rsync.py" used for archiving the backups to dropbox
 
-# web metafor.ltas.ulg.ac.be
+# web metafor.ltas.ulg.ac.be ---------------------------------------------------
 
 mkdir -p /hdd2/boman/Backups/rsync/web/
 echo
@@ -19,7 +21,7 @@ rsync -e ssh -avz \
       /hdd2/boman/Backups/rsync/web/
 echo "======= done."
 
-# serveur de licences siemens.uliege.be
+# serveur de licences siemens.uliege.be ----------------------------------------
 
 mkdir -p /hdd2/boman/Backups/rsync/siemens/web/
 echo
