@@ -1,8 +1,8 @@
 #!/bin/bash
-# scripts de backup rsync (cron)
+# scripts de backup rsync (cron) - exécuté à 12h30 chaque jour.
 # edit: crontab -e
 # list: crontab -l
-# 30 0 * * * ~/dev/progs/bin/rsync_repos.sh
+# 30 12 * * * ~/dev/progs/bin/rsync_repos.sh
 #
 # see also "bck_rsync.py" used for archiving the backups to dropbox
 
