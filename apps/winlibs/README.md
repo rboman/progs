@@ -11,7 +11,7 @@ Scripts:
 
 ```
 winlibs.py update   # <= dézippe les libs vers C:\local
-winlibs.py link     # <= crée des liens symboliques
+winlibs.py link     # <= crée/met à jour des liens symboliques
 set_libenv.py       # <= enrichit LIB, INCLUDE, etc. (sauf PATH) - utilise setx
 add2path.cmd        # <= enrichit le PATH - utilise pathed
 ```
