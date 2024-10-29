@@ -13,14 +13,14 @@ module memfile
         character(len=:), allocatable :: name
         type(line_t), pointer, private :: first => null() !< first line
         type(line_t), pointer, private :: last => null()  !< last line
-        type(line_t), pointer :: current => null()        !< read cursor
+        type(line_t), pointer, private :: read_cursor => null() !< cursor for reading
 
         contains
             procedure :: push_back => memfile_push_back
             procedure :: print => memfile_print
             procedure :: count_lines => memfile_count_lines
             procedure :: read_next => memfile_read_next
-            procedure :: rewind => memfile_rewind           
+            procedure :: rewind => memfile_rewind
     end type memfile_t
 
 contains
@@ -72,19 +72,18 @@ contains
 
     subroutine memfile_rewind(this)
         class(memfile_t), intent(inout) :: this
-        this%current => this%first
+        this%read_cursor => this%first
     end subroutine memfile_rewind
 
 
     function memfile_read_next(this, line) result(ok)
         class(memfile_t), intent(inout) :: this
         character(len=:), allocatable, intent(out) :: line
-        type(line_t), pointer :: current
         logical :: ok
 
-        if (associated(this%current)) then
-            line = this%current%line
-            this%current => this%current%next
+        if (associated(this%read_cursor)) then
+            line = this%read_cursor%line
+            this%read_cursor => this%read_cursor%next
             ok = .true.
         else
             ok = .false.
