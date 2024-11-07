@@ -1,26 +1,28 @@
-! fichier main.f90
 program main
-    !use iso_c_binding
+    use module1
+    use module2
     implicit none
 
-    ! Interface pour la fonction de la DLL
+    ! Interface copiée/collée de la routine nue "addition"
     interface
-        function addition(a, b) !bind(C, name="addition")
-            !use iso_c_binding
+        function addition(a, b)
             real(8), value :: a, b
             real(8) :: addition
         end function addition
     end interface
 
-    ! Déclaration des variables
     real(8) :: a, b, result
-
-    ! Initialiser les valeurs
     a = 5.0
     b = 3.0
 
-    ! Appeler la fonction de la DLL
+    ! Appel des fonctions:
     result = addition(a, b)
-    print *, "Le resultat de l'addition est :", result
+    print *, "Le resultat de l'addition (routine nue) est :", result
+
+    result = addition_in_mod(a, b)
+    print *, "Le resultat de l'addition (dans un module) est :", result
+
+    result = addition_bindc(a, b)
+    print *, "Le resultat de l'addition (bindc) est :", result
 
 end program main
