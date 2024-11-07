@@ -6,4 +6,4 @@ module io_module
             ! Affiche le message complet
             print *, trim(message)
         end subroutine print_message
-    end module io_module
+end module io_module
