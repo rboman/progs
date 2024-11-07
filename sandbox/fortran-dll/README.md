@@ -28,8 +28,9 @@ dumpbin /EXPORTS libaddition.dll
   Section contains the following exports for libaddition.dll
 ...
           1    0 000013B0 __module1_MOD_addition_in_mod
-          2    1 00001380 addition_
-          3    2 000013E0 addition_bindc
+          2    1 00001410 __stringlist_MOD_print_stringlist
+          3    2 00001380 addition_
+          4    3 000013E0 addition_bindc
 ````
 
 * win / ifort:
@@ -38,8 +39,9 @@ dumpbin /EXPORTS libaddition.dll
 Dump of file Release\addition.dll
 ...
           1    0 00001000 ADDITION
-          2    1 00001020 MODULE1_mp_ADDITION_IN_MOD
-          3    2 00001040 addition_bindc
+          2    1 00001120 MODULE1_mp_ADDITION_IN_MOD
+          3    2 00001020 STRINGLIST_mp_PRINT_STRINGLIST
+          4    3 00001140 addition_bindc
 ````
 
 * ubuntu  gfortran
@@ -51,8 +53,9 @@ objdump -T libaddition.so
 ````
 libaddition.so:     file format elf64-x86-64
 ...
-0000000000001127 T __module1_MOD_addition_in_mod
-00000000000010f9 T addition_
-0000000000001155 T addition_bindc
+0000000000001185 g    DF .text  000000000000002e  Base        addition_bindc
+00000000000011b3 g    DF .text  0000000000000111  Base        __stringlist_MOD_print_stringlist
+0000000000001157 g    DF .text  000000000000002e  Base        __module1_MOD_addition_in_mod
+0000000000001129 g    DF .text  000000000000002e  Base        addition_
 ````
 

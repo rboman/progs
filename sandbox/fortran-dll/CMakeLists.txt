@@ -8,7 +8,7 @@ project(FortranDLLExample LANGUAGES Fortran)
 #set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fPIC")
 
 # Cible pour la DLL
-add_library(addition SHARED addition.f90 module1.f90 module2.f90)
+add_library(addition SHARED addition.f90 module1.f90 module2.f90 stringlist.f90)
 #set_target_properties(addition PROPERTIES OUTPUT_NAME "addition")
 
 # Cible pour le programme principal
