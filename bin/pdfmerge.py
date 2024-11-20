@@ -30,6 +30,15 @@
 #   ps2pdf code.ps code.pdf
 #
 
+# TODO: ajouter conversion jupyter notebook en pdf
+#   jupyter nbconvert --to pdf --template classic --output report.pdf report.ipynb
+#   requires xelatex:
+#       sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-plain-generic
+#   => does not work... (error: ! Paragraph ended before \align* was complete.)
+#
+#   SOLUTION USED TODAY: 
+#      convert to html ("jupyter notebook" command) and then to pdf (print with chrome)
+
 import os
 import sys
 import subprocess
