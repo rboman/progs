@@ -646,7 +646,7 @@ if __name__ == "__main__":
     #                  force_update=args.update))
     mgr.add(GitLabAPI(name='gitlab.uliege.be',
                       url_api='https://gitlab.uliege.be/api/v4/projects',
-                      token_filename='gitlab_api_token.txt',
+                      token_filename='gitlab_uliege_api_token.txt',
                       dbfile='gitlab_projects.json',
                       verify_ssl=True,
                       force_update=args.update))
