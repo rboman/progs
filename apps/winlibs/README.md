@@ -5,7 +5,7 @@
 Mise en place de l'environnement de libs sur une machine vierge (update sep 2024)
 
 * installer/écraser python avec l'archive
-* installer CMake, Visual Studio, OneAPI
+* installer CMake, Visual Studio, OneAPI, MS MPI
 
 Scripts:
 
