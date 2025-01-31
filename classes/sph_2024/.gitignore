@@ -1,0 +1,14 @@
+# list of ignored files/folders
+
+build/
+*~
+*.bak
+.vscode/
+*.tgz
+*.zip
+*.rar
+*.exe
+
+stdout.txt
+*.vtp
+.DS_Store

@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.profiles.windows": {
+        "math0471": { "path" : "${workspaceFolder}//envs//windows.cmd" }
+    },
+    "terminal.integrated.defaultProfile.windows": "math0471"
+}

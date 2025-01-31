@@ -1,0 +1,33 @@
+stages:
+    - build
+    - deploy
+  
+build_cpp:
+    image: registry.gitlab.com/rboman_docker/gmsh
+    stage: build
+    script:
+        # -- OpenMP
+        - cd examples/openmp
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make -j 4
+        - OMP_NUM_THREADS=8 ./omp_hello
+        - cd ../../..
+        # -- MPI
+        - cd examples/mpi
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make -j 4
+        - mpirun -np 8 --allow-run-as-root ./mpi_hello
+        - cd ../../..
+        # -- simulation code example
+        - cd src
+        - mkdir build
+        - cd build
+        - cmake -DCMAKE_BUILD_TYPE=Release ..
+        - make -j 4
+        - ./solver ../simulation.json
+        - cd ../..
+        # --      
