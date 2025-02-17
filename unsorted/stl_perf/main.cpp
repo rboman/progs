@@ -85,12 +85,13 @@ main()
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, point_vector.size());
 
     start = steady_clock::now();
     for (int i = 0; i < nremove; i++)
     {
         // int n = rand() % point_list.size();
+        std::uniform_int_distribution<> dis(0, point_list.size());
+
         int n = dis(gen);
         auto it = point_list.begin();
         advance(it, n);
@@ -112,6 +113,7 @@ main()
     for (int i = 0; i < nremove; i++)
     {
         // int n = rand() % point_vector.size();
+        std::uniform_int_distribution<> dis(0, point_vector.size());
         int n = dis(gen);
         point_vector.erase(point_vector.begin() + n);
     }
@@ -128,6 +130,7 @@ main()
     for (int i = 0; i < nremove; i++)
     {
         // int n = rand() % point_deque.size();
+        std::uniform_int_distribution<> dis(0, point_deque.size());
         int n = dis(gen);
         point_deque.erase(point_deque.begin() + n);
     }
