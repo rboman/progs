@@ -87,6 +87,10 @@ int main()
     duration = end - start;
     cout << "Time for removing and adding points in list: " << duration_cast<milliseconds>(duration).count() << " ms" << endl;
 
+
+    // print RAND_MAX
+    cout << "RAND_MAX: " << RAND_MAX << endl;
+
     start = steady_clock::now();
     for (int i = 0; i < nremove; i++){
         int n = rand() % point_vector.size();
