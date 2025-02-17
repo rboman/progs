@@ -3,9 +3,11 @@
 
 # python
 *.pyc
+*.pyd
 *~
 *.bak
 __pycache__/
+*_wrap.cxx
 
 # java
 *.class
