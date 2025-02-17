@@ -3,24 +3,30 @@
 #include <list>
 #include <vector>
 #include <deque>
+#include <random>
 using namespace std;
 using namespace std::chrono;
 
 // class for particles, containing variables according to specific physical problems
-class Point{
+class Point
+{
 public:
     double x, y, z;
+
 public:
-    Point() {
+    Point()
+    {
         x = 0.;
         y = 0.;
         z = 0.;
     }
 };
 
-int main()
+int
+main()
 {
-    steady_clock::time_point start, end; duration<double> duration;
+    steady_clock::time_point start, end;
+    duration<double> duration;
     int np = 1e6;
     int nloop = 100;
     int nadd = 1e4;
@@ -29,19 +35,22 @@ int main()
     // create list, vector, and deque containing points
 
     list<Point *> point_list;
-    for (int i = 0; i < np; i++){
+    for (int i = 0; i < np; i++)
+    {
         Point *p = new Point();
         point_list.push_back(p);
     }
 
     vector<Point *> point_vector;
-    for (int i = 0; i < np; i++){
+    for (int i = 0; i < np; i++)
+    {
         Point *p = new Point();
         point_vector.push_back(p);
     }
 
     deque<Point *> point_deque;
-    for (int i = 0; i < np; i++){
+    for (int i = 0; i < np; i++)
+    {
         Point *p = new Point();
         point_deque.push_back(p);
     }
@@ -74,12 +83,21 @@ int main()
 
     // efficency test for deleting and adding points in list, vector, and deque
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, point_vector.size());
+
     start = steady_clock::now();
-    for (int i = 0; i < nremove; i++){
-        int n = rand() % point_list.size();
-        auto it = point_list.begin(); advance(it, n); point_list.erase(it);
+    for (int i = 0; i < nremove; i++)
+    {
+        // int n = rand() % point_list.size();
+        int n = dis(gen);
+        auto it = point_list.begin();
+        advance(it, n);
+        point_list.erase(it);
     }
-    for (int i = 0; i < nadd; i++){
+    for (int i = 0; i < nadd; i++)
+    {
         Point *p = new Point();
         point_list.push_back(p);
     }
@@ -87,16 +105,18 @@ int main()
     duration = end - start;
     cout << "Time for removing and adding points in list: " << duration_cast<milliseconds>(duration).count() << " ms" << endl;
 
-
     // print RAND_MAX
     cout << "RAND_MAX: " << RAND_MAX << endl;
 
     start = steady_clock::now();
-    for (int i = 0; i < nremove; i++){
-        int n = rand() % point_vector.size();
+    for (int i = 0; i < nremove; i++)
+    {
+        // int n = rand() % point_vector.size();
+        int n = dis(gen);
         point_vector.erase(point_vector.begin() + n);
     }
-    for (int i = 0; i < nadd; i++){
+    for (int i = 0; i < nadd; i++)
+    {
         Point *p = new Point();
         point_vector.push_back(p);
     }
@@ -105,11 +125,14 @@ int main()
     cout << "Time for removing and adding points in vector: " << duration_cast<milliseconds>(duration).count() << " ms" << endl;
 
     start = steady_clock::now();
-    for (int i = 0; i < nremove; i++){
-        int n = rand() % point_deque.size();
+    for (int i = 0; i < nremove; i++)
+    {
+        // int n = rand() % point_deque.size();
+        int n = dis(gen);
         point_deque.erase(point_deque.begin() + n);
     }
-    for (int i = 0; i < nadd; i++){
+    for (int i = 0; i < nadd; i++)
+    {
         Point *p = new Point();
         point_deque.push_back(p);
     }
