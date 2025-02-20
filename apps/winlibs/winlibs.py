@@ -74,8 +74,18 @@ def dropbox_path():
     except FileNotFoundError:
         json_path = (Path(os.getenv('APPDATA'))/'Dropbox'/'info.json').resolve()
 
-    with open(str(json_path)) as f:
-        j = json.load(f)
+    if not json_path.exists():
+        # make a compact loop from "c" to "z" to find the dropbox folder 
+        # (case: shared folder in a vbox)
+        for letter in range(ord('C'), ord('Z')+1):
+            drive = chr(letter)+':'+os.sep
+            dbox_cache = os.path.normpath(drive+'.dropbox.cache')
+            if os.path.isdir(dbox_cache):
+                return os.path.normpath(drive)  
+        raise Exception("Dropbox not found")
+    else:
+        with open(str(json_path)) as f:
+            j = json.load(f)
 
     personal_dbox_path = Path(j['personal']['path'])
     # business_dbox_path = Path(j['business']['path'])
