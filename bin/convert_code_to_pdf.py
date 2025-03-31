@@ -7,17 +7,9 @@ import subprocess
 import tempfile
 import os, sys
 
-def generate_pdf_from_python_script(script_path, output_pdf_path):
+def generate_pdf_from_code(script_path, output_filename, script_lang):
     """
-    Generates a PDF from a Python script using Pandoc.
-    
-    Args:
-        script_path (str): The path to the Python script file.
-        output_pdf_path (str): The path where the output PDF should be saved.
-        
-    Raises:
-        FileNotFoundError: If the script file does not exist.
-        RuntimeError: If the Pandoc command fails.
+    Generates a PDF from a file containing code, using Pandoc.
     """
     if not os.path.exists(script_path):
         raise FileNotFoundError(f"The file '{script_path}' does not exist.")
@@ -29,25 +21,32 @@ def generate_pdf_from_python_script(script_path, output_pdf_path):
     
     preamble = r"""
 ---
-fontsize: 10pt
+fontsize: 12pt
 papersize: a4
+geometry: "left=2cm,right=2cm,top=2cm,bottom=3cm"
 margin-left: 2cm
 margin-right: 2cm
 numbersections: true
+listings: true
 header-includes: |
+    \usepackage{lastpage}
     \usepackage{fancyhdr}
     \pagestyle{fancy}
-    \fancyfoot[CO,CE]{RB}
-    \fancyfoot[LE,RO]{\thepage}
+    \fancyhead{}
+    \fancyfoot{}
+    \fancyfoot[LE,RO]{\thepage/\pageref{LastPage}}
+    \fancyfoot[RE,LO]{\sc{\small MATH0471}}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0.4pt}
 ---
 """
     # Prepare Markdown content with syntax highlighting
-    markdown_content = f"""
+    markdown_content = rf"""
 {preamble}
 
 # PDF Generated from {os.path.basename(script_path)}
 
-```python
+```{script_lang}
 {script_content}
 ```
 """
@@ -59,14 +58,14 @@ header-includes: |
     print('running pandoc')
 
     # Run Pandoc to convert the Markdown file to a PDF
-    command = ["pandoc", temp_md_path, "-o", output_pdf_path]
+    command = ["pandoc", temp_md_path, "-o", output_filename]
     result = subprocess.run(command, capture_output=True, text=True)
     
     # Check for errors
     if result.returncode != 0:
         raise RuntimeError(f"Pandoc error: {result.stderr}")
     
-    print(f"PDF generated successfully: {output_pdf_path}")
+    print(f"PDF generated successfully: {output_filename}")
 
     # finally:
     #     # Clean up the temporary Markdown file
@@ -75,12 +74,24 @@ header-includes: |
 
 if __name__ == "__main__": # Ensure a filename is provided as a command-line argument if len(sys.argv) != 2: print("Usage: python script_to_pdf.py <path_to_python_script>") sys.exit(1)
     script_path = sys.argv[1]
-    output_path = os.path.splitext(script_path)[0] + ".pdf"  # Default output PDF file name
+    output_path, output_ext = os.path.splitext(script_path)
+    output_filename = output_path + ".pdf"  # Default output PDF file name
+    langmap = {
+        ".py": "python",
+        ".sh": "bash",
+        ".c": "c",
+        ".cpp": "cpp",
+        ".java": "java",
+        ".cpp": "cpp",
+        ".c": "c"  
+    }
+    script_lang = langmap[output_ext.lower()]  # may fail if language not in langmap
 
-    print(f"Converting Python script to PDF: {script_path} -> {output_path}")
+
+    print(f"Converting Python script to PDF: {script_path} -> {output_filename} ({script_lang})")
 
     # try:
-    generate_pdf_from_python_script(script_path, output_path)
+    generate_pdf_from_code(script_path, output_filename, script_lang)
     # except FileNotFoundError as e:
     #     print(f"Error: {e}")
     # except RuntimeError as e:

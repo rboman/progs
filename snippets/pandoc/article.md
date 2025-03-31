@@ -1,8 +1,30 @@
+---
+title: My Markdown article
+date: \today
+lang: fr
+# ...citeproc
+bibliography: zotero.bib
+csl: materials-technology.csl
+link-citations: true
+# ...pandoc-crossref
+linkReferences: true
+nameInLink: true
+# ...pdf variables
+papersize: a4
+margin-left: 2cm
+margin-right: 2cm
+colorlinks: true
+# ... autre
+numbersections: true
+autoEqnLabels: true
+---
+
+<!-- je n'utilise pas .pandoc-config.yml ici pour avoir le bon affichage dans VSCode sans devoir configurer globalement les options -->
 
 
-# My Article
+# Notes Pandoc
 
-[Video](https://youtu.be/J86Pm62XM_Q)
+Petits tests divers en regardant cette video: [Video](https://youtu.be/J86Pm62XM_Q)
 
 * [Pandoc User’s Guide](https://pandoc.org/MANUAL.html)
 * [pandoc-crossref](https://lierdakil.github.io/pandoc-crossref/)
@@ -11,8 +33,18 @@
 
 * [markdown-preview-enhanced](https://shd101wyy.github.io/markdown-preview-enhanced/#/)
 
-Settings: activer "use pandoc parser" => les figure captions apparaissent
+Settings:
 
+* activer "use pandoc parser" => les figures & captions apparaissent.
+* ajouter les settings:
+
+```
+    "markdown-preview-enhanced.pandocArguments": [
+        "-F","pandoc-crossref"
+    ],
+```
+
+Voir aussi:
 * [Pandoc Citer - Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=notZaki.pandocciter): permet d'avoir la liste des refs quand on écrit [@]
 
 ## Paragraphes bidons
