@@ -1,6 +1,6 @@
 @echo off
 
-:: build the code on Windows10 with MSYS2
+:: build the code on Windows10/11 with MSYS2 UCRT64 (or MINGW64)
 ::   in a DOS terminal with the cmake from windows
 ::
 :: run this script, then 
@@ -30,6 +30,8 @@ set PATH=C:\msys64\ucrt64\bin
 set PATH=%PATH%;C:\msys64\usr\bin
 set "PATH=%PATH%;%USERPROFILE%\AppData\Local\Programs\Microsoft VS Code\bin"
 set PATH=%PATH%;c:\windows\System32
+:: xmesher required for LAM3... 
+set PATH=%PATH%;c:\local\bin
 
 :: note: the path of windows cmake should be *before* the one of MSYS! 
 
