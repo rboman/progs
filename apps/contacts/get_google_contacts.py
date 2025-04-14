@@ -21,41 +21,49 @@ SCOPES = ['https://www.googleapis.com/auth/contacts.readonly']
 
 def main():
     creds = None
-    # Vérifier si un token d'accès existe déjà dans token.pickle
+    # Vérifie l'existence d'un token pour l'authentification
     if os.path.exists('token.pickle'):
         with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
     
-    # Si aucun token n'existe ou si celui-ci est expiré, on initie le processus d'authentification.
+    # Si le token n'existe pas ou est expiré, lancer le flux OAuth
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            # On rafraîchit le token
             creds.refresh(Request())
         else:
-            # On lance le flux OAuth2.0 pour récupérer les identifiants
             flow = InstalledAppFlow.from_client_secrets_file(credentials_file, SCOPES)
             creds = flow.run_local_server(port=0)
-        # Sauvegarde des identifiants dans token.pickle pour les utilisations futures.
         with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
     
-    # Construction du service API Google People
+    # Construction du service API
     service = build('people', 'v1', credentials=creds)
     
-    # Récupération des contacts
-    results = service.people().connections().list(
-        resourceName='people/me',
-        personFields='names,emailAddresses'
-    ).execute()
-    
-    # Extraction de la liste des contacts
-    connections = results.get('connections', [])
-    
-    # Sauvegarde des contacts dans un fichier JSON
+    # Récupération de tous les contacts en utilisant la pagination
+    all_connections = []
+    page_token = None
+
+    while True:
+        response = service.people().connections().list(
+            resourceName='people/me',
+            pageSize=100,  # Nombre maximum de contacts par page (100 est la limite usuelle)
+            pageToken=page_token,
+            personFields='names,emailAddresses'
+        ).execute()
+
+        connections = response.get('connections', [])
+        all_connections.extend(connections)
+        
+        # Récupérer le jeton de la page suivante
+        page_token = response.get('nextPageToken')
+        if not page_token:
+            break
+
+    # Sauvegarde de tous les contacts dans un fichier JSON
     with open("google_contacts.json", "w", encoding="utf-8") as f:
-        json.dump(connections, f, ensure_ascii=False, indent=4)
+        json.dump(all_connections, f, ensure_ascii=False, indent=4)
     
-    print(f"{len(connections)} contacts ont été enregistrés dans 'google_contacts.json'.")
+    print(f"{len(all_connections)} contacts ont été enregistrés dans 'google_contacts.json'.")
 
 if __name__ == '__main__':
     main()
