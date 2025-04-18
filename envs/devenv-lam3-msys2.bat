@@ -15,6 +15,13 @@
 
 echo setting msys64\mingw64 environment in a DOS terminal
 
+@REM set MSYS_FOLDER=C:\msys64
+@REM set MSYS_TYPE=ucrt64
+
+:: marc
+set MSYS_FOLDER=C:\msys64_2024
+set MSYS_TYPE=mingw64
+
 set INCLUDE=
 
 set LIB=
@@ -26,8 +33,8 @@ set OMP_NUM_THREADS=1
 :: ** MINGW version
 :: set PATH=C:\msys64\mingw64\bin
 :: ** UCRT version
-set PATH=C:\msys64\ucrt64\bin
-set PATH=%PATH%;C:\msys64\usr\bin
+set PATH=%MSYS_FOLDER%\%MSYS_TYPE%\bin
+set PATH=%PATH%;%MSYS_FOLDER%\usr\bin
 set "PATH=%PATH%;%USERPROFILE%\AppData\Local\Programs\Microsoft VS Code\bin"
 set PATH=%PATH%;c:\windows\System32
 :: xmesher required for LAM3... 
