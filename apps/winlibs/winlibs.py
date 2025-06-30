@@ -22,6 +22,9 @@
 # - gérer l'environement (PATH, INCLUDE, LIB, etc.) voir script "set_libenv.py"
 # - gérer c:\python3XX
 # - gérer les mises à jour de libs
+# - "clean" traite mal les symbolic links (junctions)
+# - "status" traite mal les symbolic links
+# - output d'"update" pas très clair 
 
 import os, time
 import subprocess, shutil
