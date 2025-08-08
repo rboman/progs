@@ -19,7 +19,7 @@ local_folder = r"c:\local"
 envs = {
     'BOOST_INCLUDEDIR': [r'%MYLOCAL%\boost'],  # not BOOST_INCLUDE_DIR!
     'BOOST_LIBRARYDIR': [r'%MYLOCAL%\boost\lib64-msvc-14.2'],
-    'CMAKE_INSTALL_PREFIX': [r'%MYLOCAL%\CGAL'],
+    #'CMAKE_INSTALL_PREFIX': [r'%MYLOCAL%\CGAL'],  # ??
     # if INCLUDE/LIB starts with %MYLOCAL% instead of c:\local, the variable editor
     # thinks it is not a list which makes it difficult to be edited (1 long line)... :(
     'INCLUDE':
