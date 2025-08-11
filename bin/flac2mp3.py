@@ -68,7 +68,7 @@ def convert_flac_to_mp3(input_dir, ffmpeg_command):
     # Liste des fichiers FLAC à convertir
     tasks = []
     for file in os.listdir(input_dir):
-        if file.endswith(".flac"):
+        if file.endswith(".mp3") or file.endswith(".flac") or file.endswith(".m4a"):
             flac_file = os.path.join(input_dir, file)
             mp3_file = os.path.join(output_dir, os.path.splitext(file)[0] + ".mp3")
             tasks.append((flac_file, mp3_file))
