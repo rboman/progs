@@ -1,0 +1,275 @@
+number of threads = 1
+loading ../verif/square_2tri_lin.geo...
+generating mesh...
+ScalarAdvection on group "domain"
+Problem::sync()...
+	retrieving entities...
+	retrieving physical groups...
+ScalarAdvection on group "left_edge"
+Problem:
+	9 entities
+	2 groups
+Solver:
+	total_time = 1
+	CFL = 1
+	savefreq = 1
+	tm_method = "ForwardEuler"
+	phi_method = "phi_nodal"
+	quadrature = "Gauss2"
+	media:
+		ScalarAdvection on "domain" (2D) c = (1, 0) fct0 = "0.0"
+		ScalarAdvection on "left_edge" (1D) c = (1, 0) fct0 = "1.0"
+Solver::solve()...
+building unique edges...
+building edges for entity Plane (2d, 1)...
+	elset type="Triangle 3": 2 elements
+	nbedges=6
+	nods_per_edge=2
+	nbedges_per_elem=3
+	getting Quadrature rule "Gauss2" for "Triangle 3"
+		nGP = 3
+		localCoord (3x3) =
+			[0.166667, 0.166667,        0]
+			[0.166667, 0.666667,        0]
+			[0.666667, 0.166667,        0]
+		weights = [ 0.166667 0.166667 0.166667 ]
+	duration: 0.000228044 seconds.
+	1 type(s) of edges created.
+adding Dirichlet boundary conditions...
+identifying edges for entity Line (1d, 4)...
+	elset type="Line 2": 1 elements
+	getting Quadrature rule "Gauss2" for "Line 2"
+		nGP = 2
+		localCoord (2x3) =
+			[-0.57735,        0,        0]
+			[ 0.57735,        0,        0]
+		weights = [ 1 1 ]
+	1 DGElements created for handling Dirichlet boundary conditions.
+creating Gmsh discrete entities for edges...
+	5 edges with 2 nodes
+	creating discrete entity #5 for "Line 2" edges
+	getting Quadrature rule "Gauss2" for "Line 2"
+		nGP = 2
+		localCoord (2x3) =
+			[-0.57735,        0,        0]
+			[ 0.57735,        0,        0]
+		weights = [ 1 1 ]
+summary of new Gmsh discrete entities for edges:
+	Discrete curve (1d, 5) named "" with 1 mesh(es), belonging to 0 group(s)
+		set of 5 "Line 2" (type=1, order=1, nnods=2)
+creating link 'GP edges <=> neighbors':
+summary of edge GP detection on the edges:
+	set of 1 "Line 2" (type=1, order=1, nnods=2): storing 2 points on the boundary
+	set of 2 "Triangle 3" (type=2, order=1, nnods=3): storing 6 points on the boundary
+	duration: 6.3323e-05 seconds.
+computing jacobians & shape functions at boundaries:
+	duration: 3.0834e-05 seconds.
+computing edge normals...
+computing elemental matrices (scalar advection)...
+	processing element #0 (tag=2) of type "Triangle 3" with 3 GPs
+		basisF (3x3) =
+			[0.666667, 0.166667, 0.166667]
+			[0.166667, 0.166667, 0.666667]
+			[0.166667, 0.666667, 0.166667]
+		processing GP #0
+			N(igp=0) (1x3) =
+				[0.666667, 0.166667, 0.166667]
+			DN(igp=0) (3x2) =
+				[-1, -1]
+				[ 1,  0]
+				[ 0,  1]
+			J(igp=0) (3x3) =
+				[1, 0, 0]
+				[0, 1, 0]
+				[0, 0, 1]
+			B(igp=0) (2x3) =
+				[-1,  1,  0]
+				[-1,  0,  1]
+		processing GP #1
+			N(igp=1) (1x3) =
+				[0.166667, 0.166667, 0.666667]
+			DN(igp=1) (3x2) =
+				[-1, -1]
+				[ 1,  0]
+				[ 0,  1]
+			J(igp=1) (3x3) =
+				[1, 0, 0]
+				[0, 1, 0]
+				[0, 0, 1]
+			B(igp=1) (2x3) =
+				[-1,  1,  0]
+				[-1,  0,  1]
+		processing GP #2
+			N(igp=2) (1x3) =
+				[0.166667, 0.666667, 0.166667]
+			DN(igp=2) (3x2) =
+				[-1, -1]
+				[ 1,  0]
+				[ 0,  1]
+			J(igp=2) (3x3) =
+				[1, 0, 0]
+				[0, 1, 0]
+				[0, 0, 1]
+			B(igp=2) (2x3) =
+				[-1,  1,  0]
+				[-1,  0,  1]
+		elemental matrices for element #0 (tag=2)
+			M (3x3) =
+				[0.0833333, 0.0416667, 0.0416667]
+				[0.0416667, 0.0833333, 0.0416667]
+				[0.0416667, 0.0416667, 0.0833333]
+			Minv (3x3) =
+				[18, -6, -6]
+				[-6, 18, -6]
+				[-6, -6, 18]
+			Sx (3x3) =
+				[-0.166667, -0.166667, -0.166667]
+				[ 0.166667,  0.166667,  0.166667]
+				[        0,         0,         0]
+			Sy (3x3) =
+				[-0.166667, -0.166667, -0.166667]
+				[        0,         0,         0]
+				[ 0.166667,  0.166667,  0.166667]
+	processing element #1 (tag=3) of type "Triangle 3" with 3 GPs
+		basisF (3x3) =
+			[0.666667, 0.166667, 0.166667]
+			[0.166667, 0.166667, 0.666667]
+			[0.166667, 0.666667, 0.166667]
+		processing GP #0
+			N(igp=0) (1x3) =
+				[0.666667, 0.166667, 0.166667]
+			DN(igp=0) (3x2) =
+				[-1, -1]
+				[ 1,  0]
+				[ 0,  1]
+			J(igp=0) (3x3) =
+				[ 0, -1,  0]
+				[ 1,  1,  0]
+				[ 0,  0,  1]
+			B(igp=0) (2x3) =
+				[ 0,  1, -1]
+				[-1,  1,  0]
+		processing GP #1
+			N(igp=1) (1x3) =
+				[0.166667, 0.166667, 0.666667]
+			DN(igp=1) (3x2) =
+				[-1, -1]
+				[ 1,  0]
+				[ 0,  1]
+			J(igp=1) (3x3) =
+				[ 0, -1,  0]
+				[ 1,  1,  0]
+				[ 0,  0,  1]
+			B(igp=1) (2x3) =
+				[ 0,  1, -1]
+				[-1,  1,  0]
+		processing GP #2
+			N(igp=2) (1x3) =
+				[0.166667, 0.666667, 0.166667]
+			DN(igp=2) (3x2) =
+				[-1, -1]
+				[ 1,  0]
+				[ 0,  1]
+			J(igp=2) (3x3) =
+				[ 0, -1,  0]
+				[ 1,  1,  0]
+				[ 0,  0,  1]
+			B(igp=2) (2x3) =
+				[ 0,  1, -1]
+				[-1,  1,  0]
+		elemental matrices for element #1 (tag=3)
+			M (3x3) =
+				[0.0833333, 0.0416667, 0.0416667]
+				[0.0416667, 0.0833333, 0.0416667]
+				[0.0416667, 0.0416667, 0.0833333]
+			Minv (3x3) =
+				[18, -6, -6]
+				[-6, 18, -6]
+				[-6, -6, 18]
+			Sx (3x3) =
+				[        0,         0,         0]
+				[ 0.166667,  0.166667,  0.166667]
+				[-0.166667, -0.166667, -0.166667]
+			Sy (3x3) =
+				[-0.166667, -0.166667, -0.166667]
+				[ 0.166667,  0.166667,  0.166667]
+				[        0,         0,         0]
+applying initial conditions...
+	set_u0(0)
+--------------------------------------------------------------------------------
+time loop...
+--------------------------------------------------------------------------------
+computing largest |c|/dx...
+	total_time = 1
+	CFL = 1
+	max(invCFL) = 1
+	dt = 1
+STEP #1 t=1 / 1 (100%)
+compute_nodal_phi: (loop over all edges)
+(i = 0) processing Edge ntags=[ 1 2 ] nidx=[ 0 1 ] elems=(2,0) e1nidx=[ 0 1 ] e2nidx=[ ] with 2 GPs
+	ue1 (2x1) =
+		[0]
+		[0]
+	ue2 (2x1) =
+		[0]
+		[0]
+	fstar (2x2) =
+		[0, 0]
+		[0, 0]
+	nodalphi (2x1) =
+		[0]
+		[0]
+(i = 1) processing Edge ntags=[ 4 1 ] nidx=[ 3 0 ] elems=(2,1) e1nidx=[ 2 0 ] e2nidx=[ 1 0 ] with 2 GPs
+	ue1 (2x1) =
+		[0]
+		[0]
+	ue2 (2x1) =
+		[1]
+		[1]
+	fstar (2x2) =
+		[1, 0]
+		[1, 0]
+	nodalphi (2x1) =
+		[0.5]
+		[0.5]
+(i = 2) processing Edge ntags=[ 2 3 ] nidx=[ 1 2 ] elems=(3,0) e1nidx=[ 0 1 ] e2nidx=[ ] with 2 GPs
+	ue1 (2x1) =
+		[0]
+		[0]
+	ue2 (2x1) =
+		[0]
+		[0]
+	fstar (2x2) =
+		[0, 0]
+		[0, 0]
+	nodalphi (2x1) =
+		[0]
+		[0]
+(i = 3) processing Edge ntags=[ 2 4 ] nidx=[ 1 3 ] elems=(2,3) e1nidx=[ 1 2 ] e2nidx=[ 0 2 ] with 2 GPs
+	ue1 (2x1) =
+		[0]
+		[0]
+	ue2 (2x1) =
+		[0]
+		[0]
+	fstar (2x2) =
+		[0, 0]
+		[0, 0]
+	nodalphi (2x1) =
+		[0]
+		[0]
+(i = 4) processing Edge ntags=[ 3 4 ] nidx=[ 2 3 ] elems=(3,0) e1nidx=[ 1 2 ] e2nidx=[ ] with 2 GPs
+	ue1 (2x1) =
+		[0]
+		[0]
+	ue2 (2x1) =
+		[0]
+		[0]
+	fstar (2x2) =
+		[0, 0]
+		[0, 0]
+	nodalphi (2x1) =
+		[0]
+		[0]
+Final time reached in 1 steps (CPU time=0.00525267 seconds.)
+successful run.

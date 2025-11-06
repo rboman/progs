@@ -1,0 +1,12 @@
+{
+    "terminal.integrated.env.linux": {
+        "PATH": "${workspaceFolder}/lib/gmsh-sdk/bin:${workspaceFolder}/lib/gmsh-sdk/lib:${env:PATH}",
+        "INCLUDE": "${workspaceFolder}/lib/eigen:${workspaceFolder}/lib/gmsh-sdk/include",
+        "LIB": "${workspaceFolder}/lib/gmsh-sdk/lib"
+    },
+    "terminal.integrated.env.windows": {
+        "PATH": "${workspaceFolder}\\envs;C:\\Users\\${env:USERNAME}\\mingw64\\bin;${workspaceFolder}\\lib\\gmsh-sdk\\bin;${workspaceFolder}\\lib\\gmsh-sdk\\lib;${env:PATH}",
+        "INCLUDE": "${workspaceFolder}\\lib\\eigen;${workspaceFolder}\\lib\\gmsh-sdk\\include",
+        "LIB": "${workspaceFolder}\\lib\\gmsh-sdk\\lib"
+    },
+}

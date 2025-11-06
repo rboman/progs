@@ -1,0 +1,14 @@
+SetFactory("OpenCASCADE");
+d=0.05;
+Point(2) = {0.1, -0.9, 0, d};
+Point(3) = {0.2, -0.3, 0, 2*d};
+Point(5) = {-0.4, -0.4, 0, d/2};
+Point(6) = {-0.4, -0.8, 0, d/2};
+Line(1) = {6, 2};
+Line(2) = {2, 3};
+Line(3) = {3, 5};
+Line(4) = {5, 6};
+Curve Loop(1) = {3, 4, 1, 2};
+Circle(5) = {0, -0.5, 0, 0.1, 0, 2*Pi};
+Curve Loop(2) = {5};
+Plane Surface(1) = {1, 2};
