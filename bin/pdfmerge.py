@@ -11,6 +11,7 @@
 #
 # requirements:
 #   a2ps, gs (ghostscript) or pdfunite (apt install poppler-utils)
+#   => sudo apt install a2ps ghostscript poppler-utils
 #
 # see https://stackoverflow.com/questions/2507766/merge-convert-multiple-pdf-files-into-one-pdf
 
