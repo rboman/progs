@@ -373,5 +373,17 @@ esac
 # <<< juliaup initialize <<<
 ```
 
+démarrage:
+```
+  Installing artifacts ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 55/55
+Precompiling packages finished.
+  236 dependencies successfully precompiled in 248 seconds. 40 already precompiled.
+  1 dependency had output during precompilation:
+┌ MKL_jll
+│   Downloading artifact: IntelOpenMP
+│   Downloading artifact: oneTBB
+└  
 
-
+/media/hdd2/boman/Dropbox/0_A_TRIER/PDE_hw1/DELBARRE Loïc/PDE on  main via ஃ v1.12.1 via t v0.13.1 took 4m21s
+```
+=> 4m21s
