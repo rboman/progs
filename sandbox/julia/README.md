@@ -1,5 +1,9 @@
 # Mémo Julia
 
+
+
+## 2018 
+
 Pas de julia dans les packages Ubuntu 18.04 => télécharger les binaires linux.
 
 Gros changements entre version 0.x et 1.x (aout 2018!)
@@ -12,7 +16,7 @@ Très lent au démarrage! https://www.zverovich.net/2016/05/13/giving-up-on-juli
 
 Similarités avec MATLAB et FORTRAN
 
-## Liens
+### Liens
 
 * https://techytok.com/from-zero-to-julia/ (<= très bien)
 * https://syl1.gitbook.io/julia-language-a-concise-tutorial/
@@ -88,10 +92,9 @@ function f(x)
 end
 ```
 
-
 ### arrays
 
-```
+```julia
 a=[1,2,3]  # démarre à 1 - ne contient qu'1 seul type!
 append!(a,4)   # ajoute 4 (le "!" signifie que a sera changé)
 
@@ -109,12 +112,10 @@ a = zeros(2,2)  # matrice 2x2 de zeros
 d = reshape([1,2,3,4,5,6,7,8,9],3,3)
 ```
 
-
 ### tuples
 
 similaires à python
-
-```
+```julia
 a = 1,2
 a = (1,2)        # idem
 print("a=$a")    # impression
@@ -122,17 +123,15 @@ print("a=$a")    # impression
 
 ### dictionnaires
 
-```
+```julia
 person1 = Dict("Name" => "Aurelio", "Phone" => 123456789, "Shoe-size" => 40)
-
-### 
 ```
 
 ### control flow
 
 très similaire à python mis à part la présence de "end" pour delimiter les blocs
 
-```
+```julia
 for i in 1:5
    println(i)
 end
@@ -146,12 +145,11 @@ else
 end
 ```
 
-
+```julia
 enumerate() # idem à python (retourne un tuple)
-
-### arrays operations
-
 ```
+### arrays operations
+```julia
 a = [1,2,3]  # column vector
 b = [4 5 6]  # row vector
 
@@ -167,7 +165,7 @@ NE PAS PRIVILEGIER LES OPERATIONS SUR MATRICES
 
 utilise le dot '`.`'  => expl: `a.*b`    (à la matlab)
 
-```
+```julia
 a = [1,2,3]
 sin.(a)          # calcule le sinus de chaque comp 
 ```
@@ -178,8 +176,9 @@ sin.(a)          # calcule le sinus de chaque comp
 ```julia
 using Pkg
 Pkg.add("SpecialFunctions")  # installe le package
+```
 
-
+```julia
 using SpecialFunctions
 gamma(3)
 SpecialFunctions.gamma(3)     # idem
@@ -245,7 +244,6 @@ aure = Physicist("Aurelio", 6, "Julia")
 aure.sleepHours = 8
 ```
 
-
 * multiple dispatch: permet de faire des appels à des fcts virtuelles et avoir une sorte de polymorphisme:
 
 ```julia
@@ -300,3 +298,101 @@ MyData2{Int}(2,3)
 generate("TestPackage1")    # genere qq fichiers de démarrage
 ```
 
+---
+
+## 2025 - PDE
+
+Je reteste en 2025 sous ubuntu 24.04
+
+Toujours pas de julia dans apt. 
+
+Je fais : [Install Julia](https://julialang.org/install/)
+
+```
+❯ curl -fsSL https://install.julialang.org | sh
+
+info: downloading installer
+Welcome to Julia!
+
+This will download and install the official Julia Language distribution
+and its version manager Juliaup.
+
+Juliaup will be installed into the Juliaup home directory, located at:
+
+  /home/boman/.juliaup
+
+The julia, juliaup and other commands will be added to
+Juliaup's bin directory, located at:
+
+  /home/boman/.juliaup/bin
+
+This path will then be added to your PATH environment variable by
+modifying the profile files located at:
+
+  /home/boman/.bashrc
+  /home/boman/.profile
+  /home/boman/.zshrc
+
+Julia will look for a new version of Juliaup itself every 1440 minutes when you start julia.
+
+You can uninstall at any time with juliaup self uninstall and these
+changes will be reverted.
+
+? Do you want to install with these default configuration choices? ›
+❯ Proceed with installation
+  Customize installation
+  Cancel installation
+```
+
+Après "proceed"
+
+```
+Now installing Juliaup
+    Checking for new Julia versions
+  Installing Julia 1.12.1+0.x64.linux.gnu
+         Add Installed Julia channel 'release'
+   Configure Default Julia version set to 'release'.
+Julia was successfully installed on your system.
+
+Depending on which shell you are using, run one of the following
+commands to reload the PATH environment variable:
+
+  . /home/boman/.bashrc
+  . /home/boman/.profile
+  . /home/boman/.zshrc
+
+```
+
+Ajoute (à la conda):
+
+```
+# >>> juliaup initialize >>>                                                    
+                                                                                
+# !! Contents within this block are managed by juliaup !!                       
+                                                                                
+case ":$PATH:" in                                                               
+    *:/home/boman/.juliaup/bin:*)                                               
+        ;;                                                                      
+                                                                                
+    *)                                                                          
+        export PATH=/home/boman/.juliaup/bin${PATH:+:${PATH}}                   
+        ;;                                                                      
+esac                                                                            
+                                                                                
+# <<< juliaup initialize <<<
+```
+
+démarrage:
+```
+  Installing artifacts ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 55/55
+Precompiling packages finished.
+  236 dependencies successfully precompiled in 248 seconds. 40 already precompiled.
+  1 dependency had output during precompilation:
+┌ MKL_jll
+│   Downloading artifact: IntelOpenMP
+│   Downloading artifact: oneTBB
+└  
+
+/media/hdd2/boman/Dropbox/0_A_TRIER/PDE_hw1/DELBARRE Loïc/PDE on  main via ஃ v1.12.1 via t v0.13.1 took 4m21s
+```
+=> 4m21s

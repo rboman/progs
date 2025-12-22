@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mon-projet-exemple"
+version = "0.1.0"
+description = "Petit projet d'exemple avec pyproject.toml"
+readme = "README.md"
+requires-python = ">=3.10"
+
+authors = [
+  { name = "Romain", email = "romain@example.com" }
+]
+
+# 👇 Ajout de NumPy
+dependencies = [
+  "numpy>=1.26"
+]
+
+[project.scripts]
+mon-projet = "mon_projet.cli:main"
