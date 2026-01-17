@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# compare cpu vs gpu compression with ffmpeg (from ChatGPT)
 
 import subprocess, os, sys, time, csv
 
