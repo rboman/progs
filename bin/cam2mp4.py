@@ -65,7 +65,7 @@ def has_nvenc(ffmpeg):
 # -------------------------
 def convert(f, ffmpeg, use_nvenc):
     name, ext = os.path.splitext(f)
-    outfile = name + ".mp4"
+    outfile = name + "x265.mp4"
 
     cmd = [
         ffmpeg, "-y",
