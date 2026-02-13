@@ -96,7 +96,7 @@ void
 CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
 {
     // change hero if <A> is pressed
-    if (pge.GetKey(olc::A).bPressed)
+    if (pge.GetKey(olc::Key::A).bPressed)
     {
         ++heroit;
         if (heroit == characters.end())
@@ -111,7 +111,7 @@ CharacterScene::update(olc::PixelGameEngine &pge, float fElapsedTime)
     if (btime > btimet) // change behaviour
     {
         int vx=0, vy=0;
-        if (monster->velocity.x == 0.0 && monster->velocity.x == 0.0)
+        if (monster->velocity.x == 0.0 && monster->velocity.y == 0.0)
         {
             vx = rand() % 3 - 1;
             vy = rand() % 3 - 1;

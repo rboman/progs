@@ -1,7 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+# build win-msvc:
+#   mkdir build
+#   cd build
+#   set INCLUDE=D:\dev\progs\externals\olcPixelGameEngine:%INCLUDE%
+#   cmake ..
+#   cmake --build . --config Release && Release\play_with_pge.exe 
+
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 PROJECT(OLCPGE CXX)
 
-SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # compiler settings

@@ -52,17 +52,17 @@ bool
 Game::OnUserUpdate(float fElapsedTime)
 {
     // quit if ESC is pressed
-    if (GetKey(olc::ESCAPE).bPressed)
+    if (GetKey(olc::Key::ESCAPE).bPressed)
         return false;
 
     // switch between scenes with <Fx> keys
-    if (GetKey(olc::F1).bPressed)
+    if (GetKey(olc::Key::F1).bPressed)
         scene = Scene::CHARACTER;
-    if (GetKey(olc::F2).bPressed)
+    if (GetKey(olc::Key::F2).bPressed)
         scene = Scene::TILES;
-    if (GetKey(olc::F3).bPressed)
+    if (GetKey(olc::Key::F3).bPressed)
         scene = Scene::MAPEDITOR;
-    if (GetKey(olc::F4).bPressed)
+    if (GetKey(olc::Key::F4).bPressed)
         scene = Scene::TEXTWINDOW;
 
     switch (scene)
