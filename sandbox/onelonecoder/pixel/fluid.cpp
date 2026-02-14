@@ -321,7 +321,7 @@ public:
         // add density and velocity at mouse position
         if (GetMouse(0).bHeld)
         {
-            int sz=2;
+            int sz=6;
             for(int i=mx-sz+1; i<mx+sz; ++i)
                 for(int j=my-sz+1; j<my+sz; ++j)
                     if(i>=0 && i<=N && j>=0 && j<=N)
@@ -352,6 +352,10 @@ public:
 int
 main()
 {
+    std::cout << "Fluid Simulation:" << std::endl;
+    std::cout << " => Left mouse button to add density" << std::endl;
+    std::cout << " => Right mouse button to add velocity" << std::endl;
+    std::cout << "HAPPY STIRRING!" << std::endl;
     CFD demo;
     if (demo.Construct(N*SCALE, N*SCALE, 1, 1))
         demo.Start();
