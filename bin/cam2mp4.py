@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# tests sur un mp4 x264 de 14min (encodage Shotcut "par defaut": 3Go):
+#                                (note: encodage Shotcut "youtube": 1.6Go):
+# default=>hardware (nvenc): ~1min30 => 1Go (9000kbits/s)
+# default=>software (x265): ~53min => 3.9Go (370000kbits/s)
+
 
 import sys, os, subprocess, glob
 
 # -------------------------
 # Quality parameters
 # -------------------------
+USE_GPU = True
+
 X265_CRF = 21
 X265_PRESET = "slow"
 
@@ -111,14 +118,17 @@ def convert(f, ffmpeg, use_nvenc):
 # -------------------------
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        print(f"usage:\n\t{sys.argv[0]} file1.avi file2.avi ...")
+        print(f"usage:\n\t{sys.argv[0]} file1.avi file2.mp4 ...")
         sys.exit(1)
 
     ffmpeg = getExe()
     if not ffmpeg:
         raise RuntimeError("ffmpeg not found")
 
-    use_nvenc = has_nvenc(ffmpeg)
+    if USE_GPU:
+        use_nvenc = has_nvenc(ffmpeg)
+    else:
+        use_nvenc = False
 
     print("NVENC available:", use_nvenc)
     print("-" * 40)
