@@ -17,6 +17,7 @@
 #include <QMouseEvent>
 #include <QSettings>
 #include <QTimerEvent>
+#include <QWheelEvent>
 
 namespace
 {
@@ -37,6 +38,10 @@ void setParameterFromSlider(double &target, bool &dirty, int value,
     target = mapSliderValue(value, minValue, maxValue);
     dirty = true;
 }
+
+constexpr double kMinZoom = 10.0;
+constexpr double kMaxZoom = 400.0;
+constexpr double kZoomStep = 1.1;
 
 RenderStyleSettings loadRenderStyleFromSettings()
 {
@@ -236,6 +241,30 @@ Barres::mouseReleaseEvent(QMouseEvent *event)
     }
 
     QWidget::mouseReleaseEvent(event);
+}
+
+void
+Barres::wheelEvent(QWheelEvent *event)
+{
+    const QPoint angleDelta = event->angleDelta();
+    if (angleDelta.y() == 0)
+    {
+        QWidget::wheelEvent(event);
+        return;
+    }
+
+    if (angleDelta.y() > 0)
+        zoom *= kZoomStep;
+    else
+        zoom /= kZoomStep;
+
+    if (zoom < kMinZoom)
+        zoom = kMinZoom;
+    if (zoom > kMaxZoom)
+        zoom = kMaxZoom;
+
+    update();
+    event->accept();
 }
 
 void
