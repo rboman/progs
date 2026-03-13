@@ -17,6 +17,7 @@
 
 #include <QWidget>
 #include "MechanismKinematicsSolver.h"
+#include "MechanismRenderer.h"
 
 class QPaintEvent;
 class QTimerEvent;
@@ -35,6 +36,7 @@ class Barres : public QWidget
     double zoom;
 
     MechanismParameters params;
+    RenderStyleSettings renderStyle;
     TrajectoryGeometry geometryCache;
     bool geometryDirty;
 
@@ -45,6 +47,8 @@ public:
     Barres(QWidget *parent = nullptr);
     MechanismParameters currentParameters() const;
     void applyParameters(const MechanismParameters &newParams);
+    RenderStyleSettings currentRenderStyle() const;
+    void applyRenderStyle(const RenderStyleSettings &newStyle);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

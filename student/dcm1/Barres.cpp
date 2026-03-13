@@ -112,6 +112,19 @@ Barres::applyParameters(const MechanismParameters &newParams)
     update();
 }
 
+RenderStyleSettings
+Barres::currentRenderStyle() const
+{
+    return renderStyle;
+}
+
+void
+Barres::applyRenderStyle(const RenderStyleSettings &newStyle)
+{
+    renderStyle = newStyle;
+    update();
+}
+
 void
 Barres::hideEvent(QHideEvent *)
 {
@@ -132,7 +145,7 @@ Barres::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
     MechanismRenderer::draw(painter, geometryCache, params, frame, nframes, ox,
-                            oy, zoom, this->rect());
+                            oy, zoom, renderStyle, this->rect());
 
     // painter.end();   // avoids "qpainter : cannot destroy paint device that
     // is being painted"

@@ -19,12 +19,29 @@
 #include <QRect>
 #include "MechanismKinematicsSolver.h"
 
+struct RenderStyleSettings
+{
+    double linkPenWidth = 2.0;
+    double trajectoryPWidth = 2.0;
+    double trajectoryDWidth = 0.5;
+    double groundHalfLen = 0.5;   // world units
+    double filmExtension = 10.0;  // world units
+    int labelFontSize = 10;       // pt
+    int labelOffsetX = 3;         // px
+    int labelOffsetY = 3;         // px
+    int paramBoxX = 10;           // px
+    int paramBoxY = 10;           // px
+    int paramBoxWidth = 200;      // px
+    int paramBoxHeight = 300;     // px
+};
+
 class MechanismRenderer
 {
 public:
     static void draw(QPainter &painter, const TrajectoryGeometry &geometry,
                      const MechanismParameters &params, int frame, int nframes,
                      int ox, int oy, double zoom,
+                     const RenderStyleSettings &style,
                      const QRect &widgetRect);
 };
 
