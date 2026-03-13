@@ -16,6 +16,27 @@
 #include "MechanismRenderer.h"
 #include <QTimerEvent>
 
+namespace
+{
+double mapSliderValue(int value, double minValue, double maxValue)
+{
+    const int range = 100;
+    if (value < 0)
+        value = 0;
+    if (value > range)
+        value = range;
+
+    return minValue + value * (maxValue - minValue) / range;
+}
+
+void setParameterFromSlider(double &target, bool &dirty, int value,
+                            double minValue, double maxValue)
+{
+    target = mapSliderValue(value, minValue, maxValue);
+    dirty = true;
+}
+} // namespace
+
 Barres::Barres(QWidget *parent)
     : QWidget(parent), geometryCache(nframes), geometryDirty(true)
 {
@@ -107,119 +128,47 @@ Barres::paintEvent(QPaintEvent *event)
 void
 Barres::set_a1_slot(int i)
 {
-    double a1min = 0.1;
-    double a1max = 2.0;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.a1 = a1min + i * (a1max - a1min) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.a1, geometryDirty, i, 0.1, 2.0);
 }
 
 void
 Barres::set_a2_slot(int i)
 {
-    double a2min = 2.5;
-    double a2max = 4.5;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.a2 = a2min + i * (a2max - a2min) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.a2, geometryDirty, i, 2.5, 4.5);
 }
 
 void
 Barres::set_a3_slot(int i)
 {
-    double a3min = 1.0;
-    double a3max = 3.0;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.a3 = a3min + i * (a3max - a3min) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.a3, geometryDirty, i, 1.0, 3.0);
 }
 
 void
 Barres::set_xb_slot(int i)
 {
-    double xbmin = 2.0;
-    double xbmax = 4.0;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.xb = xbmin + i * (xbmax - xbmin) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.xb, geometryDirty, i, 2.0, 4.0);
 }
 
 void
 Barres::set_ya_slot(int i)
 {
-    double yamin = 0.5;
-    double yamax = 2.5;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.ya = yamin + i * (yamax - yamin) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.ya, geometryDirty, i, 0.5, 2.5);
 }
 
 void
 Barres::set_L_slot(int i)
 {
-    double Lmin = 4.0;
-    double Lmax = 8.0;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.L = Lmin + i * (Lmax - Lmin) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.L, geometryDirty, i, 4.0, 8.0);
 }
 
 void
 Barres::set_e_slot(int i)
 {
-    double emin = 0.0;
-    double emax = 3.0;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.e = emin + i * (emax - emin) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.e, geometryDirty, i, 0.0, 3.0);
 }
 
 void
 Barres::set_dp_slot(int i)
 {
-    double dpmin = 0.5;
-    double dpmax = 1.5;
-    int range = 100;
-    if (i < 0)
-        i = 0;
-    if (i > range)
-        i = range;
-
-    params.dp = dpmin + i * (dpmax - dpmin) / range;
-    geometryDirty = true;
+    setParameterFromSlider(params.dp, geometryDirty, i, 0.5, 1.5);
 }
