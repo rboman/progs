@@ -35,6 +35,8 @@ class Barres : public QWidget
     double zoom;
 
     MechanismParameters params;
+    TrajectoryGeometry geometryCache;
+    bool geometryDirty;
 
     int myTimerId;
     int frame;

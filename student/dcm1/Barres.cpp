@@ -18,7 +18,8 @@
 #include <QColor>
 #include <QPen>
 
-Barres::Barres(QWidget *parent) : QWidget(parent)
+Barres::Barres(QWidget *parent)
+    : QWidget(parent), geometryCache(nframes), geometryDirty(true)
 {
     pi = 4 * atan(1.0);
 
@@ -92,20 +93,19 @@ Barres::paintEvent(QPaintEvent *event)
 {
     // std::cout << "paintEvent: please wait...\n";
 
-    TrajectoryGeometry geometry =
-        MechanismKinematicsSolver::compute(params, nframes);
+    if (geometryDirty)
+    {
+        geometryCache = MechanismKinematicsSolver::compute(params, nframes);
+        geometryDirty = false;
+    }
 
-    double x[6][nframes];
-    double y[6][nframes];
+    const TrajectoryGeometry &geometry = geometryCache;
 
-    // apply transl + zoom
-
-    for (int i = 0; i < 6; i++)
-        for (int j = 0; j < nframes; j++)
-        {
-            x[i][j] = ox + geometry.x[i][j] * zoom;
-            y[i][j] = oy - geometry.y[i][j] * zoom; // * 350 / 480;
-        }
+    auto sx = [this](double wx) { return this->ox + wx * this->zoom; };
+    auto sy = [this](double wy) { return this->oy - wy * this->zoom; };
+    auto pt = [&geometry, &sx, &sy](int p, int f) {
+        return QPointF(sx(geometry.x[p][f]), sy(geometry.y[p][f]));
+    };
 
     int i = frame;
 
@@ -116,17 +116,20 @@ Barres::paintEvent(QPaintEvent *event)
     // pen.setColor(palette().dark().color());
     painter.setPen(pen1);
 
-    painter.drawLine(x[0][i], y[0][i], x[1][i], y[1][i]); // 0-1
-    painter.drawLine(x[1][i], y[1][i], x[4][i], y[4][i]); // 1-4
-    painter.drawLine(x[4][i], y[4][i], x[5][i], y[5][i]); // 4-5
-    painter.drawLine(x[3][i], y[3][i], x[2][i], y[2][i]); // 3-2
+        painter.drawLine(pt(0, i), pt(1, i)); // 0-1
+        painter.drawLine(pt(1, i), pt(4, i)); // 1-4
+        painter.drawLine(pt(4, i), pt(5, i)); // 4-5
+        painter.drawLine(pt(3, i), pt(2, i)); // 3-2
 
     // film
-    painter.drawLine(x[3][i], y[3][i] - params.e * zoom, x[3][i] + 10 * zoom,
-                     y[3][i] - params.e * zoom);
+        painter.drawLine(QPointF(sx(geometry.x[3][i]), sy(geometry.y[3][i]) - params.e * zoom),
+                 QPointF(sx(geometry.x[3][i]) + 10 * zoom,
+                     sy(geometry.y[3][i]) - params.e * zoom));
     // ground near B
-    painter.drawLine(x[3][i] - 0.5 * zoom, y[3][i], x[3][i] + 0.5 * zoom,
-                     y[3][i]);
+        painter.drawLine(QPointF(sx(geometry.x[3][i]) - 0.5 * zoom,
+                     sy(geometry.y[3][i])),
+                 QPointF(sx(geometry.x[3][i]) + 0.5 * zoom,
+                     sy(geometry.y[3][i])));
     // ground near A
     painter.drawLine(ox - 0.5 * zoom, oy - params.ya * zoom, ox + 0.5 * zoom,
                      oy - params.ya * zoom);
@@ -137,27 +140,32 @@ Barres::paintEvent(QPaintEvent *event)
     QFont font = painter.font();
     font.setPointSize(10);
     painter.setFont(font);
-    painter.drawText(QPoint(x[0][i] + 3, y[0][i] - 3), "A");
-    painter.drawText(QPoint(x[1][i] + 3, y[1][i] - 3), "D");
-    painter.drawText(QPoint(x[2][i] + 3, y[2][i] - 3), "C");
-    painter.drawText(QPoint(x[3][i] + 3, y[3][i] - 3), "B");
-    painter.drawText(QPoint(x[4][i] + 3, y[4][i] - 3), "P'");
-    painter.drawText(QPoint(x[5][i] + 3, y[5][i] - 3), "P");
+    painter.drawText(QPoint(sx(geometry.x[0][i]) + 3, sy(geometry.y[0][i]) - 3),
+                     "A");
+    painter.drawText(QPoint(sx(geometry.x[1][i]) + 3, sy(geometry.y[1][i]) - 3),
+                     "D");
+    painter.drawText(QPoint(sx(geometry.x[2][i]) + 3, sy(geometry.y[2][i]) - 3),
+                     "C");
+    painter.drawText(QPoint(sx(geometry.x[3][i]) + 3, sy(geometry.y[3][i]) - 3),
+                     "B");
+    painter.drawText(QPoint(sx(geometry.x[4][i]) + 3, sy(geometry.y[4][i]) - 3),
+                     "P'");
+    painter.drawText(QPoint(sx(geometry.x[5][i]) + 3, sy(geometry.y[5][i]) - 3),
+                     "P");
 
     // -- trajectory
 
     painter.setPen(QPen(Qt::red, 2.0));
     for (int j = 0; j < nframes - 1; j++)
-        painter.drawLine(x[5][j], y[5][j], x[5][j + 1], y[5][j + 1]);
-    painter.drawLine(x[5][nframes - 1], y[5][nframes - 1], x[5][0], y[5][0]);
+        painter.drawLine(pt(5, j), pt(5, j + 1));
+    painter.drawLine(pt(5, nframes - 1), pt(5, 0));
 
     // -- trajectory pt2
     int npt = 1;
     painter.setPen(QPen(Qt::darkBlue, 0.5));
     for (int j = 0; j < nframes - 1; j++)
-        painter.drawLine(x[npt][j], y[npt][j], x[npt][j + 1], y[npt][j + 1]);
-    painter.drawLine(x[npt][nframes - 1], y[npt][nframes - 1], x[npt][0],
-                     y[npt][0]);
+        painter.drawLine(pt(npt, j), pt(npt, j + 1));
+    painter.drawLine(pt(npt, nframes - 1), pt(npt, 0));
 
     // write parameters values
     painter.setPen(QPen(Qt::black));
@@ -193,6 +201,7 @@ Barres::set_a1_slot(int i)
         i = range;
 
     params.a1 = a1min + i * (a1max - a1min) / range;
+    geometryDirty = true;
 }
 
 void
@@ -207,6 +216,7 @@ Barres::set_a2_slot(int i)
         i = range;
 
     params.a2 = a2min + i * (a2max - a2min) / range;
+    geometryDirty = true;
 }
 
 void
@@ -221,6 +231,7 @@ Barres::set_a3_slot(int i)
         i = range;
 
     params.a3 = a3min + i * (a3max - a3min) / range;
+    geometryDirty = true;
 }
 
 void
@@ -235,6 +246,7 @@ Barres::set_xb_slot(int i)
         i = range;
 
     params.xb = xbmin + i * (xbmax - xbmin) / range;
+    geometryDirty = true;
 }
 
 void
@@ -249,6 +261,7 @@ Barres::set_ya_slot(int i)
         i = range;
 
     params.ya = yamin + i * (yamax - yamin) / range;
+    geometryDirty = true;
 }
 
 void
@@ -263,6 +276,7 @@ Barres::set_L_slot(int i)
         i = range;
 
     params.L = Lmin + i * (Lmax - Lmin) / range;
+    geometryDirty = true;
 }
 
 void
@@ -277,6 +291,7 @@ Barres::set_e_slot(int i)
         i = range;
 
     params.e = emin + i * (emax - emin) / range;
+    geometryDirty = true;
 }
 
 void
@@ -291,4 +306,5 @@ Barres::set_dp_slot(int i)
         i = range;
 
     params.dp = dpmin + i * (dpmax - dpmin) / range;
+    geometryDirty = true;
 }
