@@ -42,15 +42,15 @@ Barres::Barres(QWidget *parent) : QWidget(parent)
     // optimsed set
     zoom = 60;
 
-    a1 = 0.9501; // AD
-    a2 = 3.3933; // DC
-    a3 = 2.0360; // BC
-    xb = 3.3427;
-    ya = 1.5459;
+    params.a1 = 0.9501; // AD
+    params.a2 = 3.3933; // DC
+    params.a3 = 2.0360; // BC
+    params.xb = 3.3427;
+    params.ya = 1.5459;
 
-    L = 6.1079; // DP'
-    e = 1.4595;
-    dp = 0.5459; // PP'
+    params.L = 6.1079; // DP'
+    params.e = 1.4595;
+    params.dp = 0.5459; // PP'
 
     this->setWindowTitle("Barres! (DCM1-1994)");
     this->resize(640, 480);
@@ -92,54 +92,19 @@ Barres::paintEvent(QPaintEvent *event)
 {
     // std::cout << "paintEvent: please wait...\n";
 
-    double theta1[nframes];
-
-    double x1[nframes];
-    double x2[nframes];
+    TrajectoryGeometry geometry =
+        MechanismKinematicsSolver::compute(params, nframes);
 
     double x[6][nframes];
     double y[6][nframes];
-
-    for (int i = 0; i < nframes; i++)
-    {
-        theta1[i] = 2 * pi * i / nframes;
-        double k1 = xb - a1 * cos(theta1[i]);
-        double k2 = -ya - a1 * sin(theta1[i]);
-        double k3 = (k1 * k1 + k2 * k2 + a2 * a2 - a3 * a3) / (2.0 * a2);
-
-        x1[i] = 2.0 *
-                atan((k2 + sqrt(k2 * k2 - (k3 + k1) * (k3 - k1))) / (k3 + k1));
-        if ((k1 - a2 * cos(x1[i])) / a3 > 0.0)
-            x2[i] = asin((k2 - a2 * sin(x1[i])) / a3);
-        else
-            x2[i] = -asin((k2 - a2 * sin(x1[i])) / a3) - pi;
-
-        x[0][i] = 0.0;
-        y[0][i] = ya;
-
-        x[1][i] = a1 * cos(theta1[i]);
-        y[1][i] = ya + a1 * sin(theta1[i]);
-
-        x[2][i] = x[1][i] + a2 * cos(x1[i]);
-        y[2][i] = y[1][i] + a2 * sin(x1[i]);
-
-        x[3][i] = xb;
-        y[3][i] = 0.0;
-
-        x[4][i] = x[1][i] + L * cos(x1[i]);
-        y[4][i] = y[1][i] + L * sin(x1[i]);
-
-        x[5][i] = x[4][i] + dp * cos(x1[i] - pi / 2);
-        y[5][i] = y[4][i] + dp * sin(x1[i] - pi / 2);
-    }
 
     // apply transl + zoom
 
     for (int i = 0; i < 6; i++)
         for (int j = 0; j < nframes; j++)
         {
-            x[i][j] = ox + x[i][j] * zoom;
-            y[i][j] = oy - y[i][j] * zoom; // * 350 / 480;
+            x[i][j] = ox + geometry.x[i][j] * zoom;
+            y[i][j] = oy - geometry.y[i][j] * zoom; // * 350 / 480;
         }
 
     int i = frame;
@@ -157,14 +122,14 @@ Barres::paintEvent(QPaintEvent *event)
     painter.drawLine(x[3][i], y[3][i], x[2][i], y[2][i]); // 3-2
 
     // film
-    painter.drawLine(x[3][i], y[3][i] - e * zoom, x[3][i] + 10 * zoom,
-                     y[3][i] - e * zoom);
+    painter.drawLine(x[3][i], y[3][i] - params.e * zoom, x[3][i] + 10 * zoom,
+                     y[3][i] - params.e * zoom);
     // ground near B
     painter.drawLine(x[3][i] - 0.5 * zoom, y[3][i], x[3][i] + 0.5 * zoom,
                      y[3][i]);
     // ground near A
-    painter.drawLine(ox - 0.5 * zoom, oy - ya * zoom, ox + 0.5 * zoom,
-                     oy - ya * zoom);
+    painter.drawLine(ox - 0.5 * zoom, oy - params.ya * zoom, ox + 0.5 * zoom,
+                     oy - params.ya * zoom);
 
     // -- draw labels
     pen1.setColor(Qt::black);
@@ -199,14 +164,14 @@ Barres::paintEvent(QPaintEvent *event)
     QRect rect(10, 10, 200, 300);
     QString argtxt = QString("a1 = %1\na2 = %2\na3 = %3\nxb = %4\nya = %5\nL = "
                              "%6\ne = %7\ndp = %8")
-                         .arg(a1)
-                         .arg(a2)
-                         .arg(a3)
-                         .arg(xb)
-                         .arg(ya)
-                         .arg(L)
-                         .arg(e)
-                         .arg(dp);
+                         .arg(params.a1)
+                         .arg(params.a2)
+                         .arg(params.a3)
+                         .arg(params.xb)
+                         .arg(params.ya)
+                         .arg(params.L)
+                         .arg(params.e)
+                         .arg(params.dp);
     painter.drawText(rect, Qt::AlignLeft | Qt::AlignTop, argtxt);
     // value of "i"
     painter.drawText(this->rect(), Qt::AlignHCenter | Qt::AlignTop,
@@ -227,7 +192,7 @@ Barres::set_a1_slot(int i)
     if (i > range)
         i = range;
 
-    a1 = a1min + i * (a1max - a1min) / range;
+    params.a1 = a1min + i * (a1max - a1min) / range;
 }
 
 void
@@ -241,7 +206,7 @@ Barres::set_a2_slot(int i)
     if (i > range)
         i = range;
 
-    a2 = a2min + i * (a2max - a2min) / range;
+    params.a2 = a2min + i * (a2max - a2min) / range;
 }
 
 void
@@ -255,7 +220,7 @@ Barres::set_a3_slot(int i)
     if (i > range)
         i = range;
 
-    a3 = a3min + i * (a3max - a3min) / range;
+    params.a3 = a3min + i * (a3max - a3min) / range;
 }
 
 void
@@ -269,7 +234,7 @@ Barres::set_xb_slot(int i)
     if (i > range)
         i = range;
 
-    xb = xbmin + i * (xbmax - xbmin) / range;
+    params.xb = xbmin + i * (xbmax - xbmin) / range;
 }
 
 void
@@ -283,7 +248,7 @@ Barres::set_ya_slot(int i)
     if (i > range)
         i = range;
 
-    ya = yamin + i * (yamax - yamin) / range;
+    params.ya = yamin + i * (yamax - yamin) / range;
 }
 
 void
@@ -297,7 +262,7 @@ Barres::set_L_slot(int i)
     if (i > range)
         i = range;
 
-    L = Lmin + i * (Lmax - Lmin) / range;
+    params.L = Lmin + i * (Lmax - Lmin) / range;
 }
 
 void
@@ -311,7 +276,7 @@ Barres::set_e_slot(int i)
     if (i > range)
         i = range;
 
-    e = emin + i * (emax - emin) / range;
+    params.e = emin + i * (emax - emin) / range;
 }
 
 void
@@ -325,5 +290,5 @@ Barres::set_dp_slot(int i)
     if (i > range)
         i = range;
 
-    dp = dpmin + i * (dpmax - dpmin) / range;
+    params.dp = dpmin + i * (dpmax - dpmin) / range;
 }

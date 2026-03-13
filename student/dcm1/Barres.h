@@ -19,6 +19,7 @@
 #include <QPainter>
 #include <iostream>
 #include <vector>
+#include "MechanismKinematicsSolver.h"
 
 class Barres : public QWidget
 {
@@ -33,14 +34,7 @@ class Barres : public QWidget
 
     double zoom;
 
-    double a1;
-    double a2;
-    double a3;
-    double xb;
-    double ya;
-    double L;
-    double e;
-    double dp;
+    MechanismParameters params;
 
     int myTimerId;
     int frame;
