@@ -32,7 +32,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 {
     this->setWindowTitle("Barres");
     this->resize(800, 600);
-    this->setMinimumSize(980, 620);
+    this->setMinimumSize(900, 580);
 
     QWidget *central = new QWidget(this);
     setCentralWidget(central);
@@ -45,17 +45,21 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     hbox->addWidget(viewer);
 
     QFrame *pan = new QFrame(central);
-    pan->setFixedWidth(320);
-    pan->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    pan->setMinimumWidth(300);
+    pan->setMaximumWidth(380);
+    pan->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     hbox->addWidget(pan);
 
-    hbox->setStretch(0, 1);
-    hbox->setStretch(1, 0);
+    hbox->setStretch(0, 4);
+    hbox->setStretch(1, 1);
 
     QVBoxLayout *vbox = new QVBoxLayout(pan);
 
     QGroupBox *groupBox = new QGroupBox("Parameters");
     QFormLayout *formLayout = new QFormLayout();
+    formLayout->setHorizontalSpacing(10);
+    formLayout->setLabelAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     groupBox->setLayout(formLayout);
 
     auto addSlider = [formLayout, this](const QString &label,
@@ -63,9 +67,10 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
                                         double minValue, double maxValue,
                                         void (Barres::*slot)(int)) {
         QSlider *slider = new QSlider(Qt::Horizontal);
-        slider->setMinimumWidth(180);
+        slider->setMinimumWidth(140);
         QLabel *nameLabel = new QLabel(label);
         nameLabel->setMinimumWidth(28);
+        nameLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
         nameLabel->setToolTip(tooltip);
         slider->setToolTip(tooltip);
         QLabel *valueLabel = new QLabel();
@@ -75,6 +80,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         QWidget *rowWidget = new QWidget();
         QHBoxLayout *rowLayout = new QHBoxLayout(rowWidget);
         rowLayout->setContentsMargins(0, 0, 0, 0);
+        rowLayout->setSpacing(6);
         rowLayout->addWidget(slider, 1);
         rowLayout->addWidget(valueLabel);
 
@@ -139,7 +145,16 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         QMessageBox::about(this, "A propos",
                            "Barres\n"
                            "Simulation d'un mecanisme planar.\n"
-                           "Projet Qt Widgets / C++.");
+                           "Projet Qt Widgets / C++.\n\n"
+                           "Commandes:\n"
+                           "- Menu Fichier > Quitter\n"
+                           "- Menu Animation > Demarrer / Arreter\n"
+                           "- Sliders: reglage des parametres geometriques\n\n"
+                           "Raccourcis clavier:\n"
+                           "- Espace : demarrer / arreter l'animation\n"
+                           "- R : reinitialiser a la frame 0\n"
+                           "- Fleche droite : frame suivante\n"
+                           "- Fleche gauche : frame precedente");
         statusBar()->showMessage("Affichage de la boite A propos", 2000);
     });
 
