@@ -14,6 +14,7 @@
 
 #include "Barres.h"
 #include "MechanismRenderer.h"
+#include <QSettings>
 #include <QTimerEvent>
 
 namespace
@@ -34,6 +35,58 @@ void setParameterFromSlider(double &target, bool &dirty, int value,
 {
     target = mapSliderValue(value, minValue, maxValue);
     dirty = true;
+}
+
+RenderStyleSettings loadRenderStyleFromSettings()
+{
+    QSettings settings;
+    RenderStyleSettings style;
+
+    style.linkPenWidth =
+        settings.value("render/linkPenWidth", style.linkPenWidth).toDouble();
+    style.trajectoryPWidth =
+        settings.value("render/trajectoryPWidth", style.trajectoryPWidth).toDouble();
+    style.trajectoryDWidth =
+        settings.value("render/trajectoryDWidth", style.trajectoryDWidth).toDouble();
+    style.groundHalfLen =
+        settings.value("render/groundHalfLen", style.groundHalfLen).toDouble();
+    style.filmExtension =
+        settings.value("render/filmExtension", style.filmExtension).toDouble();
+
+    style.labelFontSize =
+        settings.value("render/labelFontSize", style.labelFontSize).toInt();
+    style.labelOffsetX =
+        settings.value("render/labelOffsetX", style.labelOffsetX).toInt();
+    style.labelOffsetY =
+        settings.value("render/labelOffsetY", style.labelOffsetY).toInt();
+
+    style.paramBoxX = settings.value("render/paramBoxX", style.paramBoxX).toInt();
+    style.paramBoxY = settings.value("render/paramBoxY", style.paramBoxY).toInt();
+    style.paramBoxWidth =
+        settings.value("render/paramBoxWidth", style.paramBoxWidth).toInt();
+    style.paramBoxHeight =
+        settings.value("render/paramBoxHeight", style.paramBoxHeight).toInt();
+
+    return style;
+}
+
+void saveRenderStyleToSettings(const RenderStyleSettings &style)
+{
+    QSettings settings;
+    settings.setValue("render/linkPenWidth", style.linkPenWidth);
+    settings.setValue("render/trajectoryPWidth", style.trajectoryPWidth);
+    settings.setValue("render/trajectoryDWidth", style.trajectoryDWidth);
+    settings.setValue("render/groundHalfLen", style.groundHalfLen);
+    settings.setValue("render/filmExtension", style.filmExtension);
+
+    settings.setValue("render/labelFontSize", style.labelFontSize);
+    settings.setValue("render/labelOffsetX", style.labelOffsetX);
+    settings.setValue("render/labelOffsetY", style.labelOffsetY);
+
+    settings.setValue("render/paramBoxX", style.paramBoxX);
+    settings.setValue("render/paramBoxY", style.paramBoxY);
+    settings.setValue("render/paramBoxWidth", style.paramBoxWidth);
+    settings.setValue("render/paramBoxHeight", style.paramBoxHeight);
 }
 } // namespace
 
@@ -72,6 +125,8 @@ Barres::Barres(QWidget *parent)
 
     this->setWindowTitle("Barres! (DCM1-1994)");
     this->resize(640, 480);
+
+    renderStyle = loadRenderStyleFromSettings();
 
     frame = 1;
     myTimerId = 0;
@@ -122,6 +177,7 @@ void
 Barres::applyRenderStyle(const RenderStyleSettings &newStyle)
 {
     renderStyle = newStyle;
+    saveRenderStyleToSettings(renderStyle);
     update();
 }
 

@@ -18,7 +18,10 @@
 #include <QAction>
 #include <QApplication>
 #include <QDateTime>
+#include <QDialog>
+#include <QDialogButtonBox>
 #include <QDir>
+#include <QDoubleSpinBox>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -32,11 +35,14 @@
 #include <QLabel>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QSettings>
 #include <QShortcut>
 #include <QSlider>
+#include <QSpinBox>
 #include <QStatusBar>
 #include <QStandardPaths>
+#include <QTabWidget>
 #include <QVBoxLayout>
 
 Window::Window(QWidget *parent) : QMainWindow(parent)
@@ -337,6 +343,149 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     actionQuit->setShortcut(QKeySequence::Quit);
     QObject::connect(actionQuit, &QAction::triggered,
                      qApp, &QApplication::quit);
+
+    auto openRenderStyleDialog = [this]() {
+        QDialog dialog(this);
+        dialog.setWindowTitle("Parametres de dessin");
+        dialog.setMinimumWidth(460);
+
+        QVBoxLayout *rootLayout = new QVBoxLayout(&dialog);
+        QTabWidget *tabs = new QTabWidget(&dialog);
+        rootLayout->addWidget(tabs);
+
+        const RenderStyleSettings current = viewer->currentRenderStyle();
+
+        QWidget *tabLines = new QWidget(&dialog);
+        QFormLayout *linesLayout = new QFormLayout(tabLines);
+        tabs->addTab(tabLines, "Traits");
+
+        auto makeDouble = [](double minV, double maxV, double value,
+                             int decimals = 2) {
+            QDoubleSpinBox *box = new QDoubleSpinBox();
+            box->setRange(minV, maxV);
+            box->setDecimals(decimals);
+            box->setValue(value);
+            return box;
+        };
+
+        auto makeInt = [](int minV, int maxV, int value) {
+            QSpinBox *box = new QSpinBox();
+            box->setRange(minV, maxV);
+            box->setValue(value);
+            return box;
+        };
+
+        QDoubleSpinBox *sbLinkPenWidth =
+            makeDouble(0.1, 10.0, current.linkPenWidth, 2);
+        QDoubleSpinBox *sbTrajPWidth =
+            makeDouble(0.1, 10.0, current.trajectoryPWidth, 2);
+        QDoubleSpinBox *sbTrajDWidth =
+            makeDouble(0.1, 10.0, current.trajectoryDWidth, 2);
+        QDoubleSpinBox *sbGroundHalfLen =
+            makeDouble(0.0, 10.0, current.groundHalfLen, 2);
+        QDoubleSpinBox *sbFilmExtension =
+            makeDouble(0.0, 50.0, current.filmExtension, 2);
+
+        linesLayout->addRow("Epaisseur liens", sbLinkPenWidth);
+        linesLayout->addRow("Epaisseur trajectoire P", sbTrajPWidth);
+        linesLayout->addRow("Epaisseur trajectoire D", sbTrajDWidth);
+        linesLayout->addRow("Demi-longueur sol", sbGroundHalfLen);
+        linesLayout->addRow("Longueur film", sbFilmExtension);
+
+        QWidget *tabLabels = new QWidget(&dialog);
+        QFormLayout *labelsLayout = new QFormLayout(tabLabels);
+        tabs->addTab(tabLabels, "Labels");
+
+        QSpinBox *sbLabelFontSize =
+            makeInt(6, 48, current.labelFontSize);
+        QSpinBox *sbLabelOffsetX =
+            makeInt(-50, 50, current.labelOffsetX);
+        QSpinBox *sbLabelOffsetY =
+            makeInt(-50, 50, current.labelOffsetY);
+
+        labelsLayout->addRow("Taille police", sbLabelFontSize);
+        labelsLayout->addRow("Offset X", sbLabelOffsetX);
+        labelsLayout->addRow("Offset Y", sbLabelOffsetY);
+
+        QWidget *tabParamBox = new QWidget(&dialog);
+        QFormLayout *boxLayout = new QFormLayout(tabParamBox);
+        tabs->addTab(tabParamBox, "Boite texte");
+
+        QSpinBox *sbParamBoxX = makeInt(0, 2000, current.paramBoxX);
+        QSpinBox *sbParamBoxY = makeInt(0, 2000, current.paramBoxY);
+        QSpinBox *sbParamBoxWidth = makeInt(50, 2000, current.paramBoxWidth);
+        QSpinBox *sbParamBoxHeight = makeInt(50, 2000, current.paramBoxHeight);
+
+        boxLayout->addRow("Position X", sbParamBoxX);
+        boxLayout->addRow("Position Y", sbParamBoxY);
+        boxLayout->addRow("Largeur", sbParamBoxWidth);
+        boxLayout->addRow("Hauteur", sbParamBoxHeight);
+
+        auto collectStyle = [&]() {
+            RenderStyleSettings s;
+            s.linkPenWidth = sbLinkPenWidth->value();
+            s.trajectoryPWidth = sbTrajPWidth->value();
+            s.trajectoryDWidth = sbTrajDWidth->value();
+            s.groundHalfLen = sbGroundHalfLen->value();
+            s.filmExtension = sbFilmExtension->value();
+            s.labelFontSize = sbLabelFontSize->value();
+            s.labelOffsetX = sbLabelOffsetX->value();
+            s.labelOffsetY = sbLabelOffsetY->value();
+            s.paramBoxX = sbParamBoxX->value();
+            s.paramBoxY = sbParamBoxY->value();
+            s.paramBoxWidth = sbParamBoxWidth->value();
+            s.paramBoxHeight = sbParamBoxHeight->value();
+            return s;
+        };
+
+        QDialogButtonBox *buttonBox =
+            new QDialogButtonBox(QDialogButtonBox::Ok |
+                                 QDialogButtonBox::Cancel |
+                                 QDialogButtonBox::Apply,
+                                 &dialog);
+        QPushButton *resetButton =
+            buttonBox->addButton("Reinitialiser", QDialogButtonBox::ResetRole);
+        rootLayout->addWidget(buttonBox);
+
+        auto applyStyle = [&]() {
+            viewer->applyRenderStyle(collectStyle());
+            statusBar()->showMessage("Style de dessin applique", 1500);
+        };
+
+        QObject::connect(buttonBox->button(QDialogButtonBox::Apply),
+                         &QPushButton::clicked, &dialog, applyStyle);
+        QObject::connect(buttonBox, &QDialogButtonBox::accepted,
+                         &dialog, [&]() {
+                             applyStyle();
+                             dialog.accept();
+                         });
+        QObject::connect(buttonBox, &QDialogButtonBox::rejected,
+                         &dialog, &QDialog::reject);
+
+        QObject::connect(resetButton, &QPushButton::clicked, &dialog, [&]() {
+            const RenderStyleSettings defaults;
+            sbLinkPenWidth->setValue(defaults.linkPenWidth);
+            sbTrajPWidth->setValue(defaults.trajectoryPWidth);
+            sbTrajDWidth->setValue(defaults.trajectoryDWidth);
+            sbGroundHalfLen->setValue(defaults.groundHalfLen);
+            sbFilmExtension->setValue(defaults.filmExtension);
+            sbLabelFontSize->setValue(defaults.labelFontSize);
+            sbLabelOffsetX->setValue(defaults.labelOffsetX);
+            sbLabelOffsetY->setValue(defaults.labelOffsetY);
+            sbParamBoxX->setValue(defaults.paramBoxX);
+            sbParamBoxY->setValue(defaults.paramBoxY);
+            sbParamBoxWidth->setValue(defaults.paramBoxWidth);
+            sbParamBoxHeight->setValue(defaults.paramBoxHeight);
+        });
+
+        dialog.exec();
+    };
+
+    QMenu *menuView = menuBar()->addMenu("&Affichage");
+    QAction *actionRenderStyle =
+        menuView->addAction("Parametres de dessin...");
+    QObject::connect(actionRenderStyle, &QAction::triggered,
+                     this, openRenderStyleDialog);
 
     QMenu *menuAnimation = menuBar()->addMenu("&Animation");
     actionStart = menuAnimation->addAction("&Démarrer");
