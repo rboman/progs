@@ -17,6 +17,7 @@
 #include <cmath>
 #include <QAction>
 #include <QApplication>
+#include <QCloseEvent>
 #include <QColorDialog>
 #include <QDateTime>
 #include <QDialog>
@@ -49,8 +50,20 @@
 Window::Window(QWidget *parent) : QMainWindow(parent)
 {
     this->setWindowTitle("Barres");
-    this->resize(800, 600);
     this->setMinimumSize(900, 580);
+
+    {
+        QSettings settings;
+        const QSize defaultSize(1000, 650);
+        QSize savedSize = settings.value("window/size", defaultSize).toSize();
+        if (!savedSize.isValid())
+            savedSize = defaultSize;
+        if (savedSize.width() < minimumWidth())
+            savedSize.setWidth(minimumWidth());
+        if (savedSize.height() < minimumHeight())
+            savedSize.setHeight(minimumHeight());
+        this->resize(savedSize);
+    }
 
     QWidget *central = new QWidget(this);
     setCentralWidget(central);
@@ -147,6 +160,30 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
                                   &Barres::set_dp_slot);
 
     vbox->addWidget(groupBox);
+
+    QGroupBox *animGroup = new QGroupBox("Animation");
+    QFormLayout *animLayout = new QFormLayout();
+    animGroup->setLayout(animLayout);
+
+    QSpinBox *speedMsSpin = new QSpinBox();
+    speedMsSpin->setRange(5, 200);
+    speedMsSpin->setSingleStep(5);
+    speedMsSpin->setSuffix(" ms/frame");
+    speedMsSpin->setToolTip("Intervalle entre deux frames d'animation");
+    speedMsSpin->setValue(viewer->currentAnimationIntervalMs());
+    animLayout->addRow("Vitesse", speedMsSpin);
+
+    QObject::connect(speedMsSpin, QOverload<int>::of(&QSpinBox::valueChanged),
+                     viewer, &Barres::setAnimationIntervalMs);
+    QObject::connect(speedMsSpin, QOverload<int>::of(&QSpinBox::valueChanged),
+                     this, [this](int intervalMs) {
+                         statusBar()->showMessage(
+                             QString("Vitesse animation: %1 ms/frame")
+                                 .arg(intervalMs),
+                             1200);
+                     });
+
+    vbox->addWidget(animGroup);
     vbox->addStretch(1);
 
     // -- menu bar
@@ -600,4 +637,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     });
 
     statusBar()->showMessage("Pret");
+}
+
+void
+Window::closeEvent(QCloseEvent *event)
+{
+    QSettings settings;
+    settings.setValue("window/size", size());
+    QMainWindow::closeEvent(event);
 }

@@ -18,6 +18,7 @@
 #include <QMainWindow>
 class Barres;
 class QAction;
+class QCloseEvent;
 
 class Window : public QMainWindow
 {
@@ -30,6 +31,9 @@ private:
 
 public:
     explicit Window(QWidget *parent = nullptr);
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 };
 
 #endif

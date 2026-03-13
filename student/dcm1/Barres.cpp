@@ -114,6 +114,23 @@ void loadViewFromSettings(double &zoom, QPoint &panOffset)
     panOffset = QPoint(settings.value("view/panOffsetX", 150).toInt(),
                        settings.value("view/panOffsetY", 300).toInt());
 }
+
+int loadAnimationIntervalFromSettings()
+{
+    QSettings settings;
+    int intervalMs = settings.value("animation/intervalMs", 25).toInt();
+    if (intervalMs < 5)
+        intervalMs = 5;
+    if (intervalMs > 200)
+        intervalMs = 200;
+    return intervalMs;
+}
+
+void saveAnimationIntervalToSettings(int intervalMs)
+{
+    QSettings settings;
+    settings.setValue("animation/intervalMs", intervalMs);
+}
 } // namespace
 
 Barres::Barres(QWidget *parent)
@@ -155,6 +172,7 @@ Barres::Barres(QWidget *parent)
 
     renderStyle = loadRenderStyleFromSettings();
     loadViewFromSettings(zoom, panOffset);
+    animationIntervalMs = loadAnimationIntervalFromSettings();
 
     frame = 1;
     myTimerId = 0;
@@ -319,7 +337,7 @@ Barres::startAnimation()
 {
     if (myTimerId == 0)
     {
-        myTimerId = startTimer(25);
+        myTimerId = startTimer(animationIntervalMs);
         emit animationStarted();
     }
 }
@@ -342,6 +360,33 @@ Barres::toggleAnimation()
         startAnimation();
     else
         stopAnimation();
+}
+
+int
+Barres::currentAnimationIntervalMs() const
+{
+    return animationIntervalMs;
+}
+
+void
+Barres::setAnimationIntervalMs(int intervalMs)
+{
+    if (intervalMs < 5)
+        intervalMs = 5;
+    if (intervalMs > 200)
+        intervalMs = 200;
+
+    if (animationIntervalMs == intervalMs)
+        return;
+
+    animationIntervalMs = intervalMs;
+    saveAnimationIntervalToSettings(animationIntervalMs);
+
+    if (myTimerId != 0)
+    {
+        killTimer(myTimerId);
+        myTimerId = startTimer(animationIntervalMs);
+    }
 }
 
 void
