@@ -99,91 +99,10 @@ Barres::paintEvent(QPaintEvent *event)
         geometryDirty = false;
     }
 
-    const TrajectoryGeometry &geometry = geometryCache;
-
-    auto sx = [this](double wx) { return this->ox + wx * this->zoom; };
-    auto sy = [this](double wy) { return this->oy - wy * this->zoom; };
-    auto pt = [&geometry, &sx, &sy](int p, int f) {
-        return QPointF(sx(geometry.x[p][f]), sy(geometry.y[p][f]));
-    };
-
-    int i = frame;
-
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
-
-    QPen pen1(Qt::black, 2.0);
-    // pen.setColor(palette().dark().color());
-    painter.setPen(pen1);
-
-        painter.drawLine(pt(0, i), pt(1, i)); // 0-1
-        painter.drawLine(pt(1, i), pt(4, i)); // 1-4
-        painter.drawLine(pt(4, i), pt(5, i)); // 4-5
-        painter.drawLine(pt(3, i), pt(2, i)); // 3-2
-
-    // film
-        painter.drawLine(QPointF(sx(geometry.x[3][i]), sy(geometry.y[3][i]) - params.e * zoom),
-                 QPointF(sx(geometry.x[3][i]) + 10 * zoom,
-                     sy(geometry.y[3][i]) - params.e * zoom));
-    // ground near B
-        painter.drawLine(QPointF(sx(geometry.x[3][i]) - 0.5 * zoom,
-                     sy(geometry.y[3][i])),
-                 QPointF(sx(geometry.x[3][i]) + 0.5 * zoom,
-                     sy(geometry.y[3][i])));
-    // ground near A
-    painter.drawLine(ox - 0.5 * zoom, oy - params.ya * zoom, ox + 0.5 * zoom,
-                     oy - params.ya * zoom);
-
-    // -- draw labels
-    pen1.setColor(Qt::black);
-    painter.setPen(pen1);
-    QFont font = painter.font();
-    font.setPointSize(10);
-    painter.setFont(font);
-    painter.drawText(QPoint(sx(geometry.x[0][i]) + 3, sy(geometry.y[0][i]) - 3),
-                     "A");
-    painter.drawText(QPoint(sx(geometry.x[1][i]) + 3, sy(geometry.y[1][i]) - 3),
-                     "D");
-    painter.drawText(QPoint(sx(geometry.x[2][i]) + 3, sy(geometry.y[2][i]) - 3),
-                     "C");
-    painter.drawText(QPoint(sx(geometry.x[3][i]) + 3, sy(geometry.y[3][i]) - 3),
-                     "B");
-    painter.drawText(QPoint(sx(geometry.x[4][i]) + 3, sy(geometry.y[4][i]) - 3),
-                     "P'");
-    painter.drawText(QPoint(sx(geometry.x[5][i]) + 3, sy(geometry.y[5][i]) - 3),
-                     "P");
-
-    // -- trajectory
-
-    painter.setPen(QPen(Qt::red, 2.0));
-    for (int j = 0; j < nframes - 1; j++)
-        painter.drawLine(pt(5, j), pt(5, j + 1));
-    painter.drawLine(pt(5, nframes - 1), pt(5, 0));
-
-    // -- trajectory pt2
-    int npt = 1;
-    painter.setPen(QPen(Qt::darkBlue, 0.5));
-    for (int j = 0; j < nframes - 1; j++)
-        painter.drawLine(pt(npt, j), pt(npt, j + 1));
-    painter.drawLine(pt(npt, nframes - 1), pt(npt, 0));
-
-    // write parameters values
-    painter.setPen(QPen(Qt::black));
-    QRect rect(10, 10, 200, 300);
-    QString argtxt = QString("a1 = %1\na2 = %2\na3 = %3\nxb = %4\nya = %5\nL = "
-                             "%6\ne = %7\ndp = %8")
-                         .arg(params.a1)
-                         .arg(params.a2)
-                         .arg(params.a3)
-                         .arg(params.xb)
-                         .arg(params.ya)
-                         .arg(params.L)
-                         .arg(params.e)
-                         .arg(params.dp);
-    painter.drawText(rect, Qt::AlignLeft | Qt::AlignTop, argtxt);
-    // value of "i"
-    painter.drawText(this->rect(), Qt::AlignHCenter | Qt::AlignTop,
-                     QString("frame=%1/%2").arg(frame).arg(nframes));
+    MechanismRenderer::draw(painter, geometryCache, params, frame, nframes, ox,
+                            oy, zoom, this->rect());
 
     // painter.end();   // avoids "qpainter : cannot destroy paint device that
     // is being painted"

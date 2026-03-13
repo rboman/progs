@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include "MechanismKinematicsSolver.h"
+#include "MechanismRenderer.h"
 
 class Barres : public QWidget
 {
