@@ -15,6 +15,21 @@
 #include "MechanismRenderer.h"
 #include <QPen>
 
+namespace {
+constexpr double kLinkPenWidth      = 2.0;
+constexpr double kTrajectoryPWidth  = 2.0;
+constexpr double kTrajectoryDWidth  = 0.5;
+constexpr double kGroundHalfLen     = 0.5;  // world units
+constexpr double kFilmExtension     = 10.0; // world units
+constexpr int    kLabelFontSize     = 10;   // pt
+constexpr int    kLabelOffsetX      = 3;    // px
+constexpr int    kLabelOffsetY      = 3;    // px
+constexpr int    kParamBoxX         = 10;   // px
+constexpr int    kParamBoxY         = 10;   // px
+constexpr int    kParamBoxWidth     = 200;  // px
+constexpr int    kParamBoxHeight    = 300;  // px
+} // namespace
+
 void
 MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
                         const MechanismParameters &params, int frame,
@@ -27,7 +42,7 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
         return QPointF(sx(geometry.x[p][f]), sy(geometry.y[p][f]));
     };
 
-    QPen pen1(Qt::black, 2.0);
+    QPen pen1(Qt::black, kLinkPenWidth);
     // pen.setColor(palette().dark().color());
     painter.setPen(pen1);
 
@@ -39,58 +54,52 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
     // film
     painter.drawLine(QPointF(sx(geometry.x[B][frame]),
                              sy(geometry.y[B][frame]) - params.e * zoom),
-                     QPointF(sx(geometry.x[B][frame]) + 10 * zoom,
+                     QPointF(sx(geometry.x[B][frame]) + kFilmExtension * zoom,
                              sy(geometry.y[B][frame]) - params.e * zoom));
     // ground near B
-    painter.drawLine(QPointF(sx(geometry.x[B][frame]) - 0.5 * zoom,
+    painter.drawLine(QPointF(sx(geometry.x[B][frame]) - kGroundHalfLen * zoom,
                              sy(geometry.y[B][frame])),
-                     QPointF(sx(geometry.x[B][frame]) + 0.5 * zoom,
+                     QPointF(sx(geometry.x[B][frame]) + kGroundHalfLen * zoom,
                              sy(geometry.y[B][frame])));
     // ground near A
-    painter.drawLine(ox - 0.5 * zoom, oy - params.ya * zoom, ox + 0.5 * zoom,
-                     oy - params.ya * zoom);
+    painter.drawLine(ox - kGroundHalfLen * zoom, oy - params.ya * zoom,
+                     ox + kGroundHalfLen * zoom, oy - params.ya * zoom);
 
     // -- draw labels
     pen1.setColor(Qt::black);
     painter.setPen(pen1);
     QFont font = painter.font();
-    font.setPointSize(10);
+    font.setPointSize(kLabelFontSize);
     painter.setFont(font);
-    painter.drawText(
-        QPoint(sx(geometry.x[A][frame]) + 3, sy(geometry.y[A][frame]) - 3),
-        "A");
-    painter.drawText(
-        QPoint(sx(geometry.x[D][frame]) + 3, sy(geometry.y[D][frame]) - 3),
-        "D");
-    painter.drawText(
-        QPoint(sx(geometry.x[C][frame]) + 3, sy(geometry.y[C][frame]) - 3),
-        "C");
-    painter.drawText(
-        QPoint(sx(geometry.x[B][frame]) + 3, sy(geometry.y[B][frame]) - 3),
-        "B");
-    painter.drawText(
-        QPoint(sx(geometry.x[Pprime][frame]) + 3, sy(geometry.y[Pprime][frame]) - 3),
-        "P'");
-    painter.drawText(
-        QPoint(sx(geometry.x[P][frame]) + 3, sy(geometry.y[P][frame]) - 3),
-        "P");
+    auto label = [&](PointIndex p, const char *text) {
+        painter.drawText(
+            QPoint(sx(geometry.x[p][frame]) + kLabelOffsetX,
+                   sy(geometry.y[p][frame]) - kLabelOffsetY),
+            text);
+    };
+    label(A,      "A");
+    label(D,      "D");
+    label(C,      "C");
+    label(B,      "B");
+    label(Pprime, "P'");
+    label(P,      "P");
 
     // -- trajectory
 
-    painter.setPen(QPen(Qt::red, 2.0));
+    painter.setPen(QPen(Qt::red, kTrajectoryPWidth));
     for (int j = 0; j < nframes - 1; j++)
         painter.drawLine(pt(P, j), pt(P, j + 1));
     painter.drawLine(pt(P, nframes - 1), pt(P, 0));
 
     // -- trajectory D
-    painter.setPen(QPen(Qt::darkBlue, 0.5));
+    painter.setPen(QPen(Qt::darkBlue, kTrajectoryDWidth));
     for (int j = 0; j < nframes - 1; j++)
         painter.drawLine(pt(D, j), pt(D, j + 1));
     painter.drawLine(pt(D, nframes - 1), pt(D, 0));
 
     // write parameters values
     painter.setPen(QPen(Qt::black));
-    QRect rect(10, 10, 200, 300);
+    QRect rect(kParamBoxX, kParamBoxY, kParamBoxWidth, kParamBoxHeight);
     QString argtxt = QString("a1 = %1\na2 = %2\na3 = %3\nxb = %4\nya = %5\nL = "
                              "%6\ne = %7\ndp = %8")
                          .arg(params.a1)
