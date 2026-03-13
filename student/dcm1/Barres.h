@@ -43,6 +43,8 @@ class Barres : public QWidget
 
 public:
     Barres(QWidget *parent = nullptr);
+    MechanismParameters currentParameters() const;
+    void applyParameters(const MechanismParameters &newParams);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

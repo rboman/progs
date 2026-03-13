@@ -98,6 +98,20 @@ Barres::showEvent(QShowEvent *)
     startAnimation();
 }
 
+MechanismParameters
+Barres::currentParameters() const
+{
+    return params;
+}
+
+void
+Barres::applyParameters(const MechanismParameters &newParams)
+{
+    params = newParams;
+    geometryDirty = true;
+    update();
+}
+
 void
 Barres::hideEvent(QHideEvent *)
 {
