@@ -146,6 +146,40 @@ Barres::stopAnimation()
 }
 
 void
+Barres::toggleAnimation()
+{
+    if (myTimerId == 0)
+        startAnimation();
+    else
+        stopAnimation();
+}
+
+void
+Barres::resetAnimation()
+{
+    frame = 0;
+    update();
+}
+
+void
+Barres::stepForward()
+{
+    ++frame;
+    if (frame == nframes)
+        frame = 0;
+    update();
+}
+
+void
+Barres::stepBackward()
+{
+    --frame;
+    if (frame < 0)
+        frame = nframes - 1;
+    update();
+}
+
+void
 Barres::set_a1_slot(int i)
 {
     setParameterFromSlider(params.a1, geometryDirty, i, 0.1, 2.0);

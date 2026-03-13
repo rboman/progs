@@ -62,6 +62,10 @@ public slots:
 
     void startAnimation();
     void stopAnimation();
+    void toggleAnimation();
+    void resetAnimation();
+    void stepForward();
+    void stepBackward();
 
 signals:
     void animationStarted();

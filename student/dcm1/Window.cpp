@@ -25,6 +25,7 @@
 #include <QLabel>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QShortcut>
 #include <QSlider>
 #include <QStatusBar>
 
@@ -133,6 +134,32 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
                            "Simulation d'un mecanisme planar.\n"
                            "Projet Qt Widgets / C++.");
         statusBar()->showMessage("Affichage de la boite A propos", 2000);
+    });
+
+    QShortcut *shortcutToggle = new QShortcut(QKeySequence(Qt::Key_Space), this);
+    shortcutToggle->setContext(Qt::ApplicationShortcut);
+    QObject::connect(shortcutToggle, &QShortcut::activated,
+                     viewer, &Barres::toggleAnimation);
+
+    QShortcut *shortcutReset = new QShortcut(QKeySequence(Qt::Key_R), this);
+    shortcutReset->setContext(Qt::ApplicationShortcut);
+    QObject::connect(shortcutReset, &QShortcut::activated, this, [this]() {
+        viewer->resetAnimation();
+        statusBar()->showMessage("Animation reinitialisee", 1500);
+    });
+
+    QShortcut *shortcutStepPrev = new QShortcut(QKeySequence(Qt::Key_Left), this);
+    shortcutStepPrev->setContext(Qt::ApplicationShortcut);
+    QObject::connect(shortcutStepPrev, &QShortcut::activated, this, [this]() {
+        viewer->stepBackward();
+        statusBar()->showMessage("Frame precedente", 1000);
+    });
+
+    QShortcut *shortcutStepNext = new QShortcut(QKeySequence(Qt::Key_Right), this);
+    shortcutStepNext->setContext(Qt::ApplicationShortcut);
+    QObject::connect(shortcutStepNext, &QShortcut::activated, this, [this]() {
+        viewer->stepForward();
+        statusBar()->showMessage("Frame suivante", 1000);
     });
 
     statusBar()->showMessage("Pret");
