@@ -16,19 +16,18 @@
 #define BARRES_H
 
 #include <QWidget>
-#include <QPainter>
-#include <iostream>
-#include <vector>
 #include "MechanismKinematicsSolver.h"
-#include "MechanismRenderer.h"
+
+class QPaintEvent;
+class QTimerEvent;
+class QShowEvent;
+class QHideEvent;
 
 class Barres : public QWidget
 {
     Q_OBJECT;
 
     static constexpr int nframes = 50;
-
-    double pi;
 
     int ox;
     int oy;

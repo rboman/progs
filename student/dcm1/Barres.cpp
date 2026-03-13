@@ -13,16 +13,12 @@
 //   limitations under the License.
 
 #include "Barres.h"
-#include <math.h>
+#include "MechanismRenderer.h"
 #include <QTimerEvent>
-#include <QColor>
-#include <QPen>
 
 Barres::Barres(QWidget *parent)
     : QWidget(parent), geometryCache(nframes), geometryDirty(true)
 {
-    pi = 4 * atan(1.0);
-
     ox = 150;
     oy = 300;
 

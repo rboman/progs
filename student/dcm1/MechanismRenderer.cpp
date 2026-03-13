@@ -13,7 +13,6 @@
 //   limitations under the License.
 
 #include "MechanismRenderer.h"
-#include <QColor>
 #include <QPen>
 
 void
