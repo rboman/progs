@@ -45,25 +45,25 @@ MechanismKinematicsSolver::compute(const MechanismParameters &params,
             x2[i] = -std::asin((k2 - params.a2 * std::sin(x1[i])) / params.a3) -
                     pi;
 
-        geometry.x[0][i] = 0.0;
-        geometry.y[0][i] = params.ya;
+        geometry.x[A][i] = 0.0;
+        geometry.y[A][i] = params.ya;
 
-        geometry.x[1][i] = params.a1 * std::cos(theta1[i]);
-        geometry.y[1][i] = params.ya + params.a1 * std::sin(theta1[i]);
+        geometry.x[D][i] = params.a1 * std::cos(theta1[i]);
+        geometry.y[D][i] = params.ya + params.a1 * std::sin(theta1[i]);
 
-        geometry.x[2][i] = geometry.x[1][i] + params.a2 * std::cos(x1[i]);
-        geometry.y[2][i] = geometry.y[1][i] + params.a2 * std::sin(x1[i]);
+        geometry.x[C][i] = geometry.x[D][i] + params.a2 * std::cos(x1[i]);
+        geometry.y[C][i] = geometry.y[D][i] + params.a2 * std::sin(x1[i]);
 
-        geometry.x[3][i] = params.xb;
-        geometry.y[3][i] = 0.0;
+        geometry.x[B][i] = params.xb;
+        geometry.y[B][i] = 0.0;
 
-        geometry.x[4][i] = geometry.x[1][i] + params.L * std::cos(x1[i]);
-        geometry.y[4][i] = geometry.y[1][i] + params.L * std::sin(x1[i]);
+        geometry.x[Pprime][i] = geometry.x[D][i] + params.L * std::cos(x1[i]);
+        geometry.y[Pprime][i] = geometry.y[D][i] + params.L * std::sin(x1[i]);
 
-        geometry.x[5][i] =
-            geometry.x[4][i] + params.dp * std::cos(x1[i] - pi / 2);
-        geometry.y[5][i] =
-            geometry.y[4][i] + params.dp * std::sin(x1[i] - pi / 2);
+        geometry.x[P][i] =
+            geometry.x[Pprime][i] + params.dp * std::cos(x1[i] - pi / 2);
+        geometry.y[P][i] =
+            geometry.y[Pprime][i] + params.dp * std::sin(x1[i] - pi / 2);
     }
 
     return geometry;

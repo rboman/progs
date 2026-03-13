@@ -35,13 +35,12 @@ bool expectLinkLengths(const char *prefix, const TrajectoryGeometry &g,
 {
     bool ok = true;
 
-    // Geometry layout: A=0, D=1, C=2, B=3.
-    const double ad = distance2d(g.x[0][frame], g.y[0][frame], g.x[1][frame],
-                                 g.y[1][frame]);
-    const double dc = distance2d(g.x[1][frame], g.y[1][frame], g.x[2][frame],
-                                 g.y[2][frame]);
-    const double bc = distance2d(g.x[3][frame], g.y[3][frame], g.x[2][frame],
-                                 g.y[2][frame]);
+    const double ad = distance2d(g.x[A][frame], g.y[A][frame], g.x[D][frame],
+                                 g.y[D][frame]);
+    const double dc = distance2d(g.x[D][frame], g.y[D][frame], g.x[C][frame],
+                                 g.y[C][frame]);
+    const double bc = distance2d(g.x[B][frame], g.y[B][frame], g.x[C][frame],
+                                 g.y[C][frame]);
 
     ok = expectNear((std::string(prefix) + " |AD|" ).c_str(), ad, params.a1,
                     tol) && ok;
@@ -74,21 +73,21 @@ bool test_optimized_parameters()
     bool ok = true;
 
     // Anchor points remain fixed for all frames.
-    ok = expectNear("f0 x0", g.x[0][0], 0.0, tol) && ok;
-    ok = expectNear("f0 y0", g.y[0][0], 1.5459, tol) && ok;
-    ok = expectNear("f13 x0", g.x[0][13], 0.0, tol) && ok;
-    ok = expectNear("f13 y0", g.y[0][13], 1.5459, tol) && ok;
+    ok = expectNear("f0 xA", g.x[A][0], 0.0, tol) && ok;
+    ok = expectNear("f0 yA", g.y[A][0], 1.5459, tol) && ok;
+    ok = expectNear("f13 xA", g.x[A][13], 0.0, tol) && ok;
+    ok = expectNear("f13 yA", g.y[A][13], 1.5459, tol) && ok;
 
-    ok = expectNear("f0 x3", g.x[3][0], 3.3427, tol) && ok;
-    ok = expectNear("f0 y3", g.y[3][0], 0.0, tol) && ok;
-    ok = expectNear("f25 x3", g.x[3][25], 3.3427, tol) && ok;
-    ok = expectNear("f25 y3", g.y[3][25], 0.0, tol) && ok;
+    ok = expectNear("f0 xB", g.x[B][0], 3.3427, tol) && ok;
+    ok = expectNear("f0 yB", g.y[B][0], 0.0, tol) && ok;
+    ok = expectNear("f25 xB", g.x[B][25], 3.3427, tol) && ok;
+    ok = expectNear("f25 yB", g.y[B][25], 0.0, tol) && ok;
 
     // End-effector coordinates at selected frames (non-trivial solver path).
-    ok = expectNear("f0 x5", g.x[5][0], 7.0810176575155808, tol) && ok;
-    ok = expectNear("f0 y5", g.y[5][0], 1.4182367838269, tol) && ok;
-    ok = expectNear("f25 x5", g.x[5][25], 5.1819512408552786, tol) && ok;
-    ok = expectNear("f25 y5", g.y[5][25], 1.4969428807501401, tol) && ok;
+    ok = expectNear("f0 xP", g.x[P][0], 7.0810176575155808, tol) && ok;
+    ok = expectNear("f0 yP", g.y[P][0], 1.4182367838269, tol) && ok;
+    ok = expectNear("f25 xP", g.x[P][25], 5.1819512408552786, tol) && ok;
+    ok = expectNear("f25 yP", g.y[P][25], 1.4969428807501401, tol) && ok;
 
     // Link lengths for selected frames: AD=a1, DC=a2, BC=a3.
     ok = expectLinkLengths("opt f0", g, 0, params, lenTol) && ok;
@@ -119,10 +118,10 @@ bool test_initial_parameters()
     bool ok = true;
 
     // End-effector coordinates at selected frames.
-    ok = expectNear("init f0 x5", g.x[5][0], 11.819145098164825, tol) && ok;
-    ok = expectNear("init f0 y5", g.y[5][0], 0.996192513483174, tol) && ok;
-    ok = expectNear("init f9 x5", g.x[5][9], 10.506366161773686, tol) && ok;
-    ok = expectNear("init f9 y5", g.y[5][9], 0.7339062735246, tol) && ok;
+    ok = expectNear("init f0 xP", g.x[P][0], 11.819145098164825, tol) && ok;
+    ok = expectNear("init f0 yP", g.y[P][0], 0.996192513483174, tol) && ok;
+    ok = expectNear("init f9 xP", g.x[P][9], 10.506366161773686, tol) && ok;
+    ok = expectNear("init f9 yP", g.y[P][9], 0.7339062735246, tol) && ok;
 
     // Link lengths for selected frames: AD=a1, DC=a2, BC=a3.
     ok = expectLinkLengths("init f0", g, 0, params, lenTol) && ok;

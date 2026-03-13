@@ -17,6 +17,8 @@
 
 #include <vector>
 
+enum PointIndex { A = 0, D = 1, C = 2, B = 3, Pprime = 4, P = 5 };
+
 struct MechanismParameters
 {
     double a1;

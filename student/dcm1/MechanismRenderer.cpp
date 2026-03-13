@@ -31,21 +31,21 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
     // pen.setColor(palette().dark().color());
     painter.setPen(pen1);
 
-    painter.drawLine(pt(0, frame), pt(1, frame)); // 0-1
-    painter.drawLine(pt(1, frame), pt(4, frame)); // 1-4
-    painter.drawLine(pt(4, frame), pt(5, frame)); // 4-5
-    painter.drawLine(pt(3, frame), pt(2, frame)); // 3-2
+    painter.drawLine(pt(A,      frame), pt(D,      frame)); // A-D
+    painter.drawLine(pt(D,      frame), pt(Pprime, frame)); // D-P'
+    painter.drawLine(pt(Pprime, frame), pt(P,      frame)); // P'-P
+    painter.drawLine(pt(B,      frame), pt(C,      frame)); // B-C
 
     // film
-    painter.drawLine(QPointF(sx(geometry.x[3][frame]),
-                             sy(geometry.y[3][frame]) - params.e * zoom),
-                     QPointF(sx(geometry.x[3][frame]) + 10 * zoom,
-                             sy(geometry.y[3][frame]) - params.e * zoom));
+    painter.drawLine(QPointF(sx(geometry.x[B][frame]),
+                             sy(geometry.y[B][frame]) - params.e * zoom),
+                     QPointF(sx(geometry.x[B][frame]) + 10 * zoom,
+                             sy(geometry.y[B][frame]) - params.e * zoom));
     // ground near B
-    painter.drawLine(QPointF(sx(geometry.x[3][frame]) - 0.5 * zoom,
-                             sy(geometry.y[3][frame])),
-                     QPointF(sx(geometry.x[3][frame]) + 0.5 * zoom,
-                             sy(geometry.y[3][frame])));
+    painter.drawLine(QPointF(sx(geometry.x[B][frame]) - 0.5 * zoom,
+                             sy(geometry.y[B][frame])),
+                     QPointF(sx(geometry.x[B][frame]) + 0.5 * zoom,
+                             sy(geometry.y[B][frame])));
     // ground near A
     painter.drawLine(ox - 0.5 * zoom, oy - params.ya * zoom, ox + 0.5 * zoom,
                      oy - params.ya * zoom);
@@ -57,37 +57,36 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
     font.setPointSize(10);
     painter.setFont(font);
     painter.drawText(
-        QPoint(sx(geometry.x[0][frame]) + 3, sy(geometry.y[0][frame]) - 3),
+        QPoint(sx(geometry.x[A][frame]) + 3, sy(geometry.y[A][frame]) - 3),
         "A");
     painter.drawText(
-        QPoint(sx(geometry.x[1][frame]) + 3, sy(geometry.y[1][frame]) - 3),
+        QPoint(sx(geometry.x[D][frame]) + 3, sy(geometry.y[D][frame]) - 3),
         "D");
     painter.drawText(
-        QPoint(sx(geometry.x[2][frame]) + 3, sy(geometry.y[2][frame]) - 3),
+        QPoint(sx(geometry.x[C][frame]) + 3, sy(geometry.y[C][frame]) - 3),
         "C");
     painter.drawText(
-        QPoint(sx(geometry.x[3][frame]) + 3, sy(geometry.y[3][frame]) - 3),
+        QPoint(sx(geometry.x[B][frame]) + 3, sy(geometry.y[B][frame]) - 3),
         "B");
     painter.drawText(
-        QPoint(sx(geometry.x[4][frame]) + 3, sy(geometry.y[4][frame]) - 3),
+        QPoint(sx(geometry.x[Pprime][frame]) + 3, sy(geometry.y[Pprime][frame]) - 3),
         "P'");
     painter.drawText(
-        QPoint(sx(geometry.x[5][frame]) + 3, sy(geometry.y[5][frame]) - 3),
+        QPoint(sx(geometry.x[P][frame]) + 3, sy(geometry.y[P][frame]) - 3),
         "P");
 
     // -- trajectory
 
     painter.setPen(QPen(Qt::red, 2.0));
     for (int j = 0; j < nframes - 1; j++)
-        painter.drawLine(pt(5, j), pt(5, j + 1));
-    painter.drawLine(pt(5, nframes - 1), pt(5, 0));
+        painter.drawLine(pt(P, j), pt(P, j + 1));
+    painter.drawLine(pt(P, nframes - 1), pt(P, 0));
 
-    // -- trajectory pt2
-    int npt = 1;
+    // -- trajectory D
     painter.setPen(QPen(Qt::darkBlue, 0.5));
     for (int j = 0; j < nframes - 1; j++)
-        painter.drawLine(pt(npt, j), pt(npt, j + 1));
-    painter.drawLine(pt(npt, nframes - 1), pt(npt, 0));
+        painter.drawLine(pt(D, j), pt(D, j + 1));
+    painter.drawLine(pt(D, nframes - 1), pt(D, 0));
 
     // write parameters values
     painter.setPen(QPen(Qt::black));
