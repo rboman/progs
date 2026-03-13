@@ -15,6 +15,7 @@
 #ifndef BARRES_H
 #define BARRES_H
 
+#include <QPoint>
 #include <QWidget>
 #include "MechanismKinematicsSolver.h"
 #include "MechanismRenderer.h"
@@ -30,10 +31,10 @@ class Barres : public QWidget
 
     static constexpr int nframes = 50;
 
-    int ox;
-    int oy;
-
     double zoom;
+    QPoint panOffset;
+    QPoint lastMousePos;
+    bool isPanning;
 
     MechanismParameters params;
     RenderStyleSettings renderStyle;

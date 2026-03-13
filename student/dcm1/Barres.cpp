@@ -97,8 +97,9 @@ void saveRenderStyleToSettings(const RenderStyleSettings &style)
 Barres::Barres(QWidget *parent)
     : QWidget(parent), geometryCache(nframes), geometryDirty(true)
 {
-    ox = 150;
-    oy = 300;
+    panOffset = QPoint(150, 300);
+    lastMousePos = QPoint();
+    isPanning = false;
 
     /*
     // initial set
@@ -204,8 +205,9 @@ Barres::paintEvent(QPaintEvent *event)
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    MechanismRenderer::draw(painter, geometryCache, params, frame, nframes, ox,
-                            oy, zoom, renderStyle, this->rect());
+    MechanismRenderer::draw(painter, geometryCache, params, frame, nframes,
+                            panOffset.x(), panOffset.y(), zoom,
+                            renderStyle, this->rect());
 
     // painter.end();   // avoids "qpainter : cannot destroy paint device that
     // is being painted"
