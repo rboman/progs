@@ -253,6 +253,7 @@ Barres::wheelEvent(QWheelEvent *event)
         return;
     }
 
+    const double oldZoom = zoom;
     if (angleDelta.y() > 0)
         zoom *= kZoomStep;
     else
@@ -262,6 +263,12 @@ Barres::wheelEvent(QWheelEvent *event)
         zoom = kMinZoom;
     if (zoom > kMaxZoom)
         zoom = kMaxZoom;
+
+    // Keep the world point under the cursor fixed during zoom
+    const QPoint mousePos = event->position().toPoint();
+    const double r = zoom / oldZoom;
+    panOffset.setX(qRound(mousePos.x() - (mousePos.x() - panOffset.x()) * r));
+    panOffset.setY(qRound(mousePos.y() - (mousePos.y() - panOffset.y()) * r));
 
     update();
     event->accept();
@@ -322,6 +329,14 @@ void
 Barres::resetAnimation()
 {
     frame = 0;
+    update();
+}
+
+void
+Barres::resetView()
+{
+    zoom = 60.0;
+    panOffset = QPoint(150, 300);
     update();
 }
 

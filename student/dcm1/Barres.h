@@ -77,6 +77,7 @@ public slots:
     void stopAnimation();
     void toggleAnimation();
     void resetAnimation();
+    void resetView();
     void stepForward();
     void stepBackward();
 

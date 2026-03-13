@@ -523,6 +523,11 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     };
 
     QMenu *menuView = menuBar()->addMenu("&Affichage");
+    QAction *actionResetView = menuView->addAction("Réinitialiser la vue");
+    actionResetView->setShortcut(Qt::Key_H);
+    QObject::connect(actionResetView, &QAction::triggered,
+                     viewer, &Barres::resetView);
+    menuView->addSeparator();
     QAction *actionRenderStyle =
         menuView->addAction("Parametres de dessin...");
     QObject::connect(actionRenderStyle, &QAction::triggered,
