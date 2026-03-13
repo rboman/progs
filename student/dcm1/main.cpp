@@ -26,7 +26,7 @@ main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("rboman");
     QCoreApplication::setApplicationName("barres");
 
-    // i18n step 1: define preferred UI language setting, not yet applied.
+    // Ensure a persisted UI language exists; translator is loaded at startup.
     QSettings settings;
     if (!settings.contains("ui/language"))
         settings.setValue("ui/language", "fr");
