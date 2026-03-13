@@ -23,6 +23,18 @@ cmake --build build --config Release
 - Cle QSettings reservee : `ui/language`
 - Etat actuel : cle initialisee au demarrage, sans effet fonctionnel sur l'UI
 
+## i18n (etat courant)
+
+- Les textes UI principaux sont passes par `tr(...)` / `QCoreApplication::translate(...)`.
+- Infrastructure Qt Linguist activee dans `CMakeLists.txt`:
+  - fichier source de traduction: `i18n/barres_en.ts`
+  - generation du binaire `barres_en.qm` au build
+  - copie post-build vers `build/Release/i18n/barres_en.qm`
+- `main.cpp` charge `barres_en.qm` si `ui/language = "en"`.
+- Francais reste la langue source par defaut (si `ui/language = "fr"`).
+- Menu de selection langue ajoute: `Affichage -> Langue -> Francais/Anglais`.
+- Le changement de langue est persiste dans QSettings, applique au prochain demarrage.
+
 ## i18n (phase 2) - inventaire des chaines
 
 Inventaire effectue sur `Window.cpp`, `Barres.cpp`, `MechanismRenderer.cpp`.
@@ -306,7 +318,7 @@ Clés utilisées :
 | Clé | Type | Usage |
 |---|---|---|
 | `io/lastParamsDir` | QString | Dernier répertoire import/export JSON |
-| `ui/language` | QString (`fr`/`en`) | Préférence langue UI (réservée, non appliquée en phase 1) |
+| `ui/language` | QString (`fr`/`en`) | Préférence langue UI (chargée au démarrage) |
 | `view/zoom` | double | Niveau de zoom sauvé |
 | `view/panOffsetX` | int | Décalage horizontal de la vue |
 | `view/panOffsetY` | int | Décalage vertical de la vue |

@@ -15,7 +15,9 @@
 #include "Window.h"
 #include <QApplication>
 #include <QCoreApplication>
+#include <QDir>
 #include <QSettings>
+#include <QTranslator>
 
 int
 main(int argc, char *argv[])
@@ -28,6 +30,20 @@ main(int argc, char *argv[])
     QSettings settings;
     if (!settings.contains("ui/language"))
         settings.setValue("ui/language", "fr");
+
+    const QString uiLanguage =
+        settings.value("ui/language", "fr").toString().toLower();
+    if (uiLanguage == "en")
+    {
+        QTranslator *translator = new QTranslator(&app);
+        const QString qmInI18nDir =
+            QDir(QCoreApplication::applicationDirPath()).filePath("i18n/barres_en.qm");
+        const QString qmNextToExe =
+            QDir(QCoreApplication::applicationDirPath()).filePath("barres_en.qm");
+
+        if (translator->load(qmInI18nDir) || translator->load(qmNextToExe))
+            app.installTranslator(translator);
+    }
 
     Window win;
     win.show();

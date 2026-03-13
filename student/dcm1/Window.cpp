@@ -16,6 +16,7 @@
 #include "Barres.h"
 #include <cmath>
 #include <QAction>
+#include <QActionGroup>
 #include <QApplication>
 #include <QCloseEvent>
 #include <QColorDialog>
@@ -480,6 +481,44 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         menuView->addAction(tr("Parametres de dessin..."));
     QObject::connect(actionRenderStyle, &QAction::triggered,
                      this, openRenderStyleDialog);
+
+    menuView->addSeparator();
+    QMenu *menuLanguage = menuView->addMenu(tr("Langue"));
+    QActionGroup *languageGroup = new QActionGroup(this);
+    languageGroup->setExclusive(true);
+
+    QAction *actionLangFr = menuLanguage->addAction(tr("Francais"));
+    actionLangFr->setCheckable(true);
+    languageGroup->addAction(actionLangFr);
+
+    QAction *actionLangEn = menuLanguage->addAction(tr("Anglais"));
+    actionLangEn->setCheckable(true);
+    languageGroup->addAction(actionLangEn);
+
+    const QString currentLanguage =
+        QSettings().value("ui/language", "fr").toString().toLower();
+    if (currentLanguage == "en")
+        actionLangEn->setChecked(true);
+    else
+        actionLangFr->setChecked(true);
+
+    auto setLanguage = [this](const QString &languageCode) {
+        QSettings settings;
+        const QString oldLanguage =
+            settings.value("ui/language", "fr").toString().toLower();
+        if (oldLanguage == languageCode)
+            return;
+
+        settings.setValue("ui/language", languageCode);
+        QMessageBox::information(this, tr("Langue"),
+                                 tr("La langue sera appliquee au prochain demarrage."));
+        statusBar()->showMessage(tr("Preference de langue sauvegardee"), 2000);
+    };
+
+    QObject::connect(actionLangFr, &QAction::triggered, this,
+                     [setLanguage]() { setLanguage("fr"); });
+    QObject::connect(actionLangEn, &QAction::triggered, this,
+                     [setLanguage]() { setLanguage("en"); });
 
     QMenu *menuAnimation = menuBar()->addMenu(tr("&Animation"));
     actionStart = menuAnimation->addAction(tr("&Démarrer"));
