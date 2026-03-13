@@ -14,33 +14,37 @@
 
 #include "Window.h"
 #include "Barres.h"
+#include <QAction>
+#include <QApplication>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFrame>
 #include <QGroupBox>
 #include <QFormLayout>
 #include <QLabel>
+#include <QMenuBar>
 #include <QSlider>
 
-Window::Window(QWidget *parent) : QWidget(parent)
+Window::Window(QWidget *parent) : QMainWindow(parent)
 {
     this->setWindowTitle("Barres");
     this->resize(800, 600);
 
-    viewer = new Barres(this);
+    QWidget *central = new QWidget(this);
+    setCentralWidget(central);
+
+    viewer = new Barres(central);
     viewer->setMinimumSize(QSize(600, 400));
     viewer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    QHBoxLayout *hbox = new QHBoxLayout();
-    this->setLayout(hbox);
+    QHBoxLayout *hbox = new QHBoxLayout(central);
     hbox->addWidget(viewer);
 
-    QFrame *pan = new QFrame();
+    QFrame *pan = new QFrame(central);
     pan->setMaximumSize(QSize(200, 999999));
     hbox->addWidget(pan);
 
-    QVBoxLayout *vbox = new QVBoxLayout();
-    pan->setLayout(vbox);
+    QVBoxLayout *vbox = new QVBoxLayout(pan);
 
     QGroupBox *groupBox = new QGroupBox("Parameters");
     QFormLayout *formLayout = new QFormLayout();
@@ -66,4 +70,30 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     vbox->addWidget(groupBox);
     vbox->addStretch(1);
+
+    // -- menu bar
+    QMenu *menuAnimation = menuBar()->addMenu("&Animation");
+    actionStart = menuAnimation->addAction("&Démarrer");
+    actionStop  = menuAnimation->addAction("&Arrêter");
+    actionStart->setEnabled(true);
+    actionStop->setEnabled(false);
+
+    QObject::connect(actionStart, &QAction::triggered,
+                     viewer, &Barres::startAnimation);
+    QObject::connect(actionStop, &QAction::triggered,
+                     viewer, &Barres::stopAnimation);
+    QObject::connect(viewer, &Barres::animationStarted, this, [this]() {
+        actionStart->setEnabled(false);
+        actionStop->setEnabled(true);
+    });
+    QObject::connect(viewer, &Barres::animationStopped, this, [this]() {
+        actionStart->setEnabled(true);
+        actionStop->setEnabled(false);
+    });
+
+    QMenu *menuFile = menuBar()->addMenu("&Fichier");
+    QAction *actionQuit = menuFile->addAction("&Quitter");
+    actionQuit->setShortcut(QKeySequence::Quit);
+    QObject::connect(actionQuit, &QAction::triggered,
+                     qApp, &QApplication::quit);
 }

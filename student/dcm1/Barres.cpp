@@ -93,16 +93,15 @@ Barres::timerEvent(QTimerEvent *event)
 }
 
 void
-Barres::showEvent(QShowEvent *event)
+Barres::showEvent(QShowEvent *)
 {
-    // create a timer using member fct
-    myTimerId = startTimer(25); // in ms
+    startAnimation();
 }
 
 void
-Barres::hideEvent(QHideEvent *event)
+Barres::hideEvent(QHideEvent *)
 {
-    killTimer(myTimerId);
+    stopAnimation();
 }
 
 void
@@ -123,6 +122,27 @@ Barres::paintEvent(QPaintEvent *event)
 
     // painter.end();   // avoids "qpainter : cannot destroy paint device that
     // is being painted"
+}
+
+void
+Barres::startAnimation()
+{
+    if (myTimerId == 0)
+    {
+        myTimerId = startTimer(25);
+        emit animationStarted();
+    }
+}
+
+void
+Barres::stopAnimation()
+{
+    if (myTimerId != 0)
+    {
+        killTimer(myTimerId);
+        myTimerId = 0;
+        emit animationStopped();
+    }
 }
 
 void

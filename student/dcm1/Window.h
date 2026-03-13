@@ -15,18 +15,21 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <QWidget>
+#include <QMainWindow>
 class Barres;
+class QAction;
 
-class Window : public QWidget
+class Window : public QMainWindow
 {
     Q_OBJECT;
 
 private:
-    Barres *viewer;
+    Barres  *viewer;
+    QAction *actionStart;
+    QAction *actionStop;
 
 public:
-    Window(QWidget *parent = nullptr);
+    explicit Window(QWidget *parent = nullptr);
 };
 
 #endif

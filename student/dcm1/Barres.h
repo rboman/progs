@@ -59,6 +59,13 @@ public slots:
     virtual void set_L_slot(int i);
     virtual void set_e_slot(int i);
     virtual void set_dp_slot(int i);
+
+    void startAnimation();
+    void stopAnimation();
+
+signals:
+    void animationStarted();
+    void animationStopped();
 };
 
 #endif
