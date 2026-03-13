@@ -28,7 +28,7 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
         return QPointF(sx(geometry.x[p][f]), sy(geometry.y[p][f]));
     };
 
-    QPen pen1(Qt::black, style.linkPenWidth);
+    QPen pen1(style.mainColor, style.linkPenWidth);
     // pen.setColor(palette().dark().color());
     painter.setPen(pen1);
 
@@ -52,7 +52,7 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
                  ox + style.groundHalfLen * zoom, oy - params.ya * zoom);
 
     // -- draw labels
-    pen1.setColor(Qt::black);
+    pen1.setColor(style.mainColor);
     painter.setPen(pen1);
     QFont font = painter.font();
     font.setPointSize(style.labelFontSize);
@@ -72,33 +72,19 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
 
     // -- trajectory
 
-    painter.setPen(QPen(Qt::red, style.trajectoryPWidth));
+    painter.setPen(QPen(style.trajectoryPColor, style.trajectoryPWidth));
     for (int j = 0; j < nframes - 1; j++)
         painter.drawLine(pt(P, j), pt(P, j + 1));
     painter.drawLine(pt(P, nframes - 1), pt(P, 0));
 
     // -- trajectory D
-    painter.setPen(QPen(Qt::darkBlue, style.trajectoryDWidth));
+    painter.setPen(QPen(style.trajectoryDColor, style.trajectoryDWidth));
     for (int j = 0; j < nframes - 1; j++)
         painter.drawLine(pt(D, j), pt(D, j + 1));
     painter.drawLine(pt(D, nframes - 1), pt(D, 0));
 
-    // write parameters values
-    painter.setPen(QPen(Qt::black));
-    QRect rect(style.paramBoxX, style.paramBoxY,
-               style.paramBoxWidth, style.paramBoxHeight);
-    QString argtxt = QString("a1 = %1\na2 = %2\na3 = %3\nxb = %4\nya = %5\nL = "
-                             "%6\ne = %7\ndp = %8")
-                         .arg(params.a1)
-                         .arg(params.a2)
-                         .arg(params.a3)
-                         .arg(params.xb)
-                         .arg(params.ya)
-                         .arg(params.L)
-                         .arg(params.e)
-                         .arg(params.dp);
-    painter.drawText(rect, Qt::AlignLeft | Qt::AlignTop, argtxt);
     // value of "i"
+    painter.setPen(QPen(Qt::black));
     painter.drawText(widgetRect, Qt::AlignHCenter | Qt::AlignTop,
                      QString("frame=%1/%2").arg(frame).arg(nframes));
 }

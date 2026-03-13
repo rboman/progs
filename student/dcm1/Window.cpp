@@ -17,6 +17,7 @@
 #include <cmath>
 #include <QAction>
 #include <QApplication>
+#include <QColorDialog>
 #include <QDateTime>
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -407,19 +408,58 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         labelsLayout->addRow("Offset X", sbLabelOffsetX);
         labelsLayout->addRow("Offset Y", sbLabelOffsetY);
 
-        QWidget *tabParamBox = new QWidget(&dialog);
-        QFormLayout *boxLayout = new QFormLayout(tabParamBox);
-        tabs->addTab(tabParamBox, "Boite texte");
+        QWidget *tabColors = new QWidget(&dialog);
+        QFormLayout *colorsLayout = new QFormLayout(tabColors);
+        tabs->addTab(tabColors, "Couleurs");
 
-        QSpinBox *sbParamBoxX = makeInt(0, 2000, current.paramBoxX);
-        QSpinBox *sbParamBoxY = makeInt(0, 2000, current.paramBoxY);
-        QSpinBox *sbParamBoxWidth = makeInt(50, 2000, current.paramBoxWidth);
-        QSpinBox *sbParamBoxHeight = makeInt(50, 2000, current.paramBoxHeight);
+        QColor mainColor = current.mainColor;
+        QColor trajectoryPColor = current.trajectoryPColor;
+        QColor trajectoryDColor = current.trajectoryDColor;
 
-        boxLayout->addRow("Position X", sbParamBoxX);
-        boxLayout->addRow("Position Y", sbParamBoxY);
-        boxLayout->addRow("Largeur", sbParamBoxWidth);
-        boxLayout->addRow("Hauteur", sbParamBoxHeight);
+        auto makeColorButton = []() {
+            QPushButton *button = new QPushButton("Choisir...");
+            button->setMinimumWidth(120);
+            return button;
+        };
+
+        auto updateColorButton = [](QPushButton *button, const QColor &color) {
+            button->setText(color.name(QColor::HexRgb));
+            button->setStyleSheet(QString(
+                                      "QPushButton { background-color: %1; color: %2; }")
+                                      .arg(color.name(QColor::HexRgb))
+                                      .arg(color.lightness() < 128 ? "white" : "black"));
+        };
+
+        auto wireColorButton = [this, &dialog, &updateColorButton](QPushButton *button,
+                                                                   QColor *target,
+                                                                   const QString &title) {
+            updateColorButton(button, *target);
+            QObject::connect(button, &QPushButton::clicked, this,
+                             [&dialog, button, target, title, &updateColorButton]() {
+                                 const QColor chosen = QColorDialog::getColor(
+                                     *target, &dialog, title,
+                                     QColorDialog::ShowAlphaChannel);
+                                 if (!chosen.isValid())
+                                     return;
+
+                                 *target = chosen;
+                                 updateColorButton(button, *target);
+                             });
+        };
+
+        QPushButton *btnMainColor = makeColorButton();
+        QPushButton *btnTrajectoryPColor = makeColorButton();
+        QPushButton *btnTrajectoryDColor = makeColorButton();
+
+        wireColorButton(btnMainColor, &mainColor, "Couleur principale");
+        wireColorButton(btnTrajectoryPColor, &trajectoryPColor,
+                        "Couleur trajectoire P");
+        wireColorButton(btnTrajectoryDColor, &trajectoryDColor,
+                        "Couleur trajectoire D");
+
+        colorsLayout->addRow("Couleur principale", btnMainColor);
+        colorsLayout->addRow("Trajectoire P", btnTrajectoryPColor);
+        colorsLayout->addRow("Trajectoire D", btnTrajectoryDColor);
 
         auto collectStyle = [&]() {
             RenderStyleSettings s;
@@ -431,10 +471,9 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
             s.labelFontSize = sbLabelFontSize->value();
             s.labelOffsetX = sbLabelOffsetX->value();
             s.labelOffsetY = sbLabelOffsetY->value();
-            s.paramBoxX = sbParamBoxX->value();
-            s.paramBoxY = sbParamBoxY->value();
-            s.paramBoxWidth = sbParamBoxWidth->value();
-            s.paramBoxHeight = sbParamBoxHeight->value();
+            s.mainColor = mainColor;
+            s.trajectoryPColor = trajectoryPColor;
+            s.trajectoryDColor = trajectoryDColor;
             return s;
         };
 
@@ -472,10 +511,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
             sbLabelFontSize->setValue(defaults.labelFontSize);
             sbLabelOffsetX->setValue(defaults.labelOffsetX);
             sbLabelOffsetY->setValue(defaults.labelOffsetY);
-            sbParamBoxX->setValue(defaults.paramBoxX);
-            sbParamBoxY->setValue(defaults.paramBoxY);
-            sbParamBoxWidth->setValue(defaults.paramBoxWidth);
-            sbParamBoxHeight->setValue(defaults.paramBoxHeight);
+            mainColor = defaults.mainColor;
+            trajectoryPColor = defaults.trajectoryPColor;
+            trajectoryDColor = defaults.trajectoryDColor;
+            updateColorButton(btnMainColor, mainColor);
+            updateColorButton(btnTrajectoryPColor, trajectoryPColor);
+            updateColorButton(btnTrajectoryDColor, trajectoryDColor);
         });
 
         dialog.exec();

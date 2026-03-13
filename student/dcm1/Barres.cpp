@@ -41,6 +41,11 @@ RenderStyleSettings loadRenderStyleFromSettings()
 {
     QSettings settings;
     RenderStyleSettings style;
+    auto readColor = [&settings](const char *key, const QColor &defaultColor) {
+        const QColor color(settings.value(key, defaultColor.name(QColor::HexArgb))
+                               .toString());
+        return color.isValid() ? color : defaultColor;
+    };
 
     style.linkPenWidth =
         settings.value("render/linkPenWidth", style.linkPenWidth).toDouble();
@@ -60,12 +65,11 @@ RenderStyleSettings loadRenderStyleFromSettings()
     style.labelOffsetY =
         settings.value("render/labelOffsetY", style.labelOffsetY).toInt();
 
-    style.paramBoxX = settings.value("render/paramBoxX", style.paramBoxX).toInt();
-    style.paramBoxY = settings.value("render/paramBoxY", style.paramBoxY).toInt();
-    style.paramBoxWidth =
-        settings.value("render/paramBoxWidth", style.paramBoxWidth).toInt();
-    style.paramBoxHeight =
-        settings.value("render/paramBoxHeight", style.paramBoxHeight).toInt();
+    style.mainColor = readColor("render/mainColor", style.mainColor);
+    style.trajectoryPColor =
+        readColor("render/trajectoryPColor", style.trajectoryPColor);
+    style.trajectoryDColor =
+        readColor("render/trajectoryDColor", style.trajectoryDColor);
 
     return style;
 }
@@ -82,11 +86,11 @@ void saveRenderStyleToSettings(const RenderStyleSettings &style)
     settings.setValue("render/labelFontSize", style.labelFontSize);
     settings.setValue("render/labelOffsetX", style.labelOffsetX);
     settings.setValue("render/labelOffsetY", style.labelOffsetY);
-
-    settings.setValue("render/paramBoxX", style.paramBoxX);
-    settings.setValue("render/paramBoxY", style.paramBoxY);
-    settings.setValue("render/paramBoxWidth", style.paramBoxWidth);
-    settings.setValue("render/paramBoxHeight", style.paramBoxHeight);
+    settings.setValue("render/mainColor", style.mainColor.name(QColor::HexArgb));
+    settings.setValue("render/trajectoryPColor",
+                      style.trajectoryPColor.name(QColor::HexArgb));
+    settings.setValue("render/trajectoryDColor",
+                      style.trajectoryDColor.name(QColor::HexArgb));
 }
 } // namespace
 

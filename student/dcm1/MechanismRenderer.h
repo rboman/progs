@@ -15,6 +15,7 @@
 #ifndef MECHANISM_RENDERER_H
 #define MECHANISM_RENDERER_H
 
+#include <QColor>
 #include <QPainter>
 #include <QRect>
 #include "MechanismKinematicsSolver.h"
@@ -29,10 +30,9 @@ struct RenderStyleSettings
     int labelFontSize = 10;       // pt
     int labelOffsetX = 3;         // px
     int labelOffsetY = 3;         // px
-    int paramBoxX = 10;           // px
-    int paramBoxY = 10;           // px
-    int paramBoxWidth = 200;      // px
-    int paramBoxHeight = 300;     // px
+    QColor mainColor = Qt::black;
+    QColor trajectoryPColor = Qt::red;
+    QColor trajectoryDColor = Qt::darkBlue;
 };
 
 class MechanismRenderer
