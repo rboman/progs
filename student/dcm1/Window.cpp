@@ -21,7 +21,6 @@
 #include <QFrame>
 #include <QGroupBox>
 #include <QFormLayout>
-#include <QHBoxLayout>
 #include <QLabel>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -33,6 +32,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 {
     this->setWindowTitle("Barres");
     this->resize(800, 600);
+    this->setMinimumSize(980, 620);
 
     QWidget *central = new QWidget(this);
     setCentralWidget(central);
@@ -45,8 +45,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     hbox->addWidget(viewer);
 
     QFrame *pan = new QFrame(central);
-    pan->setMaximumSize(QSize(320, 999999));
+    pan->setFixedWidth(320);
+    pan->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     hbox->addWidget(pan);
+
+    hbox->setStretch(0, 1);
+    hbox->setStretch(1, 0);
 
     QVBoxLayout *vbox = new QVBoxLayout(pan);
 
@@ -55,12 +59,15 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     groupBox->setLayout(formLayout);
 
     auto addSlider = [formLayout, this](const QString &label,
+                                        const QString &tooltip,
                                         double minValue, double maxValue,
                                         void (Barres::*slot)(int)) {
         QSlider *slider = new QSlider(Qt::Horizontal);
         slider->setMinimumWidth(180);
         QLabel *nameLabel = new QLabel(label);
         nameLabel->setMinimumWidth(28);
+        nameLabel->setToolTip(tooltip);
+        slider->setToolTip(tooltip);
         QLabel *valueLabel = new QLabel();
         valueLabel->setMinimumWidth(50);
         valueLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -86,14 +93,14 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         slider->setValue(50);
     };
 
-    addSlider("a1", 0.1, 2.0, &Barres::set_a1_slot);
-    addSlider("a2", 2.5, 4.5, &Barres::set_a2_slot);
-    addSlider("a3", 1.0, 3.0, &Barres::set_a3_slot);
-    addSlider("xb", 2.0, 4.0, &Barres::set_xb_slot);
-    addSlider("ya", 0.5, 2.5, &Barres::set_ya_slot);
-    addSlider("L", 4.0, 8.0, &Barres::set_L_slot);
-    addSlider("e", 0.0, 3.0, &Barres::set_e_slot);
-    addSlider("dp", 0.5, 1.5, &Barres::set_dp_slot);
+    addSlider("a1", "Longueur AD (manivelle)", 0.1, 2.0, &Barres::set_a1_slot);
+    addSlider("a2", "Longueur DC (bielle)", 2.5, 4.5, &Barres::set_a2_slot);
+    addSlider("a3", "Longueur BC (balancier)", 1.0, 3.0, &Barres::set_a3_slot);
+    addSlider("xb", "Position x du pivot B", 2.0, 4.0, &Barres::set_xb_slot);
+    addSlider("ya", "Position y du pivot A", 0.5, 2.5, &Barres::set_ya_slot);
+    addSlider("L", "Longueur DP' (point outil)", 4.0, 8.0, &Barres::set_L_slot);
+    addSlider("e", "Offset vertical du film", 0.0, 3.0, &Barres::set_e_slot);
+    addSlider("dp", "Distance P' -> P", 0.5, 1.5, &Barres::set_dp_slot);
 
     vbox->addWidget(groupBox);
     vbox->addStretch(1);
