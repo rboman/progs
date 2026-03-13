@@ -16,6 +16,13 @@ cmake --build build --config Release
 # produit : build/Release/barres.exe
 ```
 
+## i18n (phase 1)
+
+- Branche de travail recommandee : `i18n-step1`
+- Convention de langue cible : `fr` (par defaut) / `en`
+- Cle QSettings reservee : `ui/language`
+- Etat actuel : cle initialisee au demarrage, sans effet fonctionnel sur l'UI
+
 ---
 
 ## Structure des fichiers
@@ -177,6 +184,7 @@ Clés utilisées :
 | Clé | Type | Usage |
 |---|---|---|
 | `io/lastParamsDir` | QString | Dernier répertoire import/export JSON |
+| `ui/language` | QString (`fr`/`en`) | Préférence langue UI (réservée, non appliquée en phase 1) |
 | `view/zoom` | double | Niveau de zoom sauvé |
 | `view/panOffsetX` | int | Décalage horizontal de la vue |
 | `view/panOffsetY` | int | Décalage vertical de la vue |

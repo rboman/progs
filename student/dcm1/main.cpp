@@ -15,6 +15,7 @@
 #include "Window.h"
 #include <QApplication>
 #include <QCoreApplication>
+#include <QSettings>
 
 int
 main(int argc, char *argv[])
@@ -22,6 +23,11 @@ main(int argc, char *argv[])
     QApplication app(argc, argv);
     QCoreApplication::setOrganizationName("rboman");
     QCoreApplication::setApplicationName("barres");
+
+    // i18n step 1: define preferred UI language setting, not yet applied.
+    QSettings settings;
+    if (!settings.contains("ui/language"))
+        settings.setValue("ui/language", "fr");
 
     Window win;
     win.show();
