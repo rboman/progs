@@ -45,6 +45,7 @@ class Barres : public QWidget
 
     int myTimerId;
     int frame;
+    int animationIntervalMs;
 
 public:
     Barres(QWidget *parent = nullptr);
@@ -52,6 +53,7 @@ public:
     void applyParameters(const MechanismParameters &newParams);
     RenderStyleSettings currentRenderStyle() const;
     void applyRenderStyle(const RenderStyleSettings &newStyle);
+    int currentAnimationIntervalMs() const;
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -76,6 +78,7 @@ public slots:
     void startAnimation();
     void stopAnimation();
     void toggleAnimation();
+    void setAnimationIntervalMs(int intervalMs);
     void resetAnimation();
     void resetView();
     void stepForward();

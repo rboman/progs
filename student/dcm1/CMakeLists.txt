@@ -8,7 +8,28 @@ endif()
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
+
+set(TS_FILES
+    i18n/barres_en.ts
+)
+
+set(TS_SOURCES
+    main.cpp
+    Window.cpp
+    Window.h
+    Barres.cpp
+    Barres.h
+    MechanismKinematicsSolver.cpp
+    MechanismKinematicsSolver.h
+    MechanismRenderer.cpp
+    MechanismRenderer.h
+)
+
+qt5_create_translation(QM_FILES
+    ${TS_SOURCES}
+    ${TS_FILES}
+)
 
 add_executable(barres)
 target_sources(barres PRIVATE
@@ -21,9 +42,16 @@ target_sources(barres PRIVATE
     MechanismKinematicsSolver.h
     MechanismRenderer.cpp
     MechanismRenderer.h
+    ${TS_FILES}
+    ${QM_FILES}
 )
 target_compile_features(barres PRIVATE cxx_std_11)
 target_link_libraries(barres PRIVATE Qt5::Widgets)
+
+add_custom_command(TARGET barres POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:barres>/i18n
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${QM_FILES} $<TARGET_FILE_DIR:barres>/i18n
+)
 
 add_executable(mechanism_kinematics_solver_test)
 target_sources(mechanism_kinematics_solver_test PRIVATE

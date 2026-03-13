@@ -18,6 +18,11 @@
 #include <QMainWindow>
 class Barres;
 class QAction;
+class QCloseEvent;
+class QDragEnterEvent;
+class QDropEvent;
+class QSlider;
+struct MechanismParameters;
 
 class Window : public QMainWindow
 {
@@ -27,9 +32,25 @@ private:
     Barres  *viewer;
     QAction *actionStart;
     QAction *actionStop;
+    QSlider *sliderA1;
+    QSlider *sliderA2;
+    QSlider *sliderA3;
+    QSlider *sliderXb;
+    QSlider *sliderYa;
+    QSlider *sliderL;
+    QSlider *sliderE;
+    QSlider *sliderDp;
+
+    bool importParametersFromJsonFile(const QString &fileName);
+    void syncSlidersFromParameters(const MechanismParameters &p);
 
 public:
     explicit Window(QWidget *parent = nullptr);
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 };
 
 #endif
