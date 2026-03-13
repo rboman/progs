@@ -27,7 +27,7 @@ MechanismKinematicsSolver::compute(const MechanismParameters &params,
 
     TrajectoryGeometry geometry(nframes);
 
-    for (int i = 0; i < nframes; i++)
+    for (int i = 0; i < nframes; ++i)
     {
         theta1[i] = 2 * pi * i / nframes;
         double k1 = params.xb - params.a1 * std::cos(theta1[i]);

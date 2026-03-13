@@ -42,13 +42,13 @@ class Barres : public QWidget
     int frame;
 
 public:
-    Barres(QWidget *parent = 0);
+    Barres(QWidget *parent = nullptr);
 
 protected:
-    virtual void paintEvent(QPaintEvent *event);
-    virtual void timerEvent(QTimerEvent *event);
-    virtual void showEvent(QShowEvent *event);
-    virtual void hideEvent(QHideEvent *event);
+    void paintEvent(QPaintEvent *event) override;
+    void timerEvent(QTimerEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
 
 public slots:
     virtual void set_a1_slot(int i);

@@ -62,7 +62,7 @@ Barres::timerEvent(QTimerEvent *event)
     if (event->timerId() == myTimerId)
     {
         // std::cout << "Timer!\n";
-        frame += 1;
+        ++frame;
         if (frame == nframes)
             frame = 0;
         update();
