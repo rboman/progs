@@ -98,6 +98,22 @@ void saveRenderStyleToSettings(const RenderStyleSettings &style)
     settings.setValue("render/trajectoryDColor",
                       style.trajectoryDColor.name(QColor::HexArgb));
 }
+
+void saveViewToSettings(double zoom, const QPoint &panOffset)
+{
+    QSettings settings;
+    settings.setValue("view/zoom", zoom);
+    settings.setValue("view/panOffsetX", panOffset.x());
+    settings.setValue("view/panOffsetY", panOffset.y());
+}
+
+void loadViewFromSettings(double &zoom, QPoint &panOffset)
+{
+    QSettings settings;
+    zoom = settings.value("view/zoom", 60.0).toDouble();
+    panOffset = QPoint(settings.value("view/panOffsetX", 150).toInt(),
+                       settings.value("view/panOffsetY", 300).toInt());
+}
 } // namespace
 
 Barres::Barres(QWidget *parent)
@@ -138,6 +154,7 @@ Barres::Barres(QWidget *parent)
     this->resize(640, 480);
 
     renderStyle = loadRenderStyleFromSettings();
+    loadViewFromSettings(zoom, panOffset);
 
     frame = 1;
     myTimerId = 0;
@@ -236,6 +253,7 @@ Barres::mouseReleaseEvent(QMouseEvent *event)
     {
         isPanning = false;
         unsetCursor();
+        saveViewToSettings(zoom, panOffset);
         event->accept();
         return;
     }
@@ -270,6 +288,7 @@ Barres::wheelEvent(QWheelEvent *event)
     panOffset.setX(qRound(mousePos.x() - (mousePos.x() - panOffset.x()) * r));
     panOffset.setY(qRound(mousePos.y() - (mousePos.y() - panOffset.y()) * r));
 
+    saveViewToSettings(zoom, panOffset);
     update();
     event->accept();
 }
@@ -337,6 +356,7 @@ Barres::resetView()
 {
     zoom = 60.0;
     panOffset = QPoint(150, 300);
+    saveViewToSettings(zoom, panOffset);
     update();
 }
 

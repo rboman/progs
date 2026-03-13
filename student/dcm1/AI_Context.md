@@ -177,6 +177,9 @@ Clés utilisées :
 | Clé | Type | Usage |
 |---|---|---|
 | `io/lastParamsDir` | QString | Dernier répertoire import/export JSON |
+| `view/zoom` | double | Niveau de zoom sauvé |
+| `view/panOffsetX` | int | Décalage horizontal de la vue |
+| `view/panOffsetY` | int | Décalage vertical de la vue |
 | `render/linkPenWidth` | double | Style de dessin |
 | `render/trajectoryPWidth` | double | |
 | `render/trajectoryDWidth` | double | |
@@ -229,3 +232,4 @@ Boutons : OK / Annuler / Appliquer / Réinitialiser
 - [x] Pan souris gauche (curseur feedback)
 - [x] Zoom molette centré sous le curseur (bornes 10–400, step 1.1)
 - [x] Reset vue (`H` / menu)
+- [x] Persistence pan/zoom (`view/zoom`, `view/panOffsetX`, `view/panOffsetY`)
