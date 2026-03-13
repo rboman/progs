@@ -23,7 +23,9 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
+#include <QDragEnterEvent>
 #include <QDoubleSpinBox>
+#include <QDropEvent>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -36,6 +38,7 @@
 #include <QJsonParseError>
 #include <QLabel>
 #include <QMenuBar>
+#include <QMimeData>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSettings>
@@ -45,7 +48,22 @@
 #include <QStatusBar>
 #include <QStandardPaths>
 #include <QTabWidget>
+#include <QUrl>
 #include <QVBoxLayout>
+
+namespace
+{
+int toSliderValue(double value, double minValue, double maxValue)
+{
+    const double ratio = (value - minValue) / (maxValue - minValue);
+    int raw = static_cast<int>(std::lround(ratio * 100.0));
+    if (raw < 0)
+        raw = 0;
+    if (raw > 100)
+        raw = 100;
+    return raw;
+}
+} // namespace
 
 Window::Window(QWidget *parent) : QMainWindow(parent)
 {
@@ -67,6 +85,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
     QWidget *central = new QWidget(this);
     setCentralWidget(central);
+    setAcceptDrops(true);
 
     viewer = new Barres(central);
     viewer->setMinimumSize(QSize(600, 400));
@@ -132,32 +151,22 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         return slider;
     };
 
-    auto toSliderValue = [](double value, double minValue, double maxValue) {
-        const double ratio = (value - minValue) / (maxValue - minValue);
-        int raw = static_cast<int>(std::lround(ratio * 100.0));
-        if (raw < 0)
-            raw = 0;
-        if (raw > 100)
-            raw = 100;
-        return raw;
-    };
-
-    QSlider *sliderA1 = addSlider("a1", "Longueur AD (manivelle)", 0.1, 2.0,
-                                  &Barres::set_a1_slot);
-    QSlider *sliderA2 = addSlider("a2", "Longueur DC (bielle)", 2.5, 4.5,
-                                  &Barres::set_a2_slot);
-    QSlider *sliderA3 = addSlider("a3", "Longueur BC (balancier)", 1.0, 3.0,
-                                  &Barres::set_a3_slot);
-    QSlider *sliderXb = addSlider("xb", "Position x du pivot B", 2.0, 4.0,
-                                  &Barres::set_xb_slot);
-    QSlider *sliderYa = addSlider("ya", "Position y du pivot A", 0.5, 2.5,
-                                  &Barres::set_ya_slot);
-    QSlider *sliderL = addSlider("L", "Longueur DP' (point outil)", 4.0, 8.0,
-                                 &Barres::set_L_slot);
-    QSlider *sliderE = addSlider("e", "Offset vertical du film", 0.0, 3.0,
-                                 &Barres::set_e_slot);
-    QSlider *sliderDp = addSlider("dp", "Distance P' -> P", 0.5, 1.5,
-                                  &Barres::set_dp_slot);
+    sliderA1 = addSlider("a1", "Longueur AD (manivelle)", 0.1, 2.0,
+                         &Barres::set_a1_slot);
+    sliderA2 = addSlider("a2", "Longueur DC (bielle)", 2.5, 4.5,
+                         &Barres::set_a2_slot);
+    sliderA3 = addSlider("a3", "Longueur BC (balancier)", 1.0, 3.0,
+                         &Barres::set_a3_slot);
+    sliderXb = addSlider("xb", "Position x du pivot B", 2.0, 4.0,
+                         &Barres::set_xb_slot);
+    sliderYa = addSlider("ya", "Position y du pivot A", 0.5, 2.5,
+                         &Barres::set_ya_slot);
+    sliderL = addSlider("L", "Longueur DP' (point outil)", 4.0, 8.0,
+                        &Barres::set_L_slot);
+    sliderE = addSlider("e", "Offset vertical du film", 0.0, 3.0,
+                        &Barres::set_e_slot);
+    sliderDp = addSlider("dp", "Distance P' -> P", 0.5, 1.5,
+                         &Barres::set_dp_slot);
 
     vbox->addWidget(groupBox);
 
@@ -211,115 +220,17 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     QAction *actionImport = menuFile->addAction("&Importer parametres...");
     actionImport->setShortcut(QKeySequence::Open);
     QObject::connect(actionImport, &QAction::triggered, this,
-                     [this, sliderA1, sliderA2, sliderA3, sliderXb,
-                      sliderYa, sliderL, sliderE, sliderDp, toSliderValue,
-                      defaultParamsDir, rememberParamsDir]() {
+                     [this, defaultParamsDir, rememberParamsDir]() {
         const QString fileName = QFileDialog::getOpenFileName(
             this, "Importer les parametres", defaultParamsDir(),
             "JSON files (*.json)");
         if (fileName.isEmpty())
             return;
 
+        if (!importParametersFromJsonFile(fileName))
+            return;
+
         rememberParamsDir(fileName);
-
-        QFile file(fileName);
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            QMessageBox::warning(this, "Import impossible",
-                                 "Impossible d'ouvrir le fichier en lecture.");
-            statusBar()->showMessage("Echec de l'import JSON", 2000);
-            return;
-        }
-
-        const QByteArray payload = file.readAll();
-        QJsonParseError parseError;
-        const QJsonDocument doc = QJsonDocument::fromJson(payload, &parseError);
-        if (parseError.error != QJsonParseError::NoError || !doc.isObject())
-        {
-            QMessageBox::warning(this, "Format invalide",
-                                 "Le fichier JSON est invalide.");
-            statusBar()->showMessage("JSON invalide", 2000);
-            return;
-        }
-
-        const QJsonObject root = doc.object();
-        if (root.value("format").toString() != "barres-params")
-        {
-            QMessageBox::warning(this, "Format non reconnu",
-                                 "Le fichier n'est pas un export Barres.");
-            statusBar()->showMessage("Format JSON non reconnu", 2000);
-            return;
-        }
-
-        if (root.value("version").toInt(-1) != 1)
-        {
-            QMessageBox::warning(this, "Version non supportee",
-                                 "Version de fichier non supportee.");
-            statusBar()->showMessage("Version JSON non supportee", 2000);
-            return;
-        }
-
-        const QJsonValue paramsValue = root.value("params");
-        if (!paramsValue.isObject())
-        {
-            QMessageBox::warning(this, "Fichier incomplet",
-                                 "Objet 'params' manquant.");
-            statusBar()->showMessage("Objet params manquant", 2000);
-            return;
-        }
-
-        const QJsonObject paramsObj = paramsValue.toObject();
-        auto readParam = [&](const char *name, double minValue, double maxValue,
-                             bool &ok) {
-            const QJsonValue value = paramsObj.value(name);
-            if (!value.isDouble())
-            {
-                ok = false;
-                return 0.0;
-            }
-
-            const double v = value.toDouble();
-            if (!std::isfinite(v) || v < minValue || v > maxValue)
-            {
-                ok = false;
-                return 0.0;
-            }
-
-            return v;
-        };
-
-        bool ok = true;
-        MechanismParameters p;
-        p.a1 = readParam("a1", 0.1, 2.0, ok);
-        p.a2 = readParam("a2", 2.5, 4.5, ok);
-        p.a3 = readParam("a3", 1.0, 3.0, ok);
-        p.xb = readParam("xb", 2.0, 4.0, ok);
-        p.ya = readParam("ya", 0.5, 2.5, ok);
-        p.L = readParam("L", 4.0, 8.0, ok);
-        p.e = readParam("e", 0.0, 3.0, ok);
-        p.dp = readParam("dp", 0.5, 1.5, ok);
-
-        if (!ok)
-        {
-            QMessageBox::warning(this, "Parametres invalides",
-                                 "Un ou plusieurs parametres sont manquants ou hors bornes.");
-            statusBar()->showMessage("Parametres JSON invalides", 2000);
-            return;
-        }
-
-        viewer->applyParameters(p);
-
-        // Keep UI controls in sync with imported parameters.
-        sliderA1->setValue(toSliderValue(p.a1, 0.1, 2.0));
-        sliderA2->setValue(toSliderValue(p.a2, 2.5, 4.5));
-        sliderA3->setValue(toSliderValue(p.a3, 1.0, 3.0));
-        sliderXb->setValue(toSliderValue(p.xb, 2.0, 4.0));
-        sliderYa->setValue(toSliderValue(p.ya, 0.5, 2.5));
-        sliderL->setValue(toSliderValue(p.L, 4.0, 8.0));
-        sliderE->setValue(toSliderValue(p.e, 0.0, 3.0));
-        sliderDp->setValue(toSliderValue(p.dp, 0.5, 1.5));
-
-        statusBar()->showMessage("Parametres importes depuis JSON", 2000);
     });
 
     QAction *actionExport = menuFile->addAction("&Exporter parametres...");
@@ -645,4 +556,162 @@ Window::closeEvent(QCloseEvent *event)
     QSettings settings;
     settings.setValue("window/size", size());
     QMainWindow::closeEvent(event);
+}
+
+void
+Window::dragEnterEvent(QDragEnterEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    if (!mimeData || !mimeData->hasUrls())
+        return;
+
+    const QList<QUrl> urls = mimeData->urls();
+    for (const QUrl &url : urls)
+    {
+        if (!url.isLocalFile())
+            continue;
+
+        const QString localFile = url.toLocalFile();
+        if (QFileInfo(localFile).suffix().compare("json", Qt::CaseInsensitive) == 0)
+        {
+            event->acceptProposedAction();
+            return;
+        }
+    }
+}
+
+void
+Window::dropEvent(QDropEvent *event)
+{
+    const QMimeData *mimeData = event->mimeData();
+    if (!mimeData || !mimeData->hasUrls())
+        return;
+
+    const QList<QUrl> urls = mimeData->urls();
+    for (const QUrl &url : urls)
+    {
+        if (!url.isLocalFile())
+            continue;
+
+        const QString localFile = url.toLocalFile();
+        if (QFileInfo(localFile).suffix().compare("json", Qt::CaseInsensitive) != 0)
+            continue;
+
+        if (importParametersFromJsonFile(localFile))
+        {
+            QSettings settings;
+            settings.setValue("io/lastParamsDir", QFileInfo(localFile).absolutePath());
+            event->acceptProposedAction();
+        }
+        return;
+    }
+
+    statusBar()->showMessage("Deposer un fichier .json valide", 2000);
+}
+
+bool
+Window::importParametersFromJsonFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QMessageBox::warning(this, "Import impossible",
+                             "Impossible d'ouvrir le fichier en lecture.");
+        statusBar()->showMessage("Echec de l'import JSON", 2000);
+        return false;
+    }
+
+    const QByteArray payload = file.readAll();
+    QJsonParseError parseError;
+    const QJsonDocument doc = QJsonDocument::fromJson(payload, &parseError);
+    if (parseError.error != QJsonParseError::NoError || !doc.isObject())
+    {
+        QMessageBox::warning(this, "Format invalide",
+                             "Le fichier JSON est invalide.");
+        statusBar()->showMessage("JSON invalide", 2000);
+        return false;
+    }
+
+    const QJsonObject root = doc.object();
+    if (root.value("format").toString() != "barres-params")
+    {
+        QMessageBox::warning(this, "Format non reconnu",
+                             "Le fichier n'est pas un export Barres.");
+        statusBar()->showMessage("Format JSON non reconnu", 2000);
+        return false;
+    }
+
+    if (root.value("version").toInt(-1) != 1)
+    {
+        QMessageBox::warning(this, "Version non supportee",
+                             "Version de fichier non supportee.");
+        statusBar()->showMessage("Version JSON non supportee", 2000);
+        return false;
+    }
+
+    const QJsonValue paramsValue = root.value("params");
+    if (!paramsValue.isObject())
+    {
+        QMessageBox::warning(this, "Fichier incomplet",
+                             "Objet 'params' manquant.");
+        statusBar()->showMessage("Objet params manquant", 2000);
+        return false;
+    }
+
+    const QJsonObject paramsObj = paramsValue.toObject();
+    auto readParam = [&](const char *name, double minValue, double maxValue,
+                         bool &ok) {
+        const QJsonValue value = paramsObj.value(name);
+        if (!value.isDouble())
+        {
+            ok = false;
+            return 0.0;
+        }
+
+        const double v = value.toDouble();
+        if (!std::isfinite(v) || v < minValue || v > maxValue)
+        {
+            ok = false;
+            return 0.0;
+        }
+
+        return v;
+    };
+
+    bool ok = true;
+    MechanismParameters p;
+    p.a1 = readParam("a1", 0.1, 2.0, ok);
+    p.a2 = readParam("a2", 2.5, 4.5, ok);
+    p.a3 = readParam("a3", 1.0, 3.0, ok);
+    p.xb = readParam("xb", 2.0, 4.0, ok);
+    p.ya = readParam("ya", 0.5, 2.5, ok);
+    p.L = readParam("L", 4.0, 8.0, ok);
+    p.e = readParam("e", 0.0, 3.0, ok);
+    p.dp = readParam("dp", 0.5, 1.5, ok);
+
+    if (!ok)
+    {
+        QMessageBox::warning(this, "Parametres invalides",
+                             "Un ou plusieurs parametres sont manquants ou hors bornes.");
+        statusBar()->showMessage("Parametres JSON invalides", 2000);
+        return false;
+    }
+
+    viewer->applyParameters(p);
+    syncSlidersFromParameters(p);
+    statusBar()->showMessage("Parametres importes depuis JSON", 2000);
+    return true;
+}
+
+void
+Window::syncSlidersFromParameters(const MechanismParameters &p)
+{
+    sliderA1->setValue(toSliderValue(p.a1, 0.1, 2.0));
+    sliderA2->setValue(toSliderValue(p.a2, 2.5, 4.5));
+    sliderA3->setValue(toSliderValue(p.a3, 1.0, 3.0));
+    sliderXb->setValue(toSliderValue(p.xb, 2.0, 4.0));
+    sliderYa->setValue(toSliderValue(p.ya, 0.5, 2.5));
+    sliderL->setValue(toSliderValue(p.L, 4.0, 8.0));
+    sliderE->setValue(toSliderValue(p.e, 0.0, 3.0));
+    sliderDp->setValue(toSliderValue(p.dp, 0.5, 1.5));
 }
