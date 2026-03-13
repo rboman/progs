@@ -151,21 +151,21 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         return slider;
     };
 
-    sliderA1 = addSlider("a1", "Longueur AD (manivelle)", 0.1, 2.0,
+    sliderA1 = addSlider("a1", tr("Longueur AD (manivelle)"), 0.1, 2.0,
                          &Barres::set_a1_slot);
-    sliderA2 = addSlider("a2", "Longueur DC (bielle)", 2.5, 4.5,
+    sliderA2 = addSlider("a2", tr("Longueur DC (bielle)"), 2.5, 4.5,
                          &Barres::set_a2_slot);
-    sliderA3 = addSlider("a3", "Longueur BC (balancier)", 1.0, 3.0,
+    sliderA3 = addSlider("a3", tr("Longueur BC (balancier)"), 1.0, 3.0,
                          &Barres::set_a3_slot);
-    sliderXb = addSlider("xb", "Position x du pivot B", 2.0, 4.0,
+    sliderXb = addSlider("xb", tr("Position x du pivot B"), 2.0, 4.0,
                          &Barres::set_xb_slot);
-    sliderYa = addSlider("ya", "Position y du pivot A", 0.5, 2.5,
+    sliderYa = addSlider("ya", tr("Position y du pivot A"), 0.5, 2.5,
                          &Barres::set_ya_slot);
-    sliderL = addSlider("L", "Longueur DP' (point outil)", 4.0, 8.0,
+    sliderL = addSlider("L", tr("Longueur DP' (point outil)"), 4.0, 8.0,
                         &Barres::set_L_slot);
-    sliderE = addSlider("e", "Offset vertical du film", 0.0, 3.0,
+    sliderE = addSlider("e", tr("Offset vertical du film"), 0.0, 3.0,
                         &Barres::set_e_slot);
-    sliderDp = addSlider("dp", "Distance P' -> P", 0.5, 1.5,
+    sliderDp = addSlider("dp", tr("Distance P' -> P"), 0.5, 1.5,
                          &Barres::set_dp_slot);
 
     vbox->addWidget(groupBox);
@@ -177,8 +177,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     QSpinBox *speedMsSpin = new QSpinBox();
     speedMsSpin->setRange(5, 200);
     speedMsSpin->setSingleStep(5);
-    speedMsSpin->setSuffix(" ms/frame");
-    speedMsSpin->setToolTip("Intervalle entre deux frames d'animation");
+    speedMsSpin->setSuffix(tr(" ms/frame"));
+    speedMsSpin->setToolTip(tr("Intervalle entre deux frames d'animation"));
     speedMsSpin->setValue(viewer->currentAnimationIntervalMs());
     animLayout->addRow(tr("Vitesse"), speedMsSpin);
 
@@ -187,7 +187,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     QObject::connect(speedMsSpin, QOverload<int>::of(&QSpinBox::valueChanged),
                      this, [this](int intervalMs) {
                          statusBar()->showMessage(
-                             QString("Vitesse animation: %1 ms/frame")
+                             tr("Vitesse animation: %1 ms/frame")
                                  .arg(intervalMs),
                              1200);
                      });

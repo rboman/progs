@@ -14,6 +14,7 @@
 
 #include "MechanismRenderer.h"
 #include <cmath>
+#include <QCoreApplication>
 #include <QPen>
 
 namespace
@@ -130,8 +131,10 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
 
     // value of "i"
     painter.setPen(QPen(Qt::black));
+    const QString frameText =
+        QCoreApplication::translate("MechanismRenderer", "frame=%1/%2");
     painter.drawText(widgetRect, Qt::AlignHCenter | Qt::AlignTop,
-                     QString("frame=%1/%2").arg(frame).arg(nframes));
+                     frameText.arg(frame).arg(nframes));
 
     const auto angleDeg = [](double vx, double vy) {
         const double pi = 3.14159265358979323846;
@@ -146,8 +149,10 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
     const double thetaBC = angleDeg(geometry.x[C][frame] - geometry.x[B][frame],
                                     geometry.y[C][frame] - geometry.y[B][frame]);
 
+    const QString angleTextTemplate = QCoreApplication::translate(
+        "MechanismRenderer", "thetaAD=%1 deg\nthetaDC=%2 deg\nthetaBC=%3 deg");
     const QString angleText =
-        QString("thetaAD=%1 deg\nthetaDC=%2 deg\nthetaBC=%3 deg")
+        angleTextTemplate
             .arg(thetaAD, 0, 'f', 1)
             .arg(thetaDC, 0, 'f', 1)
             .arg(thetaBC, 0, 'f', 1);
