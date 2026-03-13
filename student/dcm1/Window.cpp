@@ -16,17 +16,22 @@
 #include "Barres.h"
 #include <QAction>
 #include <QApplication>
+#include <QDateTime>
+#include <QFile>
+#include <QFileDialog>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QFrame>
-#include <QGroupBox>
 #include <QFormLayout>
+#include <QGroupBox>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QLabel>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QShortcut>
 #include <QSlider>
 #include <QStatusBar>
+#include <QVBoxLayout>
 
 Window::Window(QWidget *parent) : QMainWindow(parent)
 {
@@ -113,6 +118,56 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
     // -- menu bar
     QMenu *menuFile = menuBar()->addMenu("&Fichier");
+    QAction *actionExport = menuFile->addAction("&Exporter parametres...");
+    actionExport->setShortcut(QKeySequence::Save);
+    QObject::connect(actionExport, &QAction::triggered, this, [this]() {
+        const QString fileName = QFileDialog::getSaveFileName(
+            this, "Exporter les parametres", "barres-params.json",
+            "JSON files (*.json)");
+        if (fileName.isEmpty())
+            return;
+
+        const MechanismParameters p = viewer->currentParameters();
+
+        QJsonObject paramsObj;
+        paramsObj["a1"] = p.a1;
+        paramsObj["a2"] = p.a2;
+        paramsObj["a3"] = p.a3;
+        paramsObj["xb"] = p.xb;
+        paramsObj["ya"] = p.ya;
+        paramsObj["L"] = p.L;
+        paramsObj["e"] = p.e;
+        paramsObj["dp"] = p.dp;
+
+        QJsonObject root;
+        root["format"] = "barres-params";
+        root["version"] = 1;
+        root["savedAt"] = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+        root["params"] = paramsObj;
+
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            QMessageBox::warning(this, "Export impossible",
+                                 "Impossible d'ouvrir le fichier pour ecriture.");
+            statusBar()->showMessage("Echec de l'export JSON", 2000);
+            return;
+        }
+
+        const QByteArray payload = QJsonDocument(root).toJson(QJsonDocument::Indented);
+        const qint64 written = file.write(payload);
+        if (written != payload.size())
+        {
+            QMessageBox::warning(this, "Export incomplet",
+                                 "Le fichier n'a pas ete ecrit completement.");
+            statusBar()->showMessage("Export JSON incomplet", 2000);
+            return;
+        }
+
+        statusBar()->showMessage("Parametres exportes en JSON", 2000);
+    });
+
+    menuFile->addSeparator();
     QAction *actionQuit = menuFile->addAction("&Quitter");
     actionQuit->setShortcut(QKeySequence::Quit);
     QObject::connect(actionQuit, &QAction::triggered,
