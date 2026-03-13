@@ -25,6 +25,16 @@ qt5_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
 
 ADD_EXECUTABLE(barres ${SRCS} ${MOC_OUTFILES})
 
+ADD_EXECUTABLE(mechanism_kinematics_solver_test
+               tests/MechanismKinematicsSolver.test.cpp
+               MechanismKinematicsSolver.cpp)
+TARGET_INCLUDE_DIRECTORIES(mechanism_kinematics_solver_test
+                           PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+ENABLE_TESTING()
+ADD_TEST(NAME mechanism_kinematics_solver_test
+         COMMAND mechanism_kinematics_solver_test)
+
 IF(POLICY CMP0043)
     CMAKE_POLICY(SET CMP0043 OLD)
 ENDIF()
