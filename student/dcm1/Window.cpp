@@ -18,8 +18,10 @@
 #include <QAction>
 #include <QApplication>
 #include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QHBoxLayout>
 #include <QFrame>
 #include <QFormLayout>
@@ -30,9 +32,11 @@
 #include <QLabel>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QSettings>
 #include <QShortcut>
 #include <QSlider>
 #include <QStatusBar>
+#include <QStandardPaths>
 #include <QVBoxLayout>
 
 Window::Window(QWidget *parent) : QMainWindow(parent)
@@ -140,15 +144,39 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
     // -- menu bar
     QMenu *menuFile = menuBar()->addMenu("&Fichier");
+
+    auto defaultParamsDir = []() {
+        QSettings settings;
+        const QString lastDir = settings.value("io/lastParamsDir").toString();
+        if (!lastDir.isEmpty() && QDir(lastDir).exists())
+            return lastDir;
+
+        const QString docs =
+            QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+        if (!docs.isEmpty() && QDir(docs).exists())
+            return docs;
+
+        return QDir::homePath();
+    };
+
+    auto rememberParamsDir = [](const QString &fileName) {
+        QSettings settings;
+        settings.setValue("io/lastParamsDir", QFileInfo(fileName).absolutePath());
+    };
+
     QAction *actionImport = menuFile->addAction("&Importer parametres...");
     actionImport->setShortcut(QKeySequence::Open);
     QObject::connect(actionImport, &QAction::triggered, this,
                      [this, sliderA1, sliderA2, sliderA3, sliderXb,
-                      sliderYa, sliderL, sliderE, sliderDp, toSliderValue]() {
+                      sliderYa, sliderL, sliderE, sliderDp, toSliderValue,
+                      defaultParamsDir, rememberParamsDir]() {
         const QString fileName = QFileDialog::getOpenFileName(
-            this, "Importer les parametres", QString(), "JSON files (*.json)");
+            this, "Importer les parametres", defaultParamsDir(),
+            "JSON files (*.json)");
         if (fileName.isEmpty())
             return;
+
+        rememberParamsDir(fileName);
 
         QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -252,12 +280,17 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
     QAction *actionExport = menuFile->addAction("&Exporter parametres...");
     actionExport->setShortcut(QKeySequence::Save);
-    QObject::connect(actionExport, &QAction::triggered, this, [this]() {
+    QObject::connect(actionExport, &QAction::triggered, this,
+                     [this, defaultParamsDir, rememberParamsDir]() {
+        const QString defaultFile =
+            QDir(defaultParamsDir()).filePath("barres-params.json");
         const QString fileName = QFileDialog::getSaveFileName(
-            this, "Exporter les parametres", "barres-params.json",
+            this, "Exporter les parametres", defaultFile,
             "JSON files (*.json)");
         if (fileName.isEmpty())
             return;
+
+        rememberParamsDir(fileName);
 
         const MechanismParameters p = viewer->currentParameters();
 

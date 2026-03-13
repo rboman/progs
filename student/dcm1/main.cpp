@@ -14,11 +14,15 @@
 
 #include "Window.h"
 #include <QApplication>
+#include <QCoreApplication>
 
 int
 main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    QCoreApplication::setOrganizationName("rboman");
+    QCoreApplication::setApplicationName("barres");
+
     Window win;
     win.show();
     return app.exec();
