@@ -1,48 +1,54 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
-PROJECT(Barres CXX)
+cmake_minimum_required(VERSION 3.16)
+project(Barres LANGUAGES CXX)
 
-# on Linux, set optimisation by default
-IF(NOT CMAKE_BUILD_TYPE)
-    SET(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
-ENDIF()
+# Set a default build type only for single-config generators (Ninja/Makefiles).
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
 
-# compiler settings
-IF(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    # target-scoped settings are added after targets are declared
-ENDIF()
+set(CMAKE_AUTOMOC ON)
 
-# -- C++11
-SET(CMAKE_CXX_STANDARD 11)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED)
+add_executable(barres)
+target_sources(barres PRIVATE
+    main.cpp
+    Window.cpp
+    Window.h
+    Barres.cpp
+    Barres.h
+    MechanismKinematicsSolver.cpp
+    MechanismKinematicsSolver.h
+    MechanismRenderer.cpp
+    MechanismRenderer.h
+)
+target_compile_features(barres PRIVATE cxx_std_11)
+target_link_libraries(barres PRIVATE Qt5::Widgets)
 
-FILE(GLOB SRCS *.h *.cpp)
-SET(MOC_HEADERS Barres.h Window.h)
-
-qt5_wrap_cpp (MOC_OUTFILES ${MOC_HEADERS})
-
-ADD_EXECUTABLE(barres ${SRCS} ${MOC_OUTFILES})
-TARGET_LINK_LIBRARIES(barres PRIVATE Qt5::Widgets)
-
-ADD_EXECUTABLE(mechanism_kinematics_solver_test
-               tests/MechanismKinematicsSolver.test.cpp
-               MechanismKinematicsSolver.cpp)
-TARGET_INCLUDE_DIRECTORIES(mechanism_kinematics_solver_test
+add_executable(mechanism_kinematics_solver_test)
+target_sources(mechanism_kinematics_solver_test PRIVATE
+    tests/MechanismKinematicsSolver.test.cpp
+    MechanismKinematicsSolver.cpp
+    MechanismKinematicsSolver.h
+)
+target_compile_features(mechanism_kinematics_solver_test PRIVATE cxx_std_11)
+target_include_directories(mechanism_kinematics_solver_test
                            PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-IF(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    TARGET_COMPILE_DEFINITIONS(barres PRIVATE _CRT_SECURE_NO_WARNINGS
+if(MSVC)
+    target_compile_definitions(barres PRIVATE _CRT_SECURE_NO_WARNINGS
                                               _SCL_SECURE_NO_DEPRECATE)
-    TARGET_COMPILE_OPTIONS(barres PRIVATE /MP)
+    target_compile_options(barres PRIVATE /MP)
 
-    TARGET_COMPILE_DEFINITIONS(mechanism_kinematics_solver_test
+    target_compile_definitions(mechanism_kinematics_solver_test
                                PRIVATE _CRT_SECURE_NO_WARNINGS
                                        _SCL_SECURE_NO_DEPRECATE)
-    TARGET_COMPILE_OPTIONS(mechanism_kinematics_solver_test PRIVATE /MP)
-ENDIF()
+    target_compile_options(mechanism_kinematics_solver_test PRIVATE /MP)
+endif()
 
-ENABLE_TESTING()
-ADD_TEST(NAME mechanism_kinematics_solver_test
-         COMMAND mechanism_kinematics_solver_test)
+include(CTest)
+if(BUILD_TESTING)
+    add_test(NAME mechanism_kinematics_solver_test
+             COMMAND mechanism_kinematics_solver_test)
+endif()
 
