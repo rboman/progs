@@ -23,6 +23,128 @@ cmake --build build --config Release
 - Cle QSettings reservee : `ui/language`
 - Etat actuel : cle initialisee au demarrage, sans effet fonctionnel sur l'UI
 
+## i18n (phase 2) - inventaire des chaines
+
+Inventaire effectue sur `Window.cpp`, `Barres.cpp`, `MechanismRenderer.cpp`.
+
+### Chaines UI a traduire (FR/EN)
+
+- Fenetre principale / groupes:
+  - `Barres`
+  - `Parameters`
+  - `Animation`
+  - `Vitesse`
+  - ` ms/frame`
+  - `Intervalle entre deux frames d'animation`
+  - `Vitesse animation: %1 ms/frame`
+
+- Menus / actions:
+  - `&Fichier`, `&Importer parametres...`, `&Exporter parametres...`, `&Quitter`
+  - `&Affichage`, `Réinitialiser la vue`, `Parametres de dessin...`
+  - `&Animation`, `&Démarrer`, `&Arrêter`
+  - `&Aide`, `&A propos`
+
+- Sliders (labels + tooltips):
+  - `a1`, `a2`, `a3`, `xb`, `ya`, `L`, `e`, `dp`
+  - `Longueur AD (manivelle)`
+  - `Longueur DC (bielle)`
+  - `Longueur BC (balancier)`
+  - `Position x du pivot B`
+  - `Position y du pivot A`
+  - `Longueur DP' (point outil)`
+  - `Offset vertical du film`
+  - `Distance P' -> P`
+
+- Dialog "Parametres de dessin":
+  - Titres / onglets: `Parametres de dessin`, `Traits`, `Labels`, `Couleurs`
+  - Champs:
+    - `Epaisseur liens`
+    - `Epaisseur trajectoire P`
+    - `Epaisseur trajectoire D`
+    - `Demi-longueur sol`
+    - `Longueur film`
+    - `Taille police`
+    - `Offset X`, `Offset Y`
+    - `Choisir...`
+    - `Couleur principale`
+    - `Couleur trajectoire P`
+    - `Couleur trajectoire D`
+    - `Trajectoire P`, `Trajectoire D`
+    - `Reinitialiser`
+  - Status bar associee: `Style de dessin applique`
+
+- Import / export JSON (messages utilisateur):
+  - Selecteurs:
+    - `Importer les parametres`
+    - `Exporter les parametres`
+    - `JSON files (*.json)`
+  - Erreurs export:
+    - `Export impossible`
+    - `Impossible d'ouvrir le fichier pour ecriture.`
+    - `Echec de l'export JSON`
+    - `Export incomplet`
+    - `Le fichier n'a pas ete ecrit completement.`
+    - `Export JSON incomplet`
+    - `Parametres exportes en JSON`
+  - Erreurs import:
+    - `Import impossible`
+    - `Impossible d'ouvrir le fichier en lecture.`
+    - `Echec de l'import JSON`
+    - `Format invalide`
+    - `Le fichier JSON est invalide.`
+    - `JSON invalide`
+    - `Format non reconnu`
+    - `Le fichier n'est pas un export Barres.`
+    - `Format JSON non reconnu`
+    - `Version non supportee`
+    - `Version de fichier non supportee.`
+    - `Version JSON non supportee`
+    - `Fichier incomplet`
+    - `Objet 'params' manquant.`
+    - `Objet params manquant`
+    - `Parametres invalides`
+    - `Un ou plusieurs parametres sont manquants ou hors bornes.`
+    - `Parametres JSON invalides`
+    - `Parametres importes depuis JSON`
+    - `Deposer un fichier .json valide`
+
+- A propos / status / raccourcis:
+  - Titre: `A propos`
+  - Contenu complet de la boite "A propos"
+  - `Affichage de la boite A propos`
+  - `Animation demarree`
+  - `Animation arretee`
+  - `Animation reinitialisee`
+  - `Frame precedente`
+  - `Frame suivante`
+  - `Pret`
+
+- Rendu (`MechanismRenderer.cpp`):
+  - Labels points: `A`, `B`, `C`, `D`, `P'`, `P`
+  - Overlay frame: `frame=%1/%2`
+  - Overlay angles: `thetaAD=%1 deg\nthetaDC=%2 deg\nthetaBC=%3 deg`
+
+- Widget rendu (`Barres.cpp`):
+  - `Barres! (DCM1-1994)`
+
+### Chaines a ne pas traduire (stabilite format / technique)
+
+- Cles QSettings:
+  - `io/lastParamsDir`, `window/size`, `ui/language`
+  - `view/zoom`, `view/panOffsetX`, `view/panOffsetY`
+  - `animation/intervalMs`
+  - `render/*`
+
+- Format JSON import/export:
+  - `format`, `version`, `savedAt`, `params`
+  - `barres-params`
+  - Noms de parametres: `a1`, `a2`, `a3`, `xb`, `ya`, `L`, `e`, `dp`
+
+- Chaines purement techniques:
+  - Feuille de style: `QPushButton { background-color: %1; color: %2; }`
+  - Valeurs CSS: `white`, `black`
+  - Extension/filtre de suffixe: `json`
+
 ---
 
 ## Structure des fichiers

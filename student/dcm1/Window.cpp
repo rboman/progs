@@ -67,7 +67,7 @@ int toSliderValue(double value, double minValue, double maxValue)
 
 Window::Window(QWidget *parent) : QMainWindow(parent)
 {
-    this->setWindowTitle("Barres");
+    this->setWindowTitle(tr("Barres"));
     this->setMinimumSize(900, 580);
 
     {
@@ -105,7 +105,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
     QVBoxLayout *vbox = new QVBoxLayout(pan);
 
-    QGroupBox *groupBox = new QGroupBox("Parameters");
+    QGroupBox *groupBox = new QGroupBox(tr("Parameters"));
     QFormLayout *formLayout = new QFormLayout();
     formLayout->setHorizontalSpacing(10);
     formLayout->setLabelAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -170,7 +170,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
     vbox->addWidget(groupBox);
 
-    QGroupBox *animGroup = new QGroupBox("Animation");
+    QGroupBox *animGroup = new QGroupBox(tr("Animation"));
     QFormLayout *animLayout = new QFormLayout();
     animGroup->setLayout(animLayout);
 
@@ -180,7 +180,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     speedMsSpin->setSuffix(" ms/frame");
     speedMsSpin->setToolTip("Intervalle entre deux frames d'animation");
     speedMsSpin->setValue(viewer->currentAnimationIntervalMs());
-    animLayout->addRow("Vitesse", speedMsSpin);
+    animLayout->addRow(tr("Vitesse"), speedMsSpin);
 
     QObject::connect(speedMsSpin, QOverload<int>::of(&QSpinBox::valueChanged),
                      viewer, &Barres::setAnimationIntervalMs);
@@ -196,7 +196,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     vbox->addStretch(1);
 
     // -- menu bar
-    QMenu *menuFile = menuBar()->addMenu("&Fichier");
+    QMenu *menuFile = menuBar()->addMenu(tr("&Fichier"));
 
     auto defaultParamsDir = []() {
         QSettings settings;
@@ -217,7 +217,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         settings.setValue("io/lastParamsDir", QFileInfo(fileName).absolutePath());
     };
 
-    QAction *actionImport = menuFile->addAction("&Importer parametres...");
+    QAction *actionImport = menuFile->addAction(tr("&Importer parametres..."));
     actionImport->setShortcut(QKeySequence::Open);
     QObject::connect(actionImport, &QAction::triggered, this,
                      [this, defaultParamsDir, rememberParamsDir]() {
@@ -233,7 +233,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         rememberParamsDir(fileName);
     });
 
-    QAction *actionExport = menuFile->addAction("&Exporter parametres...");
+    QAction *actionExport = menuFile->addAction(tr("&Exporter parametres..."));
     actionExport->setShortcut(QKeySequence::Save);
     QObject::connect(actionExport, &QAction::triggered, this,
                      [this, defaultParamsDir, rememberParamsDir]() {
@@ -288,7 +288,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     });
 
     menuFile->addSeparator();
-    QAction *actionQuit = menuFile->addAction("&Quitter");
+    QAction *actionQuit = menuFile->addAction(tr("&Quitter"));
     actionQuit->setShortcut(QKeySequence::Quit);
     QObject::connect(actionQuit, &QAction::triggered,
                      qApp, &QApplication::quit);
@@ -470,20 +470,20 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         dialog.exec();
     };
 
-    QMenu *menuView = menuBar()->addMenu("&Affichage");
-    QAction *actionResetView = menuView->addAction("Réinitialiser la vue");
+    QMenu *menuView = menuBar()->addMenu(tr("&Affichage"));
+    QAction *actionResetView = menuView->addAction(tr("Réinitialiser la vue"));
     actionResetView->setShortcut(Qt::Key_H);
     QObject::connect(actionResetView, &QAction::triggered,
                      viewer, &Barres::resetView);
     menuView->addSeparator();
     QAction *actionRenderStyle =
-        menuView->addAction("Parametres de dessin...");
+        menuView->addAction(tr("Parametres de dessin..."));
     QObject::connect(actionRenderStyle, &QAction::triggered,
                      this, openRenderStyleDialog);
 
-    QMenu *menuAnimation = menuBar()->addMenu("&Animation");
-    actionStart = menuAnimation->addAction("&Démarrer");
-    actionStop  = menuAnimation->addAction("&Arrêter");
+    QMenu *menuAnimation = menuBar()->addMenu(tr("&Animation"));
+    actionStart = menuAnimation->addAction(tr("&Démarrer"));
+    actionStop  = menuAnimation->addAction(tr("&Arrêter"));
     actionStart->setEnabled(true);
     actionStop->setEnabled(false);
 
@@ -502,8 +502,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         statusBar()->showMessage("Animation arretee");
     });
 
-    QMenu *menuHelp = menuBar()->addMenu("&Aide");
-    QAction *actionAbout = menuHelp->addAction("&A propos");
+    QMenu *menuHelp = menuBar()->addMenu(tr("&Aide"));
+    QAction *actionAbout = menuHelp->addAction(tr("&A propos"));
     QObject::connect(actionAbout, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, "A propos",
                            "Barres\n"

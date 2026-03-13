@@ -167,7 +167,7 @@ Barres::Barres(QWidget *parent)
     params.e = 1.4595;
     params.dp = 0.5459; // PP'
 
-    this->setWindowTitle("Barres! (DCM1-1994)");
+    this->setWindowTitle(tr("Barres! (DCM1-1994)"));
     this->resize(640, 480);
 
     renderStyle = loadRenderStyleFromSettings();
