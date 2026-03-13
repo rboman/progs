@@ -24,6 +24,7 @@ class QPaintEvent;
 class QTimerEvent;
 class QShowEvent;
 class QHideEvent;
+class QMouseEvent;
 
 class Barres : public QWidget
 {
@@ -56,6 +57,9 @@ protected:
     void timerEvent(QTimerEvent *event) override;
     void showEvent(QShowEvent *event) override;
     void hideEvent(QHideEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public slots:
     virtual void set_a1_slot(int i);

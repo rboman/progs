@@ -14,6 +14,7 @@
 
 #include "Barres.h"
 #include "MechanismRenderer.h"
+#include <QMouseEvent>
 #include <QSettings>
 #include <QTimerEvent>
 
@@ -190,6 +191,51 @@ void
 Barres::hideEvent(QHideEvent *)
 {
     stopAnimation();
+}
+
+void
+Barres::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        isPanning = true;
+        lastMousePos = event->pos();
+        setCursor(Qt::ClosedHandCursor);
+        event->accept();
+        return;
+    }
+
+    QWidget::mousePressEvent(event);
+}
+
+void
+Barres::mouseMoveEvent(QMouseEvent *event)
+{
+    if (isPanning)
+    {
+        const QPoint delta = event->pos() - lastMousePos;
+        panOffset += delta;
+        lastMousePos = event->pos();
+        update();
+        event->accept();
+        return;
+    }
+
+    QWidget::mouseMoveEvent(event);
+}
+
+void
+Barres::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton && isPanning)
+    {
+        isPanning = false;
+        unsetCursor();
+        event->accept();
+        return;
+    }
+
+    QWidget::mouseReleaseEvent(event);
 }
 
 void
