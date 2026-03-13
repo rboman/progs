@@ -31,6 +31,7 @@ double normalizeAngleDegrees(double angleDeg)
 void drawWorldGrid(QPainter &painter, const QRect &widgetRect,
                    int ox, int oy, double zoom)
 {
+    // Keep grid readable across zoom levels by adapting world step.
     double worldStep = 1.0;
     while (worldStep * zoom < 25.0)
         worldStep *= 2.0;
@@ -66,6 +67,7 @@ MechanismRenderer::draw(QPainter &painter, const TrajectoryGeometry &geometry,
                         const RenderStyleSettings &style,
                         const QRect &widgetRect)
 {
+    // World -> screen mapping (Y axis inverted in screen space).
     auto sx = [ox, zoom](double wx) { return ox + wx * zoom; };
     auto sy = [oy, zoom](double wy) { return oy - wy * zoom; };
     auto pt = [&geometry, &sx, &sy](int p, int f) {

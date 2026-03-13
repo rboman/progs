@@ -26,6 +26,7 @@ set(TS_SOURCES
     MechanismRenderer.h
 )
 
+# Extract translatable strings and compile *.qm during build.
 qt5_create_translation(QM_FILES
     ${TS_SOURCES}
     ${TS_FILES}
@@ -48,6 +49,7 @@ target_sources(barres PRIVATE
 target_compile_features(barres PRIVATE cxx_std_11)
 target_link_libraries(barres PRIVATE Qt5::Widgets)
 
+# Make runtime translation files available next to the executable.
 add_custom_command(TARGET barres POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:barres>/i18n
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${QM_FILES} $<TARGET_FILE_DIR:barres>/i18n

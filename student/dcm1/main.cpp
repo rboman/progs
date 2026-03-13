@@ -35,6 +35,7 @@ main(int argc, char *argv[])
         settings.value("ui/language", "fr").toString().toLower();
     if (uiLanguage == "en")
     {
+        // Try both deployment layouts: <exe>/i18n and legacy next-to-exe.
         QTranslator *translator = new QTranslator(&app);
         const QString qmInI18nDir =
             QDir(QCoreApplication::applicationDirPath()).filePath("i18n/barres_en.qm");

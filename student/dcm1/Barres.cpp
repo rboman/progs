@@ -101,6 +101,7 @@ void saveRenderStyleToSettings(const RenderStyleSettings &style)
 
 void saveViewToSettings(double zoom, const QPoint &panOffset)
 {
+    // Keep view state between sessions (pan + zoom).
     QSettings settings;
     settings.setValue("view/zoom", zoom);
     settings.setValue("view/panOffsetX", panOffset.x());
@@ -119,6 +120,7 @@ int loadAnimationIntervalFromSettings()
 {
     QSettings settings;
     int intervalMs = settings.value("animation/intervalMs", 25).toInt();
+    // Clamp persisted values in case settings were edited manually.
     if (intervalMs < 5)
         intervalMs = 5;
     if (intervalMs > 200)
@@ -384,6 +386,7 @@ Barres::setAnimationIntervalMs(int intervalMs)
 
     if (myTimerId != 0)
     {
+        // Apply speed changes immediately while animation is running.
         killTimer(myTimerId);
         myTimerId = startTimer(animationIntervalMs);
     }

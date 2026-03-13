@@ -113,6 +113,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     groupBox->setLayout(formLayout);
 
+    // Factory used to keep slider rows homogeneous (label + slider + live value).
     auto addSlider = [formLayout, this](const QString &label,
                                         const QString &tooltip,
                                         double minValue, double maxValue,
@@ -199,6 +200,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     // -- menu bar
     QMenu *menuFile = menuBar()->addMenu(tr("&Fichier"));
 
+    // Reuse last successful import/export folder for convenience.
     auto defaultParamsDir = []() {
         QSettings settings;
         const QString lastDir = settings.value("io/lastParamsDir").toString();
@@ -510,6 +512,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
             return;
 
         settings.setValue("ui/language", languageCode);
+        // Full hot-retranslate is intentionally avoided for now.
         QMessageBox::information(this, tr("Langue"),
                                  tr("La langue sera appliquee au prochain demarrage."));
         statusBar()->showMessage(tr("Preference de langue sauvegardee"), 2000);
