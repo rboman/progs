@@ -222,8 +222,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     QObject::connect(actionImport, &QAction::triggered, this,
                      [this, defaultParamsDir, rememberParamsDir]() {
         const QString fileName = QFileDialog::getOpenFileName(
-            this, "Importer les parametres", defaultParamsDir(),
-            "JSON files (*.json)");
+            this, tr("Importer les parametres"), defaultParamsDir(),
+            tr("JSON files (*.json)"));
         if (fileName.isEmpty())
             return;
 
@@ -240,8 +240,8 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         const QString defaultFile =
             QDir(defaultParamsDir()).filePath("barres-params.json");
         const QString fileName = QFileDialog::getSaveFileName(
-            this, "Exporter les parametres", defaultFile,
-            "JSON files (*.json)");
+            this, tr("Exporter les parametres"), defaultFile,
+            tr("JSON files (*.json)"));
         if (fileName.isEmpty())
             return;
 
@@ -268,9 +268,9 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
-            QMessageBox::warning(this, "Export impossible",
-                                 "Impossible d'ouvrir le fichier pour ecriture.");
-            statusBar()->showMessage("Echec de l'export JSON", 2000);
+            QMessageBox::warning(this, tr("Export impossible"),
+                                 tr("Impossible d'ouvrir le fichier pour ecriture."));
+            statusBar()->showMessage(tr("Echec de l'export JSON"), 2000);
             return;
         }
 
@@ -278,13 +278,13 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         const qint64 written = file.write(payload);
         if (written != payload.size())
         {
-            QMessageBox::warning(this, "Export incomplet",
-                                 "Le fichier n'a pas ete ecrit completement.");
-            statusBar()->showMessage("Export JSON incomplet", 2000);
+            QMessageBox::warning(this, tr("Export incomplet"),
+                                 tr("Le fichier n'a pas ete ecrit completement."));
+            statusBar()->showMessage(tr("Export JSON incomplet"), 2000);
             return;
         }
 
-        statusBar()->showMessage("Parametres exportes en JSON", 2000);
+        statusBar()->showMessage(tr("Parametres exportes en JSON"), 2000);
     });
 
     menuFile->addSeparator();
@@ -295,7 +295,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
     auto openRenderStyleDialog = [this]() {
         QDialog dialog(this);
-        dialog.setWindowTitle("Parametres de dessin");
+        dialog.setWindowTitle(tr("Parametres de dessin"));
         dialog.setMinimumWidth(460);
 
         QVBoxLayout *rootLayout = new QVBoxLayout(&dialog);
@@ -306,7 +306,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
         QWidget *tabLines = new QWidget(&dialog);
         QFormLayout *linesLayout = new QFormLayout(tabLines);
-        tabs->addTab(tabLines, "Traits");
+        tabs->addTab(tabLines, tr("Traits"));
 
         auto makeDouble = [](double minV, double maxV, double value,
                              int decimals = 2) {
@@ -335,15 +335,15 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         QDoubleSpinBox *sbFilmExtension =
             makeDouble(0.0, 50.0, current.filmExtension, 2);
 
-        linesLayout->addRow("Epaisseur liens", sbLinkPenWidth);
-        linesLayout->addRow("Epaisseur trajectoire P", sbTrajPWidth);
-        linesLayout->addRow("Epaisseur trajectoire D", sbTrajDWidth);
-        linesLayout->addRow("Demi-longueur sol", sbGroundHalfLen);
-        linesLayout->addRow("Longueur film", sbFilmExtension);
+        linesLayout->addRow(tr("Epaisseur liens"), sbLinkPenWidth);
+        linesLayout->addRow(tr("Epaisseur trajectoire P"), sbTrajPWidth);
+        linesLayout->addRow(tr("Epaisseur trajectoire D"), sbTrajDWidth);
+        linesLayout->addRow(tr("Demi-longueur sol"), sbGroundHalfLen);
+        linesLayout->addRow(tr("Longueur film"), sbFilmExtension);
 
         QWidget *tabLabels = new QWidget(&dialog);
         QFormLayout *labelsLayout = new QFormLayout(tabLabels);
-        tabs->addTab(tabLabels, "Labels");
+        tabs->addTab(tabLabels, tr("Labels"));
 
         QSpinBox *sbLabelFontSize =
             makeInt(6, 48, current.labelFontSize);
@@ -352,20 +352,20 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         QSpinBox *sbLabelOffsetY =
             makeInt(-50, 50, current.labelOffsetY);
 
-        labelsLayout->addRow("Taille police", sbLabelFontSize);
-        labelsLayout->addRow("Offset X", sbLabelOffsetX);
-        labelsLayout->addRow("Offset Y", sbLabelOffsetY);
+        labelsLayout->addRow(tr("Taille police"), sbLabelFontSize);
+        labelsLayout->addRow(tr("Offset X"), sbLabelOffsetX);
+        labelsLayout->addRow(tr("Offset Y"), sbLabelOffsetY);
 
         QWidget *tabColors = new QWidget(&dialog);
         QFormLayout *colorsLayout = new QFormLayout(tabColors);
-        tabs->addTab(tabColors, "Couleurs");
+        tabs->addTab(tabColors, tr("Couleurs"));
 
         QColor mainColor = current.mainColor;
         QColor trajectoryPColor = current.trajectoryPColor;
         QColor trajectoryDColor = current.trajectoryDColor;
 
-        auto makeColorButton = []() {
-            QPushButton *button = new QPushButton("Choisir...");
+        auto makeColorButton = [this]() {
+            QPushButton *button = new QPushButton(tr("Choisir..."));
             button->setMinimumWidth(120);
             return button;
         };
@@ -399,15 +399,15 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
         QPushButton *btnTrajectoryPColor = makeColorButton();
         QPushButton *btnTrajectoryDColor = makeColorButton();
 
-        wireColorButton(btnMainColor, &mainColor, "Couleur principale");
+        wireColorButton(btnMainColor, &mainColor, tr("Couleur principale"));
         wireColorButton(btnTrajectoryPColor, &trajectoryPColor,
-                        "Couleur trajectoire P");
+                tr("Couleur trajectoire P"));
         wireColorButton(btnTrajectoryDColor, &trajectoryDColor,
-                        "Couleur trajectoire D");
+                tr("Couleur trajectoire D"));
 
-        colorsLayout->addRow("Couleur principale", btnMainColor);
-        colorsLayout->addRow("Trajectoire P", btnTrajectoryPColor);
-        colorsLayout->addRow("Trajectoire D", btnTrajectoryDColor);
+        colorsLayout->addRow(tr("Couleur principale"), btnMainColor);
+        colorsLayout->addRow(tr("Trajectoire P"), btnTrajectoryPColor);
+        colorsLayout->addRow(tr("Trajectoire D"), btnTrajectoryDColor);
 
         auto collectStyle = [&]() {
             RenderStyleSettings s;
@@ -431,12 +431,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
                                  QDialogButtonBox::Apply,
                                  &dialog);
         QPushButton *resetButton =
-            buttonBox->addButton("Reinitialiser", QDialogButtonBox::ResetRole);
+            buttonBox->addButton(tr("Reinitialiser"), QDialogButtonBox::ResetRole);
         rootLayout->addWidget(buttonBox);
 
         auto applyStyle = [&]() {
             viewer->applyRenderStyle(collectStyle());
-            statusBar()->showMessage("Style de dessin applique", 1500);
+            statusBar()->showMessage(tr("Style de dessin applique"), 1500);
         };
 
         QObject::connect(buttonBox->button(QDialogButtonBox::Apply),
@@ -494,31 +494,31 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     QObject::connect(viewer, &Barres::animationStarted, this, [this]() {
         actionStart->setEnabled(false);
         actionStop->setEnabled(true);
-        statusBar()->showMessage("Animation demarree");
+        statusBar()->showMessage(tr("Animation demarree"));
     });
     QObject::connect(viewer, &Barres::animationStopped, this, [this]() {
         actionStart->setEnabled(true);
         actionStop->setEnabled(false);
-        statusBar()->showMessage("Animation arretee");
+        statusBar()->showMessage(tr("Animation arretee"));
     });
 
     QMenu *menuHelp = menuBar()->addMenu(tr("&Aide"));
     QAction *actionAbout = menuHelp->addAction(tr("&A propos"));
     QObject::connect(actionAbout, &QAction::triggered, this, [this]() {
-        QMessageBox::about(this, "A propos",
-                           "Barres\n"
-                           "Simulation d'un mecanisme planar.\n"
-                           "Projet Qt Widgets / C++.\n\n"
-                           "Commandes:\n"
-                           "- Menu Fichier > Quitter\n"
-                           "- Menu Animation > Demarrer / Arreter\n"
-                           "- Sliders: reglage des parametres geometriques\n\n"
-                           "Raccourcis clavier:\n"
-                           "- Espace : demarrer / arreter l'animation\n"
-                           "- R : reinitialiser a la frame 0\n"
-                           "- Fleche droite : frame suivante\n"
-                           "- Fleche gauche : frame precedente");
-        statusBar()->showMessage("Affichage de la boite A propos", 2000);
+        QMessageBox::about(this, tr("A propos"),
+                           tr("Barres\n"
+                              "Simulation d'un mecanisme planar.\n"
+                              "Projet Qt Widgets / C++.\n\n"
+                              "Commandes:\n"
+                              "- Menu Fichier > Quitter\n"
+                              "- Menu Animation > Demarrer / Arreter\n"
+                              "- Sliders: reglage des parametres geometriques\n\n"
+                              "Raccourcis clavier:\n"
+                              "- Espace : demarrer / arreter l'animation\n"
+                              "- R : reinitialiser a la frame 0\n"
+                              "- Fleche droite : frame suivante\n"
+                              "- Fleche gauche : frame precedente"));
+        statusBar()->showMessage(tr("Affichage de la boite A propos"), 2000);
     });
 
     QShortcut *shortcutToggle = new QShortcut(QKeySequence(Qt::Key_Space), this);
@@ -530,24 +530,24 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
     shortcutReset->setContext(Qt::ApplicationShortcut);
     QObject::connect(shortcutReset, &QShortcut::activated, this, [this]() {
         viewer->resetAnimation();
-        statusBar()->showMessage("Animation reinitialisee", 1500);
+        statusBar()->showMessage(tr("Animation reinitialisee"), 1500);
     });
 
     QShortcut *shortcutStepPrev = new QShortcut(QKeySequence(Qt::Key_Left), this);
     shortcutStepPrev->setContext(Qt::ApplicationShortcut);
     QObject::connect(shortcutStepPrev, &QShortcut::activated, this, [this]() {
         viewer->stepBackward();
-        statusBar()->showMessage("Frame precedente", 1000);
+        statusBar()->showMessage(tr("Frame precedente"), 1000);
     });
 
     QShortcut *shortcutStepNext = new QShortcut(QKeySequence(Qt::Key_Right), this);
     shortcutStepNext->setContext(Qt::ApplicationShortcut);
     QObject::connect(shortcutStepNext, &QShortcut::activated, this, [this]() {
         viewer->stepForward();
-        statusBar()->showMessage("Frame suivante", 1000);
+        statusBar()->showMessage(tr("Frame suivante"), 1000);
     });
 
-    statusBar()->showMessage("Pret");
+    statusBar()->showMessage(tr("Pret"));
 }
 
 void
@@ -606,7 +606,7 @@ Window::dropEvent(QDropEvent *event)
         return;
     }
 
-    statusBar()->showMessage("Deposer un fichier .json valide", 2000);
+    statusBar()->showMessage(tr("Deposer un fichier .json valide"), 2000);
 }
 
 bool
@@ -615,9 +615,9 @@ Window::importParametersFromJsonFile(const QString &fileName)
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        QMessageBox::warning(this, "Import impossible",
-                             "Impossible d'ouvrir le fichier en lecture.");
-        statusBar()->showMessage("Echec de l'import JSON", 2000);
+        QMessageBox::warning(this, tr("Import impossible"),
+                             tr("Impossible d'ouvrir le fichier en lecture."));
+        statusBar()->showMessage(tr("Echec de l'import JSON"), 2000);
         return false;
     }
 
@@ -626,35 +626,35 @@ Window::importParametersFromJsonFile(const QString &fileName)
     const QJsonDocument doc = QJsonDocument::fromJson(payload, &parseError);
     if (parseError.error != QJsonParseError::NoError || !doc.isObject())
     {
-        QMessageBox::warning(this, "Format invalide",
-                             "Le fichier JSON est invalide.");
-        statusBar()->showMessage("JSON invalide", 2000);
+        QMessageBox::warning(this, tr("Format invalide"),
+                             tr("Le fichier JSON est invalide."));
+        statusBar()->showMessage(tr("JSON invalide"), 2000);
         return false;
     }
 
     const QJsonObject root = doc.object();
     if (root.value("format").toString() != "barres-params")
     {
-        QMessageBox::warning(this, "Format non reconnu",
-                             "Le fichier n'est pas un export Barres.");
-        statusBar()->showMessage("Format JSON non reconnu", 2000);
+        QMessageBox::warning(this, tr("Format non reconnu"),
+                             tr("Le fichier n'est pas un export Barres."));
+        statusBar()->showMessage(tr("Format JSON non reconnu"), 2000);
         return false;
     }
 
     if (root.value("version").toInt(-1) != 1)
     {
-        QMessageBox::warning(this, "Version non supportee",
-                             "Version de fichier non supportee.");
-        statusBar()->showMessage("Version JSON non supportee", 2000);
+        QMessageBox::warning(this, tr("Version non supportee"),
+                             tr("Version de fichier non supportee."));
+        statusBar()->showMessage(tr("Version JSON non supportee"), 2000);
         return false;
     }
 
     const QJsonValue paramsValue = root.value("params");
     if (!paramsValue.isObject())
     {
-        QMessageBox::warning(this, "Fichier incomplet",
-                             "Objet 'params' manquant.");
-        statusBar()->showMessage("Objet params manquant", 2000);
+        QMessageBox::warning(this, tr("Fichier incomplet"),
+                             tr("Objet 'params' manquant."));
+        statusBar()->showMessage(tr("Objet params manquant"), 2000);
         return false;
     }
 
@@ -691,15 +691,15 @@ Window::importParametersFromJsonFile(const QString &fileName)
 
     if (!ok)
     {
-        QMessageBox::warning(this, "Parametres invalides",
-                             "Un ou plusieurs parametres sont manquants ou hors bornes.");
-        statusBar()->showMessage("Parametres JSON invalides", 2000);
+        QMessageBox::warning(this, tr("Parametres invalides"),
+                             tr("Un ou plusieurs parametres sont manquants ou hors bornes."));
+        statusBar()->showMessage(tr("Parametres JSON invalides"), 2000);
         return false;
     }
 
     viewer->applyParameters(p);
     syncSlidersFromParameters(p);
-    statusBar()->showMessage("Parametres importes depuis JSON", 2000);
+    statusBar()->showMessage(tr("Parametres importes depuis JSON"), 2000);
     return true;
 }
 
