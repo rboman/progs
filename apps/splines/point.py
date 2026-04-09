@@ -3,6 +3,7 @@
 
 import math
 
+
 class Pt:
     """ A simple point class
     """
@@ -16,22 +17,26 @@ class Pt:
         return '(' + str(self.x) + ',' + str(self.y) + ',' + str(self.z) + ')'
 
     def __add__(self, pt):
+        if not isinstance(pt, Pt):
+            return NotImplemented
         return Pt(self.x+pt.x, self.y+pt.y, self.z+pt.z)
 
     def __sub__(self, pt):
+        if not isinstance(pt, Pt):
+            return NotImplemented
         return Pt(self.x-pt.x, self.y-pt.y, self.z-pt.z)
 
-    def __div__(self, scalar):
-        return Pt(self.x//scalar, self.y//scalar, self.z//scalar)
-
     def __truediv__(self, scalar):
+        if isinstance(scalar, Pt):
+            return NotImplemented
         return Pt(self.x/scalar, self.y/scalar, self.z/scalar)
 
     def __mul__(self, obj):
         if isinstance(obj, Pt):
             return self.x*obj.x + self.y*obj.y + self.z*obj.z
-        else:
+        if isinstance(obj, (int, float)):
             return Pt(self.x*obj, self.y*obj, self.z*obj)
+        return NotImplemented
 
     def __rmul__(self, scalar):
         return self.__mul__(scalar)
@@ -40,9 +45,12 @@ class Pt:
         return math.sqrt(self*self)
 
     def normalized(self):
-        return self/abs(self)
+        norm = abs(self)
+        if norm == 0.0:
+            raise ValueError("cannot normalize a zero-length vector")
+        return self/norm
 
-    def min(self, obj):
+    def update_min(self, obj):
         if obj.x < self.x:
             self.x = obj.x
         if obj.y < self.y:
@@ -50,7 +58,7 @@ class Pt:
         if obj.z < self.z:
             self.z = obj.z
 
-    def max(self, obj):
+    def update_max(self, obj):
         if obj.x > self.x:
             self.x = obj.x
         if obj.y > self.y:
