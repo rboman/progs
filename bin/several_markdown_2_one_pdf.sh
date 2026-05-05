@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # ============================================================
 # Conversion de plusieurs fichiers Markdown en un seul PDF
@@ -42,6 +43,51 @@ fi
 # =========================
 
 TMP_FILE=$(mktemp)
+TMP_FILTER=$(mktemp)
+
+cleanup() {
+  rm -f "$TMP_FILE" "$TMP_FILTER"
+}
+trap cleanup EXIT
+
+cat > "$TMP_FILTER" <<'EOF'
+local function header_text(tbl)
+  local row = tbl.head and tbl.head.rows and tbl.head.rows[1]
+  if not row then
+    return ""
+  end
+
+  local headers = {}
+  for _, cell in ipairs(row.cells) do
+    headers[#headers + 1] = pandoc.utils.stringify(cell.contents)
+  end
+  return table.concat(headers, " | ")
+end
+
+local function breakable_code(code)
+  return pandoc.RawInline("latex", "\\path{" .. code.text .. "}")
+end
+
+function Table(tbl)
+  tbl = tbl:walk({ Code = breakable_code })
+
+  local headers = header_text(tbl)
+  if headers:match("ID") and headers:match("Severite") and
+     headers:match("Zone") and headers:match("Reference") and
+     headers:match("Probleme") and headers:match("Correction") then
+    tbl.colspecs = {
+      { pandoc.AlignRight, 0.05 },
+      { pandoc.AlignLeft, 0.12 },
+      { pandoc.AlignLeft, 0.17 },
+      { pandoc.AlignLeft, 0.22 },
+      { pandoc.AlignLeft, 0.24 },
+      { pandoc.AlignLeft, 0.20 },
+    }
+  end
+
+  return tbl
+end
+EOF
 
 first=1
 for f in $(ls $INPUT_PATTERN | sort -V); do
@@ -69,14 +115,10 @@ pandoc "$TMP_FILE" \
   -V mainfont="$MAIN_FONT" \
   -V sansfont="$MAIN_FONT" \
   -V monofont="$MONO_FONT" \
+  -V header-includes="\\usepackage{xurl}" \
   -V papersize="$PAPER_SIZE" \
   -V geometry:"$ORIENTATION" \
-  -V geometry:margin="$MARGIN"
-
-# =========================
-# Nettoyage
-# =========================
-
-rm "$TMP_FILE"
+  -V geometry:margin="$MARGIN" \
+  --lua-filter="$TMP_FILTER"
 
 echo "PDF généré : $OUTPUT"
