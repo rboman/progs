@@ -98,6 +98,10 @@ for f in $(ls $INPUT_PATTERN | sort -V); do
     echo '```' >> "$TMP_FILE"
     echo "" >> "$TMP_FILE"
   fi
+  echo '```{=latex}' >> "$TMP_FILE"
+  echo "\\fancyfoot[L]{\\small\\detokenize{$f}}" >> "$TMP_FILE"
+  echo '```' >> "$TMP_FILE"
+  echo "" >> "$TMP_FILE"
   cat "$f" >> "$TMP_FILE"
   first=0
 done
@@ -116,6 +120,7 @@ pandoc "$TMP_FILE" \
   -V sansfont="$MAIN_FONT" \
   -V monofont="$MONO_FONT" \
   -V header-includes="\\usepackage{xurl}" \
+  -V header-includes="\\usepackage{fancyhdr}\\pagestyle{fancy}\\fancyhf{}\\fancyfoot[C]{\\thepage}\\renewcommand{\\headrulewidth}{0pt}\\renewcommand{\\footrulewidth}{0.4pt}" \
   -V papersize="$PAPER_SIZE" \
   -V geometry:"$ORIENTATION" \
   -V geometry:margin="$MARGIN" \
