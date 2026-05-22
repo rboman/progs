@@ -69,6 +69,68 @@ class Plot2DWidget(QWidget):
             curve.color = color
         self.curves.append(curve)
 
+    def autofit(self):
+        """
+        Ajuste les limites de zoom (xmin, xmax, ymin, ymax) pour que toutes
+        les courbes ajoutées soient entièrement visibles, avec une marge de sécurité.
+        Gère également les cas pathologiques (pas de courbes, coordonnées constantes/nulles, NaN/inf).
+        """
+        if not self.curves:
+            return
+
+        all_x = []
+        all_y = []
+        for c in self.curves:
+            for pt in c:
+                # Élimine les valeurs invalides (NaN ou inf)
+                if math.isfinite(pt.x) and math.isfinite(pt.y):
+                    all_x.append(pt.x)
+                    all_y.append(pt.y)
+
+        if not all_x or not all_y:
+            return
+
+        min_x = min(all_x)
+        max_x = max(all_x)
+        min_y = min(all_y)
+        max_y = max(all_y)
+
+        # Calcul des étendues
+        dx = max_x - min_x
+        dy = max_y - min_y
+
+        # Cas pathologique 1 : zoom nul ou infini sur X (ex. ligne verticale ou point unique)
+        if dx <= 0.0 or not math.isfinite(dx):
+            dx = 2.0
+            min_x -= 1.0
+            max_x += 1.0
+
+        # Cas pathologique 2 : zoom nul ou infini sur Y (ex. ligne horizontale ou point unique)
+        if dy <= 0.0 or not math.isfinite(dy):
+            dy = 2.0
+            min_y -= 1.0
+            max_y += 1.0
+
+        # Ajout d'une marge de confort de 10% pour ne pas coller aux bordures du cadre
+        margin_x = dx * 0.1
+        margin_y = dy * 0.1
+
+        # Application des nouvelles limites
+        self.xmin = min_x - margin_x
+        self.xmax = max_x + margin_x
+        self.ymin = min_y - margin_y
+        self.ymax = max_y + margin_y
+
+        # Sécurité ultime contre les valeurs non-finies inattendues
+        if not (math.isfinite(self.xmin) and math.isfinite(self.xmax) and
+                math.isfinite(self.ymin) and math.isfinite(self.ymax)):
+            self.xmin = -10.0
+            self.xmax = 10.0
+            self.ymin = -10.0
+            self.ymax = 10.0
+
+        self.update()
+
     def __setupGUI(self):
 
         self.setWindowTitle("Plot2DWidget")

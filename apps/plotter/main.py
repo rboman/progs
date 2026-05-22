@@ -61,6 +61,9 @@ def main():
     # Tracé de la deuxième fonction en orange vif
     plot_curve(win, fct2, (-1.5, 10), 150, QColor("#EA580C"))
 
+    # Ajustement automatique du zoom au démarrage pour rendre visibles toutes les courbes
+    win.autofit()
+
     win.show()
 
     # Exécution de l'application PyQt
