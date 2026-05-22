@@ -17,11 +17,6 @@
 import math
 from dataclasses import dataclass
 
-
-def fct(x):
-    return math.sin(2 * x) + math.cos(4 * x)
-
-
 @dataclass
 class Point:
     x: float

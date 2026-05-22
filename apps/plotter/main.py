@@ -16,26 +16,51 @@
 #   limitations under the License.
 
 import sys
+import math
 from PyQt5.QtWidgets import QApplication
-from core import Curve, fct
+from PyQt5.QtGui import QColor
+from core import Curve
 from plot2dwidget import Plot2DWidget
+
+
+def fct(x):
+    """Première fonction à tracer (déplacée depuis core.py)"""
+    return math.sin(2 * x) + math.cos(4 * x)
+
+
+def fct2(x):
+    """Deuxième fonction choisie arbitrairement"""
+    return math.sin(x) * 1.5
+
+
+def plot_curve(widget, f, rng, n, color):
+    """
+    Crée une courbe à partir d'une fonction f sur un intervalle rng avec n points,
+    lui attribue une couleur donnée, et l'ajoute au widget de tracé.
+    """
+    c = Curve()
+    c.fill(f, rng, n)
+    widget.add(c, color)
 
 
 def main():
     """
-    Fonction principale qui configure l'application Qt, calcule la courbe
-    en utilisant les structures de 'core' et l'affiche à l'aide de 'plotter'.
+    Fonction principale qui configure l'application Qt, ajoute les deux courbes
+    avec des couleurs différentes au widget de tracé et lance l'affichage.
     """
-    # Création de la courbe avec la fonction de test 'fct' définie dans core.py
-    c = Curve()
-    c.fill(fct, (-1.5, 10), 150)
-
     # Initialisation de l'application PyQt5
     app = QApplication(sys.argv)
 
     # Création du widget graphique 2D
     win = Plot2DWidget()
-    win.add(c)
+    win.plot_title = "Tracé multi-fonctions"
+
+    # Tracé de la première fonction en bleu indigo moderne
+    plot_curve(win, fct, (-1.5, 10), 150, QColor("#2563EB"))
+
+    # Tracé de la deuxième fonction en orange vif
+    plot_curve(win, fct2, (-1.5, 10), 150, QColor("#EA580C"))
+
     win.show()
 
     # Exécution de l'application PyQt

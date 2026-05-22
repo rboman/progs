@@ -24,7 +24,7 @@ from PyQt5.QtCore import QPoint, QRect, QLine, Qt
 from PyQt5.QtGui import QPainter, QPen, QPolygon, QColor
 from PyQt5.QtWidgets import QApplication, QWidget
 
-from core import fct, Point, Curve
+from core import Point, Curve
 
 
 class Plot2DWidget(QWidget):
@@ -64,7 +64,9 @@ class Plot2DWidget(QWidget):
 
         self.__setupGUI()
 
-    def add(self, curve):
+    def add(self, curve, color=None):
+        if color is not None:
+            curve.color = color
         self.curves.append(curve)
 
     def __setupGUI(self):
@@ -206,7 +208,14 @@ class Plot2DWidget(QWidget):
                 i += 1
 
             pen = QPen()
-            pen.setColor(self.color_curve)
+            curve_color = getattr(c, 'color', None)
+            if curve_color is not None:
+                if isinstance(curve_color, str):
+                    pen.setColor(QColor(curve_color))
+                else:
+                    pen.setColor(curve_color)
+            else:
+                pen.setColor(self.color_curve)
             # pen.setStyle(Qt.DashLine)
             pen.setWidth(self.curve_width)
             painter.setPen(pen)
