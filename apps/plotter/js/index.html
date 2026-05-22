@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracé multi-fonctions</title>
+    <!-- Chargement de Chart.js pour le tracé graphique -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chargement des plugins pour le zoom et le pan (déplacement) -->
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F8F9FA; /* Fond correspondant au thème clair */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chart-container {
+            width: 800px;
+            height: 450px; /* Ratio 16/9 horizontal de l'app Python */
+            background-color: white;
+            border: 1px solid #CCCCCC;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .help-text {
+            text-align: center;
+            color: #555555;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="chart-container">
+            <canvas id="plotCanvas"></canvas>
+        </div>
+        <div class="help-text">
+            Molette pour zoomer, clic gauche (glisser) pour se déplacer.
+        </div>
+    </div>
+
+    <script>
+        // Fonctionnalités d'origine de main.py
+        function fct(x) {
+            return Math.sin(2 * x) + Math.cos(4 * x);
+        }
+
+        function fct2(x) {
+            return Math.sin(x) * 1.5;
+        }
+
+        // Configuration pour générer les données
+        const n = 150;
+        const xmin = -1.5;
+        const xmax = 10;
+        const dx = (xmax - xmin) / n;
+
+        const data1 = [];
+        const data2 = [];
+
+        // Remplissage des points
+        for (let i = 0; i < n; i++) {
+            const x = xmin + i * dx;
+            data1.push({ x: x, y: fct(x) });
+            data2.push({ x: x, y: fct2(x) });
+        }
+
+        const ctx = document.getElementById('plotCanvas').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'scatter', // Utilisation de scatter pour afficher correctement les paires (x, y)
+            data: {
+                datasets: [
+                    {
+                        label: 'fct(x) = sin(2x) + cos(4x)',
+                        data: data1,
+                        borderColor: '#2563EB', // Bleu Indigo moderne
+                        backgroundColor: '#2563EB',
+                        borderWidth: 3,
+                        showLine: true, // Relie les points
+                        pointRadius: 0, // Cache les marqueurs pour l'aspect de courbe continue
+                        tension: 0.4 // Courbe un peu lissée
+                    },
+                    {
+                        label: 'fct2(x) = sin(x) * 1.5',
+                        data: data2,
+                        borderColor: '#EA580C', // Orange vif
+                        backgroundColor: '#EA580C',
+                        borderWidth: 3,
+                        showLine: true,
+                        pointRadius: 0,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Tracé multi-fonctions', // Mêmes titres
+                        color: '#111111',
+                        font: { size: 16, weight: 'bold' }
+                    },
+                    legend: {
+                        labels: { color: '#555555' }
+                    },
+                    zoom: {
+                        zoom: {
+                            wheel: {
+                                enabled: true, // Autorise le zoom à la molette
+                            },
+                            pinch: {
+                                enabled: true // Autorise le zoom sur mobile
+                            },
+                            mode: 'xy', // Zoom dans les 2 directions
+                        },
+                        pan: {
+                            enabled: true, // Autorise le glissement
+                            mode: 'xy',
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Axe X',
+                            color: '#555555'
+                        },
+                        grid: { color: '#E0E0E0' },
+                        ticks: { color: '#555555' }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Axe Y',
+                            color: '#555555'
+                        },
+                        grid: { color: '#E0E0E0' },
+                        ticks: { color: '#555555' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
