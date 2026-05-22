@@ -18,7 +18,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from core import Curve, fct
-from plotter import Plot2DWidget
+from plot2dwidget import Plot2DWidget
 
 
 def main():

@@ -299,18 +299,3 @@ class Plot2DWidget(QWidget):
             self.starttx = event.pos().x()
             self.startty = event.pos().y()
             self.update()
-
-
-
-
-
-if __name__ == "__main__":
-
-    c = Curve()
-    c.fill(fct, (-1.5, 10), 150)
-
-    app = QApplication(sys.argv)
-    win = Plot2DWidget()
-    win.add(c)
-    win.show()
-    app.exec_()
