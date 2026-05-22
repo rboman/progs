@@ -30,11 +30,11 @@ from core import fct, Point, Curve
 class Plot2DWidget(QWidget):
     def __init__(self):
         super().__init__()
-        # Marges asymétriques pour laisser de la place aux labels d'axes
-        self.margin_left = 60
+        # Marges asymétriques pour laisser de la place aux labels et légendes
+        self.margin_left = 70
         self.margin_right = 30
-        self.margin_top = 30
-        self.margin_bottom = 40
+        self.margin_top = 45
+        self.margin_bottom = 55
 
         self.xmin = -6.1123
         self.xmax = 12.6
@@ -48,13 +48,19 @@ class Plot2DWidget(QWidget):
         self.starttx = 0
         self.startty = 0
 
-        # Configuration du style et des couleurs
-        self.color_bg = QColor("#1A1A1A")       # Fond du widget
-        self.color_frame = QColor("#444444")    # Bordure du cadre
-        self.color_grid = QColor("#555555")     # Lignes de la grille (plus clair pour visibilité)
-        self.color_labels = QColor("#AAAAAA")   # Couleur des labels d'axes
-        self.color_curve = QColor("#00CECB")    # Couleur de la courbe
+        # Configuration du style et des couleurs (Thème Clair Moderne)
+        self.color_bg = QColor("#F8F9FA")       # Fond du widget (gris très clair doux)
+        self.color_frame = QColor("#CCCCCC")    # Bordure du cadre
+        self.color_grid = QColor("#E0E0E0")     # Lignes de la grille (subtilement claires)
+        self.color_labels = QColor("#555555")   # Couleur des labels d'axes et légendes (gris foncé)
+        self.color_title = QColor("#111111")    # Couleur du titre principal (charbon presque noir)
+        self.color_curve = QColor("#2563EB")    # Couleur de la courbe (Bleu Indigo moderne et vif)
         self.curve_width = 3                    # Épaisseur du tracé (pixels)
+
+        # Titres et légendes (faciles à modifier)
+        self.plot_title = "Tracé de la fonction f(x)"
+        self.label_x_axis = "Axe X"
+        self.label_y_axis = "Axe Y"
 
         self.__setupGUI()
 
@@ -64,7 +70,7 @@ class Plot2DWidget(QWidget):
     def __setupGUI(self):
 
         self.setWindowTitle("Plot2DWidget")
-        self.resize(500, 500)
+        self.resize(800, 450)  # Ratio 16/9 horizontal
 
     def computegrid(self, xmin, xmax, gridX):
         # find best step
@@ -121,6 +127,7 @@ class Plot2DWidget(QWidget):
             self._draw_frame(painter, rect)
             self._draw_grid(painter, rect)
             self._draw_curves(painter)
+            self._draw_labels_and_title(painter, rect)
         finally:
             painter.end()
 
@@ -129,7 +136,6 @@ class Plot2DWidget(QWidget):
         pen = QPen(self.color_frame, 1, Qt.SolidLine)
         painter.setPen(pen)
         painter.drawRect(rect)
-        painter.setClipRect(rect)
 
     def _draw_grid(self, painter, rect):
         # axes
@@ -186,7 +192,9 @@ class Plot2DWidget(QWidget):
             y += bdYf
 
     def _draw_curves(self, painter):
-        # dessine les courbes
+        # dessine les courbes avec découpe (clip) à la zone de tracé
+        painter.save()
+        painter.setClipRect(self.plot_rect)
 
         for c in self.curves:
             i = 0
@@ -203,6 +211,34 @@ class Plot2DWidget(QWidget):
             pen.setWidth(self.curve_width)
             painter.setPen(pen)
             painter.drawPolyline(poly)
+
+        painter.restore()
+
+    def _draw_labels_and_title(self, painter, rect):
+        # 1. Dessiner le titre principal
+        title_pen = QPen(self.color_title, 1, Qt.SolidLine)
+        painter.setPen(title_pen)
+        title_font = painter.font()
+        title_font.setPointSize(12)
+        title_font.setBold(True)
+        painter.setFont(title_font)
+        painter.drawText(0, 10, self.width(), 30, Qt.AlignHCenter | Qt.AlignTop, self.plot_title)
+
+        # 2. Dessiner la légende de l'axe X
+        legend_pen = QPen(self.color_labels, 1, Qt.SolidLine)
+        painter.setPen(legend_pen)
+        legend_font = painter.font()
+        legend_font.setPointSize(10)
+        legend_font.setBold(False)
+        painter.setFont(legend_font)
+        painter.drawText(rect.left(), rect.bottom() + 28, rect.width(), 20, Qt.AlignHCenter | Qt.AlignTop, self.label_x_axis)
+
+        # 3. Dessiner la légende de l'axe Y (orientée à -90 degrés)
+        painter.save()
+        painter.translate(15, rect.center().y())
+        painter.rotate(-90)
+        painter.drawText(-100, -10, 200, 20, Qt.AlignCenter, self.label_y_axis)
+        painter.restore()
 
     def ax2win(self, ax, ay):
         wx = self.plot_rect.left() + (ax - self.xmin)/(self.xmax - self.xmin) * self.plot_rect.width()
