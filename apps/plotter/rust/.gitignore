@@ -1,0 +1,11 @@
+# Fichiers et dossiers générés par Cargo lors de la compilation
+/target/
+
+# Fichiers de sauvegarde générés par rustfmt
+**/*.rs.bk
+
+# Fichiers de debug générés par MSVC Windows (rustc)
+*.pdb
+
+# Note: Cargo.lock n'est pas ignoré par défaut car il s'agit d'un binaire (application) 
+# et non d'une bibliothèque. Cela garantit des builds reproductibles.
