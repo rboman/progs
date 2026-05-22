@@ -17,3 +17,14 @@ Various progs of mine:
   * `snippets`: useful code fragments,
   * `student`: my old student projects,
   * `unsorted`: unsorted projects.
+
+## Navigation
+
+This repository is intentionally broad and historical. For a more detailed map:
+
+* [Repository map](docs/REPOSITORY_MAP.md)
+* [Project catalog](docs/PROJECT_CATALOG.md)
+* [AI navigation guide](docs/AI_NAVIGATION.md)
+* [Reorganization notes](docs/REORGANIZATION_NOTES.md)
+
+AI coding agents should also read [AGENTS.md](AGENTS.md) before making changes.
