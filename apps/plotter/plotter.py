@@ -96,8 +96,6 @@ class Plot2DWidget(QWidget):
 
     def paintEvent(self, event):
         # print "paintevent"
-        painter = QPainter(self)
-
         # boite
         self.rect = QRect(self.margin, self.margin, self.width(
         ) - 2 * self.margin, self.height() - 2 * self.margin)
@@ -105,6 +103,8 @@ class Plot2DWidget(QWidget):
 
         if not rect.isValid():
             return
+
+        painter = QPainter(self)
 
         # dessine la boite
         painter.drawRect(rect)
@@ -132,7 +132,7 @@ class Plot2DWidget(QWidget):
             y1 = rect.bottom()
             x2 = x1
             y2 = rect.top()
-            line = QLine(x1, y1, x2, y2)
+            line = QLine(self._to_pixel(x1), y1, self._to_pixel(x2), y2)
 
             painter.drawLine(line)
             x += bdXf
@@ -144,7 +144,7 @@ class Plot2DWidget(QWidget):
             y1 = rect.bottom() - (y - self.ymin)/(self.ymax - self.ymin) * rect.height()
             x2 = rect.right()
             y2 = y1
-            line = QLine(x1, y1, x2, y2)
+            line = QLine(x1, self._to_pixel(y1), x2, self._to_pixel(y2))
 
             painter.drawLine(line)
             y += bdYf
@@ -170,7 +170,10 @@ class Plot2DWidget(QWidget):
     def ax2win(self, ax, ay):
         wx = self.rect.left() + (ax - self.xmin)/(self.xmax - self.xmin) * self.rect.width()
         wy = self.rect.bottom() - (ay - self.ymin)/(self.ymax - self.ymin) * self.rect.height()
-        return (wx, wy)
+        return (self._to_pixel(wx), self._to_pixel(wy))
+
+    def _to_pixel(self, value):
+        return int(round(value))
 
     def win2ax(self, wx, wy):
         ax = self.xmin + (wx - self.rect.left()) *  (self.xmax - self.xmin) / self.rect.width()
