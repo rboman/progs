@@ -19,21 +19,22 @@
 
 import sys
 import math
-from dataclasses import dataclass
 
 from PyQt5.QtCore import QPoint, QRect, QLine, Qt
-from PyQt5.QtGui import QPainter, QPen, QPolygon
+from PyQt5.QtGui import QPainter, QPen, QPolygon, QColor
 from PyQt5.QtWidgets import QApplication, QWidget
 
-
-def fct(x):
-    return math.sin(2 * x) + math.cos(4 * x)
+from core import fct, Point, Curve
 
 
 class Plot2DWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.margin = 20
+        # Marges asymétriques pour laisser de la place aux labels d'axes
+        self.margin_left = 60
+        self.margin_right = 30
+        self.margin_top = 30
+        self.margin_bottom = 40
 
         self.xmin = -6.1123
         self.xmax = 12.6
@@ -47,6 +48,14 @@ class Plot2DWidget(QWidget):
         self.starttx = 0
         self.startty = 0
 
+        # Configuration du style et des couleurs
+        self.color_bg = QColor("#1A1A1A")       # Fond du widget
+        self.color_frame = QColor("#444444")    # Bordure du cadre
+        self.color_grid = QColor("#555555")     # Lignes de la grille (plus clair pour visibilité)
+        self.color_labels = QColor("#AAAAAA")   # Couleur des labels d'axes
+        self.color_curve = QColor("#00CECB")    # Couleur de la courbe
+        self.curve_width = 3                    # Épaisseur du tracé (pixels)
+
         self.__setupGUI()
 
     def add(self, curve):
@@ -59,13 +68,13 @@ class Plot2DWidget(QWidget):
 
     def computegrid(self, xmin, xmax, gridX):
         # find best step
-        dx = xmax - xmin  # print "dX=", dx
-        dgX = dx/gridX  # print "dgX=", dgX      # wanted dX
+        dx = xmax - xmin
+        dgX = dx/gridX
 
         # step in [0,10]
-        expo = math.floor(math.log(dgX, 10))  # print "expo=", expo
-        factor = math.pow(10.0, expo)  # print "factor=", factor
-        dgX3 = dgX/factor  # print "dgX3=", dgX3
+        expo = math.floor(math.log(dgX, 10))
+        factor = math.pow(10.0, expo)
+        dgX3 = dgX/factor
 
         # best integer increment
         if dgX3 < 1.5:
@@ -79,15 +88,9 @@ class Plot2DWidget(QWidget):
 
         bdXf = bdXi * factor
 
-        # print "bdXi=", bdXi
-        # print "bdXf=", bdXf
-        # print "expo=", expo
-
         # find first grid pos.
         xminf = xmin/factor
         xmini = math.floor(xminf)
-        # print "xminf=", xminf
-        # print "xmini=", xmini
 
         while 1:
             if xmini % bdXi == 0 and xmini >= xminf:
@@ -95,15 +98,17 @@ class Plot2DWidget(QWidget):
             xmini += 1
         xminf = xmini * factor
 
-        # print "xminf=", xminf
-        # print "xmini=", xmini
         return (xminf, bdXf)
 
     def paintEvent(self, event):
         # print "paintevent"
         # boite
-        self.plot_rect = QRect(self.margin, self.margin, self.width(
-        ) - 2 * self.margin, self.height() - 2 * self.margin)
+        self.plot_rect = QRect(
+            self.margin_left,
+            self.margin_top,
+            self.width() - self.margin_left - self.margin_right,
+            self.height() - self.margin_top - self.margin_bottom
+        )
         rect = self.plot_rect
 
         if not rect.isValid():
@@ -111,6 +116,8 @@ class Plot2DWidget(QWidget):
 
         painter = QPainter(self)
         try:
+            painter.setRenderHint(QPainter.Antialiasing, True)
+            painter.fillRect(self.rect(), self.color_bg)
             self._draw_frame(painter, rect)
             self._draw_grid(painter, rect)
             self._draw_curves(painter)
@@ -119,6 +126,8 @@ class Plot2DWidget(QWidget):
 
     def _draw_frame(self, painter, rect):
         # dessine la boite
+        pen = QPen(self.color_frame, 1, Qt.SolidLine)
+        painter.setPen(pen)
         painter.drawRect(rect)
         painter.setClipRect(rect)
 
@@ -127,16 +136,10 @@ class Plot2DWidget(QWidget):
         (xminf, bdXf) = self.computegrid(self.xmin, self.xmax, self.gridX)
         (yminf, bdYf) = self.computegrid(self.ymin, self.ymax, self.gridY)
 
-        if 0:  # debug grid
-            print("self.xmin,xmax =", self.xmin, self.xmax)
-            print("self.ymin,ymax =", self.ymin, self.ymax)
-            print("xminf =", xminf, yminf)
-            print("bdXf =", bdXf, bdYf)
-
-        pen = QPen()
-        pen.setColor(Qt.black)
-        pen.setStyle(Qt.DashLine)
-        painter.setPen(pen)
+        # Configuration de la police pour les labels
+        font = painter.font()
+        font.setPointSize(9)
+        painter.setFont(font)
 
         # axes x
         x = xminf
@@ -145,9 +148,19 @@ class Plot2DWidget(QWidget):
             y1 = rect.bottom()
             x2 = x1
             y2 = rect.top()
-            line = QLine(self._to_pixel(x1), y1, self._to_pixel(x2), y2)
 
+            # Dessiner la ligne de grille
+            pen = QPen(self.color_grid, 1, Qt.DashLine)
+            painter.setPen(pen)
+            line = QLine(self._to_pixel(x1), y1, self._to_pixel(x2), y2)
             painter.drawLine(line)
+
+            # Dessiner le label numérique de l'axe x
+            label_pen = QPen(self.color_labels, 1, Qt.SolidLine)
+            painter.setPen(label_pen)
+            text = f"{x:.4g}"
+            painter.drawText(int(round(x1 - 50)), rect.bottom() + 5, 100, 20, Qt.AlignHCenter | Qt.AlignTop, text)
+
             x += bdXf
 
         # axes y
@@ -157,9 +170,19 @@ class Plot2DWidget(QWidget):
             y1 = rect.bottom() - (y - self.ymin)/(self.ymax - self.ymin) * rect.height()
             x2 = rect.right()
             y2 = y1
-            line = QLine(x1, self._to_pixel(y1), x2, self._to_pixel(y2))
 
+            # Dessiner la ligne de grille
+            pen = QPen(self.color_grid, 1, Qt.DashLine)
+            painter.setPen(pen)
+            line = QLine(x1, self._to_pixel(y1), x2, self._to_pixel(y2))
             painter.drawLine(line)
+
+            # Dessiner le label numérique de l'axe y
+            label_pen = QPen(self.color_labels, 1, Qt.SolidLine)
+            painter.setPen(label_pen)
+            text = f"{y:.4g}"
+            painter.drawText(rect.left() - 55, int(round(y1 - 10)), 50, 20, Qt.AlignRight | Qt.AlignVCenter, text)
+
             y += bdYf
 
     def _draw_curves(self, painter):
@@ -175,9 +198,9 @@ class Plot2DWidget(QWidget):
                 i += 1
 
             pen = QPen()
-            pen.setColor(Qt.blue)
+            pen.setColor(self.color_curve)
             # pen.setStyle(Qt.DashLine)
-            pen.setWidth(2)
+            pen.setWidth(self.curve_width)
             painter.setPen(pen)
             painter.drawPolyline(poly)
 
@@ -242,35 +265,7 @@ class Plot2DWidget(QWidget):
             self.update()
 
 
-@dataclass
-class Point:
-    x: float
-    y: float
 
-    def __str__(self):
-        return "(%f,%f)" % (self.x, self.y)
-
-
-class Curve:
-    def __init__(self):
-        self.pts = []
-
-    def fill(self, f, rng, n):
-        x = float(rng[0])
-        dx = (float(rng[1]) - float(rng[0])) / n
-        for i in range(n):
-            self.pts.append(Point(x, f(x)))
-            x += dx
-
-    def __str__(self):
-        s = ""
-        for p in self.pts:
-            s += str(p) + " "
-        return s
-
-    def __iter__(self):
-        for p in self.pts:
-            yield p
 
 
 if __name__ == "__main__":
