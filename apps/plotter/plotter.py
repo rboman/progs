@@ -18,10 +18,12 @@
 # Plot2DWidget: tracé de fonctions
 
 import sys
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
 import math
+from dataclasses import dataclass
+
+from PyQt5.QtCore import QPoint, QRect, QLine, Qt
+from PyQt5.QtGui import QPainter, QPen, QPolygon
+from PyQt5.QtWidgets import QApplication, QWidget
 
 
 def fct(x):
@@ -30,7 +32,7 @@ def fct(x):
 
 class Plot2DWidget(QWidget):
     def __init__(self):
-        super(Plot2DWidget, self).__init__()
+        super().__init__()
         self.margin = 20
 
         self.xmin = -6.1123
@@ -41,6 +43,9 @@ class Plot2DWidget(QWidget):
         self.gridX = 10
         self.gridY = 5
         self.curves = []
+        self.plot_rect = QRect()
+        self.starttx = 0
+        self.startty = 0
 
         self.__setupGUI()
 
@@ -97,19 +102,27 @@ class Plot2DWidget(QWidget):
     def paintEvent(self, event):
         # print "paintevent"
         # boite
-        self.rect = QRect(self.margin, self.margin, self.width(
+        self.plot_rect = QRect(self.margin, self.margin, self.width(
         ) - 2 * self.margin, self.height() - 2 * self.margin)
-        rect = self.rect
+        rect = self.plot_rect
 
         if not rect.isValid():
             return
 
         painter = QPainter(self)
+        try:
+            self._draw_frame(painter, rect)
+            self._draw_grid(painter, rect)
+            self._draw_curves(painter)
+        finally:
+            painter.end()
 
+    def _draw_frame(self, painter, rect):
         # dessine la boite
         painter.drawRect(rect)
         painter.setClipRect(rect)
 
+    def _draw_grid(self, painter, rect):
         # axes
         (xminf, bdXf) = self.computegrid(self.xmin, self.xmax, self.gridX)
         (yminf, bdYf) = self.computegrid(self.ymin, self.ymax, self.gridY)
@@ -149,6 +162,7 @@ class Plot2DWidget(QWidget):
             painter.drawLine(line)
             y += bdYf
 
+    def _draw_curves(self, painter):
         # dessine les courbes
 
         for c in self.curves:
@@ -168,16 +182,16 @@ class Plot2DWidget(QWidget):
             painter.drawPolyline(poly)
 
     def ax2win(self, ax, ay):
-        wx = self.rect.left() + (ax - self.xmin)/(self.xmax - self.xmin) * self.rect.width()
-        wy = self.rect.bottom() - (ay - self.ymin)/(self.ymax - self.ymin) * self.rect.height()
+        wx = self.plot_rect.left() + (ax - self.xmin)/(self.xmax - self.xmin) * self.plot_rect.width()
+        wy = self.plot_rect.bottom() - (ay - self.ymin)/(self.ymax - self.ymin) * self.plot_rect.height()
         return (self._to_pixel(wx), self._to_pixel(wy))
 
     def _to_pixel(self, value):
         return int(round(value))
 
     def win2ax(self, wx, wy):
-        ax = self.xmin + (wx - self.rect.left()) *  (self.xmax - self.xmin) / self.rect.width()
-        ay = self.ymin - (wy - self.rect.bottom()) * (self.ymax - self.ymin) / self.rect.height()
+        ax = self.xmin + (wx - self.plot_rect.left()) *  (self.xmax - self.xmin) / self.plot_rect.width()
+        ay = self.ymin - (wy - self.plot_rect.bottom()) * (self.ymax - self.ymin) / self.plot_rect.height()
         return (ax, ay)
 
     def mousePressEvent(self, event):
@@ -228,10 +242,10 @@ class Plot2DWidget(QWidget):
             self.update()
 
 
+@dataclass
 class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    x: float
+    y: float
 
     def __str__(self):
         return "(%f,%f)" % (self.x, self.y)
@@ -264,9 +278,8 @@ if __name__ == "__main__":
     c = Curve()
     c.fill(fct, (-1.5, 10), 150)
 
-    if 1:
-        app = QApplication(sys.argv)
-        win = Plot2DWidget()
-        win.add(c)
-        win.show()
-        app.exec_()
+    app = QApplication(sys.argv)
+    win = Plot2DWidget()
+    win.add(c)
+    win.show()
+    app.exec_()
