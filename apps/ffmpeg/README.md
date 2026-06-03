@@ -25,3 +25,12 @@ This program uses `ffmpeg`.
   * resize preview window
   * download ffmpeg if not found
   * clear settings
+
+---
+
+Install from another PC with pipx:
+
+```
+pipx install "git+https://github.com/rboman/progs.git#egg=rb-ffmpeg&subdirectory=apps/ffmpeg"
+```
+

@@ -12,6 +12,7 @@ import platform
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from pathlib import Path
 
 def tryEXE(exe):
     try:
@@ -59,7 +60,10 @@ if __name__ == "__main__":
                 raise Exception("'%s' does not work!" % exe)
 
     # run cmd
-    cmd = [exe, 'widget.ui', '-o', 'ui_widget.py']
+    from pathlib import Path
+
+    here = Path(__file__).resolve().parent
+    cmd = [exe, str(here / "widget.ui"), "-o", str(here / "ui_widget.py")]
     print("=> running", ' '.join(cmd))
     iop = subprocess.call(cmd)
     print('iop =', iop)

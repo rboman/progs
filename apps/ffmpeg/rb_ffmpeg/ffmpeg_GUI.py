@@ -37,7 +37,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from ui_widget import Ui_Form
+from .ui_widget import Ui_Form
 
 # note: "old" ffmpeg cmd line usage
 #   ffmpeg -y -r 10 -i anim%4d.png -vf fps=25 -c:v libx264 -crf 18 -pix_fmt yuv420p video.mp4
