@@ -18,4 +18,19 @@ sudo apt install gnuplot
 python3 tra2py.py
 ```
 
+with explicit options:
+```
+python3 tra2py.py PLAFOS4 --name ecrou --x 1 --y 2 -o output.txt
+```
+
+headless mode (no plot window):
+```
+python3 tra2py.py PLAFOS4 --x 1 --y 2 --no-plot
+```
+
+help:
+```
+python3 tra2py.py --help
+```
+
 ![Screenshot](screenshot.png)
