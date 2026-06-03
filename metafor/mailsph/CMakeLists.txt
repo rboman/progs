@@ -1,23 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.16)
-IF(POLICY CMP0020)
-    CMAKE_POLICY(SET CMP0020 NEW)   # Automatically link Qt executables to qtmain target on Windows. (OLD=NO)
-ENDIF()
-IF(POLICY CMP0025)
-  CMAKE_POLICY(SET CMP0025 NEW)     # Compiler id for Apple Clang is now AppleClang.
-ENDIF()
-IF(POLICY CMP0053)
-    CMAKE_POLICY(SET CMP0053 NEW)   # Simplify variable reference and escape sequence evaluation
-ENDIF()
+cmake_minimum_required(VERSION 3.16)
 
-PROJECT(MailSph)
+project(MailSph LANGUAGES CXX)
 
-INCLUDE(CMakeToolsHelpers OPTIONAL)  # integration VSCode + CMake
+include(CMakeToolsHelpers OPTIONAL)  # integration VSCode + CMake
 
-# -- C++11
-SET(CMAKE_CXX_STANDARD 11)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-FIND_PACKAGE(VTK 9.3 REQUIRED COMPONENTS
+set(VTK_COMPONENTS
     CommonCore
     CommonDataModel
     CommonExecutionModel
@@ -35,14 +26,17 @@ FIND_PACKAGE(VTK 9.3 REQUIRED COMPONENTS
     RenderingOpenGL2
 )
 
-IF(MSVC)
-    ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_DEPRECATE)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")  # parallel build with MSVC
-ENDIF()
+find_package(VTK 9.3 REQUIRED COMPONENTS ${VTK_COMPONENTS})
 
-FILE(GLOB SRCS *.h *.cpp)
-ADD_EXECUTABLE(mailsph MACOSX_BUNDLE ${SRCS})
-TARGET_LINK_LIBRARIES(mailsph PRIVATE ${VTK_LIBRARIES})
+file(GLOB SRCS CONFIGURE_DEPENDS *.h *.cpp)
+
+add_executable(mailsph MACOSX_BUNDLE ${SRCS})
+target_link_libraries(mailsph PRIVATE ${VTK_LIBRARIES})
+
+if(MSVC)
+    target_compile_definitions(mailsph PRIVATE _CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_DEPRECATE)
+    target_compile_options(mailsph PRIVATE /MP)
+endif()
 
 vtk_module_autoinit(
     TARGETS mailsph
