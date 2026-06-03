@@ -28,9 +28,12 @@ This program uses `ffmpeg`.
 
 ---
 
-Install from another PC with pipx:
+## Install from another PC with pipx: (windows)
 
 ```
+py -m pip install --user pipx
+py -m pipx ensurepath
 pipx install "git+https://github.com/rboman/progs.git#egg=rb-ffmpeg&subdirectory=apps/ffmpeg"
+rb-ffmpeg
 ```
 
