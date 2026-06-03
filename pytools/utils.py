@@ -19,7 +19,6 @@ Miscellaneous utilities used by all the programs of 'progs'
 """
 
 
-
 # def parseargs():
 #     """
 #     parses command line arguments
@@ -42,6 +41,9 @@ Miscellaneous utilities used by all the programs of 'progs'
 #     return args
 
 
+from shutil import which
+
+
 def chDir(dirname):
     """Change current dir to dirname and display it to the terminal
     so that we can follow the current location on disk.
@@ -59,7 +61,7 @@ def isUnix():
 
 def sysName():
     import sysconfig
-    plat = sysconfig.get_platform() 
+    plat = sysconfig.get_platform()
     if 'win' in plat:
         return 'win'
     elif 'mingw' in plat:
@@ -70,11 +72,8 @@ def sysName():
         return plat
 
 
-def isInstalled(name):
-    """Check whether `name` is in the PATH.
-    """
-    from distutils.spawn import find_executable
-    return find_executable(name) is not None
+def isInstalled(program: str) -> bool:
+    return which(program) is not None
 
 
 def cls():

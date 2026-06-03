@@ -616,7 +616,7 @@ class RepoManager:
 # ██  ██  ██ ██   ██ ██ ██  ██ ██ 
 # ██      ██ ██   ██ ██ ██   ████ 
 
-if __name__ == "__main__":
+def main():
 
     # parse cmd-line arguments
     import argparse
@@ -668,6 +668,8 @@ if __name__ == "__main__":
     else:
         raise Exception("Unknown arg: {}".format(args.command))
 
+if __name__ == "__main__":
+    main()
 
 # Example of project data from GitLab:
 

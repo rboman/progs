@@ -5,3 +5,30 @@
 [tool.autopep8]
 max_line_length = 300
 ignore = ["E401"] # allow multiple imports on one line
+
+# added by ChatGPT to make the project installable and usable as a package
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rboman-progs"
+version = "0.1.0"
+description = "Personal command-line tools and scripts"
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+    "distro",
+    "chardet",
+]
+
+[tool.setuptools]
+packages = ["pytools", "progs_cli"]
+
+[project.scripts]
+rb-updateoffi = "progs_cli.updateoffi:main"
+rb-bck-git = "progs_cli.bck_git:main"
+rb-compile-lagamine = "progs_cli.compile_lagamine:main"
+rb-menus = "progs_cli.menus:main"
+

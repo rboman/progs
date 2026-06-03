@@ -52,3 +52,7 @@ test.png
 *.snm
 *.synctex.gz
 *.toc
+
+# pip
+
+*.egg-info/

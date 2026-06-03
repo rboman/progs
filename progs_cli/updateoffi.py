@@ -27,7 +27,7 @@ and runs the build procedure in parallel using incredibuild on Windows.
 Run using: "rb.py updateoffi.py"
 """
 
-import os
+import os, sys
 import shutil
 import platform
 import subprocess
@@ -237,7 +237,7 @@ def main(repos, opts):
             pu.chDir('..')
 
 
-if __name__ == "__main__":
+def main():
     
     # options (not finished yet!)
     opts = {
@@ -266,3 +266,7 @@ if __name__ == "__main__":
             'keygen', 'git@gitlab.uliege.be:am-dept/keygen.git'))
 
     main(repos, opts)
+
+
+if __name__ == "__main__":
+    main()
