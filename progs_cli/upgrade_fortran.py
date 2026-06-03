@@ -385,7 +385,7 @@ def pretty(files, keep):
         pretty_one(f, keep)
 
 
-if __name__ == "__main__":
+def main():
 
     # parse cmd-line arguments
     import argparse
@@ -411,3 +411,6 @@ if __name__ == "__main__":
         raise Exception("Unknown arg: {}".format(args.command))
 
     # main(sys.argv[1])
+
+if __name__ == "__main__":
+    main()

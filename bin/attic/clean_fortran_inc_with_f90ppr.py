@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
+# This script uses the "f90ppr" tool to reformat Fortran source files.
+# Contexte: nettoyage LAM3
+#
+# =>>> VOIR AUSSI SCRIPT "upgrade_fortran"
 
 # py f:\dev\progs\bin\clean_fortran.py ricks.f90
 

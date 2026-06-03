@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # Script de conversion FLAC vers MP3
 # Ce script parcourt un dossier spécifié (ou le dossier courant par défaut),
@@ -18,6 +19,7 @@ ffmpeg_path = r"C:\local\ffmpeg\bin\ffmpeg.exe"
 # Qualité MP3 (2 = haute qualité, ajustable entre 0 et 9)
 mp3_quality = 3
 
+
 def get_ffmpeg_command():
     # Vérifier si ffmpeg est disponible dans le PATH
     try:
@@ -31,6 +33,7 @@ def get_ffmpeg_command():
             print("Erreur : ffmpeg n'est pas disponible dans le PATH et n'a pas été trouvé à l'emplacement spécifié.")
             sys.exit(1)
 
+
 def get_unique_output_dir(base_dir):
     output_dir = os.path.join(base_dir, "mp3_files")
     counter = 1
@@ -39,6 +42,7 @@ def get_unique_output_dir(base_dir):
         counter += 1
     os.makedirs(output_dir)
     return output_dir
+
 
 def convert_file(flac_file, mp3_file, ffmpeg_command):
     # Commande FFmpeg
@@ -55,6 +59,7 @@ def convert_file(flac_file, mp3_file, ffmpeg_command):
         print(f"Terminé : {mp3_file}")
     except subprocess.CalledProcessError as e:
         print(f"Erreur lors de la conversion de {flac_file}: {e}")
+
 
 def convert_flac_to_mp3(input_dir, ffmpeg_command):
     # Vérifier si le dossier existe
@@ -81,7 +86,8 @@ def convert_flac_to_mp3(input_dir, ffmpeg_command):
 
     return len(tasks)
 
-if __name__ == "__main__":
+
+def main():
     if len(sys.argv) > 2:
         print("Utilisation : python script.py [<dossier_contenant_les_flac>]")
         sys.exit(1)
@@ -93,3 +99,7 @@ if __name__ == "__main__":
     end_time = time.time()
     elapsed_time = end_time - start_time
     print(f"Conversion terminée pour {total_files} fichiers FLAC en {elapsed_time:.2f} secondes.")
+
+
+if __name__ == "__main__":
+    main()

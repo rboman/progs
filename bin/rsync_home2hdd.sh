@@ -1,5 +1,5 @@
 #!/bin/bash
-# script de backup rsync home folder & Data
+# script de backup rsync home folder
 
 echo "***** BACKUP /home/boman => hdd"
 
@@ -14,13 +14,3 @@ rsync -avz \
 	--exclude=tmp/ \
 	  /home/boman/ \
 	  /media/boman/Home_Data/home_boman/
-
-# Data is on Dropbox now
-
-#echo
-#echo "***** BACKUP /hdd2/boman/Data => hdd"
-
-#rsync -avz \
-#      --delete --delete-excluded \
-#	  /hdd2/boman/Data/ \
-#	  /media/boman/Home_Data/Data/

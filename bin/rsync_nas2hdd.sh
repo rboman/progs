@@ -1,6 +1,6 @@
 #!/bin/bash
 # backup NAS => hdd (USB)
-# can be run from garfield
+# can be run from garfield/spirou
 
 
 HOST=rboman@metafor

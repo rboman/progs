@@ -37,7 +37,7 @@
 #       sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-plain-generic
 #   => does not work... (error: ! Paragraph ended before \align* was complete.)
 #
-#   SOLUTION USED TODAY: 
+#   SOLUTION USED TODAY:
 #      convert to html ("jupyter notebook" command) and then to pdf (print with chrome)
 
 import os
@@ -108,7 +108,7 @@ def py2pdf(file):
     return f'{file}.pdf'
 
 
-if __name__ == '__main__':
+def main():
 
     if len(sys.argv) == 1:
         print(f'usage: {sys.argv[0]} file1.[pdf|py] file2.[pdf|py] ...')
@@ -144,3 +144,7 @@ if __name__ == '__main__':
     # clean temporary files
     for f in tmpfiles:
         os.remove(f)
+
+
+if __name__ == "__main__":
+    main()
