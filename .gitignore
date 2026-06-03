@@ -53,6 +53,10 @@ test.png
 *.synctex.gz
 *.toc
 
-# pip
+# pip, pipx
 
 *.egg-info/
+
+
+# google auth
+token.pickle
