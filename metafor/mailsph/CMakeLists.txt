@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.16)
 IF(POLICY CMP0020)
     CMAKE_POLICY(SET CMP0020 NEW)   # Automatically link Qt executables to qtmain target on Windows. (OLD=NO)
 ENDIF()
@@ -17,16 +17,23 @@ INCLUDE(CMakeToolsHelpers OPTIONAL)  # integration VSCode + CMake
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-FIND_PACKAGE(VTK REQUIRED)
-vtk_module_config(VTK
-    vtkGUISupportQt   
-    vtkInteractionWidgets
-    vtkFiltersHybrid
-    vtkRenderingAnnotation
-    vtkIOExport
-    vtkIOXML
+FIND_PACKAGE(VTK 9.3 REQUIRED COMPONENTS
+    CommonCore
+    CommonDataModel
+    CommonExecutionModel
+    FiltersCore
+    FiltersExtraction
+    FiltersGeneral
+    FiltersHybrid
+    FiltersModeling
+    IOCore
+    IOXML
+    InteractionStyle
+    InteractionWidgets
+    RenderingAnnotation
+    RenderingCore
+    RenderingOpenGL2
 )
-INCLUDE(${VTK_USE_FILE})
 
 IF(MSVC)
     ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_DEPRECATE)
@@ -35,4 +42,9 @@ ENDIF()
 
 FILE(GLOB SRCS *.h *.cpp)
 ADD_EXECUTABLE(mailsph MACOSX_BUNDLE ${SRCS})
-TARGET_LINK_LIBRARIES(mailsph ${VTK_LIBRARIES})
+TARGET_LINK_LIBRARIES(mailsph PRIVATE ${VTK_LIBRARIES})
+
+vtk_module_autoinit(
+    TARGETS mailsph
+    MODULES ${VTK_LIBRARIES}
+)

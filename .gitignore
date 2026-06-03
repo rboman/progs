@@ -60,3 +60,6 @@ test.png
 
 # google auth
 token.pickle
+
+# crasses diverses
+*.zip

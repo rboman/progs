@@ -40,12 +40,13 @@ rb-convert_encoding2utf8 = "progs_cli.convert_encoding2utf8:main"
 rb-cp_dox = "progs_cli.cp_dox:main"
 rb-convert_code2pdf = "progs_cli.convert_code2pdf:main"
 rb-flac2mp3 = "progs_cli.flac2mp3:main"
-rb_pdfmerge = "progs_cli.pdfmerge:main"
+rb-pdfmerge = "progs_cli.pdfmerge:main"
 rb-pdf4x4split = "progs_cli.pdf4x4split:main"
 rb-mkhandout = "progs_cli.mkhandout:main"
 rb-rename_whatsapp_imgs = "progs_cli.rename_whatsapp_imgs:main"
 rb-starttime = "progs_cli.starttime:main"
 rb-upgrade_fortran = "progs_cli.upgrade_fortran:main"
+rb-build = "progs_cli.build:main"
 
 # To install the package in editable mode (for development), run:
 #   pipx uninstall rboman-progs ; pipx install -e .
