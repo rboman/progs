@@ -33,4 +33,25 @@ help:
 python3 tra2py.py --help
 ```
 
+## tests
+create a local virtual environment (inside this project):
+```
+cd /home/boman/dev/progs/apps/tra2py
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements-dev.txt
+```
+
+run tests manually:
+```
+source .venv/bin/activate
+pytest -q tests
+```
+
+or with the helper script (setup + tests):
+```
+./run_tests.sh
+```
+
 ![Screenshot](screenshot.png)

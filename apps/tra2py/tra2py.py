@@ -107,6 +107,8 @@ def tra2py(file_arg, fctname, rowX, rowY, outname="output.txt", do_plot=True):
             fctname,
         )
 
+    return outname
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
