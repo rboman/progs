@@ -31,4 +31,13 @@ rb-updateoffi = "progs_cli.updateoffi:main"
 rb-bck-git = "progs_cli.bck_git:main"
 rb-compile-lagamine = "progs_cli.compile_lagamine:main"
 rb-menus = "progs_cli.menus:main"
+rb-avi2mp4 = "progs_cli.avi2mp4:main"
+rb-calc = "progs_cli.calc:main"
+rb-cam2mp4 = "progs_cli.cam2mp4:main"
+rb-check_env = "progs_cli.check_env:main"
+rb-bck_rsync = "progs_cli.bck_rsync:main"
+rb-convert_encoding = "progs_cli.convert_encoding:main"
+rb-cp_dox = "progs_cli.cp_dox:main"
 
+# To install the package in editable mode (for development), run:
+#   pipx uninstall rboman-progs ; pipx install -e .

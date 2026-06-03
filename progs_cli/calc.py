@@ -16,7 +16,7 @@
 import sys, os
 import math
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) != 2:
         print(f'usage:\n\t{os.path.basename(sys.argv[0])} <math_expression>')
         sys.exit(1)
@@ -30,3 +30,7 @@ if __name__ == "__main__":
     mathok = {k: v for k, v in math.__dict__.items() if not k.startswith("__")}
     # évalue dans un environnement vaguement sécurisé
     print(eval(sys.argv[1], {"__builtins__": {}}, mathok))
+
+
+if __name__ == "__main__":
+    main()

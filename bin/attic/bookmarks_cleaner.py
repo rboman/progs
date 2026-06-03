@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 #
 # this script converts *.desktop links (gnome desktop) to *.url files (windows)
-#
+# 
+# Ce script n'est plus utile puisque je n'utilise plus de fichiers desktop dans ma dropbox.
+# j'utilise plutôt des fichiers HTML générés par l'extension "Create Shortcut" de Chrome, qui 
+# sont compatibles avec tous les systèmes (windows, linux, mac).
+# https://chromewebstore.google.com/detail/create-shortcut/ehmkjaagddnjkgghllbchghdehmgplpf?pli=1
+
 # examples:
 # bookmark_cleaner.py /hdd2/boman/Dropbox/
 #    simulation (nothing created/deleted) - counts bookmarks

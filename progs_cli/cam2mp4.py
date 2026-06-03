@@ -113,10 +113,8 @@ def convert(f, ffmpeg, use_nvenc):
     print("retcode =", retcode)
 
 
-# -------------------------
-# Main
-# -------------------------
-if __name__ == "__main__":
+
+def main():
     if len(sys.argv) == 1:
         print(f"usage:\n\t{sys.argv[0]} file1.avi file2.mp4 ...")
         sys.exit(1)
@@ -137,3 +135,6 @@ if __name__ == "__main__":
         for f in glob.glob(arg):
             print("processing", f)
             convert(f, ffmpeg, use_nvenc)
+
+if __name__ == "__main__":
+    main()

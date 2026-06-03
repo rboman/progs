@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
+# petit script pas très utile, gardé pour mes mémoire...
+#
+# Nettoie les noms de fichiers avi/sub/idx/asf/mpg/wmv/mp4/mkv dans le répertoire courant.
+# simple search/replace dans une série de fichiers
+#
 # usage: avi_name_cleaner.py [rename]
 #
 
@@ -32,12 +37,16 @@ def clean(rename=False):
                         print("'%s' => '%s'" % (file, newfile))
 
 
-if __name__ == "__main__":
+def main():
     rename = False
     for arg in sys.argv[1:]:
         if arg == "rename":
             rename = True
     clean(rename)
+
+
+if __name__ == "__main__":
+    main()
 
     print("\n[ENTER]")
     input()

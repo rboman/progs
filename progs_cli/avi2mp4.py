@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# TODO: find ffmpeg more automatically
+
+# usage: avi2mp4.py [file1.avi] [file2.avi] ...
+
+# This script converts .avi video files to .mp4 using ffmpeg with some default parameters.
+
+# TODO: find ffmpeg more automatically when not in PATH (windows)
+
+
 
 import sys, os, subprocess, glob
 
@@ -71,7 +78,7 @@ def convert(f):
     print("retcode =", retcode)
 
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) == 1:
         print('usage:\n\t%s [file1.avi] [file2.avi] ...' % sys.argv[0])
     else:
@@ -79,3 +86,8 @@ if __name__ == "__main__":
             for f in glob.glob(arg):
                 print('processing', f)
                 convert(f)
+
+if __name__ == "__main__":
+    main()
+
+    

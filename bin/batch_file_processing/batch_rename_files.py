@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# Renomme les fichiers .f90 et .inc du projet en minuscules.
 
 import os
 import fnmatch
-
 
 
 def all_files(root,
@@ -43,7 +43,7 @@ def main():
                        skips='*.git*;*build*'):
 
         targetname = os.path.join(os.path.dirname(f), os.path.basename(f).lower())
-        if(targetname != f):
+        if (targetname != f):
             print(f, targetname)
 
             os.rename(f, targetname)

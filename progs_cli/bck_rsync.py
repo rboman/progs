@@ -16,6 +16,8 @@ pars['folders'] = [ 'web',
                    'siemens/LicenseServer' ]
 
 
+# TODO: mettra ça dans les pyutils!
+
 def tar_folder(fname, tar_name):
     arcname = '%s.tar.bz2' % tar_name
     if os.path.isfile(arcname):
@@ -64,6 +66,8 @@ def main(pars):
         target = os.path.join(destdir, arcname)
         print('cp %s %s' % (arcname, target))
         shutil.copy2(arcname, target)
+
+    # TODO: Créer plutôt un répertoire avec la date et copier les archives à cet endroit.
 
 
 if __name__ == "__main__":

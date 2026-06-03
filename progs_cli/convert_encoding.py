@@ -4,6 +4,12 @@
 #
 # This script changes the encoding of the source files in the current
 # folder (and sub-folders) to UTF-8.
+#
+# It uses the "file" linux command to guess the encoding of each file.
+# It can also use the "chardet" python module, but it makes a lot of mistakes.
+#
+# TODO: Rendre plus flexible (supprimer le "if 1) et faire une option cmd-line 
+# pour choisir l'encodage de destination, ou pour ne pas convertir les fichiers).
 
 import sys
 import os

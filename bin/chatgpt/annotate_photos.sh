@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 #
+# Annotate photos with text extracted from their filenames.
+# Contexte: Génération des photos "best-of" des marches ADEPS 2025
+#
 # ChatGPT:
 #   """j ai une série d'images nommées "AAAA-MM-DD - Texte.jpg". 
 #   J'aimerais écrire "Texte (DD "Mois en lettres" AAAA)" 
