@@ -1,20 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#   Copyright 2017 Romain Boman
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
-
 # tra2py
 #    - extract 2 columns from semicolon-separated values
 #    - write the 2 columns in a file
@@ -24,68 +10,88 @@
 def tra2py(file, fctname, rowX, rowY):
     """ usage: tra2py('PLAFOS1', 'ecrou', 1, 3)"""
     import re
+    import shutil
+    import subprocess
 
-    withgplot = True
-    try:
-        import Gnuplot
-        import Gnuplot.funcutils
-        g = Gnuplot.Gnuplot(debug=1)
-        g.title('File ' + file + '.tra')
-        g('set data style lines')
-        g('set grid')
-        g('set xlabel \"X\"')
-        g('set ylabel \"Y\"')
-    except ImportError:
-        print("\n** WARNING: Gnuplot.py not available!\n")
-        withgplot = False
+    def open_tra_file(path):
+        # Old .TRA files may be ISO-8859-1 encoded.
+        for encoding in ("utf-8", "iso-8859-1"):
+            try:
+                handle = open(path, "r", encoding=encoding)
+                handle.readline()
+                handle.seek(0)
+                return handle
+            except UnicodeDecodeError:
+                handle.close()
+        raise UnicodeDecodeError("utf-8", b"", 0, 1, "unable to decode file")
 
-    myplot = []
+    def plot_with_gnuplot(data_file, title, xlabel, ylabel, curve_name):
+        gnuplot = shutil.which("gnuplot")
+        if not gnuplot:
+            print("\n** WARNING: gnuplot executable not found in PATH!\n")
+            return
+
+        # pause mouse close keeps the plot open in modern gnuplot terminals.
+        command = (
+            f"set title '{title}';"
+            "set grid;"
+            f"set xlabel '{xlabel}';"
+            f"set ylabel '{ylabel}';"
+            f"plot '{data_file}' using 1:2 with lines title '{curve_name}';"
+            "pause mouse close"
+        )
+        try:
+            subprocess.run([gnuplot, "-persist", "-e", command], check=True)
+        except subprocess.CalledProcessError:
+            print("\n** WARNING: gnuplot failed to display the curve.\n")
+
     outname = "output.txt"
 
-    input = open(file + ".TRA", "r")
-    output = open(outname, "w")
+    infile = open_tra_file(file + ".TRA")
+    outfile = open(outname, "w", encoding="utf-8")
 
     # skip 3 first lines
 
     for i in range(1, 4):
-        line = input.readline()
+        line = infile.readline()
 
     # read the names
 
     prog = re.compile("[^;]+")
 
-    line = input.readline()
+    line = infile.readline()
     names = prog.findall(line)
 
     # read the units
 
-    line = input.readline()
+    line = infile.readline()
     prog = re.compile("[^;]+")
     units = prog.findall(line)
 
     # reads the curves
 
-    line = input.readline()
+    line = infile.readline()
     while line:
         result = prog.findall(line)
         if result:
             x = result[rowX].replace(",", ".")
             y = result[rowY].replace(",", ".")
-            myplot.append([float(x), float(y)])
             out = '%s %s\n' % (x, y)
-            output.write(out)
-        line = input.readline()
+            outfile.write(out)
+        line = infile.readline()
 
-    input.close()
-    output.close()
+    infile.close()
+    outfile.close()
 
     print("output written to %s" % outname)
 
-    if withgplot:
-        try:
-            g.plot(myplot)
-        except:
-            input("\n**WARNING: gnuplot.exe should be in the PATH!\n")
+    plot_with_gnuplot(
+        outname,
+        'File ' + file + '.TRA',
+        names[rowX].strip() if rowX < len(names) else "X",
+        names[rowY].strip() if rowY < len(names) else "Y",
+        fctname,
+    )
 
     input('\n[ENTER]\n')  # otherwise gnuplot exits immediatly
 

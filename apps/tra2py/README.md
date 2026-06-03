@@ -5,13 +5,17 @@
   - display the resulting curve with Gnuplot (if available)
 
 ## install
-install gnuplot for python
+install gnuplot executable (no python gnuplot binding required)
  - [gnuplot](http://www.gnuplot.info/)
- - [gnuplot-py](https://pypi.python.org/pypi/gnuplot-py)
+
+on Debian/Ubuntu:
+```
+sudo apt install gnuplot
+```
 
 ## run
 ```
-./tra2py.py
+python3 tra2py.py
 ```
 
 ![Screenshot](screenshot.png)
