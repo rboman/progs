@@ -136,7 +136,7 @@ def buildProject(projectname):
         subprocess.call(cmd)
 
 
-def main(repos, opts):
+def update_offi(repos, opts):
 
     # checkout/update everything
     build_mtf_required = False
@@ -265,7 +265,7 @@ def main():
         repos.append(vrs.GITRepo(
             'keygen', 'git@gitlab.uliege.be:am-dept/keygen.git'))
 
-    main(repos, opts)
+    update_offi(repos, opts)
 
 
 if __name__ == "__main__":
