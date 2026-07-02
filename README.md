@@ -28,3 +28,46 @@ This repository is intentionally broad and historical. For a more detailed map:
 * [Reorganization notes](docs/REORGANIZATION_NOTES.md)
 
 AI coding agents should also read [AGENTS.md](AGENTS.md) before making changes.
+
+## Memo rapide: utiliser ces scripts avec pipx
+
+Si vous ne connaissez pas `pipx`, retenez ceci: `pipx` installe les outils Python CLI dans un environnement isole, tout en rendant les commandes disponibles dans votre shell.
+
+### 1) Installer pipx (une seule fois)
+
+```bash
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
+```
+
+Fermez/reouvrez le terminal (ou rechargez votre shell), puis verifiez:
+
+```bash
+pipx --version
+```
+
+### 2) Installer les scripts de ce repo
+
+Depuis la racine de ce repo:
+
+```bash
+cd /chemin/vers/progs
+pipx install -e .
+```
+
+Le `-e` (editable) est pratique ici: si vous modifiez le code des scripts, les commandes `rb-*` utilisent directement votre copie locale.
+
+### 3) Utiliser une commande (exemple)
+
+```bash
+rb-updateoffi
+```
+
+### 4) Mettre a jour apres un `git pull`
+
+En general, rien a faire. Si besoin de reinitialiser l'environnement pipx:
+
+```bash
+pipx uninstall rboman-progs
+pipx install -e .
+```
