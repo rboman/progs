@@ -28,6 +28,7 @@ Run using: "rb.py updateoffi.py"
 """
 
 import os, sys
+import argparse
 import shutil
 import platform
 import subprocess
@@ -237,8 +238,19 @@ def update_offi(repos, opts):
             pu.chDir('..')
 
 
-def main():
-    
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(
+        description="Update and build Metafor and related repositories.")
+    parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="show each git command before it is executed")
+    return parser.parse_args(argv)
+
+
+def main(argv=None):
+    args = parse_args(argv)
+
     # options (not finished yet!)
     opts = {
         'build_type': {
@@ -246,24 +258,31 @@ def main():
             'value': 'full',
             'values': ['full', 'student']
         },
+        'verbose': args.verbose,
     }
 
     # fills the repository list
     repos = []
     repos.append(vrs.GITRepo(
-        'MetaforSetup', 'git@gitlab.uliege.be:am-dept/MN2L/MetaforSetup.git'))
+        'MetaforSetup', 'git@gitlab.uliege.be:am-dept/MN2L/MetaforSetup.git',
+        verbose=args.verbose))
     repos.append(vrs.GITRepo(
-        'linuxbin', 'git@gitlab.uliege.be:am-dept/linuxbin.git'))
+        'linuxbin', 'git@gitlab.uliege.be:am-dept/linuxbin.git',
+        verbose=args.verbose))
     repos.append(vrs.GITRepo(
-        'oo_meta', 'git@gitlab.uliege.be:am-dept/MN2L/oo_meta.git'))
+        'oo_meta', 'git@gitlab.uliege.be:am-dept/MN2L/oo_meta.git',
+        verbose=args.verbose))
 
     if opts['build_type']['value'] == 'full':
         repos.append(vrs.GITRepo(
-            'oo_nda', 'git@gitlab.uliege.be:am-dept/MN2L/oo_nda.git'))
+            'oo_nda', 'git@gitlab.uliege.be:am-dept/MN2L/oo_nda.git',
+            verbose=args.verbose))
         repos.append(vrs.GITRepo(
-            'parasolid', 'git@gitlab.uliege.be:am-dept/MN2L/parasolid.git'))
+            'parasolid', 'git@gitlab.uliege.be:am-dept/MN2L/parasolid.git',
+            verbose=args.verbose))
         repos.append(vrs.GITRepo(
-            'keygen', 'git@gitlab.uliege.be:am-dept/keygen.git'))
+            'keygen', 'git@gitlab.uliege.be:am-dept/keygen.git',
+            verbose=args.verbose))
 
     update_offi(repos, opts)
 
