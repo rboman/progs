@@ -25,11 +25,33 @@ cmake -A x64 ..
 cmake --build . --config Release
 ctest -C Release
 ```
+
+On Windows, recent Python installations from `pymanager` may not provide
+`python314_d.lib` or `python314_d.dll`. To debug the C++ code called from a
+release Python interpreter, use the `PyRelDebug` configuration:
+
+```
+cmake -S . -B build -A x64
+cmake --build build --config PyRelDebug
+ctest --test-dir build -C PyRelDebug --output-on-failure
+```
+
+`PyRelDebug` builds the C++ code with debug symbols and no optimization, but
+keeps the release MSVC runtime and links against the release Python library.
+The regular `Debug` configuration is only useful with a matching debug build of
+Python.
+
 You may also double click on `build.py` and cross your fingers.
 
 ## Run a test
 ```
 run.py ehd\tests\test1.py
+```
+
+To run a test against a specific CMake configuration:
+
+```
+python run.py --config PyRelDebug ehd\tests\test1.py
 ```
 
 ## Notes/TODO

@@ -5,6 +5,18 @@
 if __name__ == "__main__":
     import sys
     import os
+    import argparse
+
+    # parse args
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-v", "--verb", help="increase output verbosity", action="count", default=0)
+    parser.add_argument("--nogui", help="disable any graphical output",
+                        action="store_true")
+    parser.add_argument("--config", help="CMake build configuration to use")
+    parser.add_argument('file', nargs='*', help='python files')
+    args = parser.parse_args()
+
     # adds "." to the pythonpath
     thisdir = os.path.split(os.path.abspath(__file__))[0]
     thisdir = os.path.normcase(thisdir)
@@ -12,7 +24,10 @@ if __name__ == "__main__":
 
     # add binary dir to PYTHONPATH
     pyexe = os.path.basename(sys.executable)
-    if pyexe.find('_d.exe') >= 0:
+    if args.config:
+        sys.path.append(os.path.join(thisdir, 'build', 'bin', args.config))
+        print('using %s build' % args.config)
+    elif pyexe.find('_d.exe') >= 0:
         sys.path.append(os.path.join(thisdir, 'build',
                                      'bin', 'Debug'))  # win/debug
         print('using Debug build')
@@ -21,16 +36,6 @@ if __name__ == "__main__":
                                      'bin', 'Release'))  # win/release
     else:
         sys.path.append(os.path.join(thisdir, 'build', 'bin'))  # linux
-
-    # parse args
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-v", "--verb", help="increase output verbosity", action="count", default=0)
-    parser.add_argument("--nogui", help="disable any graphical output",
-                        action="store_true")
-    parser.add_argument('file', nargs='*', help='python files')
-    args = parser.parse_args()
 
     # run all tests sequentially
     for testname in args.file:
