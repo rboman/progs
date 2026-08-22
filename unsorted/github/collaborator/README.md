@@ -1,5 +1,7 @@
 # GitHub Collaborations Report
 
+➡️ [github-repositories.html](https://raw.githack.com/rboman/progs/master/unsorted/github/collaborator/github-repositories.html)
+
 Petit outil Python autonome qui génère une page HTML statique répertoriant les
 repositories externes auxquels le compte GitHub authentifié collabore.
 
