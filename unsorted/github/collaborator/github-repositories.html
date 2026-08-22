@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub collaborations — rboman</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#f6f8fa; --panel:#fff; --text:#1f2328; --muted:#656d76; --border:#d0d7de; --accent:#0969da; --button:#f6f8fa; }
+    @media (prefers-color-scheme: dark) { :root { --bg:#0d1117; --panel:#161b22; --text:#e6edf3; --muted:#8d96a0; --border:#30363d; --accent:#58a6ff; --button:#21262d; } }
+    * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(1400px, calc(100% - 32px)); margin:36px auto; } h1 { margin:0; font-size:26px; } .summary { color:var(--muted); margin:4px 0 22px; }
+    .controls { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:16px; } input { flex:1 1 260px; min-width:0; padding:8px 12px; color:var(--text); background:var(--panel); border:1px solid var(--border); border-radius:6px; }
+    .filters { display:flex; flex-wrap:wrap; gap:6px; } button { padding:7px 11px; color:var(--text); background:var(--button); border:1px solid var(--border); border-radius:6px; cursor:pointer; } button.active { color:white; background:#1f883d; border-color:#1f883d; }
+    .table-wrap { overflow-x:auto; background:var(--panel); border:1px solid var(--border); border-radius:6px; } table { width:100%; border-collapse:collapse; } th,td { padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--border); } th { white-space:nowrap; background:var(--button); } tr:last-child td { border-bottom:0; }
+    a { color:var(--accent); font-weight:600; text-decoration:none; } a:hover { text-decoration:underline; } small { display:block; margin-top:2px; min-width:260px; color:var(--muted); font-weight:400; } .badge,.flag { display:inline-block; padding:1px 7px; border:1px solid var(--border); border-radius:12px; white-space:nowrap; } .flag { margin:0 3px 3px 0; }
+    .empty { padding:28px; text-align:center; color:var(--muted); } [hidden] { display:none !important; }
+    @media (max-width:700px) { main { width:calc(100% - 20px); margin:20px auto; } th,td { padding:8px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>External GitHub collaborations</h1>
+    <p class="summary">Authenticated as <strong>rboman</strong> · <span id="visible-count">15</span> of 15 repositories</p>
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search repositories…" aria-label="Search repositories">
+      <div class="filters" id="permission-filters" aria-label="Permission filter">
+        <button type="button" data-value="all" class="active">all</button><button type="button" data-value="read" class="">read</button><button type="button" data-value="triage" class="">triage</button><button type="button" data-value="write" class="">write</button><button type="button" data-value="maintain" class="">maintain</button><button type="button" data-value="admin" class="">admin</button>
+      </div>
+      <div class="filters" id="visibility-filters" aria-label="Visibility filter">
+        <button type="button" data-value="all" class="active">all</button><button type="button" data-value="public" class="">public</button><button type="button" data-value="private" class="">private</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Repository</th><th>Owner</th><th>Language</th><th>Permission</th><th>Visibility</th><th>Flags</th><th>Updated</th></tr></thead>
+        <tbody id="repositories">
+        <tr data-search="community/global-campus-teachers community this repository is a place to communicate with teachers signed up with github education benefits.  read private 2026-08-21t00:10:21z" data-permission="read" data-visibility="private">
+          <td><a href="https://github.com/community/Global-Campus-Teachers" rel="noopener noreferrer">community/Global-Campus-Teachers</a><small>This repository is a place to communicate with teachers signed up with GitHub Education benefits.</small></td>
+          <td>community</td>
+          <td>—</td>
+          <td><span class="badge permission-read">read</span></td>
+          <td>private</td>
+          <td>—</td>
+          <td><time datetime="2026-08-21T00:10:21Z">2026-08-21 00:10 UTC</time></td>
+        </tr>
+        <tr data-search="dorianbogucki/pfem3d dorianbogucki implementation of the particle finite element method in c++ for 2d/3d flows c++ write private fork 2026-08-06t09:26:28z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/dorianbogucki/PFEM3D" rel="noopener noreferrer">dorianbogucki/PFEM3D</a><small>Implementation of the Particle Finite Element Method in C++ for 2D/3D flows</small></td>
+          <td>dorianbogucki</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td><span class="flag">fork</span></td>
+          <td><time datetime="2026-08-06T09:26:28Z">2026-08-06 09:26 UTC</time></td>
+        </tr>
+        <tr data-search="m-lacroix/pfem3d m-lacroix implementation of the particle finite element method in c++ for 2d/3d flows c++ write private fork 2026-08-05t13:52:02z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/m-lacroix/PFEM3D" rel="noopener noreferrer">m-lacroix/PFEM3D</a><small>Implementation of the Particle Finite Element Method in C++ for 2D/3D flows</small></td>
+          <td>m-lacroix</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td><span class="flag">fork</span></td>
+          <td><time datetime="2026-08-05T13:52:02Z">2026-08-05 13:52 UTC</time></td>
+        </tr>
+        <tr data-search="imperators79/pfem3d imperators79 implementation of the particle finite element method in c++ for 2d/3d flows c++ write private 2026-08-05t13:51:26z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/ImperatorS79/PFEM3D" rel="noopener noreferrer">ImperatorS79/PFEM3D</a><small>Implementation of the Particle Finite Element Method in C++ for 2D/3D flows</small></td>
+          <td>ImperatorS79</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td>—</td>
+          <td><time datetime="2026-08-05T13:51:26Z">2026-08-05 13:51 UTC</time></td>
+        </tr>
+        <tr data-search="ramechh/pfem3d ramechh implementation of the particle finite element method in c++ for 2d/3d flows c++ write private fork 2026-06-06t06:50:32z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/Ramechh/PFEM3D" rel="noopener noreferrer">Ramechh/PFEM3D</a><small>Implementation of the Particle Finite Element Method in C++ for 2D/3D flows</small></td>
+          <td>Ramechh</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td><span class="flag">fork</span></td>
+          <td><time datetime="2026-06-06T06:50:32Z">2026-06-06 06:50 UTC</time></td>
+        </tr>
+        <tr data-search="migueldlm/bfex migueldlm addon for blender to prepare files for finite elements analysis in fossils python write public 2026-05-24t20:14:10z" data-permission="write" data-visibility="public">
+          <td><a href="https://github.com/MiguelDLM/BFEX" rel="noopener noreferrer">MiguelDLM/BFEX</a><small>Addon for Blender to prepare files for Finite Elements Analysis in Fossils</small></td>
+          <td>MiguelDLM</td>
+          <td>Python</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>public</td>
+          <td>—</td>
+          <td><time datetime="2026-05-24T20:14:10Z">2026-05-24 20:14 UTC</time></td>
+        </tr>
+        <tr data-search="catalin608/par2fem catalin608 no description c++ write private fork 2026-04-20t14:24:57z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/catalin608/Par2FEM" rel="noopener noreferrer">catalin608/Par2FEM</a><small>No description</small></td>
+          <td>catalin608</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td><span class="flag">fork</span></td>
+          <td><time datetime="2026-04-20T14:24:57Z">2026-04-20 14:24 UTC</time></td>
+        </tr>
+        <tr data-search="wbchy/pfem3d wbchy implementation of the particle finite element method in c++ for 2d/3d flows c++ write private fork 2026-04-14t11:18:58z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/wbchy/PFEM3D" rel="noopener noreferrer">wbchy/PFEM3D</a><small>Implementation of the Particle Finite Element Method in C++ for 2D/3D flows</small></td>
+          <td>wbchy</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td><span class="flag">fork</span></td>
+          <td><time datetime="2026-04-14T11:18:58Z">2026-04-14 11:18 UTC</time></td>
+        </tr>
+        <tr data-search="acrovato/aero acrovato field panel method for solving the full potential equation c++ write public 2026-04-03t08:06:21z" data-permission="write" data-visibility="public">
+          <td><a href="https://github.com/acrovato/aero" rel="noopener noreferrer">acrovato/aero</a><small>Field Panel Method for solving the Full Potential Equation</small></td>
+          <td>acrovato</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>public</td>
+          <td>—</td>
+          <td><time datetime="2026-04-03T08:06:21Z">2026-04-03 08:06 UTC</time></td>
+        </tr>
+        <tr data-search="m-lacroix/thesis m-lacroix no description tex write private 2026-02-12t16:23:10z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/m-lacroix/Thesis" rel="noopener noreferrer">m-lacroix/Thesis</a><small>No description</small></td>
+          <td>m-lacroix</td>
+          <td>TeX</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td>—</td>
+          <td><time datetime="2026-02-12T16:23:10Z">2026-02-12 16:23 UTC</time></td>
+        </tr>
+        <tr data-search="aerozine/math0024-1 aerozine math0504-1 first project: implementation of finite element methods (fem) using galerkin projection for solving elliptic pdes julia write public 2025-12-20t13:11:53z" data-permission="write" data-visibility="public">
+          <td><a href="https://github.com/Aerozine/MATH0024-1" rel="noopener noreferrer">Aerozine/MATH0024-1</a><small>MATH0504-1 First Project: Implementation of Finite Element Methods (FEM) using Galerkin projection for solving elliptic PDEs</small></td>
+          <td>Aerozine</td>
+          <td>Julia</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>public</td>
+          <td>—</td>
+          <td><time datetime="2025-12-20T13:11:53Z">2025-12-20 13:11 UTC</time></td>
+        </tr>
+        <tr data-search="mptorres89/pdes_homework_01 mptorres89 no description python write private 2025-11-18t15:33:40z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/mptorres89/PDEs_Homework_01" rel="noopener noreferrer">mptorres89/PDEs_Homework_01</a><small>No description</small></td>
+          <td>mptorres89</td>
+          <td>Python</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td>—</td>
+          <td><time datetime="2025-11-18T15:33:40Z">2025-11-18 15:33 UTC</time></td>
+        </tr>
+        <tr data-search="edofersan/par2fem edofersan no description c++ write private 2025-09-29t14:14:10z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/edofersan/Par2FEM" rel="noopener noreferrer">edofersan/Par2FEM</a><small>No description</small></td>
+          <td>edofersan</td>
+          <td>C++</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td>—</td>
+          <td><time datetime="2025-09-29T14:14:10Z">2025-09-29 14:14 UTC</time></td>
+        </tr>
+        <tr data-search="samuelvh-ulg/pfem3d samuelvh-ulg implementation of the particle finite element method in c++ for 2d/3d flows  write private fork 2025-04-02t07:13:02z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/SamuelVH-ULG/PFEM3D" rel="noopener noreferrer">SamuelVH-ULG/PFEM3D</a><small>Implementation of the Particle Finite Element Method in C++ for 2D/3D flows</small></td>
+          <td>SamuelVH-ULG</td>
+          <td>—</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td><span class="flag">fork</span></td>
+          <td><time datetime="2025-04-02T07:13:02Z">2025-04-02 07:13 UTC</time></td>
+        </tr>
+        <tr data-search="jjdheremans/wingenius-fortran jjdheremans no description fortran write private 2020-06-08t18:28:10z" data-permission="write" data-visibility="private">
+          <td><a href="https://github.com/jjdheremans/wingenius-fortran" rel="noopener noreferrer">jjdheremans/wingenius-fortran</a><small>No description</small></td>
+          <td>jjdheremans</td>
+          <td>Fortran</td>
+          <td><span class="badge permission-write">write</span></td>
+          <td>private</td>
+          <td>—</td>
+          <td><time datetime="2020-06-08T18:28:10Z">2020-06-08 18:28 UTC</time></td>
+        </tr>
+        </tbody>
+      </table>
+      <div id="empty" class="empty" hidden>No repositories match the current filters.</div>
+    </div>
+  </main>
+  <script>
+    (() => {
+      const search = document.getElementById('search');
+      const rows = [...document.querySelectorAll('#repositories tr')];
+      const count = document.getElementById('visible-count');
+      const empty = document.getElementById('empty');
+      let permission = 'all', visibility = 'all';
+      function applyFilters() {
+        const query = search.value.trim().toLocaleLowerCase(); let visible = 0;
+        rows.forEach(row => {
+          const show = (!query || row.dataset.search.includes(query)) && (permission === 'all' || row.dataset.permission === permission) && (visibility === 'all' || row.dataset.visibility === visibility);
+          row.hidden = !show; if (show) visible += 1;
+        });
+        count.textContent = visible; empty.hidden = visible !== 0;
+      }
+      function bindFilter(id, setter) {
+        document.getElementById(id).addEventListener('click', event => {
+          const button = event.target.closest('button'); if (!button) return;
+          event.currentTarget.querySelectorAll('button').forEach(item => item.classList.toggle('active', item === button));
+          setter(button.dataset.value); applyFilters();
+        });
+      }
+      search.addEventListener('input', applyFilters);
+      bindFilter('permission-filters', value => permission = value);
+      bindFilter('visibility-filters', value => visibility = value);
+    })();
+  </script>
+</body>
+</html>
