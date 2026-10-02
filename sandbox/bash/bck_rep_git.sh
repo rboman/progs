@@ -27,7 +27,7 @@ function f_bitbucket()
 
 function f_gituliege()
 {  
-    git clone git@gitlab.uliege.be:$1/$2.git  # use SSH key
+    git clone git@ssh.gitlab.uliege.be:$1/$2.git  # use SSH key
     tar czf gituliege-${1//\//_}-$2-$DATE.tar.gz $2
     rm -rf $2
 }

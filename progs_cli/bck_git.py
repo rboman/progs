@@ -757,7 +757,7 @@ if __name__ == "__main__":
 #     "shared_with_groups": [],
 #     "snippets_access_level": "enabled",
 #     "snippets_enabled": true,
-#     "ssh_url_to_repo": "git@gitlab.uliege.be:R.Boman/ceci.git",
+#     "ssh_url_to_repo": "git@ssh.gitlab.uliege.be:R.Boman/ceci.git",
 #     "star_count": 1,
 #     "tag_list": [
 #         "CECI",

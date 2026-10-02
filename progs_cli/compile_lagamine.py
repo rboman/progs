@@ -37,13 +37,13 @@ def main():
         print ('%s created.' % arcname)
 
     # checkout/update 'Lagamine' source code and switch to selected branch
-    repo = vrs.GITRepo('Lagamine', 'git@gitlab.uliege.be:UEE/Lagamine.git')
+    repo = vrs.GITRepo('Lagamine', 'git@ssh.gitlab.uliege.be:UEE/Lagamine.git')
     repo.update()
     repo.checkout(o['branch'])
 
     # checkout/update 'LagamineAPI' source code and switch to selected branch
     repo = vrs.GITRepo(
-        'LagamineAPI', 'git@gitlab.uliege.be:am-dept/MN2L/LagamineAPI.git')
+        'LagamineAPI', 'git@ssh.gitlab.uliege.be:am-dept/MN2L/LagamineAPI.git')
     repo.update()
     repo.checkout(o['branch'])
 

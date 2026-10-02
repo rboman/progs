@@ -264,24 +264,24 @@ def main(argv=None):
     # fills the repository list
     repos = []
     repos.append(vrs.GITRepo(
-        'MetaforSetup', 'git@gitlab.uliege.be:am-dept/MN2L/MetaforSetup.git',
+        'MetaforSetup', 'git@ssh.gitlab.uliege.be:am-dept/MN2L/MetaforSetup.git',
         verbose=args.verbose))
     repos.append(vrs.GITRepo(
-        'linuxbin', 'git@gitlab.uliege.be:am-dept/linuxbin.git',
+        'linuxbin', 'git@ssh.gitlab.uliege.be:am-dept/linuxbin.git',
         verbose=args.verbose))
     repos.append(vrs.GITRepo(
-        'oo_meta', 'git@gitlab.uliege.be:am-dept/MN2L/oo_meta.git',
+        'oo_meta', 'git@ssh.gitlab.uliege.be:am-dept/MN2L/oo_meta.git',
         verbose=args.verbose))
 
     if opts['build_type']['value'] == 'full':
         repos.append(vrs.GITRepo(
-            'oo_nda', 'git@gitlab.uliege.be:am-dept/MN2L/oo_nda.git',
+            'oo_nda', 'git@ssh.gitlab.uliege.be:am-dept/MN2L/oo_nda.git',
             verbose=args.verbose))
         repos.append(vrs.GITRepo(
-            'parasolid', 'git@gitlab.uliege.be:am-dept/MN2L/parasolid.git',
+            'parasolid', 'git@ssh.gitlab.uliege.be:am-dept/MN2L/parasolid.git',
             verbose=args.verbose))
         repos.append(vrs.GITRepo(
-            'keygen', 'git@gitlab.uliege.be:am-dept/keygen.git',
+            'keygen', 'git@ssh.gitlab.uliege.be:am-dept/keygen.git',
             verbose=args.verbose))
 
     update_offi(repos, opts)
