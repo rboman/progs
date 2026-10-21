@@ -42,9 +42,12 @@ def tar_folder(fname, tar_name):
     return arcname
 
 
-def main(pars):
-    destdir = pars['destdir']
-    srcdir = pars['srcdir']
+def main(options=None):
+    if options is None:
+        options = pars
+
+    destdir = options['destdir']
+    srcdir = options['srcdir']
 
     # check whether both src/dest folders exist
     if not os.path.isdir(destdir):
@@ -56,7 +59,7 @@ def main(pars):
     print('changing dir to %s' % srcdir)
     os.chdir(srcdir)
 
-    for folder in pars['folders']:
+    for folder in options['folders']:
         tar_name = folder.replace('/', '_')
         if not os.path.isdir(folder):
             raise Exception('folder does not exist (%s)!' % folder)
