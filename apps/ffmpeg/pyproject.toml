@@ -15,7 +15,7 @@ dependencies = [
 packages = ["rb_ffmpeg"]
 
 [tool.setuptools.package-data]
-rb_ffmpeg = ["*.ui"]
+rb_ffmpeg = ["*.ui", "resources/*"]
 
 [project.scripts]
 rb-ffmpeg = "rb_ffmpeg.ffmpeg_GUI:main"

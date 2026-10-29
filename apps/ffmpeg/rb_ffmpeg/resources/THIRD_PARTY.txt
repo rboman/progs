@@ -1,0 +1,36 @@
+rb-ffmpeg - third-party notices and source access
+===============================================
+
+Application source (Apache-2.0):
+https://github.com/rboman/progs/tree/master/apps/ffmpeg
+The executable uses exactly the same application as the pipx entry point.
+
+The standalone Windows build also includes:
+
+* CPython: Python Software Foundation License.
+  https://www.python.org/downloads/source/
+* PyQt5: Riverbank Computing, GPLv3 (PyPI distribution).
+  https://pypi.org/project/PyQt5/#files
+  https://pypi.org/project/PyQt5-sip/#files
+  https://www.riverbankcomputing.com/software/pyqt/download
+* PyQt5-sip: Riverbank Computing, BSD-2-Clause; see its bundled license.
+* Qt 5: The Qt Company and contributors; see the bundled Qt notices.
+  https://download.qt.io/archive/qt/5.15/
+* PyInstaller bootloader: GPL with the PyInstaller bootloader exception.
+  https://pyinstaller.org/en/stable/license.html
+  https://github.com/pyinstaller/pyinstaller
+* FFmpeg: Gyan Essentials static Windows build, GPLv3, including libx264.
+  https://www.gyan.dev/ffmpeg/builds/
+  https://ffmpeg.org/legal.html
+
+The standalone build embeds the FFmpeg version, checksum, source revision,
+upstream README and license, and license files supplied by the Python wheels.
+Select a notice in the list to read it. BUILD-INFO identifies the exact Python
+packages. The full FFmpeg HTML documentation opens separately in your browser.
+
+For source releases of a Python dependency, use its recorded version on PyPI.
+For FFmpeg and its external libraries, keep the matching source and build
+configuration with each redistributed release (including notices and any
+source distribution/offer required by the applicable licenses). The provider's
+README and the recorded source revision identify the selected FFmpeg build.
+

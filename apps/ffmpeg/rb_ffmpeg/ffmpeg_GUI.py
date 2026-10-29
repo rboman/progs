@@ -29,15 +29,17 @@ TODO: should be (re)tested on linux
 
 import sys
 import os
-import subprocess
 import re
 import fnmatch
+from pathlib import Path
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from .ui_widget import Ui_Form
+from .tools import check_tool, find_tool, start_tool
+from .notices import NoticesDialog
 
 # note: "old" ffmpeg cmd line usage
 #   ffmpeg -y -r 10 -i anim%4d.png -vf fps=25 -c:v libx264 -crf 18 -pix_fmt yuv420p video.mp4
@@ -51,6 +53,9 @@ class Window(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
         self.setupUi(self)
+        notices = QPushButton("Licenses / Sources", self)
+        notices.clicked.connect(self.show_notices)
+        self.gridLayout_2.addWidget(notices, self.gridLayout_2.rowCount(), 0)
 
         self.input_fps_lineEdit.setValidator(QIntValidator(0, 1000))
         self.output_fps_lineEdit.setValidator(QIntValidator(0, 1000))
@@ -82,9 +87,29 @@ class Window(QWidget, Ui_Form):
         self.output_fps_lineEdit.setText(settings.value("output_fps", "25"))
         self.quality_Slider.setValue(int(settings.value("quality", 19)))
 
-        iconfile = os.path.join(os.path.dirname(
-            __file__), '..', '..', 'ico', 'boomy-forward.png')
-        self.setWindowIcon(QIcon(iconfile))
+        iconfile = Path(__file__).resolve().parent / 'resources' / 'boomy-forward.png'
+        self.setWindowIcon(QIcon(str(iconfile)))
+
+    def show_notices(self):
+        NoticesDialog(self).exec_()
+
+    def run_command(self, cmd):
+        """Send both output streams to the GUI, also in windowed builds."""
+        try:
+            with start_tool(cmd) as process:
+                for line in process.stdout:
+                    print(line.rstrip())
+                retcode = process.wait()
+            print("\tretcode =", retcode)
+            if retcode:
+                QMessageBox.critical(self, 'Error',
+                    'The command failed (exit %s).\nSee the application log.' % retcode)
+            return retcode
+        except OSError as error:
+            print(error)
+            QMessageBox.critical(self, 'Error',
+                'Cannot start %s:\n%s' % (cmd[0], error))
+            return None
 
     def on_play_Button_pressed(self):
         print("running ffplay...")
@@ -110,11 +135,7 @@ class Window(QWidget, Ui_Form):
             return
         cmd.append(outfile)
         print('\t', cmd)
-        try:
-            retcode = subprocess.call(cmd)
-            print("\tretcode =", retcode)
-        except Exception as e:
-            print(e)
+        self.run_command(cmd)
 
 
     def on_check_Button_pressed(self):
@@ -139,9 +160,8 @@ class Window(QWidget, Ui_Form):
         for p in ['ffmpeg', 'ffplay', 'ffprobe']:
             print("\t.", p, end=' ')
             exe = self.getExe(p)
-            where = 'from PATH' if exe == p else 'from ffmpeg folder'
             if exe:
-                print("found: %s (%s)" % (exe, where))
+                print("found: %s" % exe)
             else:
                 print("NOT FOUND!")
 
@@ -159,16 +179,18 @@ class Window(QWidget, Ui_Form):
             print("\t. %d files found" % ( nofiles))
 
             # sort pixnames in a "natural" way (fig10.png after fig1.png)
-            self.pixnames.sort(key=lambda f: int(re.sub('\D', '', f)))
+            self.pixnames.sort(key=lambda f: int(re.sub(r'\D', '', f)))
 
             # create a file with filenames (TODO: could be done in "convert")
             #   this allows us to have missing files (some holes in the numbering)
             #   or numbers not filled with zeros: e.g. 1 instead of 0001
             #   which are required by the "-i %4d" command argument.
             listfile = os.path.join(self.workspace_lineEdit.text(), self.tmpfile)
-            f=open(listfile, "w")
+            f=open(listfile, "w", encoding="utf-8")
             for p in self.pixnames:
-                f.write(f"file '{p}'\n")
+                # FFmpeg concat files use forward slashes and shell-style quotes.
+                escaped = Path(p).resolve().as_posix().replace("'", "'\\''")
+                f.write(f"file '{escaped}'\n")
                 # f.write(f'duration {1/int(self.input_fps_lineEdit.text())}\n')
                 f.write(f'duration 1\n')   
                 # "duration": aucune influence sur le résultat vu qu'on redéfinit "-r input_fps"
@@ -216,27 +238,10 @@ class Window(QWidget, Ui_Form):
             self.img_Label.setPixmap(self.pix[no])
 
     def checkExe(self, exe):
-        try:
-            # try to call it (with a dummy arg - faster than -h)
-            with open(os.devnull, 'w') as FNULL:
-                subprocess.call([exe, '-prout'], stdout=FNULL,
-                                stderr=subprocess.STDOUT)
-            return exe
-        except OSError:
-            return ""
+        return exe if check_tool(exe) else ""
 
     def getExe(self, exename):
-        """look for ffmpeg
-        """
-        # try the provided folder name
-        if self.ffmpegfolder_lineEdit.text():
-            exeinfolder = os.path.join(
-                self.ffmpegfolder_lineEdit.text(), exename)
-            exe = self.checkExe(exeinfolder)
-            if exe:
-                return exe
-        # try ffmpeg in the PATH
-        return self.checkExe(exename)
+        return find_tool(exename, self.ffmpegfolder_lineEdit.text())
 
     def on_convert_Button_pressed(self):
         """`Convert` Button
@@ -245,6 +250,7 @@ class Window(QWidget, Ui_Form):
         if not exeffmpeg:
             QMessageBox.critical(
                 self, 'Error', 'ffmpeg does not exist/work!\nCheck ffmpeg path.')
+            return
 
         cmd = []
         cmd.append(exeffmpeg)
@@ -307,9 +313,7 @@ class Window(QWidget, Ui_Form):
         # dans ce cas, python se charge d'ajouter des guillemets là ou il faut.
         # sous windows, ca marche sans shell=True avec une bete string.
         # => on utilise une liste
-        retcode = subprocess.call(cmd)
-
-        print("\tretcode =", retcode)
+        self.run_command(cmd)
 
     def on_ffmpegfolder_Button_pressed(self):
         dir = QFileDialog.getExistingDirectory(
@@ -349,6 +353,8 @@ class Window(QWidget, Ui_Form):
         settings.setValue("output_fps", QVariant(
             self.output_fps_lineEdit.text()))
         settings.setValue("quality", QVariant(self.quality_Slider.value()))
+        if sys.stdout is self:
+            sys.stdout = self.stdout
         event.accept()
 
     def write(self, stuff):
