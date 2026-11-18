@@ -10,6 +10,10 @@
 
 /home/boman/dev/progs/bin/sauvegarder-wiki-cloud23.sh
 
+# annuaire LDAP de oury-cloud47 -----------------------------------------------
+
+/home/boman/dev/progs/bin/sauvegarder-ldap-cloud47.sh
+
 # serveur de licences siemens.uliege.be ----------------------------------------
 
 mkdir -p /hdd2/boman/Backups/rsync/siemens/web/
